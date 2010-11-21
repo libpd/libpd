@@ -1,0 +1,3 @@
+samples/test/pdtest
+*.o
+*.so
