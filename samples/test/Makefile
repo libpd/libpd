@@ -6,11 +6,11 @@ CFLAGS = -I../../pure-data/src -I../../libpd_wrapper
 .PHONY: clean clobber
 
 $(TARGET): ${SRC_FILES:.c=.o}
-	gcc -o $(TARGET) $^ ../../pure-data/src/libpd.so
+	gcc -o $(TARGET) $^ ../../libpd.so
 
 clean:
-	-rm *.o
+	rm -f *.o
 
 clobber: clean
-	-rm $(TARGET)
+	rm -f $(TARGET)
 
