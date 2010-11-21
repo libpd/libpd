@@ -1,0 +1,8 @@
+pd -schedlib `pwd`/pdsched
+
+dolist:
+pd~ to delay starting subproc until asked
+figure out about setting nchannels from command line
+fix maximum nchannels in and out
+
+
