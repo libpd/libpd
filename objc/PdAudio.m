@@ -142,8 +142,6 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
     numOutputChannels = outputChannels;
     sampleRate = (Float64) newSampleRate;
     microphoneVolume = 1.0f;
-    pool = nil;
-    audioLoopCounter = 0;
     
     int numberOfChannels = (numInputChannels < numOutputChannels) ? numOutputChannels : numInputChannels;
     floatBufferLength = [PdBase getBlockSize] * ticks * numberOfChannels;
@@ -163,8 +161,6 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
   // TODO: delete audioUnit?
   free(floatBuffer);
   floatBuffer = nil;
-  [pool release];
-  pool = nil;
   [super dealloc];
 }
 
