@@ -1,3 +1,4 @@
 samples/test/pdtest
 *.o
 *.so
+*.class
