@@ -5,6 +5,10 @@ void pdprint(const char *s) {
   printf("%s", s);
 }
 
+void pdnoteon(int ch, int pitch, int vel) {
+  printf("noteon: %d %d %d\n", ch, pitch, vel);
+}
+
 int main(int argc, char **argv) {
   if (argc < 3) {
     fprintf(stderr, "usage: %s file folder\n", argv[0]);
@@ -14,6 +18,7 @@ int main(int argc, char **argv) {
   // init pd
   int srate = 44100;
   libpd_printhook = (t_libpd_printhook) pdprint;
+  libpd_noteonhook = (t_libpd_noteonhook) pdnoteon;
   libpd_init();
   libpd_init_audio(1, 2, srate, 1);
   float inbuf[64], outbuf[128];  // one input channel, two output channels

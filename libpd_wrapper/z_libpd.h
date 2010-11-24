@@ -50,5 +50,25 @@ extern t_libpd_symbolhook libpd_symbolhook;
 extern t_libpd_listhook libpd_listhook;
 extern t_libpd_messagehook libpd_messagehook;
 
+int libpd_noteon(int, int, int);
+int libpd_controlchange(int, int, int);
+int libpd_programchange(int, int);
+int libpd_pitchbend(int, int);
+int libpd_aftertouch(int, int);
+int libpd_polyaftertouch(int, int, int);
+
+typedef void (*t_libpd_noteonhook)(int, int, int);
+typedef void (*t_libpd_controlchangehook)(int, int, int);
+typedef void (*t_libpd_programchangehook)(int, int);
+typedef void (*t_libpd_pitchbendhook)(int, int);
+typedef void (*t_libpd_aftertouchhook)(int, int);
+typedef void (*t_libpd_polyaftertouchhook)(int, int, int);
+extern t_libpd_noteonhook libpd_noteonhook;
+extern t_libpd_controlchangehook libpd_controlchangehook;
+extern t_libpd_programchangehook libpd_programchangehook;
+extern t_libpd_pitchbendhook libpd_pitchbendhook;
+extern t_libpd_aftertouchhook libpd_aftertouchhook;
+extern t_libpd_polyaftertouchhook libpd_polyaftertouchhook;
+
 #endif
 

@@ -27,6 +27,13 @@ t_libpd_symbolhook libpd_symbolhook = NULL;
 t_libpd_listhook libpd_listhook = NULL;
 t_libpd_messagehook libpd_messagehook = NULL;
 
+t_libpd_noteonhook libpd_noteonhook = NULL;
+t_libpd_controlchangehook libpd_controlchangehook = NULL;
+t_libpd_programchangehook libpd_programchangehook = NULL;
+t_libpd_pitchbendhook libpd_pitchbendhook = NULL;
+t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
+t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
+
 static int ticks_per_buffer;
 
 static void *get_object(const char *s) {
@@ -203,5 +210,59 @@ int libpd_blocksize() {
 
 int libpd_exists(const char *sym) {
   return get_object(sym) != NULL;
+}
+
+#define CHECK_CHANNEL if (channel < 0) return -1;
+#define CHECK_RANGE_7BIT(v) if (v < 0 || v > 0x7f) return -1;
+#define PORT (channel >> 4)
+#define CHANNEL (channel & 0x0f)
+
+int libpd_noteon(int channel, int pitch, int velocity) {
+  CHECK_CHANNEL
+  CHECK_RANGE_7BIT(pitch)
+  CHECK_RANGE_7BIT(velocity)
+  inmidi_noteon(PORT, CHANNEL, pitch, velocity);
+  return 0;
+}
+
+int libpd_controlchange(int channel, int controller, int value) {
+  CHECK_CHANNEL
+  CHECK_RANGE_7BIT(controller)
+  CHECK_RANGE_7BIT(value)
+  inmidi_controlchange(PORT, CHANNEL, controller, value);
+  return 0;
+}
+
+int libpd_programchange(int channel, int value) {
+  CHECK_CHANNEL
+  CHECK_RANGE_7BIT(value)
+  inmidi_programchange(PORT, CHANNEL, value);
+  return 0;
+}
+
+int libpd_pitchbend(int channel, int value) {
+  CHECK_CHANNEL
+  if (value < -8192 || value > 8191) return -1;
+  inmidi_pitchbend(PORT, CHANNEL, value + 8192);
+  // Note: For consistency with the rest of the world, we're adding 8192 here
+  // because the output range of Pd's [pitchin] is [0, 16383].  This is a bug
+  // in Pd, but everybody seems to be used to it, and so we'll go along with
+  // it.
+  return 0;
+}
+
+int libpd_aftertouch(int channel, int value) {
+  CHECK_CHANNEL
+  CHECK_RANGE_7BIT(value)
+  inmidi_aftertouch(PORT, CHANNEL, value);
+  return 0;
+}
+
+int libpd_polyaftertouch(int channel, int pitch, int value) {
+  CHECK_CHANNEL
+  CHECK_RANGE_7BIT(pitch)
+  CHECK_RANGE_7BIT(value)
+  inmidi_polyaftertouch(PORT, CHANNEL, pitch, value);
+  return 0;
 }
 
