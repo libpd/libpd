@@ -26,7 +26,9 @@ PD_FILES = \
 	pure-data/src/x_qlist.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
   libpd_wrapper/z_libpd.c
-JNI_FILES = libpd_wrapper/z_jni.c
+JNI_FILE = libpd_wrapper/z_jni.c
+JNIH_FILE = libpd_wrapper/z_jni.h
+JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libpd.dylib
 PDJAVA = libpdnative.dylib
 
@@ -35,19 +37,27 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
       -I/System/Library/Frameworks/JavaVM.framework/Headers \
       -arch x86_64 -arch i386 -g
 
-.PHONY: all clean clobber
+.PHONY: all javalib clean clobber
 
-all: $(LIBPD) $(PDJAVA)
+all: $(LIBPD) javalib
 
 $(LIBPD): ${PD_FILES:.c=.o}
 	gcc -g -arch x86_64 -arch i386 -dynamiclib -ldl -lm -lpthread -o $(LIBPD) $^
 
-$(PDJAVA): ${PD_FILES:.c=.o} ${JNI_FILES:.c=.o}
+javalib:
+	make $(JNIH_FILE)
+	make $(PDJAVA)
+
+$(JNIH_FILE): $(JAVA_BASE)
+	javac -classpath java $^
+	javah -o $@ -classpath java org.puredata.core.PdBase
+
+$(PDJAVA): ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	gcc -g -arch x86_64 -arch i386 -dynamiclib -ldl -lm -lpthread \
         -o $(PDJAVA) $^ -framework JavaVM
 
 clean:
-  rm -f ${PD_FILES:.c=.o} ${JNI_FILES:.c=.o}
+  rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDJAVA)

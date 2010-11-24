@@ -28,6 +28,7 @@ PD_FILES = \
 	libpd_wrapper/z_libpd.c
 JNI_FILE = libpd_wrapper/z_jni.c
 JNIH_FILE = libpd_wrapper/z_jni.h
+JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libpd.so
 PDJAVA = libpdnative.so
 
@@ -36,18 +37,21 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
 			-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
 			-I./pure-data/src -I./libpd_wrapper
 
-.PHONY: all clean clobber javabindings
+.PHONY: all javalib clean clobber
 
-all: $(LIBPD) javabindings
+all: $(LIBPD) javalib
 	cd samples/test && make
 
 $(LIBPD): ${PD_FILES:.c=.o}
 	gcc -shared -ldl -lm -lpthread -o $(LIBPD) $^
 
-javabindings:
-	javac -classpath java java/org/puredata/core/PdBase.java
-	javah -o $(JNIH_FILE) -classpath java org.puredata.core.PdBase
+javalib:
+	make $(JNIH_FILE)
 	make $(PDJAVA)
+
+$(JNIH_FILE): $(JAVA_BASE)
+	javac -classpath java $^
+	javah -o $@ -classpath java org.puredata.core.PdBase
 
 $(PDJAVA): ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	gcc -shared -ldl -lm -lpthread -o $(PDJAVA) $^
@@ -57,5 +61,4 @@ clean:
 
 clobber: clean
 	rm -f $(LIBPD) $(PDJAVA)
-
 
