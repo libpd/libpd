@@ -220,8 +220,16 @@ public final class PdBase {
 	/**
 	 * @return default pd block size, DEFDACBLKSIZE (currently 64) (aka number of samples per tick per channel)
 	 */
-	public native static int blockSize();
+	public synchronized native static int blockSize();
 	
+	public synchronized native static void setMidiReceiver(PdMidiReceiver receiver);
+	public synchronized native static int sendNoteOn(int channel, int pitch, int velocity);
+	public synchronized native static int sendControlChange(int channel, int controller, int value);
+	public synchronized native static int sendProgramChange(int channel, int value);
+	public synchronized native static int sendPitchBend(int channel, int value);
+	public synchronized native static int sendAfterTouch(int channel, int value);
+	public synchronized native static int sendPolyAfterTouch(int channel, int pitch, int value);
+
 	
 	private static int processArgs(Object[] args) {
 		int maxArgs = startMessage();

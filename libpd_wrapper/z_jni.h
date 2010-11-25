@@ -113,6 +113,62 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_blockSize
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    setMidiReceiver
+ * Signature: (Lorg/puredata/core/PdMidiReceiver;)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendNoteOn
+ * Signature: (III)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendNoteOn
+  (JNIEnv *, jclass, jint, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendControlChange
+ * Signature: (III)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendControlChange
+  (JNIEnv *, jclass, jint, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendProgramChange
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendProgramChange
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendPitchBend
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPitchBend
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendAfterTouch
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendAfterTouch
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendPolyAfterTouch
+ * Signature: (III)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPolyAfterTouch
+  (JNIEnv *, jclass, jint, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    initialize
  * Signature: ()V
  */

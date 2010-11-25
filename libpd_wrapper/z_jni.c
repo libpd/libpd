@@ -31,6 +31,14 @@ static jclass objClass = NULL;
 static jclass floatClass = NULL;
 static jmethodID floatInit = NULL;
 
+static jobject midiHandler = NULL;
+static jmethodID noteOnMethod = NULL;
+static jmethodID controlChangeMethod = NULL;
+static jmethodID programChangeMethod = NULL;
+static jmethodID pitchBendMethod = NULL;
+static jmethodID afterTouchMethod = NULL;
+static jmethodID polyAfterTouchMethod = NULL;
+
 static void java_printhook(const char *msg) {
   if (messageHandler == NULL || msg == NULL) return;
   GET_ENV   // safely retrieve cached env pointer, if possible
@@ -101,6 +109,54 @@ void java_sendMessage(const char *source, const char *msg,
              jsource, jmsg, jarray);
 }
 
+void java_sendNoteOn(int channel, int pitch, int velocity) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            noteOnMethod, channel, pitch, velocity);
+}
+
+void java_sendControlChange(int channel, int controller, int value) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            controlChangeMethod, channel, controller, value);
+}
+
+void java_sendProgramChange(int channel, int value) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            programChangeMethod, channel, value);
+}
+
+void java_sendPitchBend(int channel, int value) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            pitchBendMethod, channel, value);
+}
+
+void java_sendAfterTouch(int channel, int value) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            afterTouchMethod, channel, value);
+}
+
+void java_sendPolyAfterTouch(int channel, int pitch, int value) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            polyAfterTouchMethod, channel, pitch, value);
+}
+
 static void deleteHandlerRef(JNIEnv *env) {
   if (messageHandler == NULL) return;
   (*env)->DeleteGlobalRef(env, messageHandler);
@@ -111,6 +167,18 @@ static void deleteHandlerRef(JNIEnv *env) {
   symbolMethod = NULL;
   listMethod = NULL;
   anyMethod = NULL;
+}
+
+static void deleteMidiHandlerRef(JNIEnv *env) {
+  if (midiHandler == NULL) return;
+  (*env)->DeleteGlobalRef(env, midiHandler);
+  midiHandler = NULL;
+  noteOnMethod = NULL;
+  controlChangeMethod = NULL;
+  programChangeMethod = NULL;
+  pitchBendMethod = NULL;
+  afterTouchMethod = NULL;
+  polyAfterTouchMethod = NULL;
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad
@@ -127,12 +195,22 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
   objClass = LIBPD_CLASS_REF("java/lang/Object");
   floatClass = LIBPD_CLASS_REF("java/lang/Float");
   floatInit = (*env)->GetMethodID(env, floatClass, "<init>", "(F)V");
+
   libpd_printhook = (t_libpd_printhook) java_printhook;
   libpd_banghook = (t_libpd_banghook) java_sendBang;
   libpd_floathook = (t_libpd_floathook) java_sendFloat;
   libpd_symbolhook = (t_libpd_symbolhook) java_sendSymbol;
   libpd_listhook = (t_libpd_listhook) java_sendList;
   libpd_messagehook = (t_libpd_messagehook) java_sendMessage;
+
+  libpd_noteonhook = (t_libpd_noteonhook) java_sendNoteOn;
+  libpd_controlchangehook = (t_libpd_controlchangehook) java_sendControlChange;
+  libpd_programchangehook = (t_libpd_programchangehook) java_sendProgramChange;
+  libpd_pitchbendhook = (t_libpd_pitchbendhook) java_sendPitchBend;
+  libpd_aftertouchhook = (t_libpd_aftertouchhook) java_sendAfterTouch;
+  libpd_polyaftertouchhook =
+            (t_libpd_polyaftertouchhook) java_sendPolyAfterTouch;
+
   libpd_init();
 }
 
@@ -239,6 +317,29 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setReceiver
   anyMethod = (*env)->GetMethodID(env, class_handler, "receiveMessage",
     "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V");
   // no global ref necessary for method IDs
+}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
+(JNIEnv *env, jclass cls, jobject handler) {
+  CACHE_ENV
+  deleteMidiHandlerRef(env);
+  if (handler == NULL) {
+    return;
+  }
+  midiHandler = (*env)->NewGlobalRef(env, handler);
+  jclass class_handler = (*env)->GetObjectClass(env, midiHandler);
+  noteOnMethod = (*env)->GetMethodID(env, class_handler,
+    "receiveNoteOn", "(III)V");
+  controlChangeMethod = (*env)->GetMethodID(env, class_handler,
+    "receiveControlChange", "(III)V");
+  programChangeMethod = (*env)->GetMethodID(env, class_handler,
+    "receiveProgramChange", "(II)V");
+  pitchBendMethod = (*env)->GetMethodID(env, class_handler,
+    "receivePitchBend", "(II)V");
+  afterTouchMethod = (*env)->GetMethodID(env, class_handler,
+    "receiveAfterTouch", "(II)V");
+  polyAfterTouchMethod = (*env)->GetMethodID(env, class_handler,
+    "receivePolyAfterTouch", "(III)V");
 }
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_exists
@@ -352,5 +453,41 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
   libpd_unbind((void *)ptr);
   // even naughtier, using a pointer from Java
   // using long integer in case we're on a 64bit CPU
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendNoteOn
+(JNIEnv *env, jclass cls, jint channel, jint pitch, jint velocity) {
+  CACHE_ENV
+  return libpd_noteon(channel, pitch, velocity);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendControlChange
+(JNIEnv *env, jclass cls, jint channel, jint controller, jint value) {
+  CACHE_ENV
+  return libpd_controlchange(channel, controller, value);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendProgramChange
+(JNIEnv *env, jclass cls, jint channel, jint value) {
+  CACHE_ENV
+  return libpd_programchange(channel, value);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPitchBend
+(JNIEnv *env, jclass cls, jint channel, jint value) {
+  CACHE_ENV
+  return libpd_pitchbend(channel, value);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendAfterTouch
+(JNIEnv *env, jclass cls, jint channel, jint value) {
+  CACHE_ENV
+  return libpd_aftertouch(channel, value);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPolyAfterTouch
+(JNIEnv *env, jclass cls, jint channel, jint pitch, jint value) {
+  CACHE_ENV
+  return libpd_polyaftertouch(channel, pitch, value);
 }
 
