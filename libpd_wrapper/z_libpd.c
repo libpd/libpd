@@ -244,10 +244,8 @@ int libpd_pitchbend(int channel, int value) {
   CHECK_CHANNEL
   if (value < -8192 || value > 8191) return -1;
   inmidi_pitchbend(PORT, CHANNEL, value + 8192);
-  // Note: For consistency with the rest of the world, we're adding 8192 here
-  // because the output range of Pd's [pitchin] is [0, 16383].  This is a bug
-  // in Pd, but everybody seems to be used to it, and so we'll go along with
-  // it.
+  // Note: For consistency with Pd, we center the output of [pitchin]
+  // at 8192.
   return 0;
 }
 
