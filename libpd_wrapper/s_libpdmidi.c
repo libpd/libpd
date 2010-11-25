@@ -52,6 +52,7 @@ void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,
     int *pnmidioutdev, int *pmidioutdev) {}
 void sys_open_midi(int nmidiindev, int *midiindev,
     int nmidioutdev, int *midioutdev, int enable) {}
+void sys_close_midi() {}
 void sys_reopen_midi(void) {}
 void sys_initmidiqueue(void) {}
 void sys_pollmidiqueue(void) {}
