@@ -29,8 +29,8 @@ PD_FILES = \
 JNI_FILE = libpd_wrapper/z_jni.c
 JNIH_FILE = libpd_wrapper/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-LIBPD = libpd.so
-PDJAVA = libpdnative.so
+LIBPD = libs/libpd.so
+PDJAVA = libs/libpdnative.so
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
 			-Wno-int-to-pointer-cast -Wno-pointer-to-int-cast \
@@ -40,7 +40,6 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
 .PHONY: all javalib clean clobber
 
 all: $(LIBPD) javalib
-	cd samples/test && make
 
 $(LIBPD): ${PD_FILES:.c=.o}
 	gcc -shared -ldl -lm -lpthread -o $(LIBPD) $^

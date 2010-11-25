@@ -153,18 +153,18 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPitchBend
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    sendAfterTouch
+ * Method:    sendAftertouch
  * Signature: (II)I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendAfterTouch
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendAftertouch
   (JNIEnv *, jclass, jint, jint);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    sendPolyAfterTouch
+ * Method:    sendPolyAftertouch
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPolyAfterTouch
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPolyAftertouch
   (JNIEnv *, jclass, jint, jint, jint);
 
 /*

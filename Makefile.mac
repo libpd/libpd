@@ -29,8 +29,8 @@ PD_FILES = \
 JNI_FILE = libpd_wrapper/z_jni.c
 JNIH_FILE = libpd_wrapper/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-LIBPD = libpd.dylib
-PDJAVA = libpdnative.dylib
+LIBPD = libs/libpd.dylib
+PDJAVA = libs/libpdnative.dylib
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
 			-I./pure-data/src -I./libpd_wrapper \

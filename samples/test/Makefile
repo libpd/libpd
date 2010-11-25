@@ -1,5 +1,5 @@
 SRC_FILES = pdtest.c
-LIBPD = ../../libpd.so
+LIBPD = ../../libs/libpd.so
 TARGET = pdtest
 
 CFLAGS = -I../../pure-data/src -I../../libpd_wrapper

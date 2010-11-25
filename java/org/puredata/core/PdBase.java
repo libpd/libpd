@@ -22,6 +22,9 @@ import java.util.Map;
  *      
  *    - {@link PdUtils} is an example of how to wrap PdBase in higher-level functionality.
  *    
+ *    - The MIDI methods choose sanity over consistency with pd or the MIDI standard.  To wit, channel numbers always start
+ *      at 0, and pitch bend values are centered at 0, i.e., they range from -8192 to 8191.
+ *    
  *    - The basic idea is to turn pd into a library that essentially offers a rendering callback (process) mimicking the
  *      design of JACK, the JACK Audio Connection Kit.
  *      
@@ -69,6 +72,7 @@ public final class PdBase {
 	 */
 	public synchronized static void release() {
 		setReceiver(null);
+		setMidiReceiver(null);
 		for (long ptr: bindings.values()) {
 			unbindSymbol(ptr);
 		}
@@ -222,13 +226,69 @@ public final class PdBase {
 	 */
 	public synchronized native static int blockSize();
 	
+	/**
+	 * sets the handler for receiving MIDI events from pd
+	 * 
+	 * @param receiver
+	 */
 	public synchronized native static void setMidiReceiver(PdMidiReceiver receiver);
+	
+	/**
+	 * sends a note on event to pd
+	 * 
+	 * @param channel starting at 0
+	 * @param pitch   0..0x7f
+	 * @param velocity 0..0x7f
+	 * @return error code, 0 on success
+	 */
 	public synchronized native static int sendNoteOn(int channel, int pitch, int velocity);
+	
+	/**
+	 * sends a control change event to pd
+	 * 
+	 * @param channel starting at 0
+	 * @param controller 0..0x7f
+	 * @param value 0..0x7f
+	 * @return error code, 0 on success
+	 */
 	public synchronized native static int sendControlChange(int channel, int controller, int value);
+	
+	/**
+	 * sends a program change event to Pd
+	 * 
+	 * @param channel starting at 0
+	 * @param value 0..0x7f
+	 * @return error code, 0 on success
+	 */
 	public synchronized native static int sendProgramChange(int channel, int value);
+	
+	/**
+	 * sends a pitch bend event to pd
+	 * 
+	 * @param channel starting at 0
+	 * @param value -8192..8191 (note that Pd has some offset bug in its pitch bend objects, but libpd corrects for this)
+	 * @return error code, 0 on success
+	 */
 	public synchronized native static int sendPitchBend(int channel, int value);
-	public synchronized native static int sendAfterTouch(int channel, int value);
-	public synchronized native static int sendPolyAfterTouch(int channel, int pitch, int value);
+	
+	/**
+	 * sends an aftertouch event to pd
+	 * 
+	 * @param channel starting at 0
+	 * @param value 0..0x7f
+	 * @return error code, 0 on success
+	 */
+	public synchronized native static int sendAftertouch(int channel, int value);
+	
+	/**
+	 * sends a polyphonic aftertouch event to pd
+	 * 
+	 * @param channel starting at 0
+	 * @param pitch 0..0x7f
+	 * @param value 0..0x7f
+	 * @return error code, 0 on success
+	 */
+	public synchronized native static int sendPolyAftertouch(int channel, int pitch, int value);
 
 	
 	private static int processArgs(Object[] args) {

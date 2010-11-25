@@ -5,36 +5,42 @@
 #include "m_pd.h"
 #include "z_libpd.h"
 
-#define CHANNEL ((port << 4) | channel)
+#define CLAMP(x, low, high) ((x > high) ? high : ((x < low) ? low : x))
+#define CLAMP4BIT(x) CLAMP(x, 0, 0x0f)
+#define CLAMP7BIT(x) CLAMP(x, 0, 0x7f)
+#define CLAMP12BIT(x) CLAMP(x, 0, 0x0fff)
+#define CLAMP14BIT(x) CLAMP(x, 0, 0x3fff)
+
+#define CHANNEL ((CLAMP12BIT(port) << 4) | CLAMP4BIT(channel))
 
 void outmidi_noteon(int port, int channel, int pitch, int velo) {
   if (libpd_noteonhook)
-    libpd_noteonhook(CHANNEL, pitch, velo);
+    libpd_noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
 }
 
 void outmidi_controlchange(int port, int channel, int ctl, int value) {
   if (libpd_controlchangehook)
-    libpd_controlchangehook(CHANNEL, ctl, value);
+    libpd_controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
 }
 
 void outmidi_programchange(int port, int channel, int value) {
   if (libpd_programchangehook)
-    libpd_programchangehook(CHANNEL, value);
+    libpd_programchangehook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_pitchbend(int port, int channel, int value) {
   if (libpd_pitchbendhook)
-    libpd_pitchbendhook(CHANNEL, value - 8192); // remove offset
+    libpd_pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
 }
 
 void outmidi_aftertouch(int port, int channel, int value) {
   if (libpd_aftertouchhook)
-    libpd_aftertouchhook(CHANNEL, value);
+    libpd_aftertouchhook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
   if (libpd_polyaftertouchhook)
-    libpd_polyaftertouchhook(CHANNEL, pitch, value);
+    libpd_polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
 }
 
 
