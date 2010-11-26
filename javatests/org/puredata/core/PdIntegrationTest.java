@@ -8,24 +8,27 @@
 package org.puredata.core;
 
 import org.easymock.EasyMock;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import org.puredata.core.utils.PdUtils;
 
-import junit.framework.TestCase;
 
 /**
-* Some basic tests for messaging and MIDI support in libpd.
-* 
-* @author Peter Brinkmann (peter.brinkmann@gmail.com) 
-*
-*/
-public class PdIntegrationTest extends TestCase {
+ * Some basic tests for messaging and MIDI support in libpd.
+ * 
+ * @author Peter Brinkmann (peter.brinkmann@gmail.com) 
+ *
+ */
+public class PdIntegrationTest {
 
 	private String patch;
 	private PdReceiver receiver;
 	private PdMidiReceiver midiReceiver;
-	
-	@Override
-	protected void setUp() throws Exception {
+
+	@Before
+	public void setUp() throws Exception {
 		receiver = EasyMock.createStrictMock(PdReceiver.class);
 		midiReceiver = EasyMock.createStrictMock(PdMidiReceiver.class);
 		PdBase.setReceiver(receiver);
@@ -33,13 +36,14 @@ public class PdIntegrationTest extends TestCase {
 		patch = PdUtils.openPatch("javatests/org/puredata/core/test_callbacks.pd");
 		PdBase.subscribe("eggs");
 	}
-	
-	@Override
-	protected void tearDown() throws Exception {
+
+	@After
+	public void tearDown() throws Exception {
 		PdUtils.closePatch(patch);
 		PdBase.release();
 	}
-	
+
+	@Test
 	public void testPrint() {
 		receiver.print("print: 0\n");
 		receiver.print("print: 1\n");
@@ -48,7 +52,8 @@ public class PdIntegrationTest extends TestCase {
 		PdBase.sendFloat("foo", 1);
 		EasyMock.verify(receiver);
 	}
-	
+
+	@Test
 	public void testReceive() {
 		receiver.receiveBang("eggs");
 		receiver.receiveFloat("eggs", 42);
@@ -63,7 +68,8 @@ public class PdIntegrationTest extends TestCase {
 		PdBase.sendMessage("spam", "testing", "one", 1, "two", 2);
 		EasyMock.verify(receiver);
 	}
-	
+
+	@Test
 	public void testNoteOn() {
 		midiReceiver.receiveNoteOn(0, 64, 127);
 		midiReceiver.receiveNoteOn(12, 0, 127);
@@ -79,7 +85,8 @@ public class PdIntegrationTest extends TestCase {
 		assertEquals(-1, PdBase.sendNoteOn(30, 10, 128));
 		EasyMock.verify(midiReceiver);
 	}
-	
+
+	@Test
 	public void testControlChange() {
 		midiReceiver.receiveControlChange(0, 64, 127);
 		midiReceiver.receiveControlChange(12, 0, 127);
@@ -95,7 +102,8 @@ public class PdIntegrationTest extends TestCase {
 		assertEquals(-1, PdBase.sendControlChange(30, 10, 128));
 		EasyMock.verify(midiReceiver);
 	}
-	
+
+	@Test
 	public void testPolyAftertouch() {
 		midiReceiver.receivePolyAftertouch(0, 64, 127);
 		midiReceiver.receivePolyAftertouch(12, 0, 127);
@@ -111,7 +119,8 @@ public class PdIntegrationTest extends TestCase {
 		assertEquals(-1, PdBase.sendPolyAftertouch(30, 10, 128));
 		EasyMock.verify(midiReceiver);
 	}
-	
+
+	@Test
 	public void testProgramChange() {
 		midiReceiver.receiveProgramChange(0, 64);
 		midiReceiver.receiveProgramChange(12, 0);
@@ -125,7 +134,8 @@ public class PdIntegrationTest extends TestCase {
 		assertEquals(-1, PdBase.sendProgramChange(10, 128));
 		EasyMock.verify(midiReceiver);
 	}
-	
+
+	@Test
 	public void testAftertouch() {
 		midiReceiver.receiveAftertouch(0, 64);
 		midiReceiver.receiveAftertouch(12, 0);
@@ -139,7 +149,8 @@ public class PdIntegrationTest extends TestCase {
 		assertEquals(-1, PdBase.sendAftertouch(10, 128));
 		EasyMock.verify(midiReceiver);
 	}
-	
+
+	@Test
 	public void testPitchBend() {
 		midiReceiver.receivePitchBend(0, 64);
 		midiReceiver.receivePitchBend(12, 0);
