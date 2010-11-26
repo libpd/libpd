@@ -1,3 +1,10 @@
+/**
+ * 
+ * For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ * 
+ */
+
 package org.puredata.core;
 
 import org.easymock.EasyMock;
@@ -5,6 +12,12 @@ import org.puredata.core.utils.PdUtils;
 
 import junit.framework.TestCase;
 
+/**
+* Some basic tests for messaging and MIDI support in libpd.
+* 
+* @author Peter Brinkmann (peter.brinkmann@gmail.com) 
+*
+*/
 public class PdIntegrationTest extends TestCase {
 
 	private String patch;
@@ -40,10 +53,14 @@ public class PdIntegrationTest extends TestCase {
 		receiver.receiveBang("eggs");
 		receiver.receiveFloat("eggs", 42);
 		receiver.receiveSymbol("eggs", "hund katze maus");
+		receiver.receiveList("eggs", "hund", 1.0f, "katze", 2.0f, "maus", 3.0f);
+		receiver.receiveMessage("eggs", "testing", "one", 1.0f, "two", 2.0f);
 		EasyMock.replay(receiver);
 		PdBase.sendBang("spam");
 		PdBase.sendFloat("spam", 42);
 		PdBase.sendSymbol("spam", "hund katze maus");
+		PdBase.sendList("spam", "hund", 1, "katze", 2, "maus", 3);
+		PdBase.sendMessage("spam", "testing", "one", 1, "two", 2);
 		EasyMock.verify(receiver);
 	}
 	
