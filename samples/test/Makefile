@@ -9,6 +9,9 @@ CFLAGS = -I../../pure-data/src -I../../libpd_wrapper
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
 	gcc -o $(TARGET) $^ $(LIBPD)
 
+$(LIBPD):
+	cd ../.. && make
+
 clean:
 	rm -f *.o
 
