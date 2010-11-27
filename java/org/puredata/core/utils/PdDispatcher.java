@@ -35,12 +35,12 @@ public abstract class PdDispatcher implements PdReceiver {
 	 * @param listener
 	 */
 	public synchronized void addListener(String symbol, PdListener listener) {
-		int err = PdBase.subscribe(symbol);
-		if (err != 0) {
-			throw new IllegalArgumentException("bad symbol: " + symbol);
-		}
 		Set<PdListener> selected = listeners.get(symbol);
 		if (selected == null) {
+			int err = PdBase.subscribe(symbol);
+			if (err != 0) {
+				throw new IllegalArgumentException("bad symbol: " + symbol);
+			}
 			selected = new HashSet<PdListener>();
 			listeners.put(symbol, selected);
 		}
