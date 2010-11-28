@@ -10,24 +10,7 @@
 %module pylibpd
 
 %include "carrays.i"
-%array_class(float, float_array);
-
-#define SET_CALLBACK(s) \
-  int libpd_set_##s##_callback(PyObject *callback);
-
-SET_CALLBACK(print)
-SET_CALLBACK(bang)
-SET_CALLBACK(float)
-SET_CALLBACK(symbol)
-SET_CALLBACK(list)
-SET_CALLBACK(message)
-
-SET_CALLBACK(noteon)
-SET_CALLBACK(controlchange)
-SET_CALLBACK(programchange)
-SET_CALLBACK(pitchbend)
-SET_CALLBACK(aftertouch)
-SET_CALLBACK(polyaftertouch)
+%array_class(float, float_array)
 
 void libpd_clear_search_path();
 void libpd_add_to_search_path(const char *s);
@@ -56,6 +39,23 @@ int libpd_programchange(int, int);
 int libpd_pitchbend(int, int);
 int libpd_aftertouch(int, int);
 int libpd_polyaftertouch(int, int, int);
+
+#define SET_CALLBACK(s) \
+  int libpd_set_##s##_callback(PyObject *callback);
+
+SET_CALLBACK(print)
+SET_CALLBACK(bang)
+SET_CALLBACK(float)
+SET_CALLBACK(symbol)
+SET_CALLBACK(list)
+SET_CALLBACK(message)
+
+SET_CALLBACK(noteon)
+SET_CALLBACK(controlchange)
+SET_CALLBACK(programchange)
+SET_CALLBACK(pitchbend)
+SET_CALLBACK(aftertouch)
+SET_CALLBACK(polyaftertouch)
 
 %pythoncode %{
 def __process_args(args):
