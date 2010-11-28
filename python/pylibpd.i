@@ -1,5 +1,8 @@
 %module pylibpd
 
+%include "carrays.i"
+%array_class(float, float_array);
+
 %{
 #include "z_libpd.h"
 
@@ -65,44 +68,43 @@ SET_CALLBACK(pitchbend)
 SET_CALLBACK(aftertouch)
 SET_CALLBACK(polyaftertouch)
 
-static void finish_callback(PyObject *callback, PyObject *args) {
-  PyObject *result = PyObject_CallObject(callback, args);
-  Py_XDECREF(result);
+#define FINISH_CALLBACK(callback) \
+  PyObject *result = PyObject_CallObject(callback, args); \
+  Py_XDECREF(result); \
   Py_XDECREF(args);
-}
 
 static void pylibpd_print(const char *s) {
   if (print_callback) {
     PyObject *args = Py_BuildValue("(s)", s);
-    finish_callback(print_callback, args);
+    FINISH_CALLBACK(print_callback)
   }
 }
 
 static void pylibpd_bang(const char *dest) {
   if (bang_callback) {
     PyObject *args = Py_BuildValue("(s)", dest);
-    finish_callback(bang_callback, args);
+    FINISH_CALLBACK(bang_callback)
   }
 }
 
 static void pylibpd_float(const char *dest, float val) {
   if (float_callback) {
     PyObject *args = Py_BuildValue("(sf)", dest, val);
-    finish_callback(float_callback, args);
+    FINISH_CALLBACK(float_callback)
   }
 }
 
 static void pylibpd_symbol(const char *dest, const char *sym) {
   if (symbol_callback) {
     PyObject *args = Py_BuildValue("(ss)", dest, sym);
-    finish_callback(symbol_callback, args);
+    FINISH_CALLBACK(symbol_callback)
   }
 }
 
 static void pylibpd_list(const char *dest, int n, t_atom *pd_args) {
   if (list_callback) {
     PyObject *args = convertArgs(dest, NULL, n, pd_args);
-    finish_callback(list_callback, args);
+    FINISH_CALLBACK(list_callback)
   }
 }
 
@@ -110,70 +112,70 @@ static void pylibpd_message(const char *dest, const char *sym,
                  int n, t_atom *pd_args) {
   if (message_callback) {
     PyObject *args = convertArgs(dest, sym, n, pd_args);
-    finish_callback(message_callback, args);
+    FINISH_CALLBACK(message_callback)
   }
 }
 
 static void pylibpd_noteon(int ch, int n, int v) {
   if (noteon_callback) {
     PyObject *args = Py_BuildValue("(iii)", ch, n, v);
-    finish_callback(noteon_callback, args);
+    FINISH_CALLBACK(noteon_callback)
   }
 }
 
 static void pylibpd_controlchange(int ch, int c, int v) {
   if (controlchange_callback) {
     PyObject *args = Py_BuildValue("(iii)", ch, c, v);
-    finish_callback(controlchange_callback, args);
+    FINISH_CALLBACK(controlchange_callback)
   }
 }
 
 static void pylibpd_programchange(int ch, int pgm) {
   if (programchange_callback) {
     PyObject *args = Py_BuildValue("(ii)", ch, pgm);
-    finish_callback(programchange_callback, args);
+    FINISH_CALLBACK(programchange_callback)
   }
 }
 
 static void pylibpd_pitchbend(int ch, int bend) {
   if (pitchbend_callback) {
     PyObject *args = Py_BuildValue("(ii)", ch, bend);
-    finish_callback(pitchbend_callback, args);
+    FINISH_CALLBACK(pitchbend_callback)
   }
 }
 
 static void pylibpd_aftertouch(int ch, int v) {
   if (aftertouch_callback) {
     PyObject *args = Py_BuildValue("(ii)", ch, v);
-    finish_callback(aftertouch_callback, args);
+    FINISH_CALLBACK(aftertouch_callback)
   }
 }
 
 static void pylibpd_polyaftertouch(int ch, int n, int v) {
   if (polyaftertouch_callback) {
     PyObject *args = Py_BuildValue("(iii)", ch, n, v);
-    finish_callback(polyaftertouch_callback, args);
+    FINISH_CALLBACK(polyaftertouch_callback)
   }
 }
 
 %}
 
-#define SWIG_METHOD(s) \
+#define REGISTER_CALLBACK_SETTER(s) \
   int libpd_set_##s##_callback(PyObject *callback);
 
-SWIG_METHOD(print)
-SWIG_METHOD(bang)
-SWIG_METHOD(float)
-SWIG_METHOD(symbol)
-SWIG_METHOD(list)
-SWIG_METHOD(message)
+REGISTER_CALLBACK_SETTER(print)
+REGISTER_CALLBACK_SETTER(bang)
+REGISTER_CALLBACK_SETTER(float)
+REGISTER_CALLBACK_SETTER(symbol)
+REGISTER_CALLBACK_SETTER(list)
+REGISTER_CALLBACK_SETTER(message)
 
-SWIG_METHOD(noteon)
-SWIG_METHOD(controlchange)
-SWIG_METHOD(programchange)
-SWIG_METHOD(pitchbend)
-SWIG_METHOD(aftertouch)
-SWIG_METHOD(polyaftertouch)
+REGISTER_CALLBACK_SETTER(noteon)
+REGISTER_CALLBACK_SETTER(controlchange)
+REGISTER_CALLBACK_SETTER(programchange)
+REGISTER_CALLBACK_SETTER(pitchbend)
+REGISTER_CALLBACK_SETTER(aftertouch)
+REGISTER_CALLBACK_SETTER(polyaftertouch)
 
 void libpd_clear_search_path();
 void libpd_add_to_search_path(const char *s);
@@ -181,9 +183,7 @@ void libpd_add_to_search_path(const char *s);
 int libpd_blocksize();
 int libpd_init_audio(int, int, int, int);
 int libpd_process_raw(float *, float *);
-int libpd_process_short(short *, short *);
 int libpd_process_float(float *, float *);
-int libpd_process_double(double *, double *);
 
 int libpd_bang(const char *);
 int libpd_float(const char *, float);
@@ -204,6 +204,28 @@ int libpd_programchange(int, int);
 int libpd_pitchbend(int, int);
 int libpd_aftertouch(int, int);
 int libpd_polyaftertouch(int, int, int);
+
+%pythoncode %{
+def __process_args(args):
+  n = libpd_start_message();
+  if (len(args) > n): return -1
+  for arg in args:
+      if isinstance(arg, str):
+        libpd_add_symbol(arg)
+      else:
+        if isinstance(arg, int) or isinstance(arg, float):
+          libpd_add_float(arg)
+        else:
+          return -1
+  return 0
+
+def libpd_list(dest, *args):
+  return __process_args(args) or libpd_finish_list(dest)
+
+def libpd_message(dest, sym, *args):
+  return __process_args(args) or libpd_finish_message(dest, sym)
+
+%}
 
 %init %{
 libpd_printhook = pylibpd_print;
