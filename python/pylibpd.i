@@ -1,3 +1,12 @@
+/*
+ * Basic Python bindings for libpd
+ *
+ * Copyright (c) 2010 Peter Brinkmann (peter.brinkmann@gmail.com)
+ *
+ * For information on usage and redistribution, and for a DISCLAIMER OF
+ * ALL WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ */
+
 %module pylibpd
 
 %include "carrays.i"
@@ -15,8 +24,9 @@ static PyObject *convertArgs(const char *dest, const char* sym,
   if (sym) {
     PyTuple_SetItem(result, 1, PyString_FromString(sym));
   }
-  for (; i < n; i++) {
-    t_atom a = args[i];
+  int j;
+  for (j = 0; i < n; i++, j++) {
+    t_atom a = args[j];
     PyObject *x;
     if (a.a_type == A_FLOAT) {  
       x = PyFloat_FromDouble(a.a_w.w_float);

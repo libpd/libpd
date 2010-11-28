@@ -7,6 +7,7 @@ ptr = libpd_bind('eggs')
 
 libpd_set_print_callback(pd_receive)
 libpd_set_float_callback(pd_receive)
+libpd_set_list_callback(pd_receive)
 libpd_set_symbol_callback(pd_receive)
 libpd_set_noteon_callback(pd_receive)
 
@@ -17,6 +18,7 @@ libpd_init_audio(1, 2, 44100, 1)
 
 libpd_float('spam', 42)
 libpd_symbol('spam', "don't panic")
+libpd_list('spam', "test", 1, "foo", 2)
 
 inp = float_array(64)
 outp = float_array(128)
