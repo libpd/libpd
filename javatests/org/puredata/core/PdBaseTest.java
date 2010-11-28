@@ -83,10 +83,15 @@ public class PdBaseTest {
 	@Test
 	public void testPrint() {
 		receiver.print("print: 0\n");
-		receiver.print("print: 1\n");
+		receiver.print("print: 42\n");
+		receiver.print("print: symbol");
+		receiver.print(" ");
+		receiver.print("don't panic");
+		receiver.print("\n");
 		EasyMock.replay(receiver);
 		PdBase.sendFloat("foo", 0);
-		PdBase.sendFloat("foo", 1);
+		PdBase.sendFloat("foo", 42);
+		PdBase.sendSymbol("foo", "don't panic");
 		EasyMock.verify(receiver);
 	}
 
