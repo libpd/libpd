@@ -23,6 +23,12 @@ int libpd_process_float(float *, float *);
 int libpd_bang(const char *);
 int libpd_float(const char *, float);
 int libpd_symbol(const char *, const char *);
+
+%rename(__libpd_start_message) libpd_start_message;
+%rename(__libpd_add_float) libpd_add_float;
+%rename(__libpd_add_symbol) libpd_add_symbol;
+%rename(__libpd_finish_list) libpd_finish_list;
+%rename(__libpd_finish_message) libpd_finish_message;
 int libpd_start_message();
 void libpd_add_float(float);
 void libpd_add_symbol(const char *);
@@ -59,23 +65,23 @@ SET_CALLBACK(polyaftertouch)
 
 %pythoncode %{
 def __process_args(args):
-  n = libpd_start_message();
+  n = __libpd_start_message();
   if (len(args) > n): return -1
   for arg in args:
       if isinstance(arg, str):
-        libpd_add_symbol(arg)
+        __libpd_add_symbol(arg)
       else:
         if isinstance(arg, int) or isinstance(arg, float):
-          libpd_add_float(arg)
+          __libpd_add_float(arg)
         else:
           return -1
   return 0
 
 def libpd_list(dest, *args):
-  return __process_args(args) or libpd_finish_list(dest)
+  return __process_args(args) or __libpd_finish_list(dest)
 
 def libpd_message(dest, sym, *args):
-  return __process_args(args) or libpd_finish_message(dest, sym)
+  return __process_args(args) or __libpd_finish_message(dest, sym)
 %}
 
 %{
