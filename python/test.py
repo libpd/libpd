@@ -1,4 +1,5 @@
 from pylibpd import *
+import array
 
 def pd_receive(*s):
   print 'received:', s
@@ -20,8 +21,8 @@ libpd_float('spam', 42)
 libpd_symbol('spam', "don't panic")
 libpd_list('spam', "test", 1, "foo", 2)
 
-inp = float_array(64)
-outp = float_array(128)
+inp = array.array('f', '\x00\x00\x00\x00' * 64)
+outp = array.array('f', '\x00\x00\x00\x00' * 128)
 
 for i in range(64):
   inp[i] = i

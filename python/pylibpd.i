@@ -9,16 +9,29 @@
 
 %module pylibpd
 
-%include "carrays.i"
-%array_class(float, float_array)
-
 void libpd_clear_search_path();
 void libpd_add_to_search_path(const char *s);
 
 int libpd_blocksize();
 int libpd_init_audio(int, int, int, int);
+
+%typemap(in) float * {
+  $1 = (float *)PyInt_AsLong($input);
+}
+%typemap(in) double * {
+  $1 = (double *)PyInt_AsLong($input);
+}
+%typemap(in) short * {
+  $1 = (short *)PyInt_AsLong($input);
+}
+%rename(__libpd_process_raw) libpd_process_raw;
+%rename(__libpd_process_float) libpd_process_float;
+%rename(__libpd_process_short) libpd_process_short;
+%rename(__libpd_process_double) libpd_process_double;
 int libpd_process_raw(float *, float *);
-int libpd_process_float(float *, float *);
+int libpd_process_float(float*, float *);
+int libpd_process_short(short *, short *);
+int libpd_process_double(double *, double *);
 
 int libpd_bang(const char *);
 int libpd_float(const char *, float);
@@ -64,6 +77,18 @@ SET_CALLBACK(aftertouch)
 SET_CALLBACK(polyaftertouch)
 
 %pythoncode %{
+def libpd_process_raw(inp, outp):
+  return __libpd_process_raw(inp.buffer_info()[0], outp.buffer_info()[0])
+
+def libpd_process_float(inp, outp):
+  return __libpd_process_float(inp.buffer_info()[0], outp.buffer_info()[0])
+
+def libpd_process_short(inp, outp):
+  return __libpd_process_short(inp.buffer_info()[0], outp.buffer_info()[0])
+
+def libpd_process_double(inp, outp):
+  return __libpd_process_double(inp.buffer_info()[0], outp.buffer_info()[0])
+
 def __process_args(args):
   n = __libpd_start_message();
   if (len(args) > n): return -1
@@ -82,6 +107,7 @@ def libpd_list(dest, *args):
 
 def libpd_message(dest, sym, *args):
   return __process_args(args) or __libpd_finish_message(dest, sym)
+
 %}
 
 %{
@@ -155,6 +181,7 @@ MAKE_CALLBACK(aftertouch, (int ch, int v),
     Py_BuildValue, ("(ii)", ch, v))
 MAKE_CALLBACK(polyaftertouch, (int ch, int n, int v),
     Py_BuildValue, ("(iii)", ch, n, v))
+
 %}
 
 %init %{
