@@ -6,7 +6,7 @@ PYLIBPD = _pylibpd.so
 
 .PHONY: all clean clobber
 
-CFLAGS = -I../libpd_wrapper -I../pure-data/src -I/usr/include/python2.6
+CFLAGS = -I../libpd_wrapper -I../pure-data/src -I/usr/include/python2.6 -fPIC
 
 all: $(LIBPD) ${CFILE:.c=.o}
 	gcc -shared -lm -o $(PYLIBPD) $^

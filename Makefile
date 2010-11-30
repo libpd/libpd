@@ -35,7 +35,7 @@ PDJAVA = libs/libpdnative.so
 CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
 			-Wno-int-to-pointer-cast -Wno-pointer-to-int-cast \
 			-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
-			-I./pure-data/src -I./libpd_wrapper
+			-I./pure-data/src -I./libpd_wrapper -fPIC
 
 .PHONY: all javalib clean clobber
 
