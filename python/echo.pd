@@ -1,0 +1,8 @@
+#N canvas 3 111 450 300 10;
+#X obj 68 91 adc~;
+#X obj 68 171 dac~;
+#X obj 127 116 delwrite~ \$0-echo 250;
+#X obj 127 145 delread~ \$0-echo 250;
+#X connect 0 0 1 0;
+#X connect 0 0 2 0;
+#X connect 3 0 1 0;

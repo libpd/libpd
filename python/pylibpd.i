@@ -110,7 +110,7 @@ def libpd_list(dest, *args):
 def libpd_message(dest, sym, *args):
   return __process_args(args) or __libpd_finish_message(dest, sym)
 
-def libpd_open_patch(patch, dir):
+def libpd_open_patch(patch, dir = '.'):
   libpd_message('pd', 'open', patch, dir)
   return 'pd-' + patch
 
