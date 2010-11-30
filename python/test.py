@@ -4,7 +4,6 @@ import array
 def pd_receive(*s):
   print 'received:', s
 
-ptr = libpd_bind('eggs')
 
 libpd_set_print_callback(pd_receive)
 libpd_set_float_callback(pd_receive)
@@ -12,23 +11,22 @@ libpd_set_list_callback(pd_receive)
 libpd_set_symbol_callback(pd_receive)
 libpd_set_noteon_callback(pd_receive)
 
-libpd_message('pd', 'dsp', 1)
-libpd_message('pd', 'open', 'test.pd', '.')
+ptr = libpd_bind('eggs')
 
-libpd_init_audio(1, 2, 44100, 1)
+m = PdManager(1, 2, 44100, 1)
+patch = libpd_open_patch('test.pd', '.')
 
 libpd_float('spam', 42)
 libpd_symbol('spam', "don't panic")
-libpd_list('spam', "test", 1, "foo", 2)
+libpd_list('spam', 'test', 1, 'foo', 2)
 
-inp = array.array('f', '\x00\x00\x00\x00' * 64)
-outp = array.array('f', '\x00\x00\x00\x00' * 128)
+inbuf = array.array('h', range(64)).tostring()
 
-for i in range(64):
-  inp[i] = i
+outbuf = m.process(inbuf)
+print array.array('h', outbuf)
 
-libpd_process_float(inp, outp)
+outbuf = m.process(inbuf)
+print array.array('h', outbuf)
 
-for i in range(64):
-  print outp[2*i], outp[2*i+1],
+libpd_close_patch(patch)
 

@@ -77,6 +77,8 @@ SET_CALLBACK(aftertouch)
 SET_CALLBACK(polyaftertouch)
 
 %pythoncode %{
+import array
+
 def libpd_process_raw(inp, outp):
   return __libpd_process_raw(inp.buffer_info()[0], outp.buffer_info()[0])
 
@@ -108,6 +110,28 @@ def libpd_list(dest, *args):
 def libpd_message(dest, sym, *args):
   return __process_args(args) or __libpd_finish_message(dest, sym)
 
+def libpd_open_patch(patch, dir):
+  libpd_message('pd', 'open', patch, dir)
+  return 'pd-' + patch
+
+def libpd_close_patch(patch):
+  libpd_message(patch, 'menuclose')
+
+def libpd_compute_audio(flag):
+  libpd_message('pd', 'dsp', flag)
+
+class PdManager:
+  def __init__(self, inch, outch, srate, ticks):
+    self.__insize = inch * libpd_blocksize()
+    self.__outbuf = array.array('h', '\x00\x00' * outch * libpd_blocksize())
+    libpd_compute_audio(1)
+    libpd_init_audio(inch, outch, srate, ticks)
+  def process(self, inp):
+    inbuf = array.array('h', inp)
+    if len(inbuf) != self.__insize:
+      raise Exception('wrong input buffer size')
+    libpd_process_short(inbuf, self.__outbuf)
+    return self.__outbuf.tostring()
 %}
 
 %{
