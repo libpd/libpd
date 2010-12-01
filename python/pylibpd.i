@@ -10,32 +10,27 @@
 %module pylibpd
 
 void libpd_clear_search_path();
-void libpd_add_to_search_path(const char *s);
+void libpd_add_to_search_path(const char *dir);
 
 int libpd_blocksize();
-int libpd_init_audio(int, int, int, int);
+int libpd_init_audio(int inch, int outch, int srate, int tpb);
 
-%typemap(in) float * {
-  $1 = (float *)PyInt_AsLong($input);
+%typemap(in) void *inb {
+  Py_ssize_t dummy;
+  if (PyObject_AsReadBuffer($input, (const void **)&$1, &dummy)) return NULL;
 }
-%typemap(in) double * {
-  $1 = (double *)PyInt_AsLong($input);
+%typemap(in) void *outb {
+  Py_ssize_t dummy;
+  if (PyObject_AsWriteBuffer($input, &$1, &dummy)) return NULL;
 }
-%typemap(in) short * {
-  $1 = (short *)PyInt_AsLong($input);
-}
-%rename(__libpd_process_raw) libpd_process_raw;
-%rename(__libpd_process_float) libpd_process_float;
-%rename(__libpd_process_short) libpd_process_short;
-%rename(__libpd_process_double) libpd_process_double;
-int libpd_process_raw(float *, float *);
-int libpd_process_float(float*, float *);
-int libpd_process_short(short *, short *);
-int libpd_process_double(double *, double *);
+int libpd_process_raw(void *inb, void *outb);
+int libpd_process_float(void *inb, void *outb);
+int libpd_process_short(void *inb, void *outb);
+int libpd_process_double(void *inb, void *outb);
 
-int libpd_bang(const char *);
-int libpd_float(const char *, float);
-int libpd_symbol(const char *, const char *);
+int libpd_bang(const char *dest);
+int libpd_float(const char *dest, float val);
+int libpd_symbol(const char *dest, const char *sym);
 
 %rename(__libpd_start_message) libpd_start_message;
 %rename(__libpd_add_float) libpd_add_float;
@@ -48,16 +43,16 @@ void libpd_add_symbol(const char *);
 int libpd_finish_list(const char *);
 int libpd_finish_message(const char *, const char *);
 
-int libpd_exists(const char *);
-void *libpd_bind(const char *);
+int libpd_exists(const char *sym);
+void *libpd_bind(const char *sym);
 void libpd_unbind(void *p);
 
-int libpd_noteon(int, int, int);
-int libpd_controlchange(int, int, int);
-int libpd_programchange(int, int);
-int libpd_pitchbend(int, int);
-int libpd_aftertouch(int, int);
-int libpd_polyaftertouch(int, int, int);
+int libpd_noteon(int ch, int n, int v);
+int libpd_controlchange(int ch, int n, int v);
+int libpd_programchange(int ch, int p);
+int libpd_pitchbend(int ch, int b);
+int libpd_aftertouch(int ch, int v);
+int libpd_polyaftertouch(int ch, int n, int v);
 
 #define SET_CALLBACK(s) \
   int libpd_set_##s##_callback(PyObject *callback);
@@ -78,18 +73,6 @@ SET_CALLBACK(polyaftertouch)
 
 %pythoncode %{
 import array
-
-def libpd_process_raw(inp, outp):
-  return __libpd_process_raw(inp.buffer_info()[0], outp.buffer_info()[0])
-
-def libpd_process_float(inp, outp):
-  return __libpd_process_float(inp.buffer_info()[0], outp.buffer_info()[0])
-
-def libpd_process_short(inp, outp):
-  return __libpd_process_short(inp.buffer_info()[0], outp.buffer_info()[0])
-
-def libpd_process_double(inp, outp):
-  return __libpd_process_double(inp.buffer_info()[0], outp.buffer_info()[0])
 
 def __process_args(args):
   n = __libpd_start_message();
@@ -126,10 +109,7 @@ class PdManager:
     self.__outbuf = array.array('h', '\x00\x00' * outch * libpd_blocksize())
     libpd_compute_audio(1)
     libpd_init_audio(inch, outch, srate, ticks)
-  def process(self, inp):
-    inbuf = array.array('h', inp)
-    if len(inbuf) != self.__insize:
-      raise Exception('wrong input buffer size')
+  def process(self, inbuf):
     libpd_process_short(inbuf, self.__outbuf)
     return self.__outbuf.tostring()
 %}
