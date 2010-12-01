@@ -19,7 +19,11 @@ setup(name='pypdlib',
                     '../libpd_wrapper',
                     '../pure-data/src',
                   ],
-                  libraries = [ 'm', 'dl', 'pthread' ],
+                  libraries = [
+                    'm',
+                    'dl',
+                    'pthread',
+                  ],
                   sources=[
                     'pylibpd.i',
                     '../libpd_wrapper/s_libpdmidi.c',
@@ -33,7 +37,6 @@ setup(name='pypdlib',
                     '../pure-data/src/d_fft.c',
                     '../pure-data/src/d_fft_mayer.c',
                     '../pure-data/src/d_fftroutine.c',
-                    '../pure-data/src/d_fftsg_h.c',
                     '../pure-data/src/d_filter.c',
                     '../pure-data/src/d_global.c',
                     '../pure-data/src/d_math.c',
@@ -94,7 +97,7 @@ setup(name='pypdlib',
                     '../pure-data/src/x_qlist.c',
                     '../pure-data/src/x_time.c',
                   ]
-            )
+        )
       ]
 )
 
