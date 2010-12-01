@@ -3,7 +3,10 @@
 from distutils.core import setup, Extension
 
 setup(
-    ext_modules = [
+      name='pypdlib',
+      version='0.1',
+      py_modules = [ 'pylibpd' ],
+      ext_modules = [
         Extension("_pylibpd",
            define_macros = [
            ('PD', 1),
@@ -92,3 +95,4 @@ setup(
            ])
     ]
 )
+
