@@ -15,18 +15,22 @@ void libpd_add_to_search_path(const char *dir);
 int libpd_blocksize();
 int libpd_init_audio(int inch, int outch, int srate, int tpb);
 
-%typemap(in) void *inb {
-  Py_ssize_t dummy;
-  if (PyObject_AsReadBuffer($input, (const void **)&$1, &dummy)) return NULL;
+#define TYPEMAPS(t) \
+%typemap(in) t *inb { \
+  Py_ssize_t dummy; \
+  if (PyObject_AsReadBuffer($input, (const void **)&$1, &dummy)) return NULL; \
+} \
+%typemap(in) t *outb { \
+  Py_ssize_t dummy; \
+  if (PyObject_AsWriteBuffer($input, (void **)&$1, &dummy)) return NULL; \
 }
-%typemap(in) void *outb {
-  Py_ssize_t dummy;
-  if (PyObject_AsWriteBuffer($input, &$1, &dummy)) return NULL;
-}
-int libpd_process_raw(void *inb, void *outb);
-int libpd_process_float(void *inb, void *outb);
-int libpd_process_short(void *inb, void *outb);
-int libpd_process_double(void *inb, void *outb);
+TYPEMAPS(float)
+TYPEMAPS(short)
+TYPEMAPS(double)
+int libpd_process_raw(float *inb, float *outb);
+int libpd_process_float(float *inb, float *outb);
+int libpd_process_short(short *inb, short *outb);
+int libpd_process_double(double *inb, double *outb);
 
 int libpd_bang(const char *dest);
 int libpd_float(const char *dest, float val);

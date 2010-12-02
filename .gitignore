@@ -1,6 +1,8 @@
 samples/test/pdtest
 python/pylibpd_wrap.c
 python/pylibpd.py
+python/MANIFEST
+python/build
 *.o
 *.so
 *.class
