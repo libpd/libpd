@@ -60,9 +60,29 @@
 /** Initialising with a sample rate, ticks per buffer, number of input and output channels
  * One Pd-tick is typically 64 samples per channel. Call [PdBase getBlockSize] to get the actual number.
  * [PdBase openAudio] is also called within this method as well as [PdBase computeAudio:YES].
+ *
+ * This init method assumes the AudioSession Category will be PlayAndRecord 
+ * note: PlayAndRecord doesn't work properly with Libpd on some older iDevices with armv6 processors
+ * (iPhone EDGE, iPhone 3G, iTouch 1g, iTouch 2g)
+ * Use alternate init method in conjunction with an alternative AudioSession Category 
+ * for use with armv6 devices
  */
 - (id)initWithSampleRate:(float)newSampleRate andTicksPerBuffer:(int)ticks 
     andNumberOfInputChannels:(int)inputChannels andNumberOfOutputChannels:(int)outputChannels;
+
+/** Initialising with a sample rate, ticks per buffer, number of input and output channels
+ * and AudioSession Category
+ * One Pd-tick is typically 64 samples per channel. Call [PdBase getBlockSize] to get the actual number.
+ * [PdBase openAudio] is also called within this method as well as [PdBase computeAudio:YES].
+ * 
+ * This alternate init method allow the specification of an AudioSession Category 
+ * note: PlayAndRecord AudioSession Category currently doesn't work properly with Libpd on some older 
+ * iDevices with armv6 processors
+ * (iPhone EDGE, iPhone 3G, iTouch 1g, iTouch 2g)
+ */
+- (id)initWithSampleRate:(float)newSampleRate andTicksPerBuffer:(int)ticks 
+	andNumberOfInputChannels:(int)inputChannels andNumberOfOutputChannels:(int)outputChannels
+	andAudioSessionCategory:(UInt32)audioSessionCategory;
 
 /** Begin audio/scene playback. To avoid clicks, you have to create a subclass and override this 
  * function and add ramping or any other custom behaviour. Make sure to call the superclass method
@@ -75,9 +95,5 @@
  * as well.
  */
 - (void)pause;
-
-// private
-- (void)initializeAudioSession:(int)ticks;
-- (void)initializeAudioUnit;
 
 @end

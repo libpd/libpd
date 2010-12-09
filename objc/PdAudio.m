@@ -34,6 +34,15 @@
 
 #import "PdAudio.h"
 
+@interface PdAudio()
+
+// private
+- (void)initializeAudioSession:(int)ticks withAudioCategory:(UInt32)audioCategory;
+- (void)initializeAudioUnit;
+
+@end
+
+
 @implementation PdAudio
 
 @synthesize audioUnit;
@@ -134,9 +143,24 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
 }
 
 - (id)initWithSampleRate:(float)newSampleRate andTicksPerBuffer:(int)ticks 
-    andNumberOfInputChannels:(int)inputChannels andNumberOfOutputChannels:(int)outputChannels {
-  self = [super init];
-  if (self != nil) {
+	andNumberOfInputChannels:(int)inputChannels andNumberOfOutputChannels:(int)outputChannels {
+
+	// this version of init uses PlayAndRecord audio session
+	// set the audio category to PlayAndRecord so that we can have low-latency IO
+	UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
+	
+	return [self initWithSampleRate:newSampleRate andTicksPerBuffer:ticks 
+		andNumberOfInputChannels:inputChannels andNumberOfOutputChannels:outputChannels 
+		andAudioSessionCategory:audioCategory];
+
+}
+
+- (id)initWithSampleRate:(float)newSampleRate andTicksPerBuffer:(int)ticks 
+	andNumberOfInputChannels:(int)inputChannels andNumberOfOutputChannels:(int)outputChannels
+	andAudioSessionCategory:(UInt32)audioSessionCategory
+{	
+	self = [super init];
+	if (self != nil) {
     audioUnit = NULL;
     numInputChannels = inputChannels;
     numOutputChannels = outputChannels;
@@ -147,7 +171,7 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
     floatBufferLength = [PdBase getBlockSize] * ticks * numberOfChannels;
     floatBuffer = (float *) malloc(floatBufferLength * sizeof(float));;
     
-    [self initializeAudioSession:ticks];
+	[self initializeAudioSession:ticks withAudioCategory:audioSessionCategory];
     [self initializeAudioUnit];
     [PdBase openAudioWithSampleRate:sampleRate andInputChannels:numInputChannels 
         andOutputChannels:numOutputChannels andTicksPerBuffer:ticks];
@@ -177,14 +201,12 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
 }
 
 // private
-- (void)initializeAudioSession:(int)ticks {
+- (void)initializeAudioSession:(int)ticks withAudioCategory:(UInt32) audioCategory{
   /*** Create AudioSession interface to Core Audio === ***/
   
   // initialise the audio session
   AudioSessionInitialize(NULL, NULL, audioSessionInterruptListener, self);
   
-  // set the audio category to PlayAndRecord so that we can have low-latency IO
-  UInt32 audioCategory = kAudioSessionCategory_PlayAndRecord;
   AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(audioCategory), &audioCategory);
   
   // set the sample rate of the session
@@ -193,7 +215,7 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
   
   // set buffer size
   Float32 bufferSize = (Float32) [PdBase getBlockSize] * ticks; // requested buffer size
-  Float32 bufferDuration = bufferSize / sampleRate; // buffer duration in seconds
+  Float32 bufferDuration = (bufferSize + 0.5) / sampleRate; // buffer duration in seconds - add 0.5 due to differences in armv6 and armv7 fp
   AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareIOBufferDuration, 
       sizeof(bufferDuration), &bufferDuration);
   NSLog(@"AudioSession === setting PreferredHardwareIOBufferDuration to %3.2fms.", bufferDuration*1000.0);
