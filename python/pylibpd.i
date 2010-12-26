@@ -102,7 +102,7 @@ def libpd_open_patch(patch, dir = '.'):
   return 'pd-' + patch
 
 def libpd_close_patch(patch):
-  libpd_message(patch, 'menuclose')
+  libpd_message(patch, 'menuclose', 1)
 
 def libpd_compute_audio(flag):
   libpd_message('pd', 'dsp', flag)
