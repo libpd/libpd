@@ -72,6 +72,6 @@ public class PdUtils {
 	 * @param patch name of patch, as returned by openPatch
 	 */
 	public static void closePatch(String patch) {
-		PdBase.sendMessage(patch, "menuclose");
+		PdBase.sendMessage(patch, "menuclose", 1);
 	}
 }
