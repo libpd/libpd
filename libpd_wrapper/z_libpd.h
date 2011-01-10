@@ -11,6 +11,11 @@
 #ifndef __Z_LIBPD_H__
 #define __Z_LIBPD_H__
 
+#ifdef __cplusplus 
+extern "C"
+{
+#endif
+
 #include "m_pd.h"
 
 void libpd_init();
@@ -69,6 +74,10 @@ extern t_libpd_programchangehook libpd_programchangehook;
 extern t_libpd_pitchbendhook libpd_pitchbendhook;
 extern t_libpd_aftertouchhook libpd_aftertouchhook;
 extern t_libpd_polyaftertouchhook libpd_polyaftertouchhook;
+
+#ifdef __cplusplus 
+}
+#endif
 
 #endif
 
