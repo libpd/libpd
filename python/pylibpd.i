@@ -57,6 +57,8 @@ int libpd_programchange(int ch, int p);
 int libpd_pitchbend(int ch, int b);
 int libpd_aftertouch(int ch, int v);
 int libpd_polyaftertouch(int ch, int n, int v);
+int libpd_midibyte(int p, int b);
+int libpd_sysex(int p, int b);
 
 #define SET_CALLBACK(s) \
   int libpd_set_##s##_callback(PyObject *callback);
@@ -74,6 +76,7 @@ SET_CALLBACK(programchange)
 SET_CALLBACK(pitchbend)
 SET_CALLBACK(aftertouch)
 SET_CALLBACK(polyaftertouch)
+SET_CALLBACK(midibyte)
 
 %pythoncode %{
 import array
@@ -189,6 +192,8 @@ MAKE_CALLBACK(aftertouch, (int ch, int v),
     Py_BuildValue, ("(ii)", ch, v))
 MAKE_CALLBACK(polyaftertouch, (int ch, int n, int v),
     Py_BuildValue, ("(iii)", ch, n, v))
+MAKE_CALLBACK(midibyte, (int p, int b),
+    Py_BuildValue, ("(ii)", p, b))
 
 %}
 
@@ -208,6 +213,7 @@ ASSIGN_CALLBACK(programchange)
 ASSIGN_CALLBACK(pitchbend)
 ASSIGN_CALLBACK(aftertouch)
 ASSIGN_CALLBACK(polyaftertouch)
+ASSIGN_CALLBACK(midibyte)
 
 libpd_init();
 %}

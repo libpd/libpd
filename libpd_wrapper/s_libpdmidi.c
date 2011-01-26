@@ -43,9 +43,12 @@ void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
     libpd_polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
 }
 
+void outmidi_byte(int port, int value) {
+  if (libpd_midibytehook)
+    libpd_midibytehook(CLAMP12BIT(port), CLAMP7BIT(value));
+}
 
 // The rest is not relevant to libpd.
-void outmidi_byte(int port, int value) {}
 void sys_get_midi_apis(char *buf) {}
 void sys_listmididevs(void) {}
 void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,

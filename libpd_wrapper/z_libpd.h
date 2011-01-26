@@ -61,6 +61,8 @@ int libpd_programchange(int, int);
 int libpd_pitchbend(int, int);
 int libpd_aftertouch(int, int);
 int libpd_polyaftertouch(int, int, int);
+int libpd_midibyte(int, int);
+int libpd_sysex(int, int);
 
 typedef void (*t_libpd_noteonhook)(int, int, int);
 typedef void (*t_libpd_controlchangehook)(int, int, int);
@@ -68,12 +70,14 @@ typedef void (*t_libpd_programchangehook)(int, int);
 typedef void (*t_libpd_pitchbendhook)(int, int);
 typedef void (*t_libpd_aftertouchhook)(int, int);
 typedef void (*t_libpd_polyaftertouchhook)(int, int, int);
+typedef void (*t_libpd_midibytehook)(int, int);
 extern t_libpd_noteonhook libpd_noteonhook;
 extern t_libpd_controlchangehook libpd_controlchangehook;
 extern t_libpd_programchangehook libpd_programchangehook;
 extern t_libpd_pitchbendhook libpd_pitchbendhook;
 extern t_libpd_aftertouchhook libpd_aftertouchhook;
 extern t_libpd_polyaftertouchhook libpd_polyaftertouchhook;
+extern t_libpd_midibytehook libpd_midibytehook;
 
 #ifdef __cplusplus 
 }

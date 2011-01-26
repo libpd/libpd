@@ -33,6 +33,7 @@ t_libpd_programchangehook libpd_programchangehook = NULL;
 t_libpd_pitchbendhook libpd_pitchbendhook = NULL;
 t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
 t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
+t_libpd_midibytehook libpd_midibytehook = NULL;
 
 static int ticks_per_buffer;
 
@@ -213,6 +214,7 @@ int libpd_exists(const char *sym) {
 }
 
 #define CHECK_CHANNEL if (channel < 0) return -1;
+#define CHECK_PORT if (port < 0 || port > 0x0fff) return -1;
 #define CHECK_RANGE_7BIT(v) if (v < 0 || v > 0x7f) return -1;
 #define PORT (channel >> 4)
 #define CHANNEL (channel & 0x0f)
@@ -261,6 +263,20 @@ int libpd_polyaftertouch(int channel, int pitch, int value) {
   CHECK_RANGE_7BIT(pitch)
   CHECK_RANGE_7BIT(value)
   inmidi_polyaftertouch(PORT, CHANNEL, pitch, value);
+  return 0;
+}
+
+int libpd_midibyte(int port, int byte) {
+  CHECK_PORT
+  CHECK_RANGE_7BIT(byte)
+  inmidi_byte(port, byte);
+  return 0;
+}
+
+int libpd_sysex(int port, int byte) {
+  CHECK_PORT
+  CHECK_RANGE_7BIT(byte)
+  inmidi_sysex(port, byte);
   return 0;
 }
 
