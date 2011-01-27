@@ -63,6 +63,7 @@ int libpd_aftertouch(int, int);
 int libpd_polyaftertouch(int, int, int);
 int libpd_midibyte(int, int);
 int libpd_sysex(int, int);
+int libpd_sysrealtime(int, int);
 
 typedef void (*t_libpd_noteonhook)(int, int, int);
 typedef void (*t_libpd_controlchangehook)(int, int, int);
@@ -84,4 +85,3 @@ extern t_libpd_midibytehook libpd_midibytehook;
 #endif
 
 #endif
-

@@ -516,3 +516,8 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysex
   return libpd_sysex(port, value);
 }
 
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
+(JNIEnv *env, jclass cls, jint port, jint value) {
+  CACHE_ENV
+  return libpd_sysrealtime(port, value);
+}

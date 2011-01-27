@@ -308,6 +308,15 @@ public final class PdBase {
 	 */
 	public synchronized native static int sendSysex(int port, int value);
 	
+	/**
+	 * sends one byte to the realtimein object of pd
+	 * 
+	 * @param port 0..0x0fff
+	 * @param value 0..0xff
+	 * @return error code, 0 on success
+	 */
+	public synchronized native static int sendSysRealTime(int port, int value);
+	
 	private static int processArgs(Object[] args) {
 		int maxArgs = startMessage();
 		if (args.length > maxArgs) {

@@ -281,3 +281,9 @@ int libpd_sysex(int port, int byte) {
   return 0;
 }
 
+int libpd_sysrealtime(int port, int byte) {
+  CHECK_PORT
+  CHECK_RANGE_8BIT(byte)
+  inmidi_realtimein(port, byte);
+  return 0;
+}

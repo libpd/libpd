@@ -185,6 +185,14 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysex
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    sendSysRealTime
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    initialize
  * Signature: ()V
  */
