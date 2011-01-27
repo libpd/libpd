@@ -216,6 +216,7 @@ int libpd_exists(const char *sym) {
 #define CHECK_CHANNEL if (channel < 0) return -1;
 #define CHECK_PORT if (port < 0 || port > 0x0fff) return -1;
 #define CHECK_RANGE_7BIT(v) if (v < 0 || v > 0x7f) return -1;
+#define CHECK_RANGE_8BIT(v) if (v < 0 || v > 0xff) return -1;
 #define PORT (channel >> 4)
 #define CHANNEL (channel & 0x0f)
 
@@ -268,7 +269,7 @@ int libpd_polyaftertouch(int channel, int pitch, int value) {
 
 int libpd_midibyte(int port, int byte) {
   CHECK_PORT
-  CHECK_RANGE_7BIT(byte)
+  CHECK_RANGE_8BIT(byte)
   inmidi_byte(port, byte);
   return 0;
 }

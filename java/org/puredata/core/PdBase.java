@@ -290,6 +290,23 @@ public final class PdBase {
 	 */
 	public synchronized native static int sendPolyAftertouch(int channel, int pitch, int value);
 
+	/**
+	 * sends one raw MIDI byte to pd
+	 * 
+	 * @param port 0..0x0fff
+	 * @param value 0..0xff
+	 * @return error code, 0 on success
+	 */
+	public synchronized native static int sendMidiByte(int port, int value);
+	
+	/**
+	 * sends one byte of a sysex message to pd
+	 * 
+	 * @param port 0..0x0fff
+	 * @param value 0..0x7f
+	 * @return error code, 0 on success
+	 */
+	public synchronized native static int sendSysex(int port, int value);
 	
 	private static int processArgs(Object[] args) {
 		int maxArgs = startMessage();

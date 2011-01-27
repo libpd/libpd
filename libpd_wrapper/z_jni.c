@@ -38,6 +38,7 @@ static jmethodID programChangeMethod = NULL;
 static jmethodID pitchBendMethod = NULL;
 static jmethodID aftertouchMethod = NULL;
 static jmethodID polyAftertouchMethod = NULL;
+static jmethodID midiByteMethod = NULL;
 
 static void java_printhook(const char *msg) {
   if (messageHandler == NULL || msg == NULL) return;
@@ -157,6 +158,14 @@ void java_sendPolyAftertouch(int channel, int pitch, int value) {
             polyAftertouchMethod, channel, pitch, value);
 }
 
+void java_sendMidiByte(int port, int value) {
+  if (midiHandler == NULL) return;
+  GET_ENV
+  if (env == NULL) return;
+  (*env)->CallVoidMethod(env, midiHandler,
+            midiByteMethod, port, value);
+}
+
 static void deleteHandlerRef(JNIEnv *env) {
   if (messageHandler == NULL) return;
   (*env)->DeleteGlobalRef(env, messageHandler);
@@ -179,6 +188,7 @@ static void deleteMidiHandlerRef(JNIEnv *env) {
   pitchBendMethod = NULL;
   aftertouchMethod = NULL;
   polyAftertouchMethod = NULL;
+  midiByteMethod = NULL;
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad
@@ -210,6 +220,7 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
   libpd_aftertouchhook = (t_libpd_aftertouchhook) java_sendAftertouch;
   libpd_polyaftertouchhook =
             (t_libpd_polyaftertouchhook) java_sendPolyAftertouch;
+  libpd_midibytehook = (t_libpd_midibytehook) java_sendMidiByte;
 
   libpd_init();
 }
@@ -340,6 +351,8 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
     "receiveAftertouch", "(II)V");
   polyAftertouchMethod = (*env)->GetMethodID(env, class_handler,
     "receivePolyAftertouch", "(III)V");
+  midiByteMethod = (*env)->GetMethodID(env, class_handler,
+    "receiveMidiByte", "(II)V");
 }
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_exists
@@ -489,5 +502,17 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPolyAftertouch
 (JNIEnv *env, jclass cls, jint channel, jint pitch, jint value) {
   CACHE_ENV
   return libpd_polyaftertouch(channel, pitch, value);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendMidiByte
+(JNIEnv *env, jclass cls, jint port, jint value) {
+  CACHE_ENV
+  return libpd_midibyte(port, value);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysex
+(JNIEnv *env, jclass cls, jint port, jint value) {
+  CACHE_ENV
+  return libpd_sysex(port, value);
 }
 

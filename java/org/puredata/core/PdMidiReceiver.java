@@ -67,4 +67,11 @@ public interface PdMidiReceiver {
 	 */
 	void receivePolyAftertouch(int channel, int pitch, int value);
 
+	/**
+	 * receives one raw MIDI byte from pd
+	 * 
+	 * @param port
+	 * @param value
+	 */
+	void receiveMidiByte(int port, int value);
 }

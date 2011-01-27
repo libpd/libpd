@@ -8,6 +8,7 @@
 #define CLAMP(x, low, high) ((x > high) ? high : ((x < low) ? low : x))
 #define CLAMP4BIT(x) CLAMP(x, 0, 0x0f)
 #define CLAMP7BIT(x) CLAMP(x, 0, 0x7f)
+#define CLAMP8BIT(x) CLAMP(x, 0, 0xff)
 #define CLAMP12BIT(x) CLAMP(x, 0, 0x0fff)
 #define CLAMP14BIT(x) CLAMP(x, 0, 0x3fff)
 
@@ -45,7 +46,7 @@ void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
 
 void outmidi_byte(int port, int value) {
   if (libpd_midibytehook)
-    libpd_midibytehook(CLAMP12BIT(port), CLAMP7BIT(value));
+    libpd_midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
 }
 
 // The rest is not relevant to libpd.

@@ -169,6 +169,22 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendPolyAftertouch
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    sendMidiByte
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendMidiByte
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    sendSysex
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysex
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    initialize
  * Signature: ()V
  */
