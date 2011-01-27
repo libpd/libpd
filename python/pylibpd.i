@@ -59,6 +59,7 @@ int libpd_aftertouch(int ch, int v);
 int libpd_polyaftertouch(int ch, int n, int v);
 int libpd_midibyte(int p, int b);
 int libpd_sysex(int p, int b);
+int libpd_sysrealtime(int p, int b);
 
 #define SET_CALLBACK(s) \
   int libpd_set_##s##_callback(PyObject *callback);
