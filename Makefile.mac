@@ -1,7 +1,3 @@
-# the differences are:
-# 1) i removed s_entry.c from PD_FILES (the file doesn't exist)
-# 2) in the javalib target
-
 PD_FILES = \
 	pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
 	pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
