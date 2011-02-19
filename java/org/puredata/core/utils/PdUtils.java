@@ -37,6 +37,8 @@ public class PdUtils {
 	 * @param patch file
 	 * @return pd symbol representing patch
 	 * @throws IOException in case patch fails to open
+	 * 
+	 * @deprecated Use {@link PdBase.openPatch} instead.
 	 */
 	public static String openPatch(File file) throws IOException {
 		if (!file.exists()) {
@@ -61,6 +63,8 @@ public class PdUtils {
 	 * @param path to file
 	 * @return pd symbol representing patch
 	 * @throws IOException in case patch fails to open
+	 * 
+	 * @deprecated Use {@link PdBase.openPatch} instead.
 	 */
 	public static String openPatch(String path) throws IOException {
 		return openPatch(new File(path));
@@ -70,6 +74,8 @@ public class PdUtils {
 	 * Close a patch
 	 * 
 	 * @param patch name of patch, as returned by openPatch
+	 * 
+	 * @deprecated Use {@link PdBase.closePatch} instead.
 	 */
 	public static void closePatch(String patch) {
 		PdBase.sendMessage(patch, "menuclose", 1);

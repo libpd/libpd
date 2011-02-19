@@ -18,7 +18,7 @@ stream = p.open(format = pyaudio.paInt16,
                 frames_per_buffer = bs * tpb)
 
 m = PdManager(ch, ch, sr, 1)
-patch = libpd_open_patch('echo.pd')
+libpd_open_patch('echo.pd')
 
 while 1:
     data = stream.read(bs)
@@ -27,5 +27,5 @@ while 1:
 
 stream.close()
 p.terminate()
-libpd_close_patch(patch)
+libpd_release()
 

@@ -255,6 +255,30 @@ JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_bindSymbol
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    openFile
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_openFile
+  (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    closeFile
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    getDollarZero
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
+  (JNIEnv *, jclass, jlong);
+
 #ifdef __cplusplus
 }
 #endif

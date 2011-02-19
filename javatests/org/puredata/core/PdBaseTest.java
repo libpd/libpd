@@ -19,7 +19,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.puredata.core.utils.PdUtils;
 
 
 /**
@@ -33,7 +32,7 @@ import org.puredata.core.utils.PdUtils;
  */
 public class PdBaseTest {
 
-	private static String patch;
+	private static int patch;
 	
 	private PdReceiver receiver;
 	private PdMidiReceiver midiReceiver;
@@ -41,12 +40,11 @@ public class PdBaseTest {
 	@BeforeClass
 	public static void loadPatch() throws IOException {
 		PdBase.subscribe("eggs");
-		patch = PdUtils.openPatch("javatests/org/puredata/core/test_callbacks.pd");
+		patch = PdBase.openPatch("javatests/org/puredata/core/test_callbacks.pd");
 	}
 	
 	@AfterClass
 	public static void closePatch() {
-		PdUtils.closePatch(patch);
 		PdBase.release();
 	}
 	
@@ -66,6 +64,11 @@ public class PdBaseTest {
 	@Test
 	public void testBlockSize() {
 		assertEquals(64, PdBase.blockSize());
+	}
+	
+	@Test
+	public void testDollarZero() {
+		assertEquals(1002, patch);
 	}
 	
 	@Test

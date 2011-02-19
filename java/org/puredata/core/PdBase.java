@@ -7,8 +7,13 @@
 
 package org.puredata.core;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.puredata.core.utils.PdUtils;
 
 /**
  * 
@@ -43,6 +48,7 @@ import java.util.Map;
 public final class PdBase {
 
 	private final static Map<String, Long> bindings = new HashMap<String, Long>();
+	private final static Map<Integer, Long> patches = new HashMap<Integer, Long>();
 	
 	static {
 		System.loadLibrary("pdnative");
@@ -77,6 +83,10 @@ public final class PdBase {
 			unbindSymbol(ptr);
 		}
 		bindings.clear();
+		for (long ptr: patches.values()) {
+			closeFile(ptr);
+		}
+		patches.clear();
 	}
 	
 	/**
@@ -171,6 +181,53 @@ public final class PdBase {
 		unbindSymbol(ptr);
 	}
 
+	/**
+	 * reads a patch from a file
+	 * 
+	 * @param file
+	 * @return an integer handle that identifies this patch; this handle is
+	 *         the $0 value of the patch
+	 * @throws IOException thrown if the file doesn't exist or can't be opened
+	 */
+	public synchronized static int openPatch(File file) throws IOException {
+		if (!file.exists()) {
+			throw new FileNotFoundException(file.getPath());
+		}
+		String name = file.getName();
+		String dir = file.getParentFile().getAbsolutePath();
+		long ptr = openFile(name, dir);
+		if (ptr == 0) {
+			throw new IOException("unable to open patch " + file.getPath());
+		}
+		int handle = getDollarZero(ptr);
+		patches.put(handle, ptr);
+		return handle;
+	}
+	
+	/**
+	 * reads a patch from a file
+	 * 
+	 * @param path to the file
+	 * @return an integer handle that identifies this patch; this handle is
+	 *         the $0 value of the patch
+	 * @throws IOException thrown if the file doesn't exist or can't be opened
+	 */
+	public synchronized static int openPatch(String path) throws IOException {
+		return openPatch(new File(path));
+	}
+	
+	/**
+	 * closes a patch
+	 * 
+	 * @param handle representing the patch, as returned by openPatch
+	 */
+	public synchronized static void closePatch(int handle) {
+		if (!patches.containsKey(handle)) {
+			throw new IllegalArgumentException("invalid patch handle: " + handle);
+		}
+		closeFile(patches.remove(handle));
+	}
+	
 	/**
 	 * sends a bang to the object associated with the given symbol
 	 * 
@@ -344,4 +401,7 @@ public final class PdBase {
 	private native static int finishMessage(String receive, String message);
 	private native static long bindSymbol(String s);
 	private native static void unbindSymbol(long p);
+	private native static long openFile(String patch, String dir);
+	private native static void closeFile(long p);
+	private native static int getDollarZero(long p);
 }

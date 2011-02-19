@@ -11,7 +11,7 @@ libpd_set_list_callback(pd_receive)
 libpd_set_symbol_callback(pd_receive)
 libpd_set_noteon_callback(pd_receive)
 
-ptr = libpd_bind('eggs')
+libpd_subscribe('eggs')
 
 m = PdManager(1, 2, 44100, 1)
 patch = libpd_open_patch('test.pd', '.')
@@ -29,4 +29,4 @@ print array.array('h', outbuf)
 outbuf = m.process(inbuf)
 print array.array('h', outbuf)
 
-libpd_close_patch(patch)
+libpd_release()

@@ -48,6 +48,8 @@ int libpd_finish_list(const char *);
 int libpd_finish_message(const char *, const char *);
 
 int libpd_exists(const char *sym);
+%rename(__libpd_bind) libpd_bind;
+%rename(__libpd_unbind) libpd_unbind;
 void *libpd_bind(const char *sym);
 void libpd_unbind(void *p);
 
@@ -112,6 +114,8 @@ __libpd_patches = {}
 
 def libpd_open_patch(patch, dir = '.'):
   ptr = __libpd_openfile(patch, dir)
+  if not ptr:
+    raise IOError("unable to open patch: %s/%s" % (dir, patch))
   dz = __libpd_getdollarzero(ptr)
   __libpd_patches[dz] = ptr
   return dz
@@ -120,8 +124,26 @@ def libpd_close_patch(dz):
   __libpd_closefile(__libpd_patches[dz])
   del __libpd_patches[dz]
 
+__libpd_subscriptions = {}
+
+def libpd_subscribe(sym):
+  if not __libpd_subscriptions.has_key(sym):
+    __libpd_subscriptions[sym] = __libpd_bind(sym)
+
+def libpd_unsubscribe(sym):
+  __libpd_unbind(__libpd_subscriptions[sym])
+  del __libpd_subscriptions[sym]
+
 def libpd_compute_audio(flag):
   libpd_message('pd', 'dsp', flag)
+
+def libpd_release():
+  for p in __libpd_patches.values():
+    __libpd_closefile(p)
+  __libpd_patches.clear()
+  for p in __libpd_subscriptions.values():
+    __libpd_unbind(p)
+  __libpd_subscriptions.clear()
 
 class PdManager:
   def __init__(self, inch, outch, srate, ticks):

@@ -521,3 +521,30 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
   CACHE_ENV
   return libpd_sysrealtime(port, value);
 }
+
+JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_openFile
+(JNIEnv *env, jclass cls, jstring jpatch, jstring jdir) {
+  if (jpatch == NULL || jdir == NULL) return 0;
+  CACHE_ENV
+  const char *cpatch = (char *) (*env)->GetStringUTFChars(env, jpatch, NULL);
+  const char *cdir = (char *) (*env)->GetStringUTFChars(env, jdir, NULL);
+  jlong ptr = (jlong) libpd_openfile(cpatch, cdir);
+  (*env)->ReleaseStringUTFChars(env, jpatch, cpatch);
+  (*env)->ReleaseStringUTFChars(env, jdir, cdir);
+  return ptr;
+  // very naughty, returning a pointer to Java
+  // using long integer in case we're on a 64bit CPU
+}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
+(JNIEnv *env, jclass cls, jlong ptr) {
+  CACHE_ENV
+  libpd_closefile((void *)ptr);
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
+(JNIEnv *env, jclass cls, jlong ptr) {
+  CACHE_ENV
+  return libpd_getdollarzero((void *)ptr);
+}
+
