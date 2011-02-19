@@ -1,4 +1,3 @@
-
 For documentation of libpd, see the wiki: http://gitorious.org/pdlib/pages/Home
 
 Layout of the libpd repository:
