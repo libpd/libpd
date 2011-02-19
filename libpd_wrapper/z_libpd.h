@@ -42,6 +42,10 @@ int libpd_exists(const char *);
 void *libpd_bind(const char *);
 void libpd_unbind(void *p);
 
+void *libpd_openfile(const char *basename, const char *dirname);
+void libpd_closefile(void *x);
+int libpd_getdollarzero(void *x);
+
 typedef void (*t_libpd_printhook)(const char *);
 typedef void (*t_libpd_banghook)(const char *);
 typedef void (*t_libpd_floathook)(const char *, float);

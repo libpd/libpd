@@ -14,7 +14,8 @@ libpd_set_noteon_callback(pd_receive)
 ptr = libpd_bind('eggs')
 
 m = PdManager(1, 2, 44100, 1)
-patch = libpd_open_patch('test.pd')
+patch = libpd_open_patch('test.pd', '.')
+print "$0: ", patch
 
 libpd_float('spam', 42)
 libpd_symbol('spam', "don't panic")
@@ -29,4 +30,3 @@ outbuf = m.process(inbuf)
 print array.array('h', outbuf)
 
 libpd_close_patch(patch)
-

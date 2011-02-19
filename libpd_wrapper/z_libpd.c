@@ -287,3 +287,18 @@ int libpd_sysrealtime(int port, int byte) {
   inmidi_realtimein(port, byte);
   return 0;
 }
+
+void *libpd_openfile(const char *basename, const char *dirname) {
+  return (void *)glob_evalfile(NULL, gensym(basename), gensym(dirname));
+}
+
+void libpd_closefile(void *x) {
+  pd_free((t_pd *)x);
+}
+
+int libpd_getdollarzero(void *x) {
+  pd_pushsym((t_pd *)x);
+  int dzero = canvas_getdollarzero();
+  pd_popsym((t_pd *)x);
+  return dzero;
+}

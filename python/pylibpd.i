@@ -51,6 +51,13 @@ int libpd_exists(const char *sym);
 void *libpd_bind(const char *sym);
 void libpd_unbind(void *p);
 
+%rename(__libpd_openfile) libpd_openfile;
+%rename(__libpd_closefile) libpd_closefile;
+%rename(__libpd_getdollarzero) libpd_getdollarzero;
+void *libpd_openfile(const char *, const char *);
+void libpd_closefile(void *);
+int libpd_getdollarzero(void *);
+
 int libpd_noteon(int ch, int n, int v);
 int libpd_controlchange(int ch, int n, int v);
 int libpd_programchange(int ch, int p);
@@ -101,12 +108,17 @@ def libpd_list(dest, *args):
 def libpd_message(dest, sym, *args):
   return __process_args(args) or __libpd_finish_message(dest, sym)
 
-def libpd_open_patch(patch, dir = '.'):
-  libpd_message('pd', 'open', patch, dir)
-  return 'pd-' + patch
+__libpd_patches = {}
 
-def libpd_close_patch(patch):
-  libpd_message(patch, 'menuclose', 1)
+def libpd_open_patch(patch, dir = '.'):
+  ptr = __libpd_openfile(patch, dir)
+  dz = __libpd_getdollarzero(ptr)
+  __libpd_patches[dz] = ptr
+  return dz
+
+def libpd_close_patch(dz):
+  __libpd_closefile(__libpd_patches[dz])
+  del __libpd_patches[dz]
 
 def libpd_compute_audio(flag):
   libpd_message('pd', 'dsp', flag)
