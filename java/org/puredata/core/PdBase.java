@@ -13,43 +13,47 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.puredata.core.utils.PdUtils;
-
 /**
  * 
  * PdBase provides basic Java bindings for pd.
  * 
  * Some random notes:
- *    - This is a low-level library that aims to leave most design decisions to higher-level code.  In particular, it will
- *      throw no exceptions (although client code may choose to translate error codes into exceptions).  At the same time,
- *      it is designed to be fairly robust in that it is thread-safe and does as much error checking as I find reasonable
- *      at this level.  Client code is still responsible for proper dimensioning of buffers and such, though.
- *      
- *    - {@link PdUtils} is an example of how to wrap PdBase in higher-level functionality.
- *    
- *    - The MIDI methods choose sanity over consistency with pd or the MIDI standard.  To wit, channel numbers always start
- *      at 0, and pitch bend values are centered at 0, i.e., they range from -8192 to 8191.
- *    
- *    - The basic idea is to turn pd into a library that essentially offers a rendering callback (process) mimicking the
- *      design of JACK, the JACK Audio Connection Kit.
- *      
- *    - The release method is mostly there as a reminder that some sort of cleanup might be necessary; for the time being,
- *      it only releases the resources held by the print handler and cancels all subscriptions.  Shutting down pd itself
- *      wouldn't make sense because it might be needed in the future, at which point the native library may not be reloaded.
- *      If you're concerned about resources held by pd, make sure to call closePatch when you're done with a patch.
- *      
- *    - I'm a little fuzzy on how/when to use sys_lock, sys_unlock, etc., and so I decided to handle all synchronization on
- *      the Java side.  It appears that sys_lock is for top-level locking in scheduling routines only, and so Java-side sync
- *      conveys the same benefits without the risk of deadlocks.
- *      
+ * - This is a low-level library that aims to leave most
+ * design decisions to higher-level code. In particular, it will throw no
+ * exceptions (although client code may choose to translate error codes into
+ * exceptions). At the same time, it is designed to be fairly robust in that it
+ * is thread-safe and does as much error checking as I find reasonable at this
+ * level. Client code is still responsible for proper dimensioning of buffers
+ * and such, though.
+ * 
+ * - The MIDI methods choose sanity over consistency with pd or the MIDI
+ * standard. To wit, channel numbers always start at 0, and pitch bend values
+ * are centered at 0, i.e., they range from -8192 to 8191.
+ * 
+ * - The basic idea is to turn pd into a library that essentially offers a
+ * rendering callback (process) mimicking the design of JACK, the JACK Audio
+ * Connection Kit.
+ * 
+ * - The release method is mostly there as a reminder that some sort of cleanup
+ * might be necessary; for the time being, it only releases the resources held
+ * by the print handler and cancels all subscriptions. Shutting down pd itself
+ * wouldn't make sense because it might be needed in the future, at which point
+ * the native library may not be reloaded. If you're concerned about resources
+ * held by pd, make sure to call closePatch when you're done with a patch.
+ * 
+ * - I'm a little fuzzy on how/when to use sys_lock, sys_unlock, etc., and so I
+ * decided to handle all synchronization on the Java side. It appears that
+ * sys_lock is for top-level locking in scheduling routines only, and so
+ * Java-side sync conveys the same benefits without the risk of deadlocks.
+ * 
  * @author Peter Brinkmann (peter.brinkmann@gmail.com)
- *
+ * 
  */
 public final class PdBase {
 
 	private final static Map<String, Long> bindings = new HashMap<String, Long>();
 	private final static Map<Integer, Long> patches = new HashMap<Integer, Long>();
-	
+
 	static {
 		System.loadLibrary("pdnative");
 		initialize();
@@ -66,88 +70,128 @@ public final class PdBase {
 
 	/**
 	 * adds a directory to the search path
+	 * 
 	 * @param s
 	 */
 	public synchronized native static void addToSearchPath(String s);
-	
+
 	/**
-	 * releases resources held by native bindings (PdReceiver object and subscriptions); otherwise, the state of pd will remain unaffected
+	 * same as "compute audio" checkbox in pd gui, or [;pd dsp 0/1(
 	 * 
-	 * Note:  It would be nice to free pd's I/O buffers here, but sys_close_audio doesn't seem
-	 * to do that, and so we'll just skip this for now.
+	 * Note: Maintaining a DSP state that's separate from the state of the audio
+	 * rendering thread doesn't make much sense in libpd. In most applications,
+	 * you probably just want to call {@code computeAudio(true)} at the
+	 * beginning and then forget that this method exists.
+	 * 
+	 * @param state
+	 */
+	public static void computeAudio(boolean state) {
+		sendMessage("pd", "dsp", state ? 1 : 0);
+	}
+
+	/**
+	 * releases resources held by native bindings (PdReceiver object and
+	 * subscriptions); otherwise, the state of pd will remain unaffected
+	 * 
+	 * Note: It would be nice to free pd's I/O buffers here, but sys_close_audio
+	 * doesn't seem to do that, and so we'll just skip this for now.
 	 */
 	public synchronized static void release() {
 		setReceiver(null);
 		setMidiReceiver(null);
-		for (long ptr: bindings.values()) {
+		for (long ptr : bindings.values()) {
 			unbindSymbol(ptr);
 		}
 		bindings.clear();
-		for (long ptr: patches.values()) {
+		for (long ptr : patches.values()) {
 			closeFile(ptr);
 		}
 		patches.clear();
 	}
-	
+
 	/**
 	 * sets handler for receiving messages from pd
 	 * 
 	 * @param handler
 	 */
 	public synchronized native static void setReceiver(PdReceiver handler);
-	
+
 	/**
 	 * sets up pd audio; must be called before process callback
 	 * 
 	 * @param inputChannels
 	 * @param outputChannels
 	 * @param sampleRate
-	 * @param ticksPerBuffer number of pd ticks per process call
+	 * @param ticksPerBuffer
+	 *            number of pd ticks per process call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int openAudio(int inputChannels, int outputChannels, int sampleRate, int ticksPerBuffer);
+	public synchronized native static int openAudio(int inputChannels,
+			int outputChannels, int sampleRate, int ticksPerBuffer);
 
 	/**
-	 * raw process callback, processes one pd tick, writes raw data to buffers without interlacing
+	 * raw process callback, processes one pd tick, writes raw data to buffers
+	 * without interlacing
 	 * 
-	 * @param inBuffer  must be an array of the right size, never null; use inBuffer = new short[0] if no input is desired
-	 * @param outBuffer must be an array of size outBufferSize from openAudio call
+	 * @param inBuffer
+	 *            must be an array of the right size, never null; use inBuffer =
+	 *            new short[0] if no input is desired
+	 * @param outBuffer
+	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int processRaw(float[] inBuffer, float[] outBuffer);
-	
+	public synchronized native static int processRaw(float[] inBuffer,
+			float[] outBuffer);
+
 	/**
-	 * main process callback, reads samples from inBuffer and writes samples to outBuffer, using arrays of type short
+	 * main process callback, reads samples from inBuffer and writes samples to
+	 * outBuffer, using arrays of type short
 	 * 
-	 * @param inBuffer  must be an array of the right size, never null; use inBuffer = new short[0] if no input is desired
-	 * @param outBuffer must be an array of size outBufferSize from openAudio call
+	 * @param inBuffer
+	 *            must be an array of the right size, never null; use inBuffer =
+	 *            new short[0] if no input is desired
+	 * @param outBuffer
+	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int process(short[] inBuffer, short[] outBuffer);
-	
+	public synchronized native static int process(short[] inBuffer,
+			short[] outBuffer);
+
 	/**
-	 * main process callback, reads samples from inBuffer and writes samples to outBuffer, using arrays of type float
+	 * main process callback, reads samples from inBuffer and writes samples to
+	 * outBuffer, using arrays of type float
 	 * 
-	 * @param inBuffer  must be an array of the right size, never null; use inBuffer = new short[0] if no input is desired
-	 * @param outBuffer must be an array of size outBufferSize from openAudio call
+	 * @param inBuffer
+	 *            must be an array of the right size, never null; use inBuffer =
+	 *            new short[0] if no input is desired
+	 * @param outBuffer
+	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int process(float[] inBuffer, float[] outBuffer);
-	
+	public synchronized native static int process(float[] inBuffer,
+			float[] outBuffer);
+
 	/**
-	 * main process callback, reads samples from inBuffer and writes samples to outBuffer, using arrays of type double
+	 * main process callback, reads samples from inBuffer and writes samples to
+	 * outBuffer, using arrays of type double
 	 * 
-	 * @param inBuffer  must be an array of the right size, never null; use inBuffer = new short[0] if no input is desired
-	 * @param outBuffer must be an array of size outBufferSize from openAudio call
+	 * @param inBuffer
+	 *            must be an array of the right size, never null; use inBuffer =
+	 *            new short[0] if no input is desired
+	 * @param outBuffer
+	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int process(double[] inBuffer, double[] outBuffer);
-	
+	public synchronized native static int process(double[] inBuffer,
+			double[] outBuffer);
+
 	/**
 	 * checks whether a symbol represents a pd object
 	 * 
-	 * @param s String representing pd symbol
-	 * @return true if and only if the symbol given by s is associated with something in pd
+	 * @param s
+	 *            String representing pd symbol
+	 * @return true if and only if the symbol given by s is associated with
+	 *         something in pd
 	 */
 	public synchronized native static boolean exists(String s);
 
@@ -168,7 +212,7 @@ public final class PdBase {
 		bindings.put(symbol, ptr);
 		return 0;
 	}
-	
+
 	/**
 	 * unsubscribes from pd messages sent to the given symbol
 	 * 
@@ -176,7 +220,8 @@ public final class PdBase {
 	 */
 	public synchronized static void unsubscribe(String symbol) {
 		Long ptr = bindings.get(symbol);
-		if (ptr == null) return;
+		if (ptr == null)
+			return;
 		bindings.remove(symbol);
 		unbindSymbol(ptr);
 	}
@@ -185,9 +230,10 @@ public final class PdBase {
 	 * reads a patch from a file
 	 * 
 	 * @param file
-	 * @return an integer handle that identifies this patch; this handle is
-	 *         the $0 value of the patch
-	 * @throws IOException thrown if the file doesn't exist or can't be opened
+	 * @return an integer handle that identifies this patch; this handle is the
+	 *         $0 value of the patch
+	 * @throws IOException
+	 *             thrown if the file doesn't exist or can't be opened
 	 */
 	public synchronized static int openPatch(File file) throws IOException {
 		if (!file.exists()) {
@@ -203,183 +249,224 @@ public final class PdBase {
 		patches.put(handle, ptr);
 		return handle;
 	}
-	
+
 	/**
 	 * reads a patch from a file
 	 * 
-	 * @param path to the file
-	 * @return an integer handle that identifies this patch; this handle is
-	 *         the $0 value of the patch
-	 * @throws IOException thrown if the file doesn't exist or can't be opened
+	 * @param path
+	 *            to the file
+	 * @return an integer handle that identifies this patch; this handle is the
+	 *         $0 value of the patch
+	 * @throws IOException
+	 *             thrown if the file doesn't exist or can't be opened
 	 */
 	public synchronized static int openPatch(String path) throws IOException {
 		return openPatch(new File(path));
 	}
-	
+
 	/**
 	 * closes a patch
 	 * 
-	 * @param handle representing the patch, as returned by openPatch
+	 * @param handle
+	 *            representing the patch, as returned by openPatch
 	 */
 	public synchronized static void closePatch(int handle) {
 		if (!patches.containsKey(handle)) {
-			throw new IllegalArgumentException("invalid patch handle: " + handle);
+			throw new IllegalArgumentException("invalid patch handle: "
+					+ handle);
 		}
 		closeFile(patches.remove(handle));
 	}
-	
+
 	/**
 	 * sends a bang to the object associated with the given symbol
 	 * 
-	 * @param recv symbol associated with receiver
+	 * @param recv
+	 *            symbol associated with receiver
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendBang(String recv);
-	
+
 	/**
 	 * sends a float to the object associated with the given symbol
 	 * 
-	 * @param recv symbol associated with receiver
+	 * @param recv
+	 *            symbol associated with receiver
 	 * @param x
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendFloat(String recv, float x);
-	
+
 	/**
 	 * sends a symbol to the object associated with the given symbol
 	 * 
-	 * @param recv symbol associated with receiver
+	 * @param recv
+	 *            symbol associated with receiver
 	 * @param sym
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendSymbol(String recv, String sym);
-	
+
 	/**
 	 * sends a list to an object in pd
+	 * 
 	 * @param receiver
-	 * @param args list of arguments of type Integer, Float, or String; no more than 32 arguments
+	 * @param args
+	 *            list of arguments of type Integer, Float, or String; no more
+	 *            than 32 arguments
 	 * @return error code, 0 on success
 	 */
 	public synchronized static int sendList(String receiver, Object... args) {
-		int err = processArgs(args);			
+		int err = processArgs(args);
 		return (err == 0) ? finishList(receiver) : err;
 	}
-	
+
 	/**
 	 * sends a message to an object in pd
 	 * 
 	 * @param receiver
 	 * @param message
-	 * @param args  list of arguments of type Integer, Float, or String; no more than 32 arguments
+	 * @param args
+	 *            list of arguments of type Integer, Float, or String; no more
+	 *            than 32 arguments
 	 * @return error code, 0 on success
 	 */
-	public synchronized static int sendMessage(String receiver, String message, Object... args) {
-		int err = processArgs(args);			
+	public synchronized static int sendMessage(String receiver, String message,
+			Object... args) {
+		int err = processArgs(args);
 		return (err == 0) ? finishMessage(receiver, message) : err;
 	}
 
 	/**
-	 * @return default pd block size, DEFDACBLKSIZE (currently 64) (aka number of samples per tick per channel)
+	 * @return default pd block size, DEFDACBLKSIZE (currently 64) (aka number
+	 *         of samples per tick per channel)
 	 */
 	public synchronized native static int blockSize();
-	
+
 	/**
 	 * sets the handler for receiving MIDI events from pd
 	 * 
 	 * @param receiver
 	 */
-	public synchronized native static void setMidiReceiver(PdMidiReceiver receiver);
-	
+	public synchronized native static void setMidiReceiver(
+			PdMidiReceiver receiver);
+
 	/**
 	 * sends a note on event to pd
 	 * 
-	 * @param channel starting at 0
-	 * @param pitch   0..0x7f
-	 * @param velocity 0..0x7f
+	 * @param channel
+	 *            starting at 0
+	 * @param pitch
+	 *            0..0x7f
+	 * @param velocity
+	 *            0..0x7f
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int sendNoteOn(int channel, int pitch, int velocity);
-	
+	public synchronized native static int sendNoteOn(int channel, int pitch,
+			int velocity);
+
 	/**
 	 * sends a control change event to pd
 	 * 
-	 * @param channel starting at 0
-	 * @param controller 0..0x7f
-	 * @param value 0..0x7f
+	 * @param channel
+	 *            starting at 0
+	 * @param controller
+	 *            0..0x7f
+	 * @param value
+	 *            0..0x7f
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int sendControlChange(int channel, int controller, int value);
-	
+	public synchronized native static int sendControlChange(int channel,
+			int controller, int value);
+
 	/**
 	 * sends a program change event to Pd
 	 * 
-	 * @param channel starting at 0
-	 * @param value 0..0x7f
+	 * @param channel
+	 *            starting at 0
+	 * @param value
+	 *            0..0x7f
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int sendProgramChange(int channel, int value);
-	
+	public synchronized native static int sendProgramChange(int channel,
+			int value);
+
 	/**
 	 * sends a pitch bend event to pd
 	 * 
-	 * @param channel starting at 0
-	 * @param value -8192..8191 (note that Pd has some offset bug in its pitch bend objects, but libpd corrects for this)
+	 * @param channel
+	 *            starting at 0
+	 * @param value
+	 *            -8192..8191 (note that Pd has some offset bug in its pitch
+	 *            bend objects, but libpd corrects for this)
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendPitchBend(int channel, int value);
-	
+
 	/**
 	 * sends an aftertouch event to pd
 	 * 
-	 * @param channel starting at 0
-	 * @param value 0..0x7f
+	 * @param channel
+	 *            starting at 0
+	 * @param value
+	 *            0..0x7f
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendAftertouch(int channel, int value);
-	
+
 	/**
 	 * sends a polyphonic aftertouch event to pd
 	 * 
-	 * @param channel starting at 0
-	 * @param pitch 0..0x7f
-	 * @param value 0..0x7f
+	 * @param channel
+	 *            starting at 0
+	 * @param pitch
+	 *            0..0x7f
+	 * @param value
+	 *            0..0x7f
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int sendPolyAftertouch(int channel, int pitch, int value);
+	public synchronized native static int sendPolyAftertouch(int channel,
+			int pitch, int value);
 
 	/**
 	 * sends one raw MIDI byte to pd
 	 * 
-	 * @param port 0..0x0fff
-	 * @param value 0..0xff
+	 * @param port
+	 *            0..0x0fff
+	 * @param value
+	 *            0..0xff
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendMidiByte(int port, int value);
-	
+
 	/**
 	 * sends one byte of a sysex message to pd
 	 * 
-	 * @param port 0..0x0fff
-	 * @param value 0..0x7f
+	 * @param port
+	 *            0..0x0fff
+	 * @param value
+	 *            0..0x7f
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendSysex(int port, int value);
-	
+
 	/**
 	 * sends one byte to the realtimein object of pd
 	 * 
-	 * @param port 0..0x0fff
-	 * @param value 0..0xff
+	 * @param port
+	 *            0..0x0fff
+	 * @param value
+	 *            0..0xff
 	 * @return error code, 0 on success
 	 */
 	public synchronized native static int sendSysRealTime(int port, int value);
-	
+
 	private static int processArgs(Object[] args) {
 		int maxArgs = startMessage();
 		if (args.length > maxArgs) {
 			return -100;
 		}
-		for (Object arg: args) {
+		for (Object arg : args) {
 			if (arg instanceof Integer) {
 				addFloat(((Integer) arg).intValue());
 			} else if (arg instanceof Float) {
@@ -387,21 +474,33 @@ public final class PdBase {
 			} else if (arg instanceof String) {
 				addSymbol((String) arg);
 			} else {
-				return -101;  // illegal argument
+				return -101; // illegal argument
 			}
 		}
 		return 0;
 	}
-	
-	private native static void initialize();  // no sync necessary because it only runs in static initializer
+
+	private native static void initialize(); // no sync necessary because it
+												// only runs in static
+												// initializer
+
 	private native static int startMessage();
+
 	private native static void addFloat(float x);
+
 	private native static void addSymbol(String s);
+
 	private native static int finishList(String receive);
+
 	private native static int finishMessage(String receive, String message);
+
 	private native static long bindSymbol(String s);
+
 	private native static void unbindSymbol(long p);
+
 	private native static long openFile(String patch, String dir);
+
 	private native static void closeFile(long p);
+
 	private native static int getDollarZero(long p);
 }
