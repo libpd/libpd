@@ -30,10 +30,7 @@ int main(int argc, char **argv) {
   libpd_finish_message("pd", "dsp");
 
   // open patch       [; pd open file folder(
-  libpd_start_message();
-  libpd_add_symbol(argv[1]);
-  libpd_add_symbol(argv[2]);
-  libpd_finish_message("pd", "open");
+  libpd_openfile(argv[1], argv[2]);
 
   // now run pd for ten seconds (logical time)
   int i;

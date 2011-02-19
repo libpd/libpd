@@ -40,11 +40,11 @@ int libpd_finish_message(const char *, const char *);
 
 int libpd_exists(const char *);
 void *libpd_bind(const char *);
-void libpd_unbind(void *p);
+void libpd_unbind(void *);
 
-void *libpd_openfile(const char *basename, const char *dirname);
-void libpd_closefile(void *x);
-int libpd_getdollarzero(void *x);
+void *libpd_openfile(const char *, const char *);
+void libpd_closefile(void *);
+int libpd_getdollarzero(void *);
 
 typedef void (*t_libpd_printhook)(const char *);
 typedef void (*t_libpd_banghook)(const char *);
