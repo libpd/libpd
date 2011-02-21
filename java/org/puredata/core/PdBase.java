@@ -18,13 +18,14 @@ import java.util.Map;
  * PdBase provides basic Java bindings for pd.
  * 
  * Some random notes:
- * - This is a low-level library that aims to leave most
- * design decisions to higher-level code. In particular, it will throw no
- * exceptions (although client code may choose to translate error codes into
- * exceptions). At the same time, it is designed to be fairly robust in that it
- * is thread-safe and does as much error checking as I find reasonable at this
- * level. Client code is still responsible for proper dimensioning of buffers
- * and such, though.
+ * 
+ * - This is a low-level library that aims to leave most design decisions to
+ * higher-level code. In particular, it will throw no exceptions (except for the
+ * methods for opening files, which use instances of {@link File} and may throw
+ * {@link IOException} when appropriate). At the same time, it is designed to be
+ * fairly robust in that it is thread-safe and does as much error checking as I
+ * find reasonable at this level. Client code is still responsible for proper
+ * dimensioning of buffers and such, though.
  * 
  * - The MIDI methods choose sanity over consistency with pd or the MIDI
  * standard. To wit, channel numbers always start at 0, and pitch bend values
@@ -36,10 +37,9 @@ import java.util.Map;
  * 
  * - The release method is mostly there as a reminder that some sort of cleanup
  * might be necessary; for the time being, it only releases the resources held
- * by the print handler and cancels all subscriptions. Shutting down pd itself
- * wouldn't make sense because it might be needed in the future, at which point
- * the native library may not be reloaded. If you're concerned about resources
- * held by pd, make sure to call closePatch when you're done with a patch.
+ * by the print handler, closes all patches, and cancels all subscriptions.
+ * Shutting down pd itself wouldn't make sense because it might be needed in the
+ * future, at which point the native library may not be reloaded.
  * 
  * - I'm a little fuzzy on how/when to use sys_lock, sys_unlock, etc., and so I
  * decided to handle all synchronization on the Java side. It appears that
@@ -214,16 +214,16 @@ public final class PdBase {
 	}
 
 	/**
-	 * unsubscribes from pd messages sent to the given symbol
+	 * unsubscribes from pd messages sent to the given symbol; will do nothing
+	 * if there is no subscription to this symbol
 	 * 
 	 * @param symbol
 	 */
 	public synchronized static void unsubscribe(String symbol) {
-		Long ptr = bindings.get(symbol);
-		if (ptr == null)
-			return;
-		bindings.remove(symbol);
-		unbindSymbol(ptr);
+		Long ptr = bindings.remove(symbol);
+		if (ptr != null) {
+			unbindSymbol(ptr);
+		}
 	}
 
 	/**
@@ -240,8 +240,8 @@ public final class PdBase {
 			throw new FileNotFoundException(file.getPath());
 		}
 		String name = file.getName();
-		String dir = file.getParentFile().getAbsolutePath();
-		long ptr = openFile(name, dir);
+		File dir = file.getParentFile();
+		long ptr = openFile(name, (dir != null) ? dir.getAbsolutePath() : ".");
 		if (ptr == 0) {
 			throw new IOException("unable to open patch " + file.getPath());
 		}
@@ -265,17 +265,16 @@ public final class PdBase {
 	}
 
 	/**
-	 * closes a patch
+	 * closes a patch; will do nothing if the handle is invalid
 	 * 
 	 * @param handle
 	 *            representing the patch, as returned by openPatch
 	 */
 	public synchronized static void closePatch(int handle) {
-		if (!patches.containsKey(handle)) {
-			throw new IllegalArgumentException("invalid patch handle: "
-					+ handle);
+		Long ptr = patches.remove(handle);
+		if (ptr != null) {
+			closeFile(ptr);
 		}
-		closeFile(patches.remove(handle));
 	}
 
 	/**
@@ -480,9 +479,10 @@ public final class PdBase {
 		return 0;
 	}
 
-	private native static void initialize(); // no sync necessary because it
-												// only runs in static
-												// initializer
+	// the remaining methods do not need to be synchronized because they are
+	// protected by the public methods that call them
+
+	private native static void initialize();
 
 	private native static int startMessage();
 
