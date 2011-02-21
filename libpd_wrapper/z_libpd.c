@@ -15,6 +15,7 @@
 #include "z_libpd.h"
 #include "x_libpdreceive.h"
 #include "s_stuff.h"
+#include "m_imp.h"
 
 #define MAXMSGLENGTH 32
 
