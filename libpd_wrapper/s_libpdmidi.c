@@ -5,6 +5,16 @@
 #include "m_pd.h"
 #include "z_libpd.h"
 
+void inmidi_realtimein(int portno, int cmd);
+void inmidi_byte(int portno, int byte);
+void inmidi_sysex(int portno, int byte);
+void inmidi_noteon(int portno, int channel, int pitch, int velo);
+void inmidi_controlchange(int portno, int channel, int ctlnumber, int value);
+void inmidi_programchange(int portno, int channel, int value);
+void inmidi_pitchbend(int portno, int channel, int value);
+void inmidi_aftertouch(int portno, int channel, int value);
+void inmidi_polyaftertouch(int portno, int channel, int pitch, int value);
+
 #define CLAMP(x, low, high) ((x > high) ? high : ((x < low) ? low : x))
 #define CLAMP4BIT(x) CLAMP(x, 0, 0x0f)
 #define CLAMP7BIT(x) CLAMP(x, 0, 0x7f)
