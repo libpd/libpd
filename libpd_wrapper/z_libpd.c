@@ -16,6 +16,7 @@
 #include "x_libpdreceive.h"
 #include "s_stuff.h"
 #include "m_imp.h"
+#include "g_all_guis.h"
 
 #define MAXMSGLENGTH 32
 
