@@ -314,6 +314,13 @@ void esd_getdevs(char *indevlist, int *nindevs,
     char *outdevlist, int *noutdevs, int *canmulti, 
         int maxndev, int devdescsize);
 
+int dummy_open_audio(int nin, int nout, int sr);
+int dummy_close_audio();
+int dummy_send_dacs();
+void dummy_getdevs(char *indevlist, int *nindevs, char *outdevlist,
+    int *noutdevs, int *canmulti, int maxndev, int devdescsize);
+void dummy_listdevs();
+
 void sys_listmididevs(void);
 void sys_set_midi_api(int whichapi);
 EXTERN void sys_set_audio_api(int whichapi);
