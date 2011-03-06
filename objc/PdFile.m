@@ -67,7 +67,7 @@
 
 	const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
 	const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
-	t_pd *x = libpd_openfile(base, path);
+	void *x = libpd_openfile(base, path);
 	if (x) {
 		self.fileReference = [NSValue valueWithPointer:x]; 
 		self.dollarZero = libpd_getdollarzero(x);
@@ -75,7 +75,7 @@
 }
 
 - (void)closeFile {
-	t_pd *x = [self.fileReference pointerValue];
+	void *x = [self.fileReference pointerValue];
 	if (x) {
 		libpd_closefile(x);
 		self.fileReference = nil;
