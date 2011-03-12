@@ -7,3 +7,11 @@ python/build
 *.so
 *.class
 *.pyc
+build/*
+*.mode1v3
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+.DS_Store
