@@ -5,14 +5,12 @@ Layout of the libpd repository:
   * pure-data: The folder containing the sources of Pd Vanilla and standard
       externals.  This subtree is a subset of Miller Puckette's official Pd
       git repository, available at
-      git://pure-data.git.sourceforge.net/gitroot/pure-data/pure-data.
-      You can delete the pure-data branch from the libpd repository and
-      substitute a clone of Miller's repository and libpd will still build and
-      work just fine.
+      git://pure-data.git.sourceforge.net/gitroot/pure-data/pure-data,
+      with minimal changes.
 
       We're keeping our own copy of the sources of Pd in order to have the
       option of adding optimizations and other changes that may not make it
-      into the official version any time soon, but the overall policy is to
+      into the official version immediately, but the overall policy is to
       maintain compatibility with the official version.  Please don't make any
       incompatible changes in the pure-data branch, and don't add anything
       specific to libpd that you wouldn't expect to eventually be merged into
@@ -21,7 +19,7 @@ Layout of the libpd repository:
   * libpd_wrapper: This folder contains the source files that make up the core
       of libpd.
 
-  * Android.mk, Makefile, Makefile.mac: Makefiles for building libpd for
+  * Android.mk, Makefile, libpd.xcodeproj: Build support for
       various platforms.  I figure the Android makefile is pretty much
       finished, but the build system for other platforms still needs work.
       The Makefile for build shared libraries on Linux is crude but
@@ -29,8 +27,9 @@ Layout of the libpd repository:
       currently don't have a makefile for Windows.  Feel free to improve the
       build system in any way you see fit.
 
-  * java, objc: Glue for using libpd with Java and Objective C.  Feel free to
-      improve or add support for other languages such as Python or Lua.
+  * java, objc, python: Glue for using libpd with Java, Objective C, and
+      Python.  Feel free to improve or add support for other languages such as
+      Lua.
 
   * samples: Currently, this branch only contains one small sample program in
       C built on top of libpd.  It's probably redundant, but it may give you

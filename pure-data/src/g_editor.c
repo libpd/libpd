@@ -70,7 +70,8 @@ int gobj_shouldvis(t_gobj *x, struct _glist *glist)
 {
     t_object *ob;
     if (!glist->gl_havewindow && glist->gl_isgraph && glist->gl_goprect &&
-        glist->gl_owner && (pd_class(&x->g_pd) != scalar_class))
+        glist->gl_owner && (pd_class(&x->g_pd) != scalar_class)
+            && (pd_class(&x->g_pd) != garray_class))
     {
         /* if we're graphing-on-parent and the object falls outside the
         graph rectangle, don't draw it. */
@@ -774,17 +775,13 @@ void canvas_reload(t_symbol *name, t_symbol *dir, t_gobj *except)
 /* ------------------------ event handling ------------------------ */
 
 static char *cursorlist[] = {
-#ifdef MSW
-    "right_ptr",        /* CURSOR_RUNMODE_NOTHING */
-#else
-    "left_ptr",         /* CURSOR_RUNMODE_NOTHING */
-#endif
-    "arrow",            /* CURSOR_RUNMODE_CLICKME */
-    "sb_v_double_arrow", /* CURSOR_RUNMODE_THICKEN */
-    "plus",             /* CURSOR_RUNMODE_ADDPOINT */
-    "hand2",            /* CURSOR_EDITMODE_NOTHING */
-    "circle",           /* CURSOR_EDITMODE_CONNECT */
-    "X_cursor"          /* CURSOR_EDITMODE_DISCONNECT */
+    "$cursor_runmode_nothing",
+    "$cursor_runmode_clickme",
+    "$cursor_runmode_thicken",
+    "$cursor_runmode_addpoint",
+    "$cursor_editmode_nothing",
+    "$cursor_editmode_connect",
+    "$cursor_editmode_disconnect"
 };
 
 void canvas_setcursor(t_canvas *x, unsigned int cursornum)
@@ -2074,7 +2071,7 @@ void canvas_finderror(void *error_object)
         if (glist_dofinderror(x, error_object))
             return;
     }
-    post("... sorry, I couldn't find the source of that error.");
+    error("... sorry, I couldn't find the source of that error.");
 }
 
 void canvas_stowconnections(t_canvas *x)

@@ -85,7 +85,7 @@ int libpd_init_audio(int inChans, int outChans, int sampleRate, int tpb) {
   inch[0] = inChans;
   outch[0] = outChans;
   sys_set_audio_settings(1, indev, 1, inch,
-         1, outdev, 1, outch, sampleRate, -1, 1);
+         1, outdev, 1, outch, sampleRate, -1, 1, DEFDACBLKSIZE);
   sched_set_using_audio(SCHED_AUDIO_CALLBACK);
   sys_reopen_audio();
   return 0;

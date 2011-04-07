@@ -16,6 +16,8 @@
 #include <string.h>
 #include <math.h>
 
+#include "s_utf8.h"
+
 t_class *text_class;
 static t_class *message_class;
 static t_class *gatom_class;
@@ -97,13 +99,13 @@ static void canvas_objtext(t_glist *gl, int xpix, int ypix, int selected,
         if (!newest)
         {
             binbuf_print(b);
-            post("... couldn't create");
+            error("... couldn't create");
             x = 0;
         }
         else if (!(x = pd_checkobject(newest)))
         {
             binbuf_print(b);
-            post("... didn't return a patchable object");
+            error("... didn't return a patchable object");
         }
     }
     else x = 0;
@@ -699,8 +701,22 @@ static void gatom_key(void *z, t_floatarg f)
             (c >= '0' && c <= '9' || c == '.' || c == '-'
                 || c == 'e' || c == 'E'))
         {
-            x->a_buf[len] = c;
-            x->a_buf[len+1] = 0;
+            /* the wchar could expand to up to 4 bytes, which
+             * which might overrun our a_buf;
+             * therefore we first expand into a temporary buffer, 
+             * and only if the resulting utf8 string fits into a_buf
+             * we apply it
+             */
+            char utf8[UTF8_MAXBYTES];
+            int utf8len = u8_wc_toutf8(utf8, c);
+            if((len+utf8len) < (ATOMBUFSIZE-1))
+            {
+                int j=0;
+                for(j=0; j<utf8len; j++)
+                    x->a_buf[len+j] = utf8[j];
+                 
+                x->a_buf[len+utf8len] = 0;
+            }
             goto redraw;
         }
     }

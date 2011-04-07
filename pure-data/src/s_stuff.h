@@ -75,10 +75,15 @@ extern int sys_blocksize;       /* audio I/O block size in sample frames */
 extern t_float sys_dacsr;
 extern int sys_schedadvance;
 extern int sys_sleepgrain;
-void sys_set_audio_settings(int naudioindev, int *audioindev,
+EXTERN void sys_set_audio_settings(int naudioindev, int *audioindev,
     int nchindev, int *chindev,
     int naudiooutdev, int *audiooutdev, int nchoutdev, int *choutdev,
-    int srate, int advance, int callback);
+    int srate, int advance, int callback, int blocksize);
+/* the same as above, but reopens the audio subsystem if needed */
+EXTERN void sys_set_audio_settings_reopen(int naudioindev, int *audioindev,
+    int nchindev, int *chindev,
+    int naudiooutdev, int *audiooutdev, int nchoutdev, int *choutdev,
+    int srate, int advance, int callback, int blocksize);
 EXTERN void sys_reopen_audio( void);
 EXTERN void sys_close_audio(void);
 
@@ -105,9 +110,8 @@ extern int sys_nmidiout;
 extern int sys_midiindevlist[];
 extern int sys_midioutdevlist[];
 
-void sys_open_midi(int nmidiin, int *midiinvec,
+EXTERN void sys_open_midi(int nmidiin, int *midiinvec,
     int nmidiout, int *midioutvec, int enable);
-
 
 EXTERN void sys_get_midi_apis(char *buf);
 EXTERN void sys_get_midi_devs(char *indevlist, int *nindevs,
@@ -238,7 +242,7 @@ void sys_setalarm(int microsec);
 #ifdef MSW
 #define DEFAULTADVANCE 70
 #else
-#define DEFAULTADVANCE 50
+#define DEFAULTADVANCE 25
 #endif
 
 typedef void (*t_audiocallback)(void);
@@ -256,7 +260,7 @@ void pa_getdevs(char *indevlist, int *nindevs,
 
 int oss_open_audio(int naudioindev, int *audioindev, int nchindev,
     int *chindev, int naudiooutdev, int *audiooutdev, int nchoutdev,
-    int *choutdev, int rate);
+    int *choutdev, int rate, int blocksize);
 void oss_close_audio(void);
 int oss_send_dacs(void);
 void oss_reportidle(void);
@@ -266,7 +270,7 @@ void oss_getdevs(char *indevlist, int *nindevs,
 
 int alsa_open_audio(int naudioindev, int *audioindev, int nchindev,
     int *chindev, int naudiooutdev, int *audiooutdev, int nchoutdev,
-    int *choutdev, int rate);
+    int *choutdev, int rate, int blocksize);
 void alsa_close_audio(void);
 int alsa_send_dacs(void);
 void alsa_reportidle(void);
@@ -315,17 +319,17 @@ void esd_getdevs(char *indevlist, int *nindevs,
         int maxndev, int devdescsize);
 
 int dummy_open_audio(int nin, int nout, int sr);
-int dummy_close_audio();
-int dummy_send_dacs();
+int dummy_close_audio( void);
+int dummy_send_dacs( void);
 void dummy_getdevs(char *indevlist, int *nindevs, char *outdevlist,
     int *noutdevs, int *canmulti, int maxndev, int devdescsize);
-void dummy_listdevs();
+void dummy_listdevs( void);
 
 void sys_listmididevs(void);
-void sys_set_midi_api(int whichapi);
+EXTERN void sys_set_midi_api(int whichapi);
 EXTERN void sys_set_audio_api(int whichapi);
 extern int sys_audioapi;
-void sys_set_audio_state(int onoff);
+EXTERN void sys_set_audio_state(int onoff);
 
 /* API dependent audio flags and settings */
 void oss_set32bit( void);
@@ -334,11 +338,11 @@ void linux_alsa_devname(char *devname);
 EXTERN void sys_get_audio_params(
     int *pnaudioindev, int *paudioindev, int *chindev,
     int *pnaudiooutdev, int *paudiooutdev, int *choutdev,
-    int *prate, int *padvance, int *callback);
+    int *prate, int *padvance, int *callback, int *blocksize);
 void sys_save_audio_params(
     int naudioindev, int *audioindev, int *chindev,
     int naudiooutdev, int *audiooutdev, int *choutdev,
-    int rate, int advance, int callback);
+    int rate, int advance, int callback, int blocksize);
 
 /* s_file.c */
 
