@@ -51,7 +51,6 @@
 		0E82A06712EEFDEE0053280E /* m_binbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01D12EEFDEE0053280E /* m_binbuf.c */; };
 		0E82A06812EEFDEE0053280E /* m_class.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01E12EEFDEE0053280E /* m_class.c */; };
 		0E82A06912EEFDEE0053280E /* m_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01F12EEFDEE0053280E /* m_conf.c */; };
-		0E82A06A12EEFDEE0053280E /* m_fixed.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A02012EEFDEE0053280E /* m_fixed.h */; };
 		0E82A06B12EEFDEE0053280E /* m_glob.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02112EEFDEE0053280E /* m_glob.c */; };
 		0E82A06C12EEFDEE0053280E /* m_imp.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A02212EEFDEE0053280E /* m_imp.h */; };
 		0E82A06D12EEFDEE0053280E /* m_memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02312EEFDEE0053280E /* m_memory.c */; };
@@ -139,7 +138,6 @@
 		0E82A01D12EEFDEE0053280E /* m_binbuf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = m_binbuf.c; sourceTree = "<group>"; };
 		0E82A01E12EEFDEE0053280E /* m_class.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = m_class.c; sourceTree = "<group>"; };
 		0E82A01F12EEFDEE0053280E /* m_conf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = m_conf.c; sourceTree = "<group>"; };
-		0E82A02012EEFDEE0053280E /* m_fixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m_fixed.h; sourceTree = "<group>"; };
 		0E82A02112EEFDEE0053280E /* m_glob.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = m_glob.c; sourceTree = "<group>"; };
 		0E82A02212EEFDEE0053280E /* m_imp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m_imp.h; sourceTree = "<group>"; };
 		0E82A02312EEFDEE0053280E /* m_memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = m_memory.c; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 				0E82A01D12EEFDEE0053280E /* m_binbuf.c */,
 				0E82A01E12EEFDEE0053280E /* m_class.c */,
 				0E82A01F12EEFDEE0053280E /* m_conf.c */,
-				0E82A02012EEFDEE0053280E /* m_fixed.h */,
 				0E82A02112EEFDEE0053280E /* m_glob.c */,
 				0E82A02212EEFDEE0053280E /* m_imp.h */,
 				0E82A02312EEFDEE0053280E /* m_memory.c */,
@@ -340,7 +337,6 @@
 			files = (
 				0E82A04F12EEFDEE0053280E /* g_all_guis.h in Headers */,
 				0E82A05312EEFDEE0053280E /* g_canvas.h in Headers */,
-				0E82A06A12EEFDEE0053280E /* m_fixed.h in Headers */,
 				0E82A06C12EEFDEE0053280E /* m_imp.h in Headers */,
 				0E82A07012EEFDEE0053280E /* m_pd.h in Headers */,
 				0E82A07A12EEFDEE0053280E /* s_stuff.h in Headers */,
