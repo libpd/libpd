@@ -17,15 +17,33 @@ outputs audio and messages. */
 #define BUFSIZE 65536
 static char inbuf[BUFSIZE];
 
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__GNU__)
+void glob_watchdog(t_pd *dummy);
+
+static void pollwatchdog( void)
+{
+    static int sched_diddsp, sched_nextpingtime;
+    sched_diddsp++;
+    if (sys_nogui && sys_hipriority && (sched_diddsp - sched_nextpingtime > 0))
+    {
+        glob_watchdog(0);
+            /* ping every 2 seconds */
+        sched_nextpingtime = sched_diddsp +
+            2 * (int)(sys_dacsr /(double)sys_schedblocksize);
+    }
+}
+#endif
+
 int pd_extern_sched(char *flags)
 {
     int naudioindev, audioindev[MAXAUDIOINDEV], chindev[MAXAUDIOINDEV];
     int naudiooutdev, audiooutdev[MAXAUDIOOUTDEV], choutdev[MAXAUDIOOUTDEV];
-    int i, j, rate, advance, callback, chin, chout, fill = 0, c;
+    int i, j, rate, advance, callback, chin, chout, fill = 0, c, blocksize;
     t_binbuf *b = binbuf_new();
 
     sys_get_audio_params(&naudioindev, audioindev, chindev,
-        &naudiooutdev, audiooutdev, choutdev, &rate, &advance, &callback);
+        &naudiooutdev, audiooutdev, choutdev, &rate, &advance, &callback,
+            &blocksize);
 
     chin = (naudioindev < 1 ? 0 : chindev[0]);
     chout = (naudiooutdev < 1 ? 0 : choutdev[0]);
@@ -57,6 +75,9 @@ int pd_extern_sched(char *flags)
                         *fp++ = 0;
                 sched_tick(sys_time+sys_time_per_dsp_tick);
                 sys_pollgui();
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__GNU__)
+                pollwatchdog();
+#endif
                 printf(";\n");
                 for (i = chout*DEFDACBLKSIZE, fp = sys_soundout; i--; fp++)
                 {
