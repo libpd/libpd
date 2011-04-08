@@ -29,6 +29,10 @@ int libpd_process_short(short *inBuffer, short *outBuffer);
 int libpd_process_float(float *inBuffer, float *outBuffer);
 int libpd_process_double(double *inBuffer, double *outBuffer);
 
+// The parameters of the next two functions are inspired by memcpy.
+int libpd_read_array(float *dest, const char *src, int offset, int n);
+int libpd_write_array(const char *dest, int offset, float *src, int n);
+
 int libpd_bang(const char *recv);
 int libpd_float(const char *recv, float x);
 int libpd_symbol(const char *recv, const char *sym);

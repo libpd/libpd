@@ -134,6 +134,36 @@ int libpd_process_float(float *inBuffer, float *outBuffer) {
 int libpd_process_double(double *inBuffer, double *outBuffer) {
   PROCESS(,)
 }
+ 
+int libpd_read_array(float *dest, const char *src, int offset, int n) {
+  t_symbol *sym = gensym(src);
+  t_garray *garray = (t_garray *) pd_findbyclass(sym, garray_class);
+  if (!garray) {
+    return -1;
+  }
+  int size = garray_npoints(garray); 
+  if (n < 0 || offset < 0 || offset + n > size) {
+    return -2;
+  }
+  float *vec = (float *) garray_vec(garray);
+  memcpy(dest, &vec[offset], n * sizeof(float));
+  return 0;
+}
+
+int libpd_write_array(const char *dest, int offset, float *src, int n) {
+  t_symbol *sym = gensym(dest);
+  t_garray *garray = (t_garray *) pd_findbyclass(sym, garray_class);
+  if (!garray) {
+    return -1;
+  }
+  int size = garray_npoints(garray); 
+  if (n < 0 || offset < 0 || offset + n > size) {
+    return -2;
+  }
+  float *vec = (float *) garray_vec(garray);
+  memcpy(&vec[offset], src, n * sizeof(float));
+  return 0;
+}
 
 static t_atom argv[MAXMSGLENGTH], *curr;
 static int argc;

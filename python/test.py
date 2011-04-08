@@ -21,12 +21,18 @@ libpd_float('spam', 42)
 libpd_symbol('spam', "don't panic")
 libpd_list('spam', 'test', 1, 'foo', 2)
 
-inbuf = array.array('h', range(64)).tostring()
+buf = array.array('f', range(64))
+print libpd_read_array(buf, "array1", 0, 64)
+print buf
+
+inbuf = array.array('h', range(64))
+outbuf = m.process(inbuf)
+print outbuf
+
+buf = array.array('f', map(lambda x : x / 64.0, range(64)))
+print libpd_write_array("array1", 0, buf, 64)
 
 outbuf = m.process(inbuf)
-print array.array('h', outbuf)
-
-outbuf = m.process(inbuf)
-print array.array('h', outbuf)
+print outbuf
 
 libpd_release()

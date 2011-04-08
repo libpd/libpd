@@ -32,6 +32,9 @@ int libpd_process_float(float *inb, float *outb);
 int libpd_process_short(short *inb, short *outb);
 int libpd_process_double(double *inb, double *outb);
 
+int libpd_read_array(float *outb, const char *src, int offset, int n);
+int libpd_write_array(const char *dest, int offset, float *inb, int n);
+
 int libpd_bang(const char *dest);
 int libpd_float(const char *dest, float val);
 int libpd_symbol(const char *dest, const char *sym);
@@ -147,13 +150,12 @@ def libpd_release():
 
 class PdManager:
   def __init__(self, inch, outch, srate, ticks):
-    self.__insize = inch * libpd_blocksize()
     self.__outbuf = array.array('h', '\x00\x00' * outch * libpd_blocksize())
     libpd_compute_audio(1)
     libpd_init_audio(inch, outch, srate, ticks)
   def process(self, inbuf):
     libpd_process_short(inbuf, self.__outbuf)
-    return self.__outbuf.tostring()
+    return self.__outbuf
 %}
 
 %{
