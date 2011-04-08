@@ -40,7 +40,7 @@ public class PdBaseTest {
 	@BeforeClass
 	public static void loadPatch() throws IOException {
 		PdBase.subscribe("eggs");
-		patch = PdBase.openPatch("javatests/org/puredata/core/test_callbacks.pd");
+		patch = PdBase.openPatch("javatests/org/puredata/core/test_java.pd");
 	}
 	
 	@AfterClass
@@ -237,5 +237,20 @@ public class PdBaseTest {
 		assertEquals(0, PdBase.sendPitchBend(0, 64));
 		assertEquals(0, PdBase.sendProgramChange(30, 127));
 		EasyMock.verify(midiReceiver);
+	}
+	
+	@Test
+	public void testArrayAccess() {
+		int n = 128;
+		float[] u = new float[n];
+		float[] v = new float[n];
+		for (int i = 0; i < n; i++) {
+			u[i] = i;
+		}
+		PdBase.writeArray("array1", 0, u, 0, n);
+		PdBase.readArray(v, 0, "array1", 0, n);
+		for (int i = 0; i < n; i++) {
+			assertEquals(u[i], v[i], 0);
+		}
 	}
 }

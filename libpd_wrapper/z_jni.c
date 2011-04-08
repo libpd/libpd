@@ -548,3 +548,29 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
   return libpd_getdollarzero((void *)ptr);
 }
 
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_readArrayNative
+(JNIEnv *env, jclass cls, jfloatArray jdest, jint destOffset,
+jstring jsrc, jint srcOffset, jint n) {
+  if (jdest == NULL || jsrc == NULL) return -3;
+  CACHE_ENV
+  float *pdest = (*env)->GetFloatArrayElements(env, jdest, NULL);
+  const char *csrc = (char *) (*env)->GetStringUTFChars(env, jsrc, NULL);
+  int result = libpd_read_array(&pdest[destOffset], csrc, srcOffset, n);
+  (*env)->ReleaseStringUTFChars(env, jsrc, csrc);
+  (*env)->ReleaseFloatArrayElements(env, jdest, pdest, 0);
+  return result;
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_writeArrayNative
+(JNIEnv *env, jclass cls, jstring jdest, jint destOffset,
+jfloatArray jsrc, jint srcOffset, jint n) {
+  if (jdest == NULL || jsrc == NULL) return -3;
+  CACHE_ENV
+  float *psrc = (*env)->GetFloatArrayElements(env, jsrc, NULL);
+  const char *cdest = (char *) (*env)->GetStringUTFChars(env, jdest, NULL);
+  int result = libpd_write_array(cdest, destOffset, &psrc[srcOffset], n);
+  (*env)->ReleaseStringUTFChars(env, jdest, cdest);
+  (*env)->ReleaseFloatArrayElements(env, jsrc, psrc, 0);
+  return result;
+}
+

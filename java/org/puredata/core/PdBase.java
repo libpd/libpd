@@ -185,6 +185,22 @@ public final class PdBase {
 	public synchronized native static int process(double[] inBuffer,
 			double[] outBuffer);
 
+	public synchronized static int readArray(float[] destination, int destOffset,
+			String source, int srcOffset, int n) {
+		if (destOffset < 0 || destOffset + n > destination.length) {
+			return -2;
+		}
+		return readArrayNative(destination, destOffset, source, srcOffset, n);
+	}
+	
+	public synchronized static int writeArray(String destination, int destOffset, 
+			float[] source, int srcOffset, int n) {
+		if (srcOffset < 0 || srcOffset + n > source.length) {
+			return -2;
+		}
+		return writeArrayNative(destination, destOffset, source, srcOffset, n);
+	}
+	
 	/**
 	 * checks whether a symbol represents a pd object
 	 * 
@@ -503,4 +519,10 @@ public final class PdBase {
 	private native static void closeFile(long p);
 
 	private native static int getDollarZero(long p);
+	
+	private native static int readArrayNative(float[] destination, int destOffset,
+			String source, int srcOffset, int n);
+	
+	private native static int writeArrayNative(String destination, int destOffset, 
+			float[] source, int srcOffset, int n);
 }

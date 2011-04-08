@@ -279,6 +279,22 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    readArrayNative
+ * Signature: ([FILjava/lang/String;II)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_readArrayNative
+  (JNIEnv *, jclass, jfloatArray, jint, jstring, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    writeArrayNative
+ * Signature: (Ljava/lang/String;I[FII)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_writeArrayNative
+  (JNIEnv *, jclass, jstring, jint, jfloatArray, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif
