@@ -185,6 +185,22 @@ public final class PdBase {
 	public synchronized native static int process(double[] inBuffer,
 			double[] outBuffer);
 
+	/**
+	 * @param name of the array in Pd
+	 * @return size of the array, or a negative error code if the array does not exist
+	 */
+	public synchronized native static int arraySize(String name);
+
+	/**
+	 * read values from an array in Pd
+	 *
+	 * @param destination float array to write to
+	 * @param destOffset  index at which to start writing
+	 * @param source      array in Pd to read from
+	 * @param srcOffset   index at which to start reading
+	 * @param n           number of values to read
+	 * @return            0 on success, or a negative error code on failure
+	 */
 	public synchronized static int readArray(float[] destination, int destOffset,
 			String source, int srcOffset, int n) {
 		if (destOffset < 0 || destOffset + n > destination.length) {
@@ -193,6 +209,16 @@ public final class PdBase {
 		return readArrayNative(destination, destOffset, source, srcOffset, n);
 	}
 	
+	/**
+	 * write values to an array in Pd
+	 *
+	 * @param destination name of the array in Pd to write to
+	 * @param destOffset  index at which to start writing
+	 * @param source      float array to read from
+	 * @param srcOffset   index at which to start reading
+	 * @param n           number of values to write
+	 * @return            0 on success, or a negative error code on failure
+	 */
 	public synchronized static int writeArray(String destination, int destOffset, 
 			float[] source, int srcOffset, int n) {
 		if (srcOffset < 0 || srcOffset + n > source.length) {

@@ -242,6 +242,7 @@ public class PdBaseTest {
 	@Test
 	public void testArrayAccess() {
 		int n = 128;
+		assertEquals(n, PdBase.arraySize("array1"));
 		float[] u = new float[n];
 		float[] v = new float[n];
 		for (int i = 0; i < n; i++) {

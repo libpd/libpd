@@ -73,6 +73,14 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3D_3D
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    arraySize
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_arraySize
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    exists
  * Signature: (Ljava/lang/String;)Z
  */

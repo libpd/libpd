@@ -32,6 +32,7 @@ int libpd_process_float(float *inb, float *outb);
 int libpd_process_short(short *inb, short *outb);
 int libpd_process_double(double *inb, double *outb);
 
+int libpd_arraysize(const char *name);
 int libpd_read_array(float *outb, const char *src, int offset, int n);
 int libpd_write_array(const char *dest, int offset, float *inb, int n);
 

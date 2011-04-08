@@ -22,6 +22,8 @@ libpd_symbol('spam', "don't panic")
 libpd_list('spam', 'test', 1, 'foo', 2)
 
 buf = array.array('f', range(64))
+print "array size:", libpd_arraysize("array1")
+print "array size:", libpd_arraysize("?????")  # doesn't exist
 print libpd_read_array(buf, "array1", 0, 64)
 print buf
 

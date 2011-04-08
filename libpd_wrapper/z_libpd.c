@@ -135,9 +135,17 @@ int libpd_process_double(double *inBuffer, double *outBuffer) {
   PROCESS(,)
 }
  
-#define PDMEMCPY(_x, _y) \
+#define GETARRAY \
   t_garray *garray = (t_garray *) pd_findbyclass(gensym(name), garray_class); \
   if (!garray) return -1; \
+
+int libpd_arraysize(const char *name) {
+  GETARRAY
+  return garray_npoints(garray);
+}
+
+#define PDMEMCPY(_x, _y) \
+  GETARRAY \
   if (n < 0 || offset < 0 || offset + n > garray_npoints(garray)) return -2; \
   float *vec = ((float *) garray_vec(garray)) + offset; \
   memcpy(_x, _y, n * sizeof(float)); \

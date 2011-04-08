@@ -548,6 +548,16 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
   return libpd_getdollarzero((void *)ptr);
 }
 
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_arraySize
+(JNIEnv *env, jclass cls, jstring jname) {
+  if (jname == NULL) return -2;
+  CACHE_ENV
+  const char *cname = (char *) (*env)->GetStringUTFChars(env, jname, NULL);
+  int result = libpd_arraysize(cname);
+  (*env)->ReleaseStringUTFChars(env, jname, cname);
+  return result;
+}
+
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_readArrayNative
 (JNIEnv *env, jclass cls, jfloatArray jdest, jint destOffset,
 jstring jsrc, jint srcOffset, jint n) {
