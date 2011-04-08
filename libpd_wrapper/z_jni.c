@@ -555,7 +555,7 @@ jstring jsrc, jint srcOffset, jint n) {
   CACHE_ENV
   float *pdest = (*env)->GetFloatArrayElements(env, jdest, NULL);
   const char *csrc = (char *) (*env)->GetStringUTFChars(env, jsrc, NULL);
-  int result = libpd_read_array(&pdest[destOffset], csrc, srcOffset, n);
+  int result = libpd_read_array(pdest + destOffset, csrc, srcOffset, n);
   (*env)->ReleaseStringUTFChars(env, jsrc, csrc);
   (*env)->ReleaseFloatArrayElements(env, jdest, pdest, 0);
   return result;
@@ -568,7 +568,7 @@ jfloatArray jsrc, jint srcOffset, jint n) {
   CACHE_ENV
   float *psrc = (*env)->GetFloatArrayElements(env, jsrc, NULL);
   const char *cdest = (char *) (*env)->GetStringUTFChars(env, jdest, NULL);
-  int result = libpd_write_array(cdest, destOffset, &psrc[srcOffset], n);
+  int result = libpd_write_array(cdest, destOffset, psrc + srcOffset, n);
   (*env)->ReleaseStringUTFChars(env, jdest, cdest);
   (*env)->ReleaseFloatArrayElements(env, jsrc, psrc, 0);
   return result;

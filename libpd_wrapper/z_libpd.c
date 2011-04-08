@@ -139,7 +139,7 @@ int libpd_process_double(double *inBuffer, double *outBuffer) {
   t_garray *garray = (t_garray *) pd_findbyclass(gensym(name), garray_class); \
   if (!garray) return -1; \
   if (n < 0 || offset < 0 || offset + n > garray_npoints(garray)) return -2; \
-  float *vec = &(((float *) garray_vec(garray))[offset]); \
+  float *vec = ((float *) garray_vec(garray)) + offset; \
   memcpy(_x, _y, n * sizeof(float)); \
   return 0;
 
