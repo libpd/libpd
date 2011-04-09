@@ -8,7 +8,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   JAVA_LDFLAGS = -framework JavaVM
 else  # Assume Linux
   SOLIB_EXT = so
-  JAVA_HOME ?= /usr/lib/jvm/default-java  # Guess at the default path to the JDK.
+  JAVA_HOME ?= /usr/lib/jvm/default-java
   PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC \
 	 -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux
   LDFLAGS = -shared
