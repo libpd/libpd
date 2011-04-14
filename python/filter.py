@@ -5,6 +5,15 @@ it into a Pd patch (given by the file name and an option path) and to write
 the result to stdin or to a file given with -o.
 """
 
+try:
+    # On Linux dlopenflags need to be set for Pd plugin loading to work.
+    import DLFCN
+    import sys
+    sys.setdlopenflags(DLFCN.RTLD_LAZY | DLFCN.RTLD_GLOBAL)
+except ImportError:
+    pass
+
+
 import wave
 import pylibpd
 
