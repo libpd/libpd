@@ -11,7 +11,7 @@
 #ifndef __Z_LIBPD_H__
 #define __Z_LIBPD_H__
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -91,7 +91,7 @@ extern t_libpd_aftertouchhook libpd_aftertouchhook;
 extern t_libpd_polyaftertouchhook libpd_polyaftertouchhook;
 extern t_libpd_midibytehook libpd_midibytehook;
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 }
 #endif
 
