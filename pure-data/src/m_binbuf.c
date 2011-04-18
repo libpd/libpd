@@ -1487,7 +1487,7 @@ t_pd *glob_evalfile(t_pd *ignore, t_symbol *name, t_symbol *dir)
 
     int dspstate = canvas_suspend_dsp();
     binbuf_evalfile(name, dir);
-    while ((x != s__X.s_thing) && (s__X.s_thing))
+    while ((x != s__X.s_thing) && s__X.s_thing) 
     {
         x = s__X.s_thing;
         vmess(x, gensym("pop"), "i", 1);
