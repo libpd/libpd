@@ -54,7 +54,7 @@ void *libpdreceive_new(t_symbol *s) {
   return x;
 }
 
-void libpdreceive_setup() {
+void libpdreceive_setup(void) {
   libpdrec_class = class_new(gensym("libpd_receive"),
        (t_newmethod)libpdreceive_new, (t_method)libpdreceive_free,
        sizeof(t_libpdrec), CLASS_DEFAULT, A_DEFSYM, 0);
@@ -65,4 +65,3 @@ void libpdreceive_setup() {
   class_addlist(libpdrec_class, libpdreclist);
   class_addanything(libpdrec_class, libpdrecanything);
 }
-

@@ -18,11 +18,11 @@ extern "C"
 
 #include "m_pd.h"
 
-void libpd_init();
-void libpd_clear_search_path();
+void libpd_init(void);
+void libpd_clear_search_path(void);
 void libpd_add_to_search_path(const char *sym);
 
-int libpd_blocksize();
+int libpd_blocksize(void);
 int libpd_init_audio(int inChans, int outChans, int sampleRate, int tpb);
 int libpd_process_raw(float *inBuffer, float *outBuffer);
 int libpd_process_short(short *inBuffer, short *outBuffer);
@@ -37,7 +37,7 @@ int libpd_write_array(const char *dest, int offset, float *src, int n);
 int libpd_bang(const char *recv);
 int libpd_float(const char *recv, float x);
 int libpd_symbol(const char *recv, const char *sym);
-int libpd_start_message();
+int libpd_start_message(void);
 void libpd_add_float(float x);
 void libpd_add_symbol(const char *sym);
 int libpd_finish_list(const char *recv);

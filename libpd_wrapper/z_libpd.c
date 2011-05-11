@@ -20,7 +20,7 @@
 
 #define MAXMSGLENGTH 32
 
-void pd_init();
+void pd_init(void);
 
 t_libpd_printhook libpd_printhook = NULL;
 t_libpd_banghook libpd_banghook = NULL;
@@ -45,7 +45,7 @@ static void *get_object(const char *s) {
 }
 
 /* this is called instead of sys_main() to start things */
-void libpd_init() {
+void libpd_init(void) {
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;
   sys_soundout = NULL;
@@ -68,7 +68,7 @@ void libpd_init() {
   sys_searchpath = NULL;
 }
 
-void libpd_clear_search_path() {
+void libpd_clear_search_path(void) {
   namelist_free(sys_searchpath);
   sys_searchpath = NULL;
 }
@@ -162,7 +162,7 @@ int libpd_write_array(const char *name, int offset, float *src, int n) {
 static t_atom argv[MAXMSGLENGTH], *curr;
 static int argc;
 
-int libpd_start_message() {
+int libpd_start_message(void) {
   argc = 0;
   curr = argv;
   return MAXMSGLENGTH;
@@ -231,7 +231,7 @@ int libpd_bang(const char *recv) {
   }
 }
 
-int libpd_blocksize() {
+int libpd_blocksize(void) {
   return DEFDACBLKSIZE;
 }
 

@@ -540,6 +540,8 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
 (JNIEnv *env, jclass cls, jlong ptr) {
   CACHE_ENV
   libpd_closefile((void *)ptr);
+  // even naughtier, using a pointer from Java
+  // using long integer in case we're on a 64bit CPU
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
@@ -583,4 +585,3 @@ jfloatArray jsrc, jint srcOffset, jint n) {
   (*env)->ReleaseFloatArrayElements(env, jsrc, psrc, 0);
   return result;
 }
-

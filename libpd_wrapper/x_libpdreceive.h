@@ -10,8 +10,7 @@
 
 #include "m_pd.h"
 
-void libpdreceive_setup();
+void libpdreceive_setup(void);
 void *libpdreceive_new(t_symbol *);
 
 #endif
-
