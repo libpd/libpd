@@ -11,6 +11,7 @@
 //
 
 #import "PdFile.h"
+#import "PdBase.h"
 #import "z_libpd.h"
 
 @interface PdFile ()
@@ -67,18 +68,23 @@
 
 	const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
 	const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
-	void *x = libpd_openfile(base, path);
-	if (x) {
-		self.fileReference = [NSValue valueWithPointer:x]; 
-		self.dollarZero = libpd_getdollarzero(x);
-	}
+	
+	@synchronized([PdBase synchronizer]) {
+		void *x = libpd_openfile(base, path);
+		if (x) {
+			self.fileReference = [NSValue valueWithPointer:x];
+			self.dollarZero = libpd_getdollarzero(x);
+		}
+		}
 }
 
 - (void)closeFile {
-	void *x = [self.fileReference pointerValue];
-	if (x) {
-		libpd_closefile(x);
-		self.fileReference = nil;
+	@synchronized([PdBase synchronizer]) {
+		void *x = [self.fileReference pointerValue];
+		if (x) {
+			libpd_closefile(x);
+			self.fileReference = nil;
+		}
 	}
 }
 
