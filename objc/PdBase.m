@@ -260,4 +260,8 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   [PdBase sendMessage:@"menuclose" withArguments:nil toReceiver:patchName];
 }
 
++ (id)synchronizer {
+	return self;
+}
+
 @end

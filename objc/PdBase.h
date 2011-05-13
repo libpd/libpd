@@ -53,7 +53,7 @@
 /** http://www.gitorious.org/pdlib/pages/Libpd */
 
 + (void)initialize;
-/** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */
+/** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */ // ???: why retain?
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;
@@ -74,5 +74,5 @@
 + (void)computeAudio:(BOOL)enable;
 + (NSString *)openPatch:(NSString *)path;
 + (void)closePatch:(NSString *)patchName;
-
++ (id)synchronizer;
 @end
