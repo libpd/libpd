@@ -72,7 +72,5 @@
 + (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer;
 + (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer;
 + (void)computeAudio:(BOOL)enable;
-+ (NSString *)openPatch:(NSString *)path;
-+ (void)closePatch:(NSString *)patchName;
 + (id)synchronizer;
 @end

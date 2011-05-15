@@ -239,27 +239,6 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
       toReceiver:@"pd"];
 }
 
-+ (NSString *)openPatch:(NSString *)path {
-  NSString *pathToPatch = [path stringByDeletingLastPathComponent];
-  NSString *patchFile = [path lastPathComponent];
-  NSString *patchName = [NSString stringWithFormat:@"pd-%@", patchFile];
-  if ([PdBase exists:patchName]) {
-    NSLog(@"PdBase: patch is already open: %@", path);
-    return nil;
-  }
-  [PdBase sendMessage:@"open" withArguments:[NSArray arrayWithObjects:patchFile, pathToPatch, nil]
-      toReceiver:@"pd"];
-  if (![PdBase exists:patchName]) {
-    NSLog(@"PdBase: patch failed to open: %@", path);
-    return nil;
-  }
-  return patchName;
-}
-
-+ (void)closePatch:(NSString *)patchName {
-  [PdBase sendMessage:@"menuclose" withArguments:nil toReceiver:patchName];
-}
-
 + (id)synchronizer {
 	return self;
 }
