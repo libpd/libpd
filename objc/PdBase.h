@@ -53,7 +53,7 @@
 /** http://www.gitorious.org/pdlib/pages/Libpd */
 
 + (void)initialize;
-/** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */ // ???: why retain?
+/** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;
