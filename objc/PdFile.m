@@ -75,7 +75,7 @@
 			self.fileReference = [NSValue valueWithPointer:x];
 			self.dollarZero = libpd_getdollarzero(x);
 		}
-		}
+    }
 }
 
 - (void)closeFile {
