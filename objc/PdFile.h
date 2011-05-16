@@ -13,18 +13,17 @@
 #import <Foundation/Foundation.h>
 
 @interface PdFile : NSObject {
-	NSValue *fileReference_; // pointer to the file
-	int dollarZero_;		 // unique $0 argument assigned by pd
-	NSString *baseName_;	 // stored file base name
-	NSString *pathName_;	 // stored file path name
+	NSValue *fileReference_;
+	int dollarZero_;
+	NSString *baseName_;
+	NSString *pathName_;
 }
 
-@property (nonatomic, assign, readonly) int dollarZero;
-@property (nonatomic, copy, readonly) NSString *baseName;
-@property (nonatomic, copy, readonly) NSString *pathName;
+@property (nonatomic, assign, readonly) int dollarZero;             // unique $0 argument assigned by pd
+@property (nonatomic, copy, readonly) NSString *baseName;           // stored file base name
+@property (nonatomic, copy, readonly) NSString *pathName;           // stored file path name
 
-+ (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName;	// convenience class method for opening a file and returning a reference to self
-- (void)openFile:(NSString *)baseName path:(NSString *)pathName;	// open a file with base and path names
-- (void)closeFile;													// close an opened file, also called in dealloc
++ (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName;	// open a pd file/patch and return a representative PdFile object
+- (void)closeFile;													// close an opened pd file (also called in dealloc)
 
 @end
