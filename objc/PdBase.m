@@ -259,4 +259,24 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
++ (int)arraySizeForArrayNamed:(NSString *)arrayName {
+	@synchronized(self) {
+    return libpd_arraysize([arrayName cStringUsingEncoding:NSASCIIStringEncoding]);
+  }
+}
+
++ (int)readArrayNamed:(NSString *)arrayName distination:(float *)destinationArray offset:(int)offset size:(int)n {
+  @synchronized(self) {
+    const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
+    return libpd_read_array(destinationArray, name, offset, n);
+  }
+}
+
++ (int)writeArrayNamed:(NSString *)arrayName source:(float *)sourceArray offset:(int)offset size:(int)n {
+  @synchronized(self) {
+    const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
+    return libpd_write_array(name, offset, sourceArray, n);
+  }
+}
+
 @end

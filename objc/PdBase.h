@@ -75,5 +75,8 @@
 + (void *)openFile:(NSString *)baseName path:(NSString *)pathName;
 + (void)closeFile:(void *)x;
 + (int)dollarZeroForFile:(void *)x;
++ (int)arraySizeForArrayNamed:(NSString *)arrayName;
++ (int)readArrayNamed:(NSString *)arrayName distination:(float *)destinationArray offset:(int)offset size:(int)n;
++ (int)writeArrayNamed:(NSString *)arrayName source:(float *)sourceArray offset:(int)offset size:(int)n;
 
 @end
