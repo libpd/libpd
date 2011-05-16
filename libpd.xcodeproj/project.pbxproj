@@ -90,6 +90,8 @@
 		0E82A0AF12EEFE5E0053280E /* PdBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A0AB12EEFE5E0053280E /* PdBase.m */; };
 		0E8C8DCA1312007F000B9D7A /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; };
 		0E8C8DCB1312007F000B9D7A /* PdFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8C8DC91312007F000B9D7A /* PdFile.m */; };
+		113A44A213813A37004C88F9 /* PdArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 113A44A013813A37004C88F9 /* PdArray.h */; };
+		113A44A313813A37004C88F9 /* PdArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 113A44A113813A37004C88F9 /* PdArray.m */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -175,9 +177,11 @@
 		0E82A0A812EEFE5E0053280E /* PdAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdAudio.h; sourceTree = "<group>"; };
 		0E82A0A912EEFE5E0053280E /* PdAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdAudio.m; sourceTree = "<group>"; };
 		0E82A0AA12EEFE5E0053280E /* PdBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdBase.h; sourceTree = "<group>"; };
-		0E82A0AB12EEFE5E0053280E /* PdBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdBase.m; sourceTree = "<group>"; };
+		0E82A0AB12EEFE5E0053280E /* PdBase.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = PdBase.m; sourceTree = "<group>"; tabWidth = 2; };
 		0E8C8DC81312007F000B9D7A /* PdFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdFile.h; sourceTree = "<group>"; };
 		0E8C8DC91312007F000B9D7A /* PdFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdFile.m; sourceTree = "<group>"; };
+		113A44A013813A37004C88F9 /* PdArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdArray.h; sourceTree = "<group>"; };
+		113A44A113813A37004C88F9 /* PdArray.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = PdArray.m; sourceTree = "<group>"; tabWidth = 2; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libpd.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpd.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -322,10 +326,20 @@
 				0E82A0A912EEFE5E0053280E /* PdAudio.m */,
 				0E82A0AA12EEFE5E0053280E /* PdBase.h */,
 				0E82A0AB12EEFE5E0053280E /* PdBase.m */,
-				0E8C8DC81312007F000B9D7A /* PdFile.h */,
-				0E8C8DC91312007F000B9D7A /* PdFile.m */,
+				113A449E138139E1004C88F9 /* utils */,
 			);
 			path = objc;
+			sourceTree = "<group>";
+		};
+		113A449E138139E1004C88F9 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				0E8C8DC81312007F000B9D7A /* PdFile.h */,
+				0E8C8DC91312007F000B9D7A /* PdFile.m */,
+				113A44A013813A37004C88F9 /* PdArray.h */,
+				113A44A113813A37004C88F9 /* PdArray.m */,
+			);
+			name = utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,6 +359,7 @@
 				0E82A0AC12EEFE5E0053280E /* PdAudio.h in Headers */,
 				0E82A0AE12EEFE5E0053280E /* PdBase.h in Headers */,
 				0E8C8DCA1312007F000B9D7A /* PdFile.h in Headers */,
+				113A44A213813A37004C88F9 /* PdArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +486,7 @@
 				0E82A0AD12EEFE5E0053280E /* PdAudio.m in Sources */,
 				0E82A0AF12EEFE5E0053280E /* PdBase.m in Sources */,
 				0E8C8DCB1312007F000B9D7A /* PdFile.m in Sources */,
+				113A44A313813A37004C88F9 /* PdArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
