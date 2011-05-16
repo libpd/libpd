@@ -239,8 +239,24 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
       toReceiver:@"pd"];
 }
 
-+ (id)synchronizer {
-	return self;
++ (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
+	@synchronized(self) {
+    const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
+		return libpd_openfile(base, path);
+  }
+}
+
++ (void)closeFile:(void *)x {
+  @synchronized(self) {
+    libpd_closefile(x);
+  }
+}
+
++ (int)dollarZeroForFile:(void *)x {
+	@synchronized(self) {
+    return libpd_getdollarzero(x);
+  }
 }
 
 @end

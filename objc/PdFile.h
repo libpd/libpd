@@ -12,7 +12,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface PdFile : NSObject {
 	NSValue *fileReference_; // pointer to the file
 	int dollarZero_;		 // unique $0 argument assigned by pd

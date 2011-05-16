@@ -72,5 +72,8 @@
 + (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer;
 + (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer;
 + (void)computeAudio:(BOOL)enable;
-+ (id)synchronizer;
++ (void *)openFile:(NSString *)baseName path:(NSString *)pathName;
++ (void)closeFile:(void *)x;
++ (int)dollarZeroForFile:(void *)x;
+
 @end
