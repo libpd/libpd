@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface PdArray : NSObject {
+    int size_;
     NSString *name_;
     float *array_;
 }
 
-- (int)size;
+@property (nonatomic, assign, readonly) int size;
+
 - (void)readArrayNamed:(NSString *)arrayName;
 - (float)floatAtIndex:(int)index;
 

@@ -19,6 +19,7 @@
 
 @interface PdArray ()
 
+@property (nonatomic, assign) int size;
 @property (nonatomic, assign) float *array;
 @property (nonatomic, copy) NSString *name;
 
@@ -26,6 +27,7 @@
 
 @implementation PdArray
 
+@synthesize size = size_;
 @synthesize array = array_;
 @synthesize name = name_;
 
@@ -33,7 +35,7 @@
 #pragma mark - Init / Dealloc
 
 - (void)dealloc {
-  // ???: array?
+  free(self.array);
   self.name = nil;
   [super dealloc];
 }
@@ -41,23 +43,23 @@
 #pragma mark -
 #pragma mark Public
 
-- (int)size {
-  if (self.name && self.array) {
-    return [PdBase arraySizeForArrayNamed:self.name];
-  } else {
-    return 0;
-  }
-}
-
 - (void)readArrayNamed:(NSString *)arrayName {
-  int arraySize = [PdBase arraySizeForArrayNamed:arrayName];
-  [PdBase readArrayNamed:arrayName distination:self.array offset:0 size:arraySize];
-  NSLog(@"%s read array named: %@", __PRETTY_FUNCTION__, arrayName);
+  self.size = [PdBase arraySizeForArrayNamed:arrayName];
+  if (self.size <= 0) {
+    return;
+  }
+  if (self.array) {
+    free(self.array);
+  }
+  self.array = calloc(self.size, sizeof(float));
+  [PdBase readArrayNamed:arrayName distination:self.array offset:0 size:self.size];
 }
 
 - (float)floatAtIndex:(int)index {
   if (self.array && index < [self size]) {
     return self.array[index];
+  } else {
+    return 0; // in the spirit of pd's tabread
   }
 }
 
