@@ -14,9 +14,10 @@
     float *array_;
 }
 
-@property (nonatomic, assign, readonly) int size;
+@property (nonatomic, assign, readonly) int length;
 
 - (void)readArrayNamed:(NSString *)arrayName;
 - (float)floatAtIndex:(int)index;
+- (void)setFloat:(float)value atIndex:(int)index;
 
 @end
