@@ -17,6 +17,7 @@
 @property (nonatomic, assign, readonly) int size;
 
 - (void)readArrayNamed:(NSString *)arrayName;
+- (void)update;
 - (float)floatAtIndex:(int)index;
 - (void)setFloat:(float)value atIndex:(int)index;
 

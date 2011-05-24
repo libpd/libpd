@@ -57,6 +57,12 @@
   self.name = arrayName;
 }
 
+- (void)update {
+  if (self.array) {
+    [PdBase readArrayNamed:self.name distination:self.array offset:0 size:self.size];
+  }
+}
+
 - (float)floatAtIndex:(int)index {
   if (self.array && index > 0 && index < self.size) {
     return self.array[index];
