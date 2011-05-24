@@ -58,7 +58,7 @@
 }
 
 - (float)floatAtIndex:(int)index {
-  if (self.array && index < [self size]) {
+  if (self.array && index > 0 && index < self.size) {
     return self.array[index];
   } else {
     return 0; // in the spirit of pd's tabread
@@ -66,10 +66,9 @@
 }
 
 - (void)setFloat:(float)value atIndex:(int)index {
-  float *array = self.array;
-  if (array && index < [self size]) {
-    array[index] = value;
-    [PdBase writeArrayNamed:self.name source:(array+index) offset:index size:1];
+  if (self.array && index > 0 && index < self.size) {
+    self.array[index] = value;
+    [PdBase writeArrayNamed:self.name source:(self.array+index) offset:index size:1];
   }
 }
 
