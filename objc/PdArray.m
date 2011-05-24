@@ -66,9 +66,10 @@
 }
 
 - (void)setFloat:(float)value atIndex:(int)index {
-  if (self.array && index < [self length]) {
-    self.array[index] = value;
-    [PdBase writeArrayNamed:self.name source:self.array offset:0 size:self.length];
+  float *array = self.array;
+  if (array && index < [self length]) {
+    array[index] = value;
+    [PdBase writeArrayNamed:self.name source:(array+index) offset:index size:1];
   }
 }
 
