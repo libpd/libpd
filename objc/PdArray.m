@@ -19,7 +19,7 @@
 
 @interface PdArray ()
 
-@property (nonatomic, assign) int length;
+@property (nonatomic, assign) int size;
 @property (nonatomic, assign) float *array;
 @property (nonatomic, copy) NSString *name;
 
@@ -27,7 +27,7 @@
 
 @implementation PdArray
 
-@synthesize length = size_;
+@synthesize size = size_;
 @synthesize array = array_;
 @synthesize name = name_;
 
@@ -45,20 +45,20 @@
 #pragma mark Public
 
 - (void)readArrayNamed:(NSString *)arrayName {
-  self.length = [PdBase arraySizeForArrayNamed:arrayName];
-  if (self.length <= 0) {
+  self.size = [PdBase arraySizeForArrayNamed:arrayName];
+  if (self.size <= 0) {
     return;
   }
   if (self.array) {
     free(self.array);
   }
-  self.array = calloc(self.length, sizeof(float));
-  [PdBase readArrayNamed:arrayName distination:self.array offset:0 size:self.length];
+  self.array = calloc(self.size, sizeof(float));
+  [PdBase readArrayNamed:arrayName distination:self.array offset:0 size:self.size];
   self.name = arrayName;
 }
 
 - (float)floatAtIndex:(int)index {
-  if (self.array && index < [self length]) {
+  if (self.array && index < [self size]) {
     return self.array[index];
   } else {
     return 0; // in the spirit of pd's tabread
@@ -67,7 +67,7 @@
 
 - (void)setFloat:(float)value atIndex:(int)index {
   float *array = self.array;
-  if (array && index < [self length]) {
+  if (array && index < [self size]) {
     array[index] = value;
     [PdBase writeArrayNamed:self.name source:(array+index) offset:index size:1];
   }
