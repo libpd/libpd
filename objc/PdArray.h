@@ -15,10 +15,11 @@
 }
 
 @property (nonatomic, assign, readonly) int size;
+@property (nonatomic, copy, readonly) NSString *name;
 
-- (void)readArrayNamed:(NSString *)arrayName;
-- (void)update;
-- (float)floatAtIndex:(int)index;
-- (void)setFloat:(float)value atIndex:(int)index;
+- (void)readArrayNamed:(NSString *)arrayName;       // read a pd array given a name, locally storing the array
+- (void)update;                                     // re-read the pd array that was allocated with readArrayNamed:arrayName
+- (float)floatAtIndex:(int)index;                   // retrieve a single float value from the array
+- (void)setFloat:(float)value atIndex:(int)index;   // set a single float value from the array
 
 @end
