@@ -5,17 +5,12 @@
 //  Created by Rich E on 16/05/11.
 //  Copyright 2011 Richard T. Eakin. All rights reserved.
 //
+//  For information on usage and redistribution, and for a DISCLAIMER OF ALL
+//  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+//
 
 #import "PdArray.h"
 #import "PdBase.h"
-
-/* The methods I want to call are:
- 
- + (int)arraySizeForArrayNamed:(NSString *)arrayName;
- + (int)readArrayNamed:(NSString *)arrayName distination:(float *)destinationArray offset:(int)offset size:(int)n;
- + (int)writeArrayNamed:(NSString *)arrayName source:(float *)sourceArray offset:(int)offset size:(int)n;
- 
- */
 
 @interface PdArray ()
 

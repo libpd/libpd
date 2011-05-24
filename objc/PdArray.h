@@ -5,6 +5,9 @@
 //  Created by Rich E on 16/05/11.
 //  Copyright 2011 Richard T. Eakin. All rights reserved.
 //
+//  For information on usage and redistribution, and for a DISCLAIMER OF ALL
+//  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+//
 
 #import <Foundation/Foundation.h>
 
