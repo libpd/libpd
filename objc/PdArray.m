@@ -29,6 +29,20 @@
 #pragma mark -
 #pragma mark - Init / Dealloc
 
++ (id)arrayNamed:(NSString *)arrayName {
+  PdArray *pdArray = [[[self alloc] init] autorelease];
+  if (pdArray) {
+    pdArray.size = [PdBase arraySizeForArrayNamed:arrayName];
+    if (pdArray.size <= 0) {
+      return nil;
+    }
+    pdArray.array = calloc(pdArray.size, sizeof(float));
+    [PdBase readArrayNamed:arrayName distination:pdArray.array offset:0 size:pdArray.size];
+    pdArray.name = arrayName;
+  }
+  return pdArray;
+}
+
 - (void)dealloc {
   free(self.array);
   self.array = nil;
@@ -38,19 +52,6 @@
 
 #pragma mark -
 #pragma mark Public
-
-- (void)readArrayNamed:(NSString *)arrayName {
-  self.size = [PdBase arraySizeForArrayNamed:arrayName];
-  if (self.size <= 0) {
-    return;
-  }
-  if (self.array) {
-    free(self.array);
-  }
-  self.array = calloc(self.size, sizeof(float));
-  [PdBase readArrayNamed:arrayName distination:self.array offset:0 size:self.size];
-  self.name = arrayName;
-}
 
 - (void)read {
   if (self.array) {

@@ -21,12 +21,12 @@
 @property (nonatomic, assign, readonly) int size;     // size of the pd array
 
 // read the entire contents of a pd array given a name, locally storing the array. Sets size = maximum length and offset = 0
-- (void)readArrayNamed:(NSString *)arrayName;
++ (id)arrayNamed:(NSString *)arrayName;
 
-// (re)read the pd array with parameters provided by ivars name, size and offset
+// (re)read the entire contents of a pd array, provided it was already set with +arrayNamed:
 - (void)read;
 
-// write to the pd array with parameters provided by ivars name, size and offset
+// write the local array to the pd array
 - (void)write;
 
 // retrieve a float from the local array at the given index
