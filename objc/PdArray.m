@@ -14,17 +14,17 @@
 
 @interface PdArray ()
 
-@property (nonatomic, assign) int size;
-@property (nonatomic, assign) float *array;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) float *array;
+@property (nonatomic, assign) int size;
 
 @end
 
 @implementation PdArray
 
-@synthesize size = size_;
 @synthesize array = array_;
 @synthesize name = name_;
+@synthesize size = size_;
 
 #pragma mark -
 #pragma mark - Init / Dealloc
@@ -52,9 +52,15 @@
   self.name = arrayName;
 }
 
-- (void)update {
+- (void)read {
   if (self.array) {
     [PdBase readArrayNamed:self.name distination:self.array offset:0 size:self.size];
+  }
+}
+
+- (void)write {
+  if (self.array) {
+    [PdBase writeArrayNamed:self.name source:self.array offset:0 size:self.size];
   }
 }
 
@@ -67,10 +73,17 @@
 }
 
 - (void)setFloat:(float)value atIndex:(int)index {
-  if (self.array && index > 0 && index < self.size) {
-    self.array[index] = value;
+  if ([self setLocalFloat:value atIndex:index]) {
     [PdBase writeArrayNamed:self.name source:(self.array+index) offset:index size:1];
   }
+}
+
+- (BOOL)setLocalFloat:(float)value atIndex:(int)index {
+  if (self.array && index > 0 && index < self.size) {
+    self.array[index] = value;
+    return YES;
+  }
+  return NO;
 }
 
 @end
