@@ -66,7 +66,7 @@
 }
 
 - (float)floatAtIndex:(int)index {
-  if (self.array && index > 0 && index < self.size) {
+  if (self.array && index >= 0 && index < self.size) {
     return self.array[index];
   } else {
     return 0; // in the spirit of pd's tabread
@@ -80,7 +80,7 @@
 }
 
 - (BOOL)setLocalFloat:(float)value atIndex:(int)index {
-  if (self.array && index > 0 && index < self.size) {
+  if (self.array && index >= 0 && index < self.size) {
     self.array[index] = value;
     return YES;
   }
