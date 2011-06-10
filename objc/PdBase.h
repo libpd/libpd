@@ -76,7 +76,7 @@
 + (void)closeFile:(void *)x;
 + (int)dollarZeroForFile:(void *)x;
 + (int)arraySizeForArrayNamed:(NSString *)arrayName;
-+ (int)readArrayNamed:(NSString *)arrayName distination:(float *)destinationArray offset:(int)offset size:(int)n;
-+ (int)writeArrayNamed:(NSString *)arrayName source:(float *)sourceArray offset:(int)offset size:(int)n;
++ (int)readArrayNamed:(NSString *)arrayName withOffset:(int)offset distination:(float *)destinationArray size:(int)n;
++ (int)writeArrayNamed:(NSString *)arrayName withOffset:(int)offset source:(float *)sourceArray size:(int)n;
 
 @end

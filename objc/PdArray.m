@@ -37,8 +37,8 @@
       return nil;
     }
     pdArray.array = calloc(pdArray.size, sizeof(float));
-    [PdBase readArrayNamed:arrayName distination:pdArray.array offset:0 size:pdArray.size];
     pdArray.name = arrayName;
+    [pdArray read];
   }
   return pdArray;
 }
@@ -55,13 +55,13 @@
 
 - (void)read {
   if (self.array) {
-    [PdBase readArrayNamed:self.name distination:self.array offset:0 size:self.size];
+    [PdBase readArrayNamed:self.name withOffset:0 distination:self.array size:self.size];
   }
 }
 
 - (void)write {
   if (self.array) {
-    [PdBase writeArrayNamed:self.name source:self.array offset:0 size:self.size];
+    [PdBase writeArrayNamed:self.name withOffset:0 source:self.array size:self.size];
   }
 }
 
@@ -75,7 +75,7 @@
 
 - (void)setFloat:(float)value atIndex:(int)index {
   if ([self setLocalFloat:value atIndex:index]) {
-    [PdBase writeArrayNamed:self.name source:(self.array+index) offset:index size:1];
+    [PdBase writeArrayNamed:self.name withOffset:index source:(self.array+index) size:1];
   }
 }
 
