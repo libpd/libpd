@@ -41,9 +41,13 @@
 // write the local array to the pd array
 - (void)write;
 
-// retrieve a float from the local array at the given index.
+// retrieve a float from pd's array at the given index.
 // returns 0.0 if beyond the boundaries of the array.
 - (float)floatAtIndex:(int)index;
+
+// retrieve a float from the local array at the given index.
+// returns 0.0 if beyond the boundaries of the array.
+- (float)localFloatAtIndex:(int)index;
 
 // set a single float value in both the local array and pd's array
 - (void)setFloat:(float)value atIndex:(int)index;

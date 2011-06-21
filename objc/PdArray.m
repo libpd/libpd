@@ -66,6 +66,11 @@
 }
 
 - (float)floatAtIndex:(int)index {
+  [self read]; // TODO: only grab the specific float and put it in the local array
+  return [self localFloatAtIndex:index];
+}
+
+- (float)localFloatAtIndex:(int)index {
   if (self.array && index >= 0 && index < self.size) {
     return self.array[index];
   } else {
