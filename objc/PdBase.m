@@ -264,17 +264,15 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
     return libpd_arraysize([arrayName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
-// TODO: update these signatures
-//+ (int)readArrayNamed:(NSString *)arrayName distination:(float *)destinationArray offset:(int)offset size:(int)n {
-+ (int)readArrayNamed:(NSString *)arrayName withOffset:(int)offset distination:(float *)destinationArray size:(int)n {
+
++ (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset count:(int)n toArray:(float *)destinationArray {
   @synchronized(self) {
     const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
     return libpd_read_array(destinationArray, name, offset, n);
   }
 }
 
-//+ (int)writeArrayNamed:(NSString *)arrayName source:(float *)sourceArray offset:(int)offset size:(int)n {
-+ (int)writeArrayNamed:(NSString *)arrayName withOffset:(int)offset source:(float *)sourceArray size:(int)n {
++ (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName withOffset:(int)offset count:(int)n {
   @synchronized(self) {
     const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
     return libpd_write_array(name, offset, sourceArray, n);

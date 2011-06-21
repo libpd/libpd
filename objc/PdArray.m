@@ -55,13 +55,13 @@
 
 - (void)read {
   if (self.array) {
-    [PdBase readArrayNamed:self.name withOffset:0 distination:self.array size:self.size];
+		[PdBase copyArrayNamed:self.name withOffset:0 count:self.size toArray:self.array];
   }
 }
 
 - (void)write {
   if (self.array) {
-    [PdBase writeArrayNamed:self.name withOffset:0 source:self.array size:self.size];
+		[PdBase copyArray:self.array toArrayNamed:self.name withOffset:0 count:self.size];
   }
 }
 
@@ -75,7 +75,7 @@
 
 - (void)setFloat:(float)value atIndex:(int)index {
   if ([self setLocalFloat:value atIndex:index]) {
-    [PdBase writeArrayNamed:self.name withOffset:index source:(self.array+index) size:1];
+		[PdBase copyArray:(self.array+index) toArrayNamed:self.name withOffset:index count:1];
   }
 }
 
