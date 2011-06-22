@@ -265,7 +265,7 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
-+ (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset count:(int)n toArray:(float *)destinationArray {
++ (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset toArray:(float *)destinationArray count:(int)n {
   @synchronized(self) {
     const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
     return libpd_read_array(destinationArray, name, offset, n);
