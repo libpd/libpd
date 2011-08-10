@@ -60,7 +60,6 @@ public class IoUtils {
 	public static List<File> extractZipResource(InputStream in, File directory) throws IOException {
 		return extractZipResource(in, directory, false);
 	}
-
 	
 	/**
 	 * Extract a zip resource into real files and directories
@@ -85,6 +84,7 @@ public class IoUtils {
 				if (entry.isDirectory()) {
 					file.mkdirs();
 				} else {
+					file.getParentFile().mkdirs(); // Necessary because some zip files lack directory entries.
 					BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file), BUFSIZE);
 					int nRead;
 					while ((nRead = zin.read(buffer, 0, BUFSIZE)) > 0) {
