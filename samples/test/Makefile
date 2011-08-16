@@ -2,7 +2,7 @@ SRC_FILES = pdtest.c
 LIBPD = ../../libs/libpd.so
 TARGET = pdtest
 
-CFLAGS = -I../../pure-data/src -I../../libpd_wrapper
+CFLAGS = -I../../pure-data/src -I../../libpd_wrapper -O3
 
 .PHONY: clean clobber
 
