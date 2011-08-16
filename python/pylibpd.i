@@ -175,10 +175,10 @@ static PyObject *convertArgs(const char *dest, const char* sym,
   for (j = 0; i < n; i++, j++) {
     t_atom a = args[j];
     PyObject *x;
-    if (a.a_type == A_FLOAT) {
-      x = PyFloat_FromDouble(a.a_w.w_float);
-    } else if (a.a_type == A_SYMBOL) {
-      x = PyString_FromString(a.a_w.w_symbol->s_name);
+    if (libpd_is_float(a)) {
+      x = PyFloat_FromDouble(libpd_get_float(a));
+    } else if (libpd_is_symbol(a)) {
+      x = PyString_FromString(libpd_get_symbol(a));
     }
     PyTuple_SetItem(result, i, x);
   }

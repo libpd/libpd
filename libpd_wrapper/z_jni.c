@@ -79,10 +79,10 @@ static jobjectArray makeJavaArray(JNIEnv *env, int argc, t_atom *argv) {
   for (i = 0; i < argc; i++) {
     t_atom a = argv[i];
     jobject obj = NULL;
-    if (a.a_type == A_FLOAT) {
-      obj = (*env)->NewObject(env, floatClass, floatInit, a.a_w.w_float);
-    } else if (a.a_type == A_SYMBOL) {
-      obj = (*env)->NewStringUTF(env, a.a_w.w_symbol->s_name);
+    if (libpd_is_float(a)) {
+      obj = (*env)->NewObject(env, floatClass, floatInit, libpd_get_float(a));
+    } else if (libpd_is_symbol(a)) {
+      obj = (*env)->NewStringUTF(env, libpd_get_symbol(a));
     }
     (*env)->SetObjectArrayElement(env, jarray, i, obj);
   }

@@ -49,6 +49,11 @@ void libpd_add_symbol(const char *sym);
 int libpd_finish_list(const char *recv);
 int libpd_finish_message(const char *recv, const char *msg);
 
+int libpd_is_float(t_atom a);
+int libpd_is_symbol(t_atom a);
+float libpd_get_float(t_atom a);
+const char *libpd_get_symbol(t_atom a);
+
 int libpd_exists(const char *sym);
 void *libpd_bind(const char *sym);
 void libpd_unbind(void *p);

@@ -2,8 +2,8 @@
 UNAME := $(shell uname -s)
 ifeq ($(UNAME),Darwin)
   CFLAGS = -I../libpd_wrapper -I../pure-data/src -I/usr/include/python2.5 -fPIC \
-		-arch x86_64 -arch i386 -arch ppc
-  LDFLAGS = -dynamiclib -lm -arch x86_64 -arch i386 -arch ppc -lpython2.5
+		-arch x86_64 -arch i386
+  LDFLAGS = -dynamiclib -lm -arch x86_64 -arch i386 -lpython2.5
   SOLIB_EXT = dylib
   LIBPD =  ../pure-data/src/*.o ../libpd_wrapper/*.o
 else

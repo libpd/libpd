@@ -159,6 +159,22 @@ int libpd_write_array(const char *name, int offset, float *src, int n) {
   PDMEMCPY(vec, src)
 }
 
+int libpd_is_float(t_atom a) {
+  return a.a_type == A_FLOAT;
+}
+
+int libpd_is_symbol(t_atom a) {
+  return a.a_type == A_SYMBOL;
+}
+
+float libpd_get_float(t_atom a) {
+  return a.a_w.w_float;
+}
+
+const char *libpd_get_symbol(t_atom a) {
+  return a.a_w.w_symbol->s_name;
+}
+
 void libpd_set_float(t_atom *v, float x) {
   SETFLOAT(v, x);
 }
