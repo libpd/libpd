@@ -44,22 +44,15 @@ static NSArray *decodeList(int argc, t_atom *argv) {
   NSMutableArray *list = [[[NSMutableArray alloc] initWithCapacity:argc] autorelease];
   for (int i = 0; i < argc; i++) {
     t_atom a = argv[i];
-    switch (a.a_type) {
-      case A_FLOAT: {
-        float x = a.a_w.w_float;  
-        [list addObject:[NSNumber numberWithFloat:x]];
-        break;
-      }
-      case A_SYMBOL: {
-        char *s = a.a_w.w_symbol->s_name;  
-        [list addObject:[NSString stringWithCString:s encoding:NSASCIIStringEncoding]];
-        break;
-      }
-      default: {
-        NSLog(@"PdBase: element type unknown: %i", a.a_type);
-        break;
-      }
-    } 
+    if (libpd_is_float(a)) {
+      float x = libpd_get_float(a);
+      [list addObject:[NSNumber numberWithFloat:x]];
+    } else if (libpd_is_symbol(a)) {
+      const char *s = libpd_get_symbol(a);
+      [list addObject:[NSString stringWithCString:s encoding:NSASCIIStringEncoding]];
+    } else {
+      NSLog(@"PdBase: element type unsupported: %i", a.a_type);
+    }
   }
   return (NSArray *)list;
 }

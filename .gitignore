@@ -16,3 +16,7 @@ build/*
 *.mode2v3
 .DS_Store
 *.swp
+libpd.xcodeproj/project.xcworkspace
+libpd.xcodeproj/xcuserdata
+libs/libpd.dylib
+libs/libpdnative.dylib
