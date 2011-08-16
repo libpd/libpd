@@ -37,6 +37,12 @@ int libpd_write_array(const char *dest, int offset, float *src, int n);
 int libpd_bang(const char *recv);
 int libpd_float(const char *recv, float x);
 int libpd_symbol(const char *recv, const char *sym);
+
+void libpd_set_float(t_atom *v, float x);
+void libpd_set_symbol(t_atom *v, const char *sym);
+int libpd_list(const char *recv, int argc, t_atom *argv);
+int libpd_message(const char *recv, const char *msg, int argc, t_atom *argv);
+
 int libpd_start_message(void);
 void libpd_add_float(float x);
 void libpd_add_symbol(const char *sym);

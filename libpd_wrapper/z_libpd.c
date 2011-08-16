@@ -159,6 +159,28 @@ int libpd_write_array(const char *name, int offset, float *src, int n) {
   PDMEMCPY(vec, src)
 }
 
+void libpd_set_float(t_atom *v, float x) {
+  SETFLOAT(v, x);
+}
+
+void libpd_set_symbol(t_atom *v, const char *sym) {
+  SETSYMBOL(v, gensym(sym));
+}
+
+int libpd_list(const char *recv, int n, t_atom *v) {
+  t_pd *dest = get_object(recv);
+  if (dest == NULL) return -1;
+  pd_list(dest, &s_list, n, v);
+  return 0;
+}
+
+int libpd_message(const char *recv, const char *msg, int n, t_atom *v) {
+  t_pd *dest = get_object(recv);
+  if (dest == NULL) return -1;
+  pd_typedmess(dest, gensym(msg), n, v);
+  return 0;
+}
+
 static t_atom argv[MAXMSGLENGTH], *curr;
 static int argc;
 
@@ -180,17 +202,11 @@ void libpd_add_symbol(const char *s) {
 }
 
 int libpd_finish_list(const char *recv) {
-  t_pd *dest = get_object(recv);
-  if (dest == NULL) return -1;
-  pd_list(dest, &s_list, argc, argv);
-  return 0;
+  return libpd_list(recv, argc, argv);
 }
 
 int libpd_finish_message(const char *recv, const char *msg) {
-  t_pd *dest = get_object(recv);
-  if (dest == NULL) return -1;
-  pd_typedmess(dest, gensym(msg), argc, argv);
-  return 0;
+  return libpd_message(recv, msg, argc, argv);
 }
 
 void *libpd_bind(const char *sym) {
@@ -203,32 +219,23 @@ void libpd_unbind(void *p) {
 
 int libpd_symbol(const char *recv, const char *sym) {
   void *obj = get_object(recv);
-  if (obj != NULL) {
-    pd_symbol(obj, gensym(sym));
-    return 0;
-  } else {
-    return -1;
-  }
+  if (obj == NULL) return -1;
+  pd_symbol(obj, gensym(sym));
+  return 0;
 }
 
 int libpd_float(const char *recv, float x) {
   void *obj = get_object(recv);
-  if (obj != NULL) {
-    pd_float(obj, x);
-    return 0;
-  } else {
-    return -1;
-  }
+  if (obj == NULL) return -1;
+  pd_float(obj, x);
+  return 0;
 }
 
 int libpd_bang(const char *recv) {
   void *obj = get_object(recv);
-  if (obj != NULL) {
-    pd_bang(obj);
-    return 0;
-  } else {
-    return -1;
-  }
+  if (obj == NULL) return -1;
+  pd_bang(obj);
+  return 0;
 }
 
 int libpd_blocksize(void) {

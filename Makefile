@@ -2,9 +2,9 @@ UNAME = $(shell uname)
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
-  PLATFORM_CFLAGS = -arch x86_64 -arch i386 -arch ppc -g \
+  PLATFORM_CFLAGS = -arch x86_64 -arch i386 -g \
 	-I/System/Library/Frameworks/JavaVM.framework/Headers
-  LDFLAGS = -arch x86_64 -arch i386 -arch ppc -dynamiclib
+  LDFLAGS = -arch x86_64 -arch i386 -dynamiclib
   JAVA_LDFLAGS = -framework JavaVM
 else  # Assume Linux
   SOLIB_EXT = so
