@@ -22,6 +22,10 @@ void libpd_init(void);
 void libpd_clear_search_path(void);
 void libpd_add_to_search_path(const char *sym);
 
+void *libpd_openfile(const char *basename, const char *dirname);
+void libpd_closefile(void *p);
+int libpd_getdollarzero(void *p);
+
 int libpd_blocksize(void);
 int libpd_init_audio(int inChans, int outChans, int sampleRate, int tpb);
 int libpd_process_raw(float *inBuffer, float *outBuffer);
@@ -49,18 +53,14 @@ void libpd_add_symbol(const char *sym);
 int libpd_finish_list(const char *recv);
 int libpd_finish_message(const char *recv, const char *msg);
 
-#define libpd_is_float(a) ((a).a_type == A_FLOAT)
-#define libpd_is_symbol(a) ((a).a_type == A_SYMBOL)
-#define libpd_get_float(a) ((a).a_w.w_float)
-#define libpd_get_symbol(a) ((a).a_w.w_symbol->s_name)
-
 int libpd_exists(const char *sym);
 void *libpd_bind(const char *sym);
 void libpd_unbind(void *p);
 
-void *libpd_openfile(const char *basename, const char *dirname);
-void libpd_closefile(void *p);
-int libpd_getdollarzero(void *p);
+#define libpd_is_float(a) ((a).a_type == A_FLOAT)
+#define libpd_is_symbol(a) ((a).a_type == A_SYMBOL)
+#define libpd_get_float(a) ((a).a_w.w_float)
+#define libpd_get_symbol(a) ((a).a_w.w_symbol->s_name)
 
 typedef void (*t_libpd_printhook)(const char *recv);
 typedef void (*t_libpd_banghook)(const char *recv);
