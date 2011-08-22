@@ -43,6 +43,7 @@ public abstract class PureDataP5Base implements PdReceiver {
 		receiveListCallback = methods.get("receiveList");
 		receiveMessageCallback = methods.get("receiveMessage");
 		PdBase.setReceiver(this);
+		PdBase.computeAudio(true);
 	}
 	
 	private Map<String, Method> extractMethods(Class<?> clazz) {
@@ -52,6 +53,10 @@ public abstract class PureDataP5Base implements PdReceiver {
 			result.put(method.getName(), method);
 		}
 		return result;
+	}
+	
+	public void dispose() {
+		PdBase.release();
 	}
 	
 	public int subscribe(String sym) {
