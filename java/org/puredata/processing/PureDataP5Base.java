@@ -56,8 +56,13 @@ public abstract class PureDataP5Base implements PdReceiver {
 	}
 	
 	public void dispose() {
+		stop();
 		PdBase.release();
 	}
+	
+	public abstract void start();
+	
+	public abstract void stop();
 	
 	public int subscribe(String sym) {
 		return PdBase.subscribe(sym);
