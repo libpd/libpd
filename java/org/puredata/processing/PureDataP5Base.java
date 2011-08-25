@@ -64,7 +64,7 @@ public abstract class PureDataP5Base implements PdReceiver {
 	
 	private Map<String, Method> extractMethods(Class<?> clazz) {
 		Map<String, Method> result = new HashMap<String, Method>();
-		Method[] methods = clazz.getDeclaredMethods();
+		Method[] methods = clazz.getMethods();
 		for (Method method: methods) {
 			result.put(method.getName(), method);
 		}
