@@ -47,6 +47,7 @@
     return 0;
 }
 
+// Override this method in subclasses if you want different printing behavior.
 - (void)receivePrint:(NSString *)message {
     NSLog(@"Pd: %@\n", message);
 }

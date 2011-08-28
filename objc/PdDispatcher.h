@@ -11,6 +11,10 @@
 #import <Foundation/Foundation.h>
 #import "PdBase.h"
 
+// Listener class for messages from Pd.  The idea is that there will be (at least)
+// one listener for each source (i.e., send symbol) in Pd that client code is
+// supposed to receive messages from, with the routing of messages being done by an
+// instance of PdDispatcher that's handling all messages from Pd.
 @protocol PdListener
 
 @optional
@@ -22,12 +26,28 @@
 
 @end
 
-
+// Implementation of the PdReceiverDelegate protocol from PdBase.h.  Client code
+// registers one instance of this class with PdBase, and then listeners for individual
+// sources will be registered with the dispatcher object.
+//
+// Printing from Pd is done via NSLog by default; subclass and override the receivePrint
+// method if you want different printing behavior.
+//
+// Note: This class is not meant to be thread-safe.  Listeners should only be added or
+// removed when PdAudio is not active.
 @interface PdDispatcher : NSObject<PdReceiverDelegate> {
     NSMutableDictionary *listenerMap;
 }
 
+// Constructor.
 - (id)init;
-- (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol;
-- (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol;
+
+// Adds a listener for the given source (i.e., send symbol) in Pd.  If this is the first
+// listener for this source, a subscription for this symbol will automatically be registered
+// with PdBase.
+- (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
+
+// Removes a listener for a source.  The subscription to the source will remain, even if
+// the listener was the last one for this source.
+- (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 @end
