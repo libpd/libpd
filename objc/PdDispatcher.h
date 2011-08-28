@@ -37,6 +37,7 @@
 // removed when PdAudio is not active.
 @interface PdDispatcher : NSObject<PdReceiverDelegate> {
     NSMutableDictionary *listenerMap;
+    NSMutableDictionary *subscriptions;
 }
 
 // Constructor.
@@ -47,7 +48,7 @@
 // with PdBase.
 - (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 
-// Removes a listener for a source.  The subscription to the source will remain, even if
-// the listener was the last one for this source.
+// Removes a listener for a source symbol and unsubscribes from messages to this symbol if
+// the listener was the last listener for this symbol.
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 @end

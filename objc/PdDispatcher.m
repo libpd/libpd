@@ -17,11 +17,17 @@
     self = [super init];
     if (self) {
         listenerMap = [[NSMutableDictionary alloc] init];
+        subscriptions = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
 - (void)dealloc {
+    for (NSValue *handle in subscriptions) {
+        void *ptr = [handle pointerValue];
+        [PdBase unsubscribe:ptr];
+    }
+    [subscriptions release];
     [listenerMap release];
     [super dealloc];
 }
@@ -29,10 +35,12 @@
 - (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
     NSMutableArray *listeners = [listenerMap objectForKey:symbol];
     if (!listeners) {
-        void *handle = [PdBase subscribe:symbol];
-        if (!handle) {
+        void *ptr = [PdBase subscribe:symbol];
+        if (!ptr) {
             return -1;
         }
+        NSValue *handle = [NSValue valueWithPointer:ptr];
+        [subscriptions setObject:handle forKey:symbol];
         listeners = [[NSMutableArray alloc] init];
         [listenerMap setObject:listeners forKey:symbol];
         [listeners release];
@@ -43,7 +51,16 @@
 
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
     NSMutableArray *listeners = [listenerMap objectForKey:symbol];
-    [listeners removeObject:listener];
+    if (listeners) {
+        [listeners removeObject:listener];
+        if ([listeners count] == 0) {
+            NSValue *handle = [subscriptions objectForKey:symbol];
+            void *ptr = [handle pointerValue];
+            [PdBase unsubscribe:ptr];
+            [subscriptions removeObjectForKey:symbol];
+            [listenerMap removeObjectForKey:symbol];
+        }
+    }
     return 0;
 }
 

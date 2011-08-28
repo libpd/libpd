@@ -49,8 +49,8 @@ public abstract class PdDispatcher implements PdReceiver {
 	}
 	
 	/**
-	 * Remove a listener associated with a symbol; the subscription to the symbol will remain
-	 * even if no listeners are left
+	 * Remove a listener associated with a symbol; unsubscribe from Pd messages to symbol
+     * if no listeners are left
 	 * 
 	 * @param symbol    receiver symbol in Pd
 	 * @param listener
@@ -59,8 +59,12 @@ public abstract class PdDispatcher implements PdReceiver {
 		Set<PdListener> selected = listeners.get(symbol);
 		if (selected != null) {
 			selected.remove(listener);
+			if (selected.isEmpty()) {
+				PdBase.unsubscribe(symbol);
+				listeners.remove(symbol);
+			}
 		}
-	}
+    }
 	
 	/**
 	 * Unsubscribe from Pd messages and release all resources
