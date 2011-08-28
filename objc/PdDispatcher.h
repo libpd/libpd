@@ -15,7 +15,7 @@
 
 @optional
 - (void)receiveBang;
-- (void)receiveFloat:(float)val ;
+- (void)receiveFloat:(float)val;
 - (void)receiveSymbol:(NSString *)symbol;
 - (void)receiveList:(NSArray *)list;
 - (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments;
