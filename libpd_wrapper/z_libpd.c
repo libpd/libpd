@@ -150,19 +150,21 @@ int libpd_arraysize(const char *name) {
   return garray_npoints(garray);
 }
 
-#define PDMEMCPY(_x, _y) \
+#define MEMCPY(_x, _y) \
   GETARRAY \
   if (n < 0 || offset < 0 || offset + n > garray_npoints(garray)) return -2; \
-  float *vec = ((float *) garray_vec(garray)) + offset; \
-  memcpy(_x, _y, n * sizeof(float)); \
-  return 0;
+  t_word *vec = ((t_word *) garray_vec(garray)) + offset; \
+  int i; \
+  for (i = 0; i < n; i++) _x = _y;
 
 int libpd_read_array(float *dest, const char *name, int offset, int n) {
-  PDMEMCPY(dest, vec)
+  MEMCPY(*dest++, (vec++)->w_float)
+  return 0;
 }
 
 int libpd_write_array(const char *name, int offset, float *src, int n) {
-  PDMEMCPY(vec, src)
+  MEMCPY(*vec++, (t_word) *src++)
+  return 0;
 }
 
 void libpd_set_float(t_atom *v, float x) {
