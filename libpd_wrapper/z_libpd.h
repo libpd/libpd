@@ -47,7 +47,7 @@ void libpd_set_symbol(t_atom *v, const char *sym);
 int libpd_list(const char *recv, int argc, t_atom *argv);
 int libpd_message(const char *recv, const char *msg, int argc, t_atom *argv);
 
-int libpd_start_message(void);
+int libpd_start_message(int length);
 void libpd_add_float(float x);
 void libpd_add_symbol(const char *sym);
 int libpd_finish_list(const char *recv);

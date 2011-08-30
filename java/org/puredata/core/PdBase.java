@@ -503,8 +503,7 @@ public final class PdBase {
 	public synchronized native static int sendSysRealTime(int port, int value);
 
 	private static int processArgs(Object[] args) {
-		int maxArgs = startMessage();
-		if (args.length > maxArgs) {
+		if (startMessage(args.length) != 0) {
 			return -100;
 		}
 		for (Object arg : args) {
@@ -526,7 +525,7 @@ public final class PdBase {
 
 	private native static void initialize();
 
-	private native static int startMessage();
+	private native static int startMessage(int length);
 
 	private native static void addFloat(float x);
 

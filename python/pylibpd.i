@@ -45,7 +45,7 @@ int libpd_symbol(const char *dest, const char *sym);
 %rename(__libpd_add_symbol) libpd_add_symbol;
 %rename(__libpd_finish_list) libpd_finish_list;
 %rename(__libpd_finish_message) libpd_finish_message;
-int libpd_start_message();
+int libpd_start_message(int);
 void libpd_add_float(float);
 void libpd_add_symbol(const char *);
 int libpd_finish_list(const char *);
@@ -96,8 +96,7 @@ SET_CALLBACK(midibyte)
 import array
 
 def __process_args(args):
-  n = __libpd_start_message();
-  if (len(args) > n): return -1
+  if __libpd_start_message(len(args)): return -2
   for arg in args:
       if isinstance(arg, str):
         __libpd_add_symbol(arg)

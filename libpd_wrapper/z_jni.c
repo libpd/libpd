@@ -398,8 +398,8 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSymbol
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startMessage
-(JNIEnv *env, jclass cls) {
-  return libpd_start_message();
+(JNIEnv *env, jclass cls, jint length) {
+  return libpd_start_message(length);
 }
 
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_addFloat

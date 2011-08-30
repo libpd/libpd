@@ -165,7 +165,7 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 
 + (void)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    libpd_start_message();
+    if (libpd_start_message([list count])) return;
     encodeList(list);
     libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
@@ -173,7 +173,7 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 
 + (void)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    libpd_start_message();
+    if (libpd_start_message([list count])) return;
     encodeList(list);
     libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
         [message cStringUsingEncoding:NSASCIIStringEncoding]);

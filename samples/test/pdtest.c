@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
                                  // block size 64, one tick per buffer
 
   // compute audio    [; pd dsp 1(
-  libpd_start_message();
+  libpd_start_message(1); // one entry in list
   libpd_add_float(1.0f);
   libpd_finish_message("pd", "dsp");
 

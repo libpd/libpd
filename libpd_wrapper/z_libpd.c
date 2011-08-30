@@ -192,10 +192,10 @@ int libpd_message(const char *recv, const char *msg, int n, t_atom *v) {
 static t_atom argv[MAXMSGLENGTH], *curr;
 static int argc;
 
-int libpd_start_message(void) {
+int libpd_start_message(int length) {
   argc = 0;
   curr = argv;
-  return MAXMSGLENGTH;
+  return (length > MAXMSGLENGTH);
 }
 
 #define ADD_ARG(f) f(curr, x); curr++; argc++;

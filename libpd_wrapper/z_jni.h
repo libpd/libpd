@@ -210,10 +210,10 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
 /*
  * Class:     org_puredata_core_PdBase
  * Method:    startMessage
- * Signature: ()I
+ * Signature: (I)I
  */
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startMessage
-  (JNIEnv *, jclass);
+  (JNIEnv *, jclass, jint);
 
 /*
  * Class:     org_puredata_core_PdBase
