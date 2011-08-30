@@ -253,5 +253,22 @@ public class PdBaseTest {
 		for (int i = 0; i < n; i++) {
 			assertEquals(u[i], v[i], 0);
 		}
+		PdBase.readArray(v, 5, "array1", 50, 10);
+		for (int i = 0; i < n; i++) {
+			if (i < 5 || i >=15) {
+				assertEquals(u[i], v[i], 0);
+			} else {
+				assertEquals(u[i+45], v[i], 0);
+			}
+		}
+		PdBase.writeArray("array1", 10, u, 25, 30);
+		PdBase.readArray(v, 0, "array1", 0, n);
+		for (int i = 0; i < n; i++) {
+			if (i < 10 || i >=40) {
+				assertEquals(u[i], v[i], 0);
+			} else {
+				assertEquals(u[i+15], v[i], 0);
+			}
+		}
 	}
 }
