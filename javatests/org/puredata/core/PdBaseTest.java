@@ -105,12 +105,18 @@ public class PdBaseTest {
 		receiver.receiveSymbol("eggs", "hund katze maus");
 		receiver.receiveList("eggs", "hund", 1.0f, "katze", 2.0f, "maus", 3.0f);
 		receiver.receiveMessage("eggs", "testing", "one", 1.0f, "two", 2.0f);
+		Object[] longList = new Object[128];
+		for (int i = 0; i < longList.length; i++) {
+			longList[i] = (float) i;
+		}
+		receiver.receiveList("eggs", longList);
 		EasyMock.replay(receiver);
 		PdBase.sendBang("spam");
 		PdBase.sendFloat("spam", 42);
 		PdBase.sendSymbol("spam", "hund katze maus");
 		PdBase.sendList("spam", "hund", 1, "katze", 2, "maus", 3);
 		PdBase.sendMessage("spam", "testing", "one", 1, "two", 2);
+		PdBase.sendList("spam", longList);
 		EasyMock.verify(receiver);
 	}
 	

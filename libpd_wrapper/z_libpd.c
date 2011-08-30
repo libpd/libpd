@@ -18,8 +18,6 @@
 #include "m_imp.h"
 #include "g_all_guis.h"
 
-#define MAXMSGLENGTH 32
-
 void pd_init(void);
 
 t_libpd_printhook libpd_printhook = NULL;
@@ -39,6 +37,9 @@ t_libpd_midibytehook libpd_midibytehook = NULL;
 
 static int ticks_per_buffer;
 
+static t_atom *argv = NULL, *curr;
+static int argm = 0, argc;
+
 static void *get_object(const char *s) {
   t_pd *x = gensym(s)->s_thing;
   return x;
@@ -46,6 +47,7 @@ static void *get_object(const char *s) {
 
 /* this is called instead of sys_main() to start things */
 void libpd_init(void) {
+  libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;
   sys_soundout = NULL;
@@ -189,13 +191,20 @@ int libpd_message(const char *recv, const char *msg, int n, t_atom *v) {
   return 0;
 }
 
-static t_atom argv[MAXMSGLENGTH], *curr;
-static int argc;
-
 int libpd_start_message(int length) {
+  if (length > argm) {
+    t_atom *v = (t_atom *) malloc(length * sizeof(t_atom));
+    if (v) {
+      free(argv);
+      argv = v;
+      argm = length;
+    } else {
+      return -1;
+    }
+  }
   argc = 0;
   curr = argv;
-  return (length > MAXMSGLENGTH);
+  return 0;
 }
 
 #define ADD_ARG(f) f(curr, x); curr++; argc++;
