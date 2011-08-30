@@ -92,28 +92,34 @@ int libpd_init_audio(int inChans, int outChans, int sampleRate, int tpb) {
 }
 
 int libpd_process_raw(float *inBuffer, float *outBuffer) {
-  size_t n_in = sys_inchannels*DEFDACBLKSIZE*sizeof(t_float);
-  size_t n_out = sys_outchannels*DEFDACBLKSIZE*sizeof(t_float);
-  memcpy(sys_soundin, inBuffer, n_in);
-  memset(sys_soundout, 0, n_out);
+  size_t n_in = sys_inchannels * DEFDACBLKSIZE;
+  size_t n_out = sys_outchannels * DEFDACBLKSIZE;
+  t_sample *p;
+  size_t i;
+  for (p = sys_soundin, i = 0; i < n_in; i++) {
+    *p++ = *inBuffer++;
+  }
+  memset(sys_soundout, 0, n_out * sizeof(t_sample));
   sched_tick(sys_time + sys_time_per_dsp_tick);
-  memcpy(outBuffer, sys_soundout, n_out);
+  for (p = sys_soundout, i = 0; i < n_out; i++) {
+    *outBuffer++ = *p++;
+  }
   return 0;
 }
 
-static const t_float float_to_short = SHRT_MAX,
-                   short_to_float = 1.0 / (t_float) SHRT_MAX;
+static const t_sample sample_to_short = SHRT_MAX,
+                   short_to_sample = 1.0 / (t_sample) SHRT_MAX;
 
 #define PROCESS(_x, _y) \
   int i, j, k; \
-  t_float *p0, *p1; \
+  t_sample *p0, *p1; \
   for (i = 0; i < ticks_per_buffer; i++) { \
     for (j = 0, p0 = sys_soundin; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < sys_inchannels; k++, p1 += DEFDACBLKSIZE) { \
         *p1 = *inBuffer++ _x; \
       } \
     } \
-    memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_float)); \
+    memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_sample)); \
     sched_tick(sys_time + sys_time_per_dsp_tick); \
     for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < sys_outchannels; k++, p1 += DEFDACBLKSIZE) { \
@@ -124,7 +130,7 @@ static const t_float float_to_short = SHRT_MAX,
   return 0;
 
 int libpd_process_short(short *inBuffer, short *outBuffer) {
-  PROCESS(* short_to_float, * float_to_short)
+  PROCESS(* short_to_sample, * sample_to_short)
 }
 
 int libpd_process_float(float *inBuffer, float *outBuffer) {
