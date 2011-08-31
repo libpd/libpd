@@ -191,13 +191,13 @@ int libpd_message(const char *recv, const char *msg, int n, t_atom *v) {
   return 0;
 }
 
-int libpd_start_message(int length) {
-  if (length > argm) {
-    t_atom *v = (t_atom *) malloc(length * sizeof(t_atom));
+int libpd_start_message(int max_length) {
+  if (max_length > argm) {
+    t_atom *v = (t_atom *) malloc(max_length * sizeof(t_atom));
     if (v) {
       free(argv);
       argv = v;
-      argm = length;
+      argm = max_length;
     } else {
       return -1;
     }
