@@ -105,3 +105,35 @@
 }
 
 @end
+
+
+@implementation InvokeOnMainThread
+
+- (id)initWithTarget:(id)t {
+    self = [super init];
+    if (self) {
+        target = t;
+        [target retain];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [target release];
+    [super dealloc];
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
+    return [target methodSignatureForSelector:aSelector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation {
+    [anInvocation retainArguments];  // make sure the arguments survive until we make it to the main thread
+    [anInvocation performSelectorOnMainThread:@selector(invokeWithTarget:) withObject:target waitUntilDone:NO];
+}
+
++ (id)withTarget:(id)target {
+    return [[[InvokeOnMainThread alloc] initWithTarget:target] autorelease];
+}
+
+@end

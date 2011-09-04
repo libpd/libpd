@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import "PdBase.h"
 
+
 // Listener class for messages from Pd.  The idea is that there will be (at least)
 // one listener for each source (i.e., send symbol) in Pd that client code is
 // supposed to receive messages from, with the routing of messages being done by an
@@ -25,6 +26,7 @@
 - (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments;
 
 @end
+
 
 // Implementation of the PdReceiverDelegate protocol from PdBase.h.  Client code
 // registers one instance of this class with PdBase, and then listeners for individual
@@ -51,4 +53,21 @@
 // Removes a listener for a source symbol and unsubscribes from messages to this symbol if
 // the listener was the last listener for this symbol.
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
+@end
+
+
+// Utility class for executing methods on the main thread.
+//
+// In order to, say, set the text of an instance of UILabel from the audio thread, say something like
+//   [InvokeOnMainThread withTarget:label] setText:@"Hello world!"];
+// which is equivalent to
+//   [label performSelectorOnMainThread:@selector(setText:) withObject:@"Hello world!" waitUntilDone:NO];
+// The former is arguably simpler than the latter, but the main point of this class is (a) to maintain
+// the original method signature, including the option of having more than one argument, and (b) to hide
+// the waitUntilDone: flag, which should always be NO when invoked from the audio thread.
+@interface InvokeOnMainThread : NSObject {
+    id target;
+}
+
++ (id)withTarget:(id)target;
 @end
