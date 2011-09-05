@@ -57,6 +57,7 @@
 
 
 // Utility class for executing methods on the main thread.
+// WARNING: This class is experimental right now!  Use at your own risk.
 //
 // In order to, say, set the text of an instance of UILabel from the audio thread, say something like
 //   [InvokeOnMainThread withTarget:label] setText:@"Hello world!"];
