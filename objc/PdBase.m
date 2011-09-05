@@ -126,9 +126,9 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate {
   @synchronized(self) {
+    [newDelegate retain];
     [delegate release];
     delegate = newDelegate;
-    [delegate retain];
   }
 }
 
