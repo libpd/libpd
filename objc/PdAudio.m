@@ -152,15 +152,14 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
 	return [self initWithSampleRate:newSampleRate andTicksPerBuffer:ticks 
 		andNumberOfInputChannels:inputChannels andNumberOfOutputChannels:outputChannels 
 		andAudioSessionCategory:audioCategory];
-
 }
 
 - (id)initWithSampleRate:(float)newSampleRate andTicksPerBuffer:(int)ticks 
 	andNumberOfInputChannels:(int)inputChannels andNumberOfOutputChannels:(int)outputChannels
-	andAudioSessionCategory:(UInt32)audioSessionCategory
-{	
-	self = [super init];
-	if (self != nil) {
+    andAudioSessionCategory:(UInt32)audioSessionCategory {
+    
+  self = [super init];
+  if (self != nil) {
     audioUnit = NULL;
     numInputChannels = inputChannels;
     numOutputChannels = outputChannels;
@@ -344,13 +343,13 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
                        outputBus, &toneStreamFormatInputTest, &toneStreamFormatSize);
   NSLog(@"=== input stream format:");
   NSLog(@"  mSampleRate: %.0fHz", toneStreamFormatInputTest.mSampleRate);
-  NSLog(@"  mFormatID: %i", toneStreamFormatInputTest.mFormatID);
-  NSLog(@"  mFormatFlags: %i", toneStreamFormatInputTest.mFormatFlags);
-  NSLog(@"  mBytesPerPacket: %i", toneStreamFormatInputTest.mBytesPerPacket);
-  NSLog(@"  mFramesPerPacket: %i", toneStreamFormatInputTest.mFramesPerPacket);
-  NSLog(@"  mBytesPerFrame: %i", toneStreamFormatInputTest.mBytesPerFrame);
-  NSLog(@"  mChannelsPerFrame: %i", toneStreamFormatInputTest.mChannelsPerFrame);
-  NSLog(@"  mBitsPerChannel: %i", toneStreamFormatInputTest.mBitsPerChannel);
+  NSLog(@"  mFormatID: %lu", toneStreamFormatInputTest.mFormatID);
+  NSLog(@"  mFormatFlags: %lu", toneStreamFormatInputTest.mFormatFlags);
+  NSLog(@"  mBytesPerPacket: %lu", toneStreamFormatInputTest.mBytesPerPacket);
+  NSLog(@"  mFramesPerPacket: %lu", toneStreamFormatInputTest.mFramesPerPacket);
+  NSLog(@"  mBytesPerFrame: %lu", toneStreamFormatInputTest.mBytesPerFrame);
+  NSLog(@"  mChannelsPerFrame: %lu", toneStreamFormatInputTest.mChannelsPerFrame);
+  NSLog(@"  mBitsPerChannel: %lu", toneStreamFormatInputTest.mBitsPerChannel);
   
   
   AudioStreamBasicDescription toneStreamFormatOutputTest;
@@ -359,13 +358,13 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
                        inputBus, &toneStreamFormatOutputTest, &toneStreamFormatSize);
   NSLog(@"=== output stream format:");
   NSLog(@"  mSampleRate: %.0fHz", toneStreamFormatOutputTest.mSampleRate);
-  NSLog(@"  mFormatID: %i", toneStreamFormatOutputTest.mFormatID);
-  NSLog(@"  mFormatFlags: %i", toneStreamFormatOutputTest.mFormatFlags);
-  NSLog(@"  mBytesPerPacket: %i", toneStreamFormatOutputTest.mBytesPerPacket);
-  NSLog(@"  mFramesPerPacket: %i", toneStreamFormatOutputTest.mFramesPerPacket);
-  NSLog(@"  mBytesPerFrame: %i", toneStreamFormatOutputTest.mBytesPerFrame);
-  NSLog(@"  mChannelsPerFrame: %i", toneStreamFormatOutputTest.mChannelsPerFrame);
-  NSLog(@"  mBitsPerChannel: %i", toneStreamFormatOutputTest.mBitsPerChannel);
+  NSLog(@"  mFormatID: %lu", toneStreamFormatOutputTest.mFormatID);
+  NSLog(@"  mFormatFlags: %lu", toneStreamFormatOutputTest.mFormatFlags);
+  NSLog(@"  mBytesPerPacket: %lu", toneStreamFormatOutputTest.mBytesPerPacket);
+  NSLog(@"  mFramesPerPacket: %lu", toneStreamFormatOutputTest.mFramesPerPacket);
+  NSLog(@"  mBytesPerFrame: %lu", toneStreamFormatOutputTest.mBytesPerFrame);
+  NSLog(@"  mChannelsPerFrame: %lu", toneStreamFormatOutputTest.mChannelsPerFrame);
+  NSLog(@"  mBitsPerChannel: %lu", toneStreamFormatOutputTest.mBitsPerChannel);
   
   Float64 auSampleRate = 0.0;
   UInt32 sampleRateSize = sizeof(auSampleRate);

@@ -57,11 +57,11 @@
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;
-+ (void)sendBangToReceiver:(NSString *)receiverName;
-+ (void)sendFloat:(float)value toReceiver:(NSString *)receiverName;
-+ (void)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName;
-+ (void)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;
-+ (void)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName;
++ (int)sendBangToReceiver:(NSString *)receiverName;
++ (int)sendFloat:(float)value toReceiver:(NSString *)receiverName;
++ (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName;
++ (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;
++ (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName;
 + (void)clearSearchPath;
 + (void)addToSearchPath:(NSString *)path;
 + (int)getBlockSize;

@@ -144,39 +144,39 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
-+ (void)sendBangToReceiver:(NSString *)receiverName {
++ (int)sendBangToReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    libpd_bang([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
+    return libpd_bang([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
-+ (void)sendFloat:(float)value toReceiver:(NSString *)receiverName {
++ (int)sendFloat:(float)value toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    libpd_float([receiverName cStringUsingEncoding:NSASCIIStringEncoding], value);
+    return libpd_float([receiverName cStringUsingEncoding:NSASCIIStringEncoding], value);
   }
 }
 
-+ (void)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
++ (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    libpd_symbol([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-        [symbol cStringUsingEncoding:NSASCIIStringEncoding]);
+    return libpd_symbol([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
+                        [symbol cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
-+ (void)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
++ (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    if (libpd_start_message([list count])) return;
+    if (libpd_start_message([list count])) return -100;
     encodeList(list);
-    libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
+    return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
-+ (void)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
++ (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    if (libpd_start_message([list count])) return;
+    if (libpd_start_message([list count])) return -100;
     encodeList(list);
-    libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-        [message cStringUsingEncoding:NSASCIIStringEncoding]);
+    return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
+                                [message cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
@@ -235,7 +235,7 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 }
 
 + (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
-	@synchronized(self) {
+  @synchronized(self) {
     const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
     const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
 		return libpd_openfile(base, path);
@@ -249,13 +249,13 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 }
 
 + (int)dollarZeroForFile:(void *)x {
-	@synchronized(self) {
+  @synchronized(self) {
     return libpd_getdollarzero(x);
   }
 }
 
 + (int)arraySizeForArrayNamed:(NSString *)arrayName {
-	@synchronized(self) {
+  @synchronized(self) {
     return libpd_arraysize([arrayName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
