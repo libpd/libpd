@@ -86,14 +86,14 @@
 
 /** Begin audio/scene playback. To avoid clicks, you have to create a subclass and override this 
  * function and add ramping or any other custom behaviour. Make sure to call the superclass method
- * as well.
+ * as well.  Returns zero on success, nonzero error code otherwise.
  */
-- (void)play;
+- (int)play;
 
 /** Pause audio/scene playback.To avoid clicks, you have to create a subclass and override this 
  * function and add ramping or any other custom behaviour. Make sure to call the superclass method
- * as well.
+ * as well.  Returns zero on success, nonzero error code otherwise.
  */
-- (void)pause;
+- (int)pause;
 
 @end
