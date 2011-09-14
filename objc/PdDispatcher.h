@@ -34,9 +34,6 @@
 //
 // Printing from Pd is done via NSLog by default; subclass and override the receivePrint
 // method if you want different printing behavior.
-//
-// Note: This class is not meant to be thread-safe.  Listeners should only be added or
-// removed when PdAudio is not active.
 @interface PdDispatcher : NSObject<PdReceiverDelegate> {
     NSMutableDictionary *listenerMap;
     NSMutableDictionary *subscriptions;

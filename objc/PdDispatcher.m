@@ -33,74 +33,89 @@
 }
 
 - (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
-    NSMutableArray *listeners = [listenerMap objectForKey:symbol];
-    if (!listeners) {
-        void *ptr = [PdBase subscribe:symbol];
-        if (!ptr) {
-            return -1;
+    @synchronized(self) {
+        NSMutableArray *listeners = [listenerMap objectForKey:symbol];
+        if (!listeners) {
+            void *ptr = [PdBase subscribe:symbol];
+            if (!ptr) {
+                return -1;
+            }
+            NSValue *handle = [NSValue valueWithPointer:ptr];
+            [subscriptions setObject:handle forKey:symbol];
+            listeners = [[NSMutableArray alloc] init];
+            [listenerMap setObject:listeners forKey:symbol];
+            [listeners release];
         }
-        NSValue *handle = [NSValue valueWithPointer:ptr];
-        [subscriptions setObject:handle forKey:symbol];
-        listeners = [[NSMutableArray alloc] init];
-        [listenerMap setObject:listeners forKey:symbol];
-        [listeners release];
+        [listeners addObject:listener];
+        return 0;
     }
-    [listeners addObject:listener];
-    return 0;
 }
 
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
-    NSMutableArray *listeners = [listenerMap objectForKey:symbol];
-    if (listeners) {
-        [listeners removeObject:listener];
-        if ([listeners count] == 0) {
-            NSValue *handle = [subscriptions objectForKey:symbol];
-            void *ptr = [handle pointerValue];
-            [PdBase unsubscribe:ptr];
-            [subscriptions removeObjectForKey:symbol];
-            [listenerMap removeObjectForKey:symbol];
+    @synchronized(self) {
+        NSMutableArray *listeners = [listenerMap objectForKey:symbol];
+        if (listeners) {
+            [listeners removeObject:listener];
+            if ([listeners count] == 0) {
+                NSValue *handle = [subscriptions objectForKey:symbol];
+                void *ptr = [handle pointerValue];
+                [PdBase unsubscribe:ptr];
+                [subscriptions removeObjectForKey:symbol];
+                [listenerMap removeObjectForKey:symbol];
+            }
         }
+        return 0;
     }
-    return 0;
 }
 
 // Override this method in subclasses if you want different printing behavior.
+// No need to synchronize here.
 - (void)receivePrint:(NSString *)message {
     NSLog(@"Pd: %@\n", message);
 }
 
 - (void)receiveBangFromSource:(NSString *)source {
-    NSArray *listeners = [listenerMap objectForKey:source];
-    for (NSObject<PdListener> *listener in listeners) {
-        [listener receiveBang];
+    @synchronized(self) {
+        NSArray *listeners = [listenerMap objectForKey:source];
+        for (NSObject<PdListener> *listener in listeners) {
+            [listener receiveBang];
+        }
     }
 }
 
 - (void)receiveFloat:(float)received fromSource:(NSString *)source {
-    NSArray *listeners = [listenerMap objectForKey:source];
-    for (NSObject<PdListener> *listener in listeners) {
-        [listener receiveFloat:received];
+    @synchronized(self) {
+        NSArray *listeners = [listenerMap objectForKey:source];
+        for (NSObject<PdListener> *listener in listeners) {
+            [listener receiveFloat:received];
+        }
     }
 }
 
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
-    NSArray *listeners = [listenerMap objectForKey:source];
-    for (NSObject<PdListener> *listener in listeners) {
-        [listener receiveSymbol:symbol];
+    @synchronized(self) {
+        NSArray *listeners = [listenerMap objectForKey:source];
+        for (NSObject<PdListener> *listener in listeners) {
+            [listener receiveSymbol:symbol];
+        }
     }
 }
 
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
-    NSArray *listeners = [listenerMap objectForKey:source];
-    for (NSObject<PdListener> *listener in listeners) {
-        [listener receiveList:list];
+    @synchronized(self) {
+        NSArray *listeners = [listenerMap objectForKey:source];
+        for (NSObject<PdListener> *listener in listeners) {
+            [listener receiveList:list];
+        }
     }
 }
 
 - (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
-    NSArray *listeners = [listenerMap objectForKey:source];
-    for (NSObject<PdListener> *listener in listeners) {
-        [listener receiveMessage:message withArguments:arguments];
+    @synchronized(self) {
+        NSArray *listeners = [listenerMap objectForKey:source];
+        for (NSObject<PdListener> *listener in listeners) {
+            [listener receiveMessage:message withArguments:arguments];
+        }
     }
 }
 
