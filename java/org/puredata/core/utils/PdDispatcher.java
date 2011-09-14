@@ -78,8 +78,8 @@ public abstract class PdDispatcher implements PdReceiver {
 	
 	@Override
 	protected void finalize() throws Throwable {
-		super.finalize();
 		release();
+		super.finalize();
 	}
 	
 	/**
