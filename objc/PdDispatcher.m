@@ -127,32 +127,50 @@
 @implementation PdUiDispatcher
 
 -(void)receiveBangFromSource:(NSString *)source {
+    [source retain];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [super receiveBangFromSource:source];
+        [source release];
     });
 }
 
 -(void)receiveFloat:(float)received fromSource:(NSString *)source {
+    [source retain];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [super receiveFloat:received fromSource:source];
+        [source release];
     });
 }
 
 -(void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
+    [symbol retain];
+    [source retain];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [super receiveSymbol:symbol fromSource:source];
+        [symbol release];
+        [source release];
     });
 }
 
 -(void)receiveList:(NSArray *)list fromSource:(NSString *)source {
+    [list retain];
+    [source retain];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [super receiveList:list fromSource:source];
+        [list release];
+        [source release];
     });
 }
 
 -(void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
+    [message retain];
+    [arguments retain];
+    [source retain];
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [super receiveMessage:message withArguments:arguments fromSource:source];
+        [message release];
+        [arguments release];
+        [source release];
     });
 }
 

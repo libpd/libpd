@@ -39,9 +39,6 @@
     NSMutableDictionary *subscriptions;
 }
 
-// Constructor.
-- (id)init;
-
 // Adds a listener for the given source (i.e., send symbol) in Pd.  If this is the first
 // listener for this source, a subscription for this symbol will automatically be registered
 // with PdBase.
@@ -52,6 +49,9 @@
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 @end
 
+
+// Subclass of PdDispatcher that invokes its receive* methods on the main UI thread.
+// Very experimental, use at your own risk!
 @interface PdUiDispatcher : PdDispatcher {}
 @end
 
