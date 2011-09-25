@@ -52,20 +52,6 @@
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 @end
 
-
-// Utility class for executing methods on the main thread.
-// WARNING: This class is experimental right now!  Use at your own risk.
-//
-// In order to, say, set the text of an instance of UILabel from the audio thread, say something like
-//   [InvokeOnMainThread withTarget:label] setText:@"Hello world!"];
-// which is equivalent to
-//   [label performSelectorOnMainThread:@selector(setText:) withObject:@"Hello world!" waitUntilDone:NO];
-// The former is arguably simpler than the latter, but the main point of this class is (a) to maintain
-// the original method signature, including the option of having more than one argument, and (b) to hide
-// the waitUntilDone: flag, which should always be NO when invoked from the audio thread.
-@interface InvokeOnMainThread : NSObject {
-    id target;
-}
-
-+ (id)withTarget:(id)target;
+@interface PdUiDispatcher : PdDispatcher {}
 @end
+

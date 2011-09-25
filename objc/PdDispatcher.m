@@ -122,33 +122,38 @@
 @end
 
 
-@implementation InvokeOnMainThread
+#import "dispatch/dispatch.h"
 
-- (id)initWithTarget:(id)t {
-    self = [super init];
-    if (self) {
-        target = t;
-        [target retain];
-    }
-    return self;
+@implementation PdUiDispatcher
+
+-(void)receiveBangFromSource:(NSString *)source {
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [super receiveBangFromSource:source];
+    });
 }
 
-- (void)dealloc {
-    [target release];
-    [super dealloc];
+-(void)receiveFloat:(float)received fromSource:(NSString *)source {
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [super receiveFloat:received fromSource:source];
+    });
 }
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
-    return [target methodSignatureForSelector:aSelector];
+-(void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [super receiveSymbol:symbol fromSource:source];
+    });
 }
 
-- (void)forwardInvocation:(NSInvocation *)anInvocation {
-    [anInvocation retainArguments];  // make sure the arguments survive until we make it to the main thread
-    [anInvocation performSelectorOnMainThread:@selector(invokeWithTarget:) withObject:target waitUntilDone:NO];
+-(void)receiveList:(NSArray *)list fromSource:(NSString *)source {
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [super receiveList:list fromSource:source];
+    });
 }
 
-+ (id)withTarget:(id)target {
-    return [[[InvokeOnMainThread alloc] initWithTarget:target] autorelease];
+-(void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [super receiveMessage:message withArguments:arguments fromSource:source];
+    });
 }
 
 @end
