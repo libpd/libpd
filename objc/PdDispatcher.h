@@ -51,7 +51,8 @@
 
 
 // Subclass of PdDispatcher that invokes its receive* methods on the main UI thread.
-// Very experimental, use at your own risk!
+// This class is very experimental and may disappear again without
+// warning.  Use at your own risk!
 @interface PdUiDispatcher : PdDispatcher {}
 @end
 
