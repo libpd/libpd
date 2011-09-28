@@ -124,54 +124,29 @@
 
 #import "dispatch/dispatch.h"
 
+#define ON_MAIN_THREAD(f) \
+    dispatch_async(dispatch_get_main_queue(), ^(void) { f; });
+
 @implementation PdUiDispatcher
 
 -(void)receiveBangFromSource:(NSString *)source {
-    [source retain];
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [super receiveBangFromSource:source];
-        [source release];
-    });
+    ON_MAIN_THREAD([super receiveBangFromSource:source]);
 }
 
 -(void)receiveFloat:(float)received fromSource:(NSString *)source {
-    [source retain];
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [super receiveFloat:received fromSource:source];
-        [source release];
-    });
+    ON_MAIN_THREAD([super receiveFloat:received fromSource:source]);
 }
 
 -(void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
-    [symbol retain];
-    [source retain];
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [super receiveSymbol:symbol fromSource:source];
-        [symbol release];
-        [source release];
-    });
+    ON_MAIN_THREAD([super receiveSymbol:symbol fromSource:source]);
 }
 
 -(void)receiveList:(NSArray *)list fromSource:(NSString *)source {
-    [list retain];
-    [source retain];
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [super receiveList:list fromSource:source];
-        [list release];
-        [source release];
-    });
+    ON_MAIN_THREAD([super receiveList:list fromSource:source]);
 }
 
 -(void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
-    [message retain];
-    [arguments retain];
-    [source retain];
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [super receiveMessage:message withArguments:arguments fromSource:source];
-        [message release];
-        [arguments release];
-        [source release];
-    });
+    ON_MAIN_THREAD([super receiveMessage:message withArguments:arguments fromSource:source]);
 }
 
 @end
