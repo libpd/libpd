@@ -392,7 +392,7 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 + (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer {
   @synchronized(self) {
     int status = libpd_process_float(inputBuffer, outputBuffer);
-    WAKE_CONVERTER;
+    WAKE_CONVERTER;  // Yes, we're locking the audio thread.  That's okay, though; we'll be in and out in a microsecond.
     return status;
   }
 }
