@@ -55,6 +55,7 @@
 + (void)initialize;
 /** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
++ (NSObject<PdReceiverDelegate> *)getDelegate;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;
 + (int)sendBangToReceiver:(NSString *)receiverName;
