@@ -34,7 +34,6 @@
 
 #import "PdBase.h"
 #import "VirtualRingBuffer.h"
-#import "dispatch/dispatch.h"
 #include "z_libpd.h"
 
 
