@@ -152,6 +152,8 @@ static void deallocateVirtualBuffer(void *buffer, UInt32 bufferLength);
 
 - (void)didWriteLength:(UInt32)length
 {
+    OSMemoryBarrier();  // Make sure that the other thread can see our changes.
+    
     // Assumptions:
     // [self lengthAvailableToWriteReturningPointer:] currently returns a value >= length
     // length > 0

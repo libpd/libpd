@@ -55,8 +55,8 @@
         // bufferEnd is the end of the "real" buffer (always buffer + bufferLength).
         // Note that the "virtual" portion of the buffer extends from bufferEnd to bufferEnd+bufferLength.
     
-    void *readPointer;
-    void *writePointer;
+    volatile void *readPointer;
+    volatile void *writePointer;
 }
 
 - (id)initWithLength:(UInt32)length;

@@ -38,24 +38,9 @@
 
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
-static NSThread *converterThread;
-static NSCondition *condition;
+static NSMachPort *machPort;
+static NSDate *deadline;
 static VirtualRingBuffer *ringBuffer;
-
-typedef struct _params {
-  enum {
-    PRINT, BANG, FLOAT, SYMBOL, LIST, MESSAGE
-  } type;
-  const char *src;
-  float x;
-  const char *sym;
-  int argc;
-} params;
-
-#define S_PARAMS sizeof(params)
-#define S_ATOM sizeof(t_atom)
-
-#define ON_MAIN_THREAD(f) dispatch_async(dispatch_get_main_queue(), ^(void) { f; });
 
 static NSArray *decodeList(int argc, t_atom *argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
@@ -91,100 +76,18 @@ static void encodeList(NSArray *list) {
   }
 }
 
-static void evaluateBuffer(void *buffer, void *end) {
-  while (buffer < end) {
-    params *p = buffer;
-    buffer += S_PARAMS;
-    switch (p->type) {
-      case PRINT: {
-        if ([delegate respondsToSelector:@selector(receivePrint:)]) {
-          NSString *s = [[NSString alloc] initWithCString:buffer encoding:NSASCIIStringEncoding];
-          ON_MAIN_THREAD([delegate receivePrint:s]);
-          [s release];
-        }
-        buffer += p->argc;
-        break;
-      }
-      case BANG: {
-        if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
-          NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
-          ON_MAIN_THREAD([delegate receiveBangFromSource:src]);
-          [src release];
-        }
-        break;
-      }
-      case FLOAT: {
-        if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
-          NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
-          ON_MAIN_THREAD([delegate receiveFloat:p->x fromSource:src]);
-          [src release];
-        }
-        break;
-      }
-      case SYMBOL: {
-        if ([delegate respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
-          NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
-          NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
-          ON_MAIN_THREAD([delegate receiveSymbol:sym fromSource:src]);
-          [src release];
-          [sym release];
-        }
-        break;
-      }
-      case LIST: {
-        if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
-          NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
-          NSArray *args = decodeList(p->argc, buffer);
-          ON_MAIN_THREAD([delegate receiveList:args fromSource:src]);
-          [src release];
-          [args release];
-        }
-        buffer += p->argc * S_ATOM;
-        break;
-      }
-      case MESSAGE: {
-        if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
-          NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
-          NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
-          NSArray *args = decodeList(p->argc, buffer);
-          ON_MAIN_THREAD([delegate receiveMessage:sym withArguments:args fromSource:src]);
-          [src release];
-          [sym release];
-          [args release];
-        }
-        buffer += p->argc * S_ATOM;
-        break;
-      }
-      default:
-        break;
-    }
-  }
-}
+typedef struct _params {
+  enum {
+    PRINT, BANG, FLOAT, SYMBOL, LIST, MESSAGE
+  } type;
+  const char *src;
+  float x;
+  const char *sym;
+  int argc;
+} params;
 
-@interface ConverterThread : NSThread {}
-@end
-
-@implementation ConverterThread
-
--(void)main {
-  while (true) {
-    int available;
-    void *buffer;
-    [condition lock];
-    while (!(available = [ringBuffer lengthAvailableToReadReturningPointer:&buffer]) && ![self isCancelled]) {
-      [condition wait];
-    }
-    [condition unlock];
-    if ([self isCancelled]) break;
-    evaluateBuffer(buffer, buffer + available);
-    [ringBuffer didReadLength:available];
-  }
-}
-
-@end
-
-
-@implementation PdBase
+#define S_PARAMS sizeof(params)
+#define S_ATOM sizeof(t_atom)
 
 static void printHook(const char *s) {
   int len = strlen(s) + 1; // remember terminating null char
@@ -199,6 +102,15 @@ static void printHook(const char *s) {
   }
 }
 
+static void evaluatePrintMessage(params *p, void **buffer) {
+  if ([delegate respondsToSelector:@selector(receivePrint:)]) {
+    NSString *s = [[NSString alloc] initWithCString:*buffer encoding:NSASCIIStringEncoding];
+    [delegate receivePrint:s];
+    [s release];
+  }
+  *buffer += p->argc;
+}
+
 static void bangHook(const char *src) {
   void *buffer;
   int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
@@ -207,6 +119,14 @@ static void bangHook(const char *src) {
     p->type = BANG;
     p->src = src;
     [ringBuffer didWriteLength:S_PARAMS];
+  }
+}
+
+static void evaluateBangMessage(params *p, void **buffer) {
+  if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
+    NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
+    [delegate receiveBangFromSource:src];
+    [src release];
   }
 }
 
@@ -222,6 +142,14 @@ static void floatHook(const char *src, float x) {
   }
 }
 
+static void evaluateFloatMessage(params *p, void **buffer) {
+  if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
+    NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
+    [delegate receiveFloat:p->x fromSource:src];
+    [src release];
+  }
+}
+
 static void symbolHook(const char *src, const char *sym) {
   void *buffer;
   int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
@@ -231,6 +159,16 @@ static void symbolHook(const char *src, const char *sym) {
     p->src = src;
     p->sym = sym;
     [ringBuffer didWriteLength:S_PARAMS];
+  }
+}
+
+static void evaluateSymbolMessage(params *p, void **buffer) {
+  if ([delegate respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
+    NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
+    NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
+    [delegate receiveSymbol:sym fromSource:src];
+    [src release];
+    [sym release];
   }
 }
 
@@ -248,6 +186,17 @@ static void listHook(const char *src, int argc, t_atom *argv) {
   }
 }
 
+static void evaluateListMessage(params *p, void **buffer) {
+  if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
+    NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
+    NSArray *args = decodeList(p->argc, *buffer);
+    [delegate receiveList:args fromSource:src];
+    [src release];
+    [args release];
+  }
+  *buffer += p->argc * S_ATOM;
+}
+
 static void messageHook(const char *src, const char* sym, int argc, t_atom *argv) {
   void *buffer;
   int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
@@ -263,10 +212,86 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
+static void evaluateTypedMessage(params *p, void **buffer) {
+  if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
+    NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
+    NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
+    NSArray *args = decodeList(p->argc, *buffer);
+    [delegate receiveMessage:sym withArguments:args fromSource:src];
+    [src release];
+    [sym release];
+    [args release];
+  }
+  *buffer += p->argc * S_ATOM;
+}
+
+@interface PdNotificationHandler : NSObject<NSMachPortDelegate> {}
+@end
+
+@implementation PdNotificationHandler
+
+-(void)handleMachMessage:(void *)msg {
+  void *buffer;
+  int available = [ringBuffer lengthAvailableToReadReturningPointer:&buffer];
+  if (!available) return;
+  void *end = buffer + available;
+  while (buffer < end) {
+    params *p = buffer;
+    buffer += S_PARAMS;
+    switch (p->type) {
+      case PRINT: {
+        evaluatePrintMessage(p, &buffer);
+        break;
+      }
+      case BANG: {
+        evaluateBangMessage(p, &buffer);
+        break;
+      }
+      case FLOAT: {
+        evaluateFloatMessage(p, &buffer);
+        break;
+      }
+      case SYMBOL: {
+        evaluateSymbolMessage(p, &buffer);
+        break;
+      }
+      case LIST: {
+        evaluateListMessage(p, &buffer);
+        break;
+      }
+      case MESSAGE: {
+        evaluateTypedMessage(p, &buffer);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  [ringBuffer didReadLength:available];
+}
+
+@end
+
+static void init_messaging() {
+  ringBuffer = [[VirtualRingBuffer alloc] initWithLength:32768];
+  deadline = [NSDate distantPast];
+  machPort = [[NSMachPort alloc] init];
+  PdNotificationHandler *handler = [[PdNotificationHandler alloc] init];
+  [machPort setDelegate:handler];
+  [[NSRunLoop currentRunLoop] addPort:machPort forMode:NSDefaultRunLoopMode];
+}
+
+static int notifyMainThread(int v) {
+  [machPort sendBeforeDate:deadline components:nil from:nil reserved:0];
+  return v;
+}
+
+
+@implementation PdBase
+
 + (void)initialize {
   @synchronized(self) {
-    condition = [[NSCondition alloc] init];
-    ringBuffer = [[VirtualRingBuffer alloc] initWithLength:32768];
+    init_messaging();
     
     libpd_printhook = (t_libpd_printhook) printHook;
     libpd_banghook = (t_libpd_banghook) bangHook;
@@ -279,27 +304,11 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
-#define WAKE_CONVERTER \
-  [condition lock]; \
-  [condition signal]; \
-  [condition unlock];
-
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate {
   @synchronized(self) {
-    if (newDelegate == delegate) return;
-    if (!newDelegate) {
-      [converterThread cancel];
-      WAKE_CONVERTER;  // Wake up!  Time to die.
-      [converterThread release];
-      converterThread = nil;
-    }
     [newDelegate retain];
     [delegate release];
     delegate = newDelegate;
-    if (delegate && !converterThread) {
-      converterThread = [[ConverterThread alloc] init];
-      [converterThread start];
-    }
   }
 }
 
@@ -390,25 +399,19 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 
 + (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer {
   @synchronized(self) {
-    int status = libpd_process_float(inputBuffer, outputBuffer);
-    WAKE_CONVERTER;  // Yes, we're locking the audio thread.  That's okay, though; we'll be in and out in a microsecond.
-    return status;
+    return notifyMainThread(libpd_process_float(inputBuffer, outputBuffer));
   }
 }
 
 + (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer {
   @synchronized(self) {
-    int status = libpd_process_double(inputBuffer, outputBuffer);
-    WAKE_CONVERTER;
-    return status;
+    return notifyMainThread(libpd_process_double(inputBuffer, outputBuffer));
   }
 }
 
 + (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer {
   @synchronized(self) {
-    int status = libpd_process_short(inputBuffer, outputBuffer);
-    WAKE_CONVERTER;
-    return status;
+    return notifyMainThread(libpd_process_short(inputBuffer, outputBuffer));
   }
 }
 
