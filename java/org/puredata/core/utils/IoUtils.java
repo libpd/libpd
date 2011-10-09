@@ -79,8 +79,8 @@ public class IoUtils {
 		directory.mkdirs();
 		while ((entry = zin.getNextEntry()) != null) {
 			File file = new File(directory, entry.getName());
+			files.add(file);
 			if (overwrite || !file.exists())	{
-				files.add(file);
 				if (entry.isDirectory()) {
 					file.mkdirs();
 				} else {
