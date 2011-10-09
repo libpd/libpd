@@ -294,8 +294,6 @@ static int notifyMainThread(int v) {
 
 + (void)initialize {
   @synchronized(self) {
-    init_messaging();
-    
     libpd_printhook = (t_libpd_printhook) printHook;
     libpd_banghook = (t_libpd_banghook) bangHook;
     libpd_floathook = (t_libpd_floathook) floatHook;
@@ -303,6 +301,7 @@ static int notifyMainThread(int v) {
     libpd_listhook = (t_libpd_listhook) listHook;
     libpd_messagehook = (t_libpd_messagehook) messageHook;   
     
+    init_messaging();
     libpd_init();
   }
 }
