@@ -34,10 +34,10 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setReceiver
 /*
  * Class:     org_puredata_core_PdBase
  * Method:    openAudio
- * Signature: (IIII)I
+ * Signature: (III)I
  */
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
-  (JNIEnv *, jclass, jint, jint, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jint);
 
 /*
  * Class:     org_puredata_core_PdBase
@@ -50,26 +50,26 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_processRaw
 /*
  * Class:     org_puredata_core_PdBase
  * Method:    process
- * Signature: ([S[S)I
+ * Signature: (I[S[S)I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3S_3S
-  (JNIEnv *, jclass, jshortArray, jshortArray);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3S_3S
+  (JNIEnv *, jclass, jint, jshortArray, jshortArray);
 
 /*
  * Class:     org_puredata_core_PdBase
  * Method:    process
- * Signature: ([F[F)I
+ * Signature: (I[F[F)I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3F_3F
-  (JNIEnv *, jclass, jfloatArray, jfloatArray);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3F_3F
+  (JNIEnv *, jclass, jint, jfloatArray, jfloatArray);
 
 /*
  * Class:     org_puredata_core_PdBase
  * Method:    process
- * Signature: ([D[D)I
+ * Signature: (I[D[D)I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3D_3D
-  (JNIEnv *, jclass, jdoubleArray, jdoubleArray);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
+  (JNIEnv *, jclass, jint, jdoubleArray, jdoubleArray);
 
 /*
  * Class:     org_puredata_core_PdBase

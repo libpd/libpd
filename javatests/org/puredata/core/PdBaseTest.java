@@ -24,7 +24,7 @@ import org.junit.Test;
 /**
  * 
  * Some tests for messaging and MIDI support in libpd.  Basically, this class tests everything except
- * the parts of libpd that matter.  If you have any idea how to write tests for the signal processing
+ * the parts of libpd that matter.  If you have any idea how to write real tests for the signal processing
  * part, please let me know.
  * 
  * @author Peter Brinkmann (peter.brinkmann@gmail.com) 
@@ -39,8 +39,10 @@ public class PdBaseTest {
 
 	@BeforeClass
 	public static void loadPatch() throws IOException {
+		PdBase.openAudio(2, 3, 44100);
 		PdBase.subscribe("eggs");
 		patch = PdBase.openPatch("javatests/org/puredata/core/test_java.pd");
+		PdBase.computeAudio(true);
 	}
 	
 	@AfterClass
@@ -59,6 +61,25 @@ public class PdBaseTest {
 	@After
 	public void tearDown() {
 		// Do nothing; just here for symmetry.
+	}
+	
+	@Test
+	public void testAudio() {
+		float in[] = new float[256];
+		float out[] = new float[768];
+		for (int i = 0; i < 256; i++) {
+			in[i] = i;
+		}
+		int err = PdBase.process(2, in, out);
+		assertEquals(0, err);
+		for (int i = 0; i < 128; i++) {
+			assertEquals(2 * i, out[3 * i], 0.0001);
+			assertEquals(-6 * i, out[3 * i + 1], 0.0001);
+			assertEquals(Math.cos(2 * Math.PI * 440 / 44100 * i), out[3 * i + 2], 0.0001);
+		}
+		for (int i = 384; i < 768; i++) {
+			assertEquals(0, out[i], 0);
+		}
 	}
 
 	@Test

@@ -47,6 +47,7 @@
 
 @synthesize audioUnit;
 @synthesize sampleRate;
+@synthesize ticksPerBuffer;
 @synthesize numInputChannels;
 @synthesize numOutputChannels;
 @synthesize microphoneVolume;
@@ -106,7 +107,7 @@ OSStatus renderCallback(void *inRefCon, AudioUnitRenderActionFlags *ioActionFlag
   for (int i = 0; i < floatBufferLength; i++) {
     floatBuffer[i] = ((float) shortBuffer[i]) * a;
   }
-  [PdBase processFloatWithInputBuffer:floatBuffer andOutputBuffer:floatBuffer];
+  [PdBase processFloatWithInputBuffer:floatBuffer andOutputBuffer:floatBuffer andTicks:controller.ticksPerBuffer];
   for (int i = 0; i < floatBufferLength; i++) {
     float f = floatBuffer[i];
     if (f < -1.0f) shortBuffer[i] = -32767;
@@ -169,6 +170,7 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
   self = [super init];
   if (self != nil) {
     audioUnit = NULL;
+    ticksPerBuffer = ticks;
     numInputChannels = inputChannels;
     numOutputChannels = outputChannels;
     sampleRate = (Float64) newSampleRate;
@@ -184,7 +186,7 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
     FAIL_ON_ERROR(@"init audio unit failed with status %ld", [self initializeAudioUnit]);
     FAIL_ON_ERROR(@"PdBase openAudio failed wit status %ld",
                   [PdBase openAudioWithSampleRate:sampleRate andInputChannels:numInputChannels 
-                                andOutputChannels:numOutputChannels andTicksPerBuffer:ticks]);
+                                andOutputChannels:numOutputChannels]);
 
     [PdBase computeAudio:YES];
   }

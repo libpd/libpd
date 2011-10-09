@@ -204,28 +204,27 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
-+ (int)openAudioWithSampleRate:(int)samplerate andInputChannels:(int)inputChannels 
-    andOutputChannels:(int)outputchannels andTicksPerBuffer:(int)ticksPerBuffer {
++ (int)openAudioWithSampleRate:(int)samplerate andInputChannels:(int)inputChannels andOutputChannels:(int)outputchannels {
   @synchronized(self) {
-    return libpd_init_audio(inputChannels, outputchannels, samplerate, ticksPerBuffer);
+    return libpd_init_audio(inputChannels, outputchannels, samplerate);
   }
 }
 
-+ (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer {
++ (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer andTicks:(int)ticks {
   @synchronized(self) {
-    return libpd_process_float(inputBuffer, outputBuffer);
+    return libpd_process_float(ticks, inputBuffer, outputBuffer);
   }
 }
 
-+ (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer {
++ (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer andTicks:(int)ticks {
   @synchronized(self) {
-    return libpd_process_double(inputBuffer, outputBuffer);
+    return libpd_process_double(ticks, inputBuffer, outputBuffer);
   }
 }
 
-+ (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer {
++ (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer andTicks:(int)ticks {
   @synchronized(self) {
-    return libpd_process_short(inputBuffer, outputBuffer);
+    return libpd_process_short(ticks, inputBuffer, outputBuffer);
   }
 }
 

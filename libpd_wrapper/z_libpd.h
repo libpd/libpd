@@ -27,11 +27,11 @@ void libpd_closefile(void *p);
 int libpd_getdollarzero(void *p);
 
 int libpd_blocksize(void);
-int libpd_init_audio(int inChans, int outChans, int sampleRate, int tpb);
+int libpd_init_audio(int inChans, int outChans, int sampleRate);
 int libpd_process_raw(float *inBuffer, float *outBuffer);
-int libpd_process_short(short *inBuffer, short *outBuffer);
-int libpd_process_float(float *inBuffer, float *outBuffer);
-int libpd_process_double(double *inBuffer, double *outBuffer);
+int libpd_process_short(int ticks, short *inBuffer, short *outBuffer);
+int libpd_process_float(int ticks, float *inBuffer, float *outBuffer);
+int libpd_process_double(int ticks, double *inBuffer, double *outBuffer);
 
 int libpd_arraysize(const char *name);
 // The parameters of the next two functions are inspired by memcpy.
