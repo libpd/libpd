@@ -94,6 +94,7 @@ static void deallocateVirtualBuffer(void *buffer, UInt32 bufferLength);
     }
 
     *returnedReadPointer = readPointer;
+    OSMemoryBarrier();  // Make sure that we can see the changes from the other thread.
     return length;
 }
 
