@@ -282,7 +282,10 @@ static void init_messaging() {
 }
 
 static int notifyMainThread(int v) {
-  [machPort sendBeforeDate:deadline components:nil from:nil reserved:0];
+  void *buffer;
+  if ([ringBuffer lengthAvailableToReadReturningPointer:&buffer]) {
+    [machPort sendBeforeDate:deadline components:nil from:nil reserved:0];
+  }
   return v;
 }
 
