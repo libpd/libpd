@@ -38,8 +38,6 @@
 
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
-static NSMachPort *machPort;
-static NSDate *deadline;
 static VirtualRingBuffer *ringBuffer;
 
 static NSArray *decodeList(int argc, t_atom *argv) {
@@ -225,12 +223,13 @@ static void evaluateTypedMessage(params *p, void **buffer) {
   *buffer += p->argc * S_ATOM;
 }
 
-@interface PdNotificationHandler : NSObject<NSMachPortDelegate> {}
+@interface PdMessageHandler : NSObject {}
+-(void)pollQueue:(NSTimer *)timer;
 @end
 
-@implementation PdNotificationHandler
+@implementation PdMessageHandler
 
--(void)handleMachMessage:(void *)msg {
+-(void)pollQueue:(NSTimer *)timer {
   void *buffer;
   int available = [ringBuffer lengthAvailableToReadReturningPointer:&buffer];
   if (!available) return;
@@ -272,52 +271,44 @@ static void evaluateTypedMessage(params *p, void **buffer) {
 
 @end
 
-static void init_messaging() {
-  ringBuffer = [[VirtualRingBuffer alloc] initWithLength:32768];
-  deadline = [NSDate distantPast];
-  machPort = [[NSMachPort alloc] init];
-  PdNotificationHandler *handler = [[PdNotificationHandler alloc] init];
-  [machPort setDelegate:handler];
-  [[NSRunLoop currentRunLoop] addPort:machPort forMode:NSDefaultRunLoopMode];
-}
-
-static int notifyMainThread(int v) {
-  void *buffer;
-  if ([ringBuffer lengthAvailableToReadReturningPointer:&buffer]) {
-    [machPort sendBeforeDate:deadline components:nil from:nil reserved:0];
-  }
-  return v;
-}
+static NSTimer *pollTimer;
+static PdMessageHandler *messageHandler;
 
 
 @implementation PdBase
 
+// Not synchronized; only to be initialized from main thread.
 + (void)initialize {
-  @synchronized(self) {
-    libpd_printhook = (t_libpd_printhook) printHook;
-    libpd_banghook = (t_libpd_banghook) bangHook;
-    libpd_floathook = (t_libpd_floathook) floatHook;
-    libpd_symbolhook = (t_libpd_symbolhook) symbolHook;
-    libpd_listhook = (t_libpd_listhook) listHook;
-    libpd_messagehook = (t_libpd_messagehook) messageHook;   
-    
-    init_messaging();
-    libpd_init();
-  }
+  libpd_printhook = (t_libpd_printhook) printHook;
+  libpd_banghook = (t_libpd_banghook) bangHook;
+  libpd_floathook = (t_libpd_floathook) floatHook;
+  libpd_symbolhook = (t_libpd_symbolhook) symbolHook;
+  libpd_listhook = (t_libpd_listhook) listHook;
+  libpd_messagehook = (t_libpd_messagehook) messageHook;   
+  
+  ringBuffer = [[VirtualRingBuffer alloc] initWithLength:32768];
+  messageHandler = [[PdMessageHandler alloc] init];
+  libpd_init();
 }
 
+// Not synchronized; only to be initialized from main thread.
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate {
-  @synchronized(self) {
-    [newDelegate retain];
-    [delegate release];
-    delegate = newDelegate;
+  if (newDelegate == delegate) return;
+  if (!newDelegate) {
+    [pollTimer invalidate]; // This also releases the timer.
+    pollTimer = nil;
+  }
+  [newDelegate retain];
+  [delegate release];
+  delegate = newDelegate;
+  if (delegate && !pollTimer) {
+    pollTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:messageHandler selector:@selector(pollQueue:) userInfo:nil repeats:YES];
   }
 }
 
+// Not synchronized; only to be initialized from main thread.
 + (NSObject<PdReceiverDelegate> *)getDelegate {
-  @synchronized(self) {
-    return delegate;
-  }
+  return delegate;
 }
 
 + (void *)subscribe:(NSString *)symbol {
@@ -401,25 +392,28 @@ static int notifyMainThread(int v) {
 
 + (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer {
   @synchronized(self) {
-    return notifyMainThread(libpd_process_float(inputBuffer, outputBuffer));
+    return libpd_process_float(inputBuffer, outputBuffer);
   }
 }
 
 + (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer {
   @synchronized(self) {
-    return notifyMainThread(libpd_process_double(inputBuffer, outputBuffer));
+    return libpd_process_double(inputBuffer, outputBuffer);
   }
 }
 
 + (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer {
   @synchronized(self) {
-    return notifyMainThread(libpd_process_short(inputBuffer, outputBuffer));
+    return libpd_process_short(inputBuffer, outputBuffer);
   }
 }
 
 + (void)computeAudio:(BOOL)enable {
-  [PdBase sendMessage:@"dsp" withArguments:[NSArray arrayWithObject:[NSNumber numberWithBool:enable]]
-           toReceiver:@"pd"];
+  NSNumber *val = [[NSNumber alloc] initWithBool:enable];
+  NSArray *args = [[NSArray alloc] initWithObjects:val, nil];
+  [PdBase sendMessage:@"dsp" withArguments:args toReceiver:@"pd"];
+  [args release];
+  [val release];
 }
 
 + (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
