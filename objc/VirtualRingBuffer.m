@@ -23,9 +23,10 @@
 
 @implementation VirtualRingBuffer
 
+@synthesize bufferLength;
+
 static void *allocateVirtualBuffer(UInt32 bufferLength);
 static void deallocateVirtualBuffer(void *buffer, UInt32 bufferLength);
-
 
 - (id)initWithLength:(UInt32)length
 {

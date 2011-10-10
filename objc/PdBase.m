@@ -290,12 +290,13 @@ static PdMessageHandler *messageHandler;
 }
 
 // Only to called from main thread.
-+ (BOOL)setMessageBufferSize:(size_t)size {
-  if (ringBuffer) return NO;
-  @synchronized(self) {  // Still need to synchronize for visibility.
-    ringBuffer = [[VirtualRingBuffer alloc] initWithLength:size];
++ (size_t)setMessageBufferSize:(size_t)size {
+  if (!ringBuffer) {
+    @synchronized(self) {  // Still need to synchronize for visibility.
+      ringBuffer = [[VirtualRingBuffer alloc] initWithLength:size];
+    }
   }
-  return ringBuffer != nil;
+  return ringBuffer.bufferLength;
 }
 
 // Only to be called from main thread.

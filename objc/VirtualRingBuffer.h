@@ -59,6 +59,8 @@
     volatile void *writePointer;
 }
 
+@property(readonly, nonatomic) UInt32 bufferLength;
+
 - (id)initWithLength:(UInt32)length;
 // Note: The specified length will be rounded up to an integral number of VM pages.
 

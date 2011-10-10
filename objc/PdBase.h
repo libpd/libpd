@@ -53,7 +53,7 @@
 /** http://www.gitorious.org/pdlib/pages/Libpd */
 
 + (void)initialize;
-+ (BOOL)setMessageBufferSize:(size_t)size;
++ (size_t)setMessageBufferSize:(size_t)size;
 // PdBase retains the delegate: call setDelegate with nil in order to release delegate.
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
 + (NSObject<PdReceiverDelegate> *)getDelegate;
