@@ -277,7 +277,6 @@ static PdMessageHandler *messageHandler;
 
 @implementation PdBase
 
-// Not synchronized; only to be initialized from main thread.
 + (void)initialize {
   libpd_printhook = (t_libpd_printhook) printHook;
   libpd_banghook = (t_libpd_banghook) bangHook;
