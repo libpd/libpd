@@ -38,7 +38,7 @@
 
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
-static VirtualRingBuffer *ringBuffer;
+static VirtualRingBuffer *ringBuffer = nil;
 
 static NSArray *decodeList(int argc, t_atom *argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
@@ -285,17 +285,27 @@ static PdMessageHandler *messageHandler;
   libpd_listhook = (t_libpd_listhook) listHook;
   libpd_messagehook = (t_libpd_messagehook) messageHook;   
   
-  ringBuffer = [[VirtualRingBuffer alloc] initWithLength:32768];
   messageHandler = [[PdMessageHandler alloc] init];
   libpd_init();
 }
 
-// Not synchronized; only to be initialized from main thread.
+// Only to called from main thread.
++ (BOOL)setMessageBufferSize:(size_t)size {
+  if (ringBuffer) return NO;
+  @synchronized(self) {  // Still need to synchronize for visibility.
+    ringBuffer = [[VirtualRingBuffer alloc] initWithLength:size];
+  }
+  return ringBuffer != nil;
+}
+
+// Only to be called from main thread.
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate {
   if (newDelegate == delegate) return;
   if (!newDelegate) {
     [pollTimer invalidate]; // This also releases the timer.
     pollTimer = nil;
+  } else {
+    [self setMessageBufferSize:65536]; // Will do nothing if buffer is already initialized.
   }
   [newDelegate retain];
   [delegate release];
@@ -305,7 +315,7 @@ static PdMessageHandler *messageHandler;
   }
 }
 
-// Not synchronized; only to be initialized from main thread.
+// Only to be initialized from main thread.
 + (NSObject<PdReceiverDelegate> *)getDelegate {
   return delegate;
 }
