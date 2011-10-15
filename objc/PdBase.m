@@ -274,4 +274,58 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
++ (int)sendNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity {
+  @synchronized(self) {
+    return libpd_noteon(channel, pitch, velocity);
+  }
+}
+
++ (int)sendControlChange:(int)channel controller:(int)controller value:(int)value {
+  @synchronized(self) {
+    return libpd_controlchange(channel, controller, value);
+  }
+}
+
++ (int)sendProgramChange:(int)channel value:(int)value {
+  @synchronized(self) {
+    return libpd_programchange(channel, value);
+  }
+}
+
++ (int)sendPitchBend:(int)channel value:(int)value {
+  @synchronized(self) {
+    return libpd_pitchbend(channel, value);
+  }
+}
+
++ (int)sendAftertouch:(int)channel value:(int)value {
+  @synchronized(self) {
+    return libpd_aftertouch(channel, value);
+  }
+}
+
++ (int)sendPolyAftertouch:(int)channel pitch:(int)pitch value:(int)value {
+  @synchronized(self) {
+    return libpd_polyaftertouch(channel, pitch, value);
+  }
+}
+
++ (int)sendMidiByte:(int)port byte:(int)byte {
+  @synchronized(self) {
+    return libpd_midibyte(port, byte);
+  }
+}
+
++ (int)sendSysex:(int)port byte:(int)byte {
+  @synchronized(self) {
+    return libpd_sysex(port, byte);
+  }
+}
+
++ (int)sendSysRealTime:(int)port byte:(int)byte {
+  @synchronized(self) {
+    return libpd_sysrealtime(port, byte);
+  }
+}
+
 @end

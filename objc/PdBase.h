@@ -55,28 +55,43 @@
 + (void)initialize;
 /** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
+
++ (void)clearSearchPath;
++ (void)addToSearchPath:(NSString *)path;
+
++ (void *)openFile:(NSString *)baseName path:(NSString *)pathName;
++ (void)closeFile:(void *)x;
++ (int)dollarZeroForFile:(void *)x;
+
++ (int)getBlockSize;
++ (int)openAudioWithSampleRate:(int)samplerate andInputChannels:(int)inputChannels 
+             andOutputChannels:(int)outputchannels andTicksPerBuffer:(int)ticksPerBuffer;
++ (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer;
++ (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer;
++ (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer;
++ (void)computeAudio:(BOOL)enable;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;
++ (BOOL)exists:(NSString *)symbol;
+
 + (int)sendBangToReceiver:(NSString *)receiverName;
 + (int)sendFloat:(float)value toReceiver:(NSString *)receiverName;
 + (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName;
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName;
-+ (void)clearSearchPath;
-+ (void)addToSearchPath:(NSString *)path;
-+ (int)getBlockSize;
-+ (BOOL)exists:(NSString *)symbol;
-+ (int)openAudioWithSampleRate:(int)samplerate andInputChannels:(int)inputChannels 
-    andOutputChannels:(int)outputchannels andTicksPerBuffer:(int)ticksPerBuffer;
-+ (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer;
-+ (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer;
-+ (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer;
-+ (void)computeAudio:(BOOL)enable;
-+ (void *)openFile:(NSString *)baseName path:(NSString *)pathName;
-+ (void)closeFile:(void *)x;
-+ (int)dollarZeroForFile:(void *)x;
+
 + (int)arraySizeForArrayNamed:(NSString *)arrayName;
 + (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset toArray:(float *)destinationArray count:(int)n;
 + (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName withOffset:(int)offset count:(int)n;
+
++ (int)sendNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity;
++ (int)sendControlChange:(int)channel controller:(int)controller value:(int)value;
++ (int)sendProgramChange:(int)channel value:(int)value;
++ (int)sendPitchBend:(int)channel value:(int)value;
++ (int)sendAftertouch:(int)channel value:(int)value;
++ (int)sendPolyAftertouch:(int)channel pitch:(int)pitch value:(int)value;
++ (int)sendMidiByte:(int)port byte:(int)byte;
++ (int)sendSysex:(int)port byte:(int)byte;
++ (int)sendSysRealTime:(int)port byte:(int)byte;
 
 @end
