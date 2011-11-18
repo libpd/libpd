@@ -1,3 +1,13 @@
+//
+//  ringbuffer.h
+//  libpd
+//
+//  Copyright (c) 2011 Peter Brinkmann (peter.brinkmann@gmail.com)
+//
+//  For information on usage and redistribution, and for a DISCLAIMER OF ALL
+//  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+//
+
 #ifndef __LIBPD_RING_BUFFER_H__
 #define __LIBPD_RING_BUFFER_H__
 

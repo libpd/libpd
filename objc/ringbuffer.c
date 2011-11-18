@@ -1,3 +1,13 @@
+//
+//  ringbuffer.c
+//  libpd
+//
+//  Copyright (c) 2011 Peter Brinkmann (peter.brinkmann@gmail.com)
+//
+//  For information on usage and redistribution, and for a DISCLAIMER OF ALL
+//  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+//
+
 #include <stdlib.h>
 #include <string.h>
 #include <libkern/OSAtomic.h>
@@ -24,6 +34,9 @@ void rb_free(ring_buffer *buffer) {
 }
 
 size_t rb_available_to_write(ring_buffer *buffer) {
+    // Note: The largest possible result is buffer->size - 1 because
+    // we adopt the convention that read_idx == write_idx means that the
+    // buffer is empty.
     return (buffer->size + buffer->read_idx - buffer->write_idx - 1) % buffer->size;
 }
 
