@@ -33,12 +33,12 @@
  */
 
 #import "PdBase.h"
-#import "VirtualRingBuffer.h"
+#import "ringbuffer.h"
 #include "z_libpd.h"
 
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
-static VirtualRingBuffer *ringBuffer = nil;
+static ring_buffer *ringBuffer = NULL;
 
 static NSArray *decodeList(int argc, t_atom *argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
@@ -89,14 +89,10 @@ typedef struct _params {
 
 static void printHook(const char *s) {
   int len = strlen(s) + 1; // remember terminating null char
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
-  if (available >= S_PARAMS + len) {
-    params *p = buffer;
-    p->type = PRINT;
-    p->argc = len;
-    memcpy(buffer + S_PARAMS, s, len);
-    [ringBuffer didWriteLength:S_PARAMS + len];
+  if (rb_available_to_write(ringBuffer) >= S_PARAMS + len) {
+    params p = {PRINT, NULL, 0.0f, NULL, len};
+    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, s, len);
   }
 }
 
@@ -110,13 +106,9 @@ static void evaluatePrintMessage(params *p, void **buffer) {
 }
 
 static void bangHook(const char *src) {
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
-  if (available >= S_PARAMS) {
-    params *p = buffer;
-    p->type = BANG;
-    p->src = src;
-    [ringBuffer didWriteLength:S_PARAMS];
+  if (rb_available_to_write(ringBuffer) >= S_PARAMS) {
+    params p = {BANG, src, 0.0f, NULL, 0};
+    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
   }
 }
 
@@ -129,14 +121,9 @@ static void evaluateBangMessage(params *p, void **buffer) {
 }
 
 static void floatHook(const char *src, float x) {
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
-  if (available >= S_PARAMS) {
-    params *p = buffer;
-    p->type = FLOAT;
-    p->src = src;
-    p->x = x;
-    [ringBuffer didWriteLength:S_PARAMS];
+  if (rb_available_to_write(ringBuffer) >= S_PARAMS) {
+    params p = {FLOAT, src, x, NULL, 0};
+    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
   }
 }
 
@@ -149,14 +136,9 @@ static void evaluateFloatMessage(params *p, void **buffer) {
 }
 
 static void symbolHook(const char *src, const char *sym) {
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
-  if (available >= S_PARAMS) {
-    params *p = buffer;
-    p->type = SYMBOL;
-    p->src = src;
-    p->sym = sym;
-    [ringBuffer didWriteLength:S_PARAMS];
+  if (rb_available_to_write(ringBuffer) >= S_PARAMS) {
+    params p = {SYMBOL, src, 0.0f, sym, 0};
+    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
   }
 }
 
@@ -171,16 +153,11 @@ static void evaluateSymbolMessage(params *p, void **buffer) {
 }
 
 static void listHook(const char *src, int argc, t_atom *argv) {
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
   int n = argc * S_ATOM;
-  if (available >= S_PARAMS + n) {
-    params *p = buffer;
-    p->type = LIST;
-    p->src = src;
-    p->argc = argc;
-    memcpy(buffer + S_PARAMS, argv, n);
-    [ringBuffer didWriteLength:S_PARAMS + n];
+  if (rb_available_to_write(ringBuffer) >= S_PARAMS + n) {
+    params p = {LIST, src, 0.0f, NULL, argc};
+    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, argv, n);
   }
 }
 
@@ -196,17 +173,11 @@ static void evaluateListMessage(params *p, void **buffer) {
 }
 
 static void messageHook(const char *src, const char* sym, int argc, t_atom *argv) {
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToWriteReturningPointer:&buffer];
   int n = argc * S_ATOM;
-  if (available >= S_PARAMS + n) {
-    params *p = buffer;
-    p->type = MESSAGE;
-    p->src = src;
-    p->sym = sym;
-    p->argc = argc;
-    memcpy(buffer + S_PARAMS, argv, n);
-    [ringBuffer didWriteLength:S_PARAMS + n];
+  if (rb_available_to_write(ringBuffer) >= S_PARAMS + n) {
+    params p = {MESSAGE, src, 0.0f, sym, argc};
+    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, argv, n);
   }
 }
 
@@ -230,10 +201,13 @@ static void evaluateTypedMessage(params *p, void **buffer) {
 @implementation PdMessageHandler
 
 -(void)pollQueue:(NSTimer *)timer {
-  void *buffer;
-  int available = [ringBuffer lengthAvailableToReadReturningPointer:&buffer];
+  size_t available = rb_available_to_read(ringBuffer);
   if (!available) return;
-  void *end = buffer + available;
+  void *start = malloc(available);
+  if (!start) return;
+  rb_read_from_buffer(ringBuffer, start, available);
+  void *end = start + available;
+  void *buffer = start;
   while (buffer < end) {
     params *p = buffer;
     buffer += S_PARAMS;
@@ -266,7 +240,7 @@ static void evaluateTypedMessage(params *p, void **buffer) {
         break;
     }
   }
-  [ringBuffer didReadLength:available];
+  free(start);
 }
 
 @end
@@ -293,10 +267,10 @@ static PdMessageHandler *messageHandler;
 + (size_t)setMessageBufferSize:(size_t)size {
   if (!ringBuffer) {
     @synchronized(self) {  // Still need to synchronize for visibility.
-      ringBuffer = [[VirtualRingBuffer alloc] initWithLength:size];
+      ringBuffer = rb_create(size);
     }
   }
-  return ringBuffer.bufferLength;
+  return ringBuffer->size;
 }
 
 // Only to be called from main thread.
