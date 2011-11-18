@@ -37,11 +37,15 @@ size_t rb_available_to_write(ring_buffer *buffer) {
     // Note: The largest possible result is buffer->size - 1 because
     // we adopt the convention that read_idx == write_idx means that the
     // buffer is empty.
-    return (buffer->size + buffer->read_idx - buffer->write_idx - 1) % buffer->size;
+    return buffer
+      ? (buffer->size + buffer->read_idx - buffer->write_idx - 1) % buffer->size
+      : 0;
 }
 
 size_t rb_available_to_read(ring_buffer *buffer) {
-    return (buffer->size + buffer->write_idx - buffer->read_idx) % buffer->size;
+    return buffer
+      ? (buffer->size + buffer->write_idx - buffer->read_idx) % buffer->size
+      : 0;
 }
 
 int rb_write_to_buffer(ring_buffer *buffer, const void *src, size_t len) {

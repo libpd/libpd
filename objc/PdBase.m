@@ -38,7 +38,8 @@
 
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
-static ring_buffer *ringBuffer = NULL;
+static volatile ring_buffer *ringBuffer = NULL;
+static void *tempBuffer = NULL;
 
 static NSArray *decodeList(int argc, t_atom *argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
@@ -203,11 +204,9 @@ static void evaluateTypedMessage(params *p, void **buffer) {
 -(void)pollQueue:(NSTimer *)timer {
   size_t available = rb_available_to_read(ringBuffer);
   if (!available) return;
-  void *start = malloc(available);
-  if (!start) return;
-  rb_read_from_buffer(ringBuffer, start, available);
-  void *end = start + available;
-  void *buffer = start;
+  rb_read_from_buffer(ringBuffer, tempBuffer, available);
+  void *end = tempBuffer + available;
+  void *buffer = tempBuffer;
   while (buffer < end) {
     params *p = buffer;
     buffer += S_PARAMS;
@@ -240,7 +239,6 @@ static void evaluateTypedMessage(params *p, void **buffer) {
         break;
     }
   }
-  free(start);
 }
 
 @end
@@ -266,8 +264,13 @@ static PdMessageHandler *messageHandler;
 // Only to called from main thread.
 + (size_t)setMessageBufferSize:(size_t)size {
   if (!ringBuffer) {
-    @synchronized(self) {  // Still need to synchronize for visibility.
-      ringBuffer = rb_create(size);
+    ringBuffer = rb_create(size);
+    if (!ringBuffer) return 0;
+    tempBuffer = malloc(size);
+    if (!tempBuffer) {
+      rb_free(ringBuffer);
+      ringBuffer = NULL;
+      return 0;
     }
   }
   return ringBuffer->size;
@@ -280,7 +283,7 @@ static PdMessageHandler *messageHandler;
     [pollTimer invalidate]; // This also releases the timer.
     pollTimer = nil;
   } else {
-    [self setMessageBufferSize:65536]; // Will do nothing if buffer is already initialized.
+    [self setMessageBufferSize:32768]; // Will do nothing if buffer is already initialized.
   }
   [newDelegate retain];
   [delegate release];
