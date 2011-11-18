@@ -12,10 +12,10 @@
 #define __LIBPD_RING_BUFFER_H__
 
 typedef struct ring_buffer {
-  size_t size;
-  void *buf_ptr;
-  volatile size_t write_idx;
-  volatile size_t read_idx;
+    size_t size;
+    void *buf_ptr;
+    volatile size_t write_idx;
+    volatile size_t read_idx;
 } ring_buffer;
 
 ring_buffer *rb_create(size_t size);

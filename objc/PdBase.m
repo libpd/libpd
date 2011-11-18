@@ -38,7 +38,7 @@
 
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
-static volatile ring_buffer *ringBuffer = NULL;
+static ring_buffer * volatile ringBuffer = NULL;
 static void *tempBuffer = NULL;
 
 static NSArray *decodeList(int argc, t_atom *argv) {
