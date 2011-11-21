@@ -50,11 +50,10 @@
   // Not meant to be instantiated. No member variables.
 }
 
-/** http://www.gitorious.org/pdlib/pages/Libpd */
-
 + (void)initialize;
-/** PdBase retains the delegate: call setDelegate with nil in order to release delegate. */
-+ (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;
++ (size_t)setMessageBufferSize:(size_t)size;
++ (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;  // PdBase retains the delegate: call setDelegate with nil in order to release delegate.
++ (NSObject<PdReceiverDelegate> *)getDelegate;
 
 + (void)clearSearchPath;
 + (void)addToSearchPath:(NSString *)path;

@@ -49,10 +49,6 @@
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 @end
 
-
-// Subclass of PdDispatcher that invokes its receive* methods on the main UI thread.
-// This class is very experimental and may disappear again without
-// warning.  Use at your own risk!
-@interface PdUiDispatcher : PdDispatcher {}
+// Subclass of PdDispatcher that logs all callbacks, mostly for development and debugging.
+@interface LoggingDispatcher : PdDispatcher {}
 @end
-

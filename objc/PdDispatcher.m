@@ -33,39 +33,35 @@
 }
 
 - (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
-    @synchronized(self) {
-        NSMutableArray *listeners = [listenerMap objectForKey:symbol];
-        if (!listeners) {
-            void *ptr = [PdBase subscribe:symbol];
-            if (!ptr) {
-                return -1;
-            }
-            NSValue *handle = [NSValue valueWithPointer:ptr];
-            [subscriptions setObject:handle forKey:symbol];
-            listeners = [[NSMutableArray alloc] init];
-            [listenerMap setObject:listeners forKey:symbol];
-            [listeners release];
+    NSMutableArray *listeners = [listenerMap objectForKey:symbol];
+    if (!listeners) {
+        void *ptr = [PdBase subscribe:symbol];
+        if (!ptr) {
+            return -1;
         }
-        [listeners addObject:listener];
-        return 0;
+        NSValue *handle = [NSValue valueWithPointer:ptr];
+        [subscriptions setObject:handle forKey:symbol];
+        listeners = [[NSMutableArray alloc] init];
+        [listenerMap setObject:listeners forKey:symbol];
+        [listeners release];
     }
+    [listeners addObject:listener];
+    return 0;
 }
 
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
-    @synchronized(self) {
-        NSMutableArray *listeners = [listenerMap objectForKey:symbol];
-        if (listeners) {
-            [listeners removeObject:listener];
-            if ([listeners count] == 0) {
-                NSValue *handle = [subscriptions objectForKey:symbol];
-                void *ptr = [handle pointerValue];
-                [PdBase unsubscribe:ptr];
-                [subscriptions removeObjectForKey:symbol];
-                [listenerMap removeObjectForKey:symbol];
-            }
+    NSMutableArray *listeners = [listenerMap objectForKey:symbol];
+    if (listeners) {
+        [listeners removeObject:listener];
+        if ([listeners count] == 0) {
+            NSValue *handle = [subscriptions objectForKey:symbol];
+            void *ptr = [handle pointerValue];
+            [PdBase unsubscribe:ptr];
+            [subscriptions removeObjectForKey:symbol];
+            [listenerMap removeObjectForKey:symbol];
         }
-        return 0;
     }
+    return 0;
 }
 
 // Override this method in subclasses if you want different printing behavior.
@@ -75,46 +71,56 @@
 }
 
 - (void)receiveBangFromSource:(NSString *)source {
-    @synchronized(self) {
-        NSArray *listeners = [listenerMap objectForKey:source];
-        for (NSObject<PdListener> *listener in listeners) {
+    NSArray *listeners = [listenerMap objectForKey:source];
+    for (NSObject<PdListener> *listener in listeners) {
+        if ([listener respondsToSelector:@selector(receiveBang)]) {
             [listener receiveBang];
+        } else {
+            NSLog(@"Unhandled bang from %@", source);
         }
     }
 }
 
 - (void)receiveFloat:(float)received fromSource:(NSString *)source {
-    @synchronized(self) {
-        NSArray *listeners = [listenerMap objectForKey:source];
-        for (NSObject<PdListener> *listener in listeners) {
+    NSArray *listeners = [listenerMap objectForKey:source];
+    for (NSObject<PdListener> *listener in listeners) {
+        if ([listener respondsToSelector:@selector(receiveFloat:)]) {
             [listener receiveFloat:received];
+        } else {
+            NSLog(@"Unhandled float from %@", source);
         }
     }
 }
 
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
-    @synchronized(self) {
-        NSArray *listeners = [listenerMap objectForKey:source];
-        for (NSObject<PdListener> *listener in listeners) {
+    NSArray *listeners = [listenerMap objectForKey:source];
+    for (NSObject<PdListener> *listener in listeners) {
+        if ([listener respondsToSelector:@selector(receiveSymbol:)]) {
             [listener receiveSymbol:symbol];
+        } else {
+            NSLog(@"Unhandled symbol from %@", source);
         }
     }
 }
 
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
-    @synchronized(self) {
-        NSArray *listeners = [listenerMap objectForKey:source];
-        for (NSObject<PdListener> *listener in listeners) {
+    NSArray *listeners = [listenerMap objectForKey:source];
+    for (NSObject<PdListener> *listener in listeners) {
+        if ([listener respondsToSelector:@selector(receiveList:)]) {
             [listener receiveList:list];
+        } else {
+            NSLog(@"Unhandled list from %@", source);
         }
     }
 }
 
 - (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
-    @synchronized(self) {
-        NSArray *listeners = [listenerMap objectForKey:source];
-        for (NSObject<PdListener> *listener in listeners) {
+    NSArray *listeners = [listenerMap objectForKey:source];
+    for (NSObject<PdListener> *listener in listeners) {
+        if ([listener respondsToSelector:@selector(receiveMessage:withArguments:)]) {
             [listener receiveMessage:message withArguments:arguments];
+        } else {
+            NSLog(@"Unhandled typed message from %@", source);
         }
     }
 }
@@ -122,31 +128,31 @@
 @end
 
 
-#import "dispatch/dispatch.h"
-
-#define ON_MAIN_THREAD(f) \
-    dispatch_async(dispatch_get_main_queue(), ^(void) { f; });
-
-@implementation PdUiDispatcher
+@implementation LoggingDispatcher
 
 -(void)receiveBangFromSource:(NSString *)source {
-    ON_MAIN_THREAD([super receiveBangFromSource:source]);
+    NSLog(@"Received bang from source %@", source);
+    [super receiveBangFromSource:source];
 }
 
 -(void)receiveFloat:(float)received fromSource:(NSString *)source {
-    ON_MAIN_THREAD([super receiveFloat:received fromSource:source]);
+    NSLog(@"Received float %f from source %@", received, source);
+    [super receiveFloat:received fromSource:source];
 }
 
 -(void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
-    ON_MAIN_THREAD([super receiveSymbol:symbol fromSource:source]);
+    NSLog(@"Received symbol %@ from source %@", symbol, source);
+    [super receiveSymbol:symbol fromSource:source];
 }
 
 -(void)receiveList:(NSArray *)list fromSource:(NSString *)source {
-    ON_MAIN_THREAD([super receiveList:list fromSource:source]);
+    NSLog(@"Received list %@ from source %@", list, source);
+    [super receiveList:list fromSource:source];
 }
 
 -(void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
-    ON_MAIN_THREAD([super receiveMessage:message withArguments:arguments fromSource:source]);
+    NSLog(@"Received message %@ with arguments %@ from source %@", message, arguments, source);
+    [super receiveMessage:message withArguments:arguments fromSource:source];
 }
 
 @end
