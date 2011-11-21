@@ -64,11 +64,15 @@
 + (int)dollarZeroForFile:(void *)x;
 
 + (int)getBlockSize;
-+ (int)openAudioWithSampleRate:(int)samplerate andInputChannels:(int)inputChannels 
-             andOutputChannels:(int)outputchannels andTicksPerBuffer:(int)ticksPerBuffer;
-+ (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer;
-+ (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer;
-+ (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer;
++ (int)openAudioWithSampleRate:(int)samplerate
+    andInputChannels:(int)inputChannels 
+    andOutputChannels:(int)outputchannels;
++ (int)processFloatWithInputBuffer:(float *)inputBuffer
+    andOutputBuffer:(float *)outputBuffer andTicks:(int)ticks;
++ (int)processDoubleWithInputBuffer:(double *)inputBuffer
+    andOutputBuffer:(double *)outputBuffer andTicks:(int)ticks;
++ (int)processShortWithInputBuffer:(short *)inputBuffer
+    andOutputBuffer:(short *)outputBuffer andTicks:(int)ticks;
 + (void)computeAudio:(BOOL)enable;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;

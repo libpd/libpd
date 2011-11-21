@@ -243,11 +243,9 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_addToSearchPath
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
-(JNIEnv *env, jclass cls, jint inChans, jint outChans,
-jint srate, jint ticksPerBuffer) {
+(JNIEnv *env, jclass cls, jint inChans, jint outChans, jint srate) {
   CACHE_ENV
-  return libpd_init_audio((int) inChans, (int) outChans,
-               (int) srate, (int) ticksPerBuffer);
+  return libpd_init_audio((int) inChans, (int) outChans, (int) srate);
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_processRaw
@@ -264,43 +262,46 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_processRaw
   return err;
 }
 
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3S_3S
-(JNIEnv *env, jclass cls, jshortArray inBuffer, jshortArray outBuffer) {
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3S_3S
+(JNIEnv *env, jclass cls, jint ticks,
+    jshortArray inBuffer, jshortArray outBuffer) {
   if (inBuffer == NULL || outBuffer == NULL) {
     return -10;
   }
   CACHE_ENV
   short *pIn = (*env)->GetShortArrayElements(env, inBuffer, NULL);
   short *pOut = (*env)->GetShortArrayElements(env, outBuffer, NULL);
-  jint err = libpd_process_short(pIn, pOut);
+  jint err = libpd_process_short((int) ticks, pIn, pOut);
   (*env)->ReleaseShortArrayElements(env, inBuffer, pIn, 0);
   (*env)->ReleaseShortArrayElements(env, outBuffer, pOut, 0);
   return err;
 }
 
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3F_3F
-(JNIEnv *env, jclass cls, jfloatArray inBuffer, jfloatArray outBuffer) {
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3F_3F
+(JNIEnv *env, jclass cls, jint ticks,
+    jfloatArray inBuffer, jfloatArray outBuffer) {
   if (inBuffer == NULL || outBuffer == NULL) {
     return -10;
   }
   CACHE_ENV
   float *pIn = (*env)->GetFloatArrayElements(env, inBuffer, NULL);
   float *pOut = (*env)->GetFloatArrayElements(env, outBuffer, NULL);
-  jint err = libpd_process_float(pIn, pOut);
+  jint err = libpd_process_float((int) ticks, pIn, pOut);
   (*env)->ReleaseFloatArrayElements(env, inBuffer, pIn, 0);
   (*env)->ReleaseFloatArrayElements(env, outBuffer, pOut, 0);
   return err;
 }
 
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process___3D_3D
-(JNIEnv *env, jclass cls, jdoubleArray inBuffer, jdoubleArray outBuffer) {
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
+(JNIEnv *env, jclass cls, jint ticks,
+    jdoubleArray inBuffer, jdoubleArray outBuffer) {
   if (inBuffer == NULL || outBuffer == NULL) {
     return -10;
   }
   CACHE_ENV
   double *pIn = (*env)->GetDoubleArrayElements(env, inBuffer, NULL);
   double *pOut = (*env)->GetDoubleArrayElements(env, outBuffer, NULL);
-  jint err = libpd_process_double(pIn, pOut);
+  jint err = libpd_process_double((int) ticks, pIn, pOut);
   (*env)->ReleaseDoubleArrayElements(env, inBuffer, pIn, 0);
   (*env)->ReleaseDoubleArrayElements(env, outBuffer, pOut, 0);
   return err;

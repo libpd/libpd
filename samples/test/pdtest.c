@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
   libpd_printhook = (t_libpd_printhook) pdprint;
   libpd_noteonhook = (t_libpd_noteonhook) pdnoteon;
   libpd_init();
-  libpd_init_audio(1, 2, srate, 1);
+  libpd_init_audio(1, 2, srate);
   float inbuf[64], outbuf[128];  // one input channel, two output channels
                                  // block size 64, one tick per buffer
 
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
   int i;
   for (i = 0; i < 10 * srate / 64; i++) {
     // fill inbuf here
-    libpd_process_float(inbuf, outbuf);
+    libpd_process_float(1, inbuf, outbuf);
     // use outbuf here
   }
 

@@ -13,7 +13,7 @@ void libpd_clear_search_path();
 void libpd_add_to_search_path(const char *dir);
 
 int libpd_blocksize();
-int libpd_init_audio(int inch, int outch, int srate, int tpb);
+int libpd_init_audio(int inch, int outch, int srate);
 
 #define TYPEMAPS(t) \
 %typemap(in) t *inb { \
@@ -28,9 +28,9 @@ TYPEMAPS(float)
 TYPEMAPS(short)
 TYPEMAPS(double)
 int libpd_process_raw(float *inb, float *outb);
-int libpd_process_float(float *inb, float *outb);
-int libpd_process_short(short *inb, short *outb);
-int libpd_process_double(double *inb, double *outb);
+int libpd_process_float(int ticks, float *inb, float *outb);
+int libpd_process_short(int ticks, short *inb, short *outb);
+int libpd_process_double(int ticks, double *inb, double *outb);
 
 int libpd_arraysize(const char *name);
 int libpd_read_array(float *outb, const char *src, int offset, int n);
@@ -150,11 +150,12 @@ def libpd_release():
 
 class PdManager:
   def __init__(self, inch, outch, srate, ticks):
+    self.__ticks = ticks
     self.__outbuf = array.array('h', '\x00\x00' * outch * libpd_blocksize())
     libpd_compute_audio(1)
-    libpd_init_audio(inch, outch, srate, ticks)
+    libpd_init_audio(inch, outch, srate)
   def process(self, inbuf):
-    libpd_process_short(inbuf, self.__outbuf)
+    libpd_process_short(self.__ticks, inbuf, self.__outbuf)
     return self.__outbuf
 %}
 

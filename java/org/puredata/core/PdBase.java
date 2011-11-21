@@ -122,12 +122,10 @@ public final class PdBase {
 	 * @param inputChannels
 	 * @param outputChannels
 	 * @param sampleRate
-	 * @param ticksPerBuffer
-	 *            number of pd ticks per process call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int openAudio(int inputChannels,
-			int outputChannels, int sampleRate, int ticksPerBuffer);
+	public synchronized native static int openAudio(
+			int inputChannels, int outputChannels, int sampleRate);
 
 	/**
 	 * raw process callback, processes one pd tick, writes raw data to buffers
@@ -147,6 +145,8 @@ public final class PdBase {
 	 * main process callback, reads samples from inBuffer and writes samples to
 	 * outBuffer, using arrays of type short
 	 * 
+	 * @param ticks
+	 *            the number of Pd ticks (i.e., blocks of 64 frames) to compute
 	 * @param inBuffer
 	 *            must be an array of the right size, never null; use inBuffer =
 	 *            new short[0] if no input is desired
@@ -154,13 +154,15 @@ public final class PdBase {
 	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int process(short[] inBuffer,
-			short[] outBuffer);
+	public synchronized native static int process(int ticks,
+			short[] inBuffer, short[] outBuffer);
 
 	/**
 	 * main process callback, reads samples from inBuffer and writes samples to
 	 * outBuffer, using arrays of type float
 	 * 
+	 * @param ticks
+	 *            the number of Pd ticks (i.e., blocks of 64 frames) to compute
 	 * @param inBuffer
 	 *            must be an array of the right size, never null; use inBuffer =
 	 *            new short[0] if no input is desired
@@ -168,13 +170,15 @@ public final class PdBase {
 	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int process(float[] inBuffer,
-			float[] outBuffer);
+	public synchronized native static int process(int ticks,
+			float[] inBuffer, float[] outBuffer);
 
 	/**
 	 * main process callback, reads samples from inBuffer and writes samples to
 	 * outBuffer, using arrays of type double
 	 * 
+	 * @param ticks
+	 *            the number of Pd ticks (i.e., blocks of 64 frames) to compute
 	 * @param inBuffer
 	 *            must be an array of the right size, never null; use inBuffer =
 	 *            new short[0] if no input is desired
@@ -182,8 +186,8 @@ public final class PdBase {
 	 *            must be an array of size outBufferSize from openAudio call
 	 * @return error code, 0 on success
 	 */
-	public synchronized native static int process(double[] inBuffer,
-			double[] outBuffer);
+	public synchronized native static int process(int ticks,
+			double[] inBuffer, double[] outBuffer);
 
 	/**
 	 * @param name of the array in Pd
