@@ -107,7 +107,7 @@ OSStatus renderCallback(void *inRefCon, AudioUnitRenderActionFlags *ioActionFlag
   for (int i = 0; i < floatBufferLength; i++) {
     floatBuffer[i] = ((float) shortBuffer[i]) * a;
   }
-  [PdBase processFloatWithInputBuffer:floatBuffer andOutputBuffer:floatBuffer andTicks:controller.ticksPerBuffer];
+  [PdBase processFloatWithInputBuffer:floatBuffer outputBuffer:floatBuffer ticks:controller.ticksPerBuffer];
   for (int i = 0; i < floatBufferLength; i++) {
     float f = floatBuffer[i];
     if (f < -1.0f) shortBuffer[i] = -32767;
@@ -185,8 +185,8 @@ void audioSessionInterruptListener(void *inClientData, UInt32 inInterruption) {
                   [self initializeAudioSession:ticks withAudioCategory:audioSessionCategory]);
     FAIL_ON_ERROR(@"init audio unit failed with status %ld", [self initializeAudioUnit]);
     FAIL_ON_ERROR(@"PdBase openAudio failed wit status %ld",
-                  [PdBase openAudioWithSampleRate:sampleRate andInputChannels:numInputChannels 
-                                andOutputChannels:numOutputChannels]);
+                  [PdBase openAudioWithSampleRate:sampleRate inputChannels:numInputChannels 
+                                outputChannels:numOutputChannels]);
 
     [PdBase computeAudio:YES];
   }
