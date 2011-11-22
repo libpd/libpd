@@ -294,7 +294,7 @@ static PdMessageHandler *messageHandler;
 }
 
 // Only to be initialized from main thread.
-+ (NSObject<PdReceiverDelegate> *)getDelegate {
++ (NSObject<PdReceiverDelegate> *)delegate {
   return delegate;
 }
 
@@ -370,25 +370,25 @@ static PdMessageHandler *messageHandler;
   }
 }
 
-+ (int)openAudioWithSampleRate:(int)samplerate andInputChannels:(int)inputChannels andOutputChannels:(int)outputchannels {
++ (int)openAudioWithSampleRate:(int)samplerate inputChannels:(int)inputChannels outputChannels:(int)outputchannels {
   @synchronized(self) {
     return libpd_init_audio(inputChannels, outputchannels, samplerate);
   }
 }
 
-+ (int)processFloatWithInputBuffer:(float *)inputBuffer andOutputBuffer:(float *)outputBuffer andTicks:(int)ticks {
++ (int)processFloatWithInputBuffer:(float *)inputBuffer outputBuffer:(float *)outputBuffer ticks:(int)ticks {
   @synchronized(self) {
     return libpd_process_float(ticks, inputBuffer, outputBuffer);
   }
 }
 
-+ (int)processDoubleWithInputBuffer:(double *)inputBuffer andOutputBuffer:(double *)outputBuffer andTicks:(int)ticks {
++ (int)processDoubleWithInputBuffer:(double *)inputBuffer outputBuffer:(double *)outputBuffer ticks:(int)ticks {
   @synchronized(self) {
     return libpd_process_double(ticks, inputBuffer, outputBuffer);
   }
 }
 
-+ (int)processShortWithInputBuffer:(short *)inputBuffer andOutputBuffer:(short *)outputBuffer andTicks:(int)ticks {
++ (int)processShortWithInputBuffer:(short *)inputBuffer outputBuffer:(short *)outputBuffer ticks:(int)ticks {
   @synchronized(self) {
     return libpd_process_short(ticks, inputBuffer, outputBuffer);
   }
