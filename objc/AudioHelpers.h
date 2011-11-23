@@ -13,7 +13,7 @@
 #pragma mark - Audio Unit / Audio Session Debugging
 
 // uncomment this to log more information from the audio classes, or define it in "Other C Flags" build settings
-#define AU_DEBUG_VERBOSE
+//#define AU_DEBUG_VERBOSE
 
 // returns the name of the const value assosated with the OSStatus as a string
 extern NSString *AVStatusCodeAsString(OSStatus status);
