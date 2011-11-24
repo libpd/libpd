@@ -11,7 +11,7 @@ extern "C" {
 #define PD_MAJOR_VERSION 0
 #define PD_MINOR_VERSION 43
 #define PD_BUGFIX_VERSION 1
-#define PD_TEST_VERSION "test2"
+#define PD_TEST_VERSION "test5"
 
 /* old name for "MSW" flag -- we have to take it for the sake of many old
 "nmakefiles" for externs, which will define NT and not MSW */
@@ -28,7 +28,7 @@ extern "C" {
 #endif /* _MSC_VER */
 
     /* the external storage class is "extern" in UNIX; in MSW it's ugly. */
-#ifdef MSW
+#ifdef _WIN32
 #ifdef PD_INTERNAL
 #define EXTERN __declspec(dllexport) extern
 #else
@@ -36,7 +36,7 @@ extern "C" {
 #endif /* PD_INTERNAL */
 #else
 #define EXTERN extern
-#endif /* MSW */
+#endif /* _WIN32 */
 
     /* and depending on the compiler, hidden data structures are
     declared differently: */
