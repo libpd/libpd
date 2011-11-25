@@ -156,7 +156,7 @@
  * what tries to give a power of two frames to the audio unit, which
  * is inconsistent accross different devices.  As they are currently
  * truncating, we add in this value to make sure the resulting ticks
- * value is not halved.  This may break in future releases.
+ * value is not halved.
  */
 - (void)setTicksPerBuffer:(int)ticksPerBuffer {
 	if (self.ticksPerBuffer != ticksPerBuffer) {
