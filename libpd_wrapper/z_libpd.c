@@ -18,11 +18,7 @@
 #include "m_imp.h"
 #include "g_all_guis.h"
 
-/* some missing prototypes... */
 void pd_init(void);
-void inmidi_byte(int, int);
-void inmidi_sysex(int, int);
-void inmidi_realtimein(int, int);
 
 t_libpd_printhook libpd_printhook = NULL;
 t_libpd_banghook libpd_banghook = NULL;
