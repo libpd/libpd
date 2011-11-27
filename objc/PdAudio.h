@@ -38,6 +38,7 @@
 
 #import "PdBase.h"
 
+__attribute__((deprecated))
 @interface PdAudio : NSObject {
   AudioUnit audioUnit;
   int ticksPerBuffer;
