@@ -41,10 +41,14 @@ static NSObject<PdReceiverDelegate> *delegate = nil;
 static ring_buffer * volatile ringBuffer = NULL;
 static void *tempBuffer = NULL;
 
-static NSArray *decodeList(int argc, t_atom *argv) {
+#define S_PARAMS sizeof(params)
+#define S_ATOM sizeof(t_atom)
+
+static NSArray *decodeList(int argc, void **argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
-  for (int i = 0; i < argc; i++) {
-    t_atom a = argv[i];
+  for (int i = 0; i < argc; i++, *argv += S_ATOM) {
+    t_atom a;
+    memcpy(&a, *argv, S_ATOM);
     if (libpd_is_float(a)) {
       float x = libpd_get_float(a);
       NSNumber *num = [[NSNumber alloc] initWithFloat:x];
@@ -84,9 +88,6 @@ typedef struct _params {
   const char *sym;
   int argc;
 } params;
-
-#define S_PARAMS sizeof(params)
-#define S_ATOM sizeof(t_atom)
 
 static void printHook(const char *s) {
   int len = strlen(s) + 1; // remember terminating null char
@@ -165,12 +166,11 @@ static void listHook(const char *src, int argc, t_atom *argv) {
 static void evaluateListMessage(params *p, void **buffer) {
   if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
-    NSArray *args = decodeList(p->argc, *buffer);
+    NSArray *args = decodeList(p->argc, buffer);
     [delegate receiveList:args fromSource:src];
     [src release];
     [args release];
   }
-  *buffer += p->argc * S_ATOM;
 }
 
 static void messageHook(const char *src, const char* sym, int argc, t_atom *argv) {
@@ -186,13 +186,12 @@ static void evaluateTypedMessage(params *p, void **buffer) {
   if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
     NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
-    NSArray *args = decodeList(p->argc, *buffer);
+    NSArray *args = decodeList(p->argc, buffer);
     [delegate receiveMessage:sym withArguments:args fromSource:src];
     [src release];
     [sym release];
     [args release];
   }
-  *buffer += p->argc * S_ATOM;
 }
 
 @interface PdMessageHandler : NSObject {}
@@ -208,7 +207,8 @@ static void evaluateTypedMessage(params *p, void **buffer) {
   void *end = tempBuffer + available;
   void *buffer = tempBuffer;
   while (buffer < end) {
-    params p = *(params *)buffer;
+    params p;
+    memcpy(&p, buffer, S_PARAMS);
     buffer += S_PARAMS;
     switch (p.type) {
       case PRINT: {
