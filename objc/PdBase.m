@@ -208,31 +208,31 @@ static void evaluateTypedMessage(params *p, void **buffer) {
   void *end = tempBuffer + available;
   void *buffer = tempBuffer;
   while (buffer < end) {
-    params *p = buffer;
+    params p = *(params *)buffer;
     buffer += S_PARAMS;
-    switch (p->type) {
+    switch (p.type) {
       case PRINT: {
-        evaluatePrintMessage(p, &buffer);
+        evaluatePrintMessage(&p, &buffer);
         break;
       }
       case BANG: {
-        evaluateBangMessage(p, &buffer);
+        evaluateBangMessage(&p, &buffer);
         break;
       }
       case FLOAT: {
-        evaluateFloatMessage(p, &buffer);
+        evaluateFloatMessage(&p, &buffer);
         break;
       }
       case SYMBOL: {
-        evaluateSymbolMessage(p, &buffer);
+        evaluateSymbolMessage(&p, &buffer);
         break;
       }
       case LIST: {
-        evaluateListMessage(p, &buffer);
+        evaluateListMessage(&p, &buffer);
         break;
       }
       case MESSAGE: {
-        evaluateTypedMessage(p, &buffer);
+        evaluateTypedMessage(&p, &buffer);
         break;
       }
       default:
