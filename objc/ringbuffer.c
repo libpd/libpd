@@ -48,7 +48,7 @@ size_t rb_available_to_read(ring_buffer *buffer) {
       : 0;
 }
 
-int rb_write_to_buffer(ring_buffer *buffer, const void *src, size_t len) {
+int rb_write_to_buffer(ring_buffer *buffer, const char *src, size_t len) {
     if (len > rb_available_to_write(buffer)) return -1;
     size_t write_idx = buffer->write_idx;
     if (write_idx + len <= buffer->size) {
@@ -63,7 +63,7 @@ int rb_write_to_buffer(ring_buffer *buffer, const void *src, size_t len) {
     return 0; 
 }
 
-int rb_read_from_buffer(ring_buffer *buffer, void *dest, size_t len) {
+int rb_read_from_buffer(ring_buffer *buffer, char *dest, size_t len) {
     if (len > rb_available_to_read(buffer)) return -1;
     OSMemoryBarrier();
     size_t read_idx = buffer->read_idx;

@@ -39,12 +39,12 @@
 
 static NSObject<PdReceiverDelegate> *delegate = nil;
 static ring_buffer * volatile ringBuffer = NULL;
-static void *tempBuffer = NULL;
+static char *tempBuffer = NULL;
 
 #define S_PARAMS sizeof(params)
 #define S_ATOM sizeof(t_atom)
 
-static NSArray *decodeList(int argc, void **argv) {
+static NSArray *decodeList(int argc, char **argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
   for (int i = 0; i < argc; i++, *argv += S_ATOM) {
     t_atom a;
@@ -98,7 +98,7 @@ static void printHook(const char *s) {
   }
 }
 
-static void evaluatePrintMessage(params *p, void **buffer) {
+static void evaluatePrintMessage(params *p, char **buffer) {
   if ([delegate respondsToSelector:@selector(receivePrint:)]) {
     NSString *s = [[NSString alloc] initWithCString:*buffer encoding:NSASCIIStringEncoding];
     [delegate receivePrint:s];
@@ -114,7 +114,7 @@ static void bangHook(const char *src) {
   }
 }
 
-static void evaluateBangMessage(params *p, void **buffer) {
+static void evaluateBangMessage(params *p, char **buffer) {
   if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
     [delegate receiveBangFromSource:src];
@@ -129,7 +129,7 @@ static void floatHook(const char *src, float x) {
   }
 }
 
-static void evaluateFloatMessage(params *p, void **buffer) {
+static void evaluateFloatMessage(params *p, char **buffer) {
   if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
     [delegate receiveFloat:p->x fromSource:src];
@@ -144,7 +144,7 @@ static void symbolHook(const char *src, const char *sym) {
   }
 }
 
-static void evaluateSymbolMessage(params *p, void **buffer) {
+static void evaluateSymbolMessage(params *p, char **buffer) {
   if ([delegate respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
     NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
@@ -163,7 +163,7 @@ static void listHook(const char *src, int argc, t_atom *argv) {
   }
 }
 
-static void evaluateListMessage(params *p, void **buffer) {
+static void evaluateListMessage(params *p, char **buffer) {
   if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
     NSArray *args = decodeList(p->argc, buffer);
@@ -182,7 +182,7 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   }
 }
 
-static void evaluateTypedMessage(params *p, void **buffer) {
+static void evaluateTypedMessage(params *p, char **buffer) {
   if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
     NSString *src = [[NSString alloc] initWithCString:p->src encoding:NSASCIIStringEncoding];
     NSString *sym = [[NSString alloc] initWithCString:p->sym encoding:NSASCIIStringEncoding];
@@ -204,8 +204,8 @@ static void evaluateTypedMessage(params *p, void **buffer) {
   size_t available = rb_available_to_read(ringBuffer);
   if (!available) return;
   rb_read_from_buffer(ringBuffer, tempBuffer, available);
-  void *end = tempBuffer + available;
-  void *buffer = tempBuffer;
+  char *end = tempBuffer + available;
+  char *buffer = tempBuffer;
   while (buffer < end) {
     params p;
     memcpy(&p, buffer, S_PARAMS);
