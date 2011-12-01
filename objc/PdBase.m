@@ -93,7 +93,7 @@ static void printHook(const char *s) {
   int len = strlen(s) + 1; // remember terminating null char
   if (rb_available_to_write(ringBuffer) >= S_PARAMS + len) {
     params p = {PRINT, NULL, 0.0f, NULL, len};
-    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, (const char *)&p, S_PARAMS);
     rb_write_to_buffer(ringBuffer, s, len);
   }
 }
@@ -110,7 +110,7 @@ static void evaluatePrintMessage(params *p, char **buffer) {
 static void bangHook(const char *src) {
   if (rb_available_to_write(ringBuffer) >= S_PARAMS) {
     params p = {BANG, src, 0.0f, NULL, 0};
-    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, (const char *)&p, S_PARAMS);
   }
 }
 
@@ -125,7 +125,7 @@ static void evaluateBangMessage(params *p, char **buffer) {
 static void floatHook(const char *src, float x) {
   if (rb_available_to_write(ringBuffer) >= S_PARAMS) {
     params p = {FLOAT, src, x, NULL, 0};
-    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, (const char *)&p, S_PARAMS);
   }
 }
 
@@ -140,7 +140,7 @@ static void evaluateFloatMessage(params *p, char **buffer) {
 static void symbolHook(const char *src, const char *sym) {
   if (rb_available_to_write(ringBuffer) >= S_PARAMS) {
     params p = {SYMBOL, src, 0.0f, sym, 0};
-    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, (const char *)&p, S_PARAMS);
   }
 }
 
@@ -158,8 +158,8 @@ static void listHook(const char *src, int argc, t_atom *argv) {
   int n = argc * S_ATOM;
   if (rb_available_to_write(ringBuffer) >= S_PARAMS + n) {
     params p = {LIST, src, 0.0f, NULL, argc};
-    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
-    rb_write_to_buffer(ringBuffer, argv, n);
+    rb_write_to_buffer(ringBuffer, (const char *)&p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, (const char *)argv, n);
   }
 }
 
@@ -177,8 +177,8 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
   int n = argc * S_ATOM;
   if (rb_available_to_write(ringBuffer) >= S_PARAMS + n) {
     params p = {MESSAGE, src, 0.0f, sym, argc};
-    rb_write_to_buffer(ringBuffer, &p, S_PARAMS);
-    rb_write_to_buffer(ringBuffer, argv, n);
+    rb_write_to_buffer(ringBuffer, (const char *)&p, S_PARAMS);
+    rb_write_to_buffer(ringBuffer, (const char *)argv, n);
   }
 }
 
