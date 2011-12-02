@@ -23,7 +23,7 @@ static const AudioUnitElement kOutputElement = 0;
 @property (nonatomic) int numberOutputChannels;
 @property (nonatomic, getter=isInitialized) BOOL initialized;
 
-- (void)initAudioUnit;
+- (void)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
 - (void)destroyAudioUnit;
 - (void)initPd;
 - (void)checkSampleRateProperties;
@@ -71,7 +71,7 @@ static const AudioUnitElement kOutputElement = 0;
 	[self setNumberInputChannels:numInputs];
 	[self setNumberOutputChannels:numOutputs];
 
-	[self initAudioUnit];
+	[self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs];
 	[self initPd];
 	[self checkSampleRateProperties];
 
@@ -141,8 +141,8 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 #pragma mark - Private
 
-- (void)initAudioUnit {
-	AU_CHECK_RETURN(self.numberOutputChannels > 0, @"numberOutputChannels (%d) must be greater than 0", self.numberOutputChannels);
+- (void)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
+	AU_CHECK_RETURN(numOutputs > 0, @"numOutputs must be greater than 0");
 
 	AudioComponentDescription ioDescription = [self ioDescription];
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
@@ -158,7 +158,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 										 &callbackStruct,
 										 sizeof(callbackStruct)));
 	
-	AudioStreamBasicDescription outputStreamDescription = [self ASBDForNumberChannels:self.numberOutputChannels];
+	AudioStreamBasicDescription outputStreamDescription = [self ASBDForNumberChannels:numOutputs];
 	AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
 										 kAudioUnitProperty_StreamFormat,
 										 kAudioUnitScope_Input,
@@ -166,7 +166,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 										 &outputStreamDescription,
 										 sizeof(outputStreamDescription)));
 
-	if (self.numberInputChannels > 0) {
+	if (numInputs > 0) {
 		UInt32 enableInput = 1;
 		AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
 											 kAudioOutputUnitProperty_EnableIO,
@@ -175,7 +175,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 											 &enableInput,
 											 sizeof(enableInput)));
 		
-		AudioStreamBasicDescription inputStreamDescription = [self ASBDForNumberChannels:self.numberInputChannels];
+		AudioStreamBasicDescription inputStreamDescription = [self ASBDForNumberChannels:numInputs];
 		AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
 											 kAudioUnitProperty_StreamFormat,
 											 kAudioUnitScope_Output,
