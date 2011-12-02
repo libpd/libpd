@@ -67,17 +67,17 @@
 }
 
 - (PdAudioStatus)configureWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-	PdAudioStatus status = [self updateSampleRate:sampleRate];
-	status |= numInputs ? [self setCategory:AVAudioSessionCategoryPlayAndRecord] : [self setCategory:AVAudioSessionCategoryPlayback];
-	status |= [self configureAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs];
+	PdAudioStatus status = [self updateSampleRate:sampleRate]
+                | (numInputs ? [self setCategory:AVAudioSessionCategoryPlayAndRecord] : [self setCategory:AVAudioSessionCategoryPlayback])
+	            | [self configureAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
 - (PdAudioStatus)configureForBackgroundAudioWithSampleRate:(int)sampleRate numberOutputChannels:(int)numOutputs mixingEnabled:(BOOL)mixingEnabled {
-	PdAudioStatus status = [self updateSampleRate:sampleRate];
-	status |= mixingEnabled ? [self setCategory:AVAudioSessionCategoryAmbient] : [self setCategory:AVAudioSessionCategorySoloAmbient]; 
-	status |= [self configureAudioUnitWithSampleRate:sampleRate numberInputChannels:0 numberOutputChannels:numOutputs];
+	PdAudioStatus status = [self updateSampleRate:sampleRate]
+	            | (mixingEnabled ? [self setCategory:AVAudioSessionCategoryAmbient] : [self setCategory:AVAudioSessionCategorySoloAmbient]) 
+	            | [self configureAudioUnitWithSampleRate:sampleRate numberInputChannels:0 numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
