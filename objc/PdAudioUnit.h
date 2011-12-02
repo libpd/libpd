@@ -42,6 +42,9 @@ typedef enum PdAudioStatus {
 @property (nonatomic, readonly) int numberInputChannels;
 @property (nonatomic, readonly) int numberOutputChannels;
 
+// indicate/control whether the audio unit is currently playing
+@property (nonatomic, getter = isActive) BOOL active;
+
 // The configure method sets all parameters of the audio unit that may require it to be
 // recreated at the same time.  This is an expensive process and will stop the audio unit
 // before any reconstruction, causing a momentary pause in audio and UI if
@@ -49,15 +52,6 @@ typedef enum PdAudioStatus {
 - (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate
 					 numberInputChannels:(int)numInputs
 					numberOutputChannels:(int)numOutputs;
-
-// start the audio unit
-- (void)start;
-
-// stop the audio unit
-- (void)stop;
-
-// whether or not the audio unit is running
-- (BOOL)isRunning;
 
 // print info on the audio unit settings to the console
 - (void)print;

@@ -21,14 +21,11 @@ static const AudioUnitElement kOutputElement = 0;
 @property (nonatomic) Float64 sampleRate;
 @property (nonatomic) int numberInputChannels;
 @property (nonatomic) int numberOutputChannels;
-
-@property (nonatomic, getter=isRunning) BOOL running;
 @property (nonatomic, getter=isInitialized) BOOL initialized;
 
 - (void)initAudioUnit;
 - (void)destroyAudioUnit;
 - (void)initPd;
-- (void)logASBDs;
 - (void)checkSampleRateProperties;
 - (AudioComponentDescription)ioDescription;
 - (AudioStreamBasicDescription)ASBDForNumberChannels:(UInt32)numChannels;
@@ -38,7 +35,7 @@ static const AudioUnitElement kOutputElement = 0;
 @implementation PdAudioUnit
 
 @synthesize audioUnit = audioUnit_;
-@synthesize running	= isRunning_;
+@synthesize active = active_;
 @synthesize initialized = isInitialized_;
 @synthesize sampleRate = sampleRate_;
 @synthesize numberInputChannels = numberInputChannels_;
@@ -50,7 +47,7 @@ static const AudioUnitElement kOutputElement = 0;
     self = [super init];
     if (self) {
 		isInitialized_ = NO;
-		isRunning_ = NO;
+		active_ = NO;
 		blockSizeAsLog_ = log2int([PdBase getBlockSize]);
 	}
 	return self;
@@ -64,10 +61,8 @@ static const AudioUnitElement kOutputElement = 0;
 #pragma mark - Public Methods
 
 - (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-	Boolean isRunning = self.isRunning;
-	if (isRunning) {
-		[self stop];
-	}
+	Boolean wasActive = self.isActive;
+    self.active = NO;
 	if (self.isInitialized) {
 		[self destroyAudioUnit];
 	}
@@ -83,10 +78,7 @@ static const AudioUnitElement kOutputElement = 0;
 	if (!self.isInitialized) {
 		return PdAudioError;
 	}
-	
-	if (isRunning) {
-		[self start];
-	}
+	self.active = wasActive;
 
 	if (!floatsAreEqual(self.sampleRate, sampleRate) || (self.numberInputChannels != numInputs) || (self.numberOutputChannels != numOutputs)) {
 		return PdAudioPropertyChanged;
@@ -94,22 +86,16 @@ static const AudioUnitElement kOutputElement = 0;
 	return PdAudioOK;
 }
 
-- (void)start {
-	AU_CHECK_RETURN(!self.isRunning, @"audio unit already already started");
-	AU_CHECK_STATUS(AudioOutputUnitStart(audioUnit_));
-	self.running = YES;
-	AU_LOGV(@"started audio unit");
-}
-
-- (void)stop {
-	AU_CHECK_RETURN(self.isRunning, @"audio unit already stopped");
-	AU_CHECK_STATUS(AudioOutputUnitStop(audioUnit_));
-	self.running = NO;
-	AU_LOGV(@"stopped audio unit");
-}
-
-- (void)print {
-	[self logASBDs];
+- (void)setActive:(BOOL)active {
+	AU_CHECK_RETURN(active_ != active, @"setActive: no change");
+    if (active) {
+        AU_CHECK_STATUS(AudioOutputUnitStart(audioUnit_));
+        AU_LOGV(@"started audio unit");
+    } else {
+        AU_CHECK_STATUS(AudioOutputUnitStop(audioUnit_));
+        AU_LOGV(@"stopped audio unit");
+    }
+    active_ = active;
 }
 
 #pragma mark - Overridden Setters
@@ -204,9 +190,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 }
 
 - (void)destroyAudioUnit {
-	if (self.running) {
-		[self stop];
-	}
+    self.active = NO;
 	AU_CHECK_RETURN(self.isInitialized, "not initialized, cannot destroy");
 	AU_CHECK_STATUS(AudioUnitUninitialize(audioUnit_));
 	AU_CHECK_STATUS(AudioComponentInstanceDispose(audioUnit_));
@@ -290,7 +274,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	return description;
 }
 
-- (void)logASBDs {
+- (void)print {
 	UInt32 sizeASBD = sizeof(AudioStreamBasicDescription);
 
 	if (self.numberInputChannels > 0) {
@@ -332,8 +316,6 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	AU_LOGV(@"  mFramesPerPacket: %lu", outputStreamDescription.mFramesPerPacket);
 	AU_LOGV(@"  mBytesPerFrame: %lu", outputStreamDescription.mBytesPerFrame);
 	AU_LOGV(@"  mBitsPerChannel: %lu", outputStreamDescription.mBitsPerChannel);
-	
-
 }
 
 @end
