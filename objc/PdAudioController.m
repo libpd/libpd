@@ -17,7 +17,7 @@
 @interface PdAudioController ()
 
 @property (nonatomic, retain) PdAudioUnit *audioUnit;	// out private PdAudioUnit
-- (int)audioSessionTicksPerBuffer;						// calculating ticks per buffer from the audio sessions buffer size (which is provided in seconds)
+- (int)audioSessionTicksPerBuffer;						// calculating ticks per buffer from the audio sessions buffer size (provided in seconds)
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
 - (PdAudioStatus)setCategory:(NSString *)category;
 - (PdAudioStatus)configureAudioUnitWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
