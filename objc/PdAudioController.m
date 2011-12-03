@@ -89,7 +89,8 @@
 }
 
 - (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-    PdAudioStatus status = [self.audioUnit configureWithNumberInputChannels:numInputs numberOutputChannels:numOutputs];
+    int numChannels = (numInputs > numOutputs) ? numInputs : numOutputs;
+    PdAudioStatus status = [self.audioUnit configureWithNumberChannels:numChannels inputEnabled:(numInputs > 0)];
     numberInputChannels_ = numInputs;
     numberOutputChannels_ = numOutputs;
     return status;

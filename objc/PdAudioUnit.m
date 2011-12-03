@@ -55,16 +55,15 @@ static const AudioUnitElement kOutputElement = 0;
 
 #pragma mark - Public Methods
 
-- (PdAudioStatus)configureWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
+- (PdAudioStatus)configureWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	Boolean wasActive = self.isActive;
     AVAudioSession *globalSession = [AVAudioSession sharedInstance];
     Float64 sampleRate = globalSession.currentHardwareSampleRate;
-    inputEnabled_ = (numInputs > 0);
-    int numChannels = (numInputs > numOutputs) ? numInputs : numOutputs;
+    inputEnabled_ = inputEnabled;
 	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:self.inputEnabled]) {
         return PdAudioError;
     }
-	[PdBase openAudioWithSampleRate:sampleRate inputChannels:numChannels outputChannels:numChannels];
+	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(self.inputEnabled ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
 	return PdAudioOK;

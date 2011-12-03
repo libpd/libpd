@@ -39,7 +39,7 @@ typedef enum PdAudioStatus {
 // recreated at the same time.  This is an expensive process and will stop the audio unit
 // before any reconstruction, causing a momentary pause in audio and UI if
 // run from the main thread.
-- (PdAudioStatus)configureWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
+- (PdAudioStatus)configureWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 
 // print info on the audio unit settings to the console
 - (void)print;
