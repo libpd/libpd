@@ -40,9 +40,7 @@
         globalSession.delegate = self;
         NSError *error = nil;
         [globalSession setActive:YES error:&error];
-        if (error) {
-            AU_LOGV(@"Audio Session activation failed");
-        }
+        AU_LOG_IF_ERROR(error, @"Audio Session activation failed");
         AU_LOGV(@"Audio Session initialized");
         self.audioUnit = [[[PdAudioUnit alloc] init] autorelease];
         ticksPerBuffer_ = [self audioSessionTicksPerBuffer];
@@ -57,7 +55,7 @@
 	UInt32 size = sizeof(asBufferDuration);
 	
 	OSStatus status = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareIOBufferDuration, &size, &asBufferDuration);
-	AU_CHECK(!status, @"error getting audio session buffer duration (status = %ld)", status);
+	AU_LOG_IF_ERROR(status, @"error getting audio session buffer duration (status = %ld)", status);
 	AU_LOGV(@"kAudioSessionProperty_CurrentHardwareIOBufferDuration: %f seconds", asBufferDuration);
     
 	return round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
@@ -89,8 +87,13 @@
 }
 
 - (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
+    PdAudioStatus status = PdAudioOK;
+    if (numInputs > 0 && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
+        numInputs = 0;
+        status = PdAudioPropertyChanged;
+    }
     int numChannels = (numInputs > numOutputs) ? numInputs : numOutputs;
-    PdAudioStatus status = [self.audioUnit configureWithNumberChannels:numChannels inputEnabled:(numInputs > 0)];
+    status |= [self.audioUnit configureWithNumberChannels:numChannels inputEnabled:(numInputs > 0)];
     numberInputChannels_ = numInputs;
     numberOutputChannels_ = numOutputs;
     return status;
@@ -161,10 +164,6 @@
 	} else {
 		AU_LOGV(@"still interrupted");
 	}
-}
-
-- (void)inputIsAvailableChanged:(BOOL)isInputAvailable {
-	AU_LOGV(@"inputIsAvailableChanged: %@", (isInputAvailable ? @"YES" : @"NO"));
 }
 
 - (void)print {

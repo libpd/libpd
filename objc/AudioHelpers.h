@@ -15,7 +15,7 @@
 // uncomment this to log more information from the audio classes, or define it in "Other C Flags" build settings
 //#define AU_DEBUG_VERBOSE
 
-// returns the name of the const value assosated with the OSStatus as a string
+// returns the name of the const value associated with the OSStatus as a string
 extern NSString *AVStatusCodeAsString(OSStatus status);
 extern NSString *AUStatusCodeAsString(OSStatus status);
 
@@ -30,6 +30,13 @@ NSLog((@"%s[%d] " nslog_string), __func__, __LINE__, ##__VA_ARGS__);\
 #else
 #define AU_LOGV(nslog_string, ...)
 #endif
+
+// a debug check, which will only log if the value is non-zero
+#define AU_LOG_IF_ERROR(value, nslog_string, ...) do {\
+if(value) {\
+NSLog((@"*** ERROR *** %s[%d] " nslog_string), __func__, __LINE__, ##__VA_ARGS__);\
+}\
+} while (0)
 
 // check if the audio unit had an error, and if so print it and return
 #define AU_CHECK_STATUS(status) do {\
@@ -53,13 +60,6 @@ if(error) {\
 NSLog(@"*** ERROR *** %s[%d] %@, status code = %@ ", __func__, __LINE__, [error localizedDescription], AVStatusCodeAsString([error code]));\
 error = nil;\
 return;\
-}\
-} while (0)
-
-// a debug check, which will only log if the value is non-zero
-#define AU_CHECK(value, nslog_string, ...) do {\
-if(!value) {\
-NSLog((@"*** ERROR *** %s[%d] " nslog_string), __func__, __LINE__, ##__VA_ARGS__);\
 }\
 } while (0)
 

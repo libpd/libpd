@@ -19,7 +19,7 @@ typedef enum PdAudioStatus {
 
 /* PdAudioUnit: object that operates pd's audio input and
  * output through an Audio Unit. The parameters can be changed
- * after it has been instatiated with it's configure method,
+ * after it has been instatiated with its configure method,
  * which will cause the underlying audio unit to be reconstructed.
  *
  * For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
@@ -29,10 +29,10 @@ typedef enum PdAudioStatus {
 	int blockSizeAsLog_;
 }
 
-// a reference to the audio unit, which can be used to query or set other properties
+// A reference to the audio unit, which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
 
-// indicate/control whether the audio unit is currently playing
+// Check or set the active status of the audio unit
 @property (nonatomic, getter = isActive) BOOL active;
 
 // The configure method sets all parameters of the audio unit that may require it to be
@@ -41,7 +41,7 @@ typedef enum PdAudioStatus {
 // run from the main thread.
 - (PdAudioStatus)configureWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 
-// print info on the audio unit settings to the console
+// Print info on the audio unit settings to the console
 - (void)print;
 
 @end
