@@ -19,8 +19,8 @@
 @property (nonatomic, retain) PdAudioUnit *audioUnit;	// out private PdAudioUnit
 - (int)audioSessionTicksPerBuffer;						// calculating ticks per buffer from the audio sessions buffer size (provided in seconds)
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
-- (PdAudioStatus)setCategory:(NSString *)category;
-- (PdAudioStatus)configureAudioUnitWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
+- (PdAudioStatus)selectCategory:(NSString *)category;
+- (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
 
 @end
 
@@ -69,28 +69,29 @@
 }
 
 - (PdAudioStatus)configureWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-	PdAudioStatus status = [self updateSampleRate:sampleRate]
-                | (numInputs ? [self setCategory:AVAudioSessionCategoryPlayAndRecord] : [self setCategory:AVAudioSessionCategoryPlayback])
-	            | [self configureAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs];
+	PdAudioStatus status = [self updateSampleRate:sampleRate];
+    if (status == PdAudioError) return PdAudioError;
+    status |= numInputs ? [self selectCategory:AVAudioSessionCategoryPlayAndRecord] : [self selectCategory:AVAudioSessionCategoryPlayback];
+    if (status == PdAudioError) return PdAudioError;
+    status |= [self configureAudioUnitWithNumberInputChannels:numInputs numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
 - (PdAudioStatus)configureForBackgroundAudioWithSampleRate:(int)sampleRate numberOutputChannels:(int)numOutputs mixingEnabled:(BOOL)mixingEnabled {
-	PdAudioStatus status = [self updateSampleRate:sampleRate]
-	            | (mixingEnabled ? [self setCategory:AVAudioSessionCategoryAmbient] : [self setCategory:AVAudioSessionCategorySoloAmbient]) 
-	            | [self configureAudioUnitWithSampleRate:sampleRate numberInputChannels:0 numberOutputChannels:numOutputs];
+	PdAudioStatus status = [self updateSampleRate:sampleRate];
+    if (status == PdAudioError) return PdAudioError;
+    status |= mixingEnabled ? [self selectCategory:AVAudioSessionCategoryAmbient] : [self selectCategory:AVAudioSessionCategorySoloAmbient];
+    if (status == PdAudioError) return PdAudioError;
+    status |= [self configureAudioUnitWithNumberInputChannels:0 numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
-- (PdAudioStatus)configureAudioUnitWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-    PdAudioStatus status = [self.audioUnit configureWithSampleRate:sampleRate
-                                               numberInputChannels:numInputs
-                                              numberOutputChannels:numOutputs];
-    sampleRate_ = self.audioUnit.sampleRate;
-    numberInputChannels_ = self.audioUnit.numberInputChannels;
-    numberOutputChannels_ = self.audioUnit.numberOutputChannels;
+- (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
+    PdAudioStatus status = [self.audioUnit configureWithNumberInputChannels:numInputs numberOutputChannels:numOutputs];
+    numberInputChannels_ = numInputs;
+    numberOutputChannels_ = numOutputs;
     return status;
 }
 
@@ -109,7 +110,7 @@
 	return PdAudioOK;
 }
 
-- (PdAudioStatus)setCategory:(NSString *)category {
+- (PdAudioStatus)selectCategory:(NSString *)category {
     NSError *error = nil;
     [[AVAudioSession sharedInstance] setCategory:category error:&error];
     return error ? PdAudioError : PdAudioOK;

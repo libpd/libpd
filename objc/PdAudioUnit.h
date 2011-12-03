@@ -32,16 +32,6 @@ typedef enum PdAudioStatus {
 // a reference to the audio unit, which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
 
-// sampling rate, stored as Float64 for convient use in the AudioUnit framework
-@property (nonatomic, readonly) Float64 sampleRate;
-
-// numberInputChannels and numberOutput channels specify the routing between
-// the audio unit (and thereby the microphone and speaker) and pd. Setting
-// numberInputChannels to 0 turns off input audio rendering. Note that you
-// may experience silence when using unequal, positive values (i.e. ins = 1, outs = 2)
-@property (nonatomic, readonly) int numberInputChannels;
-@property (nonatomic, readonly) int numberOutputChannels;
-
 // indicate/control whether the audio unit is currently playing
 @property (nonatomic, getter = isActive) BOOL active;
 
@@ -49,9 +39,7 @@ typedef enum PdAudioStatus {
 // recreated at the same time.  This is an expensive process and will stop the audio unit
 // before any reconstruction, causing a momentary pause in audio and UI if
 // run from the main thread.
-- (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate
-					 numberInputChannels:(int)numInputs
-					numberOutputChannels:(int)numOutputs;
+- (PdAudioStatus)configureWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
 
 // print info on the audio unit settings to the console
 - (void)print;
