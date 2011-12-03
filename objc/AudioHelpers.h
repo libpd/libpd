@@ -39,6 +39,14 @@ return;\
 }\
 } while (0)
 
+// check if the audio unit had an error, and if so print it and return false
+#define AU_CHECK_STATUS_FALSE(status) do {\
+if(status) {\
+NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
+return false;\
+}\
+} while (0)
+
 // check if the AVAudioSession had an error, and if so print it and return
 #define AV_CHECK_ERROR(error) do {\
 if(error) {\

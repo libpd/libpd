@@ -40,7 +40,7 @@
         globalSession.delegate = self;
         NSError *error = nil;
         [globalSession setActive:YES error:&error];
-        AV_CHECK_ERROR(error);
+        // TODO: Check error.
         AU_LOGV(@"Audio Session initialized");
         self.audioUnit = [[[PdAudioUnit alloc] init] autorelease];
         ticksPerBuffer_ = [self audioSessionTicksPerBuffer];
@@ -96,7 +96,7 @@
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	NSError *error = nil;
 	[globalSession setPreferredHardwareSampleRate:sampleRate error:&error];
-	AV_CHECK_ERROR(error);
+    if (error) return PdAudioError;
 	double currentHardwareSampleRate = globalSession.currentHardwareSampleRate;
 	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
     sampleRate_ = currentHardwareSampleRate;
@@ -127,7 +127,7 @@
     NSError *error = nil;
     AVAudioSession *globalSession = [AVAudioSession sharedInstance];
     [globalSession setPreferredIOBufferDuration:bufferDuration error:&error];
-    AV_CHECK_ERROR(error);
+    if (error) return PdAudioError;
     
     AU_LOGV(@"numberFrames: %d, specified bufferDuration: %f", numberFrames, bufferDuration);
     AU_LOGV(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
@@ -141,28 +141,18 @@
 }
 
 - (void)setActive:(BOOL)active {
-	if (active_ != active) {
-		if (active) {
-			[self.audioUnit start];
-		} else {
-			[self.audioUnit stop];
-		}
-		active_ = [self.audioUnit isRunning];
-	}
+    self.audioUnit.active = active;
+    active_ = self.audioUnit.isActive;
 }
 
 - (void)beginInterruption {
-	if (self.active) {
-		[self.audioUnit stop];
-	}
+    self.audioUnit.active = NO;  // Leave active_ unchanged.
 	AU_LOGV(@"interrupted");
 }
 
 - (void)endInterruptionWithFlags:(NSUInteger)flags {
 	if (flags == AVAudioSessionInterruptionFlags_ShouldResume) {
-		if (self.active) {
-			[self.audioUnit start];
-		}
+        self.active = active_;  // Not redundant due to weird ObjC accessor.
 		AU_LOGV(@"ended interruption");
 	} else {
 		AU_LOGV(@"still interrupted");

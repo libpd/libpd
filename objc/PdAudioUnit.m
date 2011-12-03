@@ -61,18 +61,16 @@ static const AudioUnitElement kOutputElement = 0;
     sampleRate_ = sampleRate;
     numberInputChannels_ = numInputs;
     numberOutputChannels_ = numOutputs;
-	if (![self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs]) {
-		return PdAudioError;
-	}
+	if (![self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs]) return PdAudioError;
 	[self checkSampleRateProperties];
 	[PdBase openAudioWithSampleRate:self.sampleRate inputChannels:numInputs outputChannels:numOutputs];
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
-	return PdAudioOK;
+	return (floatsAreEqual(sampleRate, sampleRate_)) ? PdAudioOK : PdAudioError;
 }
 
 - (void)setActive:(BOOL)active {
-	AU_CHECK_RETURN(active_ != active, @"setActive: no change");
+    if (active == active_) return;
     if (active) {
         AU_CHECK_STATUS(AudioOutputUnitStart(audioUnit_));
     } else {
@@ -92,11 +90,11 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	
 	PdAudioUnit *pdAudioUnit = (PdAudioUnit *)inRefCon;
 	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
-
+    
 	if (pdAudioUnit->numberInputChannels_ > 0) {
 		AudioUnitRender(pdAudioUnit->audioUnit_, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
 	}
-
+    
 	int ticks = inNumberFrames >> pdAudioUnit->blockSizeAsLog_; // this is a faster way of computing (inNumberFrames / blockSize)
 	[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
 	return noErr;
@@ -105,50 +103,48 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 #pragma mark - Private
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-	AU_CHECK_RETURN(numOutputs > 0, @"numOutputs must be greater than 0");
-
     [self destroyAudioUnit];
 	AudioComponentDescription ioDescription = [self ioDescription];
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
-	AU_CHECK_STATUS(AudioComponentInstanceNew(audioComponent, &audioUnit_));
+	AU_CHECK_STATUS_FALSE(AudioComponentInstanceNew(audioComponent, &audioUnit_));
 	
 	AURenderCallbackStruct callbackStruct;
 	callbackStruct.inputProc = AudioRenderCallback;
 	callbackStruct.inputProcRefCon = self;
-	AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
-										 kAudioUnitProperty_SetRenderCallback,
-										 kAudioUnitScope_Input,
-										 kOutputElement,
-										 &callbackStruct,
-										 sizeof(callbackStruct)));
+	AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
+                                               kAudioUnitProperty_SetRenderCallback,
+                                               kAudioUnitScope_Input,
+                                               kOutputElement,
+                                               &callbackStruct,
+                                               sizeof(callbackStruct)));
 	
 	AudioStreamBasicDescription outputStreamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numOutputs];
-	AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
-										 kAudioUnitProperty_StreamFormat,
-										 kAudioUnitScope_Input,
-										 kOutputElement,
-										 &outputStreamDescription,
-										 sizeof(outputStreamDescription)));
-
+	AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
+                                               kAudioUnitProperty_StreamFormat,
+                                               kAudioUnitScope_Input,
+                                               kOutputElement,
+                                               &outputStreamDescription,
+                                               sizeof(outputStreamDescription)));
+    
 	if (numInputs > 0) {
 		UInt32 enableInput = 1;
-		AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
-											 kAudioOutputUnitProperty_EnableIO,
-											 kAudioUnitScope_Input,
-											 kInputElement,
-											 &enableInput,
-											 sizeof(enableInput)));
+		AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
+                                                   kAudioOutputUnitProperty_EnableIO,
+                                                   kAudioUnitScope_Input,
+                                                   kInputElement,
+                                                   &enableInput,
+                                                   sizeof(enableInput)));
 		
 		AudioStreamBasicDescription inputStreamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numInputs];
-		AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
-											 kAudioUnitProperty_StreamFormat,
-											 kAudioUnitScope_Output,
-											 kInputElement,
-											 &inputStreamDescription,
-											 sizeof(inputStreamDescription)));
+		AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
+                                                   kAudioUnitProperty_StreamFormat,
+                                                   kAudioUnitScope_Output,
+                                                   kInputElement,
+                                                   &inputStreamDescription,
+                                                   sizeof(inputStreamDescription)));
 	}
 	
-	AU_CHECK_STATUS(AudioUnitInitialize(audioUnit_));
+	AU_CHECK_STATUS_FALSE(AudioUnitInitialize(audioUnit_));
 	AU_LOGV(@"initialized audio unit");
 	return true;
 }
@@ -157,7 +153,6 @@ static OSStatus AudioRenderCallback(void *inRefCon,
     self.active = NO;
 	AU_CHECK_STATUS(AudioUnitUninitialize(audioUnit_));
 	AU_CHECK_STATUS(AudioComponentInstanceDispose(audioUnit_));
-	audioUnit_ = nil;
 	AU_LOGV(@"destroyed audio unit");
 }
 
@@ -173,7 +168,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 										 kOutputElement,
 										 &outputSampleRate,
 										 &sizeFloat64));
-
+    
 	if (self.numberInputChannels > 0) {
 		AU_CHECK_STATUS(AudioUnitGetProperty(audioUnit_,
 											 kAudioUnitProperty_SampleRate,
@@ -192,7 +187,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 							floatsAreEqual(outputSampleRate, self.sampleRate));
 		AU_CHECK(sampleRatesAreOK, @"samplerate properties not correctly set (output: %f)", outputSampleRate);
 	}
-
+    
 	if (sampleRatesAreOK) {
 		AU_LOGV(@"samplerate correctly set to %0.fHz", outputSampleRate);
 	}
@@ -212,7 +207,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 - (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numberChannels {
 	const int kFloatSize = 4;
 	const int kBitSize = 8;
-
+    
 	AudioStreamBasicDescription description;
 	memset(&description, 0, sizeof(description));
 	
@@ -230,7 +225,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 - (void)print {
 	UInt32 sizeASBD = sizeof(AudioStreamBasicDescription);
-
+    
 	if (self.numberInputChannels > 0) {
 		AudioStreamBasicDescription inputStreamDescription;
 		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
@@ -252,7 +247,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	} else {
 		AU_LOG(@"no input ASBD");
 	}
-
+    
 	AudioStreamBasicDescription outputStreamDescription;
 	memset(&outputStreamDescription, 0, sizeASBD);
 	AU_CHECK_STATUS(AudioUnitGetProperty(audioUnit_,
