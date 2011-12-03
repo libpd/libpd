@@ -40,7 +40,9 @@
         globalSession.delegate = self;
         NSError *error = nil;
         [globalSession setActive:YES error:&error];
-        // TODO: Check error.
+        if (error) {
+            AU_LOGV(@"Audio Session activation failed");
+        }
         AU_LOGV(@"Audio Session initialized");
         self.audioUnit = [[[PdAudioUnit alloc] init] autorelease];
         ticksPerBuffer_ = [self audioSessionTicksPerBuffer];
