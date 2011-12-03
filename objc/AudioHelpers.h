@@ -39,7 +39,7 @@ NSLog((@"*** ERROR *** %s[%d] " nslog_string), __func__, __LINE__, ##__VA_ARGS__
 } while (0)
 
 // check if the audio unit had an error, and if so print it and return
-#define AU_CHECK_STATUS(status) do {\
+#define AU_RETURN_IF_ERROR(status) do {\
 if(status) {\
 NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
 return;\
@@ -47,32 +47,11 @@ return;\
 } while (0)
 
 // check if the audio unit had an error, and if so print it and return false
-#define AU_CHECK_STATUS_FALSE(status) do {\
+#define AU_RETURN_FALSE_IF_ERROR(status) do {\
 if(status) {\
 NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
 return false;\
 }\
-} while (0)
-
-// check if the AVAudioSession had an error, and if so print it and return
-#define AV_CHECK_ERROR(error) do {\
-if(error) {\
-NSLog(@"*** ERROR *** %s[%d] %@, status code = %@ ", __func__, __LINE__, [error localizedDescription], AVStatusCodeAsString([error code]));\
-error = nil;\
-return;\
-}\
-} while (0)
-
-// same as AU_CHECK, but returns if the value is non-zero
-#define AU_CHECK_RETURN(value, nslog_string, ...) do {\
-AU_CHECK(value, nslog_string, ##__VA_ARGS__);\
-if(!value) return;\
-} while (0)
-
-// same as AU_CHECK, but returns false if the value is non-zero
-#define AU_CHECK_RETURN_FALSE(value, nslog_string, ...) do {\
-AU_CHECK(value, nslog_string, ##__VA_ARGS__);\
-if(!value) return false;\
 } while (0)
 
 #pragma mark - Math Helpers

@@ -73,9 +73,9 @@ static const AudioUnitElement kOutputElement = 0;
     if (!self.initialized) return;
     if (active == active_) return;
     if (active) {
-        AU_CHECK_STATUS(AudioOutputUnitStart(audioUnit_));
+        AU_RETURN_IF_ERROR(AudioOutputUnitStart(audioUnit_));
     } else {
-        AU_CHECK_STATUS(AudioOutputUnitStop(audioUnit_));
+        AU_RETURN_IF_ERROR(AudioOutputUnitStop(audioUnit_));
     }
     active_ = active;
 }
@@ -107,8 +107,8 @@ static OSStatus AudioRenderCallback(void *inRefCon,
     if (!self.initialized) return;
     self.active = NO;
     initialized_ = NO;
-	AU_CHECK_STATUS(AudioUnitUninitialize(audioUnit_));
-	AU_CHECK_STATUS(AudioComponentInstanceDispose(audioUnit_));
+	AU_RETURN_IF_ERROR(AudioUnitUninitialize(audioUnit_));
+	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(audioUnit_));
 	AU_LOGV(@"destroyed audio unit");
 }
 
@@ -116,44 +116,44 @@ static OSStatus AudioRenderCallback(void *inRefCon,
     [self destroyAudioUnit];
 	AudioComponentDescription ioDescription = [self ioDescription];
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
-	AU_CHECK_STATUS_FALSE(AudioComponentInstanceNew(audioComponent, &audioUnit_));
+	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &audioUnit_));
     
     AudioStreamBasicDescription streamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numChannels];
     if (inputEnabled) {
 		UInt32 enableInput = 1;
-		AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
-                                                   kAudioOutputUnitProperty_EnableIO,
-                                                   kAudioUnitScope_Input,
-                                                   kInputElement,
-                                                   &enableInput,
-                                                   sizeof(enableInput)));
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                      kAudioOutputUnitProperty_EnableIO,
+                                                      kAudioUnitScope_Input,
+                                                      kInputElement,
+                                                      &enableInput,
+                                                      sizeof(enableInput)));
 		
-		AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
-                                                   kAudioUnitProperty_StreamFormat,
-                                                   kAudioUnitScope_Output,  // Output scope because we're defining the output of the input element to our render callback
-                                                   kInputElement,
-                                                   &streamDescription,
-                                                   sizeof(streamDescription)));
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                      kAudioUnitProperty_StreamFormat,
+                                                      kAudioUnitScope_Output,  // Output scope because we're defining the output of the input element to our render callback
+                                                      kInputElement,
+                                                      &streamDescription,
+                                                      sizeof(streamDescription)));
 	}
 	
-	AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
-                                               kAudioUnitProperty_StreamFormat,
-                                               kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
-                                               kOutputElement,
-                                               &streamDescription,
-                                               sizeof(streamDescription)));
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                  kAudioUnitProperty_StreamFormat,
+                                                  kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
+                                                  kOutputElement,
+                                                  &streamDescription,
+                                                  sizeof(streamDescription)));
 	
 	AURenderCallbackStruct callbackStruct;
 	callbackStruct.inputProc = AudioRenderCallback;
 	callbackStruct.inputProcRefCon = self;
-	AU_CHECK_STATUS_FALSE(AudioUnitSetProperty(audioUnit_,
-                                               kAudioUnitProperty_SetRenderCallback,
-                                               kAudioUnitScope_Input,
-                                               kOutputElement,
-                                               &callbackStruct,
-                                               sizeof(callbackStruct)));
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                  kAudioUnitProperty_SetRenderCallback,
+                                                  kAudioUnitScope_Input,
+                                                  kOutputElement,
+                                                  &callbackStruct,
+                                                  sizeof(callbackStruct)));
     
-	AU_CHECK_STATUS_FALSE(AudioUnitInitialize(audioUnit_));
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(audioUnit_));
     initialized_ = YES;
 	AU_LOGV(@"initialized audio unit");
 	return true;
@@ -200,12 +200,12 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	if (self.inputEnabled) {
 		AudioStreamBasicDescription inputStreamDescription;
 		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
-		AU_CHECK_STATUS(AudioUnitGetProperty(audioUnit_,
-											 kAudioUnitProperty_StreamFormat,
-											 kAudioUnitScope_Output,
-											 kInputElement,
-											 &inputStreamDescription,
-											 &sizeASBD));
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
+                                                kAudioUnitProperty_StreamFormat,
+                                                kAudioUnitScope_Output,
+                                                kInputElement,
+                                                &inputStreamDescription,
+                                                &sizeASBD));
 		AU_LOG(@"input ASBD:");
 		AU_LOG(@"  mSampleRate: %.0fHz", inputStreamDescription.mSampleRate);
 		AU_LOG(@"  mChannelsPerFrame: %lu", inputStreamDescription.mChannelsPerFrame);
@@ -221,12 +221,12 @@ static OSStatus AudioRenderCallback(void *inRefCon,
     
 	AudioStreamBasicDescription outputStreamDescription;
 	memset(&outputStreamDescription, 0, sizeASBD);
-	AU_CHECK_STATUS(AudioUnitGetProperty(audioUnit_,
-										 kAudioUnitProperty_StreamFormat,
-										 kAudioUnitScope_Input,
-										 kOutputElement,
-										 &outputStreamDescription,
-										 &sizeASBD));
+	AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
+                                            kAudioUnitProperty_StreamFormat,
+                                            kAudioUnitScope_Input,
+                                            kOutputElement,
+                                            &outputStreamDescription,
+                                            &sizeASBD));
 	AU_LOG(@"output ASBD:");
 	AU_LOG(@"  mSampleRate: %.0fHz", outputStreamDescription.mSampleRate);
 	AU_LOG(@"  mChannelsPerFrame: %lu", outputStreamDescription.mChannelsPerFrame);
