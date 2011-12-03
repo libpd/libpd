@@ -44,6 +44,7 @@ return;\
 if(error) {\
 NSLog(@"*** ERROR *** %s[%d] %@, status code = %@ ", __func__, __LINE__, [error localizedDescription], AVStatusCodeAsString([error code]));\
 error = nil;\
+return;\
 }\
 } while (0)
 
@@ -60,7 +61,11 @@ AU_CHECK(value, nslog_string, ##__VA_ARGS__);\
 if(!value) return;\
 } while (0)
 
-
+// same as AU_CHECK, but returns false if the value is non-zero
+#define AU_CHECK_RETURN_FALSE(value, nslog_string, ...) do {\
+AU_CHECK(value, nslog_string, ##__VA_ARGS__);\
+if(!value) return false;\
+} while (0)
 
 #pragma mark - Math Helpers
 

@@ -21,14 +21,12 @@ static const AudioUnitElement kOutputElement = 0;
 @property (nonatomic) Float64 sampleRate;
 @property (nonatomic) int numberInputChannels;
 @property (nonatomic) int numberOutputChannels;
-@property (nonatomic, getter=isInitialized) BOOL initialized;
 
-- (void)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
+- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
 - (void)destroyAudioUnit;
-- (void)initPd;
 - (void)checkSampleRateProperties;
 - (AudioComponentDescription)ioDescription;
-- (AudioStreamBasicDescription)ASBDForNumberChannels:(UInt32)numChannels;
+- (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numChannels;
 
 @end
 
@@ -36,7 +34,6 @@ static const AudioUnitElement kOutputElement = 0;
 
 @synthesize audioUnit = audioUnit_;
 @synthesize active = active_;
-@synthesize initialized = isInitialized_;
 @synthesize sampleRate = sampleRate_;
 @synthesize numberInputChannels = numberInputChannels_;
 @synthesize numberOutputChannels = numberOutputChannels_;
@@ -46,7 +43,6 @@ static const AudioUnitElement kOutputElement = 0;
 - (id)init {
     self = [super init];
     if (self) {
-		isInitialized_ = NO;
 		active_ = NO;
 		blockSizeAsLog_ = log2int([PdBase getBlockSize]);
 	}
@@ -62,27 +58,16 @@ static const AudioUnitElement kOutputElement = 0;
 
 - (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
 	Boolean wasActive = self.isActive;
-    self.active = NO;
-	if (self.isInitialized) {
-		[self destroyAudioUnit];
-	}
-	
-	[self setSampleRate:sampleRate];
-	[self setNumberInputChannels:numInputs];
-	[self setNumberOutputChannels:numOutputs];
-
-	[self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs];
-	[self initPd];
-	[self checkSampleRateProperties];
-
-	if (!self.isInitialized) {
+    sampleRate_ = sampleRate;
+    numberInputChannels_ = numInputs;
+    numberOutputChannels_ = numOutputs;
+	if (![self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs]) {
 		return PdAudioError;
 	}
+	[self checkSampleRateProperties];
+	[PdBase openAudioWithSampleRate:self.sampleRate inputChannels:numInputs outputChannels:numOutputs];
+	[PdBase computeAudio:YES];
 	self.active = wasActive;
-
-	if (!floatsAreEqual(self.sampleRate, sampleRate) || (self.numberInputChannels != numInputs) || (self.numberOutputChannels != numOutputs)) {
-		return PdAudioPropertyChanged;
-	}
 	return PdAudioOK;
 }
 
@@ -90,32 +75,10 @@ static const AudioUnitElement kOutputElement = 0;
 	AU_CHECK_RETURN(active_ != active, @"setActive: no change");
     if (active) {
         AU_CHECK_STATUS(AudioOutputUnitStart(audioUnit_));
-        AU_LOGV(@"started audio unit");
     } else {
         AU_CHECK_STATUS(AudioOutputUnitStop(audioUnit_));
-        AU_LOGV(@"stopped audio unit");
     }
     active_ = active;
-}
-
-#pragma mark - Overridden Setters
-
-- (void)setSampleRate:(Float64)sampleRate {
-	if (!floatsAreEqual(sampleRate_, sampleRate)) {
-		sampleRate_ = sampleRate;
-	}
-}
-
-- (void)setNumberInputChannels:(int)numberInputChannels {
-	if (numberInputChannels_ != numberInputChannels  && numberInputChannels >= 0) {
-		numberInputChannels_ = numberInputChannels;
-	}
-}
-
-- (void)setNumberOutputChannels:(int)numberOutputChannels {
-	if (numberOutputChannels_ != numberOutputChannels && numberOutputChannels > 0) {
-		numberOutputChannels_ = numberOutputChannels;
-	}
 }
 
 #pragma mark - AURenderCallback
@@ -141,9 +104,10 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 #pragma mark - Private
 
-- (void)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
+- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
 	AU_CHECK_RETURN(numOutputs > 0, @"numOutputs must be greater than 0");
 
+    [self destroyAudioUnit];
 	AudioComponentDescription ioDescription = [self ioDescription];
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
 	AU_CHECK_STATUS(AudioComponentInstanceNew(audioComponent, &audioUnit_));
@@ -158,7 +122,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 										 &callbackStruct,
 										 sizeof(callbackStruct)));
 	
-	AudioStreamBasicDescription outputStreamDescription = [self ASBDForNumberChannels:numOutputs];
+	AudioStreamBasicDescription outputStreamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numOutputs];
 	AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
 										 kAudioUnitProperty_StreamFormat,
 										 kAudioUnitScope_Input,
@@ -175,7 +139,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 											 &enableInput,
 											 sizeof(enableInput)));
 		
-		AudioStreamBasicDescription inputStreamDescription = [self ASBDForNumberChannels:numInputs];
+		AudioStreamBasicDescription inputStreamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numInputs];
 		AU_CHECK_STATUS(AudioUnitSetProperty(audioUnit_,
 											 kAudioUnitProperty_StreamFormat,
 											 kAudioUnitScope_Output,
@@ -186,25 +150,15 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	
 	AU_CHECK_STATUS(AudioUnitInitialize(audioUnit_));
 	AU_LOGV(@"initialized audio unit");
-	self.initialized = YES;
+	return true;
 }
 
 - (void)destroyAudioUnit {
     self.active = NO;
-	AU_CHECK_RETURN(self.isInitialized, "not initialized, cannot destroy");
 	AU_CHECK_STATUS(AudioUnitUninitialize(audioUnit_));
 	AU_CHECK_STATUS(AudioComponentInstanceDispose(audioUnit_));
 	audioUnit_ = nil;
-	self.initialized = NO;
 	AU_LOGV(@"destroyed audio unit");
-}
-
-- (void)initPd {
-	[PdBase computeAudio:NO];
-	[PdBase openAudioWithSampleRate:self.sampleRate
-					  inputChannels:self.numberInputChannels
-					 outputChannels:self.numberOutputChannels];
-	[PdBase computeAudio:YES];
 }
 
 - (void)checkSampleRateProperties {
@@ -255,14 +209,14 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 }
 
 // sets the format to 32 bit, floating point, linear PCM, interleaved
-- (AudioStreamBasicDescription)ASBDForNumberChannels:(UInt32)numberChannels {
+- (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numberChannels {
 	const int kFloatSize = 4;
 	const int kBitSize = 8;
 
 	AudioStreamBasicDescription description;
 	memset(&description, 0, sizeof(description));
 	
-	description.mSampleRate = self.sampleRate;
+	description.mSampleRate = sampleRate;
 	description.mFormatID = kAudioFormatLinearPCM;
 	description.mFormatFlags = kAudioFormatFlagsNativeFloatPacked;
 	description.mBytesPerPacket = kFloatSize * numberChannels;
