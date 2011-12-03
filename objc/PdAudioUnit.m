@@ -24,7 +24,7 @@ static const AudioUnitElement kOutputElement = 0;
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
 - (void)destroyAudioUnit;
-- (void)checkSampleRateProperties;
+- (Float64)checkSampleRate:(BOOL)checkInput;
 - (AudioComponentDescription)ioDescription;
 - (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numChannels;
 
@@ -58,15 +58,20 @@ static const AudioUnitElement kOutputElement = 0;
 
 - (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
 	Boolean wasActive = self.isActive;
-    sampleRate_ = sampleRate;
+	if (![self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs]) {
+        return PdAudioError;
+    }
+	sampleRate_ = [self checkSampleRate:(numInputs > 0)];
+    if (self.sampleRate < 1) {
+        [self destroyAudioUnit];
+        return PdAudioError;
+    }
     numberInputChannels_ = numInputs;
     numberOutputChannels_ = numOutputs;
-	if (![self initAudioUnitWithSampleRate:sampleRate numberInputChannels:numInputs numberOutputChannels:numOutputs]) return PdAudioError;
-	[self checkSampleRateProperties];
 	[PdBase openAudioWithSampleRate:self.sampleRate inputChannels:numInputs outputChannels:numOutputs];
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
-	return (floatsAreEqual(sampleRate, sampleRate_)) ? PdAudioOK : PdAudioError;
+	return (floatsAreEqual(sampleRate, sampleRate_)) ? PdAudioOK : PdAudioPropertyChanged;
 }
 
 - (void)setActive:(BOOL)active {
@@ -101,6 +106,13 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 }
 
 #pragma mark - Private
+
+- (void)destroyAudioUnit {
+    self.active = NO;
+	AU_CHECK_STATUS(AudioUnitUninitialize(audioUnit_));
+	AU_CHECK_STATUS(AudioComponentInstanceDispose(audioUnit_));
+	AU_LOGV(@"destroyed audio unit");
+}
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
     [self destroyAudioUnit];
@@ -149,48 +161,32 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	return true;
 }
 
-- (void)destroyAudioUnit {
-    self.active = NO;
-	AU_CHECK_STATUS(AudioUnitUninitialize(audioUnit_));
-	AU_CHECK_STATUS(AudioComponentInstanceDispose(audioUnit_));
-	AU_LOGV(@"destroyed audio unit");
-}
-
-- (void)checkSampleRateProperties {
+- (Float64)checkSampleRate:(BOOL)checkInput {
 	UInt32 sizeFloat64 = sizeof(Float64);
-	Float64 inputSampleRate = 0.0;
 	Float64 outputSampleRate = 0.0;
-	BOOL sampleRatesAreOK = NO;
-	
-	AU_CHECK_STATUS(AudioUnitGetProperty(audioUnit_,
-										 kAudioUnitProperty_SampleRate,
-										 kAudioUnitScope_Input,
-										 kOutputElement,
-										 &outputSampleRate,
-										 &sizeFloat64));
-    
-	if (self.numberInputChannels > 0) {
-		AU_CHECK_STATUS(AudioUnitGetProperty(audioUnit_,
-											 kAudioUnitProperty_SampleRate,
-											 kAudioUnitScope_Output,
-											 kInputElement,
-											 &inputSampleRate,
-											 &sizeFloat64));
-		
-		sampleRatesAreOK = ((inputSampleRate > 0.1) &&
-							(outputSampleRate > 0.1) &&
-							floatsAreEqual(inputSampleRate, outputSampleRate) &&
-							floatsAreEqual(outputSampleRate, self.sampleRate));
-		AU_CHECK(sampleRatesAreOK, @"samplerate properties not correctly set (input: %f, output: %f)", inputSampleRate, outputSampleRate);
-	} else {
-		sampleRatesAreOK = ((outputSampleRate > 0.1) &&
-							floatsAreEqual(outputSampleRate, self.sampleRate));
-		AU_CHECK(sampleRatesAreOK, @"samplerate properties not correctly set (output: %f)", outputSampleRate);
+	if (AudioUnitGetProperty(audioUnit_,
+                             kAudioUnitProperty_SampleRate,
+                             kAudioUnitScope_Input,
+                             kOutputElement,
+                             &outputSampleRate,
+                             &sizeFloat64)) {
+        return -1;
+    }
+	if (checkInput) {
+        Float64 inputSampleRate = 0.0;
+		if (AudioUnitGetProperty(audioUnit_,
+                                 kAudioUnitProperty_SampleRate,
+                                 kAudioUnitScope_Output,
+                                 kInputElement,
+                                 &inputSampleRate,
+                                 &sizeFloat64)) {
+            return -1;
+        }
+		if (!floatsAreEqual(inputSampleRate, outputSampleRate)) {
+            return -1;
+        }
 	}
-    
-	if (sampleRatesAreOK) {
-		AU_LOGV(@"samplerate correctly set to %0.fHz", outputSampleRate);
-	}
+    return outputSampleRate;
 }
 
 - (AudioComponentDescription)ioDescription {
