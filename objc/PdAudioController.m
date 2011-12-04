@@ -67,9 +67,14 @@
 }
 
 - (PdAudioStatus)configureWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-	PdAudioStatus status = [self updateSampleRate:sampleRate];
+	PdAudioStatus status = PdAudioOK;
+    if (numInputs > 0 && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
+        numInputs = 0;
+        status = PdAudioPropertyChanged;
+    }
+    status |= [self updateSampleRate:sampleRate];
     if (status == PdAudioError) return PdAudioError;
-    status |= numInputs ? [self selectCategory:AVAudioSessionCategoryPlayAndRecord] : [self selectCategory:AVAudioSessionCategoryPlayback];
+    status |= (numInputs > 0) ? [self selectCategory:AVAudioSessionCategoryPlayAndRecord] : [self selectCategory:AVAudioSessionCategoryPlayback];
     if (status == PdAudioError) return PdAudioError;
     status |= [self configureAudioUnitWithNumberInputChannels:numInputs numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
@@ -87,13 +92,8 @@
 }
 
 - (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-    PdAudioStatus status = PdAudioOK;
-    if (numInputs > 0 && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
-        numInputs = 0;
-        status = PdAudioPropertyChanged;
-    }
     int numChannels = (numInputs > numOutputs) ? numInputs : numOutputs;
-    status |= [self.audioUnit configureWithNumberChannels:numChannels inputEnabled:(numInputs > 0)];
+    PdAudioStatus status = [self.audioUnit configureWithNumberChannels:numChannels inputEnabled:(numInputs > 0)];
     numberInputChannels_ = numInputs;
     numberOutputChannels_ = numOutputs;
     return status;
