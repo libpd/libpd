@@ -37,6 +37,7 @@ LOCAL_SRC_FILES := \
 	pure-data/src/x_time.c pure-data/src/x_interface.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
 	libpd_wrapper/z_libpd.c libpd_wrapper/z_jni.c
+LOCAL_ARM_MODE := arm
 include $(BUILD_SHARED_LIBRARY)
 
 
@@ -48,6 +49,7 @@ LOCAL_MODULE := choice
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/choice/choice.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -61,6 +63,7 @@ LOCAL_MODULE := bonk~
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/bonk~/bonk~.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -74,6 +77,7 @@ LOCAL_MODULE := lrshift~
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/lrshift~/lrshift~.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -87,6 +91,7 @@ LOCAL_MODULE := fiddle~
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/fiddle~/fiddle~.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -100,6 +105,7 @@ LOCAL_MODULE := sigmund~
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/sigmund~/sigmund~.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -113,6 +119,7 @@ LOCAL_MODULE := pique
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/pique/pique.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -126,6 +133,7 @@ LOCAL_MODULE := loop~
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/loop~/loop~.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
@@ -140,6 +148,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/expr~/vexp.c \
           pure-data/extra/expr~/vexp_fun.c pure-data/extra/expr~/vexp_if.c
+LOCAL_ARM_MODE := arm
 LOCAL_SHARED_LIBRARIES := pdnative
 
 include $(BUILD_SHARED_LIBRARY)
