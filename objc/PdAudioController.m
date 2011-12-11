@@ -13,6 +13,7 @@
 #import "AudioHelpers.h"
 #import "PdBase.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface PdAudioController ()
 
@@ -70,17 +71,26 @@
 	PdAudioStatus status = PdAudioOK;
     if (numInputs > 0 && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
         numInputs = 0;
-        status = PdAudioPropertyChanged;
+        status |= PdAudioPropertyChanged;
     }
     status |= [self updateSampleRate:sampleRate];
-    if (status == PdAudioError) return PdAudioError;
-    status |= (numInputs > 0) ? [self selectCategory:AVAudioSessionCategoryPlayAndRecord] : [self selectCategory:AVAudioSessionCategoryPlayback];
-    if (status == PdAudioError) return PdAudioError;
+    if (status == PdAudioError) {
+        return PdAudioError;
+    }
+    if (numInputs > 0) {
+        status |= [self selectCategory:AVAudioSessionCategoryPlayAndRecord];
+    }else {
+        status |= [self selectCategory:AVAudioSessionCategoryPlayback];
+    }
+    if (status == PdAudioError) {
+        return PdAudioError;
+    }
     status |= [self configureAudioUnitWithNumberInputChannels:numInputs numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
+// TODO: Fix this.
 - (PdAudioStatus)configureForBackgroundAudioWithSampleRate:(int)sampleRate numberOutputChannels:(int)numOutputs mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = [self updateSampleRate:sampleRate];
     if (status == PdAudioError) return PdAudioError;
@@ -93,7 +103,7 @@
 
 - (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
     int numChannels = (numInputs > numOutputs) ? numInputs : numOutputs;
-    PdAudioStatus status = [self.audioUnit configureWithNumberChannels:numChannels inputEnabled:(numInputs > 0)];
+    PdAudioStatus status = [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:(numInputs > 0)];
     numberInputChannels_ = numInputs;
     numberOutputChannels_ = numOutputs;
     return status;
@@ -103,7 +113,9 @@
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	NSError *error = nil;
 	[globalSession setPreferredHardwareSampleRate:sampleRate error:&error];
-    if (error) return PdAudioError;
+    if (error) {
+        return PdAudioError;
+    }
 	double currentHardwareSampleRate = globalSession.currentHardwareSampleRate;
 	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
     sampleRate_ = currentHardwareSampleRate;

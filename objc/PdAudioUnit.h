@@ -24,10 +24,7 @@ typedef enum PdAudioStatus {
  *
  * For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
  */
-@interface PdAudioUnit : NSObject {
-@private
-	int blockSizeAsLog_;
-}
+@interface PdAudioUnit : NSObject
 
 // A reference to the audio unit, which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
@@ -39,7 +36,7 @@ typedef enum PdAudioStatus {
 // recreated at the same time.  This is an expensive process and will stop the audio unit
 // before any reconstruction, causing a momentary pause in audio and UI if
 // run from the main thread.
-- (PdAudioStatus)configureWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
+- (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 
 // Print info on the audio unit settings to the console
 - (void)print;

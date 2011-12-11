@@ -12,15 +12,16 @@
 #import "PdBase.h"
 #import "AudioHelpers.h"
 #import <AudioToolbox/AudioToolbox.h>
-#import <AVFoundation/AVFoundation.h>
 
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
 
-@interface PdAudioUnit ()
-
-@property (nonatomic) BOOL inputEnabled;
-@property (nonatomic) BOOL initialized;
+@interface PdAudioUnit () {
+@private
+    BOOL inputEnabled_;
+    BOOL initialized_;
+	int blockSizeAsLog_;
+}
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 - (void)destroyAudioUnit;
@@ -33,8 +34,6 @@ static const AudioUnitElement kOutputElement = 0;
 
 @synthesize audioUnit = audioUnit_;
 @synthesize active = active_;
-@synthesize inputEnabled = inputEnabled_;
-@synthesize initialized = initialized_;
 
 #pragma mark - Init / Dealloc
 
@@ -55,23 +54,25 @@ static const AudioUnitElement kOutputElement = 0;
 
 #pragma mark - Public Methods
 
-- (PdAudioStatus)configureWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
+- (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	Boolean wasActive = self.isActive;
-    AVAudioSession *globalSession = [AVAudioSession sharedInstance];
-    Float64 sampleRate = globalSession.currentHardwareSampleRate;
     inputEnabled_ = inputEnabled;
-	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:self.inputEnabled]) {
+	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:inputEnabled_]) {
         return PdAudioError;
     }
-	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(self.inputEnabled ? numChannels : 0) outputChannels:numChannels];
+	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(inputEnabled_ ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
 	return PdAudioOK;
 }
 
 - (void)setActive:(BOOL)active {
-    if (!self.initialized) return;
-    if (active == active_) return;
+    if (!initialized_) {
+        return;
+    }
+    if (active == active_) {
+        return;
+    }
     if (active) {
         AU_RETURN_IF_ERROR(AudioOutputUnitStart(audioUnit_));
     } else {
@@ -104,7 +105,9 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 #pragma mark - Private
 
 - (void)destroyAudioUnit {
-    if (!self.initialized) return;
+    if (!initialized_) {
+        return;
+    }
     self.active = NO;
     initialized_ = NO;
 	AU_RETURN_IF_ERROR(AudioUnitUninitialize(audioUnit_));
@@ -130,7 +133,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 		
 		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
                                                       kAudioUnitProperty_StreamFormat,
-                                                      kAudioUnitScope_Output,  // Output scope because we're defining the output of the input element to our render callback
+                                                      kAudioUnitScope_Output,  // Output scope because we're defining the output of the input element _to_ our render callback
                                                       kInputElement,
                                                       &streamDescription,
                                                       sizeof(streamDescription)));
@@ -190,14 +193,14 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 }
 
 - (void)print {
-    if (!self.initialized) {
+    if (!initialized_) {
 		AU_LOG(@"Audio Unit not initialized");
         return;
     }
     
 	UInt32 sizeASBD = sizeof(AudioStreamBasicDescription);
     
-	if (self.inputEnabled) {
+	if (inputEnabled_) {
 		AudioStreamBasicDescription inputStreamDescription;
 		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
