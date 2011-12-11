@@ -24,6 +24,7 @@
 @property (nonatomic, readonly) int sampleRate;
 @property (nonatomic, readonly) int numberInputChannels;
 @property (nonatomic, readonly) int numberOutputChannels;
+@property (nonatomic, readonly) BOOL mixingEnabled;
 @property (nonatomic, readonly) int ticksPerBuffer;
 
 // Check or set the active status of the audio unit
@@ -32,12 +33,18 @@
 // Configure the audio with the specified samplerate, as well as number of inputs and outputs.  Note that this method has three
 // possible outcomes: success, failure, or conditional success, where parameters had to be adjusted to set up the audio.  In the
 // third case, you can query the sample rate and channel properties to determine whether the selected configuration is acceptable.
-- (PdAudioStatus)configureWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
+// Specifying mixingEnabled = YES will allow the app to continue playing audio along with other apps (such as iPod music player).
 
-// Configure audio for background use, so audio continues to play when the app looses focus.  Specifying
-// mixingEnabled = YES will allow the app to continue playing audio along with other apps (such as iPod
-// music player)
-- (PdAudioStatus)configureForBackgroundAudioWithSampleRate:(int)sampleRate numberOutputChannels:(int)numOutputs mixingEnabled:(BOOL)mixingEnabled;
+- (PdAudioStatus)configureWithSampleRate:(int)sampleRate
+                     numberInputChannels:(int)numInputs
+                    numberOutputChannels:(int)numOutputs
+                           mixingEnabled:(BOOL)mixingEnabled;
+
+// Configure audio for ambient use.  Specifying mixingEnabled = YES will allow the app to continue playing audio along with other
+// apps (such as iPod music player).
+- (PdAudioStatus)configureForAmbientAudioWithSampleRate:(int)sampleRate
+                                   numberOutputChannels:(int)numOutputs
+                                          mixingEnabled:(BOOL)mixingEnabled;
 
 // Configure the ticksPerBuffer parameter, which will change the audio sessions IO buffer size.
 // This can be done on the fly, while audio is running.  Note that the audio session only accepts

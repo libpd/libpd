@@ -20,7 +20,7 @@
 @property (nonatomic, retain) PdAudioUnit *audioUnit;	// out private PdAudioUnit
 - (int)audioSessionTicksPerBuffer;						// calculating ticks per buffer from the audio sessions buffer size (provided in seconds)
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
-- (PdAudioStatus)selectCategory:(NSString *)category;
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;  // Not all inputs make sense, but that's okay in the private interface.
 - (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
 
 @end
@@ -30,6 +30,7 @@
 @synthesize sampleRate = sampleRate_;
 @synthesize numberInputChannels = numberInputChannels_;
 @synthesize numberOutputChannels = numberOutputChannels_;
+@synthesize mixingEnabled = mixingEnabled_;
 @synthesize ticksPerBuffer = ticksPerBuffer_;
 @synthesize active = active_;
 @synthesize audioUnit = audioUnit_;
@@ -67,7 +68,10 @@
 	[super dealloc];
 }
 
-- (PdAudioStatus)configureWithSampleRate:(int)sampleRate numberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
+- (PdAudioStatus)configureWithSampleRate:(int)sampleRate
+                     numberInputChannels:(int)numInputs
+                    numberOutputChannels:(int)numOutputs
+                           mixingEnabled:(BOOL)mixingEnabled{
 	PdAudioStatus status = PdAudioOK;
     if (numInputs > 0 && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
         numInputs = 0;
@@ -77,11 +81,7 @@
     if (status == PdAudioError) {
         return PdAudioError;
     }
-    if (numInputs > 0) {
-        status |= [self selectCategory:AVAudioSessionCategoryPlayAndRecord];
-    }else {
-        status |= [self selectCategory:AVAudioSessionCategoryPlayback];
-    }
+    status |= [self selectCategoryWithInputs:(numInputs > 0) isAmbient:NO allowsMixing:mixingEnabled];
     if (status == PdAudioError) {
         return PdAudioError;
     }
@@ -90,12 +90,17 @@
 	return status;
 }
 
-// TODO: Fix this.
-- (PdAudioStatus)configureForBackgroundAudioWithSampleRate:(int)sampleRate numberOutputChannels:(int)numOutputs mixingEnabled:(BOOL)mixingEnabled {
+- (PdAudioStatus)configureForAmbientAudioWithSampleRate:(int)sampleRate
+                                   numberOutputChannels:(int)numOutputs
+                                          mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = [self updateSampleRate:sampleRate];
-    if (status == PdAudioError) return PdAudioError;
-    status |= mixingEnabled ? [self selectCategory:AVAudioSessionCategoryAmbient] : [self selectCategory:AVAudioSessionCategorySoloAmbient];
-    if (status == PdAudioError) return PdAudioError;
+    if (status == PdAudioError) {
+        return PdAudioError;
+    }
+    status |= [self selectCategoryWithInputs:NO isAmbient:YES allowsMixing:mixingEnabled];
+    if (status == PdAudioError) {
+        return PdAudioError;
+    }
     status |= [self configureAudioUnitWithNumberInputChannels:0 numberOutputChannels:numOutputs];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
@@ -126,10 +131,32 @@
 	return PdAudioOK;
 }
 
-- (PdAudioStatus)selectCategory:(NSString *)category {
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing {
+    NSString *category;
+    if (hasInputs && isAmbient) {
+        AU_LOG(@"impossible session config; this should never happen");
+        return PdAudioError;
+    } else if (!isAmbient) {
+        category = hasInputs ? AVAudioSessionCategoryPlayAndRecord : AVAudioSessionCategoryPlayback;
+    } else {
+        category = allowsMixing ? AVAudioSessionCategoryAmbient : AVAudioSessionCategorySoloAmbient;
+    }
     NSError *error = nil;
     [[AVAudioSession sharedInstance] setCategory:category error:&error];
-    return error ? PdAudioError : PdAudioOK;
+    if (error) {
+        AU_LOG(@"failed to set session category, error %@", error);
+        return PdAudioError;
+    }
+    if (!isAmbient) {
+        UInt32 mix = allowsMixing ? 1 : 0;
+        OSStatus status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
+        if (status) {
+            AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %ld)", (allowsMixing ? @"YES" : @"NO"), status);
+            return PdAudioError;
+        }
+    }
+    mixingEnabled_ = allowsMixing;
+    return PdAudioOK;
 }
 
 /* note about the magic 0.5 added to numberFrames:
