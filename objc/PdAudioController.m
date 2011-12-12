@@ -68,10 +68,10 @@
 	[super dealloc];
 }
 
-- (PdAudioStatus)configureWithSampleRate:(int)sampleRate
-                    numberOutputChannels:(int)numOutputs
-                            inputEnabled:(BOOL)inputEnabled
-                           mixingEnabled:(BOOL)mixingEnabled {
+- (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
+                            numberOutputChannels:(int)numOutputs
+                                    inputEnabled:(BOOL)inputEnabled
+                                   mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = PdAudioOK;
     if (inputEnabled && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
         inputEnabled = NO;
@@ -90,9 +90,9 @@
 	return status;
 }
 
-- (PdAudioStatus)configureForAmbientAudioWithSampleRate:(int)sampleRate
-                                   numberOutputChannels:(int)numOutputs
-                                          mixingEnabled:(BOOL)mixingEnabled {
+- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
+                           numberOutputChannels:(int)numOutputs
+                                  mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = [self updateSampleRate:sampleRate];
     if (status == PdAudioError) {
         return PdAudioError;

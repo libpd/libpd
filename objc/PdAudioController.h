@@ -35,16 +35,16 @@
 // success, where parameters had to be adjusted to set up the audio.  In the third case, you can query the sample rate and
 // channel properties to determine whether the selected configuration is acceptable.  Specifying mixingEnabled = YES will
 // allow the app to continue playing audio along with other apps (such as iPod music player).
-- (PdAudioStatus)configureWithSampleRate:(int)sampleRate
-                    numberOutputChannels:(int)numOutputs
-                            inputEnabled:(BOOL)inputEnabled
-                           mixingEnabled:(BOOL)mixingEnabled;
+- (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
+                            numberOutputChannels:(int)numOutputs
+                                    inputEnabled:(BOOL)inputEnabled
+                                   mixingEnabled:(BOOL)mixingEnabled;
 
 // Configure audio for ambient use.  Specifying mixingEnabled = YES will allow the app to continue playing audio along with other
 // apps (such as iPod music player).
-- (PdAudioStatus)configureForAmbientAudioWithSampleRate:(int)sampleRate
-                                   numberOutputChannels:(int)numOutputs
-                                          mixingEnabled:(BOOL)mixingEnabled;
+- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
+                           numberOutputChannels:(int)numOutputs
+                                  mixingEnabled:(BOOL)mixingEnabled;
 
 // Configure the ticksPerBuffer parameter, which will change the audio sessions IO buffer size.
 // This can be done on the fly, while audio is running.  Note that the audio session only accepts
