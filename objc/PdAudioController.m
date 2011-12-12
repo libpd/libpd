@@ -21,15 +21,15 @@
 - (int)audioSessionTicksPerBuffer;						// calculating ticks per buffer from the audio sessions buffer size (provided in seconds)
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;  // Not all inputs make sense, but that's okay in the private interface.
-- (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs;
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 
 @end
 
 @implementation PdAudioController
 
 @synthesize sampleRate = sampleRate_;
-@synthesize numberInputChannels = numberInputChannels_;
 @synthesize numberOutputChannels = numberOutputChannels_;
+@synthesize inputEnabled = inputEnabled_;
 @synthesize mixingEnabled = mixingEnabled_;
 @synthesize ticksPerBuffer = ticksPerBuffer_;
 @synthesize active = active_;
@@ -69,23 +69,23 @@
 }
 
 - (PdAudioStatus)configureWithSampleRate:(int)sampleRate
-                     numberInputChannels:(int)numInputs
                     numberOutputChannels:(int)numOutputs
-                           mixingEnabled:(BOOL)mixingEnabled{
+                            inputEnabled:(BOOL)inputEnabled
+                           mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = PdAudioOK;
-    if (numInputs > 0 && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
-        numInputs = 0;
+    if (inputEnabled && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
+        inputEnabled = NO;
         status |= PdAudioPropertyChanged;
     }
     status |= [self updateSampleRate:sampleRate];
     if (status == PdAudioError) {
         return PdAudioError;
     }
-    status |= [self selectCategoryWithInputs:(numInputs > 0) isAmbient:NO allowsMixing:mixingEnabled];
+    status |= [self selectCategoryWithInputs:inputEnabled isAmbient:NO allowsMixing:mixingEnabled];
     if (status == PdAudioError) {
         return PdAudioError;
     }
-    status |= [self configureAudioUnitWithNumberInputChannels:numInputs numberOutputChannels:numOutputs];
+    status |= [self configureAudioUnitWithNumberChannels:numOutputs inputEnabled:inputEnabled];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
@@ -101,16 +101,15 @@
     if (status == PdAudioError) {
         return PdAudioError;
     }
-    status |= [self configureAudioUnitWithNumberInputChannels:0 numberOutputChannels:numOutputs];
+    status |= [self configureAudioUnitWithNumberChannels:numOutputs inputEnabled:NO];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
-- (PdAudioStatus)configureAudioUnitWithNumberInputChannels:(int)numInputs numberOutputChannels:(int)numOutputs {
-    int numChannels = (numInputs > numOutputs) ? numInputs : numOutputs;
-    PdAudioStatus status = [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:(numInputs > 0)];
-    numberInputChannels_ = numInputs;
-    numberOutputChannels_ = numOutputs;
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
+    PdAudioStatus status = [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled];
+    inputEnabled_ = inputEnabled;
+    numberOutputChannels_ = numChannels;
     return status;
 }
 
