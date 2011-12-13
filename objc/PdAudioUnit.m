@@ -54,16 +54,16 @@ static const AudioUnitElement kOutputElement = 0;
 
 #pragma mark - Public Methods
 
-- (PdAudioStatus)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
+- (int)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	Boolean wasActive = self.isActive;
     inputEnabled_ = inputEnabled;
 	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:inputEnabled_]) {
-        return PdAudioError;
+        return -1;
     }
 	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(inputEnabled_ ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
-	return PdAudioOK;
+	return 0;
 }
 
 - (void)setActive:(BOOL)active {

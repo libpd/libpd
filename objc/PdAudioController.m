@@ -18,7 +18,6 @@
 @interface PdAudioController ()
 
 @property (nonatomic, retain) PdAudioUnit *audioUnit;	// out private PdAudioUnit
-- (int)audioSessionTicksPerBuffer;						// calculating ticks per buffer from the audio sessions buffer size (provided in seconds)
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;  // Not all inputs make sense, but that's okay in the private interface.
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
@@ -45,14 +44,13 @@
         AU_LOG_IF_ERROR(error, @"Audio Session activation failed");
         AU_LOGV(@"Audio Session initialized");
         self.audioUnit = [[[PdAudioUnit alloc] init] autorelease];
-        ticksPerBuffer_ = [self audioSessionTicksPerBuffer];
 	}
 	return self;
 }
 
 // using Audio Session C API because the AVAudioSession only provides the
 // 'preferred' buffer duration, not what is actually set
-- (int)audioSessionTicksPerBuffer {
+- (int)ticksPerBuffer {
 	Float32 asBufferDuration = 0;
 	UInt32 size = sizeof(asBufferDuration);
 	
@@ -60,7 +58,8 @@
 	AU_LOG_IF_ERROR(status, @"error getting audio session buffer duration (status = %ld)", status);
 	AU_LOGV(@"kAudioSessionProperty_CurrentHardwareIOBufferDuration: %f seconds", asBufferDuration);
     
-	return round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
+	ticksPerBuffer_ = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
+    return ticksPerBuffer_;
 }
 
 - (void)dealloc {
@@ -69,7 +68,7 @@
 }
 
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
-                            numberOutputChannels:(int)numOutputs
+                                  numberChannels:(int)numChannels
                                     inputEnabled:(BOOL)inputEnabled
                                    mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = PdAudioOK;
@@ -85,13 +84,13 @@
     if (status == PdAudioError) {
         return PdAudioError;
     }
-    status |= [self configureAudioUnitWithNumberChannels:numOutputs inputEnabled:inputEnabled];
+    status |= [self configureAudioUnitWithNumberChannels:numChannels inputEnabled:inputEnabled];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
-                           numberOutputChannels:(int)numOutputs
+                                 numberChannels:(int)numChannels
                                   mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = [self updateSampleRate:sampleRate];
     if (status == PdAudioError) {
@@ -101,16 +100,15 @@
     if (status == PdAudioError) {
         return PdAudioError;
     }
-    status |= [self configureAudioUnitWithNumberChannels:numOutputs inputEnabled:NO];
+    status |= [self configureAudioUnitWithNumberChannels:numChannels inputEnabled:NO];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
-    PdAudioStatus status = [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled];
     inputEnabled_ = inputEnabled;
     numberOutputChannels_ = numChannels;
-    return status;
+    return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
 }
 
 - (PdAudioStatus)updateSampleRate:(int)sampleRate {
@@ -177,9 +175,9 @@
     AU_LOGV(@"numberFrames: %d, specified bufferDuration: %f", numberFrames, bufferDuration);
     AU_LOGV(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
     
-    ticksPerBuffer_ = [self audioSessionTicksPerBuffer];
-    if (ticksPerBuffer_ != ticksPerBuffer) {
-        AU_LOG(@"*** WARNING *** could not set IO buffer duration to match %d ticks, got %d ticks instead", ticksPerBuffer, ticksPerBuffer_);
+    int tpb = self.ticksPerBuffer;
+    if (tpb != ticksPerBuffer) {
+        AU_LOG(@"*** WARNING *** could not set IO buffer duration to match %d ticks, got %d ticks instead", ticksPerBuffer, tpb);
         return PdAudioPropertyChanged;
     }
     return PdAudioOK;

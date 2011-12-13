@@ -12,6 +12,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PdAudioUnit.h"
 
+typedef enum PdAudioStatus {
+	PdAudioOK = 0,				// success
+	PdAudioError = -1,			// unrecoverable error
+	PdAudioPropertyChanged = 1  // some properties have changed to run correctly (not fatal)
+} PdAudioStatus;
+
 /* PdAudioController: A class for managing PdAudioUnit within iOS
  * by using the AVFoundation and Audio Services APIs.
  * Handles phone interruptions and provides high level configuration methods
@@ -36,14 +42,14 @@
 // channel properties to determine whether the selected configuration is acceptable.  Specifying mixingEnabled = YES will
 // allow the app to continue playing audio along with other apps (such as iPod music player).
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
-                            numberOutputChannels:(int)numOutputs
+                                  numberChannels:(int)numChannels
                                     inputEnabled:(BOOL)inputEnabled
                                    mixingEnabled:(BOOL)mixingEnabled;
 
-// Configure audio for ambient use.  Specifying mixingEnabled = YES will allow the app to continue playing audio along with other
-// apps (such as iPod music player).
+// Configure audio for ambient use, without input channels.  Specifying mixingEnabled = YES will allow the app to continue
+// playing audio along with other apps (such as iPod music player).
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
-                           numberOutputChannels:(int)numOutputs
+                                 numberChannels:(int)numChannels
                                   mixingEnabled:(BOOL)mixingEnabled;
 
 // Configure the ticksPerBuffer parameter, which will change the audio sessions IO buffer size.
