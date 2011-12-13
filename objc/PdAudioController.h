@@ -28,7 +28,7 @@ typedef enum PdAudioStatus {
 
 // Read only properties that are set by the configure methods
 @property (nonatomic, readonly) int sampleRate;
-@property (nonatomic, readonly) int numberOutputChannels;
+@property (nonatomic, readonly) int numberChannels;
 @property (nonatomic, readonly) BOOL inputEnabled;
 @property (nonatomic, readonly) BOOL mixingEnabled;
 @property (nonatomic, readonly) int ticksPerBuffer;

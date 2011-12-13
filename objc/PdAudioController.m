@@ -27,7 +27,7 @@
 @implementation PdAudioController
 
 @synthesize sampleRate = sampleRate_;
-@synthesize numberOutputChannels = numberOutputChannels_;
+@synthesize numberChannels = numberChannels_;
 @synthesize inputEnabled = inputEnabled_;
 @synthesize mixingEnabled = mixingEnabled_;
 @synthesize ticksPerBuffer = ticksPerBuffer_;
@@ -107,7 +107,7 @@
 
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
     inputEnabled_ = inputEnabled;
-    numberOutputChannels_ = numChannels;
+    numberChannels_ = numChannels;
     return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
 }
 
