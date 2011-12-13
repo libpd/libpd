@@ -144,13 +144,11 @@
         AU_LOG(@"failed to set session category, error %@", error);
         return PdAudioError;
     }
-    if (!isAmbient) {
-        UInt32 mix = allowsMixing ? 1 : 0;
-        OSStatus status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
-        if (status) {
-            AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %ld)", (allowsMixing ? @"YES" : @"NO"), status);
-            return PdAudioError;
-        }
+    UInt32 mix = allowsMixing ? 1 : 0;
+    OSStatus status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
+    if (status) {
+        AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %ld)", (allowsMixing ? @"YES" : @"NO"), status);
+        return PdAudioError;
     }
     mixingEnabled_ = allowsMixing;
     return PdAudioOK;
