@@ -289,7 +289,8 @@ static PdMessageHandler *messageHandler;
   [delegate release];
   delegate = newDelegate;
   if (delegate && !pollTimer) {
-    pollTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:messageHandler selector:@selector(pollQueue:) userInfo:nil repeats:YES];
+    pollTimer = [NSTimer timerWithTimeInterval:0.02 target:messageHandler selector:@selector(pollQueue:) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:pollTimer forMode:NSRunLoopCommonModes];
   }
 }
 
