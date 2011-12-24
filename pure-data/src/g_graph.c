@@ -108,7 +108,9 @@ void glist_delete(t_glist *x, t_gobj *y)
             glist_getcanvas(x)->gl_name)), 2);
     gobj_delete(y, x);
     if (glist_isvisible(canvas))
+    {
         gobj_vis(y, x, 0);
+    }
     if (x->gl_editor && (ob = pd_checkobject(&y->g_pd)))
         rtext_new(x, ob);
     if (x->gl_list == y) x->gl_list = y->g_next;
@@ -972,10 +974,12 @@ static void graph_delete(t_gobj *z, t_glist *glist)
 {
     t_glist *x = (t_glist *)z;
     t_gobj *y;
-    if (glist_isvisible(x))
-        text_widgetbehavior.w_deletefn(z, glist);
     while (y = x->gl_list)
         glist_delete(x, y);
+    if (glist_isvisible(x))
+    {
+        text_widgetbehavior.w_deletefn(z, glist);
+    }
 }
 
 static t_float graph_lastxpix, graph_lastypix;
