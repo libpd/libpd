@@ -73,7 +73,7 @@
 - (void)receiveBangFromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveBang)]) {
+        if ([listener respondsToSelector:@selector(receiveBangFromSource:)]) {
             [listener receiveBangFromSource:source];
         } else {
             NSLog(@"Unhandled bang from %@", source);
@@ -84,7 +84,7 @@
 - (void)receiveFloat:(float)received fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveFloat:)]) {
+        if ([listener respondsToSelector:@selector(receiveFloat:fromSource:)]) {
             [listener receiveFloat:received fromSource:source];
         } else {
             NSLog(@"Unhandled float from %@", source);
@@ -95,7 +95,7 @@
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveSymbol:)]) {
+        if ([listener respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
             [listener receiveSymbol:symbol fromSource:source];
         } else {
             NSLog(@"Unhandled symbol from %@", source);
@@ -106,7 +106,7 @@
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveList:)]) {
+        if ([listener respondsToSelector:@selector(receiveList:fromSource:)]) {
             [listener receiveList:list fromSource:source];
         } else {
             NSLog(@"Unhandled list from %@", source);
@@ -117,7 +117,7 @@
 - (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveMessage:withArguments:)]) {
+        if ([listener respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
             [listener receiveMessage:message withArguments:arguments fromSource:source];
         } else {
             NSLog(@"Unhandled typed message from %@", source);
