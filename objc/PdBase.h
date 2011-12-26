@@ -34,17 +34,23 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol PdReceiverDelegate
 
+// Listener interface for messages from Pd.
+@protocol PdListener
 @optional
-- (void)receivePrint:(NSString *)message;
 - (void)receiveBangFromSource:(NSString *)source;
 - (void)receiveFloat:(float)received fromSource:(NSString *)source;
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source;
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source;
 - (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source;
-
 @end
+
+// Receiver interface for printing and receiving messages from Pd
+@protocol PdReceiverDelegate<PdListener>
+@optional
+- (void)receivePrint:(NSString *)message;
+@end
+
 
 @interface PdBase {
   // Not meant to be instantiated. No member variables.

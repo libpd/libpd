@@ -74,7 +74,7 @@
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveBang)]) {
-            [listener receiveBang];
+            [listener receiveBangFromSource:source];
         } else {
             NSLog(@"Unhandled bang from %@", source);
         }
@@ -85,7 +85,7 @@
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveFloat:)]) {
-            [listener receiveFloat:received];
+            [listener receiveFloat:received fromSource:source];
         } else {
             NSLog(@"Unhandled float from %@", source);
         }
@@ -96,7 +96,7 @@
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveSymbol:)]) {
-            [listener receiveSymbol:symbol];
+            [listener receiveSymbol:symbol fromSource:source];
         } else {
             NSLog(@"Unhandled symbol from %@", source);
         }
@@ -107,7 +107,7 @@
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveList:)]) {
-            [listener receiveList:list];
+            [listener receiveList:list fromSource:source];
         } else {
             NSLog(@"Unhandled list from %@", source);
         }
@@ -118,7 +118,7 @@
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveMessage:withArguments:)]) {
-            [listener receiveMessage:message withArguments:arguments];
+            [listener receiveMessage:message withArguments:arguments fromSource:source];
         } else {
             NSLog(@"Unhandled typed message from %@", source);
         }
