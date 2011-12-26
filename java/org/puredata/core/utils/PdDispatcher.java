@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.puredata.core.PdBase;
+import org.puredata.core.PdListener;
 import org.puredata.core.PdReceiver;
 
 /**
@@ -93,7 +94,7 @@ public abstract class PdDispatcher implements PdReceiver {
 		Set<PdListener> selected = listeners.get(source);
 		if (selected != null) {
 			for (PdListener listener: selected) {
-				listener.receiveBang();
+				listener.receiveBang(source);
 			}
 		}
 	}
@@ -103,7 +104,7 @@ public abstract class PdDispatcher implements PdReceiver {
 		Set<PdListener> selected = listeners.get(source);
 		if (selected != null) {
 			for (PdListener listener: selected) {
-				listener.receiveFloat(x);
+				listener.receiveFloat(source, x);
 			}
 		}
 	}
@@ -113,7 +114,7 @@ public abstract class PdDispatcher implements PdReceiver {
 		Set<PdListener> selected = listeners.get(source);
 		if (selected != null) {
 			for (PdListener listener: selected) {
-				listener.receiveSymbol(symbol);
+				listener.receiveSymbol(source, symbol);
 			}
 		}
 	}
@@ -123,7 +124,7 @@ public abstract class PdDispatcher implements PdReceiver {
 		Set<PdListener> selected = listeners.get(source);
 		if (selected != null) {
 			for (PdListener listener: selected) {
-				listener.receiveList(args);
+				listener.receiveList(source, args);
 			}
 		}
 	}
@@ -133,7 +134,7 @@ public abstract class PdDispatcher implements PdReceiver {
 		Set<PdListener> selected = listeners.get(source);
 		if (selected != null) {
 			for (PdListener listener: selected) {
-				listener.receiveMessage(symbol, args);
+				listener.receiveMessage(source, symbol, args);
 			}
 		}
 	}

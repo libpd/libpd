@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.puredata.core.PdBase;
+import org.puredata.core.PdListener;
 
 
 /**
@@ -77,16 +78,16 @@ public class PdDispatcherTest {
 	public void testCallbacks() {
 		dispatcher.addListener("foo", listener1);
 		dispatcher.addListener("bar", listener2);
-		listener1.receiveBang();
-		listener2.receiveBang();
-		listener1.receiveFloat(0f);
-		listener2.receiveFloat(1.5f);
-		listener1.receiveSymbol("hund");
-		listener2.receiveSymbol("katze");
-		listener1.receiveList(0f, "call", 3f, "me", 7f, "ishmael");
-		listener2.receiveList("test", 1f, 2f);
-		listener1.receiveMessage("dest", -3f);
-		listener2.receiveMessage("zzz", "eggs");
+		listener1.receiveBang("foo");
+		listener2.receiveBang("bar");
+		listener1.receiveFloat("foo", 0f);
+		listener2.receiveFloat("bar", 1.5f);
+		listener1.receiveSymbol("foo", "hund");
+		listener2.receiveSymbol("bar", "katze");
+		listener1.receiveList("foo", 0f, "call", 3f, "me", 7f, "ishmael");
+		listener2.receiveList("bar", "test", 1f, 2f);
+		listener1.receiveMessage("foo", "dest", -3f);
+		listener2.receiveMessage("bar", "zzz", "eggs");
 		EasyMock.replay(listener1, listener2);
 		dispatcher.receiveBang("foo");
 		dispatcher.receiveBang("bar");
@@ -106,8 +107,8 @@ public class PdDispatcherTest {
 	public void testMultipleListeners() {
 		dispatcher.addListener("spam", listener1);
 		dispatcher.addListener("spam", listener2);
-		listener1.receiveBang();
-		listener2.receiveBang();
+		listener1.receiveBang("spam");
+		listener2.receiveBang("spam");
 		EasyMock.replay(listener1, listener2);
 		dispatcher.receiveBang("spam");
 		EasyMock.verify(listener1, listener2);
