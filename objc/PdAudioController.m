@@ -144,8 +144,14 @@
         AU_LOG(@"failed to set session category, error %@", error);
         return PdAudioError;
     }
+	UInt32 defaultToSpeaker = 1;
+	OSStatus status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
+	if (status) {
+		AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %ld)", status);
+		return PdAudioError;
+	}
     UInt32 mix = allowsMixing ? 1 : 0;
-    OSStatus status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
+    status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
     if (status) {
         AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %ld)", (allowsMixing ? @"YES" : @"NO"), status);
         return PdAudioError;

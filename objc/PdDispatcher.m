@@ -73,8 +73,8 @@
 - (void)receiveBangFromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveBang)]) {
-            [listener receiveBang];
+        if ([listener respondsToSelector:@selector(receiveBangFromSource:)]) {
+            [listener receiveBangFromSource:source];
         } else {
             NSLog(@"Unhandled bang from %@", source);
         }
@@ -84,8 +84,8 @@
 - (void)receiveFloat:(float)received fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveFloat:)]) {
-            [listener receiveFloat:received];
+        if ([listener respondsToSelector:@selector(receiveFloat:fromSource:)]) {
+            [listener receiveFloat:received fromSource:source];
         } else {
             NSLog(@"Unhandled float from %@", source);
         }
@@ -95,8 +95,8 @@
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveSymbol:)]) {
-            [listener receiveSymbol:symbol];
+        if ([listener respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
+            [listener receiveSymbol:symbol fromSource:source];
         } else {
             NSLog(@"Unhandled symbol from %@", source);
         }
@@ -106,8 +106,8 @@
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveList:)]) {
-            [listener receiveList:list];
+        if ([listener respondsToSelector:@selector(receiveList:fromSource:)]) {
+            [listener receiveList:list fromSource:source];
         } else {
             NSLog(@"Unhandled list from %@", source);
         }
@@ -117,8 +117,8 @@
 - (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
     NSArray *listeners = [listenerMap objectForKey:source];
     for (NSObject<PdListener> *listener in listeners) {
-        if ([listener respondsToSelector:@selector(receiveMessage:withArguments:)]) {
-            [listener receiveMessage:message withArguments:arguments];
+        if ([listener respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
+            [listener receiveMessage:message withArguments:arguments fromSource:source];
         } else {
             NSLog(@"Unhandled typed message from %@", source);
         }
