@@ -18,13 +18,14 @@
 #include <vector>
 #include <map>
 
-#include "z_libpd.h"
 #include "PdReceiver.hpp"
 #include "PdMidiReceiver.hpp"
 
 #ifndef HAVE_UNISTD_H
     #define HAVE_UNISTD_H
 #endif
+
+typedef struct _atom t_atom;
 
 namespace pd {
 

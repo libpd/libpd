@@ -14,6 +14,7 @@
  *
  */
 #include "PdBase.hpp"
+#include "z_libpd.h"
 
 #include <iostream>
 
