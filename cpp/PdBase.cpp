@@ -38,10 +38,9 @@ PdBase::~PdBase() {
 }
 
 //--------------------------------------------------------------------
-bool PdBase::init(const int numInChannels, const int numOutChannels, 
-				 const int sampleRate, const int ticksPerBuffer) {
+bool PdBase::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 	clear();
-    return PdContext::instance().init(numInChannels, numOutChannels, sampleRate, ticksPerBuffer);
+    return PdContext::instance().init(numInChannels, numOutChannels, sampleRate);
 }
 
 void PdBase::clear() {	
@@ -90,16 +89,16 @@ bool PdBase::processRaw(float* inBuffer, float* outBuffer) {
     return libpd_process_raw(inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processShort(short* inBuffer, short* outBuffer) {
-    return libpd_process_short(inBuffer, outBuffer) == 0;
+bool PdBase::processShort(int ticks, short* inBuffer, short* outBuffer) {
+    return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processFloat(float* inBuffer, float* outBuffer) {
-    return libpd_process_float(inBuffer, outBuffer) == 0;
+bool PdBase::processFloat(int ticks, float* inBuffer, float* outBuffer) {
+    return libpd_process_float(ticks, inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processDouble(double* inBuffer, double* outBuffer) {
-    return libpd_process_double(inBuffer, outBuffer) == 0;
+bool PdBase::processDouble(int ticks, double* inBuffer, double* outBuffer) {
+    return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
 }
 
 
@@ -718,8 +717,7 @@ void PdBase::PdContext::removeBase() {
 }
 
 /// init the pd instance
-bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels,
-          const int sampleRate, const int ticksPerBuffer) {
+bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
     
 	// attach callbacks
 	libpd_printhook = (t_libpd_printhook) _print;
@@ -741,7 +739,7 @@ bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels,
     
     // init pd
 	libpd_init();
-	if(libpd_init_audio(numInChannels, numOutChannels, sampleRate, ticksPerBuffer) != 0) {
+	if(libpd_init_audio(numInChannels, numOutChannels, sampleRate) != 0) {
 		return false;
 	}
     bInited = true;
