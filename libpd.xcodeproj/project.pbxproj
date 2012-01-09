@@ -167,6 +167,10 @@
 		119013A71486450C00086F19 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		119013AD1486459C00086F19 /* PdAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0A812EEFE5E0053280E /* PdAudio.h */; };
 		119013AE1486459C00086F19 /* PdAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A0A912EEFE5E0053280E /* PdAudio.m */; };
+		11A026E814BAA414002FC756 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A026E214BAA414002FC756 /* PdBase.cpp */; };
+		11A026E914BAA414002FC756 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A026E214BAA414002FC756 /* PdBase.cpp */; };
+		11A026F014BAA414002FC756 /* PdTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A026E614BAA414002FC756 /* PdTypes.cpp */; };
+		11A026F114BAA414002FC756 /* PdTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A026E614BAA414002FC756 /* PdTypes.cpp */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
 		58DDDC361476374300450A0A /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 58DDDC341476374300450A0A /* ringbuffer.c */; };
@@ -265,6 +269,12 @@
 		110E6DD2147B838F00282ABC /* PdAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdAudioUnit.h; sourceTree = "<group>"; };
 		110E6DD3147B838F00282ABC /* PdAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdAudioUnit.m; sourceTree = "<group>"; };
 		119013AB1486450C00086F19 /* libpd-osx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-osx.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		11A026E214BAA414002FC756 /* PdBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdBase.cpp; sourceTree = "<group>"; };
+		11A026E314BAA414002FC756 /* PdBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdBase.hpp; sourceTree = "<group>"; };
+		11A026E414BAA414002FC756 /* PdMidiReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdMidiReceiver.hpp; sourceTree = "<group>"; };
+		11A026E514BAA414002FC756 /* PdReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdReceiver.hpp; sourceTree = "<group>"; };
+		11A026E614BAA414002FC756 /* PdTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdTypes.cpp; sourceTree = "<group>"; };
+		11A026E714BAA414002FC756 /* PdTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdTypes.hpp; sourceTree = "<group>"; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
 		58DDDC341476374300450A0A /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
@@ -306,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				0E82A0A712EEFE5E0053280E /* objc */,
+				11A026E014BAA414002FC756 /* cpp */,
 				0E82A08F12EEFE050053280E /* libpd_wrapper */,
 				0E829FF312EEFDED0053280E /* pure-data */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
@@ -453,6 +464,19 @@
 			);
 			name = utils;
 			sourceTree = "<group>";
+		};
+		11A026E014BAA414002FC756 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				11A026E314BAA414002FC756 /* PdBase.hpp */,
+				11A026E214BAA414002FC756 /* PdBase.cpp */,
+				11A026E714BAA414002FC756 /* PdTypes.hpp */,
+				11A026E614BAA414002FC756 /* PdTypes.cpp */,
+				11A026E414BAA414002FC756 /* PdMidiReceiver.hpp */,
+				11A026E514BAA414002FC756 /* PdReceiver.hpp */,
+			);
+			path = cpp;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -626,6 +650,8 @@
 				119013A01486450C00086F19 /* PdFile.m in Sources */,
 				119013A11486450C00086F19 /* PdDispatcher.m in Sources */,
 				119013A21486450C00086F19 /* ringbuffer.c in Sources */,
+				11A026E914BAA414002FC756 /* PdBase.cpp in Sources */,
+				11A026F114BAA414002FC756 /* PdTypes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,6 +737,8 @@
 				110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */,
 				110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */,
 				119013AE1486459C00086F19 /* PdAudio.m in Sources */,
+				11A026E814BAA414002FC756 /* PdBase.cpp in Sources */,
+				11A026F014BAA414002FC756 /* PdTypes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
