@@ -162,7 +162,7 @@ int libpd_read_array(float *dest, const char *name, int offset, int n) {
 }
 
 int libpd_write_array(const char *name, int offset, float *src, int n) {
-  MEMCPY(*vec++, (t_word) *src++)
+  MEMCPY((vec++)->w_float, *src++)
   return 0;
 }
 
