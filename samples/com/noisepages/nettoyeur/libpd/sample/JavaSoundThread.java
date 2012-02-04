@@ -65,7 +65,6 @@ public class JavaSoundThread extends Thread {
 	private void perform() throws LineUnavailableException {
 		// JavaSound setup.
 		int sampleSize = 2;
-		int frames = PdBase.blockSize() * ticks;
 		AudioFormat audioFormat = new AudioFormat(sampleRate, 8 * sampleSize, outChans, true, true);
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
 		SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
@@ -75,6 +74,7 @@ public class JavaSoundThread extends Thread {
 		// Buffer setup for exchanging samples between libpd and JavaSound.
 		// Question: Is this the best possible solution?  It seems to involve too
 		// much copying.
+		int frames = PdBase.blockSize() * ticks;
 		short[] dummy = new short[0];
 		short[] samples = new short[frames * outChans];
 		byte[] rawSamples = new byte[samples.length * sampleSize];
