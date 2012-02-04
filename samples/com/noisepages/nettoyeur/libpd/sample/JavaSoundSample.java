@@ -22,7 +22,11 @@ import org.puredata.core.PdBase;
 /**
  *
  * Minimal tutorial example of how to use libpd with JavaSound.  This example currently only does audio output,
- * but it should be easy enough to add support for audio input.
+ * but it's easy enough to add support for audio input.
+ *
+ * Note that the simple expedient of requesting a source data line from AudioSystem may not be sound on systems
+ * with multiple sound cards or other complications.  In general, you will need to deal with mixers and line info
+ * objects and other subtleties.
  *
  * @author Peter Brinkmann (peter.brinkmann@gmail.com)
  *
@@ -69,7 +73,9 @@ public class JavaSoundSample {
 		}
 		
 		// Shutdown.
+		sourceDataLine.drain();
 		sourceDataLine.stop();
+		sourceDataLine.close();
 		PdBase.closePatch(patch);
 	}
 }
