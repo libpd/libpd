@@ -86,8 +86,8 @@
 + (int)sendBangToReceiver:(NSString *)receiverName;
 + (int)sendFloat:(float)value toReceiver:(NSString *)receiverName;
 + (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName;
-+ (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;
-+ (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName;
++ (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;  // list may be nil
++ (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName;  // list may be nil
 
 + (int)arraySizeForArrayNamed:(NSString *)arrayName;
 + (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset toArray:(float *)destinationArray count:(int)n;
