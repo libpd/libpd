@@ -515,6 +515,8 @@ public final class PdBase {
 				addFloat(((Integer) arg).intValue());
 			} else if (arg instanceof Float) {
 				addFloat(((Float) arg).floatValue());
+			} else if (arg instanceof Double) {
+				addFloat(((Double) arg).floatValue());
 			} else if (arg instanceof String) {
 				addSymbol((String) arg);
 			} else {
