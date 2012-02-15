@@ -224,7 +224,7 @@ class PdBase {
         /// sends a typed message -> [; test msg1 hello 1.23(
         ///
         virtual void sendList(const std::string& dest, const pd::List& list);
-        virtual void sendMessage(const std::string& dest, const std::string& msg, const pd::List& list);
+        virtual void sendMessage(const std::string& dest, const std::string& msg, const pd::List& list = pd::List());
         
 		/// midi
 		///
