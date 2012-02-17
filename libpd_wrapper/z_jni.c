@@ -5,7 +5,6 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
-#include <signal.h>
 #include <stdio.h>
 #include <pthread.h>
 #include <jni.h>
@@ -203,7 +202,6 @@ JNIEXPORT jint JNICALL JNI_OnLoad
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
 (JNIEnv *env, jclass cls) {
   CACHE_ENV
-  signal(SIGFPE, SIG_IGN);
   objClass = LIBPD_CLASS_REF("java/lang/Object");
   floatClass = LIBPD_CLASS_REF("java/lang/Float");
   floatInit = (*env)->GetMethodID(env, floatClass, "<init>", "(F)V");
