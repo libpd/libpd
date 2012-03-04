@@ -1,4 +1,8 @@
+
+# samples
 samples/test/pdtest
+
+# python
 python/pylibpd_wrap.c
 python/pylibpd.py
 python/MANIFEST
@@ -7,6 +11,8 @@ python/build
 *.so
 *.class
 *.pyc
+
+# xcode
 build/*
 *.mode1v3
 *.pbxuser
@@ -14,9 +20,14 @@ build/*
 *.perspectivev3
 *.mode1v3
 *.mode2v3
-.DS_Store
 *.swp
+xcuserdata
 libpd.xcodeproj/project.xcworkspace
 libpd.xcodeproj/xcuserdata
 libs/libpd.dylib
 libs/libpdnative.dylib
+
+
+# OSX
+.DS_STORE
+*.app
