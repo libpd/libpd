@@ -15,7 +15,6 @@
 #include "z_libpd.h"
 
 #include <iostream>
-#include <sstream>
 
 // needed for libpd audio passing
 #ifndef USEAPI_DUMMY
