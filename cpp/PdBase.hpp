@@ -101,6 +101,22 @@ class PdBase {
         /// }
 		virtual pd::Patch openPatch(const std::string& patch, const std::string& path);
 		
+		/// open a patch file using the filename and path of an existing patch
+		///
+		/// set the filename within the patch object or use a previously opened
+		/// object
+		///
+		/// // open an instance of "somefile.pd"
+		/// Patch p2("somefile.pd", "/some/path");	// set file and path
+		/// pd.openPatch(p2);
+		///
+		/// // open a new instance of "somefile.pd"
+		/// Patch p3 = pd.openPatch(p2);
+		///
+		/// // p2 and p3 refer to 2 different instances of "somefile.pd"
+		///
+		virtual pd::Patch openPatch(pd::Patch& patch);
+		
 		/// close a patch file
         /// takes only the patch's basename (filename without extension)
 		virtual void closePatch(const std::string& patch);

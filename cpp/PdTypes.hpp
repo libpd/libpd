@@ -20,11 +20,17 @@ namespace pd {
 
 /// \section Pd Patch
 
+/// a pd patch
+///
+/// if you use the copy constructor/operator, keep in mind the libpd void* pointer
+/// patch handle is copied and problems can arise if one object is used to close
+/// a patch that other copies may be referring to 
 class Patch {
 
 	public:
 
 		Patch();
+		Patch(const std::string& filename, const std::string& path);
 		Patch(void* handle, int dollarZero, const std::string& filename, const std::string& path);
 			
 		/// data access
@@ -39,7 +45,10 @@ class Patch {
 		/// is the patch pointer valid?
 		bool isValid() const;
 		
-		/// clear data in this object (does not close patch!)
+		/// clear patch pointer and dollar zero (does not close patch!)
+		///
+		/// note: does not clear filename and path so the object can be reused
+		//        for opening multiple instances
 		void clear();
 
 		/// copy constructor

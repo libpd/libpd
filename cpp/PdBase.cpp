@@ -15,6 +15,7 @@
 #include "z_libpd.h"
 
 #include <iostream>
+#include <sstream>
 
 // needed for libpd audio passing
 #ifndef USEAPI_DUMMY
@@ -57,9 +58,6 @@ void PdBase::clearSearchPath() {
 }
 
 //--------------------------------------------------------------------
-//
-//	references http://pocoproject.org/docs/Poco.Path.html
-//
 Patch PdBase::openPatch(const std::string& patch, const std::string& path) {
     // [; pd open file folder(
 	void* handle = libpd_openfile(patch.c_str(), path.c_str());
@@ -68,6 +66,10 @@ Patch PdBase::openPatch(const std::string& patch, const std::string& path) {
 	}
 	int dollarZero = libpd_getdollarzero(handle);
 	return Patch(handle, dollarZero, patch, path);
+}
+
+Patch PdBase::openPatch(pd::Patch& patch) {
+	return openPatch(patch.filename(), patch.path());
 }
 
 void PdBase::closePatch(const std::string& patch) {
@@ -79,6 +81,9 @@ void PdBase::closePatch(const std::string& patch) {
 }
 
 void PdBase::closePatch(Patch& patch) {
+	if(!patch.isValid()) {
+		return;
+	}
 	libpd_closefile(patch.handle());
 	patch.clear();
 }	

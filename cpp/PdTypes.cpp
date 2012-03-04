@@ -23,10 +23,13 @@ namespace pd {
 Patch::Patch() : _handle(NULL), _dollarZero(0), _dollarZeroStr("0"),
 	_filename(""), _path("") {}
 
+Patch::Patch(const std::string& filename, const std::string& path) :
+	_handle(NULL), _dollarZero(0), _dollarZeroStr("0"), 
+	_filename(filename), _path(path) {}
+
 Patch::Patch(void* handle, int dollarZero, const std::string& filename, const std::string& path) :
-	_handle(handle), _dollarZero(dollarZero), _dollarZeroStr(""), 
-	_filename(filename), _path(path) {
-    std::stringstream itoa;
+	_handle(handle), _dollarZero(dollarZero), _filename(filename), _path(path) {
+	std::stringstream itoa;
     itoa << dollarZero;
 	_dollarZeroStr = itoa.str();
 }
@@ -37,16 +40,12 @@ bool Patch::isValid() const {
 	return true;
 }
 
-/// clear data
 void Patch::clear() {
 	_handle = NULL;
 	_dollarZero = 0;
 	_dollarZeroStr = "0";
-	_filename = "";
-	_path = "";
 }
 
-/// copy constructor
 Patch::Patch(const Patch& from) {
 	_handle = from._handle;
 	_dollarZero = from._dollarZero;
@@ -55,7 +54,6 @@ Patch::Patch(const Patch& from) {
 	_path = from._path;
 }
 
-/// copy operator
 void Patch::operator=(const Patch& from) {
 	_handle = from._handle;
 	_dollarZero = from._dollarZero;
@@ -64,7 +62,6 @@ void Patch::operator=(const Patch& from) {
 	_path = from._path;
 }
 
-/// print to ostream
 std::ostream& operator<<(std::ostream& os, const Patch& from) {
 	return os << "Patch: \"" << from.filename() << "\" $0: " << from.dollarZeroStr()
 	   		  << " valid: " << from.isValid();
