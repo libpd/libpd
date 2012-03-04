@@ -1,16 +1,14 @@
 /*
- * Copyright (c) 2011 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  *
- * See https://github.com/danomatika/ofxPd for documentation
+ * See https://github.com/libpd/libpd for documentation
  *
- * This project uses libpd, copyrighted by Miller Puckette and others using the
- * "Standard Improved BSD License". See the file "LICENSE.txt" in src/pd.
- *
- * See http://gitorious.org/pdlib/pages/Libpd for documentation
+ * This file was originally written for the ofxPd openFrameworks addon:
+ * https://github.com/danomatika/ofxPd
  *
  */
 #pragma once
@@ -32,11 +30,12 @@ namespace pd {
 ///
 ///	a Pure Data instance
 ///
-/// use ithis class directly or extend it and any of its virtual functions
+/// use this class directly or extend it and any of its virtual functions
 ///
-///	references:	http://gitorious.org/pdlib/pages/Libpd
 ///
 /// note: this object is not thread safe! use your own mutexes ...
+///
+///		  see https://github.com/danomatika/ofxPd/tree/master/src for an example
 ///
 /// note: libpd currently does not support multiple states and it is 
 ///       suggested that you use only one PdBase-derived object at a time

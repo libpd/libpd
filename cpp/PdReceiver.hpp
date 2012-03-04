@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2011 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  *
- * See https://github.com/danomatika/ofxPd for documentation
+ * See https://github.com/libpd/libpd for documentation
  *
- * This file created by Marek Bereza on 24/01/2011. Updated by Dan Wilcox 2011.
+ * This file was originally written for the ofxPd openFrameworks addon:
+ * https://github.com/danomatika/ofxPd
  *
  */
 #pragma once
