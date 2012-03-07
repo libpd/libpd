@@ -84,17 +84,17 @@ bool List::isSymbol(const unsigned int index) const {
 }
 
 //----------------------------------------------------------
-float List::asFloat(const unsigned int index) const {
+float List::getFloat(const unsigned int index) const {
 	if(!isFloat(index)) {
-		std::cerr << "Pd: List: object is not a float" << std::endl;
+		std::cerr << "Pd: List: object " << index << " is not a float" << std::endl;
 		return 0;
 	}
 	return objects[index].value;
 }
 
-std::string List::asSymbol(const unsigned int index) const {
+std::string List::getSymbol(const unsigned int index) const {
 	if(!isSymbol(index)) {
-		std::cerr << "Pd: List: object is not a symbol" << std::endl;
+		std::cerr << "Pd: List: object " << index << " is not a symbol" << std::endl;
 		return "";
 	}
 	return objects[index].symbol;
@@ -175,12 +175,12 @@ std::string List::toString() const {
 	
 	for(int i = 0; i < objects.size(); ++i) {
 		if(isFloat(i)) {
-            itoa << asFloat(i);
+            itoa << getFloat(i);
 			line += itoa.str();
             itoa.str("");
         }
 		else
-			line += asSymbol(i);
+			line += getSymbol(i);
 		line += " ";
 	}
 	

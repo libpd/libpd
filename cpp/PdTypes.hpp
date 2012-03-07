@@ -113,8 +113,8 @@ class List : public Bang {
 		bool isSymbol(const unsigned int index) const;
 
 		/// get item as type
-		float asFloat(const unsigned int index) const;
-		std::string asSymbol(const unsigned int index) const;
+		float getFloat(const unsigned int index) const;
+		std::string getSymbol(const unsigned int index) const;
 
 		/// \section Write
 		
