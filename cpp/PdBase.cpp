@@ -322,9 +322,9 @@ void PdBase::sendList(const std::string& dest, const List& list) {
     // step through list
     for(int i = 0; i < list.len(); ++i) {
 		if(list.isFloat(i))
-			addFloat(list.asFloat(i));
+			addFloat(list.getFloat(i));
 		else if(list.isSymbol(i))
-			addSymbol(list.asSymbol(i));
+			addSymbol(list.getSymbol(i));
 	}
     
     finishList(dest);
@@ -346,9 +346,9 @@ void PdBase::sendMessage(const std::string& dest, const std::string& msg, const 
     // step through list
     for(int i = 0; i < list.len(); ++i) {
 		if(list.isFloat(i))
-			addFloat(list.asFloat(i));
+			addFloat(list.getFloat(i));
 		else if(list.isSymbol(i))
-			addSymbol(list.asSymbol(i));
+			addSymbol(list.getSymbol(i));
 	}
     
     finishMessage(dest, msg);

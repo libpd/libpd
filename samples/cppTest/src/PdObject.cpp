@@ -42,9 +42,9 @@ void PdObject::receiveList(const std::string& dest, const List& list) {
 	// step through the list
 	for(int i = 0; i < list.len(); ++i) {
 		if(list.isFloat(i))
-			cout << list.asFloat(i) << " ";
+			cout << list.getFloat(i) << " ";
 		else if(list.isSymbol(i))
-			cout << list.asSymbol(i) << " ";
+			cout << list.getSymbol(i) << " ";
 	}
     
     // you can also use the built in toString function or simply stream it out
