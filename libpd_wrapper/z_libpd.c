@@ -8,6 +8,7 @@
  *
  */
 
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -45,6 +46,7 @@ static void *get_object(const char *s) {
 
 /* this is called instead of sys_main() to start things */
 void libpd_init(void) {
+  signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;

@@ -130,6 +130,7 @@
 
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing {
     NSString *category;
+	OSStatus status;
     if (hasInputs && isAmbient) {
         AU_LOG(@"impossible session config; this should never happen");
         return PdAudioError;
@@ -144,11 +145,13 @@
         AU_LOG(@"failed to set session category, error %@", error);
         return PdAudioError;
     }
-	UInt32 defaultToSpeaker = 1;
-	OSStatus status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
-	if (status) {
-		AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %ld)", status);
-		return PdAudioError;
+	if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+		UInt32 defaultToSpeaker = 1;
+		status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
+		if (status) {
+			AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %ld)", status);
+			return PdAudioError;
+		}
 	}
     UInt32 mix = allowsMixing ? 1 : 0;
     status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
