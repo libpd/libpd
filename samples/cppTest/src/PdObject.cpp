@@ -28,8 +28,8 @@ void PdObject::receiveBang(const std::string& dest) {
 	cout << "CPP: bang " << dest << endl;
 }
 
-void PdObject::receiveFloat(const std::string& dest, float value) {
-	cout << "CPP: float " << dest << ": " << value << endl;
+void PdObject::receiveFloat(const std::string& dest, float num) {
+	cout << "CPP: float " << dest << ": " << num << endl;
 }
 
 void PdObject::receiveSymbol(const std::string& dest, const std::string& symbol) {
@@ -64,8 +64,8 @@ void PdObject::receiveNoteOn(const int channel, const int pitch, const int veloc
 	cout << "CPP MIDI: note on: " << channel << " " << pitch << " " << velocity << endl;
 }
 
-void PdObject::receiveControlChange(const int channel, const int controller, const int value) {
-	cout << "CPP MIDI: control change: " << channel << " " << controller << " " << value << endl;
+void PdObject::receiveControlChange(const int channel, const int control, const int value) {
+	cout << "CPP MIDI: control change: " << channel << " " << control << " " << value << endl;
 }
 
 void PdObject::receiveProgramChange(const int channel, const int value) {

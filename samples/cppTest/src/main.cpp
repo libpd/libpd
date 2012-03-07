@@ -17,6 +17,8 @@
 using namespace std;
 using namespace pd;
 
+void testEventPolling(PdBase& pd);
+
 int main(int argc, char **argv) {
 
 	// our pd engine
@@ -173,7 +175,25 @@ int main(int argc, char **argv) {
 	cout << endl << "BEGIN PD Test" << endl;
 	pd.sendSymbol("fromCPP", "test");
 	cout << "FINISH PD Test" << endl << endl;
+
+	//sleep(1);
 	
+	cout << endl << "BEGIN Event Polling Test" << endl;
+	
+	// disable receivers, enable polling
+	pd.setReceiver(NULL);
+    pd.setMidiReceiver(NULL);
+	
+	pd.sendSymbol("fromCPP", "test");
+	testEventPolling(pd);
+	
+	// reenable receivers, disable polling
+	pd.setReceiver(&pdObject);
+    pd.setMidiReceiver(&pdObject);
+	
+	cout << "FINISH Event Polling Test" << endl << endl;
+	
+	//sleep(1);
 	
 	// play a tone by sending a list
 	// [list tone pitch 72 (
@@ -196,4 +216,64 @@ int main(int argc, char **argv) {
 	pd.computeAudio(false);
 	
   return 0;
+}
+
+void testEventPolling(PdBase& pd) {
+	
+	cout << "Number of waiting messages: " << pd.numMessages() << endl;
+	
+	while(pd.numMessages() > 0) {
+		Message& msg = pd.nextMessage();
+//	
+		switch(msg.type) {
+			
+			case(PRINT):
+				cout << "CPP: " << msg.symbol << endl;
+				break;
+			
+			// events
+			case(BANG):
+				cout << "CPP: bang " << msg.dest << endl;
+				break;
+			case(FLOAT):
+				cout << "CPP: float " << msg.dest << ": " << msg.num << endl;
+				break;
+			case(SYMBOL):
+				cout << "CPP: symbol " << msg.dest << ": " << msg.symbol << endl;
+				break;
+			case(LIST):
+				cout << "CPP: list " << msg.list << endl;
+				break;
+			case(MESSAGE):
+				cout << "CPP: message " << msg.dest << ": " << msg.symbol << " " << msg.list << endl;
+				break;
+			
+			// midi
+			case(NOTE_ON):
+				cout << "CPP MIDI: note on: " << msg.channel << " " << msg.pitch << " " << msg.velocity << endl;
+				break;
+			case(CONTROL_CHANGE):
+				cout << "CPP MIDI: control change: " << msg.channel << " " << msg.control << " " << msg.value << endl;
+				break;
+			case(PROGRAM_CHANGE):
+				cout << "CPP MIDI: program change: " << msg.channel << " " << msg.value << endl;
+				break;
+			case(PITCH_BEND):
+				cout << "CPP MIDI: pitch bend: " << msg.channel << " " << msg.value << endl;
+				break;
+			case(AFTERTOUCH):
+				cout << "CPP MIDI: aftertouch: " << msg.channel << " " << msg.value << endl;
+				break;
+			case(POLY_AFTERTOUCH):
+				cout << "CPP MIDI: poly aftertouch: " << msg.channel << " " << msg.pitch << " " << msg.value << endl;
+				break;
+			case(BYTE):
+				cout << "CPP MIDI: midi byte: " << msg.port << " 0x" << hex << (int) msg.byte << dec << endl;
+				break;
+		
+			case NONE:
+				cout << "CPP: NONE ... empty message" << endl;
+				break;
+		}
+	}
 }

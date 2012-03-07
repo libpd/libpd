@@ -69,6 +69,8 @@ std::ostream& operator<<(std::ostream& os, const Patch& from) {
 
 /// LIST	
 //----------------------------------------------------------
+List::List() {}
+
 bool List::isFloat(const unsigned int index) const {
 	if(index < objects.size())
 		if(objects[index].type == List::FLOAT)
@@ -101,10 +103,10 @@ std::string List::asSymbol(const unsigned int index) const {
 }
 
 //----------------------------------------------------------
-void List::addFloat(const float value) {
+void List::addFloat(const float num) {
 	MsgObject o;
 	o.type = List::FLOAT;
-	o.value = value;
+	o.value = num;
 	objects.push_back(o);
 	typeString += 'f';
 }
@@ -189,6 +191,32 @@ std::string List::toString() const {
 
 std::ostream& operator<<(std::ostream& os, const List& from) {
 	return os << from.toString();
+}
+
+/// MESSAGE
+//----------------------------------------------------------
+Message::Message() : type(NONE) {
+	clear();
+}
+
+Message::Message(MessageType type) {
+	clear();
+	this->type = type;
+}
+
+void Message::clear() {
+	type = NONE;
+	dest = "";
+	num = 0;
+	symbol = "";
+	list.clear();
+	channel = 0;
+	pitch = 0;
+	velocity = 0;
+	control = 0;
+	value = 0;
+	port = 0;
+	byte = 0;
 }
 
 } // namespace

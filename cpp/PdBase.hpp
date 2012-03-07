@@ -14,6 +14,7 @@
 #pragma once
 
 #include <vector>
+#include <deque>
 #include <map>
 
 #include "PdReceiver.hpp"
@@ -36,6 +37,9 @@ namespace pd {
 /// note: this object is not thread safe! use your own mutexes ...
 ///
 ///		  see https://github.com/danomatika/ofxPd/tree/master/src for an example
+///
+///	note: if you need to grab events in your main thread (aka working with a gui),
+///		  you may find the message polling interface useful, see nextMessage()
 ///
 /// note: libpd currently does not support multiple states and it is 
 ///       suggested that you use only one PdBase-derived object at a time
@@ -170,21 +174,65 @@ class PdBase {
 		virtual bool exists(const std::string& source); ///< is a receiver subscribed?
 		virtual void unsubscribeAll(); ///< receivers will be unsubscribed from *all* sources
 		
-        /// set the incoming event receiver
+		/// poll for messages
+		///
+		/// by default, PdBase receieves print, event, and midi messages into a FIFO
+		/// queue which can be polled
+		///
+		/// while(pd.numMessages() > 0) {
+		///		pd::Message& msg = pd.nextMessage(&msg);
+		///		
+		///		switch(msg.type) {
+		///			case PRINT:
+		///				cout << got print: " << msg.symbol << endl;
+		///				break;
+		///			case BANG:
+		///				cout << "go a bang to " << msg.dest << endl;
+		///				break;
+		///			case NOTE_ON:
+		///				cout << "got a note on " << msg.channel
+		///					 << msg.pitch << " " << msg.velocity << endl;
+		///				break;
+		///			...
+		///		}
+		///	}
+		///
+		/// if you set a PdReceiver callback receiver, then event messages will
+		/// not be added to the queue
+		///
+		/// the same goes for setting a PdMidiReceiver regarding midi messages
+		
+		/// returns the number of waiting messages in the queue
+		int numMessages();
+		
+		/// get the current waiting message
+		/// 
+		/// copies current message into given message object
+		///
+		/// returns true if message was copied, returns false if no message
+		pd::Message& nextMessage();
+		
+		/// clear currently waiting messages
+		void clearMessages();
+		
+		/// \section Event Receiving via Callbacks
+		
+        /// set the incoming event receiver, disables the event queue
 		///
         /// automatically receives from all currently subscribed sources
         ///
-		/// set this to NULL to disable message events
+		/// set this to NULL to disable callback receiving and reenable the
+		/// event queue
         ///
 		void setReceiver(pd::PdReceiver* receiver);
 		
-        /// \section Midi Receiving
+        /// \section Midi Receiving via Callbacks
         
-        /// set the incoming midi event receiver
+        /// set the incoming midi event receiver, disables the midi queue
 		///
         /// automatically receives from all midi channels
         ///
-        /// set this to NULL to disable midi events
+        /// set this to NULL to disable midi events and reenable the midi queue
 		///
 		void setMidiReceiver(pd::PdMidiReceiver* midiReceiver);
         
@@ -192,7 +240,7 @@ class PdBase {
 		
 		/// messages
 		virtual void sendBang(const std::string& dest);
-		virtual void sendFloat(const std::string& dest, float value);
+		virtual void sendFloat(const std::string& dest, float num);
 		virtual void sendSymbol(const std::string& dest, const std::string& symbol);
 		
 		/// compound messages
@@ -213,7 +261,7 @@ class PdBase {
 		/// pd.finishMessage("test", "msg1");
         ///
 		virtual void startMessage();
-		virtual void addFloat(const float value);
+		virtual void addFloat(const float num);
 		virtual void addSymbol(const std::string& symbol);
 		virtual void finishList(const std::string& dest);
         virtual void finishMessage(const std::string& dest, const std::string& msg);
@@ -382,7 +430,7 @@ class PdBase {
         unsigned int maxMessageLen();
 		
     private:
-		            
+					            
 		/// compound message status
 		enum MsgType {
 			MSG,
@@ -439,6 +487,9 @@ class PdBase {
                 pd::PdMidiReceiver* midiReceiver;       ///< the midi receiver
                 
                 std::string printMsg;	///< used to build a print message
+				
+				std::deque<pd::Message> messages;	///< the event queue
+				Message message;					///< the current message
         
             private:
             
