@@ -215,12 +215,12 @@ struct NoteOn {
 /// change a control value aka send a CC message
 struct ControlChange {
 
-	const int channel;	///< channel (0 - 15 * dev#)
-	const int control;	///< control (0 - 127)
-	const int value;	///< value (0 - 127)
+	const int channel;		///< channel (0 - 15 * dev#)
+	const int controller;	///< controller (0 - 127)
+	const int value;		///< value (0 - 127)
 	
-	ControlChange(const int channel, const int control, const int value) :
-		channel(channel), control(control), value(value) {}
+	ControlChange(const int channel, const int controller, const int value) :
+		channel(channel), controller(controller), value(value) {}
 };
 
 /// change a program value (ie an instrument)
@@ -363,14 +363,16 @@ struct Message {
 		std::string dest;		///< dest receiver name
 		
 		float num;				///< FLOAT value
-		std::string symbol;		///< PRINT message & SYMBOL value
+		std::string symbol;		///< SYMBOL value
+								///< PRINT message & message name for MESSAGE
+								
 		pd::List list;			///< LIST & MESSAGE
 		
 		// midi
 		int channel;			///< channel (0 - 15 * dev#)
 		int pitch;				///< pitch (0 - 127) for NOTE_ON & POLY_AFTERTOUCH
 		int velocity;			///< velocity (0 - 127) for NOTE_ON
-		int control;			///< control (0 - 127) for CONTROL_CHANGE
+		int controller;			///< controller (0 - 127) for CONTROL_CHANGE
 		
 		int value;				///< value (0 - 127) for CONTROL_CHANGE,
 								///< PROGRAM_CHANGE, & POLY_AFTERTOUCH

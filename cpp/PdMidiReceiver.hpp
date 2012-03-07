@@ -22,7 +22,7 @@ class PdMidiReceiver {
 
 		/// midi
 		virtual void receiveNoteOn(const int channel, const int pitch, const int velocity) {}
-		virtual void receiveControlChange(const int channel, const int control, const int value) {}
+		virtual void receiveControlChange(const int channel, const int controller, const int value) {}
 		virtual void receiveProgramChange(const int channel, const int value) {} // note: pgm value is 1-128
 		virtual void receivePitchBend(const int channel, const int value) {}
 		virtual void receiveAftertouch(const int channel, const int value) {}

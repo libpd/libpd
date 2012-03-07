@@ -359,8 +359,8 @@ void PdBase::sendNoteOn(const int channel, const int pitch, const int velocity) 
 	libpd_noteon(channel, pitch, velocity);
 }
 
-void PdBase::sendControlChange(const int channel, const int control, const int value) {
-	libpd_controlchange(channel, control, value);
+void PdBase::sendControlChange(const int channel, const int controller, const int value) {
+	libpd_controlchange(channel, controller, value);
 }
 
 void PdBase::sendProgramChange(const int channel, int program) {
@@ -512,7 +512,7 @@ PdBase& PdBase::operator<<(const NoteOn& var) {
 }
 
 PdBase& PdBase::operator<<(const ControlChange& var) {
-	sendControlChange(var.channel, var.control, var.value);
+	sendControlChange(var.channel, var.controller, var.value);
 	return *this;
 }
 
@@ -977,14 +977,14 @@ void PdBase::PdContext::_noteon(int channel, int pitch, int velocity) {
 	}
 }
 
-void PdBase::PdContext::_controlchange(int channel, int control, int value) {
+void PdBase::PdContext::_controlchange(int channel, int controller, int value) {
     PdContext& context = PdContext::instance();
     if(context.midiReceiver)
-        context.midiReceiver->receiveControlChange(channel, control, value);
+        context.midiReceiver->receiveControlChange(channel, controller, value);
 	else {
 		Message m(CONTROL_CHANGE);
 		m.channel = channel;
-		m.control = control;
+		m.controller = controller;
 		m.value = value;
 		context.messages.push_back(m);
 	}

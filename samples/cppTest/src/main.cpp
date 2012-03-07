@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
 	pd.sendNoteOn(midiChan, 60);
 	pd.sendControlChange(midiChan, 0, 64);
 	pd.sendProgramChange(midiChan, 100);   // note: pgm num range is 1 - 128
-	pd.sendPitchBend(midiChan, 2000);   // note: ofxPd uses -8192 - 8192 while [bendin] returns 0 - 16383,
+	pd.sendPitchBend(midiChan, 2000);   // note: libpd uses -8192 - 8192 while [bendin] returns 0 - 16383,
                                         // so sending a val of 2000 gives 10192 in pd
 	pd.sendAftertouch(midiChan, 100);
 	pd.sendPolyAftertouch(midiChan, 64, 100);
@@ -240,33 +240,41 @@ void testEventPolling(PdBase& pd) {
 				cout << "CPP: symbol " << msg.dest << ": " << msg.symbol << endl;
 				break;
 			case(LIST):
-				cout << "CPP: list " << msg.list << endl;
+				cout << "CPP: list " << msg.list << msg.list.types() << endl;
 				break;
 			case(MESSAGE):
-				cout << "CPP: message " << msg.dest << ": " << msg.symbol << " " << msg.list << endl;
+				cout << "CPP: message " << msg.dest << ": " << msg.symbol << " " 
+					 << msg.list << msg.list.types() << endl;
 				break;
 			
 			// midi
 			case(NOTE_ON):
-				cout << "CPP MIDI: note on: " << msg.channel << " " << msg.pitch << " " << msg.velocity << endl;
+				cout << "CPP MIDI: note on: " << msg.channel << " "
+					 << msg.pitch << " " << msg.velocity << endl;
 				break;
 			case(CONTROL_CHANGE):
-				cout << "CPP MIDI: control change: " << msg.channel << " " << msg.control << " " << msg.value << endl;
+				cout << "CPP MIDI: control change: " << msg.channel
+					 << " " << msg.controller << " " << msg.value << endl;
 				break;
 			case(PROGRAM_CHANGE):
-				cout << "CPP MIDI: program change: " << msg.channel << " " << msg.value << endl;
+				cout << "CPP MIDI: program change: " << msg.channel << " "
+					 << msg.value << endl;
 				break;
 			case(PITCH_BEND):
-				cout << "CPP MIDI: pitch bend: " << msg.channel << " " << msg.value << endl;
+				cout << "CPP MIDI: pitch bend: " << msg.channel << " "
+					 << msg.value << endl;
 				break;
 			case(AFTERTOUCH):
-				cout << "CPP MIDI: aftertouch: " << msg.channel << " " << msg.value << endl;
+				cout << "CPP MIDI: aftertouch: " << msg.channel << " "
+					 << msg.value << endl;
 				break;
 			case(POLY_AFTERTOUCH):
-				cout << "CPP MIDI: poly aftertouch: " << msg.channel << " " << msg.pitch << " " << msg.value << endl;
+				cout << "CPP MIDI: poly aftertouch: " << msg.channel << " "
+					 << msg.pitch << " " << msg.value << endl;
 				break;
 			case(BYTE):
-				cout << "CPP MIDI: midi byte: " << msg.port << " 0x" << hex << (int) msg.byte << dec << endl;
+				cout << "CPP MIDI: midi byte: " << msg.port << " 0x"
+					 << hex << (int) msg.byte << dec << endl;
 				break;
 		
 			case NONE:

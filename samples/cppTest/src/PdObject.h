@@ -30,7 +30,7 @@ class PdObject : public pd::PdReceiver, public pd::PdMidiReceiver {
 		
         // pd midi receiver callbacks
 		void receiveNoteOn(const int channel, const int pitch, const int velocity);
-		void receiveControlChange(const int channel, const int control, const int value);
+		void receiveControlChange(const int channel, const int controller, const int value);
 		void receiveProgramChange(const int channel, const int value);
 		void receivePitchBend(const int channel, const int value);
 		void receiveAftertouch(const int channel, const int value);

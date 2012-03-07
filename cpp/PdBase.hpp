@@ -296,11 +296,11 @@ class PdBase {
 		/// number ranges:
         /// channel		0 - 15 * dev# (dev #0: 0-15, dev #1: 16-31, etc)
 		/// pitch 		0 - 127
-		/// velocity	0 - 127
-		/// control value	0 - 127
-		/// program value	1 - 128
-		/// bend value		-8192 - 8191
-		/// touch value		0 - 127
+		/// velocity			0 - 127
+		/// controller value	0 - 127
+		/// program value		1 - 128
+		/// bend value			-8192 - 8191
+		/// touch value			0 - 127
 		///
 		/// note, in pd:
         /// [bendin] takes 0 - 16383 while [bendout] returns -8192 - 8192

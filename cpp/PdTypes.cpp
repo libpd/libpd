@@ -213,7 +213,7 @@ void Message::clear() {
 	channel = 0;
 	pitch = 0;
 	velocity = 0;
-	control = 0;
+	controller = 0;
 	value = 0;
 	port = 0;
 	byte = 0;
