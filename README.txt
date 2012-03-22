@@ -5,8 +5,7 @@ Layout of the libpd repository:
   * pure-data: The folder containing the sources of Pd Vanilla and standard
       externals.  This subtree is a subset of Miller Puckette's official Pd
       git repository, available at
-      git://pure-data.git.sourceforge.net/gitroot/pure-data/pure-data,
-      with minimal changes.
+      git://pure-data.git.sourceforge.net/gitroot/pure-data/pure-data.
 
       We're keeping our own copy of the sources of Pd in order to have the
       option of adding optimizations and other changes that may not make it
@@ -31,7 +30,6 @@ Layout of the libpd repository:
       Python.  Feel free to improve or add support for other languages such as
       Lua.
 
-  * samples: Currently, this branch only contains one small sample program in
-      C built on top of libpd.  It's probably redundant, but it may give you
-      an idea how to embed libpd into your own applications.
+  * samples: This branch contains one small sample program in C built on top
+      of libpd, as well as a sample project in Java that uses JavaSound.
 
