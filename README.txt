@@ -1,4 +1,4 @@
-For documentation of libpd, see the wiki: http://gitorious.org/pdlib/pages/Home
+For documentation of libpd, see the wiki: https://github.com/libpd/libpd/wiki
 
 Layout of the libpd repository:
 
