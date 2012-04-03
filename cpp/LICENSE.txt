@@ -1,7 +1,9 @@
-Copyright (c) 2011 Dan Wilcox <danomatika@gmail.com>
+Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
 All rights reserved.
 
-The following terms (the "Standard Improved BSD License") apply to all files associated with the software unless explicitly disclaimed in individual files:
+The following terms (the "Standard Improved BSD License") apply to all
+files associated with the software unless explicitly disclaimed in
+individual files:
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
