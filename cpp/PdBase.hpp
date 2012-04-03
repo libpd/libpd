@@ -14,6 +14,7 @@
 #pragma once
 
 #include <vector>
+#include <deque>
 #include <map>
 
 #include "PdReceiver.hpp"
@@ -36,6 +37,9 @@ namespace pd {
 /// note: this object is not thread safe! use your own mutexes ...
 ///
 ///		  see https://github.com/danomatika/ofxPd/tree/master/src for an example
+///
+///	note: if you need to grab events in your main thread (aka working with a gui),
+///		  you may find the message polling interface useful, see nextMessage()
 ///
 /// note: libpd currently does not support multiple states and it is 
 ///       suggested that you use only one PdBase-derived object at a time
@@ -170,21 +174,68 @@ class PdBase {
 		virtual bool exists(const std::string& source); ///< is a receiver subscribed?
 		virtual void unsubscribeAll(); ///< receivers will be unsubscribed from *all* sources
 		
-        /// set the incoming event receiver
+		/// poll for messages
+		///
+		/// by default, PdBase receieves print, event, and midi messages into a FIFO
+		/// queue which can be polled
+		///
+		/// while(pd.numMessages() > 0) {
+		///		pd::Message& msg = pd.nextMessage(&msg);
+		///		
+		///		switch(msg.type) {
+		///			case PRINT:
+		///				cout << got print: " << msg.symbol << endl;
+		///				break;
+		///			case BANG:
+		///				cout << "go a bang to " << msg.dest << endl;
+		///				break;
+		///			case NOTE_ON:
+		///				cout << "got a note on " << msg.channel
+		///					 << msg.pitch << " " << msg.velocity << endl;
+		///				break;
+		///			...
+		///		}
+		///	}
+		///
+		/// if you set a PdReceiver callback receiver, then event messages will
+		/// not be added to the queue
+		///
+		/// the same goes for setting a PdMidiReceiver regarding midi messages
+		///
+		/// if the message queue is full, the oldest message will be dropped
+		/// see setMaxQueueLen()
+		
+		/// returns the number of waiting messages in the queue
+		int numMessages();
+		
+		/// get the current waiting message
+		/// 
+		/// copies current message into given message object
+		///
+		/// returns true if message was copied, returns false if no message
+		pd::Message& nextMessage();
+		
+		/// clear currently waiting messages
+		void clearMessages();
+		
+		/// \section Event Receiving via Callbacks
+		
+        /// set the incoming event receiver, disables the event queue
 		///
         /// automatically receives from all currently subscribed sources
         ///
-		/// set this to NULL to disable message events
+		/// set this to NULL to disable callback receiving and reenable the
+		/// event queue
         ///
 		void setReceiver(pd::PdReceiver* receiver);
 		
-        /// \section Midi Receiving
+        /// \section Midi Receiving via Callbacks
         
-        /// set the incoming midi event receiver
+        /// set the incoming midi event receiver, disables the midi queue
 		///
         /// automatically receives from all midi channels
         ///
-        /// set this to NULL to disable midi events
+        /// set this to NULL to disable midi events and reenable the midi queue
 		///
 		void setMidiReceiver(pd::PdMidiReceiver* midiReceiver);
         
@@ -192,7 +243,7 @@ class PdBase {
 		
 		/// messages
 		virtual void sendBang(const std::string& dest);
-		virtual void sendFloat(const std::string& dest, float value);
+		virtual void sendFloat(const std::string& dest, float num);
 		virtual void sendSymbol(const std::string& dest, const std::string& symbol);
 		
 		/// compound messages
@@ -213,7 +264,7 @@ class PdBase {
 		/// pd.finishMessage("test", "msg1");
         ///
 		virtual void startMessage();
-		virtual void addFloat(const float value);
+		virtual void addFloat(const float num);
 		virtual void addSymbol(const std::string& symbol);
 		virtual void finishList(const std::string& dest);
         virtual void finishMessage(const std::string& dest, const std::string& msg);
@@ -248,11 +299,11 @@ class PdBase {
 		/// number ranges:
         /// channel		0 - 15 * dev# (dev #0: 0-15, dev #1: 16-31, etc)
 		/// pitch 		0 - 127
-		/// velocity	0 - 127
-		/// control value	0 - 127
-		/// program value	1 - 128
-		/// bend value		-8192 - 8191
-		/// touch value		0 - 127
+		/// velocity			0 - 127
+		/// controller value	0 - 127
+		/// program value		1 - 128
+		/// bend value			-8192 - 8191
+		/// touch value			0 - 127
 		///
 		/// note, in pd:
         /// [bendin] takes 0 - 16383 while [bendout] returns -8192 - 8192
@@ -381,8 +432,13 @@ class PdBase {
         void setMaxMessageLen(unsigned int len);
         unsigned int maxMessageLen();
 		
+		/// get/set the max length of the message queue, default: 1000
+		/// the oldest message will be dropped when the queue is full
+		void setMaxQueueLen(unsigned int len);
+		unsigned int maxQueueLen();
+		
     private:
-		            
+					            
 		/// compound message status
 		enum MsgType {
 			MSG,
@@ -405,7 +461,7 @@ class PdBase {
                 void addBase();
                 
                 /// decrements the num of pd base objects
-                /// clears if removeing last base
+                /// clears if removing last base
                 void removeBase();
                 
                 /// init the pd instance
@@ -419,6 +475,10 @@ class PdBase {
                 
                 /// is the instance inited?
                 inline bool isInited() {return bInited;}
+				
+				/// add a message to the event queue
+				/// prints error when dropping messages if queue is full
+				void addMessage(pd::Message& msg);
         
                 /// \section Variables
                 
@@ -439,6 +499,10 @@ class PdBase {
                 pd::PdMidiReceiver* midiReceiver;       ///< the midi receiver
                 
                 std::string printMsg;	///< used to build a print message
+				
+				std::deque<pd::Message> messages;	///< the event queue
+				Message message;					///< the current message
+				int maxQueueLen;					///< max len of queue
         
             private:
             

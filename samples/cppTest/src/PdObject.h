@@ -23,7 +23,7 @@ class PdObject : public pd::PdReceiver, public pd::PdMidiReceiver {
 		void print(const std::string& message);
 		
 		void receiveBang(const std::string& dest);
-		void receiveFloat(const std::string& dest, float value);
+		void receiveFloat(const std::string& dest, float num);
 		void receiveSymbol(const std::string& dest, const std::string& symbol);
 		void receiveList(const std::string& dest, const pd::List& list);
 		void receiveMessage(const std::string& dest, const std::string& msg, const pd::List& list);

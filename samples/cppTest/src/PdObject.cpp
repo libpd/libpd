@@ -28,8 +28,8 @@ void PdObject::receiveBang(const std::string& dest) {
 	cout << "CPP: bang " << dest << endl;
 }
 
-void PdObject::receiveFloat(const std::string& dest, float value) {
-	cout << "CPP: float " << dest << ": " << value << endl;
+void PdObject::receiveFloat(const std::string& dest, float num) {
+	cout << "CPP: float " << dest << ": " << num << endl;
 }
 
 void PdObject::receiveSymbol(const std::string& dest, const std::string& symbol) {
