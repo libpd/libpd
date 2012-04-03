@@ -201,6 +201,9 @@ class PdBase {
 		/// not be added to the queue
 		///
 		/// the same goes for setting a PdMidiReceiver regarding midi messages
+		///
+		/// if the message queue is full, the oldest message will be dropped
+		/// see setMaxQueueLen()
 		
 		/// returns the number of waiting messages in the queue
 		int numMessages();
@@ -429,6 +432,11 @@ class PdBase {
         void setMaxMessageLen(unsigned int len);
         unsigned int maxMessageLen();
 		
+		/// get/set the max length of the message queue, default: 1000
+		/// the oldest message will be dropped when the queue is full
+		void setMaxQueueLen(unsigned int len);
+		unsigned int maxQueueLen();
+		
     private:
 					            
 		/// compound message status
@@ -453,7 +461,7 @@ class PdBase {
                 void addBase();
                 
                 /// decrements the num of pd base objects
-                /// clears if removeing last base
+                /// clears if removing last base
                 void removeBase();
                 
                 /// init the pd instance
@@ -467,6 +475,10 @@ class PdBase {
                 
                 /// is the instance inited?
                 inline bool isInited() {return bInited;}
+				
+				/// add a message to the event queue
+				/// prints error when dropping messages if queue is full
+				void addMessage(pd::Message& msg);
         
                 /// \section Variables
                 
@@ -490,6 +502,7 @@ class PdBase {
 				
 				std::deque<pd::Message> messages;	///< the event queue
 				Message message;					///< the current message
+				int maxQueueLen;					///< max len of queue
         
             private:
             

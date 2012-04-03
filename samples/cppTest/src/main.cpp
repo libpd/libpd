@@ -225,54 +225,54 @@ void testEventPolling(PdBase& pd) {
 
 		switch(msg.type) {
 			
-			case(PRINT):
+			case PRINT:
 				cout << "CPP: " << msg.symbol << endl;
 				break;
 			
 			// events
-			case(BANG):
+			case BANG:
 				cout << "CPP: bang " << msg.dest << endl;
 				break;
-			case(FLOAT):
+			case FLOAT:
 				cout << "CPP: float " << msg.dest << ": " << msg.num << endl;
 				break;
-			case(SYMBOL):
+			case SYMBOL:
 				cout << "CPP: symbol " << msg.dest << ": " << msg.symbol << endl;
 				break;
-			case(LIST):
+			case LIST:
 				cout << "CPP: list " << msg.list << msg.list.types() << endl;
 				break;
-			case(MESSAGE):
+			case MESSAGE:
 				cout << "CPP: message " << msg.dest << ": " << msg.symbol << " " 
 					 << msg.list << msg.list.types() << endl;
 				break;
 			
 			// midi
-			case(NOTE_ON):
+			case NOTE_ON:
 				cout << "CPP MIDI: note on: " << msg.channel << " "
 					 << msg.pitch << " " << msg.velocity << endl;
 				break;
-			case(CONTROL_CHANGE):
+			case CONTROL_CHANGE:
 				cout << "CPP MIDI: control change: " << msg.channel
 					 << " " << msg.controller << " " << msg.value << endl;
 				break;
-			case(PROGRAM_CHANGE):
+			case PROGRAM_CHANGE:
 				cout << "CPP MIDI: program change: " << msg.channel << " "
 					 << msg.value << endl;
 				break;
-			case(PITCH_BEND):
+			case PITCH_BEND:
 				cout << "CPP MIDI: pitch bend: " << msg.channel << " "
 					 << msg.value << endl;
 				break;
-			case(AFTERTOUCH):
+			case AFTERTOUCH:
 				cout << "CPP MIDI: aftertouch: " << msg.channel << " "
 					 << msg.value << endl;
 				break;
-			case(POLY_AFTERTOUCH):
+			case POLY_AFTERTOUCH:
 				cout << "CPP MIDI: poly aftertouch: " << msg.channel << " "
 					 << msg.pitch << " " << msg.value << endl;
 				break;
-			case(BYTE):
+			case BYTE:
 				cout << "CPP MIDI: midi byte: " << msg.port << " 0x"
 					 << hex << (int) msg.byte << dec << endl;
 				break;

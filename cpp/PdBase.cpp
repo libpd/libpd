@@ -724,6 +724,14 @@ unsigned int PdBase::maxMessageLen() {
     return PdContext::instance().maxMsgLen;
 }
 
+void PdBase::setMaxQueueLen(unsigned int len) {
+	PdContext::instance().maxQueueLen = len;
+}
+
+unsigned int PdBase::maxQueueLen() {
+	return PdContext::instance().maxQueueLen;
+}
+
 /* ***** PD CONTEXT ***** */
 
 //----------------------------------------------------------
@@ -819,6 +827,15 @@ void PdBase::PdContext::computeAudio(bool state) {
 	libpd_finish_message("pd", "dsp");
 }
 
+void PdBase::PdContext::addMessage(pd::Message& msg) {
+	if(messages.size() >= maxQueueLen) { 
+		cerr << "Pd: message queue max len of " << maxQueueLen
+			 << " reached, dropping oldest message" << endl;
+		messages.pop_front();
+	}
+	messages.push_back(msg);
+}
+
 /* ***** PD CONTEXT PRIVATE ***** */
 
 //----------------------------------------------------------
@@ -830,6 +847,8 @@ PdBase::PdContext::PdContext() {
     
     bInited = false;
     numBases = false;
+	
+	maxQueueLen = 1000;
 }
 
 PdBase::PdContext::~PdContext() {
@@ -873,7 +892,7 @@ void PdBase::PdContext::_bang(const char* source) {
 	else {
 		Message m(BANG);
 		m.dest = (string) source;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -886,7 +905,7 @@ void PdBase::PdContext::_float(const char* source, float num)
 		Message m(FLOAT);
 		m.dest = (string) source;
 		m.num = num;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -899,7 +918,7 @@ void PdBase::PdContext::_symbol(const char* source, const char* symbol)
 		Message m(SYMBOL);
 		m.dest = (string) source;
 		m.symbol = (string) symbol;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -929,7 +948,7 @@ void PdBase::PdContext::_list(const char* source, int argc, t_atom* argv)
 		Message m(LIST);
 		m.dest = (string) source;
 		m.list = list;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -960,7 +979,7 @@ void PdBase::PdContext::_message(const char* source, const char *symbol, int arg
 		m.dest = (string) source;
 		m.symbol = (string) symbol;
 		m.list = list;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -973,7 +992,7 @@ void PdBase::PdContext::_noteon(int channel, int pitch, int velocity) {
 		m.channel = channel;
 		m.pitch = pitch;
 		m.velocity = velocity;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -986,7 +1005,7 @@ void PdBase::PdContext::_controlchange(int channel, int controller, int value) {
 		m.channel = channel;
 		m.controller = controller;
 		m.value = value;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -998,7 +1017,7 @@ void PdBase::PdContext::_programchange(int channel, int value) {
 		Message m(PROGRAM_CHANGE);
 		m.channel = channel;
 		m.value = value;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -1010,7 +1029,7 @@ void PdBase::PdContext::_pitchbend(int channel, int value) {
 		Message m(PITCH_BEND);
 		m.channel = channel;
 		m. value = value;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -1022,7 +1041,7 @@ void PdBase::PdContext::_aftertouch(int channel, int value) {
 		Message m(AFTERTOUCH);
 		m.channel = channel;
 		m.value = value;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -1035,7 +1054,7 @@ void PdBase::PdContext::_polyaftertouch(int channel, int pitch, int value) {
 		m.channel = channel;
 		m.pitch = pitch;
 		m.value = value;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
@@ -1047,7 +1066,7 @@ void PdBase::PdContext::_midibyte(int port, int byte) {
 		Message m(BYTE);
 		m.port = port;
 		m.byte = byte;
-		context.messages.push_back(m);
+		context.addMessage(m);
 	}
 }
 
