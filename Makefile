@@ -2,16 +2,26 @@ UNAME = $(shell uname)
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
-  PLATFORM_CFLAGS = -O3 -arch x86_64 -arch i386 -g \
+  PLATFORM_CFLAGS = -DHAVE_LIBDL -O3 -arch x86_64 -arch i386 -g \
 	-I/System/Library/Frameworks/JavaVM.framework/Headers
-  LDFLAGS = -arch x86_64 -arch i386 -dynamiclib
-  JAVA_LDFLAGS = -framework JavaVM
-else  # Assume Linux
-  SOLIB_EXT = so
-  JAVA_HOME ?= /usr/lib/jvm/default-java
-  PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC \
-	-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -O3
-  LDFLAGS = -shared
+  LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
+  JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
+else
+  ifeq ($(OS), Windows_NT)  # Windows, use Mingw
+    CC = gcc
+    SOLIB_EXT = dll
+    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/win32
+    MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
+    LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def -Wl,--out-implib=libs/libpd.lib
+    JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdnative.def -Wl,--out-implib=libs/libpdnative.lib
+  else  # Assume Linux
+    SOLIB_EXT = so
+    JAVA_HOME ?= /usr/lib/jvm/default-java
+    PLATFORM_CFLAGS = -DHAVE_LIBDL -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC \
+  	-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -O3
+    LDFLAGS = -shared -ldl
+    JAVA_LDFLAGS = $(LDFLAGS)
+  endif
 endif
 
 PD_FILES = \
@@ -48,7 +58,7 @@ JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDJAVA = libs/libpdnative.$(SOLIB_EXT)
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
+CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY \
 			-I./pure-data/src -I./libpd_wrapper \
 			$(PLATFORM_CFLAGS)
 
@@ -57,7 +67,7 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
 all: $(LIBPD) javalib
 
 $(LIBPD): ${PD_FILES:.c=.o}
-	gcc $(LDFLAGS) -ldl -lm -lpthread -o $(LIBPD) $^
+	gcc -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
 javalib: $(JNIH_FILE) $(PDJAVA)
 
@@ -66,7 +76,7 @@ $(JNIH_FILE): $(JAVA_BASE)
 	javah -o $@ -classpath java org.puredata.core.PdBase
 
 $(PDJAVA): ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
-	gcc $(LDFLAGS) $(JAVA_LDFLAGS) -ldl -lm -lpthread -o $(PDJAVA) $^
+	gcc -o $(PDJAVA) $^ -lm -lpthread $(JAVA_LDFLAGS) 
 
 clean:
 	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
