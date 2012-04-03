@@ -1,0 +1,17 @@
+
+///////////////////////////////////////////
+// LIBS
+
+// path to the libpd dir
+PD_PATH = ../..
+
+// libpd
+PD_CFLAGS = -DHAVE_UNISTD_H -DUSEAPI_DUMMY -DPD
+PD_HEADERS = $(PD_PATH)/pure-data/src $(PD_PATH)/libpd_wrapper $(PD_PATH)/cpp
+
+///////////////////////////////////////////
+// MAIN
+
+OTHER_CFLAGS = $(PD_CFLAGS)
+HEADER_SEARCH_PATHS = $(PD_HEADERS)
+OTHER_LDFLAGS = 

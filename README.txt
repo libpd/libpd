@@ -26,7 +26,7 @@ Layout of the libpd repository:
       currently don't have a makefile for Windows.  Feel free to improve the
       build system in any way you see fit.
 
-  * java, objc, python: Glue for using libpd with Java, Objective C, and
+  * java, objc, cpp, python: Glue for using libpd with Java, Objective C, C++, and
       Python.  Feel free to improve or add support for other languages such as
       Lua.
 

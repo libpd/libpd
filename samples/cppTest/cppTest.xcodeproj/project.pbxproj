@@ -1,0 +1,326 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		307912C415032CE600FF881A /* PdObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307912C215032CE600FF881A /* PdObject.cpp */; };
+		309212E414F4689100194CAF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309212E314F4689100194CAF /* Cocoa.framework */; };
+		3092130914F4693E00194CAF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3092130814F4693E00194CAF /* main.cpp */; };
+		3092131614F46CE400194CAF /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3092131514F4694F00194CAF /* libpd-osx.a */; };
+		3092133514F4785000194CAF /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3092133414F4785000194CAF /* Project.xcconfig */; };
+		3092133714F4785B00194CAF /* cppTest-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3092133614F4785B00194CAF /* cppTest-Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3092131214F4694F00194CAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3092130A14F4694F00194CAF /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libpd-ios";
+		};
+		3092131414F4694F00194CAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3092130A14F4694F00194CAF /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 119013AB1486450C00086F19;
+			remoteInfo = "libpd-osx";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		307912C215032CE600FF881A /* PdObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdObject.cpp; sourceTree = "<group>"; };
+		307912C315032CE600FF881A /* PdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdObject.h; sourceTree = "<group>"; };
+		309212DF14F4689100194CAF /* cppTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cppTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		309212E314F4689100194CAF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		309212E614F4689100194CAF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		309212E714F4689100194CAF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		309212E814F4689100194CAF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3092130814F4693E00194CAF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3092130A14F4694F00194CAF /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../libpd.xcodeproj; sourceTree = "<group>"; };
+		3092133414F4785000194CAF /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = SOURCE_ROOT; };
+		3092133614F4785B00194CAF /* cppTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "cppTest-Info.plist"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		309212DC14F4689100194CAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3092131614F46CE400194CAF /* libpd-osx.a in Frameworks */,
+				309212E414F4689100194CAF /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		309212D414F4689100194CAF = {
+			isa = PBXGroup;
+			children = (
+				3092130A14F4694F00194CAF /* libpd.xcodeproj */,
+				309212E914F4689100194CAF /* cppTest */,
+				309212E214F4689100194CAF /* Frameworks */,
+				309212E014F4689100194CAF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		309212E014F4689100194CAF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				309212DF14F4689100194CAF /* cppTest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		309212E214F4689100194CAF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				309212E314F4689100194CAF /* Cocoa.framework */,
+				309212E514F4689100194CAF /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		309212E514F4689100194CAF /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				309212E614F4689100194CAF /* AppKit.framework */,
+				309212E714F4689100194CAF /* CoreData.framework */,
+				309212E814F4689100194CAF /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		309212E914F4689100194CAF /* cppTest */ = {
+			isa = PBXGroup;
+			children = (
+				3092133614F4785B00194CAF /* cppTest-Info.plist */,
+				3092133414F4785000194CAF /* Project.xcconfig */,
+				3092130714F4693E00194CAF /* src */,
+				309212EA14F4689100194CAF /* Supporting Files */,
+			);
+			path = cppTest;
+			sourceTree = "<group>";
+		};
+		309212EA14F4689100194CAF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3092130714F4693E00194CAF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3092130814F4693E00194CAF /* main.cpp */,
+				307912C215032CE600FF881A /* PdObject.cpp */,
+				307912C315032CE600FF881A /* PdObject.h */,
+			);
+			path = src;
+			sourceTree = SOURCE_ROOT;
+		};
+		3092130B14F4694F00194CAF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3092131314F4694F00194CAF /* libpd-ios.a */,
+				3092131514F4694F00194CAF /* libpd-osx.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		309212DE14F4689100194CAF /* cppTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 309212FD14F4689200194CAF /* Build configuration list for PBXNativeTarget "cppTest" */;
+			buildPhases = (
+				309212DB14F4689100194CAF /* Sources */,
+				309212DC14F4689100194CAF /* Frameworks */,
+				309212DD14F4689100194CAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = cppTest;
+			productName = cppTest;
+			productReference = 309212DF14F4689100194CAF /* cppTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		309212D614F4689100194CAF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 309212D914F4689100194CAF /* Build configuration list for PBXProject "cppTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 309212D414F4689100194CAF;
+			productRefGroup = 309212E014F4689100194CAF /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3092130B14F4694F00194CAF /* Products */;
+					ProjectRef = 3092130A14F4694F00194CAF /* libpd.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				309212DE14F4689100194CAF /* cppTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3092131314F4694F00194CAF /* libpd-ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-ios.a";
+			remoteRef = 3092131214F4694F00194CAF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3092131514F4694F00194CAF /* libpd-osx.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-osx.a";
+			remoteRef = 3092131414F4694F00194CAF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		309212DD14F4689100194CAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3092133514F4785000194CAF /* Project.xcconfig in Resources */,
+				3092133714F4785B00194CAF /* cppTest-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		309212DB14F4689100194CAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3092130914F4693E00194CAF /* main.cpp in Sources */,
+				307912C415032CE600FF881A /* PdObject.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		309212FB14F4689200194CAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		309212FC14F4689200194CAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		309212FE14F4689200194CAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(SRCROOT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				INFOPLIST_FILE = "cppTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		309212FF14F4689200194CAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(SRCROOT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				INFOPLIST_FILE = "cppTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		309212D914F4689100194CAF /* Build configuration list for PBXProject "cppTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				309212FB14F4689200194CAF /* Debug */,
+				309212FC14F4689200194CAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		309212FD14F4689200194CAF /* Build configuration list for PBXNativeTarget "cppTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				309212FE14F4689200194CAF /* Debug */,
+				309212FF14F4689200194CAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 309212D614F4689100194CAF /* Project object */;
+}
