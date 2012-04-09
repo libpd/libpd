@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+# SharpDevelop 4.2.0.8649-Beta 2
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDExample", "example\LibPDExample.csproj", "{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDBinding", "libpd\LibPDBinding.csproj", "{56E27175-956F-4182-8A74-5DE0CC1FCDC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Debug|x86.Build.0 = Debug|x86
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Debug|x86.ActiveCfg = Debug|x86
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Release|x86.Build.0 = Release|x86
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Release|x86.ActiveCfg = Release|x86
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Debug|x86.Build.0 = Debug|x86
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Debug|x86.ActiveCfg = Debug|x86
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Release|x86.Build.0 = Release|x86
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Release|x86.ActiveCfg = Release|x86
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56E27175-956F-4182-8A74-5DE0CC1FCDC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60EA10B2-F0F4-4948-B6BB-9DCC803D6F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal
