@@ -38,7 +38,7 @@ namespace LibPDBinding
 		public int TimesSent
 		{
 			get;
-			private set;
+			protected set;
 		}
 		
 		/// <summary>
@@ -48,18 +48,16 @@ namespace LibPDBinding
 		public virtual void SendTo(string receiver)
 		{
 			var start = LibPD.start_message(Args.Length + 1);
-			
-			ParseArgs();
-			
+			ParseAndAddArgs();
 			var end = LibPD.finish_list(receiver);
 			
-			Debug.WriteLine("Message Start: {1} End: {2}", start, end);
-			
 			TimesSent = TimesSent + 1;
+			
+			Debug.WriteLine("Message: {0} {1} Start: {2} End: {2}", receiver, this.ToString(), start, end);
 		}
 		
 		//add arguments to native pd message
-		protected void ParseArgs()
+		protected void ParseAndAddArgs()
 		{
 			var previousCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -79,6 +77,12 @@ namespace LibPDBinding
 			
 			Thread.CurrentThread.CurrentCulture = previousCulture;
 		}
+		
+		public override string ToString()
+		{
+			return string.Format("{0} TimesSent={1}", String.Join(" ", Args), TimesSent);
+		}
+
 	}
 	
 	/// <summary>
@@ -101,13 +105,19 @@ namespace LibPDBinding
 		public override void SendTo(string receiver)
 		{
 			var start = LibPD.start_message(Args.Length + 2);
-			
-			ParseArgs();
-			
+			ParseAndAddArgs();
 			var end = LibPD.finish_message(receiver, Type);
 			
-			Debug.WriteLine("Message {0} Start: {1} End: {2}", Type, start, end);
+			TimesSent = TimesSent + 1;
+			
+			Debug.WriteLine("Message: {0} {1} Start: {2} End: {2}", receiver, this.ToString(), start, end);
 		}
+		
+		public override string ToString()
+		{
+			return this.Type + " " + base.ToString();
+		}
+
 	}
 	
 	//obj message

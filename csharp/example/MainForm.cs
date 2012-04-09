@@ -67,8 +67,7 @@ namespace LibPDBinding
             ofd.Filter = "PD files|*.pd";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-            	FLibPDPatch = new LibPDPatch(ofd.FileName);
-            	FLibPDPatch.Load();
+            	FLibPDPatch = FLibPDManager.LoadPatch(ofd.FileName);
             }
             
         }
@@ -119,20 +118,7 @@ namespace LibPDBinding
         	
         	if (FLibPDPatch != null) FLibPDPatch.Close();
         	
-        	//create temp file
-        	var path = Path.Combine(Path.GetTempPath(), "temp_new.pd");
-        	
-        	using (StreamWriter myWriter = File.CreateText(path))
-        	{
-        		//setup empty canvas
-        		myWriter.WriteLine(@"#N canvas 0 0 450 300 10");
-        	}
-        	
-        	FLibPDPatch = new LibPDPatch(path);
-        	FLibPDPatch.Load();
-        	
-        	//delete temp file
-        	File.Delete(path);
+        	FLibPDPatch = FLibPDManager.NewPatch();
         	
         	FLibPDPatch.SendMessage(new LibPDObjMessage("10", "150", "dac~"));
         	FLibPDPatch.SendMessage(new LibPDObjMessage("10", "100", "*~", "0.2"));

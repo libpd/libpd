@@ -12,8 +12,9 @@ using System.IO;
 
 namespace LibPDBinding
 {
+	
 	/// <summary>
-	/// Description of LibPDPatch.
+	/// A LibPDPatch from a file
 	/// </summary>
 	public class LibPDPatch
 	{
@@ -22,38 +23,53 @@ namespace LibPDBinding
 		public LibPDPatch(string fileName)
 		{
 			FileName = fileName;
+			Name = Path.GetFileName(fileName);
 		}
 		
+		/// <summary>
+		/// File path on disk
+		/// </summary>
 		public string FileName
 		{
 			get;
 			private set;
 		}
 		
-		public bool IsLoaded
+		/// <summary>
+		/// PDs internal name
+		/// </summary>
+		public string Name
 		{
 			get;
 			private set;
 		}
 		
 		/// <summary>
+		/// indicates whether the patch is loaded in PD
+		/// </summary>
+		public bool IsLoaded
+		{
+			get;
+			protected set;
+		}
+		
+		/// <summary>
 		/// Actually load the patch into PD
 		/// </summary>
-		public void Load()
+		public virtual void Load()
 		{
 			if(IsLoaded) Close();
 			
-			var path = Path.GetDirectoryName(FileName);
-			var file = Path.GetFileName(FileName);
-			FPatchHandle = LibPD.openfile(file, path);
+			var path = Path.GetDirectoryName(this.FileName);
+			FPatchHandle = LibPD.openfile(this.Name, path);
 			Debug.WriteLine("PD File Handle: " + FPatchHandle);
 			IsLoaded = true;
 		}
 		
 		/// <summary>
-		/// Remove the patch from pd
+		/// Remove the patch from PD
 		/// </summary>
-		public void Close()
+		public virtual void Close()
 		{
 			if (IsLoaded) LibPD.closefile(FPatchHandle);
 			IsLoaded = false;
@@ -65,7 +81,39 @@ namespace LibPDBinding
 		/// <param name="message">Message to be sent</param>
 		public void SendMessage(LibPDMessage message)
 		{
-			message.SendTo("pd-" + Path.GetFileName(this.FileName));
+			message.SendTo("pd-" + this.Name);
 		}
+
+	}
+	
+	/// <summary>
+	/// A dynamic LibPDPatch.
+	/// </summary>
+	public class LibPDDynamicPatch : LibPDPatch
+	{
+		public LibPDDynamicPatch(string name)
+			: base(Path.Combine(Path.GetTempPath(), name + ".pd"))
+		{
+		}
+		
+		/// <summary>
+		/// Actually load the patch into PD
+		/// </summary>
+		public override void Load()
+		{
+        	using (StreamWriter myWriter = File.CreateText(this.FileName))
+        	{
+        		//setup empty canvas
+        		myWriter.WriteLine(@"#N canvas 0 0 450 300 10");
+        	}
+        	
+        	base.Load();
+        	
+        	//delete temp file
+        	File.Delete(this.FileName);
+		}
+		
+
+		
 	}
 }

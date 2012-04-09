@@ -7,6 +7,7 @@
  */
  
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace LibPDBinding
@@ -17,6 +18,8 @@ namespace LibPDBinding
 	public class LibPDManager 
 	{
 		private t_libpd_printhook FPrint_Hook;
+		
+		protected List<LibPDPatch> FPatches = new List<LibPDPatch>();
 		
 		/// <summary>
 		/// Init LibPD
@@ -37,7 +40,12 @@ namespace LibPDBinding
 			Debug.WriteLine(message);
 		}
 
-		
+		/// <summary>
+		/// Initialize or re-initialize the audio system
+		/// </summary>
+		/// <param name="inChannels">nr of input channels</param>
+		/// <param name="outChannels">nr of output channels</param>
+		/// <param name="sampleRate">sample rate</param>
 		public void InitAudio(int inChannels=2, int outChannels=2, int sampleRate=44100)
 		{
 			LibPD.init_audio(inChannels, outChannels, sampleRate);
@@ -45,6 +53,9 @@ namespace LibPDBinding
 		
 		//MESSAGING-------------------------------------------------------------------------------------
 		
+		/// <summary>
+		/// Start audio processing
+		/// </summary>
 		public void EnableDSP()
 		{
 			var start = LibPD.start_message(3);
@@ -54,6 +65,9 @@ namespace LibPDBinding
 			Debug.WriteLine("Enable DSP Start: {0} End: {1}", start, end);
 		}
 		
+		/// <summary>
+		/// Stop audio processing
+		/// </summary>
 		public void DisableDSP()
 		{
 			var start = LibPD.start_message(3);
@@ -63,20 +77,36 @@ namespace LibPDBinding
 			Debug.WriteLine("Disable DSP Start: {0} End: {1}", start, end);
 		}
 		
-		public void SendCanavasMessage(float xPos, float yPos, float width, float height, float fonSize)
+		/// <summary>
+		/// Creates a new dynamic patch
+		/// </summary>
+		/// <param name="name">optional name of the new patch</param>
+		/// <returns>The new patch</returns>
+		public LibPDDynamicPatch NewPatch(string name = "")
 		{
-			var start = LibPD.start_message(7);
-			LibPD.add_symbol("canvas");
-			LibPD.add_float(xPos);
-			LibPD.add_float(yPos);
-			LibPD.add_float(width);
-			LibPD.add_float(height);
-			LibPD.add_float(fonSize);
-			var end = LibPD.finish_list("#N");
+			if(name == "") name = string.Format("temp-{0:HH-mm-ss-fff}", DateTime.Now.ToLocalTime());
 			
-			Debug.WriteLine("Canvas Start: {0} End: {1}", start, end);
+			var patch = new LibPDDynamicPatch(name);
+			patch.Load();
+			return patch;
 		}
 		
+		/// <summary>
+		/// Creates a new dynamic patch
+		/// </summary>
+		/// <param name="name">optional name of the new patch</param>
+		/// <returns>The new patch</returns>
+		public LibPDPatch LoadPatch(string fileName)
+		{
+			var patch = new LibPDPatch(fileName);
+			patch.Load();
+			return patch;
+		}
+
+		/// <summary>
+		/// Sends a message to PD
+		/// </summary>
+		/// <param name="message">Message to be sent</param>
 		public void SendMessage(LibPDMessage message)
 		{
 			message.SendTo("pd");
