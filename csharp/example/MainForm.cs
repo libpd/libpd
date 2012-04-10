@@ -87,6 +87,7 @@ namespace LibPDBinding
 
         private void Play()
         {
+        	FLibPDManager.InitAudio();
         	FLibPDManager.EnableDSP();
             this.FAsioOut.Play();
             SetButtonStates();
@@ -186,6 +187,26 @@ namespace LibPDBinding
 				this.FAsioOut.Dispose();
 				this.FAsioOut = null;
 			}
+		}
+
+		private LibPDMessage ParseMessage()
+		{
+			return LibPDMessage.ParseTypedMessage(this.textBoxMessage.Text);
+		}
+		
+		void ButtonPatchClick(object sender, EventArgs e)
+		{
+			FLibPDPatch.SendMessage(ParseMessage());
+		}
+		
+		void ButtonPDClick(object sender, EventArgs e)
+		{
+			FLibPDManager.SendMessage(ParseMessage());
+		}
+		
+		void ButtonCustomClick(object sender, EventArgs e)
+		{
+			ParseMessage().SendTo(this.textBoxReceiver.Text);
 		}
 	}
 }

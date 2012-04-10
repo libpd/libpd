@@ -82,6 +82,29 @@ namespace LibPDBinding
 		{
 			return string.Format("{0} TimesSent={1}", String.Join(" ", Args), TimesSent);
 		}
+		
+		/// <summary>
+		/// Create a message from a message string
+		/// </summary>
+		/// <param name="message">message as string</param>
+		/// <returns>New message</returns>
+		public static LibPDMessage ParseMessage(string message)
+		{
+			return new LibPDMessage(message.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
+		}
+		
+		/// <summary>
+		/// Create a typed message from a message string
+		/// </summary>
+		/// <param name="message">message as string</param>
+		/// <returns>New message</returns>
+		public static LibPDTypedMessage ParseTypedMessage(string message)
+		{
+			var type = message.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries)[0];
+			var args = message.Replace(type, "").Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+			
+			return new LibPDTypedMessage(type, args);
+		}
 
 	}
 	
@@ -134,6 +157,15 @@ namespace LibPDBinding
 	{
 		public LibPDConnectMessage(int fromObj, int fromPin, int toObj, int toPin)
 			: base("connect", fromObj.ToString(), fromPin.ToString(), toObj.ToString(), toPin.ToString())
+		{
+		}
+	}
+	
+	//connect message
+	public class LibPDDisconnectMessage : LibPDTypedMessage
+	{
+		public LibPDDisconnectMessage(int fromObj, int fromPin, int toObj, int toPin)
+			: base("disconnect", fromObj.ToString(), fromPin.ToString(), toObj.ToString(), toPin.ToString())
 		{
 		}
 	}

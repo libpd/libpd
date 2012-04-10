@@ -40,6 +40,8 @@ namespace LibPDBinding
 			Debug.WriteLine(message);
 		}
 
+		//AUDIO---------------------------------------------------------------------------
+		
 		/// <summary>
 		/// Initialize or re-initialize the audio system
 		/// </summary>
@@ -50,8 +52,6 @@ namespace LibPDBinding
 		{
 			LibPD.init_audio(inChannels, outChannels, sampleRate);
 		}
-		
-		//MESSAGING-------------------------------------------------------------------------------------
 		
 		/// <summary>
 		/// Start audio processing
@@ -77,8 +77,10 @@ namespace LibPDBinding
 			Debug.WriteLine("Disable DSP Start: {0} End: {1}", start, end);
 		}
 		
+		//PATCH HANDLING--------------------------------------------------------------------------
+		
 		/// <summary>
-		/// Creates a new dynamic patch
+		/// Creates a new dynamic patch and adds ot to PD
 		/// </summary>
 		/// <param name="name">optional name of the new patch</param>
 		/// <returns>The new patch</returns>
@@ -87,20 +89,40 @@ namespace LibPDBinding
 			if(name == "") name = string.Format("temp-{0:HH-mm-ss-fff}", DateTime.Now.ToLocalTime());
 			
 			var patch = new LibPDDynamicPatch(name);
-			patch.Load();
+			AddPatch(patch);
 			return patch;
 		}
 		
 		/// <summary>
-		/// Creates a new dynamic patch
+		/// Creates a new dynamic patch and adds it to PD
 		/// </summary>
 		/// <param name="name">optional name of the new patch</param>
 		/// <returns>The new patch</returns>
 		public LibPDPatch LoadPatch(string fileName)
 		{
 			var patch = new LibPDPatch(fileName);
-			patch.Load();
+			AddPatch(patch);
 			return patch;
+		}
+		
+		/// <summary>
+		/// Add a patch to PD
+		/// </summary>
+		/// <param name="patch"></param>
+		public void AddPatch(LibPDPatch patch)
+		{
+			patch.Load();
+			this.FPatches.Add(patch);
+		}
+		
+		/// <summary>
+		/// Removes a patch from PD
+		/// </summary>
+		/// <param name="patch"></param>
+		public void RemovePatch(LibPDPatch patch)
+		{
+			patch.Close();
+			FPatches.Remove(patch);
 		}
 
 		/// <summary>
