@@ -130,6 +130,41 @@ t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
 t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
 t_libpd_midibytehook libpd_midibytehook = NULL;
 
+void libpd_set_noteonhook(const t_libpd_noteonhook hook)
+{
+	libpd_noteonhook = hook;
+}
+
+void libpd_set_controlchangehook(const t_libpd_controlchangehook hook)
+{
+	libpd_controlchangehook = hook;
+}
+
+void libpd_set_programchangehook(const t_libpd_programchangehook hook)
+{
+	libpd_programchangehook = hook;
+}
+
+void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook)
+{
+	libpd_pitchbendhook = hook;
+}
+
+void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook)
+{
+	libpd_aftertouchhook = hook;
+}
+
+void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook)
+{
+	libpd_polyaftertouchhook = hook;
+}
+
+void libpd_set_midibytehook(const t_libpd_midibytehook hook)
+{
+	libpd_midibytehook = hook;
+}
+
 static t_atom *argv = NULL, *curr;
 static int argm = 0, argc;
 
