@@ -17,7 +17,6 @@ namespace LibPDBinding
 	/// </summary>
 	public class LibPDManager 
 	{
-		private t_libpd_printhook FPrint_Hook;
 		
 		protected List<LibPDPatch> FPatches = new List<LibPDPatch>();
 		
@@ -26,12 +25,21 @@ namespace LibPDBinding
 		/// </summary>
 		public LibPDManager()
 		{
-			LibPD.init();
+			LibPD.WriteMessageToDebug = true;
+			LibPD.Print += new LibPDPrintHook(LibPD_Print);
+			LibPD.Message += new LibPDMessageStringHook(LibPD_Message);
 			
-//			FPrint_Hook = new t_libpd_printhook(Print);
-//			LibPD.set_printhook(FPrint_Hook);
-//			LibPD.test_printhook();
-			
+			LibPD.bind("toCPP");
+		}
+
+		void LibPD_Message(string recv, string msg, int argc, string argv)
+		{
+			Debug.WriteLine("Message from PD: {0} {1} count={2} args={3}", recv, msg, argc, argv);
+		}
+
+		void LibPD_Print(string recv)
+		{
+			Debug.Write(recv);
 		}
 		
 		//PD Print hook
@@ -50,7 +58,7 @@ namespace LibPDBinding
 		/// <param name="sampleRate">sample rate</param>
 		public void InitAudio(int inChannels=2, int outChannels=2, int sampleRate=44100)
 		{
-			LibPD.init_audio(inChannels, outChannels, sampleRate);
+			LibPD.InitAudio(inChannels, outChannels, sampleRate);
 		}
 		
 		/// <summary>
@@ -58,11 +66,7 @@ namespace LibPDBinding
 		/// </summary>
 		public void EnableDSP()
 		{
-			var start = LibPD.start_message(3);
-			LibPD.add_float(1);
-			var end = LibPD.finish_message("pd", "dsp");
-			
-			Debug.WriteLine("Enable DSP Start: {0} End: {1}", start, end);
+			LibPD.ComputeAudio(true);
 		}
 		
 		/// <summary>
@@ -70,11 +74,7 @@ namespace LibPDBinding
 		/// </summary>
 		public void DisableDSP()
 		{
-			var start = LibPD.start_message(3);
-			LibPD.add_float(0);
-			var end = LibPD.finish_message("pd", "dsp");
-			
-			Debug.WriteLine("Disable DSP Start: {0} End: {1}", start, end);
+			LibPD.ComputeAudio(false);
 		}
 		
 		//PATCH HANDLING--------------------------------------------------------------------------

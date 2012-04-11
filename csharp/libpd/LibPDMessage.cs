@@ -18,15 +18,22 @@ namespace LibPDBinding
 	/// </summary>
 	public class LibPDMessage
 	{
-		public LibPDMessage(params string[] args)
+		public LibPDMessage(string type, params object[] args)
 		{
+			Type = type;
 			Args = args;
 		}
 		
 		/// <summary>
 		/// Arguments of this message
 		/// </summary>
-		public string[] Args
+		public object[] Args
+		{
+			get;
+			private set;
+		}
+		
+		public string Type
 		{
 			get;
 			private set;
@@ -47,40 +54,14 @@ namespace LibPDBinding
 		/// <param name="receiver">Identifier of the receiver</param>
 		public virtual void SendTo(string receiver)
 		{
-			var start = LibPD.start_message(Args.Length + 1);
-			ParseAndAddArgs();
-			var end = LibPD.finish_list(receiver);
-			
+			LibPD.SendMessage(receiver, Type, Args);
 			TimesSent = TimesSent + 1;
-			
-			Debug.WriteLine("Message: {0} {1} Start: {2} End: {2}", receiver, this.ToString(), start, end);
 		}
 		
-		//add arguments to native pd message
-		protected void ParseAndAddArgs()
-		{
-			var previousCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            
-			foreach(var s in Args)
-			{
-				float f;
-				if(float.TryParse(s, out f))
-				{
-					LibPD.add_float(f);
-				}
-				else
-				{
-					LibPD.add_symbol(s);
-				}
-			}
-			
-			Thread.CurrentThread.CurrentCulture = previousCulture;
-		}
 		
 		public override string ToString()
 		{
-			return string.Format("{0} TimesSent={1}", String.Join(" ", Args), TimesSent);
+			return this.Type + " " + string.Format("{0} TimesSent={1}", String.Join(" ", Args), TimesSent);
 		}
 		
 		/// <summary>
@@ -88,84 +69,39 @@ namespace LibPDBinding
 		/// </summary>
 		/// <param name="message">message as string</param>
 		/// <returns>New message</returns>
-		public static LibPDMessage ParseMessage(string message)
-		{
-			return new LibPDMessage(message.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
-		}
-		
-		/// <summary>
-		/// Create a typed message from a message string
-		/// </summary>
-		/// <param name="message">message as string</param>
-		/// <returns>New message</returns>
-		public static LibPDTypedMessage ParseTypedMessage(string message)
+		public static LibPDMessage ParseTypedMessage(string message)
 		{
 			var type = message.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries)[0];
 			var args = message.Replace(type, "").Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
 			
-			return new LibPDTypedMessage(type, args);
-		}
-
-	}
-	
-	/// <summary>
-	/// Typed message
-	/// </summary>
-	public class LibPDTypedMessage : LibPDMessage
-	{
-		public LibPDTypedMessage(string type, params string[] args)
-			: base(args)
-		{
-			Type = type;
-		}
-		
-		public string Type
-		{
-			get;
-			private set;
-		}
-		
-		public override void SendTo(string receiver)
-		{
-			var start = LibPD.start_message(Args.Length + 2);
-			ParseAndAddArgs();
-			var end = LibPD.finish_message(receiver, Type);
-			
-			TimesSent = TimesSent + 1;
-			
-			Debug.WriteLine("Message: {0} {1} Start: {2} End: {2}", receiver, this.ToString(), start, end);
-		}
-		
-		public override string ToString()
-		{
-			return this.Type + " " + base.ToString();
+			return new LibPDMessage(type, args);
 		}
 
 	}
 	
 	//obj message
-	public class LibPDObjMessage : LibPDTypedMessage
+	public class LibPDObjMessage : LibPDMessage
 	{
-		public LibPDObjMessage(params string[] args)
+		public LibPDObjMessage(params object[] args)
 			: base("obj", args)
 		{
 		}
 	}
 	
 	//connect message
-	public class LibPDConnectMessage : LibPDTypedMessage
+	public class LibPDConnectMessage : LibPDMessage
 	{
 		public LibPDConnectMessage(int fromObj, int fromPin, int toObj, int toPin)
-			: base("connect", fromObj.ToString(), fromPin.ToString(), toObj.ToString(), toPin.ToString())
+			: base("connect", fromObj, fromPin, toObj, toPin)
 		{
 		}
 	}
 	
 	//connect message
-	public class LibPDDisconnectMessage : LibPDTypedMessage
+	public class LibPDDisconnectMessage : LibPDMessage
 	{
 		public LibPDDisconnectMessage(int fromObj, int fromPin, int toObj, int toPin)
-			: base("disconnect", fromObj.ToString(), fromPin.ToString(), toObj.ToString(), toPin.ToString())
+			: base("disconnect", fromObj, fromPin, toObj, toPin)
 		{
 		}
 	}

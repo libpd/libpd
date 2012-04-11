@@ -121,9 +121,9 @@ namespace LibPDBinding
         	
         	FLibPDPatch = FLibPDManager.NewPatch();
         	
-        	FLibPDPatch.SendMessage(new LibPDObjMessage("10", "150", "dac~"));
-        	FLibPDPatch.SendMessage(new LibPDObjMessage("10", "100", "*~", "0.2"));
-        	FLibPDPatch.SendMessage(new LibPDObjMessage("10", "70", "osc~", "440"));
+        	FLibPDPatch.SendMessage(new LibPDObjMessage(10, 150, "dac~"));
+        	FLibPDPatch.SendMessage(new LibPDObjMessage(10, 100, "*~", 0.2));
+        	FLibPDPatch.SendMessage(new LibPDObjMessage(10, 70, "osc~", 440));
         	FLibPDPatch.SendMessage(new LibPDConnectMessage(1, 0, 0, 0));
         	FLibPDPatch.SendMessage(new LibPDConnectMessage(1, 0, 0, 1));
         	FLibPDPatch.SendMessage(new LibPDConnectMessage(2, 0, 1, 0));

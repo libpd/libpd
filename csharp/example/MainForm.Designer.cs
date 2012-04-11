@@ -141,6 +141,7 @@ namespace LibPDBinding
 			this.textBoxMessage.Name = "textBoxMessage";
 			this.textBoxMessage.Size = new System.Drawing.Size(226, 20);
 			this.textBoxMessage.TabIndex = 9;
+			this.textBoxMessage.Text = "test";
 			// 
 			// buttonPatch
 			// 
@@ -178,7 +179,7 @@ namespace LibPDBinding
 			this.textBoxReceiver.Name = "textBoxReceiver";
 			this.textBoxReceiver.Size = new System.Drawing.Size(75, 20);
 			this.textBoxReceiver.TabIndex = 13;
-			this.textBoxReceiver.Text = "print";
+			this.textBoxReceiver.Text = "fromCPP";
 			// 
 			// MainForm
 			// 

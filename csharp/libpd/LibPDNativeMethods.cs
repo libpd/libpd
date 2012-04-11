@@ -6,70 +6,182 @@
  * 
  */
 
+using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace LibPDBinding
 {
-	/// Return Type: void
-	///recv: charr
-	[System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
-	public delegate void t_libpd_printhook([System.Runtime.InteropServices.In] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string recv);
 
-	public static class LibPD
+	/// <summary>
+	/// Static methods of libpd.dll
+	/// </summary>
+	public static partial class LibPD
 	{
+		//only call this once a lifetime
+		static LibPD()
+		{
+			SetupHooks();
+			SetupMidi();
+			libpd_init();
+		}
 		
-		/// Return Type: void
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_init")]
-		public static extern  void init() ;
+		public static bool WriteMessageToDebug
+		{
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			get;
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			set;
+		}
+		
+		/// Init PD
+		[DllImport("libpd.dll", EntryPoint="libpd_init")]
+		private static extern  void libpd_init() ;
 
 		
 		/// Return Type: void
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_clear_search_path")]
-		public static extern  void clear_search_path() ;
+		[DllImport("libpd.dll", EntryPoint="libpd_clear_search_path")]
+		private static extern  void clear_search_path() ;
+		
+		/// <summary>
+		/// clears the search path for pd externals
+		/// </summary>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static void ClearSearchPath()
+		{
+			clear_search_path();
+		}
 
 		
 		/// Return Type: void
 		///sym: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_add_to_search_path")]
-		public static extern  void add_to_search_path([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string sym) ;
-
+		[DllImport("libpd.dll", EntryPoint="libpd_add_to_search_path")]
+		private static extern  void add_to_search_path([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
+		/// <summary>
+		/// adds a directory to the search path
+		/// </summary>
+		/// <param name="sym">directory to add</param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static void AddToSearchPath(string sym)
+		{
+			add_to_search_path(sym);
+		}
+		
+		
+		/// <summary>
+		/// same as "compute audio" checkbox in pd gui, or [;pd dsp 0/1(
+		/// 
+		/// Note: Maintaining a DSP state that's separate from the state of the audio
+		/// rendering thread doesn't make much sense in libpd. In most applications,
+		/// you probably just want to call {@code computeAudio(true)} at the
+		/// beginning and then forget that this method exists.
+		/// </summary>
+		/// <param name="state"></param>
+		public static void ComputeAudio(bool state)
+		{
+			SendMessage("pd", "dsp", state ? 1 : 0);
+		}
+
 		/// Return Type: void*
 		///basename: char*
 		///dirname: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_openfile")]
-		public static extern  System.IntPtr openfile([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string basename, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string dirname) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_openfile")]
+		public static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
 
 		
 		/// Return Type: void
 		///p: void*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_closefile")]
-		public static extern  void closefile(System.IntPtr p) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_closefile")]
+		public static extern  void closefile(IntPtr p) ;
 
 		
 		/// Return Type: int
 		///p: void*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_getdollarzero")]
-		public static extern  int getdollarzero(System.IntPtr p) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_getdollarzero")]
+		public static extern  int getdollarzero(IntPtr p) ;
+		
+				
+		/// Return Type: int
+		///sym: char*
+		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
+		public static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
 		
+		/// Return Type: void*
+		///sym: char*
+		[DllImport("libpd.dll", EntryPoint="libpd_bind")]
+		public static extern  IntPtr bind([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
+
+		
+		/// Return Type: void
+		///p: void*
+		[DllImport("libpd.dll", EntryPoint="libpd_unbind")]
+		public static extern  void unbind(IntPtr p) ;
+		
+		/// <summary>
+		/// sends a message to an object in pd
+		/// </summary>
+		/// <param name="receiver"> </param>
+		/// <param name="message"> </param>
+		/// <param name="args">
+		///            list of arguments of type Integer, Float, or String; no more
+		///            than 32 arguments </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int SendMessage(string receiver, string message, params object[] args)
+		{
+			if(WriteMessageToDebug)
+			{
+				var s = String.Format("Message: {0} {1}", receiver, message);
+				int err = ProcessArgsDebug(args, ref s);
+				var ret = (err == 0) ? finish_message(receiver, message) : err;
+				s += " Start: " + err;
+				s += " End: " + ret;
+				Debug.WriteLine(s);
+				return ret;
+			}
+			else
+			{
+				int err = ProcessArgs(args);
+				return (err == 0) ? finish_message(receiver, message) : err;
+			}
+		}
+		
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int sendList(string receiver, params object[] args)
+		{
+			int err = ProcessArgs(args);
+			return (err == 0) ? finish_list(receiver) : err;
+		}
+			
 		/// Return Type: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_blocksize")]
+		[DllImport("libpd.dll", EntryPoint="libpd_blocksize")]
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static extern  int blocksize() ;
-
 		
-		/// Return Type: int
-		///inChans: int
-		///outChans: int
-		///sampleRate: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_init_audio")]
-		public static extern  int init_audio(int inChans, int outChans, int sampleRate) ;
-
 		
+		[DllImport("libpd.dll", EntryPoint="libpd_init_audio")]
+		private static extern  int init_audio(int inputChannels, int outputChannels, int sampleRate) ;
+		
+		/// <summary>
+		/// sets up pd audio; must be called before process callback
+		/// </summary>
+		/// <param name="inputChannels"> </param>
+		/// <param name="outputChannels"> </param>
+		/// <param name="sampleRate"> </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int InitAudio(int inputChannels, int outputChannels, int sampleRate)
+		{
+			return init_audio(inputChannels, outputChannels, sampleRate);
+		}
+
 		/// Return Type: int
 		///inBuffer: float*
 		///outBuffer: float*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_process_raw")]
+		[DllImport("libpd.dll", EntryPoint="libpd_process_raw")]
 		public static extern  int process_raw(ref float inBuffer, ref float outBuffer) ;
 
 		
@@ -77,7 +189,7 @@ namespace LibPDBinding
 		///ticks: int
 		///inBuffer: short*
 		///outBuffer: short*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_process_short")]
+		[DllImport("libpd.dll", EntryPoint="libpd_process_short")]
 		public static extern  int process_short(int ticks, ref short inBuffer, ref short outBuffer) ;
 
 		
@@ -85,22 +197,27 @@ namespace LibPDBinding
 		///ticks: int
 		///inBuffer: float*
 		///outBuffer: float*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_process_float")]
-		public static extern  int process_float(int ticks, ref float inBuffer, ref float outBuffer) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_process_float")]
+		private static extern  int process_float(int ticks, ref float inBuffer, ref float outBuffer) ;
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int Process(int ticks, ref float inBuffer, ref float outBuffer)
+		{
+			return process_float(ticks, ref inBuffer, ref outBuffer);
+		}
 		
 		/// Return Type: int
 		///ticks: int
 		///inBuffer: double*
 		///outBuffer: double*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_process_double")]
+		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
 		public static extern  int process_double(int ticks, ref double inBuffer, ref double outBuffer) ;
 
 		
 		/// Return Type: int
 		///name: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_arraysize")]
-		public static extern  int arraysize([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string name) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_arraysize")]
+		public static extern  int arraysize([In] [MarshalAs(UnmanagedType.LPStr)] string name) ;
 
 		
 		/// Return Type: int
@@ -108,8 +225,9 @@ namespace LibPDBinding
 		///src: char*
 		///offset: int
 		///n: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_read_array")]
-		public static extern  int read_array(ref float dest, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string src, int offset, int n) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static extern  int read_array(ref float dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
 		
 		/// Return Type: int
@@ -117,156 +235,135 @@ namespace LibPDBinding
 		///offset: int
 		///src: float*
 		///n: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_write_array")]
-		public static extern  int write_array([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
 
 		
 		/// Return Type: int
 		///recv: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_bang")]
-		public static extern  int send_bang([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string recv) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_bang")]
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static extern  int send_bang([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
 
 		
 		/// Return Type: int
 		///recv: char*
 		///x: float
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_float")]
-		public static extern  int send_float([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string recv, float x) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_float")]
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static extern  int send_float([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x) ;
 
 		
 		/// Return Type: int
 		///recv: char*
 		///sym: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_symbol")]
-		public static extern  int send_symbol([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string recv, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string sym) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_symbol")]
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
+		//PRIVATE STUFF---------------------------------------------------------------------------------------
 		
 		/// Return Type: int
 		///max_length: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_start_message")]
-		public static extern  int start_message(int max_length) ;
-
+		[DllImport("libpd.dll", EntryPoint="libpd_start_message")]
+		private static extern  int start_message(int max_length) ;
 		
 		/// Return Type: void
 		///x: float
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_add_float")]
-		public static extern  void add_float(float x) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_add_float")]
+		private static extern  void add_float(float x) ;
 
 		
 		/// Return Type: void
 		///sym: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_add_symbol")]
-		public static extern  void add_symbol([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string sym) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_add_symbol")]
+		private static extern  void add_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
 		
 		/// Return Type: int
 		///recv: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_finish_list")]
-		public static extern  int finish_list([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string recv) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_finish_list")]
+		private static extern  int finish_list([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
 
 		
 		/// Return Type: int
 		///recv: char*
 		///msg: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_finish_message")]
-		public static extern  int finish_message([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string recv, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string msg) ;
+		[DllImport("libpd.dll", EntryPoint="libpd_finish_message")]
+		private static extern  int finish_message([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg) ;
 
 		
-		/// Return Type: int
-		///sym: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_exists")]
-		public static extern  int exists([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string sym) ;
-
+		//parse args helper
+		private static int ProcessArgs(object[] args)
+		{
+			if (start_message(args.Length) != 0)
+			{
+				return -100;
+			}
+			foreach (object arg in args)
+			{
+				if (arg is int?)
+				{
+					add_float((int)((int?) arg));
+				}
+				else if (arg is float?)
+				{
+					add_float((float)((float?) arg));
+				}
+				else if (arg is double?)
+				{
+					add_float((float)((double?) arg));
+				}
+				else if (arg is string)
+				{
+					add_symbol((string) arg);
+				}
+				else
+				{
+					return -101; // illegal argument
+				}
+			}
+			return 0;
+		}
 		
-		/// Return Type: void*
-		///sym: char*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_bind")]
-		public static extern  System.IntPtr bind([System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string sym) ;
-
-		
-		/// Return Type: void
-		///p: void*
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_unbind")]
-		public static extern  void unbind(System.IntPtr p) ;
-
-		
-		/// Return Type: int
-		///channel: int
-		///pitch: int
-		///velocity: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_noteon")]
-		public static extern  int noteon(int channel, int pitch, int velocity) ;
-
-		
-		/// Return Type: int
-		///channel: int
-		///controller: int
-		///value: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_controlchange")]
-		public static extern  int controlchange(int channel, int controller, int value) ;
-
-		
-		/// Return Type: int
-		///channel: int
-		///value: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_programchange")]
-		public static extern  int programchange(int channel, int value) ;
-
-		
-		/// Return Type: int
-		///channel: int
-		///value: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_pitchbend")]
-		public static extern  int pitchbend(int channel, int value) ;
-
-		
-		/// Return Type: int
-		///channel: int
-		///value: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_aftertouch")]
-		public static extern  int aftertouch(int channel, int value) ;
-
-		
-		/// Return Type: int
-		///channel: int
-		///pitch: int
-		///value: int
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_polyaftertouch")]
-		public static extern  int polyaftertouch(int channel, int pitch, int value) ;
-
-		
-		/// Return Type: int
-		///port: int
-		///param1: int
-		///param2: byte
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_midibyte")]
-		public static extern  int midibyte(int port, int param1, byte param2) ;
-
-		
-		/// Return Type: int
-		///port: int
-		///param1: int
-		///param2: byte
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_sysex")]
-		public static extern  int sysex(int port, int param1, byte param2) ;
-
-		
-		/// Return Type: int
-		///port: int
-		///param1: int
-		///param2: byte
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_sysrealtime")]
-		public static extern  int sysrealtime(int port, int param1, byte param2) ;
-		
-//		/// Return Type: void
-//		///hook: t_libpd_printhook
-//		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_printhook")]
-//		public static extern  void set_printhook(t_libpd_printhook hook) ;
-//		
-//		/// Return Type: void
-//		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_test_printhook")]
-//		public static extern  void test_printhook() ;
-
+		//parse args helper with debug string
+		private static int ProcessArgsDebug(object[] args, ref string debug)
+		{
+			if (start_message(args.Length) != 0)
+			{
+				return -100;
+			}
+			foreach (object arg in args)
+			{
+				if (arg is int?)
+				{
+					add_float((int)((int?) arg));
+					debug += " i:" + arg.ToString();
+				}
+				else if (arg is float?)
+				{
+					add_float((float)((float?) arg));
+					debug += " f:" + arg.ToString();
+				}
+				else if (arg is double?)
+				{
+					add_float((float)((double?) arg));
+					debug += " d:" + arg.ToString();
+				}
+				else if (arg is string)
+				{
+					add_symbol((string) arg);
+					debug += " s:" + arg.ToString();
+				}
+				else
+				{
+					debug += " illegal argument: " + arg.ToString();
+					return -101; // illegal argument
+				}
+			}
+			return 0;
+		}
 
 	}
 }

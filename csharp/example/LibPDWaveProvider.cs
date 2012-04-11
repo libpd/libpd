@@ -49,7 +49,7 @@ namespace LibPDBinding
 			
 			fixed(byte* outBuff = buffer)
 			{
-				LibPD.process_float(ticks, ref ((float*)outBuff)[0], ref ((float*)outBuff)[0]);
+				LibPD.Process(ticks, ref ((float*)outBuff)[0], ref ((float*)outBuff)[0]);
 			}
 			
 			return sampleCount;
