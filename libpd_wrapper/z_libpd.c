@@ -28,6 +28,100 @@ t_libpd_symbolhook libpd_symbolhook = NULL;
 t_libpd_listhook libpd_listhook = NULL;
 t_libpd_messagehook libpd_messagehook = NULL;
 
+t_libpd_liststrhook libpd_liststrhook = NULL;
+t_libpd_messagestrhook libpd_messagestrhook = NULL;
+
+void libpd_set_printhook(const t_libpd_printhook hook){
+	libpd_printhook = hook;
+}
+
+void libpd_set_banghook(const t_libpd_banghook hook){
+	libpd_banghook = hook;
+}
+
+void libpd_set_floathook(const t_libpd_floathook hook){
+	libpd_floathook = hook;
+}
+
+void libpd_set_symbolhook(const t_libpd_symbolhook hook){
+	libpd_symbolhook = hook;
+}
+
+void libpd_set_listhook(const t_libpd_listhook hook){
+	libpd_listhook = hook;
+}
+
+void libpd_set_messagehook(const t_libpd_messagehook hook){
+	libpd_messagehook = hook;
+}
+
+//pointer to string memory
+char *arg_str;
+
+//convert atom list to space separated string
+char* args_to_str(char *str, int argc, t_atom *args) {
+  
+  //free mem
+  free(str);
+  
+  int i;
+  int size;
+  char float_buff[64];
+  
+  //determine size
+  for (i = 0; i < argc; i++) {
+	t_atom a = args[i];
+	if (libpd_is_float(a)) {
+	  sprintf(float_buff, "%f", libpd_get_float(a));
+      size = size + strlen(float_buff);
+    
+	} else if (libpd_is_symbol(a)) {
+      size = size + strlen(libpd_get_symbol(a));
+    }
+  }
+  
+  //get mem
+  str = malloc(size+argc);
+  char *space = " ";
+  
+  //build string
+  for (i = 0; i < argc; i++) {
+	t_atom a = args[i];
+	if (libpd_is_float(a)) {
+	  sprintf(float_buff, "%f ", libpd_get_float(a));
+      strcat(str, float_buff);
+    
+	} else if (libpd_is_symbol(a)) {
+      strcat(str, libpd_get_symbol(a));
+	  strcat(str, space);
+    }
+  }
+  
+  return str;
+}
+
+//list
+void str_listhook(const char *recv, int argc, t_atom *argv)
+{
+	if (libpd_liststrhook) (*libpd_liststrhook)(recv, argc, args_to_str(arg_str, argc, argv));
+}
+
+void libpd_set_liststrhook(const t_libpd_liststrhook hook){
+	libpd_liststrhook = hook;
+	libpd_listhook = (t_libpd_listhook)str_listhook;
+}
+
+//message
+void str_messagehook(const char *recv, const char *msg, int argc, t_atom *argv)
+{
+	if (libpd_messagestrhook) (*libpd_messagestrhook)(recv, msg, argc, args_to_str(arg_str, argc, argv));
+}
+
+void libpd_set_messagestrhook(const t_libpd_messagestrhook hook){
+	libpd_messagestrhook = hook;
+	libpd_messagehook = (t_libpd_messagehook)str_messagehook;
+}
+
 t_libpd_noteonhook libpd_noteonhook = NULL;
 t_libpd_controlchangehook libpd_controlchangehook = NULL;
 t_libpd_programchangehook libpd_programchangehook = NULL;
