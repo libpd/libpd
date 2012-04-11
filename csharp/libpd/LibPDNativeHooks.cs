@@ -112,8 +112,6 @@ namespace LibPDBinding
 		///hook: t_libpd_messagehook
 		[DllImport("libpd.dll", EntryPoint="libpd_set_messagestrhook")]
 		private static extern  void set_messagestrhook(LibPDMessageStringHook hook) ;
-		
-		
 
 		private static void RaiseMessageEvent(string recv, string msg, int argc, string argv)
         {

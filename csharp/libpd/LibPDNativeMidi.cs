@@ -10,6 +10,52 @@ using System.Runtime.InteropServices;
 
 namespace LibPDBinding
 {
+	/// Return Type: void
+	///channel: int
+	///pitch: int
+	///velocity: int
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_noteonhook(int channel, int pitch, int velocity);
+
+	/// Return Type: void
+	///channel: int
+	///controller: int
+	///value: int
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_controlchangehook(int channel, int controller, int value);
+
+	/// Return Type: void
+	///channel: int
+	///value: int
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_programchangehook(int channel, int value);
+
+	/// Return Type: void
+	///channel: int
+	///value: int
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_pitchbendhook(int channel, int value);
+
+	/// Return Type: void
+	///channel: int
+	///value: int
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_aftertouchhook(int channel, int value);
+
+	/// Return Type: void
+	///channel: int
+	///pitch: int
+	///value: int
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_polyaftertouchhook(int channel, int pitch, int value);
+
+	/// Return Type: void
+	///port: int
+	///param1: int
+	///param2: byte
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void t_libpd_midibytehook(int port, int param1, byte param2);
+
 
 	public static partial class LibPD
 	{
