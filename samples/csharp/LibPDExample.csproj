@@ -61,8 +61,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libpd\LibPDBinding.csproj">
-      <Project>{56E27175-956F-4182-8A74-5DE0CC1FCDC2}</Project>
+    <ProjectReference Include="..\..\csharp\LibPDBinding.csproj">
+      <Project>0D2EF933-6094-4DE1-9D63-9B43786C06AE</Project>
       <Name>LibPDBinding</Name>
     </ProjectReference>
   </ItemGroup>

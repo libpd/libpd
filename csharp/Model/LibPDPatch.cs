@@ -18,7 +18,11 @@ namespace LibPDBinding
 	/// </summary>
 	public class LibPDPatch
 	{
-		private IntPtr FPatchHandle;
+		public IntPtr PatchHandle
+		{
+			get;
+			private set;
+		}
 		
 		public LibPDPatch(string fileName)
 		{
@@ -61,8 +65,8 @@ namespace LibPDBinding
 			if(IsLoaded) Close();
 			
 			var path = Path.GetDirectoryName(this.FileName);
-			FPatchHandle = LibPD.Openfile(this.Name, path);
-			Debug.WriteLine("PD File Handle: " + FPatchHandle);
+			PatchHandle = LibPD.Openfile(this.Name, path);
+			Debug.WriteLine("PD File Handle: " + PatchHandle);
 			IsLoaded = true;
 		}
 		
@@ -71,7 +75,7 @@ namespace LibPDBinding
 		/// </summary>
 		public virtual void Close()
 		{
-			if (IsLoaded) LibPD.CloseFile(FPatchHandle);
+			if (IsLoaded) LibPD.CloseFile(PatchHandle);
 			IsLoaded = false;
 		}
 		

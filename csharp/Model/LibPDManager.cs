@@ -115,7 +115,7 @@ namespace LibPDBinding
 	
 		#endregion receive events
 
-		//AUDIO---------------------------------------------------------------------------
+		#region audio
 		
 		/// <summary>
 		/// Initialize or re-initialize the audio system
@@ -144,7 +144,9 @@ namespace LibPDBinding
 			LibPD.ComputeAudio(false);
 		}
 		
-		//PATCH HANDLING--------------------------------------------------------------------------
+		#endregion audio
+		
+		#region patch handling
 		
 		/// <summary>
 		/// Creates a new dynamic patch and adds ot to PD
@@ -191,6 +193,8 @@ namespace LibPDBinding
 			patch.Close();
 			FPatches.Remove(patch);
 		}
+		
+		#endregion patch handling
 
 		/// <summary>
 		/// Sends a message to PD

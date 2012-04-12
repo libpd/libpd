@@ -54,7 +54,6 @@ namespace LibPDBinding
 			
             SetButtonStates();
             
-            FLibPDPatch = FLibPDManager.LoadPatch(@"C:\Dev\c++\libpd\samples\cppTest\test.pd");
 			LibPD.Bind("toCPP");
         }
 		
@@ -219,6 +218,36 @@ namespace LibPDBinding
 			LibPD.SendPolyAftertouch(0, 56, 78);
 			LibPD.SendSysex(0, 56, 78);
 			LibPD.SendSysRealtime(0, 56, 78);
+		}
+		
+		void ButtonMessagesClick(object sender, EventArgs e)
+		{
+			var recv = this.textBoxReceiver.Text;
+			LibPD.SendBang(recv);
+			LibPD.SendFloat(recv, 123.45f);
+			LibPD.SendSymbol(recv, "a symbol");
+			
+			var dollar = LibPD.GetDollarZero(FLibPDPatch.PatchHandle);
+			var msg = LibPDMessage.ParseMessage("");
+			msg.SendTo("" + dollar + "-fromCPP");
+		}
+		
+		void ButtonArrayClick(object sender, EventArgs e)
+		{
+			var arr = new float[3];
+			
+			LibPD.ReadArray(arr, "array1", 0, 3);
+
+			Debug.WriteLine("Array: " + string.Concat(arr));
+		
+			arr[0] = 10;
+			arr[1] = 20;
+			arr[2] = 30;
+			
+			LibPD.WriteArray("array1", arr, 0, 3);
+			
+			Debug.WriteLine("Got array size of: " + LibPD.ArraySize("array1"));
+			
 		}
 	}
 }

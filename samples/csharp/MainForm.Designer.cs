@@ -51,6 +51,8 @@ namespace LibPDBinding
 			this.buttonCustom = new System.Windows.Forms.Button();
 			this.textBoxReceiver = new System.Windows.Forms.TextBox();
 			this.buttonMidi = new System.Windows.Forms.Button();
+			this.buttonMessages = new System.Windows.Forms.Button();
+			this.buttonArray = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// comboBoxAsioDevice
@@ -192,11 +194,33 @@ namespace LibPDBinding
 			this.buttonMidi.UseVisualStyleBackColor = true;
 			this.buttonMidi.Click += new System.EventHandler(this.ButtonMidiClick);
 			// 
+			// buttonMessages
+			// 
+			this.buttonMessages.Location = new System.Drawing.Point(12, 241);
+			this.buttonMessages.Name = "buttonMessages";
+			this.buttonMessages.Size = new System.Drawing.Size(145, 23);
+			this.buttonMessages.TabIndex = 15;
+			this.buttonMessages.Text = "Messages";
+			this.buttonMessages.UseVisualStyleBackColor = true;
+			this.buttonMessages.Click += new System.EventHandler(this.ButtonMessagesClick);
+			// 
+			// buttonArray
+			// 
+			this.buttonArray.Location = new System.Drawing.Point(163, 267);
+			this.buttonArray.Name = "buttonArray";
+			this.buttonArray.Size = new System.Drawing.Size(75, 23);
+			this.buttonArray.TabIndex = 16;
+			this.buttonArray.Text = "Array";
+			this.buttonArray.UseVisualStyleBackColor = true;
+			this.buttonArray.Click += new System.EventHandler(this.ButtonArrayClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(251, 305);
+			this.Controls.Add(this.buttonArray);
+			this.Controls.Add(this.buttonMessages);
 			this.Controls.Add(this.buttonMidi);
 			this.Controls.Add(this.textBoxReceiver);
 			this.Controls.Add(this.buttonCustom);
@@ -218,6 +242,8 @@ namespace LibPDBinding
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Button buttonArray;
+		private System.Windows.Forms.Button buttonMessages;
 		private System.Windows.Forms.Button buttonMidi;
 		private System.Windows.Forms.TextBox textBoxReceiver;
 		private System.Windows.Forms.Button buttonCustom;

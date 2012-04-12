@@ -92,9 +92,9 @@ namespace LibPDBinding
 		private static extern  int getdollarzero(IntPtr p) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void GetDollarZero(IntPtr p)
+		public static int GetDollarZero(IntPtr p)
 		{
-			getdollarzero(p);
+			return getdollarzero(p);
 		}
 				
 		/// Return Type: int
