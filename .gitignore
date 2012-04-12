@@ -33,9 +33,9 @@ libs/libpdnative.dylib
 *.app
 
 # csharp
-csharp/example/obj/*
-csharp/example/bin/*
-csharp/libpd/obj/*
-csharp/libpd/bin/*
+samples/csharp/obj/*
+samples/csharp/bin/*
+csharp/obj/*
+csharp/bin/*
 libs/libpd.*
 libs/libpdnative.*
