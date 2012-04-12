@@ -236,7 +236,7 @@ namespace LibPDBinding
 		{
 			var arr = new float[3];
 			
-			LibPD.ReadArray(arr, "array1", 0, 3);
+			LibPD.ReadArray(arr, 0, "array1", 0, 3);
 
 			Debug.WriteLine("Array: " + string.Concat(arr));
 		
@@ -244,7 +244,7 @@ namespace LibPDBinding
 			arr[1] = 20;
 			arr[2] = 30;
 			
-			LibPD.WriteArray("array1", arr, 0, 3);
+			LibPD.WriteArray("array1", 0, arr, 0, 3);
 			
 			Debug.WriteLine("Got array size of: " + LibPD.ArraySize("array1"));
 			
