@@ -42,6 +42,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LibPDList.cs" />
     <Compile Include="LibPDNativeMidi.cs" />
     <Compile Include="LibPDManager.cs" />
     <Compile Include="LibPDMessage.cs" />

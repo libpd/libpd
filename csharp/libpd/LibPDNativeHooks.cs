@@ -7,7 +7,11 @@
  * 
  */
 
+using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace LibPDBinding
 {
@@ -41,6 +45,11 @@ namespace LibPDBinding
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void LibPDListStringHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, int argc, [In] [MarshalAsAttribute(UnmanagedType.LPStr)] string argv);
 
+	/// <summary>
+	/// List Event Delegate
+	/// </summary>
+	public delegate void LibPDListHook(string recv, object[] args);
+	
 	/// Return Type: void
 	///recv: char*
 	///msg: char*
@@ -49,11 +58,19 @@ namespace LibPDBinding
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void LibPDMessageStringHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg, int argc, [In] [MarshalAs(UnmanagedType.LPStr)] string argv);
 
+	/// <summary>
+	/// Message Event Delegate
+	/// </summary>
+	public delegate void LibPDMessageHook(string recv, string msg, object[] args);
 
 	//the receiver part of libpd
 	public static partial class LibPD
 	{
 		private static LibPDPrintHook PrintHook;
+		private static LibPDBangHook BangHook;
+		private static LibPDFloatHook FloatHook;
+		private static LibPDSymbolHook SymbolHook;
+		private static LibPDListStringHook ListHook;
 		private static LibPDMessageStringHook MessageHook;
 		
 		private static void SetupHooks()
@@ -61,12 +78,28 @@ namespace LibPDBinding
 			PrintHook = new LibPDPrintHook(RaisePrintEvent);
 			set_printhook(PrintHook);
 			
+			BangHook = new LibPDBangHook(RaiseBangEvent);
+			set_banghook(BangHook);
+			
+			FloatHook = new LibPDFloatHook(RaiseFloatEvent);
+			set_floathook(FloatHook);
+			
+			SymbolHook = new LibPDSymbolHook(RaiseSymbolEvent);
+			set_symbolhook(SymbolHook);
+			
+			ListHook = new LibPDListStringHook(RaiseListEvent);
+			set_liststrhook(ListHook);
+			
 			MessageHook = new LibPDMessageStringHook(RaiseMessageEvent);
 			set_messagestrhook(MessageHook);
 		}
 		
 		public static event LibPDPrintHook Print;
-		public static event LibPDMessageStringHook Message;
+		public static event LibPDBangHook Bang;
+		public static event LibPDFloatHook Float;
+		public static event LibPDSymbolHook Symbol;
+		public static event LibPDListHook List;
+		public static event LibPDMessageHook Message;
 		
 		/// Return Type: void
 		///hook: t_libpd_printhook
@@ -83,6 +116,30 @@ namespace LibPDBinding
                 Print(e);
             }
         }
+		
+		private static void RaiseBangEvent(string recv)
+		{
+			if (Bang != null)
+			{
+				Bang(recv);
+			}
+		}
+		
+		private static void RaiseFloatEvent(string recv, float e)
+		{
+			if (Float != null)
+			{
+				Float(recv, e);
+			}
+		}
+		
+		private static void RaiseSymbolEvent(string recv, string e)
+		{
+			if (Symbol != null)
+			{
+				Symbol(recv, e);
+			}
+		}
 		
 		/// Return Type: void
 		///hook: t_libpd_banghook
@@ -113,14 +170,62 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_set_messagestrhook")]
 		private static extern  void set_messagestrhook(LibPDMessageStringHook hook) ;
 
+		
 		private static void RaiseMessageEvent(string recv, string msg, int argc, string argv)
         {
-            // Event will be null if there are no subscribers
-            if (Print != null)
+            if (Message != null)
             {
-                // Use the () operator to raise the event.
-                Message(recv, msg, argc, argv);
+            	var args = ParseArgsString(argv);
+            	
+            	if(args.Length != argc) Debug.WriteLine("Message string parsing got {3} objects but should have {4}: {0} {1} {2}", recv, msg, argv, args.Length, argc);
+            	
+                Message(recv, msg, args);
             }
         }
+		
+		private static void RaiseListEvent(string recv, int argc, string argv)
+        {
+            if (List != null)
+            {
+            	var args = ParseArgsString(argv);
+            	
+            	if(args.Length != argc) Debug.WriteLine("List string parsing got {2} objects but should have {3}: {0} {1}", recv, argv, args.Length, argc);
+            	
+                List(recv, args);
+            }
+        }
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="argsString"></param>
+		/// <returns></returns>
+		public static object[] ParseArgsString(string argsString)
+		{
+			var args = argsString.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+			var ret = new object[args.Length];
+			
+			var previousCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
+            for(int i=0; i<args.Length; i++)
+			{
+            	var s = args[i];
+				float f;
+				if(float.TryParse(s, out f))
+				{
+					ret[i] = f;
+				}
+				else
+				{
+					ret[i] = s;
+				}
+			}
+
+			Thread.CurrentThread.CurrentCulture = previousCulture;
+			
+			return ret;
+		}
+		
 	}
 }

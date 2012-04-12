@@ -149,13 +149,34 @@ namespace LibPDBinding
 			}
 		}
 		
+		/// <summary>
+		/// sends a list to an object in pd
+		/// </summary>
+		/// <param name="receiver"> </param>
+		/// <param name="args">
+		///            list of arguments of type Integer, Float, or String; no more
+		///            than 32 arguments </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int sendList(string receiver, params object[] args)
+		public static int SendList(string receiver, params object[] args)
 		{
-			int err = ProcessArgs(args);
-			return (err == 0) ? finish_list(receiver) : err;
+			if(WriteMessageToDebug)
+			{
+				var s = String.Format("List: {0}", receiver);
+				int err = ProcessArgsDebug(args, ref s);
+				var ret = (err == 0) ? finish_list(receiver) : err;
+				s += " Start: " + err;
+				s += " End: " + ret;
+				Debug.WriteLine(s);
+				return ret;
+			}
+			else
+			{
+				int err = ProcessArgs(args);
+				return (err == 0) ? finish_list(receiver) : err;
+			}
 		}
-			
+		
 		/// Return Type: int
 		[DllImport("libpd.dll", EntryPoint="libpd_blocksize")]
 		[MethodImpl(MethodImplOptions.Synchronized)]

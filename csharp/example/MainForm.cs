@@ -26,8 +26,6 @@ namespace LibPDBinding
 		private LibPDWaveProvider FLibPDReader;
         private AsioOut FAsioOut;
 
-		
-		
 		public MainForm()
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
@@ -55,6 +53,8 @@ namespace LibPDBinding
 			}
 			
             SetButtonStates();
+            
+            FLibPDPatch = FLibPDManager.LoadPatch(@"C:\Dev\c++\libpd\samples\cppTest\test.pd");
 
         }
 		
@@ -191,7 +191,7 @@ namespace LibPDBinding
 
 		private LibPDMessage ParseMessage()
 		{
-			return LibPDMessage.ParseTypedMessage(this.textBoxMessage.Text);
+			return LibPDMessage.ParseMessage(this.textBoxMessage.Text);
 		}
 		
 		void ButtonPatchClick(object sender, EventArgs e)

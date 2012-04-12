@@ -4,7 +4,6 @@
  * Date: 08.04.2012
  * Time: 20:17
  * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
 using System.Windows.Forms;

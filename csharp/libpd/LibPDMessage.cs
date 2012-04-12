@@ -13,26 +13,21 @@ using System.Threading;
 
 namespace LibPDBinding
 {
+	
 	/// <summary>
 	/// Handles message construction and sending
 	/// </summary>
-	public class LibPDMessage
+	public class LibPDMessage : LibPDList
 	{
 		public LibPDMessage(string type, params object[] args)
+			: base(args)
 		{
 			Type = type;
-			Args = args;
 		}
 		
 		/// <summary>
-		/// Arguments of this message
+		/// Type of the message
 		/// </summary>
-		public object[] Args
-		{
-			get;
-			private set;
-		}
-		
 		public string Type
 		{
 			get;
@@ -40,24 +35,14 @@ namespace LibPDBinding
 		}
 		
 		/// <summary>
-		/// How often the messages was sent
-		/// </summary>
-		public int TimesSent
-		{
-			get;
-			protected set;
-		}
-		
-		/// <summary>
 		/// Send this message to the receiver in PD
 		/// </summary>
 		/// <param name="receiver">Identifier of the receiver</param>
-		public virtual void SendTo(string receiver)
+		public override void SendTo(string receiver)
 		{
 			LibPD.SendMessage(receiver, Type, Args);
 			TimesSent = TimesSent + 1;
 		}
-		
 		
 		public override string ToString()
 		{
@@ -69,7 +54,7 @@ namespace LibPDBinding
 		/// </summary>
 		/// <param name="message">message as string</param>
 		/// <returns>New message</returns>
-		public static LibPDMessage ParseTypedMessage(string message)
+		public static LibPDMessage ParseMessage(string message)
 		{
 			var type = message.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries)[0];
 			var args = message.Replace(type, "").Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
