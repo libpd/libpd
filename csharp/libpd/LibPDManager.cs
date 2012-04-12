@@ -48,8 +48,7 @@ namespace LibPDBinding
 		
 		void LibPD_Print(string recv)
 		{
-			if(recv.EndsWith("\n")) recv = recv.Replace("\n", "");
-			Debug.WriteLine("Print from PD: " + recv);
+			Debug.Write(recv);
 		}
 		
 		void LibPD_Bang(string recv)

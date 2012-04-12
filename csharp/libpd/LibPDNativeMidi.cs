@@ -237,30 +237,30 @@ namespace LibPDBinding
 
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_midibyte")]
-		private static extern  int midibyte(int port, int param1, byte param2) ;
+		private static extern  int midibyte(int port, int param1, int param2) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendMidiByte(int port, int param1, byte param2)
+		public static int SendMidiByte(int port, int param1, int param2)
 		{
 			return midibyte(port, param1, param2);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysex")]
-		private static extern  int sysex(int port, int param1, byte param2) ;
+		private static extern  int sysex(int port, int param1, int param2) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendSysex(int port, int param1, byte param2)
+		public static int SendSysex(int port, int param1, int param2)
 		{
 			return sysex(port, param1, param2);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysrealtime")]
-		private static extern  int sysrealtime(int port, int param1, byte param2) ;
+		private static extern  int sysrealtime(int port, int param1, int param2) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendSysRealtime(int port, int param1, byte param2)
+		public static int SendSysRealtime(int port, int param1, int param2)
 		{
 			return sysrealtime(port, param1, param2);
 		}
