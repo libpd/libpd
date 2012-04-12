@@ -34,7 +34,7 @@ namespace LibPDBinding
 		public LibPDWaveProvider(int sampleRate, int channels)
 		{
 			this.SetWaveFormat(sampleRate, channels);
-			FInBuffer = new float[1024];
+			FInBuffer = new float[8192];
 		}
 		
 		public void SetWaveFormat(int sampleRate, int channels)
@@ -47,9 +47,12 @@ namespace LibPDBinding
 			//calc nr of PD frames
 			var ticks = (sampleCount/4)/(64*waveFormat.Channels);
 			
+			fixed(float* inBuff = FInBuffer)
+			{
 			fixed(byte* outBuff = buffer)
 			{
-				LibPD.Process(ticks, ref ((float*)outBuff)[0], ref ((float*)outBuff)[0]);
+				LibPD.Process(ticks, ref inBuff[0], ref ((float*)outBuff)[0]);
+			}
 			}
 			
 			return sampleCount;
