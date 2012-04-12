@@ -50,6 +50,7 @@ namespace LibPDBinding
 			this.buttonPD = new System.Windows.Forms.Button();
 			this.buttonCustom = new System.Windows.Forms.Button();
 			this.textBoxReceiver = new System.Windows.Forms.TextBox();
+			this.buttonMidi = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// comboBoxAsioDevice
@@ -129,7 +130,7 @@ namespace LibPDBinding
 			// 
 			// label2
 			// 
-			this.label2.Location = new System.Drawing.Point(281, 273);
+			this.label2.Location = new System.Drawing.Point(294, 362);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(74, 17);
 			this.label2.TabIndex = 8;
@@ -181,11 +182,22 @@ namespace LibPDBinding
 			this.textBoxReceiver.TabIndex = 13;
 			this.textBoxReceiver.Text = "fromCPP";
 			// 
+			// buttonMidi
+			// 
+			this.buttonMidi.Location = new System.Drawing.Point(12, 267);
+			this.buttonMidi.Name = "buttonMidi";
+			this.buttonMidi.Size = new System.Drawing.Size(145, 23);
+			this.buttonMidi.TabIndex = 14;
+			this.buttonMidi.Text = "Midi";
+			this.buttonMidi.UseVisualStyleBackColor = true;
+			this.buttonMidi.Click += new System.EventHandler(this.ButtonMidiClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(254, 277);
+			this.ClientSize = new System.Drawing.Size(251, 305);
+			this.Controls.Add(this.buttonMidi);
 			this.Controls.Add(this.textBoxReceiver);
 			this.Controls.Add(this.buttonCustom);
 			this.Controls.Add(this.buttonPD);
@@ -206,6 +218,7 @@ namespace LibPDBinding
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Button buttonMidi;
 		private System.Windows.Forms.TextBox textBoxReceiver;
 		private System.Windows.Forms.Button buttonCustom;
 		private System.Windows.Forms.Button buttonPD;

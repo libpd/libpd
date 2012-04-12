@@ -208,5 +208,17 @@ namespace LibPDBinding
 		{
 			ParseMessage().SendTo(this.textBoxReceiver.Text);
 		}
+		
+		void ButtonMidiClick(object sender, EventArgs e)
+		{
+			LibPD.SendNoteOn(0, 56, 78);
+			LibPD.SendControlChange(0, 56, 78);
+			LibPD.SendProgramChange(0, 56);
+			LibPD.SendPitchbend(0, 56);
+			LibPD.SendAftertouch(0, 56);
+			LibPD.SendPolyAftertouch(0, 56, 78);
+			LibPD.SendSysex(0, 56, 78);
+			LibPD.SendSysRealtime(0, 56, 78);
+		}
 	}
 }

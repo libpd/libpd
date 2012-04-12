@@ -198,11 +198,7 @@ namespace LibPDBinding
 			return Bindings.Remove(sym);
 		}
 		
-		//sending------------------------------------------------------------
-
-		
-		[DllImport("libpd.dll", EntryPoint="libpd_bang")]
-		private static extern  int send_bang([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
+		//sending-----------------------------------------------------------
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendBang(string recv)
@@ -210,21 +206,11 @@ namespace LibPDBinding
 			return send_bang(recv);
 		}
 
-		
-		[DllImport("libpd.dll", EntryPoint="libpd_float")]
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		private static extern  int send_float([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x) ;
-		
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendFloat(string recv, float x)
 		{
 			return send_float(recv, x);
 		}
-
-		
-		[DllImport("libpd.dll", EntryPoint="libpd_symbol")]
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		private static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendSymbol(string recv, string sym)
@@ -233,7 +219,7 @@ namespace LibPDBinding
 		}
 		
 		/// <summary>
-		/// sends a message to an object in pd
+		/// Sends a message to an object in pd
 		/// </summary>
 		/// <param name="receiver"> </param>
 		/// <param name="message"> </param>
@@ -262,7 +248,7 @@ namespace LibPDBinding
 		}
 		
 		/// <summary>
-		/// sends a list to an object in pd
+		/// Sends a list to an object in pd
 		/// </summary>
 		/// <param name="receiver"> </param>
 		/// <param name="args">
@@ -334,7 +320,7 @@ namespace LibPDBinding
 		
 		#endregion Message sending
 		
-		#region PRIVATE STUFF
+		#region private
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_bind")]
 		private static extern IntPtr bind([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
@@ -344,9 +330,14 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_unbind")]
 		private static extern void unbind(IntPtr p) ;
 		
-		/// Init PD
-		[DllImport("libpd.dll", EntryPoint="libpd_init")]
-		private static extern  void libpd_init() ;
+		[DllImport("libpd.dll", EntryPoint="libpd_bang")]
+		private static extern  int send_bang([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_float")]
+		private static extern  int send_float([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x) ;
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_symbol")]
+		private static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		/// Return Type: int
 		///max_length: int
@@ -449,10 +440,6 @@ namespace LibPDBinding
 			return 0;
 		}
 		
-		#endregion PRIVATE STUFF
-		
-		#region Hook setter
-		
 		/// Return Type: void
 		///hook: t_libpd_printhook
 		[DllImport("libpd.dll", EntryPoint="libpd_set_printhook")]
@@ -487,7 +474,7 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_set_messagestrhook")]
 		private static extern  void set_messagestrhook(LibPDMessageStringHook hook) ;
 		
-		#endregion Hook setter
+		#endregion private
 		
 	}
 }

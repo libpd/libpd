@@ -177,90 +177,90 @@ namespace LibPDBinding
 		
 
 		[DllImport("libpd.dll", EntryPoint="libpd_noteon")]
-		public static extern  int noteon(int channel, int pitch, int velocity) ;
+		private static extern  int noteon(int channel, int pitch, int velocity) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int noteonSync(int channel, int pitch, int velocity)
+		public static int SendNoteOn(int channel, int pitch, int velocity)
 		{
 			return noteon(channel, pitch, velocity);
 		}
 
 
 		[DllImport("libpd.dll", EntryPoint="libpd_controlchange")]
-		public static extern  int controlchange(int channel, int controller, int value) ;
+		private static extern  int controlchange(int channel, int controller, int value) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int controlchangeSync(int channel, int controller, int value)
+		public static int SendControlChange(int channel, int controller, int value)
 		{
 			return controlchange(channel, controller, value);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_programchange")]
-		public static extern  int programchange(int channel, int value) ;
+		private static extern  int programchange(int channel, int value) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int programchangeSync(int channel, int value)
+		public static int SendProgramChange(int channel, int value)
 		{
 			return programchange(channel, value);
 		}
 		
 	
 		[DllImport("libpd.dll", EntryPoint="libpd_pitchbend")]
-		public static extern  int pitchbend(int channel, int value) ;
+		private static extern  int pitchbend(int channel, int value) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int pitchbendSync(int channel, int value)
+		public static int SendPitchbend(int channel, int value)
 		{
 			return pitchbend(channel, value);
 		}
 		
 	
 		[DllImport("libpd.dll", EntryPoint="libpd_aftertouch")]
-		public static extern  int aftertouch(int channel, int value) ;
+		private static extern  int aftertouch(int channel, int value) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int aftertouchSync(int channel, int value)
+		public static int SendAftertouch(int channel, int value)
 		{
 			return aftertouch(channel, value);
 		}
 		
 	
 		[DllImport("libpd.dll", EntryPoint="libpd_polyaftertouch")]
-		public static extern  int polyaftertouch(int channel, int pitch, int value) ;
+		private static extern  int polyaftertouch(int channel, int pitch, int value) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int polyaftertouchSync(int channel, int pitch, int value)
+		public static int SendPolyAftertouch(int channel, int pitch, int value)
 		{
 			return polyaftertouch(channel, pitch, value);
 		}
 
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_midibyte")]
-		public static extern  int midibyte(int port, int param1, byte param2) ;
+		private static extern  int midibyte(int port, int param1, byte param2) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int midibyteSync(int port, int param1, byte param2)
+		public static int SendMidiByte(int port, int param1, byte param2)
 		{
 			return midibyte(port, param1, param2);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysex")]
-		public static extern  int sysex(int port, int param1, byte param2) ;
+		private static extern  int sysex(int port, int param1, byte param2) ;
 
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int sysexSync(int port, int param1, byte param2)
+		public static int SendSysex(int port, int param1, byte param2)
 		{
 			return sysex(port, param1, param2);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysrealtime")]
-		public static extern  int sysrealtime(int port, int param1, byte param2) ;
+		private static extern  int sysrealtime(int port, int param1, byte param2) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int sysrealtimeSync(int port, int param1, byte param2)
+		public static int SendSysRealtime(int port, int param1, byte param2)
 		{
 			return sysrealtime(port, param1, param2);
 		}

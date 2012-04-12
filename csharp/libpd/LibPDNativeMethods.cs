@@ -27,6 +27,11 @@ namespace LibPDBinding
 			libpd_init();
 		}
 		
+		#region Environment
+		
+		/// Init PD
+		[DllImport("libpd.dll", EntryPoint="libpd_init")]
+		private static extern  void libpd_init() ;
 
 				
 		/// Return Type: void
@@ -58,6 +63,54 @@ namespace LibPDBinding
 			add_to_search_path(sym);
 		}
 		
+		/// Return Type: void*
+		///basename: char*
+		///dirname: char*
+		[DllImport("libpd.dll", EntryPoint="libpd_openfile")]
+		private static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
+		
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static IntPtr Openfile(string basename, string dirname)
+		{
+			return openfile(basename, dirname);
+		}
+
+		/// Return Type: void
+		///p: void*
+		[DllImport("libpd.dll", EntryPoint="libpd_closefile")]
+		private static extern  void closefile(IntPtr p) ;
+		
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static void CloseFile(IntPtr p)
+		{
+			closefile(p);
+		}
+		
+		/// Return Type: int
+		///p: void*
+		[DllImport("libpd.dll", EntryPoint="libpd_getdollarzero")]
+		private static extern  int getdollarzero(IntPtr p) ;
+		
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static void GetDollarZero(IntPtr p)
+		{
+			getdollarzero(p);
+		}
+				
+		/// Return Type: int
+		///sym: char*
+		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
+		private static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int Exists(string sym)
+		{
+			return exists(sym);
+		}
+
+		#endregion Environment
+		
+		#region Audio
 		
 		/// <summary>
 		/// same as "compute audio" checkbox in pd gui, or [;pd dsp 0/1(
@@ -73,36 +126,23 @@ namespace LibPDBinding
 		{
 			SendMessage("pd", "dsp", state ? 1 : 0);
 		}
-
-		/// Return Type: void*
-		///basename: char*
-		///dirname: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_openfile")]
-		public static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
-
-		/// Return Type: void
-		///p: void*
-		[DllImport("libpd.dll", EntryPoint="libpd_closefile")]
-		public static extern  void closefile(IntPtr p) ;
-		
-		/// Return Type: int
-		///p: void*
-		[DllImport("libpd.dll", EntryPoint="libpd_getdollarzero")]
-		public static extern  int getdollarzero(IntPtr p) ;
-				
-		/// Return Type: int
-		///sym: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
-		public static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
-
-		
-		
-		#region AUDIO
 		
 		/// Return Type: int
 		[DllImport("libpd.dll", EntryPoint="libpd_blocksize")]
 		public static extern  int blocksize() ;
 		
+		/// <summary>
+		/// default pd block size, DEFDACBLKSIZE (currently 64) (aka number
+		/// of samples per tick per channel)
+		/// </summary>
+		public static int BlockSize
+		{
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			get
+			{
+				return blocksize();
+			}
+		}
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_init_audio")]
 		private static extern  int init_audio(int inputChannels, int outputChannels, int sampleRate) ;
@@ -124,7 +164,23 @@ namespace LibPDBinding
 		///inBuffer: float*
 		///outBuffer: float*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_raw")]
-		public static extern  int process_raw(ref float inBuffer, ref float outBuffer) ;
+		private static extern  int process_raw(ref float inBuffer, ref float outBuffer) ;
+
+		/// <summary>
+		/// raw process callback, processes one pd tick, writes raw data to buffers
+		/// without interlacing
+		/// </summary>
+		/// <param name="inBuffer">
+		///            must be an array of the right size, never null; use inBuffer =
+		///            new short[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            must be an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int ProcessRaw(ref float inBuffer, ref float outBuffer)
+		{
+			return process_raw(ref inBuffer, ref outBuffer);
+		}
 
 		
 		/// Return Type: int
@@ -132,7 +188,25 @@ namespace LibPDBinding
 		///inBuffer: short*
 		///outBuffer: short*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_short")]
-		public static extern  int process_short(int ticks, ref short inBuffer, ref short outBuffer) ;
+		private static extern  int process_short(int ticks, ref short inBuffer, ref short outBuffer) ;
+		
+		/// <summary>
+		/// main process callback, reads samples from inBuffer and writes samples to
+		/// outBuffer, using arrays of type float
+		/// </summary>
+		/// <param name="ticks">
+		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
+		/// <param name="inBuffer">
+		///            must be an array of the right size, never null; use inBuffer =
+		///            new short[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            must be an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int Process(int ticks, ref short inBuffer, ref short outBuffer)
+		{
+			return process_short(ticks, ref inBuffer, ref outBuffer);
+		}
 
 		
 		/// Return Type: int
@@ -142,6 +216,19 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_process_float")]
 		private static extern  int process_float(int ticks, ref float inBuffer, ref float outBuffer) ;
 
+
+		/// <summary>
+		/// main process callback, reads samples from inBuffer and writes samples to
+		/// outBuffer, using arrays of type float
+		/// </summary>
+		/// <param name="ticks">
+		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
+		/// <param name="inBuffer">
+		///            must be an array of the right size, never null; use inBuffer =
+		///            new short[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            must be an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int Process(int ticks, ref float inBuffer, ref float outBuffer)
 		{
@@ -153,9 +240,27 @@ namespace LibPDBinding
 		///inBuffer: double*
 		///outBuffer: double*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
-		public static extern  int process_double(int ticks, ref double inBuffer, ref double outBuffer) ;
+		private static extern  int process_double(int ticks, ref double inBuffer, ref double outBuffer) ;
 		
-		#endregion AUDIO
+		/// <summary>
+		/// main process callback, reads samples from inBuffer and writes samples to
+		/// outBuffer, using arrays of type float
+		/// </summary>
+		/// <param name="ticks">
+		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
+		/// <param name="inBuffer">
+		///            must be an array of the right size, never null; use inBuffer =
+		///            new short[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            must be an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int Process(int ticks, ref double inBuffer, ref double outBuffer)
+		{
+			return process_double(ticks, ref inBuffer, ref outBuffer);
+		}
+		
+		#endregion Audio
 
 		#region ARRAY
 		
@@ -195,7 +300,7 @@ namespace LibPDBinding
 
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
-		public static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
+		private static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
 		
 		/// <summary>
 		/// Write to a PD array
