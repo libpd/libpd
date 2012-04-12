@@ -27,13 +27,7 @@ namespace LibPDBinding
 			libpd_init();
 		}
 		
-		public static bool WriteMessageToDebug
-		{
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			get;
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			set;
-		}
+
 				
 		/// Return Type: void
 		[DllImport("libpd.dll", EntryPoint="libpd_clear_search_path")]
@@ -101,72 +95,7 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
 		public static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
-		/// Return Type: void*
-		///sym: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_bind")]
-		public static extern  IntPtr bind([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
-		/// Return Type: void
-		///p: void*
-		[DllImport("libpd.dll", EntryPoint="libpd_unbind")]
-		public static extern  void unbind(IntPtr p) ;
-		
-		/// <summary>
-		/// sends a message to an object in pd
-		/// </summary>
-		/// <param name="receiver"> </param>
-		/// <param name="message"> </param>
-		/// <param name="args">
-		///            list of arguments of type Integer, Float, or String; no more
-		///            than 32 arguments </param>
-		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendMessage(string receiver, string message, params object[] args)
-		{
-			if(WriteMessageToDebug)
-			{
-				var s = String.Format("Message: {0} {1}", receiver, message);
-				int err = ProcessArgsDebug(args, ref s);
-				var ret = (err == 0) ? finish_message(receiver, message) : err;
-				s += " Start: " + err;
-				s += " End: " + ret;
-				Debug.WriteLine(s);
-				return ret;
-			}
-			else
-			{
-				int err = ProcessArgs(args);
-				return (err == 0) ? finish_message(receiver, message) : err;
-			}
-		}
-		
-		/// <summary>
-		/// sends a list to an object in pd
-		/// </summary>
-		/// <param name="receiver"> </param>
-		/// <param name="args">
-		///            list of arguments of type Integer, Float, or String; no more
-		///            than 32 arguments </param>
-		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendList(string receiver, params object[] args)
-		{
-			if(WriteMessageToDebug)
-			{
-				var s = String.Format("List: {0}", receiver);
-				int err = ProcessArgsDebug(args, ref s);
-				var ret = (err == 0) ? finish_list(receiver) : err;
-				s += " Start: " + err;
-				s += " End: " + ret;
-				Debug.WriteLine(s);
-				return ret;
-			}
-			else
-			{
-				int err = ProcessArgs(args);
-				return (err == 0) ? finish_list(receiver) : err;
-			}
-		}
 		
 		#region AUDIO
 		
@@ -228,163 +157,60 @@ namespace LibPDBinding
 		
 		#endregion AUDIO
 
+		#region ARRAY
 		
 		/// Return Type: int
 		///name: char*
 		[DllImport("libpd.dll", EntryPoint="libpd_arraysize")]
-		public static extern  int arraysize([In] [MarshalAs(UnmanagedType.LPStr)] string name) ;
-
+		private static extern  int arraysize([In] [MarshalAs(UnmanagedType.LPStr)] string name) ;
 		
-		/// Return Type: int
-		///dest: float*
-		///src: char*
-		///offset: int
-		///n: int
+		/// <summary>
+		/// Get the size of an array
+		/// </summary>
+		/// <param name="name">Identifier of array</param>
+		/// <returns>array size</returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int ArraySize(string name)
+		{
+			return arraysize(name);
+		}
+		
+
 		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
+		private static extern  int read_array(ref float dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
+
+		/// <summary>
+		/// Read from an PD array
+		/// </summary>
+		/// <param name="dest">Array to fill</param>
+		/// <param name="src">Identifier of the PD array to read from</param>
+		/// <param name="offset"></param>
+		/// <param name="n"></param>
+		/// <returns>0 for success</returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static extern  int read_array(ref float dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
+		public static int ReadArray(float[] dest, string src, int offset, int n)
+		{
+			return read_array(ref dest[0], src, offset, n);
+		}
 
 		
-		/// Return Type: int
-		///dest: char*
-		///offset: int
-		///src: float*
-		///n: int
 		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
-
 		
-		/// Return Type: int
-		///recv: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_bang")]
+		/// <summary>
+		/// Write to a PD array
+		/// </summary>
+		/// <param name="dest">Identifier of the PD array to write</param>
+		/// <param name="src">Array to read from</param>
+		/// <param name="offset"></param>
+		/// <param name="n"></param>
+		/// <returns>0 for success</returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static extern  int send_bang([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
-
-		
-		/// Return Type: int
-		///recv: char*
-		///x: float
-		[DllImport("libpd.dll", EntryPoint="libpd_float")]
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static extern  int send_float([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x) ;
-
-		
-		/// Return Type: int
-		///recv: char*
-		///sym: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_symbol")]
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
-
-		#region PRIVATE STUFF
-		
-		/// Init PD
-		[DllImport("libpd.dll", EntryPoint="libpd_init")]
-		private static extern  void libpd_init() ;
-		
-		/// Return Type: int
-		///max_length: int
-		[DllImport("libpd.dll", EntryPoint="libpd_start_message")]
-		private static extern  int start_message(int max_length) ;
-		
-		/// Return Type: void
-		///x: float
-		[DllImport("libpd.dll", EntryPoint="libpd_add_float")]
-		private static extern  void add_float(float x) ;
-
-		
-		/// Return Type: void
-		///sym: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_add_symbol")]
-		private static extern  void add_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
-
-		
-		/// Return Type: int
-		///recv: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_finish_list")]
-		private static extern  int finish_list([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
-
-		
-		/// Return Type: int
-		///recv: char*
-		///msg: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_finish_message")]
-		private static extern  int finish_message([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg) ;
-
-		
-		//parse args helper
-		private static int ProcessArgs(object[] args)
+		public static int WriteArray(string dest, float[] src, int offset, int n)
 		{
-			if (start_message(args.Length) != 0)
-			{
-				return -100;
-			}
-			foreach (object arg in args)
-			{
-				if (arg is int?)
-				{
-					add_float((int)((int?) arg));
-				}
-				else if (arg is float?)
-				{
-					add_float((float)((float?) arg));
-				}
-				else if (arg is double?)
-				{
-					add_float((float)((double?) arg));
-				}
-				else if (arg is string)
-				{
-					add_symbol((string) arg);
-				}
-				else
-				{
-					return -101; // illegal argument
-				}
-			}
-			return 0;
+			return write_array(dest, offset, ref src[0], n);
 		}
-		
-		//parse args helper with debug string
-		private static int ProcessArgsDebug(object[] args, ref string debug)
-		{
-			if (start_message(args.Length) != 0)
-			{
-				return -100;
-			}
-			foreach (object arg in args)
-			{
-				if (arg is int?)
-				{
-					add_float((int)((int?) arg));
-					debug += " i:" + arg.ToString();
-				}
-				else if (arg is float?)
-				{
-					add_float((float)((float?) arg));
-					debug += " f:" + arg.ToString();
-				}
-				else if (arg is double?)
-				{
-					add_float((float)((double?) arg));
-					debug += " d:" + arg.ToString();
-				}
-				else if (arg is string)
-				{
-					add_symbol((string) arg);
-					debug += " s:" + arg.ToString();
-				}
-				else
-				{
-					debug += " illegal argument: " + arg.ToString();
-					return -101; // illegal argument
-				}
-			}
-			return 0;
-		}
-		
-		#endregion PRIVATE STUFF
 
+		#endregion ARRAY
 	}
 }
