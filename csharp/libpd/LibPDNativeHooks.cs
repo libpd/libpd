@@ -12,9 +12,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace LibPDBinding
 {
+	#region Delegates
 
 	/// Return Type: void
 	///recv: charr
@@ -43,7 +45,7 @@ namespace LibPDBinding
 	///argc: int
 	///argv: char*
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDListStringHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, int argc, [In] [MarshalAsAttribute(UnmanagedType.LPStr)] string argv);
+	internal delegate void LibPDListStringHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, int argc, [In] [MarshalAsAttribute(UnmanagedType.LPStr)] string argv);
 
 	/// <summary>
 	/// List Event Delegate
@@ -56,12 +58,14 @@ namespace LibPDBinding
 	///argc: int
 	///argv: char*
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDMessageStringHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg, int argc, [In] [MarshalAs(UnmanagedType.LPStr)] string argv);
+	internal delegate void LibPDMessageStringHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg, int argc, [In] [MarshalAs(UnmanagedType.LPStr)] string argv);
 
 	/// <summary>
 	/// Message Event Delegate
 	/// </summary>
 	public delegate void LibPDMessageHook(string recv, string msg, object[] args);
+	
+	#endregion Delegates
 
 	//the receiver part of libpd
 	public static partial class LibPD
@@ -101,11 +105,7 @@ namespace LibPDBinding
 		public static event LibPDListHook List;
 		public static event LibPDMessageHook Message;
 		
-		/// Return Type: void
-		///hook: t_libpd_printhook
-		[DllImport("libpd.dll", EntryPoint="libpd_set_printhook")]
-		private static extern  void set_printhook(LibPDPrintHook hook) ;
-		
+		#region Rise events
 
 		private static void RaisePrintEvent(string e)
         {
@@ -141,6 +141,39 @@ namespace LibPDBinding
 			}
 		}
 		
+		private static void RaiseMessageEvent(string recv, string msg, int argc, string argv)
+		{
+			if (Message != null)
+			{
+				var args = ParseArgsString(argv);
+				
+				if(args.Length != argc) Debug.WriteLine("Message string parsing got {3} objects but should have {4}: {0} {1} {2}", recv, msg, argv, args.Length, argc);
+				
+				Message(recv, msg, args);
+			}
+		}
+		
+		private static void RaiseListEvent(string recv, int argc, string argv)
+		{
+			if (List != null)
+			{
+				var args = ParseArgsString(argv);
+				
+				if(args.Length != argc) Debug.WriteLine("List string parsing got {2} objects but should have {3}: {0} {1}", recv, argv, args.Length, argc);
+				
+				List(recv, args);
+			}
+		}
+		
+		#endregion Rise events
+		
+		#region Native methods
+		
+		/// Return Type: void
+		///hook: t_libpd_printhook
+		[DllImport("libpd.dll", EntryPoint="libpd_set_printhook")]
+		private static extern  void set_printhook(LibPDPrintHook hook) ;
+		
 		/// Return Type: void
 		///hook: t_libpd_banghook
 		[DllImport("libpd.dll", EntryPoint="libpd_set_banghook")]
@@ -169,34 +202,22 @@ namespace LibPDBinding
 		///hook: t_libpd_messagehook
 		[DllImport("libpd.dll", EntryPoint="libpd_set_messagestrhook")]
 		private static extern  void set_messagestrhook(LibPDMessageStringHook hook) ;
-
 		
-		private static void RaiseMessageEvent(string recv, string msg, int argc, string argv)
-        {
-            if (Message != null)
-            {
-            	var args = ParseArgsString(argv);
-            	
-            	if(args.Length != argc) Debug.WriteLine("Message string parsing got {3} objects but should have {4}: {0} {1} {2}", recv, msg, argv, args.Length, argc);
-            	
-                Message(recv, msg, args);
-            }
-        }
-		
-		private static void RaiseListEvent(string recv, int argc, string argv)
-        {
-            if (List != null)
-            {
-            	var args = ParseArgsString(argv);
-            	
-            	if(args.Length != argc) Debug.WriteLine("List string parsing got {2} objects but should have {3}: {0} {1}", recv, argv, args.Length, argc);
-            	
-                List(recv, args);
-            }
-        }
+		#endregion Native methods
 		
 		/// <summary>
-		/// 
+		/// Get an object array from a space seperated message string threadsafe
+		/// </summary>
+		/// <param name="argsString"></param>
+		/// <returns></returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static object[] ParseArgsStringSync(string argsString)
+		{
+			return ParseArgsString(argsString);
+		}
+		
+		/// <summary>
+		/// Get an object array from a space seperated message string
 		/// </summary>
 		/// <param name="argsString"></param>
 		/// <returns></returns>

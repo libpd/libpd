@@ -55,7 +55,7 @@ namespace LibPDBinding
             SetButtonStates();
             
             FLibPDPatch = FLibPDManager.LoadPatch(@"C:\Dev\c++\libpd\samples\cppTest\test.pd");
-
+			LibPD.bind("toCPP");
         }
 		
         //open file

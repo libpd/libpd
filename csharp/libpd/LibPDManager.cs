@@ -26,6 +26,7 @@ namespace LibPDBinding
 		public LibPDManager()
 		{
 			LibPD.WriteMessageToDebug = true;
+			
 			LibPD.Print += new LibPDPrintHook(LibPD_Print);
 			LibPD.Bang += new LibPDBangHook(LibPD_Bang);
 			LibPD.Float += new LibPDFloatHook(LibPD_Float);
@@ -41,15 +42,43 @@ namespace LibPDBinding
 			LibPD.PolyAftertouch += new LibPDPolyAftertouchHook(LibPD_PolyAftertouch);
 			LibPD.MidiByte += new LibPDMidiByteHook(LibPD_MidiByte);
 			
-			LibPD.bind("toCPP");
 		}
-
-
 		
 		#region receive events
 		
-	
+		void LibPD_Print(string recv)
+		{
+			if(recv.EndsWith("\n")) recv = recv.Replace("\n", "");
+			Debug.WriteLine("Print from PD: " + recv);
+		}
 		
+		void LibPD_Bang(string recv)
+		{
+			Debug.WriteLine("Bang from PD: " + recv);
+		}
+		
+		void LibPD_Float(string recv, float x)
+		{
+			Debug.WriteLine("Float from PD: {0} {1}", recv, x);
+		}
+
+		void LibPD_Symbol(string recv, string sym)
+		{
+			Debug.WriteLine("Symbol from PD: {0} {1}", recv, sym);
+		}
+
+		void LibPD_List(string recv, object[] args)
+		{
+			var msg = new LibPDList(args);
+			Debug.WriteLine("List from PD: {0} {1}", recv, msg.ToString());
+		}
+
+		void LibPD_Message(string recv, string type, object[] args)
+		{
+			var msg = new LibPDMessage(type, args);
+			Debug.WriteLine("Message from PD: {0} {1}", recv, msg.ToString());
+		}
+
 		void LibPD_NoteOn(int channel, int pitch, int velocity)
 		{
 			Debug.WriteLine("NoteOn from PD: {0} {1} {2}", channel, pitch, velocity);
@@ -84,45 +113,7 @@ namespace LibPDBinding
 		{
 			Debug.WriteLine("MidiByte from PD: {0} {1}", port, byt);
 		}
-		
-		void LibPD_Print(string recv)
-		{
-			Debug.Write(recv);
-		}
-		
-		void LibPD_Bang(string recv)
-		{
-			Debug.WriteLine("Bang from PD: " + recv);
-		}
-		
-		void LibPD_Float(string recv, float x)
-		{
-			Debug.WriteLine("Float from PD: {0} {1}", recv, x);
-		}
-
-		void LibPD_Symbol(string recv, string sym)
-		{
-			Debug.WriteLine("Symbol from PD: {0} {1}", recv, sym);
-		}
-
-		void LibPD_List(string recv, object[] args)
-		{
-			var msg = new LibPDList(args);
-			Debug.WriteLine("List from PD: {0} {1}", recv, msg.ToString());
-		}
-
-		void LibPD_Message(string recv, string type, object[] args)
-		{
-			var msg = new LibPDMessage(type, args);
-			Debug.WriteLine("Message from PD: {0} {1}", recv, msg.ToString());
-		}
-
-		//PD Print hook
-		protected void Print(string message)
-		{
-			Debug.WriteLine(message);
-		}
-		
+	
 		#endregion receive events
 
 		//AUDIO---------------------------------------------------------------------------

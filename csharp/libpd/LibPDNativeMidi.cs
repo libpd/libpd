@@ -7,9 +7,12 @@
  * 
  */
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace LibPDBinding
 {
+	#region Delegates
+	
 	/// Return Type: void
 	///channel: int
 	///pitch: int
@@ -56,6 +59,7 @@ namespace LibPDBinding
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void LibPDMidiByteHook(int port, int byt);
 
+	#endregion Delegates
 
 	public static partial class LibPD
 	{
@@ -67,7 +71,7 @@ namespace LibPDBinding
 		private static LibPDPolyAftertouchHook polyaftertouchHook;
 		private static LibPDMidiByteHook midibyteHook;
 		
-		private static void SetupMidi()
+		private static void SetupMidiHooks()
 		{
 			noteonHook = new LibPDNoteOnHook(RaiseNoteOnEvent);
 			set_noteonhook(noteonHook);
@@ -99,6 +103,8 @@ namespace LibPDBinding
 		public static event LibPDAftertouchHook Aftertouch;
 		public static event LibPDPolyAftertouchHook PolyAftertouch;
 		public static event LibPDMidiByteHook MidiByte;
+		
+		#region Rise events
 		
 		private static void RaiseNoteOnEvent(int channel, int pitch, int velocity)
 		{
@@ -165,73 +171,103 @@ namespace LibPDBinding
 			}
 		}
 		
-		/// Return Type: int
-		///channel: int
-		///pitch: int
-		///velocity: int
+		#endregion Rise events
+		
+		#region Send Midi
+		
+
 		[DllImport("libpd.dll", EntryPoint="libpd_noteon")]
 		public static extern  int noteon(int channel, int pitch, int velocity) ;
-
 		
-		/// Return Type: int
-		///channel: int
-		///controller: int
-		///value: int
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int noteonSync(int channel, int pitch, int velocity)
+		{
+			return noteon(channel, pitch, velocity);
+		}
+
+
 		[DllImport("libpd.dll", EntryPoint="libpd_controlchange")]
 		public static extern  int controlchange(int channel, int controller, int value) ;
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int controlchangeSync(int channel, int controller, int value)
+		{
+			return controlchange(channel, controller, value);
+		}
 		
-		/// Return Type: int
-		///channel: int
-		///value: int
+		
 		[DllImport("libpd.dll", EntryPoint="libpd_programchange")]
 		public static extern  int programchange(int channel, int value) ;
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int programchangeSync(int channel, int value)
+		{
+			return programchange(channel, value);
+		}
 		
-		/// Return Type: int
-		///channel: int
-		///value: int
+	
 		[DllImport("libpd.dll", EntryPoint="libpd_pitchbend")]
 		public static extern  int pitchbend(int channel, int value) ;
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int pitchbendSync(int channel, int value)
+		{
+			return pitchbend(channel, value);
+		}
 		
-		/// Return Type: int
-		///channel: int
-		///value: int
+	
 		[DllImport("libpd.dll", EntryPoint="libpd_aftertouch")]
 		public static extern  int aftertouch(int channel, int value) ;
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int aftertouchSync(int channel, int value)
+		{
+			return aftertouch(channel, value);
+		}
 		
-		/// Return Type: int
-		///channel: int
-		///pitch: int
-		///value: int
+	
 		[DllImport("libpd.dll", EntryPoint="libpd_polyaftertouch")]
 		public static extern  int polyaftertouch(int channel, int pitch, int value) ;
+		
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int polyaftertouchSync(int channel, int pitch, int value)
+		{
+			return polyaftertouch(channel, pitch, value);
+		}
 
 		
-		/// Return Type: int
-		///port: int
-		///param1: int
-		///param2: byte
 		[DllImport("libpd.dll", EntryPoint="libpd_midibyte")]
 		public static extern  int midibyte(int port, int param1, byte param2) ;
-
 		
-		/// Return Type: int
-		///port: int
-		///param1: int
-		///param2: byte
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int midibyteSync(int port, int param1, byte param2)
+		{
+			return midibyte(port, param1, param2);
+		}
+		
+		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysex")]
 		public static extern  int sysex(int port, int param1, byte param2) ;
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int sysexSync(int port, int param1, byte param2)
+		{
+			return sysex(port, param1, param2);
+		}
 		
-		/// Return Type: int
-		///port: int
-		///param1: int
-		///param2: byte
+		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysrealtime")]
 		public static extern  int sysrealtime(int port, int param1, byte param2) ;
+		
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static int sysrealtimeSync(int port, int param1, byte param2)
+		{
+			return sysrealtime(port, param1, param2);
+		}
+		
+		#endregion Send Midi
+		
+		#region Hook setter
 		
 		/// Return Type: void
 		///hook: t_libpd_noteonhook
@@ -273,7 +309,8 @@ namespace LibPDBinding
 		///hook: t_libpd_midibytehook
 		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_midibytehook")]
 		private static extern  void set_midibytehook(LibPDMidiByteHook hook) ;
-
+		
+		#endregion Hook setter
 
 	}
 }

@@ -23,7 +23,7 @@ namespace LibPDBinding
 		static LibPD()
 		{
 			SetupHooks();
-			SetupMidi();
+			SetupMidiHooks();
 			libpd_init();
 		}
 		
@@ -34,12 +34,7 @@ namespace LibPDBinding
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			set;
 		}
-		
-		/// Init PD
-		[DllImport("libpd.dll", EntryPoint="libpd_init")]
-		private static extern  void libpd_init() ;
-
-		
+				
 		/// Return Type: void
 		[DllImport("libpd.dll", EntryPoint="libpd_clear_search_path")]
 		private static extern  void clear_search_path() ;
@@ -79,6 +74,7 @@ namespace LibPDBinding
 		/// beginning and then forget that this method exists.
 		/// </summary>
 		/// <param name="state"></param>
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static void ComputeAudio(bool state)
 		{
 			SendMessage("pd", "dsp", state ? 1 : 0);
@@ -90,30 +86,25 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_openfile")]
 		public static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
 
-		
 		/// Return Type: void
 		///p: void*
 		[DllImport("libpd.dll", EntryPoint="libpd_closefile")]
 		public static extern  void closefile(IntPtr p) ;
-
 		
 		/// Return Type: int
 		///p: void*
 		[DllImport("libpd.dll", EntryPoint="libpd_getdollarzero")]
 		public static extern  int getdollarzero(IntPtr p) ;
-		
 				
 		/// Return Type: int
 		///sym: char*
 		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
 		public static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
-		
 		/// Return Type: void*
 		///sym: char*
 		[DllImport("libpd.dll", EntryPoint="libpd_bind")]
 		public static extern  IntPtr bind([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
-
 		
 		/// Return Type: void
 		///p: void*
@@ -177,9 +168,10 @@ namespace LibPDBinding
 			}
 		}
 		
+		#region AUDIO
+		
 		/// Return Type: int
 		[DllImport("libpd.dll", EntryPoint="libpd_blocksize")]
-		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static extern  int blocksize() ;
 		
 		
@@ -233,6 +225,8 @@ namespace LibPDBinding
 		///outBuffer: double*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
 		public static extern  int process_double(int ticks, ref double inBuffer, ref double outBuffer) ;
+		
+		#endregion AUDIO
 
 		
 		/// Return Type: int
@@ -283,7 +277,11 @@ namespace LibPDBinding
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
-		//PRIVATE STUFF---------------------------------------------------------------------------------------
+		#region PRIVATE STUFF
+		
+		/// Init PD
+		[DllImport("libpd.dll", EntryPoint="libpd_init")]
+		private static extern  void libpd_init() ;
 		
 		/// Return Type: int
 		///max_length: int
@@ -385,6 +383,8 @@ namespace LibPDBinding
 			}
 			return 0;
 		}
+		
+		#endregion PRIVATE STUFF
 
 	}
 }
