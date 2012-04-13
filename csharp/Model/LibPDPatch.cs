@@ -64,8 +64,7 @@ namespace LibPDBinding
 		{
 			if(IsLoaded) Close();
 			
-			var path = Path.GetDirectoryName(this.FileName);
-			PatchHandle = LibPD.Openfile(this.Name, path);
+			PatchHandle = LibPD.Openfile(this.FileName);
 			Debug.WriteLine("PD File Handle: " + PatchHandle);
 			IsLoaded = true;
 		}

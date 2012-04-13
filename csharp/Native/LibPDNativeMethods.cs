@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.IO;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -70,9 +71,9 @@ namespace LibPDBinding
 		private static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static IntPtr Openfile(string basename, string dirname)
+		public static IntPtr Openfile(string filepath)
 		{
-			return openfile(basename, dirname);
+			return openfile(Path.GetFileName(filepath), Path.GetDirectoryName(filepath));
 		}
 
 		/// Return Type: void
