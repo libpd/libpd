@@ -64,7 +64,7 @@ namespace LibPDBinding
 		{
 			if(IsLoaded) Close();
 			
-			PatchHandle = LibPD.Openfile(this.FileName);
+			PatchHandle = LibPD.OpenPatch(this.FileName);
 			Debug.WriteLine("PD File Handle: " + PatchHandle);
 			IsLoaded = true;
 		}
@@ -74,7 +74,7 @@ namespace LibPDBinding
 		/// </summary>
 		public virtual void Close()
 		{
-			if (IsLoaded) LibPD.CloseFile(PatchHandle);
+			if (IsLoaded) LibPD.ClosePatch(PatchHandle);
 			IsLoaded = false;
 		}
 		

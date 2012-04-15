@@ -71,7 +71,7 @@ namespace LibPDBinding
 		private static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static IntPtr Openfile(string filepath)
+		public static IntPtr OpenPatch(string filepath)
 		{
 			return openfile(Path.GetFileName(filepath), Path.GetDirectoryName(filepath));
 		}
@@ -82,7 +82,7 @@ namespace LibPDBinding
 		private static extern  void closefile(IntPtr p) ;
 		
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void CloseFile(IntPtr p)
+		public static void ClosePatch(IntPtr p)
 		{
 			closefile(p);
 		}
