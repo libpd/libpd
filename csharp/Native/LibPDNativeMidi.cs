@@ -15,6 +15,8 @@ namespace LibPDBinding
 	
 	#region Delegates
 	
+	/*
+	
 	/// Return Type: void
 	///channel: int
 	///pitch: int
@@ -60,13 +62,17 @@ namespace LibPDBinding
 	///param2: byte
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void LibPDMidiByteHook(int port, int byt);
+	
+	*/
 
 	#endregion Delegates
 
 	public static partial class LibPD
 	{
 		#region Events
-				
+		
+		/*		
+		
 		private static LibPDNoteOnHook noteonHook;
 		private static LibPDControlChangeHook controlchangeHook;
 		private static LibPDProgramChangeHook programchangeHook;
@@ -172,6 +178,8 @@ namespace LibPDBinding
 				MidiByte(port, byt);
 			}
 		}
+		
+		*/
 		
 		#endregion Events
 		
@@ -350,6 +358,8 @@ namespace LibPDBinding
 		
 		#region Hook setter
 		
+		/*
+		
 		/// Return Type: void
 		///hook: t_libpd_noteonhook
 		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_noteonhook")]
@@ -390,6 +400,8 @@ namespace LibPDBinding
 		///hook: t_libpd_midibytehook
 		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_midibytehook")]
 		private static extern  void set_midibytehook(LibPDMidiByteHook hook) ;
+		
+		*/
 		
 		#endregion Hook setter
 

@@ -4,8 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # SharpDevelop 4.2.0.8649-Beta 2
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDBinding", "csharp\LibPDBinding.csproj", "0D2EF933-6094-4DE1-9D63-9B43786C06AE"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDExample", "samples\csharp\LibPDExample.csproj", "9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -22,13 +20,5 @@ Global
 		0D2EF933-6094-4DE1-9D63-9B43786C06AE.Release|x86.ActiveCfg = Release|x86
 		0D2EF933-6094-4DE1-9D63-9B43786C06AE.Release|Any CPU.Build.0 = Release|x86
 		0D2EF933-6094-4DE1-9D63-9B43786C06AE.Release|Any CPU.ActiveCfg = Release|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Debug|x86.Build.0 = Debug|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Debug|x86.ActiveCfg = Debug|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Debug|Any CPU.Build.0 = Debug|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Debug|Any CPU.ActiveCfg = Debug|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Release|x86.Build.0 = Release|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Release|x86.ActiveCfg = Release|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Release|Any CPU.Build.0 = Release|x86
-		9CD2E2FF-16F8-49AC-8A25-45E6ECA50BB3.Release|Any CPU.ActiveCfg = Release|x86
 	EndGlobalSection
 EndGlobal

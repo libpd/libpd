@@ -25,8 +25,8 @@ namespace LibPDBinding
 		//only call this once a lifetime
 		static LibPD()
 		{
-			SetupHooks();
-			SetupMidiHooks();
+			//SetupHooks();
+			//SetupMidiHooks();
 			libpd_init();
 		}
 		

@@ -42,9 +42,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\LibPDManager.cs" />
-    <Compile Include="Model\LibPDMessage.cs" />
-    <Compile Include="Model\LibPDPatch.cs" />
     <Compile Include="Native\LibPDNativeMessaging.cs" />
     <Compile Include="Native\LibPDNativeMethods.cs" />
     <Compile Include="Native\LibPDNativeMidi.cs" />
@@ -61,7 +58,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model" />
     <Folder Include="Native" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

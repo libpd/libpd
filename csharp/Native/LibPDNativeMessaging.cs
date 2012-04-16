@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 namespace LibPDBinding
 {
 	#region Delegates
+	
+	/*
 
 	/// Return Type: void
 	///recv: charr
@@ -66,6 +68,8 @@ namespace LibPDBinding
 	/// </summary>
 	public delegate void LibPDMessageHook(string recv, string msg, object[] args);
 	
+	*/
+	
 	#endregion Delegates
 
 	//the receiver part of libpd
@@ -73,6 +77,8 @@ namespace LibPDBinding
 	{
 		
 		#region Events
+		
+		/*
 		
 		private static LibPDPrintHook PrintHook;
 		private static LibPDBangHook BangHook;
@@ -166,6 +172,8 @@ namespace LibPDBinding
 				List(recv, args);
 			}
 		}
+		
+		*/
 		
 		#endregion Events
 		
@@ -482,6 +490,8 @@ namespace LibPDBinding
 			return 0;
 		}
 		
+		/*
+		
 		/// Return Type: void
 		///hook: t_libpd_printhook
 		[DllImport("libpd.dll", EntryPoint="libpd_set_printhook")]
@@ -515,6 +525,8 @@ namespace LibPDBinding
 		///hook: t_libpd_messagehook
 		[DllImport("libpd.dll", EntryPoint="libpd_set_messagestrhook")]
 		private static extern  void set_messagestrhook(LibPDMessageStringHook hook) ;
+		
+		*/
 		
 		#endregion private
 		
