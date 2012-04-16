@@ -324,7 +324,7 @@ namespace LibPDBinding
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static object[] ParseArgsString(string argsString)
 		{
-			return ParseArgsString(argsString);
+			return ParseArgsStringUnsync(argsString);
 		}
 		
 		/// <summary>
