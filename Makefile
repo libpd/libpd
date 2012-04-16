@@ -10,7 +10,7 @@ else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC = gcc
     SOLIB_EXT = dll
-    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/win32
+    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def -Wl,--out-implib=libs/libpd.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdnative.def -Wl,--out-implib=libs/libpdnative.lib
@@ -51,7 +51,7 @@ PD_FILES = \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
 	pure-data/src/x_qlist.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_libpd.c
+	libpd_wrapper/z_libpd.c libpd_wrapper/z_hookset.c
 JNI_FILE = libpd_wrapper/z_jni.c
 JNIH_FILE = libpd_wrapper/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
