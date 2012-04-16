@@ -1,11 +1,16 @@
 ﻿/*
+ * 
+ * For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ * 
+ * 
  * Created by SharpDevelop.
  * User: Tebjan Halm
  * Date: 11.04.2012
  * Time: 11:40
  * 
- * 
  */
+ 
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 

@@ -1,4 +1,9 @@
 ﻿/*
+ * 
+ * For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ * 
+ * 
  * Created by SharpDevelop.
  * User: Tebjan Halm
  * Date: 08.04.2012
@@ -17,7 +22,40 @@ namespace LibPDBinding
 {
 
 	/// <summary>
-	/// Static methods of libpd.dll
+	/// LibPD provides basic C# bindings for pd. It follows the libpd Java bingings as good as possible.
+	/// 
+	/// Some random notes from Peter Brinkmann on the java bindings:
+	/// 
+	/// - This is a low-level library that aims to leave most design decisions to
+	/// higher-level code. In particular, it will throw no exceptions (except for the
+	/// methods for opening files, which may throw an <seealso cref="IOException"/> when appropriate). 
+	/// At the same time, it is designed to be
+	/// fairly robust in that it is thread-safe and does as much error checking as I
+	/// find reasonable at this level. Client code is still responsible for proper
+	/// dimensioning of buffers and such, though.
+	/// 
+	/// - The MIDI methods choose sanity over consistency with pd or the MIDI
+	/// standard. To wit, channel numbers always start at 0, and pitch bend values
+	/// are centered at 0, i.e., they range from -8192 to 8191.
+	/// 
+	/// - The basic idea is to turn pd into a library that essentially offers a
+	/// rendering callback (process) mimicking the design of JACK, the JACK Audio
+	/// Connection Kit.
+	/// 
+	/// - The release method is mostly there as a reminder that some sort of cleanup
+	/// might be necessary; for the time being, it only releases the resources held
+	/// by the print handler, closes all patches, and cancels all subscriptions.
+	/// Shutting down pd itself wouldn't make sense because it might be needed in the
+	/// future, at which point the native library may not be reloaded.
+	/// 
+	///  - I'm a little fuzzy on how/when to use sys_lock, sys_unlock, etc., and so I
+	/// decided to handle all synchronization on the Java side. It appears that
+	/// sys_lock is for top-level locking in scheduling routines only, and so
+	/// Java-side sync conveys the same benefits without the risk of deadlocks.
+	/// 
+	/// 
+	/// Author: Tebjan Halm (tebjan@vvvv.org)
+	/// 
 	/// </summary>
 	public static partial class LibPD
 	{

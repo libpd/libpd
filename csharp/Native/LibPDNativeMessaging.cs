@@ -1,9 +1,13 @@
 ﻿/*
+ * 
+ * For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ * 
+ * 
  * Created by SharpDevelop.
  * User: Tebjan Halm
  * Date: 11.04.2012
  * Time: 07:01
- * 
  * 
  */
 
@@ -23,8 +27,7 @@ namespace LibPDBinding
 	public static partial class LibPD
 	{
 		
-	
-		
+
 		#region Message sending
 		
 		//store bindings
@@ -36,10 +39,18 @@ namespace LibPDBinding
 		public static bool WriteMessageToDebug
 		{
 			[MethodImpl(MethodImplOptions.Synchronized)]
-			get;
+			get
+			{
+				return SWriteMessageToDebug;
+			}
 			[MethodImpl(MethodImplOptions.Synchronized)]
-			set;
+			set
+			{
+				SWriteMessageToDebug = value;
+			}
 		}
+		
+		private static bool SWriteMessageToDebug;
 		
 		//sending-----------------------------------------------------------
 		
@@ -96,7 +107,7 @@ namespace LibPDBinding
 			if(WriteMessageToDebug)
 			{
 				var s = String.Format("Message: {0} {1}", receiver, message);
-				int err = ProcessArgsDebug(args, ref s);
+				int err = ProcessArgs(args, ref s);
 				var ret = (err == 0) ? finish_message(receiver, message) : err;
 				s += " Start: " + err;
 				s += " End: " + ret;
@@ -105,7 +116,8 @@ namespace LibPDBinding
 			}
 			else
 			{
-				int err = ProcessArgs(args);
+				var s = "";
+				int err = ProcessArgs(args, ref s);
 				return (err == 0) ? finish_message(receiver, message) : err;
 			}
 		}
@@ -124,7 +136,7 @@ namespace LibPDBinding
 			if(WriteMessageToDebug)
 			{
 				var s = String.Format("List: {0}", receiver);
-				int err = ProcessArgsDebug(args, ref s);
+				int err = ProcessArgs(args, ref s);
 				var ret = (err == 0) ? finish_list(receiver) : err;
 				s += " Start: " + err;
 				s += " End: " + ret;
@@ -133,7 +145,8 @@ namespace LibPDBinding
 			}
 			else
 			{
-				int err = ProcessArgs(args);
+				var s = "";
+				int err = ProcessArgs(args, ref s);
 				return (err == 0) ? finish_list(receiver) : err;
 			}
 		}
@@ -233,41 +246,8 @@ namespace LibPDBinding
 		private static extern  int finish_message([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg) ;
 
 		
-		//parse args helper
-		private static int ProcessArgs(object[] args)
-		{
-			if (start_message(args.Length) != 0)
-			{
-				return -100;
-			}
-			foreach (object arg in args)
-			{
-				if (arg is int?)
-				{
-					add_float((int)((int?) arg));
-				}
-				else if (arg is float?)
-				{
-					add_float((float)((float?) arg));
-				}
-				else if (arg is double?)
-				{
-					add_float((float)((double?) arg));
-				}
-				else if (arg is string)
-				{
-					add_symbol((string) arg);
-				}
-				else
-				{
-					return -101; // illegal argument
-				}
-			}
-			return 0;
-		}
-		
 		//parse args helper with debug string
-		private static int ProcessArgsDebug(object[] args, ref string debug)
+		private static int ProcessArgs(object[] args, ref string debug)
 		{
 			if (start_message(args.Length) != 0)
 			{
@@ -278,26 +258,26 @@ namespace LibPDBinding
 				if (arg is int?)
 				{
 					add_float((int)((int?) arg));
-					debug += " i:" + arg.ToString();
+					if(SWriteMessageToDebug) debug += " i:" + arg.ToString();
 				}
 				else if (arg is float?)
 				{
 					add_float((float)((float?) arg));
-					debug += " f:" + arg.ToString();
+					if(SWriteMessageToDebug) debug += " f:" + arg.ToString();
 				}
 				else if (arg is double?)
 				{
 					add_float((float)((double?) arg));
-					debug += " d:" + arg.ToString();
+					if(SWriteMessageToDebug) debug += " d:" + arg.ToString();
 				}
 				else if (arg is string)
 				{
 					add_symbol((string) arg);
-					debug += " s:" + arg.ToString();
+					if(SWriteMessageToDebug) debug += " s:" + arg.ToString();
 				}
 				else
 				{
-					debug += " illegal argument: " + arg.ToString();
+					if(SWriteMessageToDebug) debug += " illegal argument: " + arg.ToString();
 					return -101; // illegal argument
 				}
 			}
