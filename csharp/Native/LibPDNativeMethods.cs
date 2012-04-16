@@ -21,7 +21,6 @@ namespace LibPDBinding
 	/// </summary>
 	public static partial class LibPD
 	{
-		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
 		
 		//only call this once a lifetime
 		static LibPD()
@@ -32,6 +31,9 @@ namespace LibPDBinding
 		}
 		
 		#region Environment
+		
+		//store open patches
+		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
 		
 		/// Init PD
 		[DllImport("libpd.dll", EntryPoint="libpd_init")]

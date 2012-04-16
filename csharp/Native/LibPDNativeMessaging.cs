@@ -71,13 +71,8 @@ namespace LibPDBinding
 	//the receiver part of libpd
 	public static partial class LibPD
 	{
-		public static bool WriteMessageToDebug
-		{
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			get;
-			[MethodImpl(MethodImplOptions.Synchronized)]
-			set;
-		}
+		
+		#region Events
 		
 		private static LibPDPrintHook PrintHook;
 		private static LibPDBangHook BangHook;
@@ -85,8 +80,6 @@ namespace LibPDBinding
 		private static LibPDSymbolHook SymbolHook;
 		private static LibPDListStringHook ListHook;
 		private static LibPDMessageStringHook MessageHook;
-		
-		private static Dictionary<string, IntPtr> Bindings = new Dictionary<string, IntPtr>();
 		
 		private static void SetupHooks()
 		{
@@ -115,8 +108,6 @@ namespace LibPDBinding
 		public static event LibPDSymbolHook Symbol;
 		public static event LibPDListHook List;
 		public static event LibPDMessageHook Message;
-		
-		#region Rise events
 
 		private static void RaisePrintEvent(string e)
         {
@@ -176,9 +167,23 @@ namespace LibPDBinding
 			}
 		}
 		
-		#endregion Rise events
+		#endregion Events
 		
 		#region Message sending
+		
+		//store bindings
+		private static Dictionary<string, IntPtr> Bindings = new Dictionary<string, IntPtr>();
+		
+		/// <summary>
+		/// If set to true each sent message will be written to Debug output
+		/// </summary>
+		public static bool WriteMessageToDebug
+		{
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			get;
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			set;
+		}
 		
 		//binding-----------------------------------
 		

@@ -63,9 +63,10 @@ namespace LibPDBinding
 
 	#endregion Delegates
 
-	
 	public static partial class LibPD
 	{
+		#region Events
+				
 		private static LibPDNoteOnHook noteonHook;
 		private static LibPDControlChangeHook controlchangeHook;
 		private static LibPDProgramChangeHook programchangeHook;
@@ -106,8 +107,6 @@ namespace LibPDBinding
 		public static event LibPDAftertouchHook Aftertouch;
 		public static event LibPDPolyAftertouchHook PolyAftertouch;
 		public static event LibPDMidiByteHook MidiByte;
-		
-		#region Rise events
 		
 		private static void RaiseNoteOnEvent(int channel, int pitch, int velocity)
 		{
@@ -174,7 +173,7 @@ namespace LibPDBinding
 			}
 		}
 		
-		#endregion Rise events
+		#endregion Events
 		
 		#region Send Midi
 		
