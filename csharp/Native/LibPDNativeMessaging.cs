@@ -104,7 +104,7 @@ namespace LibPDBinding
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendMessage(string receiver, string message, params object[] args)
 		{
-			if(WriteMessageToDebug)
+			if(SWriteMessageToDebug)
 			{
 				var s = String.Format("Message: {0} {1}", receiver, message);
 				int err = ProcessArgs(args, ref s);
@@ -133,7 +133,7 @@ namespace LibPDBinding
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendList(string receiver, params object[] args)
 		{
-			if(WriteMessageToDebug)
+			if(SWriteMessageToDebug)
 			{
 				var s = String.Format("List: {0}", receiver);
 				int err = ProcessArgs(args, ref s);
