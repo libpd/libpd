@@ -67,7 +67,8 @@ typedef void (*t_libpd_banghook)(const char *recv);
 typedef void (*t_libpd_floathook)(const char *recv, float x);
 typedef void (*t_libpd_symbolhook)(const char *recv, const char *sym);
 typedef void (*t_libpd_listhook)(const char *recv, int argc, t_atom *argv);
-typedef void (*t_libpd_messagehook)(const char *recv, const char *msg, int argc, t_atom *argv);
+typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
+    int argc, t_atom *argv);
 
 EXTERN t_libpd_printhook libpd_printhook;
 EXTERN t_libpd_banghook libpd_banghook;
@@ -94,7 +95,6 @@ typedef void (*t_libpd_pitchbendhook)(int channel, int value);
 typedef void (*t_libpd_aftertouchhook)(int channel, int value);
 typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
 typedef void (*t_libpd_midibytehook)(int port, int byte);
-
 EXTERN t_libpd_noteonhook libpd_noteonhook;
 EXTERN t_libpd_controlchangehook libpd_controlchangehook;
 EXTERN t_libpd_programchangehook libpd_programchangehook;
