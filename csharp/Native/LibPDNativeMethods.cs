@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -20,6 +21,8 @@ namespace LibPDBinding
 	/// </summary>
 	public static partial class LibPD
 	{
+		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
+		
 		//only call this once a lifetime
 		static LibPD()
 		{
@@ -55,7 +58,7 @@ namespace LibPDBinding
 		private static extern  void add_to_search_path([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		/// <summary>
-		/// adds a directory to the search path
+		/// adds a directory to the search paths
 		/// </summary>
 		/// <param name="sym">directory to add</param>
 		[MethodImpl(MethodImplOptions.Synchronized)]
@@ -70,10 +73,34 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_openfile")]
 		private static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
 		
+		/// <summary>
+		/// reads a patch from a file
+		/// </summary>
+		/// <param name="path">to the file </param>
+		/// <returns> an integer handle that identifies this patch; this handle is the
+		///         $0 value of the patch </returns>
+		/// <exception cref="IOException">
+		///             thrown if the file doesn't exist or can't be opened </exception>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static IntPtr OpenPatch(string filepath)
+		public static int OpenPatch(string filepath)
 		{
-			return openfile(Path.GetFileName(filepath), Path.GetDirectoryName(filepath));
+			if(!File.Exists(filepath))
+			{
+				throw new FileNotFoundException(filepath);
+			}
+			
+			var ptr =  openfile(Path.GetFileName(filepath), Path.GetDirectoryName(filepath));
+			
+			if(ptr == IntPtr.Zero)
+			{
+				throw new IOException("unable to open patch " + filepath);
+			}
+			
+			var handle = getdollarzero(ptr);
+			
+			Patches[handle] = ptr;
+			
+			return handle;
 		}
 
 		/// Return Type: void
@@ -81,32 +108,66 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_closefile")]
 		private static extern  void closefile(IntPtr p) ;
 		
+		/// <summary>
+		/// closes a patch; will do nothing if the handle is invalid
+		/// </summary>
+		/// <param name="p">$0 of the patch, as returned by OpenPatch</param>
+		/// <returns>true if file was found and closed</returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void ClosePatch(IntPtr p)
+		public static bool ClosePatch(int p)
 		{
-			closefile(p);
+			if(!Patches.ContainsKey(p)) return false;
+			
+			var ptr = Patches[p];
+			closefile(ptr);
+			return Patches.Remove(p);
+			
 		}
 		
 		/// Return Type: int
 		///p: void*
 		[DllImport("libpd.dll", EntryPoint="libpd_getdollarzero")]
 		private static extern  int getdollarzero(IntPtr p) ;
-		
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int GetDollarZero(IntPtr p)
-		{
-			return getdollarzero(p);
-		}
+
 				
 		/// Return Type: int
 		///sym: char*
 		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
 		private static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
+		/// <summary>
+		/// checks whether a symbol represents a pd object
+		/// </summary>
+		/// <param name="s">String representing pd symbol </param>
+		/// <returns> true if and only if the symbol given by s is associated with
+		///         something in pd </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static bool Exists(string sym)
 		{
 			return exists(sym) != 0;
+		}
+		
+		/// <summary>
+		/// releases resources held by native bindings (PdReceiver object and
+		/// subscriptions); otherwise, the state of pd will remain unaffected
+		/// 
+		/// Note: It would be nice to free pd's I/O buffers here, but sys_close_audio
+		/// doesn't seem to do that, and so we'll just skip this for now.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static void Release()
+		{
+			foreach (var ptr in Bindings.Values)
+			{
+				unbind(ptr);
+			}
+			
+			Bindings.Clear();
+			foreach (var ptr in Patches.Values)
+			{
+				closefile(ptr);
+			}
+			Patches.Clear();
 		}
 
 		#endregion Environment
@@ -156,7 +217,7 @@ namespace LibPDBinding
 		/// <param name="sampleRate"> </param>
 		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int InitAudio(int inputChannels, int outputChannels, int sampleRate)
+		public static int OpenAudio(int inputChannels, int outputChannels, int sampleRate)
 		{
 			return init_audio(inputChannels, outputChannels, sampleRate);
 		}

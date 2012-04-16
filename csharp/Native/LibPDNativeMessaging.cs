@@ -182,16 +182,32 @@ namespace LibPDBinding
 		
 		//binding-----------------------------------
 		
+		/// <summary>
+		/// subscribes to pd messages sent to the given symbol
+		/// </summary>
+		/// <param name="symbol"> </param>
+		/// <returns> true on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void Bind(string sym)
+		public static bool Subscribe(string sym)
 		{
-			if(Bindings.ContainsKey(sym)) return;
-			Bindings[sym] = bind(sym);
+			if(Bindings.ContainsKey(sym)) return true;
+			
+			var ptr = bind(sym);
+			
+			if(ptr == IntPtr.Zero) return false;
+			
+			Bindings[sym] = ptr;
+			return true;
 		}
 		
-		
+		/// <summary>
+		/// unsubscribes from pd messages sent to the given symbol; will do nothing
+		/// if there is no subscription to this symbol
+		/// </summary>
+		/// <param name="sym"> </param>
+		/// <returns>true if unsubscribed</returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static bool Unbind(string sym)
+		public static bool Unsubscribe(string sym)
 		{
 			if(!Bindings.ContainsKey(sym)) return false;
 			unbind(Bindings[sym]);
@@ -200,18 +216,38 @@ namespace LibPDBinding
 		
 		//sending-----------------------------------------------------------
 		
+		/// <summary>
+		/// sends a bang to the object associated with the given symbol
+		/// </summary>
+		/// <param name="recv">
+		///            symbol associated with receiver </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendBang(string recv)
 		{
 			return send_bang(recv);
 		}
 
+		/// <summary>
+		/// sends a float to the object associated with the given symbol
+		/// </summary>
+		/// <param name="recv">
+		///            symbol associated with receiver </param>
+		/// <param name="x"> </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendFloat(string recv, float x)
 		{
 			return send_float(recv, x);
 		}
-
+		
+		/// <summary>
+		/// sends a symbol to the object associated with the given symbol
+		/// </summary>
+		/// <param name="recv">
+		///            symbol associated with receiver </param>
+		/// <param name="sym"> </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendSymbol(string recv, string sym)
 		{
@@ -281,17 +317,18 @@ namespace LibPDBinding
 		/// <param name="argsString"></param>
 		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static object[] ParseArgsStringSync(string argsString)
+		public static object[] ParseArgsString(string argsString)
 		{
 			return ParseArgsString(argsString);
 		}
 		
 		/// <summary>
 		/// Get an object array from a space seperated message string
+		/// This method is not synchronized for performance reasons
 		/// </summary>
 		/// <param name="argsString"></param>
 		/// <returns></returns>
-		public static object[] ParseArgsString(string argsString)
+		public static object[] ParseArgsStringUnsync(string argsString)
 		{
 			var args = argsString.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
 			var ret = new object[args.Length];

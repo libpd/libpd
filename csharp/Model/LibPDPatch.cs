@@ -18,7 +18,7 @@ namespace LibPDBinding
 	/// </summary>
 	public class LibPDPatch
 	{
-		public IntPtr PatchHandle
+		public int PatchHandle
 		{
 			get;
 			private set;

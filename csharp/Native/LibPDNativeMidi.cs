@@ -11,6 +11,8 @@ using System.Runtime.CompilerServices;
 
 namespace LibPDBinding
 {
+	
+	
 	#region Delegates
 	
 	/// Return Type: void
@@ -61,6 +63,7 @@ namespace LibPDBinding
 
 	#endregion Delegates
 
+	
 	public static partial class LibPD
 	{
 		private static LibPDNoteOnHook noteonHook;
@@ -179,6 +182,16 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_noteon")]
 		private static extern  int noteon(int channel, int pitch, int velocity) ;
 		
+		/// <summary>
+		/// sends a note on event to pd
+		/// </summary>
+		/// <param name="channel">
+		///            starting at 0 </param>
+		/// <param name="pitch">
+		///            0..0x7f </param>
+		/// <param name="velocity">
+		///            0..0x7f </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendNoteOn(int channel, int pitch, int velocity)
 		{
@@ -189,6 +202,16 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_controlchange")]
 		private static extern  int controlchange(int channel, int controller, int value) ;
 
+		/// <summary>
+		/// sends a control change event to pd
+		/// </summary>
+		/// <param name="channel">
+		///            starting at 0 </param>
+		/// <param name="controller">
+		///            0..0x7f </param>
+		/// <param name="value">
+		///            0..0x7f </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendControlChange(int channel, int controller, int value)
 		{
@@ -199,6 +222,14 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_programchange")]
 		private static extern  int programchange(int channel, int value) ;
 
+		/// <summary>
+		/// sends a program change event to Pd
+		/// </summary>
+		/// <param name="channel">
+		///            starting at 0 </param>
+		/// <param name="value">
+		///            0..0x7f </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendProgramChange(int channel, int value)
 		{
@@ -209,6 +240,15 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_pitchbend")]
 		private static extern  int pitchbend(int channel, int value) ;
 
+		/// <summary>
+		/// sends a pitch bend event to pd
+		/// </summary>
+		/// <param name="channel">
+		///            starting at 0 </param>
+		/// <param name="value">
+		///            -8192..8191 (note that Pd has some offset bug in its pitch
+		///            bend objects, but libpd corrects for this) </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendPitchbend(int channel, int value)
 		{
@@ -219,6 +259,14 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_aftertouch")]
 		private static extern  int aftertouch(int channel, int value) ;
 
+		/// <summary>
+		/// sends an aftertouch event to pd
+		/// </summary>
+		/// <param name="channel">
+		///            starting at 0 </param>
+		/// <param name="value">
+		///            0..0x7f </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendAftertouch(int channel, int value)
 		{
@@ -229,6 +277,16 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_polyaftertouch")]
 		private static extern  int polyaftertouch(int channel, int pitch, int value) ;
 		
+		/// <summary>
+		/// sends a polyphonic aftertouch event to pd
+		/// </summary>
+		/// <param name="channel">
+		///            starting at 0 </param>
+		/// <param name="pitch">
+		///            0..0x7f </param>
+		/// <param name="value">
+		///            0..0x7f </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static int SendPolyAftertouch(int channel, int pitch, int value)
 		{
@@ -237,32 +295,56 @@ namespace LibPDBinding
 
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_midibyte")]
-		private static extern  int midibyte(int port, int param1, int param2) ;
+		private static extern  int midibyte(int port, int value) ;
 		
+		/// <summary>
+		/// sends one raw MIDI byte to pd
+		/// </summary>
+		/// <param name="port">
+		///            0..0x0fff </param>
+		/// <param name="value">
+		///            0..0xff </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendMidiByte(int port, int param1, int param2)
+		public static int SendMidiByte(int port, int value)
 		{
-			return midibyte(port, param1, param2);
+			return midibyte(port, value);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysex")]
-		private static extern  int sysex(int port, int param1, int param2) ;
+		private static extern  int sysex(int port, int value) ;
 
+		/// <summary>
+		/// sends one byte of a sysex message to pd
+		/// </summary>
+		/// <param name="port">
+		///            0..0x0fff </param>
+		/// <param name="value">
+		///            0..0x7f </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendSysex(int port, int param1, int param2)
+		public static int SendSysex(int port, int value)
 		{
-			return sysex(port, param1, param2);
+			return sysex(port, value);
 		}
 		
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_sysrealtime")]
-		private static extern  int sysrealtime(int port, int param1, int param2) ;
+		private static extern  int sysrealtime(int port, int value) ;
 		
+		/// <summary>
+		/// sends one byte to the realtimein object of pd
+		/// </summary>
+		/// <param name="port">
+		///            0..0x0fff </param>
+		/// <param name="value">
+		///            0..0xff </param>
+		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendSysRealtime(int port, int param1, int param2)
+		public static int SendSysRealtime(int port, int value)
 		{
-			return sysrealtime(port, param1, param2);
+			return sysrealtime(port, value);
 		}
 		
 		#endregion Send Midi

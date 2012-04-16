@@ -125,7 +125,7 @@ namespace LibPDBinding
 		/// <param name="sampleRate">sample rate</param>
 		public void InitAudio(int inChannels=2, int outChannels=2, int sampleRate=44100)
 		{
-			LibPD.InitAudio(inChannels, outChannels, sampleRate);
+			LibPD.OpenAudio(inChannels, outChannels, sampleRate);
 		}
 		
 		/// <summary>

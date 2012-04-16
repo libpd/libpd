@@ -54,7 +54,7 @@ namespace LibPDBinding
 			
             SetButtonStates();
             
-			LibPD.Bind("toCPP");
+			LibPD.Subscribe("toCPP");
         }
 		
         //open file
@@ -216,8 +216,9 @@ namespace LibPDBinding
 			LibPD.SendPitchbend(0, 56);
 			LibPD.SendAftertouch(0, 56);
 			LibPD.SendPolyAftertouch(0, 56, 78);
-			LibPD.SendSysex(0, 56, 78);
-			LibPD.SendSysRealtime(0, 56, 78);
+			LibPD.SendMidiByte(0, 56);
+			LibPD.SendSysex(0, 56);
+			LibPD.SendSysRealtime(0, 56);
 		}
 		
 		void ButtonMessagesClick(object sender, EventArgs e)
@@ -227,9 +228,8 @@ namespace LibPDBinding
 			LibPD.SendFloat(recv, 123.45f);
 			LibPD.SendSymbol(recv, "a symbol");
 			
-			var dollar = LibPD.GetDollarZero(FLibPDPatch.PatchHandle);
 			var msg = LibPDMessage.ParseMessage("");
-			msg.SendTo("" + dollar + "-fromCPP");
+			msg.SendTo("" + FLibPDPatch + "-fromCPP");
 		}
 		
 		void ButtonArrayClick(object sender, EventArgs e)
