@@ -11,62 +11,6 @@ using System.Runtime.CompilerServices;
 
 namespace LibPDBinding
 {
-	
-	
-	#region Delegates
-	
-	/*
-	
-	/// Return Type: void
-	///channel: int
-	///pitch: int
-	///velocity: int
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDNoteOnHook(int channel, int pitch, int velocity);
-
-	/// Return Type: void
-	///channel: int
-	///controller: int
-	///value: int
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDControlChangeHook(int channel, int controller, int value);
-
-	/// Return Type: void
-	///channel: int
-	///value: int
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDProgramChangeHook(int channel, int value);
-
-	/// Return Type: void
-	///channel: int
-	///value: int
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDPitchBendHook(int channel, int value);
-
-	/// Return Type: void
-	///channel: int
-	///value: int
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDAftertouchHook(int channel, int value);
-
-	/// Return Type: void
-	///channel: int
-	///pitch: int
-	///value: int
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDPolyAftertouchHook(int channel, int pitch, int value);
-
-	/// Return Type: void
-	///port: int
-	///param1: int
-	///param2: byte
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDMidiByteHook(int port, int byt);
-	
-	*/
-
-	#endregion Delegates
-
 	public static partial class LibPD
 	{
 		#region Events
@@ -356,54 +300,5 @@ namespace LibPDBinding
 		
 		#endregion Send Midi
 		
-		#region Hook setter
-		
-		/*
-		
-		/// Return Type: void
-		///hook: t_libpd_noteonhook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_noteonhook")]
-		private static extern  void set_noteonhook(LibPDNoteOnHook hook) ;
-
-		
-		/// Return Type: void
-		///hook: t_libpd_controlchangehook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_controlchangehook")]
-		private static extern  void set_controlchangehook(LibPDControlChangeHook hook) ;
-
-		
-		/// Return Type: void
-		///hook: t_libpd_programchangehook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_programchangehook")]
-		private static extern  void set_programchangehook(LibPDProgramChangeHook hook) ;
-
-		
-		/// Return Type: void
-		///hook: t_libpd_pitchbendhook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_pitchbendhook")]
-		private static extern  void set_pitchbendhook(LibPDPitchBendHook hook) ;
-
-		
-		/// Return Type: void
-		///hook: t_libpd_aftertouchhook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_aftertouchhook")]
-		private static extern  void set_aftertouchhook(LibPDAftertouchHook hook) ;
-
-		
-		/// Return Type: void
-		///hook: t_libpd_polyaftertouchhook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_polyaftertouchhook")]
-		private static extern  void set_polyaftertouchhook(LibPDPolyAftertouchHook hook) ;
-
-		
-		/// Return Type: void
-		///hook: t_libpd_midibytehook
-		[System.Runtime.InteropServices.DllImportAttribute("libpd.dll", EntryPoint="libpd_set_midibytehook")]
-		private static extern  void set_midibytehook(LibPDMidiByteHook hook) ;
-		
-		*/
-		
-		#endregion Hook setter
-
 	}
 }
