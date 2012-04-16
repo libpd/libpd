@@ -53,9 +53,11 @@
   <ItemGroup>
     <None Include="..\libs\libpd.dll">
       <Link>libpd.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\libs\pthreadGC2.dll">
       <Link>pthreadGC2.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

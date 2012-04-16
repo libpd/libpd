@@ -226,7 +226,7 @@ namespace LibPDBinding
 			var recv = this.textBoxReceiver.Text;
 			LibPD.SendBang(recv);
 			LibPD.SendFloat(recv, 123.45f);
-			LibPD.SendSymbol(recv, "a symbol");
+			LibPD.SendSymbol(recv, "a string");
 			
 			var msg = LibPDMessage.ParseMessage("");
 			msg.SendTo("" + FLibPDPatch + "-fromCPP");
