@@ -31,6 +31,5 @@ Layout of the libpd repository:
 	  such as Lua.
 
   * samples: This branch contains one small sample program in C built on top
-      of libpd, as well as a sample project in Java that uses JavaSound and a 
-	  C# project that uses NAudio/ASIO.
+      of libpd, as well as a sample project in Java that uses JavaSound.
 
