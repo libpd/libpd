@@ -63,8 +63,6 @@ namespace LibPDBinding
 		//only call this once a lifetime
 		static LibPD()
 		{
-			//SetupHooks();
-			//SetupMidiHooks();
 			libpd_init();
 		}
 		
@@ -137,9 +135,7 @@ namespace LibPDBinding
 			}
 			
 			var handle = getdollarzero(ptr);
-			
 			Patches[handle] = ptr;
-			
 			return handle;
 		}
 
@@ -157,11 +153,9 @@ namespace LibPDBinding
 		public static bool ClosePatch(int p)
 		{
 			if(!Patches.ContainsKey(p)) return false;
-			
 			var ptr = Patches[p];
 			closefile(ptr);
 			return Patches.Remove(p);
-			
 		}
 		
 		/// Return Type: int
@@ -197,12 +191,7 @@ namespace LibPDBinding
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static void Release()
 		{
-			foreach (var ptr in Bindings.Values)
-			{
-				unbind(ptr);
-			}
-			
-			Bindings.Clear();
+
 			foreach (var ptr in Patches.Values)
 			{
 				closefile(ptr);
@@ -231,7 +220,7 @@ namespace LibPDBinding
 		
 		/// Return Type: int
 		[DllImport("libpd.dll", EntryPoint="libpd_blocksize")]
-		public static extern  int blocksize() ;
+		private static extern  int blocksize() ;
 		
 		/// <summary>
 		/// default pd block size, DEFDACBLKSIZE (currently 64) (aka number
@@ -386,7 +375,6 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
 		private static extern  int read_array(ref float dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
-
 		/// <summary>
 		/// read values from an array in Pd
 		/// </summary>
@@ -409,7 +397,6 @@ namespace LibPDBinding
 		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
 		private static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
 		
-
 		/// <summary>
 		/// write values to an array in Pd
 		/// </summary>
