@@ -272,14 +272,32 @@ namespace LibPDBinding
 		{
 			return process_raw(inBuffer, outBuffer);
 		}
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_process_raw")]
+		private static unsafe extern  int process_raw(float* inBuffer, float* outBuffer) ;
 
+		/// <summary>
+		/// raw process callback, processes one pd tick, writes raw data to buffers
+		/// without interlacing
+		/// </summary>
+		/// <param name="inBuffer">
+		///            pointer to an array of the right size, never null; use inBuffer =
+		///            new short[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            pointer to an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static unsafe int ProcessRaw(float* inBuffer, float* outBuffer)
+		{
+			return process_raw(inBuffer, outBuffer);
+		}
 		
 		/// Return Type: int
 		///ticks: int
 		///inBuffer: short*
 		///outBuffer: short*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_short")]
-		private static extern  int process_short(int ticks, ref short inBuffer, ref short outBuffer) ;
+		private static extern  int process_short(int ticks, [In] short[] inBuffer, [Out] short[] outBuffer) ;
 		
 		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
@@ -294,9 +312,30 @@ namespace LibPDBinding
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int Process(int ticks, ref short inBuffer, ref short outBuffer)
+		public static int Process(int ticks, short[] inBuffer, short[] outBuffer)
 		{
-			return process_short(ticks, ref inBuffer, ref outBuffer);
+			return process_short(ticks, inBuffer, outBuffer);
+		}
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_process_short")]
+		private static unsafe extern  int process_short(int ticks, short* inBuffer, short* outBuffer) ;
+		
+		/// <summary>
+		/// main process callback, reads samples from inBuffer and writes samples to
+		/// outBuffer, using arrays of type float
+		/// </summary>
+		/// <param name="ticks">
+		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
+		/// <param name="inBuffer">
+		///            pointer to an array of the right size, never null; use inBuffer =
+		///            new short[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            pointer to an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static unsafe int Process(int ticks, short* inBuffer, short* outBuffer)
+		{
+			return process_short(ticks, inBuffer, outBuffer);
 		}
 
 		
@@ -305,8 +344,7 @@ namespace LibPDBinding
 		///inBuffer: float*
 		///outBuffer: float*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_float")]
-		private static extern  int process_float(int ticks, ref float inBuffer, ref float outBuffer) ;
-
+		private static extern  int process_float(int ticks, [In] float[] inBuffer, [Out] float[] outBuffer) ;
 
 		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
@@ -316,22 +354,43 @@ namespace LibPDBinding
 		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
 		/// <param name="inBuffer">
 		///            must be an array of the right size, never null; use inBuffer =
-		///            new short[0] if no input is desired </param>
+		///            new float[0] if no input is desired </param>
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int Process(int ticks, ref float inBuffer, ref float outBuffer)
+		public static int Process(int ticks, float[] inBuffer, float[] outBuffer)
 		{
-			return process_float(ticks, ref inBuffer, ref outBuffer);
+			return process_float(ticks, inBuffer, outBuffer);
 		}
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_process_float")]
+		private static unsafe extern  int process_float(int ticks, float* inBuffer, float* outBuffer) ;
+
+		/// <summary>
+		/// main process callback, reads samples from inBuffer and writes samples to
+		/// outBuffer, using arrays of type float
+		/// </summary>
+		/// <param name="ticks">
+		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
+		/// <param name="inBuffer">
+		///            pointer to an array of the right size, never null; use inBuffer =
+		///            new float[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            pointer to an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static unsafe int Process(int ticks, float* inBuffer, float* outBuffer)
+		{
+			return process_float(ticks, inBuffer, outBuffer);
+		}		
 		
 		/// Return Type: int
 		///ticks: int
 		///inBuffer: double*
 		///outBuffer: double*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
-		private static extern  int process_double(int ticks, ref double inBuffer, ref double outBuffer) ;
+		private static extern  int process_double(int ticks, [In] double[] inBuffer, [Out] double[] outBuffer) ;
 		
 		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
@@ -341,15 +400,36 @@ namespace LibPDBinding
 		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
 		/// <param name="inBuffer">
 		///            must be an array of the right size, never null; use inBuffer =
-		///            new short[0] if no input is desired </param>
+		///            new double[0] if no input is desired </param>
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int Process(int ticks, ref double inBuffer, ref double outBuffer)
+		public static int Process(int ticks, double[] inBuffer, double[] outBuffer)
 		{
-			return process_double(ticks, ref inBuffer, ref outBuffer);
+			return process_double(ticks, inBuffer, outBuffer);
 		}
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
+		private static unsafe extern int process_double(int ticks, double* inBuffer, double* outBuffer) ;
+		
+		/// <summary>
+		/// main process callback, reads samples from inBuffer and writes samples to
+		/// outBuffer, using arrays of type float
+		/// </summary>
+		/// <param name="ticks">
+		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
+		/// <param name="inBuffer">
+		///            pointer to an array of the right size, never null; use inBuffer =
+		///            new double[0] if no input is desired </param>
+		/// <param name="outBuffer">
+		///            pointer an array of size outBufferSize from openAudio call </param>
+		/// <returns> error code, 0 on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static unsafe int Process(int ticks, double* inBuffer, double* outBuffer)
+		{
+			return process_double(ticks, inBuffer, outBuffer);
+		}		
 		
 		#endregion Audio
 
@@ -442,8 +522,8 @@ namespace LibPDBinding
 		/// </summary>
 		/// <param name="destination"> name of the array in Pd to write to </param>
 		/// <param name="destOffset">  index at which to start writing </param>
-		/// <param name="source">      float array to read from </param>
-		/// <param name="n">           number of values to write </param>
+		/// <param name="source"> pointer to a float array to read from </param>
+		/// <param name="n">         number of values to write </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static unsafe int WriteArray(string destination, int destOffset, float* source, int n)
