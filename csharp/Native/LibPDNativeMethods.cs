@@ -255,7 +255,7 @@ namespace LibPDBinding
 		///inBuffer: float*
 		///outBuffer: float*
 		[DllImport("libpd.dll", EntryPoint="libpd_process_raw")]
-		private static extern  int process_raw(ref float inBuffer, ref float outBuffer) ;
+		private static extern  int process_raw([In] float[] inBuffer, [Out] float[] outBuffer) ;
 
 		/// <summary>
 		/// raw process callback, processes one pd tick, writes raw data to buffers
@@ -268,9 +268,9 @@ namespace LibPDBinding
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int ProcessRaw(ref float inBuffer, ref float outBuffer)
+		public static int ProcessRaw(float[] inBuffer, float[] outBuffer)
 		{
-			return process_raw(ref inBuffer, ref outBuffer);
+			return process_raw(inBuffer, outBuffer);
 		}
 
 		
@@ -373,29 +373,47 @@ namespace LibPDBinding
 		
 
 		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
-		private static extern  int read_array(ref float dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
+		private static extern  int read_array([Out] float[] dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
 		/// <summary>
 		/// read values from an array in Pd
 		/// </summary>
 		/// <param name="destination"> float array to write to </param>
-		/// <param name="destOffset">  index at which to start writing </param>
 		/// <param name="source">      array in Pd to read from </param>
 		/// <param name="srcOffset">   index at which to start reading </param>
 		/// <param name="n">           number of values to read </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int ReadArray(float[] destination, int destOffset, string source, int srcOffset, int n)
+		public static int ReadArray(float[] destination, string source, int srcOffset, int n)
 		{
-			if (destOffset < 0 || destOffset + n > destination.Length)
+			if (n > destination.Length)
 			{
 				return -2;
 			}
-			return read_array(ref destination[destOffset], source, srcOffset, n);
+			
+			return read_array(destination, source, srcOffset, n);
+		}
+		
+		
+		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
+		private static unsafe extern  int read_array(float* dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
+
+		/// <summary>
+		/// read values from an array in Pd
+		/// </summary>
+		/// <param name="destination"> pointer to float array to write to </param>
+		/// <param name="source">      array in Pd to read from </param>
+		/// <param name="srcOffset">   index at which to start reading </param>
+		/// <param name="n">           number of values to read </param>
+		/// <returns>            0 on success, or a negative error code on failure </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static unsafe int ReadArray(float* destination, string source, int srcOffset, int n)
+		{
+			return read_array(destination, source, srcOffset, n);
 		}
 		
 		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
-		private static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, ref float src, int n) ;
+		private static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, [In] float[] src, int n) ;
 		
 		/// <summary>
 		/// write values to an array in Pd
@@ -403,19 +421,35 @@ namespace LibPDBinding
 		/// <param name="destination"> name of the array in Pd to write to </param>
 		/// <param name="destOffset">  index at which to start writing </param>
 		/// <param name="source">      float array to read from </param>
-		/// <param name="srcOffset">   index at which to start reading </param>
 		/// <param name="n">           number of values to write </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int WriteArray(string destination, int destOffset, float[] source, int srcOffset, int n)
+		public static int WriteArray(string destination, int destOffset, float[] source, int n)
 		{
-			if (srcOffset < 0 || srcOffset + n > source.Length)
+			if (n > source.Length)
 			{
 				return -2;
 			}
-			return write_array(destination, destOffset, ref source[srcOffset], n);
+			
+			return write_array(destination, destOffset, source, n);
 		}
 		
+		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
+		private static unsafe extern int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, float* src, int n) ;
+		
+		/// <summary>
+		/// write values to an array in Pd
+		/// </summary>
+		/// <param name="destination"> name of the array in Pd to write to </param>
+		/// <param name="destOffset">  index at which to start writing </param>
+		/// <param name="source">      float array to read from </param>
+		/// <param name="n">           number of values to write </param>
+		/// <returns>            0 on success, or a negative error code on failure </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static unsafe int WriteArray(string destination, int destOffset, float* source, int n)
+		{
+			return write_array(destination, destOffset, source, n);
+		}
 
 		#endregion Array
 	}
