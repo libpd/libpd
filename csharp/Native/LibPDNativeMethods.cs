@@ -464,7 +464,7 @@ namespace LibPDBinding
 		private static extern  int read_array([Out] float[] dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
 		/// <summary>
-		/// read values from an array in Pd
+		/// read values from an array in Pd. if you need an offset use the pointer method and use pointer arithmetic.
 		/// </summary>
 		/// <param name="destination"> float array to write to </param>
 		/// <param name="source">      array in Pd to read from </param>
@@ -506,7 +506,7 @@ namespace LibPDBinding
 		private static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, [In] float[] src, int n) ;
 		
 		/// <summary>
-		/// write values to an array in Pd
+		/// write values to an array in Pd. if you need an offset use the pointer method and use pointer arithmetic.
 		/// </summary>
 		/// <param name="destination"> name of the array in Pd to write to </param>
 		/// <param name="destOffset">  index at which to start writing </param>
