@@ -21,11 +21,52 @@ using System.Runtime.CompilerServices;
 
 namespace LibPDBinding
 {
+	#region delegates
+	
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv);
+	
+	#endregion delegates
+	
 	
 	//the receiver part of libpd
 	public static partial class LibPD
 	{
 
+		#region Events
+
+		//private delegate field, holds the function pointer
+		private static LibPDPrintHook PrintHook;
+
+		//import hook set method
+		[DllImport("libpd.dll", EntryPoint="libpd_set_printhook")]
+		private static extern void set_printhook(LibPDPrintHook hook);
+		
+		private static void SetupHooks()
+		{
+			//create the delegate
+			PrintHook = new LibPDPrintHook(RaisePrintEvent);
+			
+			//assign the delegate as PDs printhook
+			set_printhook(PrintHook);
+		}
+
+		//event to raise if a PD print happens
+		public static event LibPDPrintHook Print;
+
+		//the actual method called by PDs print hook
+		private static void RaisePrintEvent(string e)
+        {
+            // Event will be null if there are no subscribers
+            if (Print != null)
+            {
+                // Use the () operator to raise the event.
+                Print(e);
+            }
+        }
+
+		#endregion Events
+		
 		#region Message sending
 		
 		/// <summary>

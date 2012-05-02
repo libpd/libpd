@@ -64,6 +64,7 @@ namespace LibPDBinding
 		static LibPD()
 		{
 			libpd_init();
+			SetupHooks();
 		}
 		
 		#region Environment
