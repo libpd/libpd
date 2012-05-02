@@ -19,7 +19,7 @@ else
     JAVA_HOME ?= /usr/lib/jvm/default-java
     PLATFORM_CFLAGS = -DHAVE_LIBDL -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC \
   	-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -O3
-    LDFLAGS = -shared -ldl
+    LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
