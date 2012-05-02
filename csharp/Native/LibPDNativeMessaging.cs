@@ -44,7 +44,7 @@ namespace LibPDBinding
 		
 		private static void SetupHooks()
 		{
-			//create the delegate
+			//create the delegate with the method to call
 			PrintHook = new LibPDPrintHook(RaisePrintEvent);
 			
 			//assign the delegate as PDs printhook
@@ -56,14 +56,14 @@ namespace LibPDBinding
 
 		//the actual method called by PDs print hook
 		private static void RaisePrintEvent(string e)
-        {
-            // Event will be null if there are no subscribers
-            if (Print != null)
-            {
-                // Use the () operator to raise the event.
-                Print(e);
-            }
-        }
+		{
+			// Event will be null if there are no subscribers
+			if (Print != null)
+			{
+				// Use the () operator to raise the event.
+				Print(e);
+			}
+		}
 
 		#endregion Events
 		
