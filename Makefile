@@ -10,7 +10,7 @@ else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC = gcc
     SOLIB_EXT = dll
-    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/win32
+    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def -Wl,--out-implib=libs/libpd.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdnative.def -Wl,--out-implib=libs/libpdnative.lib

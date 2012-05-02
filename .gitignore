@@ -31,3 +31,11 @@ libs/libpdnative.dylib
 # OSX
 .DS_STORE
 *.app
+
+# csharp
+samples/csharp/obj/*
+samples/csharp/bin/*
+csharp/obj/*
+csharp/bin/*
+libs/libpd.*
+libs/libpdnative.*

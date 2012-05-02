@@ -18,7 +18,7 @@ Layout of the libpd repository:
   * libpd_wrapper: This folder contains the source files that make up the core
       of libpd.
 
-  * Android.mk, Makefile, libpd.xcodeproj: Build support for
+  * Android.mk, Makefile, libpd.xcodeproj, libpd_win.sln: Build support for
       various platforms.  I figure the Android makefile is pretty much
       finished, but the build system for other platforms still needs work.
       The Makefile for build shared libraries on Linux is crude but
@@ -26,9 +26,9 @@ Layout of the libpd repository:
       currently don't have a makefile for Windows.  Feel free to improve the
       build system in any way you see fit.
 
-  * java, objc, cpp, python: Glue for using libpd with Java, Objective C, C++, and
-      Python.  Feel free to improve or add support for other languages such as
-      Lua.
+  * java, csharp, objc, cpp, python: Glue for using libpd with Java, C#, Objective C,
+      C++ and Python.  Feel free to improve or add support for other languages 
+	  such as Lua.
 
   * samples: This branch contains one small sample program in C built on top
       of libpd, as well as a sample project in Java that uses JavaSound.
