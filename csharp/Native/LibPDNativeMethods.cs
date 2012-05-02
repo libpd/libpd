@@ -278,7 +278,9 @@ namespace LibPDBinding
 
 		/// <summary>
 		/// raw process callback, processes one pd tick, writes raw data to buffers
-		/// without interlacing
+		/// without interlacing. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
+		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
+		/// pointer arithmetic like: &myMemory[offset]
 		/// </summary>
 		/// <param name="inBuffer">
 		///            pointer to an array of the right size, never null; use inBuffer =
@@ -322,7 +324,9 @@ namespace LibPDBinding
 		
 		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
-		/// outBuffer, using arrays of type float
+		/// outBuffer, using arrays of type float. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
+		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
+		/// pointer arithmetic like: &myMemory[offset]
 		/// </summary>
 		/// <param name="ticks">
 		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
@@ -369,7 +373,9 @@ namespace LibPDBinding
 
 		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
-		/// outBuffer, using arrays of type float
+		/// outBuffer, using arrays of type float. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
+		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
+		/// pointer arithmetic like: &myMemory[offset]
 		/// </summary>
 		/// <param name="ticks">
 		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
@@ -415,7 +421,9 @@ namespace LibPDBinding
 		
 		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
-		/// outBuffer, using arrays of type float
+		/// outBuffer, using arrays of type double. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
+		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
+		/// pointer arithmetic like: &myMemory[offset]
 		/// </summary>
 		/// <param name="ticks">
 		///            the number of Pd ticks (i.e., blocks of 64 frames) to compute </param>
@@ -479,7 +487,9 @@ namespace LibPDBinding
 		private static unsafe extern  int read_array(float* dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
 		/// <summary>
-		/// read values from an array in Pd
+		/// read values from an array in Pd. use this method if you have a pointer to the local memory.
+		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
+		/// pointer arithmetic like: &myDestinationMemory[offset]
 		/// </summary>
 		/// <param name="destination"> pointer to float array to write to </param>
 		/// <param name="source">      array in Pd to read from </param>
@@ -518,7 +528,9 @@ namespace LibPDBinding
 		private static unsafe extern int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, float* src, int n) ;
 		
 		/// <summary>
-		/// write values to an array in Pd
+		/// write values to an array in Pd. use this method if you have a pointer to the local memory.
+		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
+		/// pointer arithmetic like: &mySourceMemory[offset]
 		/// </summary>
 		/// <param name="destination"> name of the array in Pd to write to </param>
 		/// <param name="destOffset">  index at which to start writing </param>
