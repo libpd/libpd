@@ -27,22 +27,20 @@ namespace LibPDBindingTest
 		public static void loadPatch()
 		{
 			LibPD.OpenAudio(2, 3, 44100);
-			//LibPD.Subscribe("eggs");
 			patch = LibPD.OpenPatch(@"..\..\test_csharp.pd");
 			LibPD.ComputeAudio(true);
-			LibPD.Print += new LibPDPrint(LibPD_Print);
-		}
-
-		private static string Msg;
-		static void LibPD_Print(string text)
-		{
-			Msg = text;
 		}
 
 		[TearDown]
 		public static void closePatch()
 		{
 			LibPD.Release();
+		}
+		
+		[Test]
+		public virtual void testDollarZero()
+		{
+			Assert.AreEqual(1004, patch);
 		}
 
 		[Test]
@@ -73,24 +71,31 @@ namespace LibPDBindingTest
 		{
 			Assert.AreEqual(64, LibPD.BlockSize);
 		}
-		
-		[Test]
-		public virtual void testDollarZero()
-		{
-			Assert.AreEqual(1004, patch);
-		}
 
 		[Test]
 		public virtual void testPrint()
 		{
-			var msg = "";
-			LibPD.Print += delegate(string text) { msg = text; };
+			var msgs = new string[]
+			{
+				"print: bang\n",
+				"print: 0\n",
+				"print: 42\n",
+				"print: symbol",
+				" ",
+				"don't panic",
+				"\n",
+			};
+			
+			var i = 0;
+			LibPD.Print += delegate(string text) 
+			{ 
+				Assert.AreEqual(msgs[i++], text);
+			};
+			
+			LibPD.SendBang("foo");
 			LibPD.SendFloat("foo", 0);
-			Assert.AreEqual("0", msg);
 			LibPD.SendFloat("foo", 42);
-			Assert.AreEqual("42", msg);
 			LibPD.SendSymbol("foo", "don't panic");
-			Assert.AreEqual("don't panic", msg);
 		}
 
 	}
