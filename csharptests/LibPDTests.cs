@@ -40,7 +40,7 @@ namespace LibPDBindingTest
 		[Test]
 		public virtual void testDollarZero()
 		{
-			Assert.AreEqual(1004, patch);
+			Assert.AreEqual(1005, patch);
 		}
 
 		[Test]
@@ -96,6 +96,61 @@ namespace LibPDBindingTest
 			LibPD.SendFloat("foo", 0);
 			LibPD.SendFloat("foo", 42);
 			LibPD.SendSymbol("foo", "don't panic");
+		}
+		
+		[Test]
+		public unsafe virtual void testArrayAccess()
+		{
+			int n = 128;
+			Assert.AreEqual(n, LibPD.ArraySize("array1"));
+			
+			float[] u = new float[n];
+			float[] v = new float[n];
+			for (int i = 0; i < n; i++)
+			{
+				u[i] = i;
+			}
+			
+			LibPD.WriteArray("array1", 0, u, n);
+			LibPD.ReadArray(v, "array1", 0, n);
+			for (int i = 0; i < n; i++)
+			{
+				Assert.AreEqual(u[i], v[i], 0);
+			}
+			
+			fixed(float* vp = v)
+			{
+				LibPD.ReadArray(&vp[5], "array1", 50, 10);
+				for (int i = 0; i < n; i++)
+				{
+					if (i < 5 || i >= 15)
+					{
+						Assert.AreEqual(u[i], v[i], 0);
+					}
+					else
+					{
+						Assert.AreEqual(u[i + 45], v[i], 0);
+					}
+				}
+			}
+			
+			fixed(float* up = u)
+			{
+				LibPD.WriteArray("array1", 10, &up[25], 30);
+			}
+			
+			LibPD.ReadArray(v, "array1", 0, n);
+			for (int i = 0; i < n; i++)
+			{
+				if (i < 10 || i >= 40)
+				{
+					Assert.AreEqual(u[i], v[i], 0);
+				}
+				else
+				{
+					Assert.AreEqual(u[i + 15], v[i], 0);
+				}
+			}
 		}
 
 	}

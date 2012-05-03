@@ -30,7 +30,6 @@ namespace LibPDBinding
 	
 	#endregion delegates
 	
-	
 	//the receiver part of libpd
 	public static partial class LibPD
 	{
