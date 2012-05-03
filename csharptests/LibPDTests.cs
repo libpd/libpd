@@ -46,23 +46,23 @@ namespace LibPDBindingTest
 		[Test]
 		public virtual void testAudio()
 		{
-			float[] @in = new float[256];
-			float[] @out = new float[768];
+			float[] inBuffer = new float[256];
+			float[] outBuffer = new float[768];
 			for (int i = 0; i < 256; i++)
 			{
-				@in[i] = i;
+				inBuffer[i] = i;
 			}
-			int err = LibPD.Process(2, @in, @out);
+			int err = LibPD.Process(2, inBuffer, outBuffer);
 			Assert.AreEqual(0, err);
 			for (int i = 0; i < 128; i++)
 			{
-				Assert.AreEqual(2 * i, @out[3 * i], 0.0001);
-				Assert.AreEqual(-6 * i, @out[3 * i + 1], 0.0001);
-				Assert.AreEqual(Math.Cos(2 * Math.PI * 440 / 44100 * i), @out[3 * i + 2], 0.0001);
+				Assert.AreEqual(2 * i, outBuffer[3 * i], 0.0001);
+				Assert.AreEqual(-6 * i, outBuffer[3 * i + 1], 0.0001);
+				Assert.AreEqual(Math.Cos(2 * Math.PI * 440 / 44100 * i), outBuffer[3 * i + 2], 0.0001);
 			}
 			for (int i = 384; i < 768; i++)
 			{
-				Assert.AreEqual(0, @out[i], 0);
+				Assert.AreEqual(0, outBuffer[i], 0);
 			}
 		}
 
@@ -96,6 +96,8 @@ namespace LibPDBindingTest
 			LibPD.SendFloat("foo", 0);
 			LibPD.SendFloat("foo", 42);
 			LibPD.SendSymbol("foo", "don't panic");
+			
+			Assert.AreEqual(msgs.Length, i);
 		}
 		
 		[Test]
