@@ -63,8 +63,8 @@ namespace LibPDBinding
 		//only call this once a lifetime
 		static LibPD()
 		{
-			libpd_init();
 			SetupHooks();
+			libpd_init();
 		}
 		
 		#region Environment
