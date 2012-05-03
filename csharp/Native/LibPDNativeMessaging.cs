@@ -24,7 +24,9 @@ namespace LibPDBinding
 	#region delegates
 	
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv);
+	internal delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string text);
+	
+	public delegate void LibPDPrint(string text);
 	
 	#endregion delegates
 	
@@ -52,7 +54,7 @@ namespace LibPDBinding
 		}
 
 		//event to raise if a PD print happens
-		public static event LibPDPrintHook Print;
+		public static event LibPDPrint Print;
 
 		//the actual method called by PDs print hook
 		private static void RaisePrintEvent(string e)
