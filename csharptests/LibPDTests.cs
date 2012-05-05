@@ -38,9 +38,9 @@ namespace LibPDBindingTest
 		}
 		
 		[Test]
-		public virtual void testDollarZero()
+		public virtual void aTestDollarZero()
 		{
-			Assert.AreEqual(1005, patch);
+			Assert.AreEqual(1002, patch);
 		}
 
 		[Test]

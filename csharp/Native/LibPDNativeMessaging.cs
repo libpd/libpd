@@ -40,7 +40,7 @@ namespace LibPDBinding
 		private static LibPDPrintHook PrintHook;
 
 		//import hook set method
-		[DllImport("libpd.dll", EntryPoint="libpd_set_printhook")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_printhook")]
 		private static extern void set_printhook(LibPDPrintHook hook);
 		
 		private static void SetupHooks()
@@ -91,7 +91,7 @@ namespace LibPDBinding
 		
 		//sending-----------------------------------------------------------
 				
-		[DllImport("libpd.dll", EntryPoint="libpd_bang")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_bang")]
 		private static extern  int send_bang([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
 		
 		/// <summary>
@@ -107,7 +107,7 @@ namespace LibPDBinding
 		}
 
 				
-		[DllImport("libpd.dll", EntryPoint="libpd_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_float")]
 		private static extern  int send_float([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x) ;
 		
 		/// <summary>
@@ -124,7 +124,7 @@ namespace LibPDBinding
 		}
 		
 				
-		[DllImport("libpd.dll", EntryPoint="libpd_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_symbol")]
 		private static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		/// <summary>
@@ -141,10 +141,10 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_start_message")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_start_message")]
 		private static extern  int start_message(int max_length) ;
 
-		[DllImport("libpd.dll", EntryPoint="libpd_finish_message")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_finish_message")]
 		private static extern  int finish_message([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg) ;
 		
 		/// <summary>
@@ -173,7 +173,7 @@ namespace LibPDBinding
 		}
 
 
-		[DllImport("libpd.dll", EntryPoint="libpd_finish_list")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_finish_list")]
 		private static extern  int finish_list([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
 		
 		/// <summary>
@@ -201,10 +201,10 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_add_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_add_float")]
 		private static extern  void add_float(float x) ;
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_add_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_add_symbol")]
 		private static extern  void add_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		//parse args helper with debug string

@@ -48,8 +48,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\libs\libpd.dll">
-      <Link>libpd.dll</Link>
+    <None Include="..\libs\libpdcsharp.dll">
+      <Link>libpdcsharp.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\libs\pthreadGC2.dll">
