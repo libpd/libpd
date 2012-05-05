@@ -3,7 +3,7 @@ UNAME = $(shell uname)
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
   PLATFORM_CFLAGS = -DHAVE_LIBDL -O3 -arch x86_64 -arch i386 -g \
-	-I/System/Library/Frameworks/JavaVM.framework/Headers
+  -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
@@ -14,15 +14,15 @@ else
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def -Wl,--out-implib=libs/libpd.lib
-	CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def -Wl,--out-implib=libs/libpdcsharp.lib
+    CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def -Wl,--out-implib=libs/libpdcsharp.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdnative.def -Wl,--out-implib=libs/libpdnative.lib
   else  # Assume Linux
     SOLIB_EXT = so
     JAVA_HOME ?= /usr/lib/jvm/default-java
     PLATFORM_CFLAGS = -DHAVE_LIBDL -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC \
-  	-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -O3
+    -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -O3
     LDFLAGS = -shared -ldl
-	CSHARP_LDFLAGS = $(LDFLAGS)
+    CSHARP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
