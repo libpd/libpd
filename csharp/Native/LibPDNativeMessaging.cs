@@ -54,8 +54,10 @@ namespace LibPDBinding
 
 		/// <summary>
 		/// Subscribe to this event in order to get PDs print messages.
-		/// Note: Events can be raised by any thread. In multithreading 
-		/// scenarios you need to synchronize the calls in the subscriber method.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
 		/// </summary>
 		public static event LibPDPrint Print = delegate{};
 

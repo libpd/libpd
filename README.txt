@@ -26,10 +26,9 @@ Layout of the libpd repository:
       currently don't have a makefile for Windows.  Feel free to improve the
       build system in any way you see fit. Currently the makefile has the 
       following targets: 
-      - libpd, (default) builds if no target is specified, builds the libpd.dll
+      - libpd, (default) builds if no target is specified, builds the libpd.so/dylib/dll
       - csharplib, builds libpdcsharp.dll
       - javalib, builds libpdnative and the jni wrapper
-      - all, builds all above
       - clean, removes the object files
       - clobber, removes the linked library files
 

@@ -75,8 +75,6 @@ libpd: $(LIBPD)
 $(LIBPD): ${PD_FILES:.c=.o}
 	gcc -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
-all: libpd csharplib javalib
-
 csharplib: $(PDCSHARP)
 
 $(PDCSHARP): ${PD_FILES:.c=.o} ${HOOK_SET:.c=.o}
