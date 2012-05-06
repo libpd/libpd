@@ -52,18 +52,16 @@ namespace LibPDBinding
 			set_printhook(PrintHook);
 		}
 
-		//event to raise if a PD print happens
-		public static event LibPDPrint Print;
+		/// <summary>
+		/// Subscribe to this event in order to get PDs print messages.
+		/// Note: Events can be raised by any thread. In multithreading 
+		/// scenarios you need to synchronize the calls in the subscriber method.
+		/// </summary>
+		public static event LibPDPrint Print = delegate{};
 
-		//the actual method called by PDs print hook
 		private static void RaisePrintEvent(string e)
 		{
-			// Event will be null if there are no subscribers
-			if (Print != null)
-			{
-				// Use the () operator to raise the event.
-				Print(e);
-			}
+			Print(e);
 		}
 
 		#endregion Events
