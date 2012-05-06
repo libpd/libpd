@@ -39,3 +39,7 @@ csharp/obj/*
 csharp/bin/*
 libs/libpd.*
 libs/libpdnative.*
+csharptests/bin
+csharptests/obj
+csharptests/PartCover/coverage.xml
+libs/libpdcsharp.*

@@ -21,11 +21,53 @@ using System.Runtime.CompilerServices;
 
 namespace LibPDBinding
 {
+	#region delegates
+	
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string text);
+	
+	public delegate void LibPDPrint(string text);
+	
+	#endregion delegates
 	
 	//the receiver part of libpd
 	public static partial class LibPD
 	{
 
+		#region Events
+
+		//private delegate field, holds the function pointer
+		private static LibPDPrintHook PrintHook;
+
+		//import hook set method
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_printhook")]
+		private static extern void set_printhook(LibPDPrintHook hook);
+		
+		private static void SetupHooks()
+		{
+			//create the delegate with the method to call
+			PrintHook = new LibPDPrintHook(RaisePrintEvent);
+			
+			//assign the delegate as PDs printhook
+			set_printhook(PrintHook);
+		}
+
+		/// <summary>
+		/// Subscribe to this event in order to get PDs print messages.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDPrint Print = delegate{};
+
+		private static void RaisePrintEvent(string e)
+		{
+			Print(e);
+		}
+
+		#endregion Events
+		
 		#region Message sending
 		
 		/// <summary>
@@ -49,7 +91,7 @@ namespace LibPDBinding
 		
 		//sending-----------------------------------------------------------
 				
-		[DllImport("libpd.dll", EntryPoint="libpd_bang")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_bang")]
 		private static extern  int send_bang([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
 		
 		/// <summary>
@@ -65,7 +107,7 @@ namespace LibPDBinding
 		}
 
 				
-		[DllImport("libpd.dll", EntryPoint="libpd_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_float")]
 		private static extern  int send_float([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x) ;
 		
 		/// <summary>
@@ -82,7 +124,7 @@ namespace LibPDBinding
 		}
 		
 				
-		[DllImport("libpd.dll", EntryPoint="libpd_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_symbol")]
 		private static extern  int send_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		/// <summary>
@@ -99,10 +141,10 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_start_message")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_start_message")]
 		private static extern  int start_message(int max_length) ;
 
-		[DllImport("libpd.dll", EntryPoint="libpd_finish_message")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_finish_message")]
 		private static extern  int finish_message([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg) ;
 		
 		/// <summary>
@@ -131,7 +173,7 @@ namespace LibPDBinding
 		}
 
 
-		[DllImport("libpd.dll", EntryPoint="libpd_finish_list")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_finish_list")]
 		private static extern  int finish_list([In] [MarshalAs(UnmanagedType.LPStr)] string recv) ;
 		
 		/// <summary>
@@ -159,10 +201,10 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_add_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_add_float")]
 		private static extern  void add_float(float x) ;
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_add_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_add_symbol")]
 		private static extern  void add_symbol([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		//parse args helper with debug string

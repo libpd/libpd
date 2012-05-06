@@ -22,7 +22,7 @@ namespace LibPDBinding
 		#region Send Midi
 		
 
-		[DllImport("libpd.dll", EntryPoint="libpd_noteon")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_noteon")]
 		private static extern  int noteon(int channel, int pitch, int velocity) ;
 		
 		/// <summary>
@@ -42,7 +42,7 @@ namespace LibPDBinding
 		}
 
 
-		[DllImport("libpd.dll", EntryPoint="libpd_controlchange")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_controlchange")]
 		private static extern  int controlchange(int channel, int controller, int value) ;
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_programchange")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_programchange")]
 		private static extern  int programchange(int channel, int value) ;
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace LibPDBinding
 		}
 		
 	
-		[DllImport("libpd.dll", EntryPoint="libpd_pitchbend")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_pitchbend")]
 		private static extern  int pitchbend(int channel, int value) ;
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace LibPDBinding
 		}
 		
 	
-		[DllImport("libpd.dll", EntryPoint="libpd_aftertouch")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_aftertouch")]
 		private static extern  int aftertouch(int channel, int value) ;
 
 		/// <summary>
@@ -117,7 +117,7 @@ namespace LibPDBinding
 		}
 		
 	
-		[DllImport("libpd.dll", EntryPoint="libpd_polyaftertouch")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_polyaftertouch")]
 		private static extern  int polyaftertouch(int channel, int pitch, int value) ;
 		
 		/// <summary>
@@ -137,7 +137,7 @@ namespace LibPDBinding
 		}
 
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_midibyte")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_midibyte")]
 		private static extern  int midibyte(int port, int value) ;
 		
 		/// <summary>
@@ -155,7 +155,7 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_sysex")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_sysex")]
 		private static extern  int sysex(int port, int value) ;
 
 		/// <summary>
@@ -173,7 +173,7 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_sysrealtime")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_sysrealtime")]
 		private static extern  int sysrealtime(int port, int value) ;
 		
 		/// <summary>

@@ -63,6 +63,7 @@ namespace LibPDBinding
 		//only call this once a lifetime
 		static LibPD()
 		{
+			SetupHooks();
 			libpd_init();
 		}
 		
@@ -72,12 +73,12 @@ namespace LibPDBinding
 		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
 		
 		/// Init PD
-		[DllImport("libpd.dll", EntryPoint="libpd_init")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_init")]
 		private static extern  void libpd_init() ;
 
 				
 		/// Return Type: void
-		[DllImport("libpd.dll", EntryPoint="libpd_clear_search_path")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_clear_search_path")]
 		private static extern  void clear_search_path() ;
 		
 		/// <summary>
@@ -92,7 +93,7 @@ namespace LibPDBinding
 		
 		/// Return Type: void
 		///sym: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_add_to_search_path")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_add_to_search_path")]
 		private static extern  void add_to_search_path([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 		
 		/// <summary>
@@ -108,7 +109,7 @@ namespace LibPDBinding
 		/// Return Type: void*
 		///basename: char*
 		///dirname: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_openfile")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_openfile")]
 		private static extern  IntPtr openfile([In] [MarshalAs(UnmanagedType.LPStr)] string basename, [In] [MarshalAs(UnmanagedType.LPStr)] string dirname) ;
 		
 		/// <summary>
@@ -141,7 +142,7 @@ namespace LibPDBinding
 
 		/// Return Type: void
 		///p: void*
-		[DllImport("libpd.dll", EntryPoint="libpd_closefile")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_closefile")]
 		private static extern  void closefile(IntPtr p) ;
 		
 		/// <summary>
@@ -160,13 +161,13 @@ namespace LibPDBinding
 		
 		/// Return Type: int
 		///p: void*
-		[DllImport("libpd.dll", EntryPoint="libpd_getdollarzero")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_getdollarzero")]
 		private static extern  int getdollarzero(IntPtr p) ;
 
 				
 		/// Return Type: int
 		///sym: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_exists")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_exists")]
 		private static extern  int exists([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
 
 		/// <summary>
@@ -219,7 +220,7 @@ namespace LibPDBinding
 		}
 		
 		/// Return Type: int
-		[DllImport("libpd.dll", EntryPoint="libpd_blocksize")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_blocksize")]
 		private static extern  int blocksize() ;
 		
 		/// <summary>
@@ -235,7 +236,7 @@ namespace LibPDBinding
 			}
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_init_audio")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_init_audio")]
 		private static extern  int init_audio(int inputChannels, int outputChannels, int sampleRate) ;
 		
 		/// <summary>
@@ -254,7 +255,7 @@ namespace LibPDBinding
 		/// Return Type: int
 		///inBuffer: float*
 		///outBuffer: float*
-		[DllImport("libpd.dll", EntryPoint="libpd_process_raw")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_raw")]
 		private static extern  int process_raw([In] float[] inBuffer, [Out] float[] outBuffer) ;
 
 		/// <summary>
@@ -273,7 +274,7 @@ namespace LibPDBinding
 			return process_raw(inBuffer, outBuffer);
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_process_raw")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_raw")]
 		private static unsafe extern  int process_raw(float* inBuffer, float* outBuffer) ;
 
 		/// <summary>
@@ -298,7 +299,7 @@ namespace LibPDBinding
 		///ticks: int
 		///inBuffer: short*
 		///outBuffer: short*
-		[DllImport("libpd.dll", EntryPoint="libpd_process_short")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_short")]
 		private static extern  int process_short(int ticks, [In] short[] inBuffer, [Out] short[] outBuffer) ;
 		
 		/// <summary>
@@ -319,7 +320,7 @@ namespace LibPDBinding
 			return process_short(ticks, inBuffer, outBuffer);
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_process_short")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_short")]
 		private static unsafe extern  int process_short(int ticks, short* inBuffer, short* outBuffer) ;
 		
 		/// <summary>
@@ -347,7 +348,7 @@ namespace LibPDBinding
 		///ticks: int
 		///inBuffer: float*
 		///outBuffer: float*
-		[DllImport("libpd.dll", EntryPoint="libpd_process_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_float")]
 		private static extern  int process_float(int ticks, [In] float[] inBuffer, [Out] float[] outBuffer) ;
 
 		/// <summary>
@@ -368,7 +369,7 @@ namespace LibPDBinding
 			return process_float(ticks, inBuffer, outBuffer);
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_process_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_float")]
 		private static unsafe extern  int process_float(int ticks, float* inBuffer, float* outBuffer) ;
 
 		/// <summary>
@@ -395,7 +396,7 @@ namespace LibPDBinding
 		///ticks: int
 		///inBuffer: double*
 		///outBuffer: double*
-		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_double")]
 		private static extern  int process_double(int ticks, [In] double[] inBuffer, [Out] double[] outBuffer) ;
 		
 		/// <summary>
@@ -416,7 +417,7 @@ namespace LibPDBinding
 			return process_double(ticks, inBuffer, outBuffer);
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_process_double")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_process_double")]
 		private static unsafe extern int process_double(int ticks, double* inBuffer, double* outBuffer) ;
 		
 		/// <summary>
@@ -445,7 +446,7 @@ namespace LibPDBinding
 		
 		/// Return Type: int
 		///name: char*
-		[DllImport("libpd.dll", EntryPoint="libpd_arraysize")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_arraysize")]
 		private static extern  int arraysize([In] [MarshalAs(UnmanagedType.LPStr)] string name) ;
 		
 		/// <summary>
@@ -460,7 +461,7 @@ namespace LibPDBinding
 		}
 		
 
-		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_read_array")]
 		private static extern  int read_array([Out] float[] dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
 		/// <summary>
@@ -483,7 +484,7 @@ namespace LibPDBinding
 		}
 		
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_read_array")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_read_array")]
 		private static unsafe extern  int read_array(float* dest, [In] [MarshalAs(UnmanagedType.LPStr)] string src, int offset, int n) ;
 
 		/// <summary>
@@ -502,7 +503,7 @@ namespace LibPDBinding
 			return read_array(destination, source, srcOffset, n);
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_write_array")]
 		private static extern  int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, [In] float[] src, int n) ;
 		
 		/// <summary>
@@ -524,7 +525,7 @@ namespace LibPDBinding
 			return write_array(destination, destOffset, source, n);
 		}
 		
-		[DllImport("libpd.dll", EntryPoint="libpd_write_array")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_write_array")]
 		private static unsafe extern int write_array([In] [MarshalAs(UnmanagedType.LPStr)] string dest, int offset, float* src, int n) ;
 		
 		/// <summary>
