@@ -1,4 +1,5 @@
 UNAME = $(shell uname)
+SOLIB_PREFIX = lib
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
@@ -11,6 +12,7 @@ else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC = gcc
     SOLIB_EXT = dll
+    SOLIB_PREFIX = 
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
@@ -18,8 +20,8 @@ else
       -Wl,--out-implib=libs/libpd.lib
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -Wl,--out-implib=libs/libpdcsharp.lib
-    JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdnative.def \
-      -Wl,--out-implib=libs/libpdnative.lib
+    JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/$(SOLIB_PREFIX)pdnative.def \
+      -Wl,--out-implib=libs/$(SOLIB_PREFIX)pdnative.lib
   else  # Assume Linux
     SOLIB_EXT = so
     JAVA_HOME ?= /usr/lib/jvm/default-java
@@ -67,7 +69,7 @@ JAVA_BASE = java/org/puredata/core/PdBase.java
 HOOK_SET = libpd_wrapper/z_hookset.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
-PDJAVA = libs/libpdnative.$(SOLIB_EXT)
+PDJAVA = libs/$(SOLIB_PREFIX)pdnative.$(SOLIB_EXT)
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper $(PLATFORM_CFLAGS)
