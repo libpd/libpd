@@ -24,11 +24,17 @@ Layout of the libpd repository:
       The Makefile for build shared libraries on Linux is crude but
       functional.  The one for Macs is tentative and untested, and we
       currently don't have a makefile for Windows.  Feel free to improve the
-      build system in any way you see fit.
+      build system in any way you see fit. Currently the makefile has the 
+      following targets: 
+      - libpd, (default) builds if no target is specified, builds the libpd.so/dylib/dll
+      - csharplib, builds libpdcsharp.dll
+      - javalib, builds libpdnative and the jni wrapper
+      - clean, removes the object files
+      - clobber, removes the linked library files
 
   * java, csharp, objc, cpp, python: Glue for using libpd with Java, C#, Objective C,
       C++ and Python.  Feel free to improve or add support for other languages 
-	  such as Lua.
+      such as Lua.
 
   * samples: This branch contains one small sample program in C built on top
       of libpd, as well as a sample project in Java that uses JavaSound.
