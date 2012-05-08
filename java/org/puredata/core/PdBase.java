@@ -124,7 +124,7 @@ public final class PdBase {
 			throw new RuntimeException("Unknown architecture " + osName);
 		}
 		if (arch64) {
-			osArch += "-64";
+			osArch += "_64";
 		}
 		return osArch;
 	}
