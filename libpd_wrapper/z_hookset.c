@@ -16,4 +16,16 @@ void libpd_set_printhook(const t_libpd_printhook hook){
 	libpd_printhook = hook;
 }
 
+void libpd_set_banghook(const t_libpd_banghook hook){
+	libpd_banghook = hook;
+}
+
+void libpd_set_floathook(const t_libpd_floathook hook){
+	libpd_floathook = hook;
+}
+
+void libpd_set_symbolhook(const t_libpd_symbolhook hook){
+	libpd_symbolhook = hook;
+}
+
 
