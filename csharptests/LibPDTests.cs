@@ -118,26 +118,34 @@ namespace LibPDBindingTest
 		{
 			var receiver = "spam";
 			
+			LibPD.Subscribe(receiver);
+			
+			var i = 0;
 			LibPD.Bang += delegate(string recv) 
 			{
 				Assert.AreEqual(receiver, recv);
+				i++;
 			};
 			
 			LibPD.Float += delegate(string recv, float x) 
 			{
 				Assert.AreEqual(receiver, recv);
 				Assert.AreEqual(42, x);
+				i++;
 			};
 			
 			LibPD.Symbol += delegate(string recv, string sym) 
 			{
 				Assert.AreEqual(receiver, recv);
 				Assert.AreEqual("hund katze maus", sym);
+				i++;
 			};
 			
 			LibPD.SendBang(receiver);
 			LibPD.SendFloat(receiver, 42);
 			LibPD.SendSymbol(receiver, "hund katze maus");
+			
+			Assert.AreEqual(3, i);
 		}
 		
 		[Test]

@@ -23,29 +23,22 @@ namespace LibPDBinding
 {
 	#region delegates
 	
+	public delegate void LibPDPrint(string text);
+	public delegate void LibPDBang(string recv);
+	public delegate void LibPDFloat(string recv, float x);
+	public delegate void LibPDSymbol(string recv, string sym);
+	
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string text);
-	
-	public delegate void LibPDPrint(string text);
-	
 	
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDBangHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv);
 	
-	public delegate void LibPDBang(string recv);
-
-
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDFloatHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x);
-	
-	public delegate void LibPDFloat(string recv, float x);
-
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDSymbolHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym);
-	
-	public delegate void LibPDSymbol(string recv, string sym);
-
 	
 	#endregion delegates
 	
