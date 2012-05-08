@@ -28,6 +28,25 @@ namespace LibPDBinding
 	
 	public delegate void LibPDPrint(string text);
 	
+	
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDBangHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv);
+	
+	public delegate void LibPDBang(string recv);
+
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDFloatHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, float x);
+	
+	public delegate void LibPDFloat(string recv, float x);
+
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDSymbolHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym);
+	
+	public delegate void LibPDSymbol(string recv, string sym);
+
+	
 	#endregion delegates
 	
 	//the receiver part of libpd
@@ -38,18 +57,37 @@ namespace LibPDBinding
 
 		//private delegate field, holds the function pointer
 		private static LibPDPrintHook PrintHook;
-
+		private static LibPDBangHook BangHook;
+		private static LibPDFloatHook FloatHook;
+		private static LibPDSymbolHook SymbolHook;
+		
 		//import hook set method
 		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_printhook")]
 		private static extern void set_printhook(LibPDPrintHook hook);
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_banghook")]
+		private static extern  void set_banghook(LibPDBangHook hook) ;
+
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_floathook")]
+		private static extern  void set_floathook(LibPDFloatHook hook) ;
+
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_symbolhook")]
+		private static extern  void set_symbolhook(LibPDSymbolHook hook) ;
 		
 		private static void SetupHooks()
 		{
 			//create the delegate with the method to call
 			PrintHook = new LibPDPrintHook(RaisePrintEvent);
-			
-			//assign the delegate as PDs printhook
 			set_printhook(PrintHook);
+			
+			BangHook = new LibPDBangHook(RaiseBangEvent);
+			set_banghook(BangHook);
+
+			FloatHook = new LibPDFloatHook(RaiseFloatEvent);
+			set_floathook(FloatHook);
+
+			SymbolHook = new LibPDSymbolHook(RaiseSymbolEvent);
+			set_symbolhook(SymbolHook);
 		}
 
 		/// <summary>
@@ -60,10 +98,52 @@ namespace LibPDBinding
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
 		public static event LibPDPrint Print = delegate{};
+		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs bang messages.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDBang Bang = delegate{};
+		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs float messages.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDFloat Float = delegate{};
+		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs symbol messages.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDSymbol Symbol = delegate{};
 
 		private static void RaisePrintEvent(string e)
 		{
 			Print(e);
+		}
+		
+		private static void RaiseBangEvent(string recv)
+		{
+			Bang(recv);
+		}
+
+		private static void RaiseFloatEvent(string recv, float e)
+		{
+			Float(recv, e);
+		}
+
+		private static void RaiseSymbolEvent(string recv, string e)
+		{
+			Symbol(recv, e);
 		}
 
 		#endregion Events
@@ -88,6 +168,50 @@ namespace LibPDBinding
 		}
 		
 		private static bool SWriteMessageToDebug;
+		
+		//binding-----------------------------------
+		
+		//store bindings
+		private static Dictionary<string, IntPtr> Bindings = new Dictionary<string, IntPtr>();
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_bind")]
+		private static extern IntPtr bind([In] [MarshalAs(UnmanagedType.LPStr)] string sym) ;
+
+		/// <summary>
+		/// subscribes to pd messages sent to the given symbol
+		/// </summary>
+		/// <param name="symbol"> </param>
+		/// <returns> true on success </returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static bool Subscribe(string sym)
+		{
+			if(String.IsNullOrEmpty(sym)) return false;
+			if(Bindings.ContainsKey(sym)) return true;
+
+			var ptr = bind(sym);
+
+			if(ptr == IntPtr.Zero) return false;
+
+			Bindings[sym] = ptr;
+			return true;
+		}
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_unbind")]
+		private static extern void unbind(IntPtr p) ;
+
+		/// <summary>
+		/// unsubscribes from pd messages sent to the given symbol; will do nothing
+		/// if there is no subscription to this symbol
+		/// </summary>
+		/// <param name="sym"> </param>
+		/// <returns>true if unsubscribed</returns>
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		public static bool Unsubscribe(string sym)
+		{
+			if(String.IsNullOrEmpty(sym) || !Bindings.ContainsKey(sym)) return false;
+			unbind(Bindings[sym]);
+			return Bindings.Remove(sym);
+		}
 		
 		//sending-----------------------------------------------------------
 				

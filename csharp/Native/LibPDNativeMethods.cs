@@ -192,7 +192,14 @@ namespace LibPDBinding
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static void Release()
 		{
-
+			ComputeAudio(false);
+			
+			foreach (var ptr in Bindings.Values)
+			{
+				unbind(ptr);
+			}
+			Bindings.Clear();
+			
 			foreach (var ptr in Patches.Values)
 			{
 				closefile(ptr);

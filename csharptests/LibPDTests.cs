@@ -71,6 +71,19 @@ namespace LibPDBindingTest
 		{
 			Assert.AreEqual(64, LibPD.BlockSize);
 		}
+		
+		[Test]
+		public virtual void atestSubscription()
+		{
+			Assert.False(LibPD.Exists("baz"));
+			Assert.False(LibPD.Subscribe(null));
+			Assert.True(LibPD.Subscribe("baz"));
+			Assert.True(LibPD.Exists("baz"));
+			Assert.False(LibPD.Unsubscribe(null));
+			Assert.False(LibPD.Unsubscribe(""));
+			Assert.True(LibPD.Unsubscribe("baz"));
+			Assert.False(LibPD.Exists("baz"));
+		}
 
 		[Test]
 		public virtual void testPrint()
@@ -98,6 +111,33 @@ namespace LibPDBindingTest
 			LibPD.SendSymbol("foo", "don't panic");
 			
 			Assert.AreEqual(msgs.Length, i);
+		}
+		
+		[Test]
+		public virtual void atestReceive()
+		{
+			var receiver = "spam";
+			
+			LibPD.Bang += delegate(string recv) 
+			{
+				Assert.AreEqual(receiver, recv);
+			};
+			
+			LibPD.Float += delegate(string recv, float x) 
+			{
+				Assert.AreEqual(receiver, recv);
+				Assert.AreEqual(42, x);
+			};
+			
+			LibPD.Symbol += delegate(string recv, string sym) 
+			{
+				Assert.AreEqual(receiver, recv);
+				Assert.AreEqual("hund katze maus", sym);
+			};
+			
+			LibPD.SendBang(receiver);
+			LibPD.SendFloat(receiver, 42);
+			LibPD.SendSymbol(receiver, "hund katze maus");
 		}
 		
 		[Test]
