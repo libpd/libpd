@@ -110,7 +110,7 @@ $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
 	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS) 
 
-$(PDJAVA_JAR): $(PDJAVA_NATIVE)
+$(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 	javac -d $(PDJAVA_BUILD) $(PDJAVA_JAR_CLASSES)
 	jar -cvf $(PDJAVA_JAR) -C $(PDJAVA_BUILD) org/puredata/
 
