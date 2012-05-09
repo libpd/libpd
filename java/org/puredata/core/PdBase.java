@@ -53,8 +53,7 @@ public final class PdBase {
 	private final static Map<Integer, Long> patches = new HashMap<Integer, Long>();
 
 	static {
-		NativeLoader.loadLibrary("pthreadGC2-w32", "windows", "x86");
-		NativeLoader.loadLibrary("pthreadGC2-w64", "windows", "x86_64");
+		NativeLoader.loadLibrary("pthreadGC2", "windows");
 		NativeLoader.loadLibrary("pdnative");
 		initialize();
 	}

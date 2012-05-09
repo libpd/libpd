@@ -24,7 +24,7 @@ else
       -Wl,--out-implib=libs/libpd.lib
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -Wl,--out-implib=libs/libpdcsharp.lib
-    JAVA_LDFLAGS = $(MINGW_LDFLAGS)
+    JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Assume Linux
     SOLIB_EXT = so
     PDNATIVE_PLATFORM = linux
