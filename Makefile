@@ -70,6 +70,7 @@ PD_FILES = \
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
+	java/org/puredata/core/NativeLoader.java \
 	java/org/puredata/core/PdListener.java \
 	java/org/puredata/core/PdMidiReceiver.java \
 	java/org/puredata/core/PdReceiver.java \

@@ -7,6 +7,12 @@
 
 package org.puredata.core;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * 
  * Utilities for loading platform-specific libraries from the jar file.
@@ -83,6 +89,7 @@ public class NativeLoader {
 	
 	/** Load the library named. */
 	static void loadLibrary(String library) {
+		System.out.println("Loading "+library);
 		try {
 			System.loadLibrary(library);
 		} catch (UnsatisfiedLinkError error) {
