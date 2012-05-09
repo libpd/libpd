@@ -23,6 +23,11 @@ EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
 EXTERN void libpd_set_symbolhook(const t_libpd_symbolhook hook);
 
+EXTERN int libpd_atom_is_float(t_atom *a);
+EXTERN int libpd_atom_is_symbol(t_atom *a);
+EXTERN float libpd_atom_get_float(t_atom *a);
+EXTERN char *libpd_atom_get_symbol(t_atom *a);
+
 #ifdef __cplusplus
 }
 #endif

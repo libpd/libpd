@@ -28,4 +28,19 @@ void libpd_set_symbolhook(const t_libpd_symbolhook hook){
 	libpd_symbolhook = hook;
 }
 
+int libpd_atom_is_float(t_atom *a) {
+  return libpd_is_float(*a);
+}
+
+int libpd_atom_is_symbol(t_atom *a) {
+  return libpd_is_symbol(*a);
+}
+
+float libpd_atom_get_float(t_atom *a) {
+  return libpd_get_float(*a);
+}
+
+char *libpd_atom_get_symbol(t_atom *a) {
+  return libpd_get_symbol(*a);
+}
 
