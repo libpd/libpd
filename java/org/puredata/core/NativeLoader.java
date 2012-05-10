@@ -89,7 +89,6 @@ public class NativeLoader {
 	
 	/** Load the library named. */
 	static void loadLibrary(String library) {
-		System.out.println("Loading "+library);
 		try {
 			System.loadLibrary(library);
 		} catch (UnsatisfiedLinkError error) {
