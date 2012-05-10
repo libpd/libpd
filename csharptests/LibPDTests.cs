@@ -117,35 +117,49 @@ namespace LibPDBindingTest
 		public virtual void atestReceive()
 		{
 			var receiver = "spam";
+			var listArgs = new object[]{"hund", 1, "katze", 2.5, "maus", 3.1f};
 			
 			LibPD.Subscribe(receiver);
 			
-			var i = 0;
+			var n = 0;
 			LibPD.Bang += delegate(string recv) 
 			{
 				Assert.AreEqual(receiver, recv);
-				i++;
+				n++;
 			};
 			
 			LibPD.Float += delegate(string recv, float x) 
 			{
 				Assert.AreEqual(receiver, recv);
 				Assert.AreEqual(42, x);
-				i++;
+				n++;
 			};
 			
 			LibPD.Symbol += delegate(string recv, string sym) 
 			{
 				Assert.AreEqual(receiver, recv);
 				Assert.AreEqual("hund katze maus", sym);
-				i++;
+				n++;
 			};
 			
+			LibPD.List += delegate(string recv, object[] args) 
+			{  
+				Assert.AreEqual(receiver, recv);
+				Assert.AreEqual(listArgs.Length, args.Length);
+				
+				for (int i = 0; i < args.Length; i++) 
+				{
+					Assert.AreEqual(listArgs[i], args[i]);
+				}
+				n++;
+			};
+
 			LibPD.SendBang(receiver);
 			LibPD.SendFloat(receiver, 42);
 			LibPD.SendSymbol(receiver, "hund katze maus");
+			LibPD.SendList(receiver, listArgs);
 			
-			Assert.AreEqual(3, i);
+			Assert.AreEqual(4, n);
 		}
 		
 		[Test]

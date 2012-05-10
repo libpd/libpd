@@ -28,6 +28,14 @@ void libpd_set_symbolhook(const t_libpd_symbolhook hook){
 	libpd_symbolhook = hook;
 }
 
+void libpd_set_listhook(const t_libpd_listhook hook){
+	libpd_listhook = hook;
+}
+
+void libpd_set_messagehook(const t_libpd_messagehook hook){
+	libpd_messagehook = hook;
+}
+
 int libpd_atom_is_float(t_atom *a) {
   return libpd_is_float(*a);
 }
