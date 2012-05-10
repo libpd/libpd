@@ -7,7 +7,9 @@
 
 package org.puredata.core;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +59,6 @@ public final class PdBase {
 		NativeLoader.loadLibrary("pdnative");
 		initialize();
 	}
-	
 
 	private PdBase() {
 		// do nothing
