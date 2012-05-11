@@ -52,3 +52,6 @@ char *libpd_atom_get_symbol(t_atom *a) {
   return libpd_get_symbol(*a);
 }
 
+t_atom *libpd_next_atom(t_atom *a) {
+  return a + 1;
+}

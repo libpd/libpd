@@ -156,35 +156,37 @@ namespace LibPDBinding
 		
 		
 		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_is_float")]
-		private unsafe static extern int atom_is_float(void* a) ;
+		private static extern int atom_is_float(IntPtr a) ;
 
 		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_is_symbol")]
-		private unsafe static extern int atom_is_symbol(void* a) ;
+		private static extern int atom_is_symbol(IntPtr a) ;
 
 		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_get_float")]
-		private unsafe static extern  float atom_get_float(void* a) ;
+		private static extern float atom_get_float(IntPtr a) ;
 
 		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_get_symbol")]
 		[return:MarshalAs(UnmanagedType.LPStr)]
-		private unsafe static extern string atom_get_symbol(void* a) ;
+		private static extern string atom_get_symbol(IntPtr a) ;
 		
-		private unsafe static void RaiseListEvent(string recv, int argc, IntPtr argv)
+		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_next_atom")]
+		private static extern IntPtr next_atom(IntPtr a) ;
+		
+		private static void RaiseListEvent(string recv, int argc, IntPtr argv)
 		{
 			var args = new object[argc];
-			var p = argv.ToPointer();
-			var size = 4;
 			
 			for (int i = 0; i < argc; i++) 
 			{
-				var a = ((char*)p) + size * i;
-				if(atom_is_float(a) != 0)
+				if(atom_is_float(argv) != 0)
 				{
-					args[i] = atom_get_float(a);
+					args[i] = atom_get_float(argv);
 				}
-				else if(atom_is_symbol(a) != 0)
+				else if(atom_is_symbol(argv) != 0)
 				{
-					args[i] = atom_get_symbol(a);
+					args[i] = atom_get_symbol(argv);
 				}
+				
+				argv = next_atom(argv);
 			}
 			
 			List(recv, args);
