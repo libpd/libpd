@@ -106,6 +106,9 @@ public class NativeLoader {
 		File fileOut = new File(cacheDir, library);
 		InputStream in = PdBase.class.getResourceAsStream("/org/puredata/natives/" + osName + "/" + osArch + "/" + library);
 		if (in == null) {
+		    in = PdBase.class.getResourceAsStream("/org/puredata/natives/" + osName + "/" + library);
+		}
+		if (in == null) {
 			throw new RuntimeException("Couldn't find " + library + " for this platform " + osName + "/" + osArch);
 		}
 		try {
