@@ -154,7 +154,7 @@ namespace LibPDBinding
 		public static event LibPDList List = delegate{};
 		
 		/// <summary>
-		/// Subscribe to this event in order to get PDs message messages. Currently only
+		/// Subscribe to this event in order to get PDs typed messages. Currently only
 		/// float and symbol types are supported. Other types in the list such as pointers will be null.
 		/// Note: Events may be raised by several threads, such as the GUI thread and 
 		/// the audio thread. If a subscriber method calls operations that must be executed 
@@ -202,19 +202,7 @@ namespace LibPDBinding
 		{
 			var args = new object[argc];
 
-			for (int i = 0; i < argc; i++) 
-			{
-				if(i!=0) argv = next_atom(argv);
-				
-				if(atom_is_float(argv) != 0)
-				{
-					args[i] = atom_get_float(argv);
-				}
-				else if(atom_is_symbol(argv) != 0)
-				{
-					args[i] = Marshal.PtrToStringAnsi(atom_get_symbol(argv));
-				}
-			}
+			ConvertList(args, argc, argv);
 				
 			List(recv, args);
 		}
@@ -223,7 +211,14 @@ namespace LibPDBinding
 		{
 			var args = new object[argc];
 
-			for (int i = 0; i < argc; i++) 
+			ConvertList(args, argc, argv);
+				
+			Message(recv, msg, args);
+		}
+		
+		private static void ConvertList(object[] args, int argc, IntPtr argv)
+		{
+			for (int i = 0; i < argc; i++)
 			{
 				if(i!=0) argv = next_atom(argv);
 				
@@ -236,8 +231,6 @@ namespace LibPDBinding
 					args[i] = Marshal.PtrToStringAnsi(atom_get_symbol(argv));
 				}
 			}
-				
-			Message(recv, msg, args);
 		}
 
 		#endregion Events
