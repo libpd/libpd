@@ -144,7 +144,8 @@ namespace LibPDBinding
 		public static event LibPDSymbol Symbol = delegate{};
 		
 		/// <summary>
-		/// Subscribe to this event in order to get PDs list messages.
+		/// Subscribe to this event in order to get PDs list messages. Currently only
+		/// float and symbol types are supported. Other types in the list such as pointers will be null.
 		/// Note: Events may be raised by several threads, such as the GUI thread and 
 		/// the audio thread. If a subscriber method calls operations that must be executed 
 		/// in a particular thread, then the subscriber method is responsible for posting 
@@ -153,7 +154,8 @@ namespace LibPDBinding
 		public static event LibPDList List = delegate{};
 		
 		/// <summary>
-		/// Subscribe to this event in order to get PDs message messages.
+		/// Subscribe to this event in order to get PDs message messages. Currently only
+		/// float and symbol types are supported. Other types in the list such as pointers will be null.
 		/// Note: Events may be raised by several threads, such as the GUI thread and 
 		/// the audio thread. If a subscriber method calls operations that must be executed 
 		/// in a particular thread, then the subscriber method is responsible for posting 
