@@ -28,6 +28,7 @@ namespace LibPDBinding
 	public delegate void LibPDFloat(string recv, float x);
 	public delegate void LibPDSymbol(string recv, string sym);
 	public delegate void LibPDList(string recv, object[] args);
+	public delegate void LibPDMessage(string recv, string msg, object[] args);
 	
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string text);
@@ -44,6 +45,9 @@ namespace LibPDBinding
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDListHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, int argc, IntPtr argv);
 
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDMessageHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg, int argc, IntPtr argv);
+
 	
 	#endregion delegates
 	
@@ -59,6 +63,7 @@ namespace LibPDBinding
 		private static LibPDFloatHook FloatHook;
 		private static LibPDSymbolHook SymbolHook;
 		private static LibPDListHook ListHook;
+		private static LibPDMessageHook MessageHook;
 		
 		//import hook set method
 		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_printhook")]
@@ -75,6 +80,9 @@ namespace LibPDBinding
 		
 		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_listhook")]
 		private static extern  void set_listhook(LibPDListHook hook) ;
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_messagehook")]
+		private static extern  void set_messagehook(LibPDMessageHook hook) ;
 		
 		private static void SetupHooks()
 		{
@@ -93,6 +101,9 @@ namespace LibPDBinding
 			
 			ListHook = new LibPDListHook(RaiseListEvent);
 			set_listhook(ListHook);
+			
+			MessageHook = new LibPDMessageHook(RaiseMessageEvent);
+			set_messagehook(MessageHook);
 			
 		}
 
@@ -132,7 +143,23 @@ namespace LibPDBinding
 		/// </summary>
 		public static event LibPDSymbol Symbol = delegate{};
 		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs list messages.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
 		public static event LibPDList List = delegate{};
+		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs message messages.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDMessage Message = delegate{};
 
 		private static void RaisePrintEvent(string e)
 		{
@@ -173,7 +200,6 @@ namespace LibPDBinding
 		{
 			var args = new object[argc];
 
-			
 			for (int i = 0; i < argc; i++) 
 			{
 				if(i!=0) argv = next_atom(argv);
@@ -184,13 +210,32 @@ namespace LibPDBinding
 				}
 				else if(atom_is_symbol(argv) != 0)
 				{
-					var p = atom_get_symbol(argv);
-					args[i] = Marshal.PtrToStringAnsi(p);
+					args[i] = Marshal.PtrToStringAnsi(atom_get_symbol(argv));
 				}
-						
 			}
 				
 			List(recv, args);
+		}
+		
+		private static void RaiseMessageEvent(string recv, string msg, int argc, IntPtr argv)
+		{
+			var args = new object[argc];
+
+			for (int i = 0; i < argc; i++) 
+			{
+				if(i!=0) argv = next_atom(argv);
+				
+				if(atom_is_float(argv) != 0)
+				{
+					args[i] = atom_get_float(argv);
+				}
+				else if(atom_is_symbol(argv) != 0)
+				{
+					args[i] = Marshal.PtrToStringAnsi(atom_get_symbol(argv));
+				}
+			}
+				
+			Message(recv, msg, args);
 		}
 
 		#endregion Events

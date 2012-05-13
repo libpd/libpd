@@ -145,6 +145,8 @@ namespace LibPDBindingTest
 		{
 			var receiver = "spam";
 			var listArgs = new object[]{"hund", 1, "katze", 2.5, "maus", 3.1f};
+			var msgName = "testing";
+			var msgArgs = new object[]{"one", 1, "two", 2};
 			
 			LibPD.Subscribe(receiver);
 			
@@ -190,17 +192,35 @@ namespace LibPDBindingTest
 
 			LibPD.List += delList;
 			
+			LibPDMessage delMessage = delegate(string recv, string msg, object[] args) 
+			{  
+				
+				Assert.AreEqual(receiver, recv);
+				Assert.AreEqual(msgName, msg);
+				Assert.AreEqual(msgArgs.Length, args.Length);
+				
+				for (int i = 0; i < args.Length; i++) 
+				{
+					Assert.AreEqual(msgArgs[i], args[i]);
+				}
+				n++;
+			};
+			
+			LibPD.Message += delMessage;
+			
 			LibPD.SendBang(receiver);
 			LibPD.SendFloat(receiver, 42);
 			LibPD.SendSymbol(receiver, "hund katze maus");
 			LibPD.SendList(receiver, listArgs);
+			LibPD.SendMessage(receiver, msgName, msgArgs);
 			
-			Assert.AreEqual(4, n);
+			Assert.AreEqual(5, n);
 			
 			LibPD.Bang -= delBang;
 			LibPD.Float -= delFloat;
 			LibPD.Symbol -= delSymbol;
 			LibPD.List -= delList;
+			LibPD.Message -= delMessage;
 		}
 		
 		[Test]
