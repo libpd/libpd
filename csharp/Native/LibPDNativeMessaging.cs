@@ -154,41 +154,42 @@ namespace LibPDBinding
 			Symbol(recv, e);
 		}
 		
-		
-		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_is_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_is_float")]
 		private static extern int atom_is_float(IntPtr a) ;
 
-		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_is_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_is_symbol")]
 		private static extern int atom_is_symbol(IntPtr a) ;
 
-		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_get_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_get_float")]
 		private static extern float atom_get_float(IntPtr a) ;
 
-		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_atom_get_symbol")]
-		[return:MarshalAs(UnmanagedType.LPStr)]
-		private static extern string atom_get_symbol(IntPtr a) ;
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_get_symbol")]
+		private static extern IntPtr atom_get_symbol(IntPtr a);
 		
-		[System.Runtime.InteropServices.DllImportAttribute("libpdcsharp.dll", EntryPoint="libpd_next_atom")]
-		private static extern IntPtr next_atom(IntPtr a) ;
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_next_atom")]
+		private static extern IntPtr next_atom(IntPtr a);
 		
 		private static void RaiseListEvent(string recv, int argc, IntPtr argv)
 		{
 			var args = new object[argc];
+
 			
 			for (int i = 0; i < argc; i++) 
 			{
+				if(i!=0) argv = next_atom(argv);
+				
 				if(atom_is_float(argv) != 0)
 				{
 					args[i] = atom_get_float(argv);
 				}
 				else if(atom_is_symbol(argv) != 0)
 				{
-					args[i] = atom_get_symbol(argv);
+					var p = atom_get_symbol(argv);
+					args[i] = Marshal.PtrToStringAnsi(p);
 				}
-				
-				argv = next_atom(argv);
+						
 			}
-			
+				
 			List(recv, args);
 		}
 
@@ -358,7 +359,9 @@ namespace LibPDBinding
 		{
 			string s = "";
 			int err = ProcessArgs(args, ref s);
+							
 			var ret = (err == 0) ? finish_list(receiver) : err;
+				
 			
 			if(SWriteMessageToDebug)
 			{
