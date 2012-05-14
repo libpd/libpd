@@ -200,24 +200,18 @@ namespace LibPDBinding
 		
 		private static void RaiseListEvent(string recv, int argc, IntPtr argv)
 		{
-			var args = new object[argc];
-
-			ConvertList(args, argc, argv);
-				
-			List(recv, args);
+			List(recv, ConvertList(argc, argv));
 		}
 		
 		private static void RaiseMessageEvent(string recv, string msg, int argc, IntPtr argv)
 		{
-			var args = new object[argc];
-
-			ConvertList(args, argc, argv);
-				
-			Message(recv, msg, args);
+			Message(recv, msg, ConvertList(argc, argv));
 		}
 		
-		private static void ConvertList(object[] args, int argc, IntPtr argv)
+		private static object[] ConvertList(int argc, IntPtr argv)
 		{
+			var args = new object[argc];
+			
 			for (int i = 0; i < argc; i++)
 			{
 				if(i!=0) argv = next_atom(argv);
@@ -231,6 +225,8 @@ namespace LibPDBinding
 					args[i] = Marshal.PtrToStringAnsi(atom_get_symbol(argv));
 				}
 			}
+			
+			return args;
 		}
 
 		#endregion Events
