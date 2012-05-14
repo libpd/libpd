@@ -10,6 +10,15 @@
 
 #include "z_hookset.h"
 
+// returns true if and only if an actual init was performed
+int libpd_safe_init() { 
+  static int initialized = 0;
+  if (initialized) return 0;
+  initialized = 1;
+  libpd_init();
+  return 1;
+}
+
 /* set hooks */
 
 void libpd_set_printhook(const t_libpd_printhook hook){

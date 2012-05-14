@@ -18,6 +18,8 @@ extern "C"
 
 #include "z_libpd.h"
 
+EXTERN int libpd_safe_init();
+
 EXTERN void libpd_set_printhook(const t_libpd_printhook hook);
 EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 EXTERN void libpd_set_floathook(const t_libpd_floathook hook);

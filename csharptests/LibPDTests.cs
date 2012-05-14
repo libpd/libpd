@@ -25,18 +25,13 @@ namespace LibPDBindingTest
 	{
 		private static int SPatch;
 		private static int SDllHandle;
-		private static bool SInitializationRequired;
 		
 		[SetUp]
 		public static void loadPatch()
 		{
 			SDllHandle = LoadLibrary("libpdcsharp.dll");
-			if (SInitializationRequired)
-			{
-				LibPD.ReInit();
-				SInitializationRequired = false;
-			}
-			
+			LibPD.ReInit();
+
 			LibPD.OpenAudio(2, 3, 44100);
 			SPatch = LibPD.OpenPatch(@"..\..\test_csharp.pd");
 			LibPD.ComputeAudio(true);
@@ -54,9 +49,7 @@ namespace LibPDBindingTest
 			LibPD.Release();
 			
 			while(FreeLibrary(SDllHandle)) 
-			{
-				SInitializationRequired = true;
-			}
+			{}
 		}
 		
 		[Test]
