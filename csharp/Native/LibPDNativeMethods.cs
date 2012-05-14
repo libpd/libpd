@@ -70,7 +70,8 @@ namespace LibPDBinding
 		/// <summary>
 		/// You almost never have to call this! The only case is when the libpdcsharp.dll 
 		/// was unloaded and you load it again into your application.
-		/// The initialization is done automatically when using a LibPD method.
+		/// So be careful, it will also call Release() to clear all states.
+		/// The first initialization is done automatically when using a LibPD method.
 		/// </summary>
 		public static void ReInit()
 		{
