@@ -8,7 +8,7 @@
  *
  */
 
-#include "z_hookset.h"
+#include "z_csharp_helper.h"
 
 // returns true if and only if an actual init was performed
 int libpd_safe_init() { 
