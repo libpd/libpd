@@ -27,6 +27,8 @@ namespace LibPDBinding
 	public delegate void LibPDBang(string recv);
 	public delegate void LibPDFloat(string recv, float x);
 	public delegate void LibPDSymbol(string recv, string sym);
+	public delegate void LibPDList(string recv, object[] args);
+	public delegate void LibPDMessage(string recv, string msg, object[] args);
 	
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDPrintHook([In] [MarshalAs(UnmanagedType.LPStr)] string text);
@@ -39,6 +41,13 @@ namespace LibPDBinding
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void LibPDSymbolHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string sym);
+	
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDListHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, int argc, IntPtr argv);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void LibPDMessageHook([In] [MarshalAs(UnmanagedType.LPStr)] string recv, [In] [MarshalAs(UnmanagedType.LPStr)] string msg, int argc, IntPtr argv);
+
 	
 	#endregion delegates
 	
@@ -53,6 +62,8 @@ namespace LibPDBinding
 		private static LibPDBangHook BangHook;
 		private static LibPDFloatHook FloatHook;
 		private static LibPDSymbolHook SymbolHook;
+		private static LibPDListHook ListHook;
+		private static LibPDMessageHook MessageHook;
 		
 		//import hook set method
 		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_printhook")]
@@ -66,6 +77,12 @@ namespace LibPDBinding
 
 		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_symbolhook")]
 		private static extern  void set_symbolhook(LibPDSymbolHook hook) ;
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_listhook")]
+		private static extern  void set_listhook(LibPDListHook hook) ;
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_set_messagehook")]
+		private static extern  void set_messagehook(LibPDMessageHook hook) ;
 		
 		private static void SetupHooks()
 		{
@@ -81,6 +98,13 @@ namespace LibPDBinding
 
 			SymbolHook = new LibPDSymbolHook(RaiseSymbolEvent);
 			set_symbolhook(SymbolHook);
+			
+			ListHook = new LibPDListHook(RaiseListEvent);
+			set_listhook(ListHook);
+			
+			MessageHook = new LibPDMessageHook(RaiseMessageEvent);
+			set_messagehook(MessageHook);
+			
 		}
 
 		/// <summary>
@@ -118,6 +142,26 @@ namespace LibPDBinding
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
 		public static event LibPDSymbol Symbol = delegate{};
+		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs list messages. Currently only
+		/// float and symbol types are supported. Other types in the list such as pointers will be null.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDList List = delegate{};
+		
+		/// <summary>
+		/// Subscribe to this event in order to get PDs typed messages. Currently only
+		/// float and symbol types are supported. Other types in the list such as pointers will be null.
+		/// Note: Events may be raised by several threads, such as the GUI thread and 
+		/// the audio thread. If a subscriber method calls operations that must be executed 
+		/// in a particular thread, then the subscriber method is responsible for posting 
+		/// those calls to the appropriate synchronization context.
+		/// </summary>
+		public static event LibPDMessage Message = delegate{};
 
 		private static void RaisePrintEvent(string e)
 		{
@@ -137,6 +181,52 @@ namespace LibPDBinding
 		private static void RaiseSymbolEvent(string recv, string e)
 		{
 			Symbol(recv, e);
+		}
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_is_float")]
+		private static extern int atom_is_float(IntPtr a) ;
+
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_is_symbol")]
+		private static extern int atom_is_symbol(IntPtr a) ;
+
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_get_float")]
+		private static extern float atom_get_float(IntPtr a) ;
+
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_get_symbol")]
+		private static extern IntPtr atom_get_symbol(IntPtr a);
+		
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_next_atom")]
+		private static extern IntPtr next_atom(IntPtr a);
+		
+		private static void RaiseListEvent(string recv, int argc, IntPtr argv)
+		{
+			List(recv, ConvertList(argc, argv));
+		}
+		
+		private static void RaiseMessageEvent(string recv, string msg, int argc, IntPtr argv)
+		{
+			Message(recv, msg, ConvertList(argc, argv));
+		}
+		
+		private static object[] ConvertList(int argc, IntPtr argv)
+		{
+			var args = new object[argc];
+			
+			for (int i = 0; i < argc; i++)
+			{
+				if(i!=0) argv = next_atom(argv);
+				
+				if(atom_is_float(argv) != 0)
+				{
+					args[i] = atom_get_float(argv);
+				}
+				else if(atom_is_symbol(argv) != 0)
+				{
+					args[i] = Marshal.PtrToStringAnsi(atom_get_symbol(argv));
+				}
+			}
+			
+			return args;
 		}
 
 		#endregion Events
@@ -205,6 +295,7 @@ namespace LibPDBinding
 			unbind(Bindings[sym]);
 			return Bindings.Remove(sym);
 		}
+
 		
 		//sending-----------------------------------------------------------
 				
@@ -304,7 +395,9 @@ namespace LibPDBinding
 		{
 			string s = "";
 			int err = ProcessArgs(args, ref s);
+							
 			var ret = (err == 0) ? finish_list(receiver) : err;
+				
 			
 			if(SWriteMessageToDebug)
 			{

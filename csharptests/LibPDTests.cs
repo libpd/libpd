@@ -12,35 +12,50 @@
  */
 
 using System;
-using NUnit.Framework;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 using LibPDBinding;
+using NUnit.Framework;
 
 namespace LibPDBindingTest
 {
 	[TestFixture]
 	public class LibPDTests
 	{
-		private static int patch;
-
+		private static int SPatch;
+		private static int SDllHandle;
+		
 		[SetUp]
 		public static void loadPatch()
 		{
+			SDllHandle = LoadLibrary("libpdcsharp.dll");
+			LibPD.ReInit();
+
 			LibPD.OpenAudio(2, 3, 44100);
-			patch = LibPD.OpenPatch(@"..\..\test_csharp.pd");
+			SPatch = LibPD.OpenPatch(@"..\..\test_csharp.pd");
 			LibPD.ComputeAudio(true);
 		}
 
+		[DllImport("kernel32")]
+		static extern int LoadLibrary(string lpLibFileName);
+		
+		[DllImport("kernel32")]
+		static extern bool FreeLibrary(int hModule);
+		
 		[TearDown]
 		public static void closePatch()
 		{
 			LibPD.Release();
+			
+			while(FreeLibrary(SDllHandle)) 
+			{}
 		}
 		
 		[Test]
-		public virtual void aTestDollarZero()
+		public virtual void testDollarZero()
 		{
-			Assert.AreEqual(1002, patch);
+			Assert.AreEqual(1002, SPatch);
 		}
 
 		[Test]
@@ -73,7 +88,7 @@ namespace LibPDBindingTest
 		}
 		
 		[Test]
-		public virtual void atestSubscription()
+		public virtual void testSubscription()
 		{
 			Assert.False(LibPD.Exists("baz"));
 			Assert.False(LibPD.Subscribe(null));
@@ -100,10 +115,13 @@ namespace LibPDBindingTest
 			};
 			
 			var i = 0;
-			LibPD.Print += delegate(string text) 
+			
+			LibPDPrint del = delegate(string text)
 			{ 
 				Assert.AreEqual(msgs[i++], text);
 			};
+				
+			LibPD.Print += del;
 			
 			LibPD.SendBang("foo");
 			LibPD.SendFloat("foo", 0);
@@ -111,41 +129,91 @@ namespace LibPDBindingTest
 			LibPD.SendSymbol("foo", "don't panic");
 			
 			Assert.AreEqual(msgs.Length, i);
+			
+			LibPD.Print -= del;
 		}
 		
 		[Test]
-		public virtual void atestReceive()
+		public virtual void testReceive()
 		{
 			var receiver = "spam";
+			var listArgs = new object[]{"hund", 1, "katze", 2.5, "maus", 3.1f};
+			var msgName = "testing";
+			var msgArgs = new object[]{"one", 1, "two", 2};
 			
 			LibPD.Subscribe(receiver);
 			
-			var i = 0;
-			LibPD.Bang += delegate(string recv) 
+			var n = 0;
+			
+			LibPDBang delBang = delegate(string recv)
 			{
 				Assert.AreEqual(receiver, recv);
-				i++;
+				n++;
 			};
 			
-			LibPD.Float += delegate(string recv, float x) 
+			LibPD.Bang += delBang;
+			
+			LibPDFloat delFloat = delegate(string recv, float x) 
 			{
 				Assert.AreEqual(receiver, recv);
 				Assert.AreEqual(42, x);
-				i++;
+				n++;
 			};
 			
-			LibPD.Symbol += delegate(string recv, string sym) 
+			LibPD.Float += delFloat;
+			
+			LibPDSymbol delSymbol = delegate(string recv, string sym) 
 			{
 				Assert.AreEqual(receiver, recv);
 				Assert.AreEqual("hund katze maus", sym);
-				i++;
+				n++;
 			};
+			
+			LibPD.Symbol += delSymbol;
+			
+			LibPDList delList = delegate(string recv, object[] args) 
+			{  
+				Assert.AreEqual(receiver, recv);
+				Assert.AreEqual(listArgs.Length, args.Length);
+				
+				for (int i = 0; i < args.Length; i++) 
+				{
+					Assert.AreEqual(listArgs[i], args[i]);
+				}
+				n++;
+			};
+
+			LibPD.List += delList;
+			
+			LibPDMessage delMessage = delegate(string recv, string msg, object[] args) 
+			{  
+				
+				Assert.AreEqual(receiver, recv);
+				Assert.AreEqual(msgName, msg);
+				Assert.AreEqual(msgArgs.Length, args.Length);
+				
+				for (int i = 0; i < args.Length; i++) 
+				{
+					Assert.AreEqual(msgArgs[i], args[i]);
+				}
+				n++;
+			};
+			
+			LibPD.Message += delMessage;
 			
 			LibPD.SendBang(receiver);
 			LibPD.SendFloat(receiver, 42);
 			LibPD.SendSymbol(receiver, "hund katze maus");
+			LibPD.SendList(receiver, listArgs);
+			LibPD.SendMessage(receiver, msgName, msgArgs);
 			
-			Assert.AreEqual(3, i);
+			Assert.AreEqual(5, n);
+			
+			LibPD.Bang -= delBang;
+			LibPD.Float -= delFloat;
+			LibPD.Symbol -= delSymbol;
+			LibPD.List -= delList;
+			LibPD.Message -= delMessage;
 		}
 		
 		[Test]
