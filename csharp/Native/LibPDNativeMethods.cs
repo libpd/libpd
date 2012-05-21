@@ -59,22 +59,34 @@ namespace LibPDBinding
 	/// </summary>
 	public static partial class LibPD
 	{
-		
-		//only call this once a lifetime
+		//only call this once
 		static LibPD()
 		{
-			SetupHooks();
-			libpd_init();
+			ReInit();
 		}
 		
 		#region Environment
+		
+		/// <summary>
+		/// You almost never have to call this! The only case is when the libpdcsharp.dll 
+		/// was unloaded and you load it again into your application.
+		/// So be careful, it will also call Release() to clear all state.
+		/// The first initialization is done automatically when using a LibPD method.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.Synchronized)] 
+		public static void ReInit()
+		{
+			Release();
+			SetupHooks();
+			libpd_init();
+		}
 		
 		//store open patches
 		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
 		
 		/// Init PD
-		[DllImport("libpdcsharp.dll", EntryPoint="libpd_init")]
-		private static extern  void libpd_init() ;
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_safe_init")]
+		private static extern void libpd_init() ;
 
 				
 		/// Return Type: void

@@ -81,7 +81,7 @@ PDJAVA_JAR_CLASSES = \
 JNI_FILE = libpd_wrapper/z_jni.c
 JNIH_FILE = libpd_wrapper/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/z_hookset.c
+HOOK_SET = libpd_wrapper/z_csharp_helper.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
