@@ -2,7 +2,8 @@ UNAME = $(shell uname)
 SOLIB_PREFIX = lib
 
 ifeq ($(UNAME), Darwin)  # Mac
-  SOLIB_EXT = jnilib
+  SOLIB_EXT = dylib
+  PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH = 
   PLATFORM_CFLAGS = -DHAVE_LIBDL -O3 -arch x86_64 -arch i386 -g \
@@ -38,6 +39,8 @@ else
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
+
+PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 
 PD_FILES = \
 	pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
@@ -86,7 +89,7 @@ LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_DIR = java-build/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
-PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(SOLIB_EXT)
+PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 PDJAVA_BUILD = java-build
 
