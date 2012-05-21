@@ -85,7 +85,7 @@ HOOK_SET = libpd_wrapper/z_hookset.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
-PDJAVA_DIR = java-build/org/puredata/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
+PDJAVA_DIR = java-build/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 PDJAVA_BUILD = java-build
