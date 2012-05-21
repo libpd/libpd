@@ -39,7 +39,9 @@ a fat binary or an indication of the instruction set. */
 #ifdef __FreeBSD__
 static char sys_dllextent[] = ".b_i386", sys_dllextent2[] = ".pd_freebsd";
 #elif defined(__linux__) || defined(__FreeBSD_kernel__) || defined(__GNU__)
-# ifdef __x86_64__
+# ifdef ANDROID
+static char sys_dllextent[] = ".so", sys_dllextent2[] = ".pd_linux";
+# elif defined(__x86_64__)
 static char sys_dllextent[] = ".l_ia64", sys_dllextent2[] = ".pd_linux";
 # else
 static char sys_dllextent[] = ".l_i386", sys_dllextent2[] = ".pd_linux";
@@ -52,8 +54,6 @@ static char sys_dllextent[] = ".d_ppc", sys_dllextent2[] = ".pd_darwin";
 # endif
 #elif defined(_WIN32) || defined(__CYGWIN__)
 static char sys_dllextent[] = ".m_i386", sys_dllextent2[] = ".dll";
-#elif defined(ANDROID)
-static char sys_dllextent[] = ".l_arm", sys_dllextent2[] = ".pd_linux";
 #endif
 
     /* maintain list of loaded modules to avoid repeating loads */
@@ -88,7 +88,7 @@ void class_set_extern_dir(t_symbol *s);
 static int sys_do_load_lib(t_canvas *canvas, char *objectname)
 {
     char symname[MAXPDSTRING], filename[MAXPDSTRING], dirbuf[MAXPDSTRING],
-        *classname, *nameptr, altsymname[MAXPDSTRING];
+        *classname, *nameptr, altsymname[MAXPDSTRING], libobjname[MAXPDSTRING] = "lib";
     void *dlobj;
     t_xxx makeout = NULL;
     int i, hexmunge = 0, fd;
@@ -103,6 +103,7 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
         post("%s: already loaded", objectname);
         return (1);
     }
+    strcpy(libobjname+3, objectname);
     for (i = 0, nameptr = classname; i < MAXPDSTRING-7 && *nameptr; nameptr++)
     {
         char c = *nameptr;
@@ -116,6 +117,7 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
         else if (c == '~' && nameptr[1] == 0)
         {
             strcpy(symname+i, "_tilde");
+            strcpy(libobjname+i+3, "_tilde");
             i += strlen(symname+i);
         }
         else /* anything you can't put in a C symbol is sprintf'ed in hex */
@@ -126,6 +128,7 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
         }
     }
     symname[i] = 0;
+    libobjname[i+3] = 0;
     if (hexmunge)
     {
         memmove(symname+6, symname, strlen(symname)+1);
@@ -144,6 +147,15 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
     if ((fd = canvas_open(canvas, objectname, sys_dllextent2,
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
             goto gotone;
+        /* try looking in the path for (libobjectname).(sys_dllextent) ... */
+    if ((fd = canvas_open(canvas, libobjname, sys_dllextent,
+        dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
+            goto gotone;
+        /* same, with the more generic sys_dllextent2 */
+    if ((fd = canvas_open(canvas, libobjname, sys_dllextent2,
+        dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
+            goto gotone;
+
         /* next try (objectname)/(classname).(sys_dllextent) ... */
     strncpy(filename, objectname, MAXPDSTRING);
     filename[MAXPDSTRING-2] = 0;
