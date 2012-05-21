@@ -2,7 +2,7 @@ UNAME = $(shell uname)
 SOLIB_PREFIX = lib
 
 ifeq ($(UNAME), Darwin)  # Mac
-  SOLIB_EXT = dylib
+  SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH = 
   PLATFORM_CFLAGS = -DHAVE_LIBDL -O3 -arch x86_64 -arch i386 -g \
