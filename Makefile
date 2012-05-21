@@ -4,7 +4,7 @@ SOLIB_PREFIX = lib
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
   PDNATIVE_PLATFORM = mac
-  PDNATIVE_ARCH = universal
+  PDNATIVE_ARCH = 
   PLATFORM_CFLAGS = -DHAVE_LIBDL -O3 -arch x86_64 -arch i386 -g \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
