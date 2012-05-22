@@ -33,12 +33,12 @@ public class NativeLoader {
 		}
 		
 		public NativeLibraryLoadError(String message, Throwable cause) {
-			//Convenience constructor with cause as second argument only available in Java 1.7
+			// The convenience super-constructor, with cause as second argument, is only available from Java 1.7
 			super(message);
 			initCause(cause);
 		}
 		
-	};
+	}
 	
 
 	static {
@@ -47,30 +47,31 @@ public class NativeLoader {
 
 	private static void detectSystem() {
 		osArch = System.getProperty("os.arch").toLowerCase();
-		boolean arch64 = osArch.indexOf("64") != -1;
-		if (osArch.indexOf("86") != -1 || osArch.indexOf("amd64") != -1) {
+		if (osArch.indexOf("86") != -1) {
 			osArch = "x86";
 		}
-		if (arch64) {
-			osArch += "_64";
+		else if (osArch.indexOf("64") != -1) {
+			osArch = "x86_64";
 		}
 
 		osName = System.getProperty("os.name").toLowerCase();
 
-		if (osName.indexOf("windows") != -1) {
+		//Ordered by likeliness to appear in each others' names
+		if (osName.indexOf("linux") != -1) {
+			osName = "linux";
+		} else if (osName.indexOf("windows") != -1) {
 			osName = "windows";
-		} else {
-			if (osName.indexOf("linux") != -1) {
-				osName = "linux";
-			} else if (osName.indexOf("mac") != -1) {
-				osName = "mac";
-			}
+		} else if (osName.indexOf("mac") != -1) {
+			osName = "mac";
 		}
 	}
 
 	/**
 	 * Load the library named, if osNameCheck is the current operating system
 	 * and osArchCheck is the current architecture.
+	 * 
+	 * @param osNameCheck Name of detected operating system (linux/mac/windows), or null to match any
+	 * @param osArchCheck Architecture name (x86/x86_64), or null to match any
 	 */
 	public static void loadLibrary(String library, String osNameCheck, String osArchCheck) {
 		if (osArchCheck == null || osArchCheck.equals(osArch)) {
@@ -78,7 +79,11 @@ public class NativeLoader {
 		}
 	}
 
-	/** Load the library named, if osNameCheck is the current operating system. */
+	/**
+	 *  Load the library named, if osNameCheck is the current operating system. 
+	 *  
+ 	 * @param osNameCheck Name of detected operating system (linux/mac/windows), or null to match any
+ 	 */
 	public static void loadLibrary(String library, String osNameCheck) {
 		if (osNameCheck == null || osNameCheck.equals(osName)) {
 			loadLibrary(library);
@@ -96,13 +101,7 @@ public class NativeLoader {
 
 	/** Try to extract the native library from this Jar file. */
 	private static void loadLibraryFromJar(String library) {
-		File cacheDir = new File(System.getProperty("java.io.tmpdir"), "pdnative");
-		if (!cacheDir.isDirectory()) {
-			cacheDir.mkdirs();
-		}
 		library = System.mapLibraryName(library);
-		//TODO What about multiple running instances? Will try to overwrite existing file - Windows might not like that. 
-		File fileOut = new File(cacheDir, library);
 		InputStream in = PdBase.class.getResourceAsStream("natives/" + osName + "/" + osArch + "/" + library);
 		if (in == null) {
 			in = PdBase.class.getResourceAsStream("natives/" + osName + "/" + library);
@@ -111,6 +110,7 @@ public class NativeLoader {
 			throw new NativeLibraryLoadError("Couldn't find " + library + " for this platform " + osName + "/" + osArch);
 		}
 		try {
+			File fileOut = File.createTempFile(library.replaceFirst("\\.[^.]*$", ""), library.replaceFirst("^.*\\.", "."));
 			OutputStream out = new FileOutputStream(fileOut);
 			byte[] copyBuffer = new byte[1024];
 			int amountRead;
@@ -119,9 +119,10 @@ public class NativeLoader {
 			}
 			in.close();
 			out.close();
+			System.load(fileOut.toString());
+			fileOut.deleteOnExit();
 		} catch (IOException error) {
-			throw new NativeLibraryLoadError("Failed to save native library " + library + " to " + cacheDir, error);
+			throw new NativeLibraryLoadError("Failed to save native library " + library + " to temporary file", error);
 		}
-		System.load(fileOut.toString());
 	}
 }
