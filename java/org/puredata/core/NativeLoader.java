@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * 
  * Utilities for loading platform-specific libraries using System.loadLibrary,
- * or falls back to trying to load an appropriate library from the jar file.
+ * falling back to loading the jar file.
  * 
  * @author Bill Robinson (airbaggins@gmail.com)
  */
