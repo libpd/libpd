@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * 
  * Utilities for loading platform-specific libraries using System.loadLibrary,
- * falling back to loading the jar file.
+ * falling back to trying to load from the jar file.
  * 
  * @author Bill Robinson (airbaggins@gmail.com)
  */
@@ -26,7 +26,7 @@ public class NativeLoader {
 	private static String osArch = null;
 	
 	
-	public static class NativeLibraryLoadError extends LinkageError {
+	public static class NativeLibraryLoadError extends UnsatisfiedLinkError {
 		
 		public NativeLibraryLoadError(String message) {
 			super(message);
@@ -47,11 +47,10 @@ public class NativeLoader {
 
 	private static void detectSystem() {
 		osArch = System.getProperty("os.arch").toLowerCase();
-		if (osArch.indexOf("86") != -1) {
-			osArch = "x86";
-		}
-		else if (osArch.indexOf("64") != -1) {
+		if (osArch.indexOf("64") != -1) {
 			osArch = "x86_64";
+		} else if (osArch.indexOf("86") != -1) {
+			osArch = "x86";
 		}
 
 		osName = System.getProperty("os.name").toLowerCase();
@@ -69,12 +68,12 @@ public class NativeLoader {
 	/**
 	 * Load the library named, if osNameCheck is the current operating system
 	 * and osArchCheck is the current architecture.
-	 * 
-	 * @param osNameCheck Name of detected operating system (linux/mac/windows), or null to match any
-	 * @param osArchCheck Architecture name (x86/x86_64), or null to match any
+	 *  
+	 *  @param osNameCheck Name of detected operating system (linux/mac/windows)
+	 *  @param osArchCheck Architecture name (x86/x86_64),
 	 */
 	public static void loadLibrary(String library, String osNameCheck, String osArchCheck) {
-		if (osArchCheck == null || osArchCheck.equals(osArch)) {
+		if (osArch.equals(osArchCheck)) {
 			loadLibrary(library, osNameCheck);
 		}
 	}
@@ -82,10 +81,10 @@ public class NativeLoader {
 	/**
 	 *  Load the library named, if osNameCheck is the current operating system. 
 	 *  
- 	 * @param osNameCheck Name of detected operating system (linux/mac/windows), or null to match any
+	 *  @param osNameCheck Name of detected operating system (linux/mac/windows)
  	 */
 	public static void loadLibrary(String library, String osNameCheck) {
-		if (osNameCheck == null || osNameCheck.equals(osName)) {
+		if (osName.equals(osNameCheck)) {
 			loadLibrary(library);
 		}
 	}
