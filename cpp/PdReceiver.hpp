@@ -20,17 +20,17 @@ namespace pd {
 /// a pd message receiver base class
 class PdReceiver {
 
-	public:
-	
-		/// print
-		virtual void print(const std::string& message) {};
-		
-		/// messages
-		virtual void receiveBang(const std::string& dest) {}
-		virtual void receiveFloat(const std::string& dest, float num) {}
-		virtual void receiveSymbol(const std::string& dest, const std::string& symbol) {}
-		virtual void receiveList(const std::string& dest, const List& list) {}
-		virtual void receiveMessage(const std::string& dest, const std::string& msg, const List& list) {}
+    public:
+
+        /// print
+        virtual void print(const std::string& message) {};
+
+        /// messages
+        virtual void receiveBang(const std::string& dest) {}
+        virtual void receiveFloat(const std::string& dest, float num) {}
+        virtual void receiveSymbol(const std::string& dest, const std::string& symbol) {}
+        virtual void receiveList(const std::string& dest, const List& list) {}
+        virtual void receiveMessage(const std::string& dest, const std::string& msg, const List& list) {}
 };
 
 } // namespace
