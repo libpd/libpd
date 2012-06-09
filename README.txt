@@ -39,3 +39,5 @@ Layout of the libpd repository:
   * samples: This branch contains one small sample program in C built on top
       of libpd, as well as a sample project in Java that uses JavaSound.
 
+Ready-made binaries for Java are available at
+https://github.com/airbaggins/libpd-java-build/raw/master/libpd.jar.

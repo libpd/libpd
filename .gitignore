@@ -43,3 +43,6 @@ csharptests/bin
 csharptests/obj
 csharptests/PartCover/coverage.xml
 libs/libpdcsharp.*
+
+# java
+java-build/*
