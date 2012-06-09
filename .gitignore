@@ -45,4 +45,4 @@ csharptests/PartCover/coverage.xml
 libs/libpdcsharp.*
 
 # java
-nbproject/private/
+java-build/*
