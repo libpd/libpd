@@ -28,6 +28,8 @@ public class NativeLoader {
 	
 	public static class NativeLibraryLoadError extends UnsatisfiedLinkError {
 		
+		private static final long serialVersionUID = 1L;
+
 		public NativeLibraryLoadError(String message) {
 			super(message);
 		}
