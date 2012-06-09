@@ -18,18 +18,18 @@ namespace pd {
 /// a pd midi receiver base class
 class PdMidiReceiver {
 
-	public:
+    public:
 
-		/// midi
-		virtual void receiveNoteOn(const int channel, const int pitch, const int velocity) {}
-		virtual void receiveControlChange(const int channel, const int controller, const int value) {}
-		virtual void receiveProgramChange(const int channel, const int value) {} // note: pgm value is 1-128
-		virtual void receivePitchBend(const int channel, const int value) {}
-		virtual void receiveAftertouch(const int channel, const int value) {}
-		virtual void receivePolyAftertouch(const int channel, const int pitch, const int value) {}
-		
-		/// raw midi byte
-		virtual void receiveMidiByte(const int port, const int byte) {}
+        /// midi
+        virtual void receiveNoteOn(const int channel, const int pitch, const int velocity) {}
+        virtual void receiveControlChange(const int channel, const int controller, const int value) {}
+        virtual void receiveProgramChange(const int channel, const int value) {} // note: pgm value is 1-128
+        virtual void receivePitchBend(const int channel, const int value) {}
+        virtual void receiveAftertouch(const int channel, const int value) {}
+        virtual void receivePolyAftertouch(const int channel, const int pitch, const int value) {}
+
+        /// raw midi byte
+        virtual void receiveMidiByte(const int port, const int byte) {}
 };
 
 } // namespace
