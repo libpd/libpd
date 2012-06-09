@@ -51,8 +51,26 @@ public final class PdBase {
 	private final static Map<Integer, Long> patches = new HashMap<Integer, Long>();
 	
 	static {
-		NativeLoader.loadLibrary("pthreadGC2", "windows");
-		NativeLoader.loadLibrary("pdnative");
+		try {
+			Class<?> inner[] = Class.forName("android.os.Build").getDeclaredClasses();
+			int version = -1;
+			for (Class<?> c : inner) {
+				if (c.getCanonicalName().equals("android.os.Build.VERSION")) {
+					version = c.getDeclaredField("SDK_INT").getInt(null);
+					break;
+				}
+			}
+			if (version >= 9) {
+				System.out.println("loading pdnativeopensl for Android");
+				NativeLoader.loadLibrary("pdnativeopensl");
+			} else {
+				System.out.println("loading pdnative for Android");
+				NativeLoader.loadLibrary("pdnative");
+			}
+		} catch (Exception e) {
+			NativeLoader.loadLibrary("pthreadGC2", "windows");
+			NativeLoader.loadLibrary("pdnative");
+		}
 		initialize();
 	}
 
