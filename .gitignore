@@ -46,4 +46,3 @@ libs/libpdcsharp.*
 
 # java
 nbproject/private/
-!java-build/org/puredata/natives/*/*/*.so
