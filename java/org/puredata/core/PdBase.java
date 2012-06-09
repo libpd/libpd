@@ -81,9 +81,10 @@ public final class PdBase {
 	/**
 	 * Releases resources held by native bindings (receiver objects and
 	 * subscriptions, as well as patches); otherwise, the state of Pd will
-     * remain unaffected.
+	 * remain unaffected.
 	 */
 	public synchronized static void release() {
+		closeAudio();
 		setReceiver(null);
 		setMidiReceiver(null);
 		for (long ptr : bindings.values()) {
