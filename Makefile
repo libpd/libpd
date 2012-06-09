@@ -63,8 +63,9 @@ PD_FILES = \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
 	libpd_wrapper/z_libpd.c 
 	
-JNI_FILE = libpd_wrapper/z_jni.c
-JNIH_FILE = libpd_wrapper/z_jni.h
+JNI_FILE = libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c \
+	jni/z_jni_plain.c
+JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 HOOK_SET = libpd_wrapper/z_csharp_helper.c
 LIBPD = libs/libpd.$(SOLIB_EXT)

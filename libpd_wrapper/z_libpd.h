@@ -95,6 +95,7 @@ typedef void (*t_libpd_pitchbendhook)(int channel, int value);
 typedef void (*t_libpd_aftertouchhook)(int channel, int value);
 typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
 typedef void (*t_libpd_midibytehook)(int port, int byte);
+
 EXTERN t_libpd_noteonhook libpd_noteonhook;
 EXTERN t_libpd_controlchangehook libpd_controlchangehook;
 EXTERN t_libpd_programchangehook libpd_programchangehook;
