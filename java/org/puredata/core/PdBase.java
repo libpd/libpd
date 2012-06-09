@@ -13,9 +13,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.puredata.core.PdMidiReceiver;
-import org.puredata.core.PdReceiver;
-
 
 /**
  * 
