@@ -62,10 +62,10 @@ public final class PdBase {
 			}
 			if (version >= 9) {
 				System.out.println("loading pdnativeopensl for Android");
-				NativeLoader.loadLibrary("pdnativeopensl");
+				System.loadLibrary("pdnativeopensl");
 			} else {
 				System.out.println("loading pdnative for Android");
-				NativeLoader.loadLibrary("pdnative");
+				System.loadLibrary("pdnative");
 			}
 		} catch (Exception e) {
 			NativeLoader.loadLibrary("pthreadGC2", "windows");
