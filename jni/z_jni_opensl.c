@@ -26,12 +26,11 @@ JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_implementsAudio
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
 (JNIEnv *env, jclass cls, jint inChans, jint outChans, jint sRate) {
+  Java_org_puredata_core_PdBase_closeAudio(env, cls);
   pthread_mutex_lock(&mutex);
   jint err = libpd_init_audio(inChans, outChans, sRate);
   pthread_mutex_unlock(&mutex);
   if (err) return err;
-  if (streamPtr) opensl_close(streamPtr);
-  isRunning = 0;
   streamPtr = opensl_open(sRate, inChans, outChans,
           NTICKS * libpd_blocksize(), process_callback, NULL);
   return !streamPtr;
