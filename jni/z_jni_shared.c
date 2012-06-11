@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <jni.h>
 
-#include "opensl_io.h"
 #include "z_libpd.h"
 #include "z_queued.h"
 

@@ -33,7 +33,7 @@ extern "C" {
  * the number of frames per buffer.
  */
 typedef void (*opensl_process_t)(void *context, int sRate, int bufFrames,
-    int inChans, short *inBuf, int outChans, short *outBuf);
+    int inChans, const short *inBuf, int outChans, short *outBuf);
 
 /*
  * Abstract data type for streaming audio with OpenSL.

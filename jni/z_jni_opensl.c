@@ -5,6 +5,8 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
+#include "opensl_io.h"
+
 #include "z_jni_shared.c"
 
 #define NTICKS 16
@@ -13,7 +15,7 @@ static OPENSL_STREAM *streamPtr = NULL;
 static int isRunning = 0;
 
 static void process_callback(void *context, int sRate, int bufFrames,
-    int nIn, short *inBuf, int nOut, short *outBuf) {
+    int nIn, const short *inBuf, int nOut, short *outBuf) {
   pthread_mutex_lock(&mutex);
   libpd_process_short(NTICKS, inBuf, outBuf);
   pthread_mutex_unlock(&mutex);
