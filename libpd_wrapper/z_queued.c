@@ -7,6 +7,7 @@
 
 #include "z_queued.h"
 
+#include <alloca.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -50,13 +51,9 @@ typedef struct _params {
 static ring_buffer *receive_buffer = NULL;
 static char temp_buffer[BUFFER_SIZE];
 
-static t_atom *alloc_args(int argc, char **argv) {
-  int n = argc * S_ATOM;
-  t_atom *args = (t_atom *)malloc(n);
-  if (!args) return NULL;
+static void copy_args(int n, char **argv, t_atom *args) {
   memcpy(args, *argv, n);
   *argv += n; 
-  return args;
 }
 
 static void receive_print(params *p, char **buffer) {
@@ -85,19 +82,21 @@ static void receive_symbol(params *p, char **buffer) {
 }
 
 static void receive_list(params *p, char **buffer) {
-  t_atom *args = alloc_args(p->argc, buffer);
+  int n = p->argc * S_ATOM;
+  t_atom *args = alloca(n);
+  copy_args(n, buffer, args);
   if (libpd_queued_listhook) {
     libpd_queued_listhook(p->src, p->argc, args);
   }
-  free(args);
 }
 
 static void receive_message(params *p, char **buffer) {
-  t_atom *args = alloc_args(p->argc, buffer);
+  int n = p->argc * S_ATOM;
+  t_atom *args = alloca(n);
+  copy_args(n, buffer, args);
   if (libpd_queued_messagehook) {
     libpd_queued_messagehook(p->src, p->sym, p->argc, args);
   }
-  free(args);
 }
 
 static void internal_printhook(const char *s) {

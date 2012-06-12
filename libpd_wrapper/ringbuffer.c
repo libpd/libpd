@@ -13,7 +13,7 @@
 ring_buffer *rb_create(int size) {
   ring_buffer *buffer = malloc(sizeof(ring_buffer));
   if (!buffer) return NULL;
-  buffer->buf_ptr = malloc(size * sizeof(char));
+  buffer->buf_ptr = calloc(size, sizeof(char));
   if (!buffer->buf_ptr) {
     free(buffer);
     return NULL;
