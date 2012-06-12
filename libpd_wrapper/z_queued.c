@@ -51,11 +51,6 @@ typedef struct _params {
 static ring_buffer *receive_buffer = NULL;
 static char temp_buffer[BUFFER_SIZE];
 
-static void copy_args(int n, char **argv, t_atom *args) {
-  memcpy(args, *argv, n);
-  *argv += n; 
-}
-
 static void receive_print(params *p, char **buffer) {
   if (libpd_queued_printhook) {
     libpd_queued_printhook(*buffer);
@@ -83,20 +78,22 @@ static void receive_symbol(params *p, char **buffer) {
 
 static void receive_list(params *p, char **buffer) {
   int n = p->argc * S_ATOM;
-  t_atom *args = alloca(n);
-  copy_args(n, buffer, args);
   if (libpd_queued_listhook) {
+    t_atom *args = alloca(n);
+    memcpy(args, *buffer, n);
     libpd_queued_listhook(p->src, p->argc, args);
   }
+  *buffer += n; 
 }
 
 static void receive_message(params *p, char **buffer) {
   int n = p->argc * S_ATOM;
-  t_atom *args = alloca(n);
-  copy_args(n, buffer, args);
   if (libpd_queued_messagehook) {
+    t_atom *args = alloca(n);
+    memcpy(args, *buffer, n);
     libpd_queued_messagehook(p->src, p->sym, p->argc, args);
   }
+  *buffer += n; 
 }
 
 static void internal_printhook(const char *s) {
