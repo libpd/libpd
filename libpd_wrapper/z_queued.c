@@ -77,14 +77,14 @@ static void receive_symbol(params *p, char **buffer) {
 
 static void receive_list(params *p, char **buffer) {
   if (libpd_queued_listhook) {
-    libpd_queued_listhook(p->src, p->argc, *buffer);
+    libpd_queued_listhook(p->src, p->argc, (t_atom *) *buffer);
   }
   *buffer += p->argc * S_ATOM;
 }
 
 static void receive_message(params *p, char **buffer) {
   if (libpd_queued_messagehook) {
-    libpd_queued_messagehook(p->src, p->sym, p->argc, *buffer);
+    libpd_queued_messagehook(p->src, p->sym, p->argc, (t_atom *) *buffer);
   }
   *buffer += p->argc * S_ATOM;
 }
