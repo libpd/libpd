@@ -7,7 +7,6 @@
 
 #include "z_queued.h"
 
-#include <alloca.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -77,31 +76,32 @@ static void receive_symbol(params *p, char **buffer) {
 }
 
 static void receive_list(params *p, char **buffer) {
-  int n = p->argc * S_ATOM;
   if (libpd_queued_listhook) {
-    t_atom *args = alloca(n);
-    memcpy(args, *buffer, n);
-    libpd_queued_listhook(p->src, p->argc, args);
+    libpd_queued_listhook(p->src, p->argc, *buffer);
   }
-  *buffer += n; 
+  *buffer += p->argc * S_ATOM;
 }
 
 static void receive_message(params *p, char **buffer) {
-  int n = p->argc * S_ATOM;
   if (libpd_queued_messagehook) {
-    t_atom *args = alloca(n);
-    memcpy(args, *buffer, n);
-    libpd_queued_messagehook(p->src, p->sym, p->argc, args);
+    libpd_queued_messagehook(p->src, p->sym, p->argc, *buffer);
   }
-  *buffer += n; 
+  *buffer += p->argc * S_ATOM;
 }
 
+#define LIBPD_WORD_ALIGN 8
+
 static void internal_printhook(const char *s) {
+  static char padding[LIBPD_WORD_ALIGN];
   int len = strlen(s) + 1; // remember terminating null char
-  if (rb_available_to_write(receive_buffer) >= S_PARAMS + len) {
-    params p = {LIBPD_PRINT, NULL, 0.0f, NULL, len, 0, 0, 0};
+  int rest = len % LIBPD_WORD_ALIGN;
+  if (rest) rest = LIBPD_WORD_ALIGN - rest;
+  int total = len + rest;
+  if (rb_available_to_write(receive_buffer) >= S_PARAMS + total) {
+    params p = {LIBPD_PRINT, NULL, 0.0f, NULL, total, 0, 0, 0};
     rb_write_to_buffer(receive_buffer, (const char *)&p, S_PARAMS);
     rb_write_to_buffer(receive_buffer, s, len);
+    rb_write_to_buffer(receive_buffer, padding, rest);
   }
 }
 
@@ -275,60 +275,59 @@ void libpd_queued_receive() {
   char *end = temp_buffer + available;
   char *buffer = temp_buffer;
   while (buffer < end) {
-    params p;
-    memcpy(&p, buffer, S_PARAMS);
+    params *p = buffer;
     buffer += S_PARAMS;
-    switch (p.type) {
+    switch (p->type) {
       case LIBPD_PRINT: {
-        receive_print(&p, &buffer);
+        receive_print(p, &buffer);
         break;
       }
       case LIBPD_BANG: {
-        receive_bang(&p, &buffer);
+        receive_bang(p, &buffer);
         break;
       }
       case LIBPD_FLOAT: {
-        receive_float(&p, &buffer);
+        receive_float(p, &buffer);
         break;
       }
       case LIBPD_SYMBOL: {
-        receive_symbol(&p, &buffer);
+        receive_symbol(p, &buffer);
         break;
       }
       case LIBPD_LIST: {
-        receive_list(&p, &buffer);
+        receive_list(p, &buffer);
         break;
       }
       case LIBPD_MESSAGE: {
-        receive_message(&p, &buffer);
+        receive_message(p, &buffer);
         break;
       }
       case LIBPD_NOTEON: {
-        receive_noteon(&p, &buffer);
+        receive_noteon(p, &buffer);
         break;
       }
       case LIBPD_CONTROLCHANGE: {
-        receive_controlchange(&p, &buffer);
+        receive_controlchange(p, &buffer);
         break;
       }
       case LIBPD_PROGRAMCHANGE: {
-        receive_programchange(&p, &buffer);
+        receive_programchange(p, &buffer);
         break;
       }
       case LIBPD_PITCHBEND: {
-        receive_pitchbend(&p, &buffer);
+        receive_pitchbend(p, &buffer);
         break;
       }
       case LIBPD_AFTERTOUCH: {
-        receive_aftertouch(&p, &buffer);
+        receive_aftertouch(p, &buffer);
         break;
       }
       case LIBPD_POLYAFTERTOUCH: {
-        receive_polyaftertouch(&p, &buffer);
+        receive_polyaftertouch(p, &buffer);
         break;
       }
       case LIBPD_MIDIBYTE: {
-        receive_midibyte(&p, &buffer);
+        receive_midibyte(p, &buffer);
         break;
       }
       default:
