@@ -15,7 +15,7 @@
 #include "z_libpd.h"
 #include "z_queued.h"
 
-static pthread_mutex_t mutex;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static JNIEnv *cached_env = NULL;
 
 static jobject messageHandler = NULL;
@@ -148,7 +148,6 @@ JNIEXPORT jint JNICALL JNI_OnLoad
 
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
 (JNIEnv *env, jclass cls) {
-  pthread_mutex_init(&mutex, (pthread_mutexattr_t*)NULL);
   libpd_queued_init();
 
   objClass = LIBPD_CLASS_REF("java/lang/Object");
