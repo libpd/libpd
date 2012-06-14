@@ -29,12 +29,10 @@ PD_SRC_FILES := \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_qlist.c \
   pure-data/src/x_time.c pure-data/src/x_interface.c \
   libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-  libpd_wrapper/z_libpd.c
-PD_JNI_FILES := \
-  libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c
+  libpd_wrapper/z_libpd.c libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c
 PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper
-PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY \
-	    -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
+PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY
+PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
 PD_LDLIBS := -ldl
 
 
@@ -56,9 +54,8 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := pdnative
 LOCAL_C_INCLUDES := $(PD_C_INCLUDES)
-LOCAL_CFLAGS := $(PD_CFLAGS)
-LOCAL_LDLIBS := $(PD_LDLIBS)
-LOCAL_SRC_FILES := $(PD_JNI_FILES) jni/z_jni_plain.c
+LOCAL_CFLAGS := $(PD_JNI_CFLAGS)
+LOCAL_SRC_FILES := jni/z_jni_plain.c
 LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
@@ -69,10 +66,9 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := pdnativeopensl
 LOCAL_C_INCLUDES := $(PD_C_INCLUDES) $(LOCAL_PATH)/jni
-LOCAL_CFLAGS := $(PD_CFLAGS)
-LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
-LOCAL_LDLIBS := $(PD_LDLIBS) -lOpenSLES
-LOCAL_SRC_FILES := $(PD_JNI_FILES) jni/opensl_io.c jni/z_jni_opensl.c
+LOCAL_CFLAGS := $(PD_JNI_CFLAGS)
+LOCAL_LDLIBS := -lOpenSLES
+LOCAL_SRC_FILES := jni/opensl_io.c jni/z_jni_opensl.c
 LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
