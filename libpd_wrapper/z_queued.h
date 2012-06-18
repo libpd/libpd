@@ -10,6 +10,11 @@
 
 #include "z_libpd.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 EXTERN t_libpd_printhook libpd_queued_printhook;
 EXTERN t_libpd_banghook libpd_queued_banghook;
 EXTERN t_libpd_floathook libpd_queued_floathook;
@@ -28,5 +33,9 @@ EXTERN t_libpd_midibytehook libpd_queued_midibytehook;
 int libpd_queued_init();
 void libpd_queued_release();
 void libpd_queued_receive();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
