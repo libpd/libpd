@@ -275,7 +275,7 @@ void libpd_queued_receive() {
   char *end = temp_buffer + available;
   char *buffer = temp_buffer;
   while (buffer < end) {
-    params *p = buffer;
+    params *p = (params *)buffer;
     buffer += S_PARAMS;
     switch (p->type) {
       case LIBPD_PRINT: {
