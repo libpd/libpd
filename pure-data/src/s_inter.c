@@ -19,6 +19,8 @@ that didn't really belong anywhere. */
 #include <sys/time.h>
 #include <sys/mman.h>
 #include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #endif
 #ifdef HAVE_BSTRING_H
 #include <bstring.h>
@@ -1154,7 +1156,19 @@ int sys_startgui(const char *libdir)
         /etc/security/limits.conf */
     if (sys_hipriority == -1)
         sys_hipriority = 1;
-    
+
+    sprintf(cmdbuf, "%s/bin/pd-watchdog", libdir);
+    if (sys_hipriority)
+    {
+      struct stat statbuf;
+      {
+        if (sys_verbose) fprintf(stderr,
+           "disabling real-time priority due to missing pd-watchdog (%s)\n",
+              cmdbuf);
+        sys_hipriority = 0;
+      }
+    }
+
     if (sys_hipriority)
     {
             /* To prevent lockup, we fork off a watchdog process with
@@ -1194,8 +1208,7 @@ int sys_startgui(const char *libdir)
             }
             close(pipe9[1]);
 
-            sprintf(cmdbuf, "%s/bin/pd-watchdog\n", libdir);
-            if (sys_verbose) fprintf(stderr, "%s", cmdbuf);
+            if (sys_verbose) fprintf(stderr, "%s\n", cmdbuf);
             execl("/bin/sh", "sh", "-c", cmdbuf, (char*)0);
             perror("pd: exec");
             _exit(1);
