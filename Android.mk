@@ -86,11 +86,11 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build libbonk~.so
+# Build libbonk_tilde.so
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := bonk~
+LOCAL_MODULE := bonk_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/bonk~/bonk~.c
@@ -99,11 +99,11 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build liblrshift~.so
+# Build liblrshift_tilde.so
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := lrshift~
+LOCAL_MODULE := lrshift_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/lrshift~/lrshift~.c
@@ -112,11 +112,11 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build libfiddle~.so
+# Build libfiddle_tilde.so
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := fiddle~
+LOCAL_MODULE := fiddle_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/fiddle~/fiddle~.c
@@ -125,11 +125,11 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build libsigmund~.so
+# Build libsigmund_tilde.so
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sigmund~
+LOCAL_MODULE := sigmund_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/sigmund~/sigmund~.c
@@ -151,11 +151,11 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build libloop~.so
+# Build libloop_tilde.so
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := loop~
+LOCAL_MODULE := loop_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/loop~/loop~.c
@@ -164,7 +164,7 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build libexpr~.so
+# Build libexpr.so
 
 include $(CLEAR_VARS)
 
