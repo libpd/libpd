@@ -547,6 +547,10 @@ public final class PdBase {
 	 */
 	public native static int process(int ticks, double[] inBuffer, double[] outBuffer);
 	
+	public native static int suggestSampleRate();
+	public native static int suggestInputChannels();
+	public native static int suggestOutputChannels();
+	
 	private native static void initialize();
 	private native static long openFile(String patch, String dir);
 	private native static void closeFile(long p);

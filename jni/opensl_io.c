@@ -26,6 +26,22 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 
+int opensl_suggest_sample_rate() {
+  return 44100;
+}
+
+int opensl_suggest_input_channels() {
+  return 1;
+}
+
+int opensl_suggest_output_channels() {
+  return 2;
+}
+
+int opensl_suggest_buffer_size(
+    int sample_rate, int input_channels, int output_channels) {
+  return 1024;
+}
 
 struct _opensl_stream {
   int inputChannels;

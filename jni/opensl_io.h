@@ -25,6 +25,12 @@
 extern "C" {
 #endif
 
+int opensl_suggest_sample_rate();
+int opensl_suggest_input_channels();
+int opensl_suggest_output_channels();
+int opensl_suggest_buffer_size(
+    int sample_rate, int input_channels, int output_channels);
+
 /*
  * Processing callback; takes a processing context (which is just a pointer to
  * whatever data you want to pass to the callback), the sample rate, the
@@ -56,7 +62,7 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * Returns NULL on failure.
  */
 OPENSL_STREAM *opensl_open(
-    int sRate, int inChans, int outChans, int bufFrames,
+    int sample_rate, int input_channels, int output_channels, int buffer_frames,
     opensl_process_t proc, void *context);
 
 /*

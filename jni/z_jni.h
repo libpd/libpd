@@ -249,6 +249,30 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    suggestSampleRate
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    suggestInputChannels
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    suggestOutputChannels
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    initialize
  * Signature: ()V
  */

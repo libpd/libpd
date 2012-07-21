@@ -9,15 +9,14 @@
 
 #include "z_jni_shared.c"
 
-#define NTICKS 16
-
 static OPENSL_STREAM *streamPtr = NULL;
 static int isRunning = 0;
+static int nticks;
 
 static void process_callback(void *context, int sRate, int bufFrames,
     int nIn, const short *inBuf, int nOut, short *outBuf) {
   pthread_mutex_lock(&mutex);
-  libpd_process_short(NTICKS, inBuf, outBuf);
+  libpd_process_short(*((int *)context), inBuf, outBuf);
   pthread_mutex_unlock(&mutex);
 }
 
@@ -33,8 +32,14 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
   jint err = libpd_init_audio(inChans, outChans, sRate);
   pthread_mutex_unlock(&mutex);
   if (err) return err;
+  int blkSize = libpd_blocksize();
+  int bufSize = opensl_suggest_buffer_size(sRate, inChans, outChans);
+  if (bufSize % blkSize) {
+    bufSize = (bufSize / blkSize) * blkSize + blkSize;
+  }
+  nticks = bufSize / blkSize;
   streamPtr = opensl_open(sRate, inChans, outChans,
-          NTICKS * libpd_blocksize(), process_callback, NULL);
+          bufSize, process_callback, &nticks);
   return !streamPtr;
 }
 
@@ -71,3 +76,19 @@ JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning
 (JNIEnv *env, jclass cls) {
   return isRunning;
 }
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
+(JNIEnv *env, jclass cls) {
+  return opensl_suggest_sample_rate();
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
+(JNIEnv *env, jclass cls) {
+  return opensl_suggest_input_channels();
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
+(JNIEnv *env, jclass cls) {
+  return opensl_suggest_output_channels();
+}
+

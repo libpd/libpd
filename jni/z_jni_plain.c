@@ -39,3 +39,19 @@ JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning
 (JNIEnv *env, jclass cls) {
   return 0;
 }
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
+(JNIEnv *env, jclass cls) {
+  return -1;
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
+(JNIEnv *env, jclass cls) {
+  return -1;
+}
+
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
+(JNIEnv *env, jclass cls) {
+  return -1;
+}
+

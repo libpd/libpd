@@ -104,7 +104,7 @@ libpd: $(LIBPD)
 $(LIBPD): ${PD_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
-javalib: $(PDJAVA_JAR)
+javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
 $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^
