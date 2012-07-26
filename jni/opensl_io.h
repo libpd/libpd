@@ -25,9 +25,26 @@
 extern "C" {
 #endif
 
+/*
+ * Returns the recommended sample rate for optimum audio performance,
+ * typically CD sample rate (44.1kHz).
+ */
 int opensl_suggest_sample_rate();
+
+/*
+ * Returns the recommended number of input channels, typically one.
+ */
 int opensl_suggest_input_channels();
+
+/*
+ * Returns the recommended number of output channels, typically two.
+ */
 int opensl_suggest_output_channels();
+
+/*
+ * Returns the recommended buffer size (in frames) for the given
+ * audio parameters.
+ */
 int opensl_suggest_buffer_size(
     int sample_rate, int input_channels, int output_channels);
 
