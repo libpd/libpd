@@ -40,7 +40,7 @@ int opensl_suggest_output_channels() {
 
 int opensl_suggest_buffer_size(
     int sample_rate, int input_channels, int output_channels) {
-  return 1024;
+  return (input_channels > 0) ? 1024 : 384;
 }
 
 struct _opensl_stream {
