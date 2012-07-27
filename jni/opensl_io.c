@@ -22,6 +22,7 @@
 
 #include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
@@ -40,8 +41,10 @@ int opensl_suggest_output_channels() {
 
 int opensl_suggest_buffer_size(
     int sample_rate, int input_channels, int output_channels) {
-  return (input_channels > 0) ? 1024 : 384;
+  return 384;
 }
+
+#define NBUFS 12
 
 struct _opensl_stream {
   int inputChannels;
@@ -62,17 +65,16 @@ struct _opensl_stream {
   SLAndroidSimpleBufferQueueItf recorderBufferQueue;
 
   int bufferFrames;
-  short *inputBuffer[3];  // The third input buffer is for defensive copies.
+  short *inputBuffer[NBUFS];
   short *outputBuffer[2];
 
-  int outputIndex;
   int inputIndex;
+  int outputIndex;
+  int readIndex;
 
   int queuesPrimed;
   opensl_process_t callback;
   void *context;
-
-  pthread_mutex_t mutex;
 };
 
 static SLuint32 convertSampleRate(SLuint32 sr) {
@@ -120,41 +122,27 @@ static SLresult openSLCreateEngine(OPENSL_STREAM *p) {
 void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
 
-  // Only need to lock if there's input as well as output.
-  if (p->outputChannels) {
-    pthread_mutex_lock(&(p->mutex));
-  }
   (*bq)->Enqueue(bq, p->inputBuffer[p->inputIndex],
       p->bufferFrames * p->inputChannels * sizeof(short));
-  p->inputIndex ^= 1;
-  if (p->outputChannels) {
-    pthread_mutex_unlock(&(p->mutex));
-  } else {
+  if (!p->outputChannels) {
     // Audio processing occurs in the output callback unless there is no output.
-    p->callback(p->context, p->sampleRate, p->bufferFrames,
-        p->inputChannels, p->inputBuffer[p->inputIndex], 0, NULL);
+    p->callback(p->context, p->sampleRate, p->bufferFrames, p->inputChannels,
+        p->inputBuffer[(p->inputIndex + 4) % NBUFS], 0, NULL);
   }
+  p->inputIndex = (p->inputIndex + 1) % NBUFS;
 }
 
 void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
 
-  if (p->inputChannels) {
-    pthread_mutex_lock(&(p->mutex));
-    // Make a defensive copy of current input buffer, in order to minimize the
-    // amount of time spent with the lock.
-    memcpy(p->inputBuffer[2], p->inputBuffer[p->inputIndex],
-        p->bufferFrames * p->inputChannels * sizeof(short));
-    pthread_mutex_unlock(&(p->mutex));
-  }
-
   short *outputBuffer = p->outputBuffer[p->outputIndex];
   p->callback(p->context, p->sampleRate, p->bufferFrames,
-      p->inputChannels, p->inputBuffer[2],
+      p->inputChannels, p->inputBuffer[p->readIndex],
       p->outputChannels, outputBuffer);
   (*bq)->Enqueue(bq, outputBuffer,
       p->bufferFrames * p->outputChannels * sizeof(short));
   p->outputIndex ^= 1;
+  p->readIndex = (p->readIndex + 1) % NBUFS;
 }
 
 static SLresult openSLRecOpen(OPENSL_STREAM *p, SLuint32 sr) {
@@ -297,11 +285,6 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
-  if (pthread_mutex_init(&(p->mutex), (pthread_mutexattr_t*) NULL)) {
-    free(p);
-    return NULL;
-  }
-
   p->queuesPrimed = 0;
   p->callback = proc;
   p->context = context;
@@ -309,8 +292,6 @@ OPENSL_STREAM *opensl_open(
   p->inputChannels = inChans;
   p->outputChannels = outChans;
   p->sampleRate = sRate;
-  p->outputIndex  = 0;
-  p->inputIndex = 0;
 
   if (openSLCreateEngine(p) != SL_RESULT_SUCCESS) {
     opensl_close(p);
@@ -320,9 +301,11 @@ OPENSL_STREAM *opensl_open(
   if (inChans) {
     int inBufSize = bufFrames * inChans;
     if (openSLRecOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
-        (p->inputBuffer[0] = (short *) calloc(3 * inBufSize, sizeof(short)))) {
-      p->inputBuffer[1] = p->inputBuffer[0] + inBufSize;
-      p->inputBuffer[2] = p->inputBuffer[1] + inBufSize;
+        (p->inputBuffer[0] = (short *) calloc(NBUFS * inBufSize, sizeof(short)))) {
+      int i;
+      for (i = 1; i < NBUFS; i++) {
+        p->inputBuffer[i] = p->inputBuffer[0] + i * inBufSize;
+      }
     } else {
       opensl_close(p);
       return NULL;
@@ -363,11 +346,16 @@ void opensl_close(OPENSL_STREAM *p) {
     // Only need to free p->outputBuffer[0] since we allocated them all at once.
     free(p->outputBuffer[0]);
   }
-  pthread_mutex_destroy(&(p->mutex));
   free(p);
 }
 
 int opensl_start(OPENSL_STREAM *p) {
+  p->inputIndex = 0;
+  p->outputIndex = 0;
+  p->readIndex = 4;
+  memset(p->inputBuffer[0], 0,
+      NBUFS * p->inputChannels * p->bufferFrames * sizeof(short));
+
   if (p->recorderRecord &&
       (*p->recorderRecord)->SetRecordState(p->recorderRecord,
           SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
