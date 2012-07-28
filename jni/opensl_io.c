@@ -26,6 +26,27 @@
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
+#include <sys/system_properties.h>
+
+static int supports_low_output_latency(int srate) {
+  static int initialized = 0;
+  static int is_jb_gn = 0;
+  if (!initialized) {
+    initialized = 1;
+    char value[PROP_VALUE_MAX];
+    int len = __system_property_get("ro.build.version.sdk", value);
+    if (len > 0) {
+      int version = atoi(value);
+      if (version > 15) {  // Jelly Bean or later?
+        len = __system_property_get("ro.product.model", value);
+        if (len > 0 && !strcmp("Galaxy Nexus", value)) {
+          is_jb_gn = 1;
+        }
+      }
+    }
+  }
+  return is_jb_gn && srate == 44100;
+}
 
 int opensl_suggest_sample_rate() {
   return 44100;
@@ -38,13 +59,6 @@ int opensl_suggest_input_channels() {
 int opensl_suggest_output_channels() {
   return 2;
 }
-
-int opensl_suggest_buffer_size(
-    int sample_rate, int input_channels, int output_channels) {
-  return 384;
-}
-
-#define NBUFS 12
 
 struct _opensl_stream {
   int inputChannels;
@@ -65,14 +79,16 @@ struct _opensl_stream {
   SLAndroidSimpleBufferQueueItf recorderBufferQueue;
 
   int bufferFrames;
-  short *inputBuffer[NBUFS];
-  short *outputBuffer[2];
+  int nInBufs;
+  int nOutBufs;
+  short *inputBuffer[16];
+  short *outputBuffer[16];
 
   int inputIndex;
   int outputIndex;
+  int initialReadIndex;
   int readIndex;
 
-  int queuesPrimed;
   opensl_process_t callback;
   void *context;
 };
@@ -127,22 +143,21 @@ void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   if (!p->outputChannels) {
     // Audio processing occurs in the output callback unless there is no output.
     p->callback(p->context, p->sampleRate, p->bufferFrames, p->inputChannels,
-        p->inputBuffer[(p->inputIndex + 4) % NBUFS], 0, NULL);
+        p->inputBuffer[(p->inputIndex + p->nInBufs / 2) % p->nInBufs], 0, NULL);
   }
-  p->inputIndex = (p->inputIndex + 1) % NBUFS;
+  p->inputIndex = (p->inputIndex + 1) % p->nInBufs;
 }
 
 void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
 
-  short *outputBuffer = p->outputBuffer[p->outputIndex];
   p->callback(p->context, p->sampleRate, p->bufferFrames,
       p->inputChannels, p->inputBuffer[p->readIndex],
-      p->outputChannels, outputBuffer);
-  (*bq)->Enqueue(bq, outputBuffer,
+      p->outputChannels, p->outputBuffer[p->outputIndex]);
+  (*bq)->Enqueue(bq, p->outputBuffer[p->outputIndex],
       p->bufferFrames * p->outputChannels * sizeof(short));
-  p->outputIndex ^= 1;
-  p->readIndex = (p->readIndex + 1) % NBUFS;
+  p->outputIndex = (p->outputIndex + 1) % p->nOutBufs;
+  p->readIndex = (p->readIndex + 1) % p->nInBufs;
 }
 
 static SLresult openSLRecOpen(OPENSL_STREAM *p, SLuint32 sr) {
@@ -269,7 +284,7 @@ static void openSLDestroyEngine(OPENSL_STREAM *p) {
 }
 
 OPENSL_STREAM *opensl_open(
-    int sRate, int inChans, int outChans, int bufFrames,
+    int sRate, int inChans, int outChans,
     opensl_process_t proc, void *context) {
   if (!proc || (!inChans && !outChans)) {
     return NULL;
@@ -285,13 +300,22 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
-  p->queuesPrimed = 0;
   p->callback = proc;
   p->context = context;
-  p->bufferFrames = bufFrames;
   p->inputChannels = inChans;
   p->outputChannels = outChans;
   p->sampleRate = sRate;
+  if (supports_low_output_latency(sRate)) {
+    p->bufferFrames = 384;
+    p->nInBufs = 16;
+    p->nOutBufs = 4;
+    p->initialReadIndex = 4;
+  } else {
+    p->bufferFrames = (sRate == 44100) ? 1024 : 512;
+    p->nInBufs = 16;
+    p->nOutBufs = 4;
+    p->initialReadIndex = 8;
+  }
 
   if (openSLCreateEngine(p) != SL_RESULT_SUCCESS) {
     opensl_close(p);
@@ -299,11 +323,11 @@ OPENSL_STREAM *opensl_open(
   }
 
   if (inChans) {
-    int inBufSize = bufFrames * inChans;
+    int inBufSize = p->bufferFrames * inChans;
     if (openSLRecOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
-        (p->inputBuffer[0] = (short *) calloc(NBUFS * inBufSize, sizeof(short)))) {
+        (p->inputBuffer[0] = (short *) calloc(p->nInBufs * inBufSize, sizeof(short)))) {
       int i;
-      for (i = 1; i < NBUFS; i++) {
+      for (i = 1; i < p->nInBufs; i++) {
         p->inputBuffer[i] = p->inputBuffer[0] + i * inBufSize;
       }
     } else {
@@ -313,11 +337,14 @@ OPENSL_STREAM *opensl_open(
   }
 
   if (outChans) {
-    int outBufSize = bufFrames * outChans;
+    int outBufSize = p->bufferFrames * outChans;
     if (openSLPlayOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
         (p->outputBuffer[0] =
-            (short *) calloc(2 * outBufSize, sizeof(short)))) {
-      p->outputBuffer[1] = p->outputBuffer[0] + outBufSize;
+            (short *) calloc(p->nOutBufs * outBufSize, sizeof(short)))) {
+      int i;
+      for (i = 1; i < p->nOutBufs; i++) {
+        p->outputBuffer[i] = p->outputBuffer[0] + i * outBufSize;
+      }
     } else {
       opensl_close(p);
       return NULL;
@@ -327,15 +354,20 @@ OPENSL_STREAM *opensl_open(
   return p;
 }
 
+int opensl_buffer_size(OPENSL_STREAM *p) {
+  return p->bufferFrames;
+}
+
 void opensl_close(OPENSL_STREAM *p) {
+  opensl_pause(p);  // Overkill?
   if (p->recorderRecord) {
+    (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
     (*p->recorderRecord)->SetRecordState(p->recorderRecord,
         SL_RECORDSTATE_STOPPED);
-    (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
   }
   if (p->playerPlay) {
-    (*p->playerPlay)->SetPlayState(p->playerPlay, SL_PLAYSTATE_STOPPED);
     (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
+    (*p->playerPlay)->SetPlayState(p->playerPlay, SL_PLAYSTATE_STOPPED);
   }
   openSLDestroyEngine(p);
   if (p->inputBuffer[0]) {
@@ -350,44 +382,41 @@ void opensl_close(OPENSL_STREAM *p) {
 }
 
 int opensl_start(OPENSL_STREAM *p) {
+  opensl_pause(p);
+
   p->inputIndex = 0;
   p->outputIndex = 0;
-  p->readIndex = 4;
+  p->readIndex = p->initialReadIndex;
   memset(p->inputBuffer[0], 0,
-      NBUFS * p->inputChannels * p->bufferFrames * sizeof(short));
+      p->nInBufs * p->inputChannels * p->bufferFrames * sizeof(short));
 
-  if (p->recorderRecord &&
-      (*p->recorderRecord)->SetRecordState(p->recorderRecord,
-          SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
-    return -1;
-  }
-  if (p->playerPlay &&
-      (*p->playerPlay)->SetPlayState(p->playerPlay,
-           SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
-    return -1;
-  }
-  if (!p->queuesPrimed) {
-    p->queuesPrimed = 1;
-    if (p->recorderBufferQueue) {
-      recorderCallback(p->recorderBufferQueue, p);
+  if (p->recorderRecord) {
+    recorderCallback(p->recorderBufferQueue, p);
+    if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
+            SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
+      return -1;
     }
-    if (p->playerBufferQueue) {
-      playerCallback(p->playerBufferQueue, p);
+  }
+  if (p->playerPlay) {
+    playerCallback(p->playerBufferQueue, p);
+    playerCallback(p->playerBufferQueue, p);
+    if ((*p->playerPlay)->SetPlayState(p->playerPlay,
+           SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
+      opensl_pause(p);
+      return -1;
     }
   }
   return 0;
 }
 
-int opensl_pause(OPENSL_STREAM *p) {
-  if (p->recorderRecord &&
-      (*p->recorderRecord)->SetRecordState(p->recorderRecord,
-          SL_RECORDSTATE_PAUSED) != SL_RESULT_SUCCESS) {
-    return -1;
+void opensl_pause(OPENSL_STREAM *p) {
+  if (p->recorderRecord) {
+    (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
+    (*p->recorderRecord)->SetRecordState(p->recorderRecord,
+        SL_RECORDSTATE_PAUSED);
   }
-  if (p->playerPlay &&
-      (*p->playerPlay)->SetPlayState(p->playerPlay,
-           SL_PLAYSTATE_PAUSED) != SL_RESULT_SUCCESS) {
-    return -1;
+  if (p->playerPlay) {
+    (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
+    (*p->playerPlay)->SetPlayState(p->playerPlay, SL_PLAYSTATE_PAUSED);
   }
-  return 0;
 }

@@ -42,13 +42,6 @@ int opensl_suggest_input_channels();
 int opensl_suggest_output_channels();
 
 /*
- * Returns the recommended buffer size (in frames) for the given
- * audio parameters.
- */
-int opensl_suggest_buffer_size(
-    int sample_rate, int input_channels, int output_channels);
-
-/*
  * Processing callback; takes a processing context (which is just a pointer to
  * whatever data you want to pass to the callback), the sample rate, the
  * buffer size in frames, the number of input and output channels, as well as
@@ -79,8 +72,13 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * Returns NULL on failure.
  */
 OPENSL_STREAM *opensl_open(
-    int sample_rate, int input_channels, int output_channels, int buffer_frames,
+    int sample_rate, int input_channels, int output_channels,
     opensl_process_t proc, void *context);
+
+/*
+ * Returns the buffer size (in frames) of the given OpenSL stream.
+ */
+int opensl_buffer_size(OPENSL_STREAM *p);
 
 /*
  * Stops playback and frees all resources associated with the given stream,
@@ -98,10 +96,8 @@ int opensl_start(OPENSL_STREAM *p);
 
 /*
  * Pauses the audio stream.
- *
- * Returns 0 on success.
  */
-int opensl_pause(OPENSL_STREAM *p);
+void opensl_pause(OPENSL_STREAM *p);
 
 #ifdef __cplusplus
 };
