@@ -309,7 +309,7 @@ OPENSL_STREAM *opensl_open(
     p->bufferFrames = 384;
     p->nInBufs = 16;
     p->nOutBufs = 4;
-    p->initialReadIndex = 4;
+    p->initialReadIndex = 14;
   } else {
     p->bufferFrames = (sRate == 44100) ? 1024 : 512;
     p->nInBufs = 16;
