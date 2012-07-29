@@ -28,24 +28,32 @@
 #include <SLES/OpenSLES_Android.h>
 #include <sys/system_properties.h>
 
+static int sdk_version() {
+  static int sdk = 0;
+  static int initialized = 0;
+  if (!initialized) {
+    initialized = 1;
+    char value[PROP_VALUE_MAX];
+    int len = __system_property_get("ro.build.version.sdk", value);
+    if (len > 0) {
+      sdk = atoi(value);
+    }
+  }
+  return sdk;
+}
+
 static int supports_low_output_latency(int srate) {
   static int initialized = 0;
   static int is_jb_gn = 0;
   if (!initialized) {
     initialized = 1;
     char value[PROP_VALUE_MAX];
-    int len = __system_property_get("ro.build.version.sdk", value);
-    if (len > 0) {
-      int version = atoi(value);
-      if (version > 15) {  // Jelly Bean or later?
-        len = __system_property_get("ro.product.model", value);
-        if (len > 0 && !strcmp("Galaxy Nexus", value)) {
-          is_jb_gn = 1;
-        }
-      }
+    int len = __system_property_get("ro.product.model", value);
+    if (len > 0 && !strcmp("Galaxy Nexus", value)) {
+      is_jb_gn = 1;
     }
   }
-  return is_jb_gn && srate == 44100;
+  return is_jb_gn && sdk_version() > 15 && srate == 44100;
 }
 
 int opensl_suggest_sample_rate() {
@@ -311,7 +319,7 @@ OPENSL_STREAM *opensl_open(
     p->nOutBufs = 4;
     p->initialReadIndex = 14;
   } else {
-    p->bufferFrames = (sRate == 44100) ? 1024 : 512;
+    p->bufferFrames = (sRate >= 44100 || sdk_version() < 14) ? 1024 : 512;
     p->nInBufs = 16;
     p->nOutBufs = 4;
     p->initialReadIndex = 8;
