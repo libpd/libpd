@@ -317,12 +317,12 @@ OPENSL_STREAM *opensl_open(
     p->bufferFrames = 384;
     p->nInBufs = 16;
     p->nOutBufs = 4;
-    p->initialReadIndex = 14;
+    p->initialReadIndex = p->nInBufs - 2;
   } else {
     p->bufferFrames = (sRate >= 44100 || sdk_version() < 14) ? 1024 : 512;
     p->nInBufs = 16;
     p->nOutBufs = 4;
-    p->initialReadIndex = 8;
+    p->initialReadIndex = p->nInBufs / 2;
   }
 
   if (openSLCreateEngine(p) != SL_RESULT_SUCCESS) {
