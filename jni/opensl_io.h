@@ -58,16 +58,13 @@ struct _opensl_stream;
 typedef struct _opensl_stream OPENSL_STREAM;
 
 /*
- * Opens the audio device for the given sample rate, channel configuration,
- * and buffer size; registers an audio processing callback that will receive
- * a context pointer (which may be NULL if no context is needed).  The context
- * is owned by the caller.
+ * Opens the audio device for the given sample rate and channel configuration;
+ * registers an audio processing callback that will receive a context pointer
+ * (which may be NULL if no context is needed).  The context is owned by the
+ * caller.
  *
  * For the time being, each channel number must be 0, 1, or 2; at least one
  * channel number must be nonzero.
- *
- * A buffer size of 1024 frames seems to be safe; significantly smaller buffer
- * sizes may result in glitchy audio.
  *
  * Returns NULL on failure.
  */
