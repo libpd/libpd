@@ -407,7 +407,6 @@ int opensl_start(OPENSL_STREAM *p) {
   }
   if (p->playerPlay) {
     playerCallback(p->playerBufferQueue, p);
-    playerCallback(p->playerBufferQueue, p);
     if ((*p->playerPlay)->SetPlayState(p->playerPlay,
            SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
       opensl_pause(p);
