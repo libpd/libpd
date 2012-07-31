@@ -319,7 +319,11 @@ OPENSL_STREAM *opensl_open(
     p->nOutBufs = 4;
     p->initialReadIndex = p->nInBufs - 2;
   } else {
-    p->bufferFrames = (sRate >= 44100 || sdk_version() < 14) ? 1024 : 512;
+    if (sdk_version() < 14) {
+      p->bufferFrames = (sRate >= 44100 && inChans > 0) ? 2048 : 1024;
+    } else {
+      p->bufferFrames = (sRate >= 44100 && inChans > 0) ? 1024 : 512;
+    }
     p->nInBufs = 16;
     p->nOutBufs = 4;
     p->initialReadIndex = p->nInBufs / 2;
