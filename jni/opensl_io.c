@@ -42,6 +42,9 @@ static int sdk_version() {
   return sdk;
 }
 
+// This method reflects the state of low latency support; it needs
+// to be updated whenever low latency latency becomes available on
+// a new device.
 static int supports_low_output_latency(int srate) {
   static int initialized = 0;
   static int is_jb_gn = 0;
@@ -313,6 +316,10 @@ OPENSL_STREAM *opensl_open(
   p->inputChannels = inChans;
   p->outputChannels = outChans;
   p->sampleRate = sRate;
+
+  // Now we set up input and output buffers. The values below are chosen
+  // conservatively and probably leave some room for improvement. More
+  // experimentation is necessary. Feedback is welcome.
   if (supports_low_output_latency(sRate)) {
     p->bufferFrames = 384;
     p->nInBufs = 16;
