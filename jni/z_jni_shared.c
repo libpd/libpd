@@ -52,6 +52,9 @@ static jobjectArray makeJavaArray(JNIEnv *env, int argc, t_atom *argv) {
       obj = (*env)->NewStringUTF(env, libpd_get_symbol(a));
     }
     (*env)->SetObjectArrayElement(env, jarray, i, obj);
+    if (obj != NULL) {
+      (*env)->DeleteLocalRef(env, obj);  // The reference in the array remains.
+    }
   }
   return jarray;
 }
@@ -60,18 +63,21 @@ static void java_printhook(const char *msg) {
   if (!messageHandler || !msg || !cached_env) return;
   jstring jmsg = (*cached_env)->NewStringUTF(cached_env, msg);
   (*cached_env)->CallVoidMethod(cached_env, messageHandler, printMethod, jmsg);
+  (*cached_env)->DeleteLocalRef(cached_env, jmsg);
 }
 
 void java_sendBang(const char *source) {
   if (!messageHandler || !source || !cached_env) return;
   jstring jsource = (*cached_env)->NewStringUTF(cached_env, source);
   (*cached_env)->CallVoidMethod(cached_env, messageHandler, bangMethod, jsource);
+  (*cached_env)->DeleteLocalRef(cached_env, jsource);
 }
 
 void java_sendFloat(const char *source, float x) {
   if (!messageHandler || !source || !cached_env) return;
   jstring jsource = (*cached_env)->NewStringUTF(cached_env, source);
   (*cached_env)->CallVoidMethod(cached_env, messageHandler, floatMethod, jsource, x);
+  (*cached_env)->DeleteLocalRef(cached_env, jsource);
 }
 
 void java_sendSymbol(const char *source, const char *sym) {
@@ -80,6 +86,8 @@ void java_sendSymbol(const char *source, const char *sym) {
   jstring jsym = (*cached_env)->NewStringUTF(cached_env, sym);
   (*cached_env)->CallVoidMethod(cached_env,
       messageHandler, symbolMethod, jsource, jsym);
+  (*cached_env)->DeleteLocalRef(cached_env, jsym);
+  (*cached_env)->DeleteLocalRef(cached_env, jsource);
 }
 
 void java_sendList(const char *source, int argc, t_atom *argv) {
@@ -88,6 +96,8 @@ void java_sendList(const char *source, int argc, t_atom *argv) {
   jobjectArray jarray = makeJavaArray(cached_env, argc, argv);
   (*cached_env)->CallVoidMethod(cached_env,
       messageHandler, listMethod, jsource, jarray);
+  (*cached_env)->DeleteLocalRef(cached_env, jarray);
+  (*cached_env)->DeleteLocalRef(cached_env, jsource);
 }
 
 void java_sendMessage(const char *source, const char *msg, int argc, t_atom *argv) {
@@ -97,6 +107,9 @@ void java_sendMessage(const char *source, const char *msg, int argc, t_atom *arg
   jobjectArray jarray = makeJavaArray(cached_env, argc, argv);
   (*cached_env)->CallVoidMethod(cached_env,
       messageHandler, anyMethod, jsource, jmsg, jarray);
+  (*cached_env)->DeleteLocalRef(cached_env, jarray);
+  (*cached_env)->DeleteLocalRef(cached_env, jmsg);
+  (*cached_env)->DeleteLocalRef(cached_env, jsource);
 }
 
 void java_sendNoteOn(int channel, int pitch, int velocity) {
