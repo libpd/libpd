@@ -21,12 +21,11 @@ import org.puredata.core.PdReceiver;
 /**
  * Abstract base class for using libpd with Processing.  It provides a
  * wrapper for libpd that is in line with the general look and feel of
- * Processing libraries.  Subclasses will provide the connection between
- * libpd and the audio platform, such as JACK.
+ * Processing libraries.
  * 
  * @author Peter Brinkmann (peter.brinkmann@gmail.com)
  */
-public abstract class PureDataP5Base implements PdReceiver {
+public class PureDataP5 implements PdReceiver {
 
 	private final Object parent;
 	private final Method pdPrintCallback;
@@ -41,9 +40,20 @@ public abstract class PureDataP5Base implements PdReceiver {
 	 * but we don't use PApplet here because we don't want any Processing
 	 * dependency in libpd itself.
 	 * 
-	 * @param parent owner, instance of PApplet
+	 * @param parent owner       instance of PApplet
+	 * @param int sampleRate     sample rate
+	 * @param int inputChannels  number of input channels
+	 * @param int outputChannels number of output channels
 	 */
-	public PureDataP5Base(Object parent) {
+	public PureDataP5(Object parent, int sampleRate, int inputChannels, int outputChannels) {
+		if (!PdBase.implementsAudio()) {
+			throw new RuntimeException("PdBase does not implement audio!");
+		}
+		if (PdBase.openAudio(inputChannels, outputChannels, sampleRate) != 0) {
+			throw new RuntimeException("Bad audio parameters: " + inputChannels + ", " + outputChannels + ", " + sampleRate);
+		}
+		PdBase.setReceiver(this);
+		PdBase.computeAudio(true);
 		this.parent = parent;
 		Map<String, Method> methods = extractMethods(parent.getClass());
 		try {
@@ -58,8 +68,6 @@ public abstract class PureDataP5Base implements PdReceiver {
 		receiveSymbolCallback = methods.get("receiveSymbol");
 		receiveListCallback = methods.get("receiveList");
 		receiveMessageCallback = methods.get("receiveMessage");
-		PdBase.setReceiver(this);
-		PdBase.computeAudio(true);
 	}
 	
 	private Map<String, Method> extractMethods(Class<?> clazz) {
@@ -82,12 +90,16 @@ public abstract class PureDataP5Base implements PdReceiver {
 	/**
 	 * Start audio.
 	 */
-	public abstract void start();
+	public void start() {
+		PdBase.startAudio();
+	}
 	
 	/**
 	 * Stop audio.
 	 */
-	public abstract void stop();
+	public void stop() {
+		PdBase.pauseAudio();
+	}
 	
 	/**
 	 * Delegates to the corresponding method in {@link PdBase}.
