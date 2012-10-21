@@ -14,7 +14,6 @@
 #define KEY_BUFFER_SIZE "opensl.buffer_size"
 
 static OPENSL_STREAM *streamPtr = NULL;
-static int isRunning = 0;
 
 static void process_callback(void *context, int sRate, int bufFrames,
     int nIn, const short *inBuf, int nOut, short *outBuf) {
@@ -66,26 +65,18 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio
   if (streamPtr) {
     opensl_close(streamPtr);
     streamPtr = NULL;
-    isRunning = 0;
   }
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio
 (JNIEnv *env, jclass cls) {
-  if (streamPtr && !isRunning) {
-    int res = opensl_start(streamPtr);
-    isRunning = !res;
-    return res;
-  } else {
-    return -1;
-  }
+  return streamPtr ? opensl_start(streamPtr) : -1;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio
 (JNIEnv *env, jclass cls) {
   if (streamPtr) {
     opensl_pause(streamPtr);
-    isRunning = 0;
     return 0;
   } else {
     return -1;
@@ -94,7 +85,7 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning
 (JNIEnv *env, jclass cls) {
-  return isRunning;
+  return streamPtr && opensl_is_running(streamPtr);
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
@@ -111,4 +102,3 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
 (JNIEnv *env, jclass cls) {
   return -1;
 }
-

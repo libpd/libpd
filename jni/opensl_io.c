@@ -359,8 +359,12 @@ static void *render_loop(void *arg) {
   return NULL;
 }
 
+int opensl_is_running(OPENSL_STREAM *p) {
+  return __sync_fetch_and_or(&(p->isRunning), 0);
+}
+
 int opensl_start(OPENSL_STREAM *p) {
-  opensl_pause(p);
+  if (opensl_is_running(p)) return 0;
 
   p->inputIndex = 0;
   p->outputIndex = 0;

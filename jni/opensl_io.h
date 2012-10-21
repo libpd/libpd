@@ -47,6 +47,11 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * (which may be NULL if no context is needed).  The context is owned by the
  * caller.
  *
+ * The internal buffer size is the buffer size (in frames) at which OpenSL
+ * operates; 512 is a reasonable default. The external buffer size is the buffer
+ * size for the processing callback. For example, Pd (via libpd) uses 64 frames
+ * per buffer.
+ *
  * For the time being, each channel number must be 0, 1, or 2; at least one
  * channel number must be nonzero.
  *
@@ -68,6 +73,11 @@ int opensl_buffer_size(OPENSL_STREAM *p);
  * the context (if any) is the responsibility of the caller.
  */
 void opensl_close(OPENSL_STREAM *p);
+
+/*
+ * Returns nonzero value if the given stream is currently running.
+ */
+int opensl_is_running(OPENSL_STREAM *p);
 
 /*
  * Starts the audio stream.
