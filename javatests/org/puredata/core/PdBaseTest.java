@@ -39,7 +39,7 @@ public class PdBaseTest {
 
 	@BeforeClass
 	public static void loadPatch() throws IOException {
-		PdBase.openAudio(2, 3, 44100);
+		PdBase.openAudio(2, 3, 44100, null);
 		PdBase.subscribe("eggs");
 		patch = PdBase.openPatch("javatests/org/puredata/core/test_java.pd");
 		PdBase.computeAudio(true);
