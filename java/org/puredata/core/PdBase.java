@@ -124,6 +124,15 @@ public final class PdBase {
 	 * 
 	 * @return error code, 0 on success
 	 */
+	public static int openAudio(int inputChannels, int outputChannels, int sampleRate) {
+		return openAudio(inputChannels, outputChannels, sampleRate, null);
+	}
+	
+	/**
+	 * Sets up Pd audio; must be called before rendering audio with process or startAudio.
+	 * 
+	 * @return error code, 0 on success
+	 */
 	public native static int openAudio(int inputChannels, int outputChannels, int sampleRate, Map<String, String> options);
 	
 	/**

@@ -49,7 +49,7 @@ public class PureDataP5 implements PdReceiver {
 		if (!PdBase.implementsAudio()) {
 			throw new RuntimeException("PdBase does not implement audio!");
 		}
-		if (PdBase.openAudio(inputChannels, outputChannels, sampleRate, null) != 0) {
+		if (PdBase.openAudio(inputChannels, outputChannels, sampleRate) != 0) {
 			throw new RuntimeException("Bad audio parameters: " + inputChannels + ", " + outputChannels + ", " + sampleRate);
 		}
 		PdBase.setReceiver(this);

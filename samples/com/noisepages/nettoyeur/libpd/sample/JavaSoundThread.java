@@ -41,7 +41,7 @@ public class JavaSoundThread extends Thread {
 		this.sampleRate = sampleRate;
 		this.outChans = outChans;
 		this.ticks = ticks;
-		PdBase.openAudio(0, outChans, (int) sampleRate, null);
+		PdBase.openAudio(0, outChans, (int) sampleRate);
 		PdBase.computeAudio(true);
 		setPriority(Thread.MAX_PRIORITY);
 	}
