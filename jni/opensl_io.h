@@ -26,29 +26,13 @@ extern "C" {
 #endif
 
 /*
- * Returns the recommended sample rate for optimum audio performance,
- * typically CD sample rate (44.1kHz).
- */
-int opensl_suggest_sample_rate();
-
-/*
- * Returns the recommended number of input channels, typically one.
- */
-int opensl_suggest_input_channels();
-
-/*
- * Returns the recommended number of output channels, typically two.
- */
-int opensl_suggest_output_channels();
-
-/*
  * Processing callback; takes a processing context (which is just a pointer to
  * whatever data you want to pass to the callback), the sample rate, the
  * buffer size in frames, the number of input and output channels, as well as
  * input and output buffers whose size must be the number of channels times
  * the number of frames per buffer.
  */
-typedef void (*opensl_process_t)(void *context, int sRate, int bufFrames,
+typedef void (*opensl_process_t)(void *context, int sRate, int bufferFrames,
     int inChans, const short *inBuf, int outChans, short *outBuf);
 
 /*
@@ -70,10 +54,11 @@ typedef struct _opensl_stream OPENSL_STREAM;
  */
 OPENSL_STREAM *opensl_open(
     int sample_rate, int input_channels, int output_channels,
+    int internal_buffer_size, int external_buffer_size,
     opensl_process_t proc, void *context);
 
 /*
- * Returns the buffer size (in frames) of the given OpenSL stream.
+ * Returns the external buffer size (in frames) of the given OpenSL stream.
  */
 int opensl_buffer_size(OPENSL_STREAM *p);
 

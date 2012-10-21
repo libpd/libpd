@@ -124,13 +124,19 @@ public final class PdBase {
 	 * 
 	 * @return error code, 0 on success
 	 */
-	public native static int openAudio(int inputChannels, int outputChannels, int sampleRate);
+	public native static int openAudio(int inputChannels, int outputChannels, int sampleRate, Map<String, String> options);
 	
 	/**
 	 * Indicates whether the underlying binary implements audio, e.g.,
-	 * with OpenSL or JACK.
+	 * with OpenSL or PortAudio or JACK.
 	 */
 	public native static boolean implementsAudio();
+	
+	/**
+	 * Indicates how the underlying binary implements audio, e.g.,
+	 * with OpenSL or PortAudio or JACK. Returns null if it doesn't implement audio.
+	 */
+	public native static String audioImplementation();
 	
 	/**
 	 * Returns a sample rate recommendation, or a negative value if no recommendation is available.

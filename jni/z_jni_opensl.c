@@ -7,7 +7,11 @@
 
 #include "opensl_io.h"
 
+#include <stdio.h>
+
 #include "z_jni_shared.c"
+
+#define KEY_BUFFER_SIZE "opensl.buffer_size"
 
 static OPENSL_STREAM *streamPtr = NULL;
 static int isRunning = 0;
@@ -19,19 +23,41 @@ static void process_callback(void *context, int sRate, int bufFrames,
   pthread_mutex_unlock(&mutex);
 }
 
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioImplementation
+(JNIEnv *env , jclass cls) {
+  return (*env)->NewStringUTF(env, "OpenSL");
+}
+
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_implementsAudio
 (JNIEnv *env, jclass cls) {
   return 1;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
-(JNIEnv *env, jclass cls, jint inChans, jint outChans, jint sRate) {
+(JNIEnv *env, jclass cls, jint inChans, jint outChans, jint sRate,
+jobject options) {
   Java_org_puredata_core_PdBase_closeAudio(env, cls);
   pthread_mutex_lock(&mutex);
   jint err = libpd_init_audio(inChans, outChans, sRate);
   pthread_mutex_unlock(&mutex);
   if (err) return err;
-  streamPtr = opensl_open(sRate, inChans, outChans, process_callback, NULL);
+
+  int buffer_size = 1024;  // Reasonable default...
+  if (options != NULL) {
+    jclass clazz = (*env)->GetObjectClass(env, options);
+    jmethodID getMethod = (*env)->GetMethodID(env, clazz, "get",
+        "(Ljava/lang/Object;)Ljava/lang/Object;");
+    jstring jkey = (*env)->NewStringUTF(env, KEY_BUFFER_SIZE);
+    jstring jvalue = (jstring) (*env)->CallObjectMethod(env, options,
+        getMethod, jkey);
+    if (jvalue != NULL) {
+      const char *s = (char *) (*env)->GetStringUTFChars(env, jvalue, NULL);
+      buffer_size = atoi(s);
+      (*env)->ReleaseStringUTFChars(env, jvalue, s);
+    }
+  }
+  streamPtr = opensl_open(sRate, inChans, outChans, buffer_size, 64,
+                          process_callback, NULL);
   return !streamPtr;
 }
 
@@ -73,16 +99,16 @@ JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
 (JNIEnv *env, jclass cls) {
-  return opensl_suggest_sample_rate();
+  return -1;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
 (JNIEnv *env, jclass cls) {
-  return opensl_suggest_input_channels();
+  return -1;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
 (JNIEnv *env, jclass cls) {
-  return opensl_suggest_output_channels();
+  return -1;
 }
 

@@ -42,10 +42,10 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
 /*
  * Class:     org_puredata_core_PdBase
  * Method:    openAudio
- * Signature: (III)I
+ * Signature: (IIILjava/util/Map;)I
  */
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
-  (JNIEnv *, jclass, jint, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jint, jobject);
 
 /*
  * Class:     org_puredata_core_PdBase
@@ -53,6 +53,38 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_implementsAudio
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    audioImplementation
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioImplementation
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    suggestSampleRate
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    suggestInputChannels
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    suggestOutputChannels
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
   (JNIEnv *, jclass);
 
 /*
@@ -246,30 +278,6 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3F_3F
  */
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
   (JNIEnv *, jclass, jint, jdoubleArray, jdoubleArray);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    suggestSampleRate
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
-  (JNIEnv *, jclass);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    suggestInputChannels
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
-  (JNIEnv *, jclass);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    suggestOutputChannels
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
-  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase

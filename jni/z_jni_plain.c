@@ -7,13 +7,19 @@
 
 #include "z_jni_shared.c"
 
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioImplementation
+(JNIEnv *env , jclass cls) {
+  return NULL;
+}
+
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_implementsAudio
 (JNIEnv *env, jclass cls) {
   return 0;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
-(JNIEnv *env, jclass cls, jint inChans, jint outChans, jint sRate) {
+(JNIEnv *env, jclass cls, jint inChans, jint outChans, jint sRate,
+jobject options) {
   pthread_mutex_lock(&mutex);
   jint err = libpd_init_audio(inChans, outChans, sRate);
   pthread_mutex_unlock(&mutex);
