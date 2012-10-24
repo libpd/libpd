@@ -47,7 +47,7 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * (which may be NULL if no context is needed).  The context is owned by the
  * caller.
  *
- * The internal buffer size is the buffer size (in frames) at which OpenSL
+ * The internal buffer sizes are the buffer sizes (in frames) at which OpenSL
  * operates; 512 is a reasonable default. The external buffer size is the buffer
  * size for the processing callback. For example, Pd (via libpd) uses 64 frames
  * per buffer.
@@ -59,8 +59,8 @@ typedef struct _opensl_stream OPENSL_STREAM;
  */
 OPENSL_STREAM *opensl_open(
     int sample_rate, int input_channels, int output_channels,
-    int internal_buffer_size, int external_buffer_size,
-    opensl_process_t proc, void *context);
+    int internal__input_buffer_size, int internal__output_buffer_size,
+    int external_buffer_size, opensl_process_t proc, void *context);
 
 /*
  * Returns the external buffer size (in frames) of the given OpenSL stream.
