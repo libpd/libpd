@@ -355,7 +355,6 @@ void opensl_close(OPENSL_STREAM *p) {
 
 static void *render_loop(void *arg) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) arg;
-  __sync_bool_compare_and_swap(&(p->isRunning), 0, 1);
   int renderInputIndex = 0;
   int renderOutputIndex = 0;
   while (__sync_fetch_and_or(&(p->isRunning), 0)) {
@@ -413,7 +412,9 @@ int opensl_start(OPENSL_STREAM *p) {
     memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
   }
 
+  p->isRunning = 1;
   if (pthread_create(&(p->renderThread), NULL, render_loop, p)) {
+    p->isRunning = 0;
     return -1;
   }
 
