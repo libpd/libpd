@@ -285,6 +285,7 @@ OPENSL_STREAM *opensl_open(
            p->totalInputBufferFrames / externalBufferFrames < NBUFFERS) {
       p->totalInputBufferFrames += lcm;
     }
+    p->totalInputBufferFrames *= 2;
   }
   if (outChans) {
     p->internalOutputBufferFrames = internalOutputBufferFrames;
@@ -355,7 +356,7 @@ void opensl_close(OPENSL_STREAM *p) {
 
 static void *render_loop(void *arg) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) arg;
-  int renderInputIndex = 0;
+  int renderInputIndex = p->totalInputBufferFrames / 2;
   int renderOutputIndex = 0;
   while (__sync_fetch_and_or(&(p->isRunning), 0)) {
     int invokeCallback = 1;
