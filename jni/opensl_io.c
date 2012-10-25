@@ -283,7 +283,7 @@ OPENSL_STREAM *opensl_open(
     p->totalInputBufferFrames = lcm;
     while (p->totalInputBufferFrames / internalInputBufferFrames < NBUFFERS ||
            p->totalInputBufferFrames / externalBufferFrames < NBUFFERS) {
-         p->totalInputBufferFrames += lcm;
+      p->totalInputBufferFrames += lcm;
     }
   }
   if (outChans) {
@@ -293,7 +293,7 @@ OPENSL_STREAM *opensl_open(
     p->totalOutputBufferFrames = lcm;
     while (p->totalOutputBufferFrames / internalOutputBufferFrames < NBUFFERS ||
            p->totalOutputBufferFrames / externalBufferFrames < NBUFFERS) {
-         p->totalOutputBufferFrames += lcm;
+      p->totalOutputBufferFrames += lcm;
     }
   }
   p->callback = proc;
