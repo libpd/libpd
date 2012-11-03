@@ -23,7 +23,7 @@
 }
 
 - (void)dealloc {
-    for (NSValue *handle in subscriptions) {
+    for (NSValue *handle in [subscriptions allValues]) {
         void *ptr = [handle pointerValue];
         [PdBase unsubscribe:ptr];
     }
