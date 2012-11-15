@@ -506,7 +506,8 @@ class PdBase {
 
             private:
 
-                bool bInited;           ///< is pd inited?
+                bool bInited;           ///< is this pd context inited?
+				bool bLibPDInited;		///< has libpd_init be called?
 
                 unsigned int numBases;  ///< number of pd base objects
 
