@@ -773,8 +773,12 @@ bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, 
 
     libpd_midibytehook = (t_libpd_midibytehook) _midibyte;
 
-    // init pd
-    libpd_init();
+    // init libpd, should only be called once!
+	if(!bLibPDInited) {
+		libpd_init();
+		bLibPDInited = true;
+	}
+	// init audio
     if(libpd_init_audio(numInChannels, numOutChannels, sampleRate) != 0) {
         return false;
     }
@@ -845,6 +849,7 @@ PdBase::PdContext::PdContext() {
     clear();
     maxMsgLen = 32;
 
+	bLibPDInited = false;
     bInited = false;
     numBases = false;
 
