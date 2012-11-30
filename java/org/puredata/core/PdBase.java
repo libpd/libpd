@@ -58,7 +58,11 @@ public final class PdBase {
 			int version = -1;
 			for (Class<?> c : inner) {
 				if (c.getCanonicalName().equals("android.os.Build.VERSION")) {
-					version = c.getDeclaredField("SDK_INT").getInt(null);
+					try {
+						version = c.getDeclaredField("SDK_INT").getInt(null);
+					} catch (Exception e) {
+						version = 3;  // SDK_INT is not available for Cupcake.
+					}
 					break;
 				}
 			}
@@ -70,6 +74,7 @@ public final class PdBase {
 				System.loadLibrary("pdnative");
 			}
 		} catch (Exception e) {
+			// Now we know we aren't running on an Android device.
 			NativeLoader.loadLibrary("pthreadGC2", "windows");
 			NativeLoader.loadLibrary("pdnative");
 		}
