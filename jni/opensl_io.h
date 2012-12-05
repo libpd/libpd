@@ -49,9 +49,12 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * caller.
  *
  * The internal buffer sizes are the buffer sizes (in frames) at which OpenSL
- * operates; 512 is a reasonable default. The external buffer size is the buffer
- * size for the processing callback. For example, Pd (via libpd) uses 64 frames
- * per buffer.
+ * operates; 512 is a reasonable default. As of Android 4.2, the AudioManager
+ * class in Java offers a method that will yield the recommended sample rate
+ * and buffer size for OpenSL.
+ *
+ * The external buffer size is the buffer size for the processing callback. For
+ * example, Pd (via libpd) uses 64 frames per buffer.
  *
  * For the time being, each channel number must be 0, 1, or 2; at least one
  * channel number must be nonzero.
