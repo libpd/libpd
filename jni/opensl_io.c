@@ -1,6 +1,5 @@
 /*
- * Copyright 2012 Google Inc.
- * Author: Peter Brinkmann (brinkmann@google.com)
+ * Copyright 2012 Peter Brinkmann (peter.brinkmann@gmail.com)
  *
  * Based on sample code by Victor Lazzarini, available at
  * http://audioprograming.wordpress.com/2012/03/03/android-audio-streaming-with-opensl-es-and-the-ndk/
@@ -327,10 +326,6 @@ OPENSL_STREAM *opensl_open(
   }
 
   return p;
-}
-
-int opensl_buffer_size(OPENSL_STREAM *p) {
-  return p->externalBufferFrames;
 }
 
 void opensl_close(OPENSL_STREAM *p) {

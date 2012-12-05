@@ -1,6 +1,5 @@
 /*
- * Copyright 2012 Google Inc.
- * Author: Peter Brinkmann (brinkmann@google.com)
+ * Copyright 2012 Peter Brinkmann (peter.brinkmann@gmail.com)
  *
  * Based on sample code by Victor Lazzarini, available at
  * http://audioprograming.wordpress.com/2012/03/03/android-audio-streaming-with-opensl-es-and-the-ndk/
@@ -32,8 +31,10 @@ extern "C" {
  * input and output buffers whose size must be the number of channels times
  * the number of frames per buffer.
  */
-typedef void (*opensl_process_t)(void *context, int sRate, int bufferFrames,
-    int inChans, const short *inBuf, int outChans, short *outBuf);
+typedef void (*opensl_process_t)
+    (void *context, int sample_rate, int buffer_frames,
+     int input_channels, const short *input_buffer,
+     int output_channels, short *output_buffer);
 
 /*
  * Abstract data type for streaming audio with OpenSL.
@@ -61,11 +62,6 @@ OPENSL_STREAM *opensl_open(
     int sample_rate, int input_channels, int output_channels,
     int internal__input_buffer_size, int internal__output_buffer_size,
     int external_buffer_size, opensl_process_t proc, void *context);
-
-/*
- * Returns the external buffer size (in frames) of the given OpenSL stream.
- */
-int opensl_buffer_size(OPENSL_STREAM *p);
 
 /*
  * Stops playback and frees all resources associated with the given stream,
