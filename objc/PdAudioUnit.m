@@ -17,10 +17,6 @@ static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
 
 @interface PdAudioUnit () {
-@private
-    BOOL inputEnabled_;
-    BOOL initialized_;
-	int blockSizeAsLog_;
 }
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
