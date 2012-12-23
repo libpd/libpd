@@ -15,6 +15,8 @@
 
 #define UNDEFINED_BAD_CATEGORY_ERROR -12986
 
+#if TARGET_OS_IPHONE
+
 NSString *AVStatusCodeAsString(OSStatus status) {
 	switch (status) {
 		case kAudioSessionNoError:
@@ -43,6 +45,8 @@ NSString *AVStatusCodeAsString(OSStatus status) {
 			return [NSString stringWithFormat:@"unknown error code %ld", status];
 	}
 }
+
+#endif // TARGET_OS_IPHONE
 
 NSString *AUStatusCodeAsString(OSStatus status) {
 	switch (status) {

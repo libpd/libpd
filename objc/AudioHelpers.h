@@ -9,14 +9,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#include "TargetConditionals.h"
 
 #pragma mark - Audio Unit / Audio Session Debugging
 
 // uncomment this to log more information from the audio classes, or define it in "Other C Flags" build settings
 //#define AU_DEBUG_VERBOSE
 
+#if TARGET_OS_IPHONE
 // returns the name of the const value associated with the OSStatus as a string
 extern NSString *AVStatusCodeAsString(OSStatus status);
+#endif // TARGET_OS_IPHONE
+
+// returns the name of the const value associated with the OSStatus as a string
 extern NSString *AUStatusCodeAsString(OSStatus status);
 
 // log debug info along with the class, function and line number
