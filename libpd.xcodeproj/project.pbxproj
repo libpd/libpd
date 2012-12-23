@@ -87,6 +87,8 @@
 		110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD1147B838F00282ABC /* PdAudioController.m */; };
 		110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD2147B838F00282ABC /* PdAudioUnit.h */; };
 		110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD3147B838F00282ABC /* PdAudioUnit.m */; };
+		118409251680422A007ACD8F /* PdAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD3147B838F00282ABC /* PdAudioUnit.m */; };
+		118409261680458E007ACD8F /* AudioHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DCF147B838E00282ABC /* AudioHelpers.m */; };
 		119013511486450C00086F19 /* PdBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0AA12EEFE5E0053280E /* PdBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		119013521486450C00086F19 /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		119013531486450C00086F19 /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -645,6 +647,8 @@
 				119013A21486450C00086F19 /* ringbuffer.c in Sources */,
 				11A026E914BAA414002FC756 /* PdBase.cpp in Sources */,
 				11A026F114BAA414002FC756 /* PdTypes.cpp in Sources */,
+				118409251680422A007ACD8F /* PdAudioUnit.m in Sources */,
+				118409261680458E007ACD8F /* AudioHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
