@@ -161,7 +161,13 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 - (AudioComponentDescription)ioDescription {
 	AudioComponentDescription description;
 	description.componentType = kAudioUnitType_Output;
+
+#if TARGET_OS_IPHONE
 	description.componentSubType = kAudioUnitSubType_RemoteIO;
+#else
+	description.componentSubType = kAudioUnitSubType_HALOutput;
+#endif
+
 	description.componentManufacturer = kAudioUnitManufacturer_Apple;
 	description.componentFlags = 0;
 	description.componentFlagsMask = 0;
