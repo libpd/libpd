@@ -43,15 +43,18 @@ return -1;\
 } while (0)
 
 
-@interface AppDelegate : NSObject <NSApplicationDelegate> {
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSTextFieldDelegate> {
 	NSWindow	*_window;
+
 	AudioUnit	_outputUnit;
+	NSTextField *_textField;
 	AudioUnit	_speechUnit;
 	AUGraph		_graph;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (nonatomic) AudioUnit outputUnit;
+@property (assign) IBOutlet NSTextField *textField;
 
 - (int)createGraph;
 - (int)startGraph;
@@ -64,6 +67,7 @@ return -1;\
 
 @synthesize window = _window;
 @synthesize outputUnit = _outputUnit;
+@synthesize textField = _textField;
 
 - (void)dealloc
 {
@@ -73,6 +77,7 @@ return -1;\
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	[NSApp setDelegate:self];
+	[self.textField setDelegate:self];
 	
 	if( [self createGraph] ) {
 		AU_LOG(@"error: failed to initialize graph.");
@@ -154,8 +159,13 @@ return -1;\
 }
 
 - (IBAction)speakButtonTapped:(id)sender {
-	AU_LOG(@"trying to speak..");
-	[self saySomething:@"Hey there ugly dude."];
+	[self saySomething:[self.textField stringValue]];
 }
+
+- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor {
+	[self saySomething:[self.textField stringValue]];
+	return YES;
+}
+
 
 @end
