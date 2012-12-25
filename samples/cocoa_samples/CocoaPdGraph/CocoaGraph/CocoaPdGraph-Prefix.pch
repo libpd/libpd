@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'CocoaGraph' target in the 'CocoaGraph' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif
