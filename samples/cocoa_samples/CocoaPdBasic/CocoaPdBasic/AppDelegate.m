@@ -14,7 +14,8 @@
 #import <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AUGraph.h>
 
-static NSString *const kPatchName = @"tone.pd";
+//static NSString *const kPatchName = @"tone.pd";
+static NSString *const kPatchName = @"testinput.pd";
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
 	NSWindow	*_window;
@@ -39,7 +40,7 @@ static NSString *const kPatchName = @"tone.pd";
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	[NSApp setDelegate:self];
 	self.pdAudioUnit = [[[PdAudioUnit alloc] init] autorelease];
-	[self.pdAudioUnit configureWithSampleRate:44100 numberChannels:2 inputEnabled:NO];
+	[self.pdAudioUnit configureWithSampleRate:44100 numberChannels:2 inputEnabled:YES];
 	[self.pdAudioUnit print];
 
 	void *handle = [PdBase openFile:kPatchName path:[[NSBundle mainBundle] resourcePath]];
@@ -49,6 +50,10 @@ static NSString *const kPatchName = @"tone.pd";
 		AU_LOG(@"error: patch failed to open %@.", kPatchName);
 	}
 
+	[self performSelector:@selector(startAudio) withObject:nil afterDelay:1];
+}
+
+- (void)startAudio {
 	self.pdAudioUnit.active = YES;
 	AU_LOG(@"PdAudioUnit audio active: %@", (self.pdAudioUnit.isActive ? @"YES" : @"NO" ) );
 }

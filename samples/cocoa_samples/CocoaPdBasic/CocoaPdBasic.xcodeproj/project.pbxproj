@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		114677AB168A128D00687E25 /* testinput.pd in Resources */ = {isa = PBXBuildFile; fileRef = 114677AA168A128D00687E25 /* testinput.pd */; };
+		114677AE168A1B8100687E25 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114677AD168A1B8100687E25 /* CoreAudio.framework */; };
 		118408F816803D13007ACD8F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118408F716803D13007ACD8F /* Cocoa.framework */; };
 		1184090216803D13007ACD8F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1184090016803D13007ACD8F /* InfoPlist.strings */; };
 		1184090416803D13007ACD8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184090316803D13007ACD8F /* main.m */; };
@@ -43,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		114677AA168A128D00687E25 /* testinput.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = testinput.pd; path = Resources/testinput.pd; sourceTree = SOURCE_ROOT; };
+		114677AD168A1B8100687E25 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		118408F416803D13007ACD8F /* CocoaPdBasic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaPdBasic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		118408F716803D13007ACD8F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		118408FA16803D13007ACD8F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				114677AE168A1B8100687E25 /* CoreAudio.framework in Frameworks */,
 				1184092416804210007ACD8F /* AudioUnit.framework in Frameworks */,
 				1184091F16803D57007ACD8F /* libpd-osx.a in Frameworks */,
 				118408F816803D13007ACD8F /* Cocoa.framework in Frameworks */,
@@ -77,6 +82,7 @@
 		118408EB16803D13007ACD8F = {
 			isa = PBXGroup;
 			children = (
+				114677AD168A1B8100687E25 /* CoreAudio.framework */,
 				1184091416803D43007ACD8F /* libpd.xcodeproj */,
 				118408FD16803D13007ACD8F /* CocoaPdBasic */,
 				118408F616803D13007ACD8F /* Frameworks */,
@@ -147,6 +153,7 @@
 		118409201680407A007ACD8F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				114677AA168A128D00687E25 /* testinput.pd */,
 				1184092116804082007ACD8F /* tone.pd */,
 			);
 			name = Resources;
@@ -231,6 +238,7 @@
 				1184090816803D13007ACD8F /* Credits.rtf in Resources */,
 				1184090E16803D13007ACD8F /* MainMenu.xib in Resources */,
 				1184092216804082007ACD8F /* tone.pd in Resources */,
+				114677AB168A128D00687E25 /* testinput.pd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
