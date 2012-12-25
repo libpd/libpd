@@ -72,11 +72,12 @@ return -1;\
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+	[NSApp setDelegate:self];
+	
 	if( [self createGraph] ) {
 		AU_LOG(@"error: failed to initialize graph.");
 		return;
 	}
-	[self saySomething:@"Hey there handsome dude."];
 	[self startGraph];
 	
 //	void *handle = [PdBase openFile:PATCH_NAME path:[[NSBundle mainBundle] resourcePath]];
@@ -88,6 +89,10 @@ return -1;\
 
 	// TODO: need to init PdBase same as PdAudioUnit
 //	[PdBase computeAudio:YES];
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+	return YES;
 }
 
 - (int)createGraph {

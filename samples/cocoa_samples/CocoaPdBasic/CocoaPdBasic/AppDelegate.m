@@ -37,6 +37,7 @@ static NSString *const kPatchName = @"tone.pd";
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	[NSApp setDelegate:self];
 	self.pdAudioUnit = [[[PdAudioUnit alloc] init] autorelease];
 	[self.pdAudioUnit configureWithSampleRate:44100 numberChannels:2 inputEnabled:NO];
 	[self.pdAudioUnit print];
@@ -50,6 +51,10 @@ static NSString *const kPatchName = @"tone.pd";
 
 	self.pdAudioUnit.active = YES;
 	AU_LOG(@"PdAudioUnit audio active: %@", (self.pdAudioUnit.isActive ? @"YES" : @"NO" ) );
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+	return YES;
 }
 
 @end
