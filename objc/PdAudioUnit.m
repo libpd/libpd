@@ -133,8 +133,34 @@ static OSStatus AudioRenderCallback(void *inRefCon,
                                                       kInputElement,
                                                       &streamDescription,
                                                       sizeof(streamDescription)));
+
+#if ! TARGET_OS_IPHONE
+		// set input device (osx only... iphone has only one device)
+		AudioDeviceID defaultDevice = kAudioObjectUnknown;
+		UInt32 propertySize = sizeof (defaultDevice);
+
+		AudioObjectPropertyAddress defaultDeviceProperty;
+		defaultDeviceProperty.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+		defaultDeviceProperty.mScope = kAudioObjectPropertyScopeGlobal;
+		defaultDeviceProperty.mElement = kAudioObjectPropertyElementMaster;
+
+		AU_RETURN_FALSE_IF_ERROR( AudioObjectGetPropertyData(kAudioObjectSystemObject,
+															 &defaultDeviceProperty,
+															 0,
+															 NULL,
+															 &propertySize,
+															 &defaultDevice) );
+
+		AU_RETURN_FALSE_IF_ERROR( AudioUnitSetProperty(audioUnit_,
+													   kAudioOutputUnitProperty_CurrentDevice,
+													   kAudioUnitScope_Global,
+													   0,
+													   &defaultDevice,
+													   sizeof(defaultDevice)) );
+
+#endif
 	}
-	
+
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
                                                   kAudioUnitProperty_StreamFormat,
                                                   kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
