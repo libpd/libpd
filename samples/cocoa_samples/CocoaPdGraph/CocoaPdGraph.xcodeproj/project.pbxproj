@@ -44,14 +44,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1146776C1689D9FB00687E25 /* CocoaGraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaGraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1146776C1689D9FB00687E25 /* CocoaPdGraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaPdGraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1146776F1689D9FB00687E25 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		114677721689D9FB00687E25 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		114677741689D9FB00687E25 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		114677771689D9FB00687E25 /* CocoaGraph-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CocoaGraph-Info.plist"; sourceTree = "<group>"; };
+		114677771689D9FB00687E25 /* CocoaPdGraph-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CocoaPdGraph-Info.plist"; sourceTree = "<group>"; };
 		114677791689D9FB00687E25 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1146777B1689D9FB00687E25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1146777D1689D9FB00687E25 /* CocoaGraph-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CocoaGraph-Prefix.pch"; sourceTree = "<group>"; };
+		1146777D1689D9FB00687E25 /* CocoaPdGraph-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CocoaPdGraph-Prefix.pch"; sourceTree = "<group>"; };
 		1146777F1689D9FB00687E25 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		114677821689D9FB00687E25 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		114677851689D9FB00687E25 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				1146778C1689DB1400687E25 /* libpd.xcodeproj */,
-				114677751689D9FB00687E25 /* CocoaGraph */,
+				114677751689D9FB00687E25 /* Source */,
 				114677981689DEB400687E25 /* Resources */,
 				1146776E1689D9FB00687E25 /* Frameworks */,
 				1146776D1689D9FB00687E25 /* Products */,
@@ -90,7 +90,7 @@
 		1146776D1689D9FB00687E25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1146776C1689D9FB00687E25 /* CocoaGraph.app */,
+				1146776C1689D9FB00687E25 /* CocoaPdGraph.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,23 +115,24 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		114677751689D9FB00687E25 /* CocoaGraph */ = {
+		114677751689D9FB00687E25 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				114677821689D9FB00687E25 /* AppDelegate.m */,
 				114677841689D9FB00687E25 /* MainMenu.xib */,
 				114677761689D9FB00687E25 /* Supporting Files */,
 			);
+			name = Source;
 			path = CocoaGraph;
 			sourceTree = "<group>";
 		};
 		114677761689D9FB00687E25 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				114677771689D9FB00687E25 /* CocoaGraph-Info.plist */,
+				114677771689D9FB00687E25 /* CocoaPdGraph-Info.plist */,
 				114677781689D9FB00687E25 /* InfoPlist.strings */,
 				1146777B1689D9FB00687E25 /* main.m */,
-				1146777D1689D9FB00687E25 /* CocoaGraph-Prefix.pch */,
+				1146777D1689D9FB00687E25 /* CocoaPdGraph-Prefix.pch */,
 				1146777E1689D9FB00687E25 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -157,9 +158,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1146776B1689D9FB00687E25 /* CocoaGraph */ = {
+		1146776B1689D9FB00687E25 /* CocoaPdGraph */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 114677891689D9FB00687E25 /* Build configuration list for PBXNativeTarget "CocoaGraph" */;
+			buildConfigurationList = 114677891689D9FB00687E25 /* Build configuration list for PBXNativeTarget "CocoaPdGraph" */;
 			buildPhases = (
 				114677681689D9FB00687E25 /* Sources */,
 				114677691689D9FB00687E25 /* Frameworks */,
@@ -170,9 +171,9 @@
 			dependencies = (
 				114677A01689DF8B00687E25 /* PBXTargetDependency */,
 			);
-			name = CocoaGraph;
+			name = CocoaPdGraph;
 			productName = CocoaGraph;
-			productReference = 1146776C1689D9FB00687E25 /* CocoaGraph.app */;
+			productReference = 1146776C1689D9FB00687E25 /* CocoaPdGraph.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -184,7 +185,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Racoon;
 			};
-			buildConfigurationList = 114677671689D9FB00687E25 /* Build configuration list for PBXProject "CocoaGraph" */;
+			buildConfigurationList = 114677671689D9FB00687E25 /* Build configuration list for PBXProject "CocoaPdGraph" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -202,7 +203,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				1146776B1689D9FB00687E25 /* CocoaGraph */,
+				1146776B1689D9FB00687E25 /* CocoaPdGraph */,
 			);
 		};
 /* End PBXProject section */
@@ -350,9 +351,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CocoaGraph/CocoaGraph-Prefix.pch";
-				INFOPLIST_FILE = "CocoaGraph/CocoaGraph-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "CocoaGraph/CocoaPdGraph-Prefix.pch";
+				INFOPLIST_FILE = "CocoaGraph/CocoaPdGraph-Info.plist";
+				PRODUCT_NAME = CocoaPdGraph;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -362,9 +363,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CocoaGraph/CocoaGraph-Prefix.pch";
-				INFOPLIST_FILE = "CocoaGraph/CocoaGraph-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "CocoaGraph/CocoaPdGraph-Prefix.pch";
+				INFOPLIST_FILE = "CocoaGraph/CocoaPdGraph-Info.plist";
+				PRODUCT_NAME = CocoaPdGraph;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -372,7 +373,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		114677671689D9FB00687E25 /* Build configuration list for PBXProject "CocoaGraph" */ = {
+		114677671689D9FB00687E25 /* Build configuration list for PBXProject "CocoaPdGraph" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				114677871689D9FB00687E25 /* Debug */,
@@ -381,13 +382,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		114677891689D9FB00687E25 /* Build configuration list for PBXNativeTarget "CocoaGraph" */ = {
+		114677891689D9FB00687E25 /* Build configuration list for PBXNativeTarget "CocoaPdGraph" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1146778A1689D9FB00687E25 /* Debug */,
 				1146778B1689D9FB00687E25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
