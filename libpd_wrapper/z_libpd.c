@@ -92,7 +92,7 @@ int libpd_init_audio(int inChans, int outChans, int sampleRate) {
   return 0;
 }
 
-int libpd_process_raw(float *inBuffer, float *outBuffer) {
+int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   size_t n_in = sys_inchannels * DEFDACBLKSIZE;
   size_t n_out = sys_outchannels * DEFDACBLKSIZE;
   t_sample *p;
@@ -130,15 +130,15 @@ static const t_sample sample_to_short = SHRT_MAX,
   } \
   return 0;
 
-int libpd_process_short(int ticks, short *inBuffer, short *outBuffer) {
+int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
   PROCESS(* short_to_sample, * sample_to_short)
 }
 
-int libpd_process_float(int ticks, float *inBuffer, float *outBuffer) {
+int libpd_process_float(int ticks, const float *inBuffer, float *outBuffer) {
   PROCESS(,)
 }
 
-int libpd_process_double(int ticks, double *inBuffer, double *outBuffer) {
+int libpd_process_double(int ticks, const double *inBuffer, double *outBuffer) {
   PROCESS(,)
 }
  
@@ -192,9 +192,8 @@ int libpd_message(const char *recv, const char *msg, int n, t_atom *v) {
 
 int libpd_start_message(int max_length) {
   if (max_length > argm) {
-    t_atom *v = (t_atom *) malloc(max_length * sizeof(t_atom));
+    t_atom *v = realloc(argv, max_length * sizeof(t_atom));
     if (v) {
-      free(argv);
       argv = v;
       argm = max_length;
     } else {

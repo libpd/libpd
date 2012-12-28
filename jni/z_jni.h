@@ -33,59 +33,91 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setReceiver
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    setMidiReceiver
+ * Signature: (Lorg/puredata/core/PdMidiReceiver;)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    openAudio
- * Signature: (III)I
+ * Signature: (IIILjava/util/Map;)I
  */
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
-  (JNIEnv *, jclass, jint, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jint, jobject);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    processRaw
- * Signature: ([F[F)I
+ * Method:    implementsAudio
+ * Signature: ()Z
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_processRaw
-  (JNIEnv *, jclass, jfloatArray, jfloatArray);
+JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_implementsAudio
+  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    process
- * Signature: (I[S[S)I
+ * Method:    audioImplementation
+ * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3S_3S
-  (JNIEnv *, jclass, jint, jshortArray, jshortArray);
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioImplementation
+  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    process
- * Signature: (I[F[F)I
+ * Method:    suggestSampleRate
+ * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3F_3F
-  (JNIEnv *, jclass, jint, jfloatArray, jfloatArray);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
+  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    process
- * Signature: (I[D[D)I
+ * Method:    suggestInputChannels
+ * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
-  (JNIEnv *, jclass, jint, jdoubleArray, jdoubleArray);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestInputChannels
+  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    arraySize
- * Signature: (Ljava/lang/String;)I
+ * Method:    suggestOutputChannels
+ * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_arraySize
-  (JNIEnv *, jclass, jstring);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
+  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    exists
- * Signature: (Ljava/lang/String;)Z
+ * Method:    closeAudio
+ * Signature: ()V
  */
-JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_exists
-  (JNIEnv *, jclass, jstring);
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    startAudio
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    pauseAudio
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    isRunning
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning
+  (JNIEnv *, jclass);
 
 /*
  * Class:     org_puredata_core_PdBase
@@ -113,19 +145,19 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSymbol
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    blockSize
- * Signature: ()I
+ * Method:    exists
+ * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_blockSize
-  (JNIEnv *, jclass);
+JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_exists
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    setMidiReceiver
- * Signature: (Lorg/puredata/core/PdMidiReceiver;)V
+ * Method:    arraySize
+ * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_arraySize
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     org_puredata_core_PdBase
@@ -201,11 +233,83 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    pollMessageQueue
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMessageQueue
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    blockSize
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_blockSize
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    processRaw
+ * Signature: ([F[F)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_processRaw
+  (JNIEnv *, jclass, jfloatArray, jfloatArray);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    process
+ * Signature: (I[S[S)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3S_3S
+  (JNIEnv *, jclass, jint, jshortArray, jshortArray);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    process
+ * Signature: (I[F[F)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3F_3F
+  (JNIEnv *, jclass, jint, jfloatArray, jfloatArray);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    process
+ * Signature: (I[D[D)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
+  (JNIEnv *, jclass, jint, jdoubleArray, jdoubleArray);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    initialize
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
   (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    openFile
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_openFile
+  (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    closeFile
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    getDollarZero
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
+  (JNIEnv *, jclass, jlong);
 
 /*
  * Class:     org_puredata_core_PdBase
@@ -249,46 +353,6 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_finishMessage
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    bindSymbol
- * Signature: (Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_bindSymbol
-  (JNIEnv *, jclass, jstring);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    unbindSymbol
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    openFile
- * Signature: (Ljava/lang/String;Ljava/lang/String;)J
- */
-JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_openFile
-  (JNIEnv *, jclass, jstring, jstring);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    closeFile
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    getDollarZero
- * Signature: (J)I
- */
-JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
-  (JNIEnv *, jclass, jlong);
-
-/*
- * Class:     org_puredata_core_PdBase
  * Method:    readArrayNative
  * Signature: ([FILjava/lang/String;II)I
  */
@@ -302,6 +366,22 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_readArrayNative
  */
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_writeArrayNative
   (JNIEnv *, jclass, jstring, jint, jfloatArray, jint, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    bindSymbol
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_bindSymbol
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    unbindSymbol
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
+  (JNIEnv *, jclass, jlong);
 
 #ifdef __cplusplus
 }

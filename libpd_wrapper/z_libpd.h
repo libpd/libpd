@@ -28,10 +28,13 @@ EXTERN int libpd_getdollarzero(void *p);
 
 EXTERN int libpd_blocksize(void);
 EXTERN int libpd_init_audio(int inChans, int outChans, int sampleRate);
-EXTERN int libpd_process_raw(float *inBuffer, float *outBuffer);
-EXTERN int libpd_process_short(int ticks, short *inBuffer, short *outBuffer);
-EXTERN int libpd_process_float(int ticks, float *inBuffer, float *outBuffer);
-EXTERN int libpd_process_double(int ticks, double *inBuffer, double *outBuffer);
+EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
+EXTERN int libpd_process_short(const int ticks,
+    const short *inBuffer, short *outBuffer);
+EXTERN int libpd_process_float(int ticks,
+    const float *inBuffer, float *outBuffer);
+EXTERN int libpd_process_double(int ticks,
+    const double *inBuffer, double *outBuffer);
 
 EXTERN int libpd_arraysize(const char *name);
 // The parameters of the next two functions are inspired by memcpy.
@@ -95,6 +98,7 @@ typedef void (*t_libpd_pitchbendhook)(int channel, int value);
 typedef void (*t_libpd_aftertouchhook)(int channel, int value);
 typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
 typedef void (*t_libpd_midibytehook)(int port, int byte);
+
 EXTERN t_libpd_noteonhook libpd_noteonhook;
 EXTERN t_libpd_controlchangehook libpd_controlchangehook;
 EXTERN t_libpd_programchangehook libpd_programchangehook;

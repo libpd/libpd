@@ -13,5 +13,5 @@
 	<classpathentry kind="lib" path="libs/objenesis-1.2.jar"/>
 	<classpathentry kind="lib" path="libs/cglib-2.2.jar"/>
 	<classpathentry kind="lib" path="libs/asm-3.3.jar"/>
-	<classpathentry kind="output" path="java"/>
+	<classpathentry kind="output" path="java-build"/>
 </classpath>

@@ -81,8 +81,9 @@ PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/utils/PdDispatcher.java
 
 	
-JNI_FILE = libpd_wrapper/z_jni.c
-JNIH_FILE = libpd_wrapper/z_jni.h
+JNI_FILE = libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c \
+	jni/z_jni_plain.c
+JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 HOOK_SET = libpd_wrapper/z_csharp_helper.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
@@ -103,7 +104,7 @@ libpd: $(LIBPD)
 $(LIBPD): ${PD_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
-javalib: $(PDJAVA_JAR)
+javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
 $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^
