@@ -233,10 +233,18 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    pollMessageQueue
+ * Method:    pollPdMessageQueue
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMessageQueue
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollPdMessageQueue
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    pollMidiQueue
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMidiQueue
   (JNIEnv *, jclass);
 
 /*

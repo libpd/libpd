@@ -517,9 +517,14 @@ public final class PdBase {
 	public native static int sendSysRealTime(int port, int value);
 	
 	/**
-	 * Polls the message queue and invokes message or MIDI callbacks as appropriate.
+	 * Polls the Pd message queue and invokes Pd message callbacks as appropriate.
 	 */
-	public native static void pollMessageQueue();
+	public native static void pollPdMessageQueue();
+	
+	/**
+	 * Polls the MIDI queue and invokes MIDI callbacks as appropriate.
+	 */
+	public native static void pollMidiQueue();
 	
 	/**
 	 * Returns the number of frames per Pd tick (currently 64).

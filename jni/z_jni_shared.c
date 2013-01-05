@@ -186,10 +186,17 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
   libpd_queued_midibytehook = (t_libpd_midibytehook) java_sendMidiByte;
 }
 
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMessageQueue
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollPdMessageQueue
 (JNIEnv *env, jclass cls) {
   cached_env = env;
-  libpd_queued_receive();
+  libpd_queued_receive_pd_messages();
+  cached_env = NULL;
+}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMidiQueue
+(JNIEnv *env, jclass cls) {
+  cached_env = env;
+  libpd_queued_receive_midi_messages();
   cached_env = NULL;
 }
 

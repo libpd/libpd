@@ -32,7 +32,8 @@ EXTERN t_libpd_midibytehook libpd_queued_midibytehook;
 
 int libpd_queued_init();
 void libpd_queued_release();
-void libpd_queued_receive();
+void libpd_queued_receive_pd_messages();
+void libpd_queued_receive_midi_messages();
 
 #ifdef __cplusplus
 }
