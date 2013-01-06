@@ -82,7 +82,6 @@
 		118408EB16803D13007ACD8F = {
 			isa = PBXGroup;
 			children = (
-				114677AD168A1B8100687E25 /* CoreAudio.framework */,
 				1184091416803D43007ACD8F /* libpd.xcodeproj */,
 				118408FD16803D13007ACD8F /* CocoaPdBasic */,
 				118408F616803D13007ACD8F /* Frameworks */,
@@ -101,6 +100,7 @@
 		118408F616803D13007ACD8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				114677AD168A1B8100687E25 /* CoreAudio.framework */,
 				1184092316804210007ACD8F /* AudioUnit.framework */,
 				118408F716803D13007ACD8F /* Cocoa.framework */,
 				118408F916803D13007ACD8F /* Other Frameworks */,
