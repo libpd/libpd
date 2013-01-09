@@ -1313,6 +1313,7 @@
 							<string key="NSFrame">{{350, 27}, {82, 32}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="789775628">
@@ -1347,7 +1348,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="531794824">
 								<int key="NSCellFlags">-1804599231</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Hoo hah Pure Data and Cocoa!</string>
+								<string key="NSContents">audio units a friggin finicky</string>
 								<reference key="NSSupport" ref="301062451"/>
 								<string key="NSCellIdentifier">_NS:9</string>
 								<reference key="NSControlView" ref="239648687"/>

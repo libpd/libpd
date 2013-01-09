@@ -63,6 +63,7 @@ return -1;\
 @property (assign) IBOutlet NSTextField *textField;
 @property (nonatomic) AudioUnit outputUnit;
 
+- (void)initPd;
 - (int)startGraph;
 - (int)createSynthGraph;
 - (int)createFilePlayerGraph;
@@ -88,7 +89,7 @@ return -1;\
 	[self.textField setDelegate:self];
 
 #ifdef GRAPH_TYPE_SYNTH
-	if( [self createSynthGraph] ) {
+	if( [self createSynthWithoutAUGraph] ) {
 		AU_LOG(@"error: failed to initialize synth graph.");
 		return;
 	}
@@ -103,7 +104,13 @@ return -1;\
 
 	[self printStreamFormats];
 
+	[self initPd];
 
+
+//	[self startGraph];
+}
+
+- (void)initPd {
 	void *handle = [PdBase openFile:PATCH_NAME path:[[NSBundle mainBundle] resourcePath]];
 	if( handle ) {
 		AU_LOG(@"successfully opened patch %@.", PATCH_NAME);
@@ -114,11 +121,8 @@ return -1;\
 
 	[PdBase openAudioWithSampleRate:44100 inputChannels:2 outputChannels:2];
 	[PdBase computeAudio:YES];
-
-
-
-	[self startGraph];
 }
+
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)app {
 	return YES;
@@ -130,6 +134,18 @@ return -1;\
 }
 
 #pragma mark - Audio Render Callbacks
+
+// TESTING:
+static OSStatus MixerRenderCallback(void *inRefCon,
+								 AudioUnitRenderActionFlags *ioActionFlags,
+								 const AudioTimeStamp *inTimeStamp,
+								 UInt32 inBusNumber,
+								 UInt32 inNumberFrames,
+								 AudioBufferList *ioData) {
+
+	// pass through
+	return noErr;
+}
 
 static OSStatus PdRenderCallback(void *inRefCon,
 									AudioUnitRenderActionFlags *ioActionFlags,
@@ -174,12 +190,125 @@ static OSStatus PdRenderCallback(void *inRefCon,
 	outputCD.componentSubType = kAudioUnitSubType_DefaultOutput;
 	outputCD.componentManufacturer = kAudioUnitManufacturer_Apple;
 
-	// ???: how to log devices to console
-	AudioComponent component = AudioComponentFindNext( NULL, &outputCD );
-	if( ! component ) {
-		AU_LOG( @"error: can't get kAudioUnitSubType_DefaultOutput." );
+	AUGRAPH_CHECK( AUGraphAddNode( _graph, &outputCD, &outputNode ) );
+	AUGRAPH_CHECK( AUGraphAddNode( _graph, &speechCD, &speechNode ) );
+
+
+	AUGRAPH_CHECK( AUGraphOpen( _graph ) );
+	AUGRAPH_CHECK( AUGraphNodeInfo( _graph, outputNode, NULL, &_outputUnit ) );
+	AUGRAPH_CHECK( AUGraphNodeInfo( _graph, speechNode, NULL, &_speechUnit ) );
+
+	AudioStreamBasicDescription speechDesc, outputDesc;
+	UInt32 dataSize = sizeof(speechDesc);
+	AU_CHECK(AudioUnitGetProperty( _speechUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &speechDesc, &dataSize ) );
+	AU_LOG(@"speech ABSD:");
+	printASBD( speechDesc );
+
+	AU_CHECK(AudioUnitGetProperty( _outputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &outputDesc, &dataSize ) );
+	AU_LOG(@"output ABSD:");
+	printASBD( speechDesc );
+
+
+//	// setup stream formats:
+//	AudioStreamBasicDescription streamFormat = [self streamFormat];
+//	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &streamFormat, sizeof(streamFormat) ) );
+//
+//	// ???: needed? don't think so.. mixer works without
+//	AU_CHECK( AudioUnitSetProperty( _outputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat) ) );
+//
+//	// added for mixer, needed for speech synthesis?
+//	Float64 graphSampleRate = 44100;
+//	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &graphSampleRate, sizeof(graphSampleRate) ) );
+
+
+	// setup callback:
+	AURenderCallbackStruct callback;
+	callback.inputProc = PdRenderCallback;
+	callback.inputProcRefCon = self;
+//	AUGRAPH_CHECK( AUGraphSetNodeInputCallback ( _graph, outputNode, 0, &callback ) );
+
+    AU_CHECK( AudioUnitSetProperty( _outputUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callback, sizeof(callback)) );
+
+	// connect and init
+//	AUGRAPH_CHECK( AUGraphConnectNodeInput( _graph, speechNode, 0, outputNode, 0 ) );
+
+
+
+	// finally init
+	AUGRAPH_CHECK( AUGraphInitialize( _graph ) );
+
+	AU_LOG( @"AUGraph successfully initialized" );
+
+	CAShow( _graph );
+
+	return 0;
+}
+
+- (int)createSynthWithoutAUGraph {
+
+	// speech synthesizer
+	AudioComponentDescription speechCD = {0};
+	speechCD.componentType = kAudioUnitType_Generator;
+	speechCD.componentSubType = kAudioUnitSubType_SpeechSynthesis;
+	speechCD.componentManufacturer = kAudioUnitManufacturer_Apple;
+
+	// output device (speakers)
+	AudioComponentDescription outputCD = {0};
+	outputCD.componentType = kAudioUnitType_Output;
+	outputCD.componentSubType = kAudioUnitSubType_DefaultOutput;
+	outputCD.componentManufacturer = kAudioUnitManufacturer_Apple;
+
+	AudioComponent speechComponent = AudioComponentFindNext(NULL, &speechCD);
+	if(!speechComponent) {
+		AU_LOG(@"Error: could not locate speech unit");
 		return -1;
 	}
+	AU_CHECK( AudioComponentInstanceNew( speechComponent, &_speechUnit ) );
+	AU_CHECK( AudioUnitInitialize( _speechUnit ) );
+
+	AudioComponent outputComponent = AudioComponentFindNext(NULL, &outputCD);
+	if(!outputComponent) {
+		AU_LOG(@"Error: could not locate output unit");
+		return -1;
+	}
+	AU_CHECK( AudioComponentInstanceNew( outputComponent, &_outputUnit ) );
+	AU_CHECK( AudioUnitInitialize( _outputUnit ) );
+
+	// setup callback:
+	AURenderCallbackStruct callback = { &PdRenderCallback, self };
+	AU_CHECK( AudioUnitSetProperty( _outputUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callback, sizeof(callback)) );
+
+	// finally init
+	AU_LOG( @"AU successfully initialized without graph." );
+
+	AU_CHECK( AudioOutputUnitStart( _outputUnit) );
+	return 0;
+}
+
+// TESTING ONLY:
+- (int)createMixerGraph {
+	AUGRAPH_CHECK( NewAUGraph( &_graph ) );
+
+	AUNode speechNode, outputNode;
+
+	// speech synthesizer
+	AudioComponentDescription speechCD = {0};
+	speechCD.componentType = kAudioUnitType_Mixer;
+	speechCD.componentSubType = kAudioUnitSubType_MultiChannelMixer;
+	speechCD.componentManufacturer = kAudioUnitManufacturer_Apple;
+
+	// output device (speakers)
+	AudioComponentDescription outputCD = {0};
+	outputCD.componentType = kAudioUnitType_Output;
+	outputCD.componentSubType = kAudioUnitSubType_DefaultOutput;
+	outputCD.componentManufacturer = kAudioUnitManufacturer_Apple;
+
+	// doesn't seem to be necessary with kAudioUnitSubType_DefaultOutput
+	//	AudioComponent component = AudioComponentFindNext( NULL, &outputCD );
+	//	if( ! component ) {
+	//		AU_LOG( @"error: can't get kAudioUnitSubType_DefaultOutput." );
+	//		return -1;
+	//	}
 
 	AUGRAPH_CHECK( AUGraphAddNode( _graph, &outputCD, &outputNode ) );
 	AUGRAPH_CHECK( AUGraphAddNode( _graph, &speechCD, &speechNode ) );
@@ -189,10 +318,41 @@ static OSStatus PdRenderCallback(void *inRefCon,
 	AUGRAPH_CHECK( AUGraphNodeInfo( _graph, outputNode, NULL, &_outputUnit ) );
 	AUGRAPH_CHECK( AUGraphNodeInfo( _graph, speechNode, NULL, &_speechUnit ) );
 
+	// ----------------------------------------------------
+	// TESTING MIXER:
+
+	UInt32 busCount   = 2;    // bus count for mixer unit input
+	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_ElementCount, kAudioUnitScope_Input, 0, &busCount, sizeof(busCount) ) );
+
+	UInt32 maximumFramesPerSlice = 4096;
+	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &maximumFramesPerSlice, sizeof(maximumFramesPerSlice) ) );
+
+	// Attach the input render callback and context to each input bus
+    for (UInt16 busNumber = 0; busNumber < busCount; ++busNumber) {
+
+        // Setup the struture that contains the input render callback
+        AURenderCallbackStruct inputCallbackStruct;
+        inputCallbackStruct.inputProc        = MixerRenderCallback;
+        inputCallbackStruct.inputProcRefCon  = self;
+
+        // Set a callback for the specified node's specified input
+		AU_CHECK( AUGraphSetNodeInputCallback( _graph, speechNode, busNumber, &inputCallbackStruct ) );
+    }
+
+	// ----------------------------------------------------
+
 	// setup stream formats:
 	AudioStreamBasicDescription streamFormat = [self streamFormat];
-	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &streamFormat, sizeof(streamFormat) ) );
-	AU_CHECK( AudioUnitSetProperty( _outputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat) ) );
+	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat) ) );
+	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 1, &streamFormat, sizeof(streamFormat) ) ); // TEMP
+
+	// ???: needed? don't think so.. mixer works without
+	//	AU_CHECK( AudioUnitSetProperty( _outputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat) ) );
+
+	// added for mixer, needed for speech synthesis?
+	Float64 graphSampleRate = 44100;
+	AU_CHECK( AudioUnitSetProperty( _speechUnit, kAudioUnitProperty_SampleRate, kAudioUnitScope_Output, 0, &graphSampleRate, sizeof(graphSampleRate) ) );
+
 
 	// setup callback:
 	AURenderCallbackStruct callback;
@@ -207,9 +367,10 @@ static OSStatus PdRenderCallback(void *inRefCon,
 	AU_LOG(@"AUGraph successfully initialized" );
 
 	CAShow( _graph );
-
+	
 	return 0;
 }
+
 
 - (void)saySomething:(NSString *)str {
 	SpeechChannel chan;
@@ -266,10 +427,6 @@ static OSStatus PdRenderCallback(void *inRefCon,
 	callback.inputProc = PdRenderCallback;
 	callback.inputProcRefCon = self;
 	AUGRAPH_CHECK( AUGraphSetNodeInputCallback ( _graph, outputNode, 0, &callback ) );
-
-
-	// connect and init
-//	AUGRAPH_CHECK( AUGraphConnectNodeInput( _graph, playerNode, 0, outputNode, 0 ) );
 
 	AUGRAPH_CHECK( AUGraphInitialize( _graph ) );
 
@@ -336,23 +493,23 @@ static OSStatus PdRenderCallback(void *inRefCon,
 
 - (AudioStreamBasicDescription)streamFormat {
 
-	AudioStreamBasicDescription stereoStreamFormat;
+	AudioStreamBasicDescription streamFormat;
     // The AudioUnitSampleType data type is the recommended type for sample data in audio
     //    units. This obtains the byte size of the type for use in filling in the ASBD.
     size_t bytesPerSample = sizeof (AudioUnitSampleType);
 
     // Fill the application audio format struct's fields to define a linear PCM,
     //        stereo, noninterleaved stream at the hardware sample rate.
-    stereoStreamFormat.mFormatID          = kAudioFormatLinearPCM;
-    stereoStreamFormat.mFormatFlags       = kAudioFormatFlagsAudioUnitCanonical; // TODO: pd expects kAudioFormatFlagsNativeFloatPacked
-    stereoStreamFormat.mBytesPerPacket    = bytesPerSample;
-    stereoStreamFormat.mFramesPerPacket   = 1;
-    stereoStreamFormat.mBytesPerFrame     = bytesPerSample;
-    stereoStreamFormat.mChannelsPerFrame  = 2;                    // 2 indicates stereo
-    stereoStreamFormat.mBitsPerChannel    = 8 * bytesPerSample;
-    stereoStreamFormat.mSampleRate        = 44100;
+    streamFormat.mFormatID          = kAudioFormatLinearPCM;
+    streamFormat.mFormatFlags       = kAudioFormatFlagsAudioUnitCanonical; // TODO: pd expects kAudioFormatFlagsNativeFloatPacked
+    streamFormat.mBytesPerPacket    = bytesPerSample;
+    streamFormat.mFramesPerPacket   = 1;
+    streamFormat.mBytesPerFrame     = bytesPerSample;
+    streamFormat.mChannelsPerFrame  = 2;                    // 2 indicates stereo
+    streamFormat.mBitsPerChannel    = 8 * bytesPerSample;
+    streamFormat.mSampleRate        = 44100;
 
-	return stereoStreamFormat;
+	return streamFormat;
 }
 
 static void printASBD( AudioStreamBasicDescription asbd ) {
