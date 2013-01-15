@@ -104,7 +104,7 @@ static void internal_printhook(const char *s) {
   if (rest) rest = LIBPD_WORD_ALIGN - rest;
   int total = len + rest;
   if (rb_available_to_write(pd_receive_buffer) >= S_PD_PARAMS + total) {
-    pd_params p = {LIBPD_PRINT, NULL, 0.0f, NULL, total, 0, 0, 0};
+    pd_params p = {LIBPD_PRINT, NULL, 0.0f, NULL, total};
     rb_write_to_buffer(pd_receive_buffer, (const char *)&p, S_PD_PARAMS);
     rb_write_to_buffer(pd_receive_buffer, s, len);
     rb_write_to_buffer(pd_receive_buffer, padding, rest);
