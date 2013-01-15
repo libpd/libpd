@@ -283,12 +283,12 @@
 		11A026E514BAA414002FC756 /* PdReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdReceiver.hpp; sourceTree = "<group>"; };
 		11A026E614BAA414002FC756 /* PdTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdTypes.cpp; sourceTree = "<group>"; };
 		11A026E714BAA414002FC756 /* PdTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdTypes.hpp; sourceTree = "<group>"; };
-		301130B216A4C88D005421C7 /* z_queued.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = z_queued.c; path = ../../PdParty/src/libs/pd/libpd_wrapper/z_queued.c; sourceTree = "<group>"; };
-		301130B316A4C88D005421C7 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = z_queued.h; path = ../../PdParty/src/libs/pd/libpd_wrapper/z_queued.h; sourceTree = "<group>"; };
-		301130B416A4C88D005421C7 /* z_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = z_util.c; path = ../../PdParty/src/libs/pd/libpd_wrapper/z_util.c; sourceTree = "<group>"; };
-		301130B516A4C88D005421C7 /* z_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = z_util.h; path = ../../PdParty/src/libs/pd/libpd_wrapper/z_util.h; sourceTree = "<group>"; };
-		301130BF16A4C896005421C7 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ringbuffer.c; path = ../../PdParty/src/libs/pd/libpd_wrapper/ringbuffer.c; sourceTree = "<group>"; };
-		301130C016A4C896005421C7 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ringbuffer.h; path = ../../PdParty/src/libs/pd/libpd_wrapper/ringbuffer.h; sourceTree = "<group>"; };
+		301130B216A4C88D005421C7 /* z_queued.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_queued.c; sourceTree = "<group>"; };
+		301130B316A4C88D005421C7 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
+		301130B416A4C88D005421C7 /* z_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_util.c; sourceTree = "<group>"; };
+		301130B516A4C88D005421C7 /* z_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_util.h; sourceTree = "<group>"; };
+		301130BF16A4C896005421C7 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
+		301130C016A4C896005421C7 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
 		58DDDC341476374300450A0A /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
