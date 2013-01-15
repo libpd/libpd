@@ -45,6 +45,17 @@
 	return pdFile;
 }
 
++ (id)openFileNamed:(PdFile*) file {
+	PdFile *pdFile = [[[self alloc] init] autorelease];
+	if (pdFile) {
+		[pdFile openFile:file.baseName path:file.pathName];
+		if (![pdFile fileReference]) {
+			return nil;
+		}
+	}
+	return pdFile;
+}
+
 #pragma mark -
 #pragma mark - Dealloc
 
@@ -80,6 +91,14 @@
         [PdBase closeFile:x];
         self.fileReference = nil;
     }
+}
+
+#pragma mark -
+#pragma mark - Util
+
+- (NSString *)description {
+	return [NSString stringWithFormat: @"Patch: \"%@\" $0: %d valid: %d",
+		self.baseName, self.dollarZero, (bool) self.fileReference];
 }
 
 @end
