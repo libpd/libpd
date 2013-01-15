@@ -1,0 +1,7 @@
+#N canvas 80 290 336 208 10;
+#X text 14 32 this is a test abstraction ... does it load?;
+#X obj 37 85 inlet;
+#X obj 37 155 print PD;
+#X msg 37 119 test_abs: Hello World!;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;

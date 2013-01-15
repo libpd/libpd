@@ -21,6 +21,7 @@ build/*
 *.mode1v3
 *.mode2v3
 *.swp
+*.xcworkspace
 xcuserdata
 libpd.xcodeproj/project.xcworkspace
 libpd.xcodeproj/xcuserdata
