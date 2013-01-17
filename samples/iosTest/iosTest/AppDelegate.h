@@ -1,8 +1,8 @@
 //
 //  AppDelegate.h
-//  iosTest
+//  iOSTest
 //
-//  Created by Dan Wilcox on 1/14/13.
+//  Created by Dan Wilcox on 1/16/13.
 //  Copyright (c) 2013 libpd. All rights reserved.
 //
 
@@ -10,8 +10,12 @@
 
 #import "PdBase.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, PdReceiverDelegate>
+@class ViewController;
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, PdReceiverDelegate, PdMidiReceiverDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) ViewController *viewController;
 
 @end

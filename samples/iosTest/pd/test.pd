@@ -1,4 +1,4 @@
-#N canvas 368 372 409 355 10;
+#N canvas 334 190 409 355 10;
 #X obj 272 270 dac~;
 #N canvas 369 98 675 256 test 0;
 #N canvas 0 22 450 300 (subpatch) 0;
@@ -334,5 +334,4 @@ in this distribution.;
 #X connect 18 0 0 0;
 #X connect 18 0 0 1;
 #X connect 21 0 5 0;
-#X connect 22 0 6 0;
 #X connect 22 0 9 0;

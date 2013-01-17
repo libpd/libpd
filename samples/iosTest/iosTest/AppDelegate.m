@@ -1,12 +1,14 @@
 //
 //  AppDelegate.m
-//  iosTest
+//  iOSTest
 //
-//  Created by Dan Wilcox on 1/14/13.
-//  Copyright (c) 2013 lib[PdBase  All rights reserved.
+//  Created by Dan Wilcox on 1/16/13.
+//  Copyright (c) 2013 libpd. All rights reserved.
 //
 
 #import "AppDelegate.h"
+
+#import "ViewController.h"
 
 #import "PdAudioController.h"
 #import "PdFile.h"
@@ -22,13 +24,22 @@
 
 @implementation AppDelegate
 
+@synthesize window = window_;
+@synthesize viewController = viewController_;
+@synthesize audioController = audioController_;
+
+#pragma mark - Application lifecycle
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+	self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
+	self.window.rootViewController = self.viewController;
 	
 	[self setupPd];
+	[self testPd];
+	
+	[self.window makeKeyAndVisible];
 	
     return YES;
 }
@@ -52,12 +63,16 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	// be nice and clean up on exit
-	[PdBase computeAudio:NO];}
+	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[self testPd];
+	UITouch *touch = [touches anyObject];
+    CGPoint pos = [touch locationInView:self.viewController.view];
+	NSLog(@"touch at %.f %.f", pos.x, pos.y);
 }
+
+#pragma mark - Pd
 
 - (void)setupPd {
 	// Configure a typical audio session with 2 output channels
@@ -67,37 +82,36 @@
 																	inputEnabled:NO
 																   mixingEnabled:YES];
 	if (status == PdAudioError) {
-		NSLog(@"Error: Could not configure PdAudioController");
+		NSLog(@"Error! Could not configure PdAudioController");
 	} else if (status == PdAudioPropertyChanged) {
-		NSLog(@"Warning: Some of the audio parameters were not accceptable");
+		NSLog(@"Warning: some of the audio parameters were not accceptable.");
 	} else {
-		NSLog(@"Audio Configuration successful");
+		NSLog(@"Audio Configuration successful.");
 	}
-	
-	// log settings
+
+	// log actual settings
 	[self.audioController print];
 
 	// set AppDelegate as PdRecieverDelegate to recieve messages from pd
     [PdBase setDelegate:self];
-
+	[PdBase setMidiDelegate:self]; // for midi too
+	
 	// recieve messages to fromPD: [r fromPD]
 	[PdBase subscribe:@"fromPD"];
 	
 	// add search path
-	[PdBase addToSearchPath:@"pd"];//[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle]]]];
-	
-	// turn on dsp
-	[PdBase computeAudio:true];
+	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [[NSBundle mainBundle] bundlePath]]];
 }
 
 - (void)testPd {
 
-	int midiChan = 1; // midi channels are 0-15
+	int midiChan = 1; // midi channels are 1-16
 
-	NSLog(@"BEGIN Patch Test");
+	NSLog(@"-- BEGIN Patch Test");
 	
 	// open patch
-	PdFile *patch = [PdFile openFileNamed:@"test.pd" path:[[NSBundle mainBundle] bundlePath]];
+	PdFile *patch = [PdFile openFileNamed:@"test.pd"
+		path:[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle] bundlePath]]];
 	NSLog(@"%@", patch);
 	
 	// close patch
@@ -108,10 +122,10 @@
 	patch = [PdFile openFileNamed:patch];
 	NSLog(@"%@", patch);
 	
-	NSLog(@"FINISH Patch Test");
+	NSLog(@"-- FINISH Patch Test");
 	
 	
-	NSLog(@"BEGIN Message Test");
+	NSLog(@"-- BEGIN Message Test");
 	
 	// test basic atoms
 	[PdBase sendBangToReceiver:@"toPd"];
@@ -130,10 +144,10 @@
 	[PdBase sendMessage:@"msg" withArguments:list toReceiver:@"toPD"];
     
 
-	NSLog(@"FINISH Message Test");
+	NSLog(@"-- FINISH Message Test");
 	
 	
-	NSLog(@"BEGIN MIDI Test");
+	NSLog(@"-- BEGIN MIDI Test");
 	
 	// send functions
 	[PdBase sendNoteOn:midiChan pitch:60 velocity:64];
@@ -147,10 +161,10 @@
 	[PdBase sendSysex:0 byte:239];
 	[PdBase sendSysRealTime:0 byte:239];
     
-	NSLog(@"FINISH MIDI Test");
+	NSLog(@"-- FINISH MIDI Test");
 	
 	
-	NSLog(@"BEGIN Array Test");
+	NSLog(@"-- BEGIN Array Test");
 	
 	// array check length
 	int array1Len = [PdBase arraySizeForArrayNamed:@"array1"];
@@ -188,42 +202,86 @@
 		[array1String appendString:[NSString stringWithFormat:@"%f ", array1[i]]];
 	NSLog(@"%@", array1String);
 
-	NSLog(@"FINISH Array Test");
+	NSLog(@"-- FINISH Array Test");
 
 	
-	//NSLog(@"BEGIN PD Test");
-	//[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
-	//NSLog(@"FINISH PD Test");
+	NSLog(@"-- BEGIN PD Test");
+	
+	[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
+	
+	NSLog(@"-- FINISH PD Test");
 	
 	
-	[patch closeFile];
+	NSLog(@"-- BEGIN Polling Test");
+	
+	// set delegates again, but disable polling
+	[PdBase setDelegate:nil];
+	[PdBase setMidiDelegate:nil];
+	[PdBase setDelegate:self pollingEnabled:NO];
+	[PdBase setMidiDelegate:self pollingEnabled:NO];
+	
+	[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
+	
+	// process messages manually
+	[PdBase recieveMessages];
+	[PdBase recieveMidi];
+	
+	NSLog(@"-- FINISH Polling Test");
 }
 
 #pragma mark - PdRecieverDelegate
 
 // uncomment this to get print statements from pd
 - (void)receivePrint:(NSString *)message {
-	NSLog(@"Pd Console: %@", message);
+	NSLog(@"%@", message);
 }
 
 - (void)receiveBangFromSource:(NSString *)source {
-	NSLog(@"Pd Bang from %@", source);
+	NSLog(@"Bang from %@", source);
 }
 
 - (void)receiveFloat:(float)received fromSource:(NSString *)source {
-	NSLog(@"Pd Float from %@: %f", source, received);
+	NSLog(@"Float from %@: %f", source, received);
 }
 
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
-	NSLog(@"Pd Symbol from %@: %@", source, symbol);
+	NSLog(@"Symbol from %@: %@", source, symbol);
 }
 
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
-	NSLog(@"Pd List from %@", source);
+	NSLog(@"List from %@", source);
 }
 
 - (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
-	NSLog(@"Pd Message to %@ from %@", message, source);
+	NSLog(@"Message to %@ from %@", message, source);
+}
+
+- (void)receiveNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity {
+	NSLog(@"NoteOn: %d %d %d", channel, pitch, velocity);
+}
+
+- (void)receiveControlChange:(int)channel controller:(int)controller value:(int)value {
+	NSLog(@"Control Change: %d %d %d", channel, controller, value);
+}
+
+- (void)receiveProgramChange:(int)channel value:(int)value {
+	NSLog(@"Program Change: %d %d", channel, value);
+}
+
+- (void)receivePitchBend:(int)channel value:(int)value {
+	NSLog(@"Pitch Bend: %d %d", channel, value);
+}
+
+- (void)receiveAftertouch:(int)channel value:(int)value {
+	NSLog(@"Aftertouch: %d %d", channel, value);
+}
+
+- (void)receivePolyAftertouch:(int)channel pitch:(int)pitch value:(int)value {
+	NSLog(@"Poly Aftertouch: %d %d %d", channel, pitch, value);
+}
+
+- (void)receiveMidiByte:(int)port byte:(int)byte {
+	NSLog(@"Midi Byte: %d 0x%X", port, byte);
 }
 
 @end
