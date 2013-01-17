@@ -163,7 +163,6 @@
 		1190139F1486450C00086F19 /* PdBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A0AB12EEFE5E0053280E /* PdBase.m */; };
 		119013A01486450C00086F19 /* PdFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8C8DC91312007F000B9D7A /* PdFile.m */; };
 		119013A11486450C00086F19 /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
-		119013A21486450C00086F19 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 58DDDC341476374300450A0A /* ringbuffer.c */; };
 		119013A71486450C00086F19 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		11A026E814BAA414002FC756 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A026E214BAA414002FC756 /* PdBase.cpp */; };
 		11A026E914BAA414002FC756 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11A026E214BAA414002FC756 /* PdBase.cpp */; };
@@ -177,13 +176,12 @@
 		301130BB16A4C88D005421C7 /* z_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 301130B416A4C88D005421C7 /* z_util.c */; };
 		301130BC16A4C88D005421C7 /* z_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 301130B516A4C88D005421C7 /* z_util.h */; };
 		301130BD16A4C88D005421C7 /* z_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 301130B516A4C88D005421C7 /* z_util.h */; };
-		301130C116A4C896005421C7 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 301130BF16A4C896005421C7 /* ringbuffer.c */; };
-		301130C216A4C896005421C7 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 301130BF16A4C896005421C7 /* ringbuffer.c */; };
-		301130C316A4C896005421C7 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 301130C016A4C896005421C7 /* ringbuffer.h */; };
-		301130C416A4C896005421C7 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 301130C016A4C896005421C7 /* ringbuffer.h */; };
+		301135AE16A75943005421C7 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 301135AC16A75942005421C7 /* ringbuffer.c */; };
+		301135AF16A75943005421C7 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 301135AC16A75942005421C7 /* ringbuffer.c */; };
+		301135B016A75943005421C7 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 301135AD16A75942005421C7 /* ringbuffer.h */; };
+		301135B116A75943005421C7 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 301135AD16A75942005421C7 /* ringbuffer.h */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
-		58DDDC361476374300450A0A /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 58DDDC341476374300450A0A /* ringbuffer.c */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -287,12 +285,10 @@
 		301130B316A4C88D005421C7 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
 		301130B416A4C88D005421C7 /* z_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_util.c; sourceTree = "<group>"; };
 		301130B516A4C88D005421C7 /* z_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_util.h; sourceTree = "<group>"; };
-		301130BF16A4C896005421C7 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
-		301130C016A4C896005421C7 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
+		301135AC16A75942005421C7 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
+		301135AD16A75942005421C7 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
-		58DDDC341476374300450A0A /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
-		58DDDC351476374300450A0A /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libpd-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -431,8 +427,8 @@
 		0E82A08F12EEFE050053280E /* libpd_wrapper */ = {
 			isa = PBXGroup;
 			children = (
-				301130BF16A4C896005421C7 /* ringbuffer.c */,
-				301130C016A4C896005421C7 /* ringbuffer.h */,
+				301135AC16A75942005421C7 /* ringbuffer.c */,
+				301135AD16A75942005421C7 /* ringbuffer.h */,
 				0E82A09012EEFE050053280E /* s_libpdmidi.c */,
 				0E82A09112EEFE050053280E /* x_libpdreceive.c */,
 				0E82A09212EEFE050053280E /* x_libpdreceive.h */,
@@ -451,8 +447,6 @@
 			children = (
 				110E6DCC147B833B00282ABC /* audio */,
 				113A449E138139E1004C88F9 /* utils */,
-				58DDDC341476374300450A0A /* ringbuffer.c */,
-				58DDDC351476374300450A0A /* ringbuffer.h */,
 				0E82A0AA12EEFE5E0053280E /* PdBase.h */,
 				0E82A0AB12EEFE5E0053280E /* PdBase.m */,
 			);
@@ -508,7 +502,7 @@
 				119013531486450C00086F19 /* PdFile.h in Headers */,
 				301130B916A4C88D005421C7 /* z_queued.h in Headers */,
 				301130BD16A4C88D005421C7 /* z_util.h in Headers */,
-				301130C416A4C896005421C7 /* ringbuffer.h in Headers */,
+				301135B116A75943005421C7 /* ringbuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,7 +518,7 @@
 				110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */,
 				301130B816A4C88D005421C7 /* z_queued.h in Headers */,
 				301130BC16A4C88D005421C7 /* z_util.h in Headers */,
-				301130C316A4C896005421C7 /* ringbuffer.h in Headers */,
+				301135B016A75943005421C7 /* ringbuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,12 +666,11 @@
 				1190139F1486450C00086F19 /* PdBase.m in Sources */,
 				119013A01486450C00086F19 /* PdFile.m in Sources */,
 				119013A11486450C00086F19 /* PdDispatcher.m in Sources */,
-				119013A21486450C00086F19 /* ringbuffer.c in Sources */,
 				11A026E914BAA414002FC756 /* PdBase.cpp in Sources */,
 				11A026F114BAA414002FC756 /* PdTypes.cpp in Sources */,
 				301130B716A4C88D005421C7 /* z_queued.c in Sources */,
 				301130BB16A4C88D005421C7 /* z_util.c in Sources */,
-				301130C216A4C896005421C7 /* ringbuffer.c in Sources */,
+				301135AF16A75943005421C7 /* ringbuffer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,7 +751,6 @@
 				0E82A0AF12EEFE5E0053280E /* PdBase.m in Sources */,
 				0E8C8DCB1312007F000B9D7A /* PdFile.m in Sources */,
 				5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */,
-				58DDDC361476374300450A0A /* ringbuffer.c in Sources */,
 				110E6DD5147B838F00282ABC /* AudioHelpers.m in Sources */,
 				110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */,
 				110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */,
@@ -766,7 +758,7 @@
 				11A026F014BAA414002FC756 /* PdTypes.cpp in Sources */,
 				301130B616A4C88D005421C7 /* z_queued.c in Sources */,
 				301130BA16A4C88D005421C7 /* z_util.c in Sources */,
-				301130C116A4C896005421C7 /* ringbuffer.c in Sources */,
+				301135AE16A75943005421C7 /* ringbuffer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,7 +847,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DPD",
-					"-DUSE_API_DUMMY",
+					"-DUSEAPI_DUMMY",
 					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
 				);
@@ -878,7 +870,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = (
 					"-DPD",
-					"-DUSE_API_DUMMY",
+					"-DUSEAPI_DUMMY",
 					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
 				);
