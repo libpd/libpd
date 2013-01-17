@@ -3,6 +3,7 @@
 //  libpd
 //
 //  Copyright (c) 2011 Peter Brinkmann (peter.brinkmann@gmail.com)
+//  Updated       2013 Dan Wilcox (danomatika@gmail.com)
 //
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -11,6 +12,7 @@
 #import <Foundation/Foundation.h>
 #import "PdBase.h"
 
+#pragma - Dispatcher
 
 // Implementation of the PdReceiverDelegate protocol from PdBase.h.  Client code
 // registers one instance of this class with PdBase, and then listeners for individual
@@ -31,8 +33,39 @@
 // Removes a listener for a source symbol and unsubscribes from messages to this symbol if
 // the listener was the last listener for this symbol.
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
+
+// Remove all listeners.
+- (void)removeAllListeners;
 @end
 
-// Subclass of PdDispatcher that logs all callbacks, mostly for development and debugging.
+#pragma - Midi Dispatcher
+
+// Implementation of the PdMidiReceiverDelegate protocol from PdBase.h.  Client code
+// registers one instance of this class with PdBase, and then listeners for individual
+// channels will be registered with the dispatcher object.
+//
+// Printing from Pd is done via NSLog by default; subclass and override the receivePrint
+// method if you want different printing behavior.
+@interface PdMidiDispatcher : NSObject<PdMidiReceiverDelegate> {
+    NSMutableDictionary *listenerMap;
+    NSMutableSet *channels;
+}
+
+// Adds a listener for the given MIDI channel in Pd.
+- (int)addListener:(NSObject<PdMidiListener> *)listener forChannel:(int)channel;
+
+// Removes a listener for a channel.
+- (int)removeListener:(NSObject<PdMidiListener> *)listener forChannel:(int)channel;
+
+// Remove all listeners.
+- (void)removeAllListeners;
+@end
+
+#pragma - Logging
+
+// Subclasses of PdDispatcher & PdMidiDisptcher that logs all callbacks, mostly for development and debugging.
 @interface LoggingDispatcher : PdDispatcher {}
+@end
+
+@interface LoggingMidiDispatcher : PdMidiDispatcher {}
 @end

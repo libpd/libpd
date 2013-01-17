@@ -30,6 +30,9 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Updated 2013 Dan Wilcox (danomatika@gmail.com)
+ *
  */
 
 #import <Foundation/Foundation.h>
@@ -52,14 +55,53 @@
 @end
 
 
+// Listener interface for MIDI from Pd.
+@protocol PdMidiListener
+@optional
+- (void)receiveNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity;
+- (void)receiveControlChange:(int)channel controller:(int)controller value:(int)value;
+- (void)receiveProgramChange:(int)channel value:(int)value;
+- (void)receivePitchBend:(int)channel value:(int)value;
+- (void)receiveAftertouch:(int)channel value:(int)value;
+- (void)receivePolyAftertouch:(int)channel pitch:(int)pitch value:(int)value;
+- (void)receiveMidiByte:(int)port byte:(int)byte;
+@end
+
+
+// Receiver interface for MIDI messages from Pd.
+@protocol PdMidiReceiverDelegate<PdMidiListener>
+@end
+
+
 @interface PdBase {
   // Not meant to be instantiated. No member variables.
 }
 
 + (void)initialize;
-+ (size_t)setMessageBufferSize:(size_t)size;
-+ (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;  // PdBase retains the delegate: call setDelegate with nil in order to release delegate.
+
+// TODO: reimplement buffer sizes? z_queue uses a fixed size for now ...
+//+ (size_t)setMessageBufferSize:(size_t)size;
+//+ (size_t)setMidiBufferSize:(size_t)size;
+
+// Set the delegates to recieve messages and midi. Only to be called from main thread.
+// An NSTimer is used poll for messages be default. However, the input queues can be processed
+// manually when setting the respective delegate using pollingEnabled:NO.
+//
+// Setting the delegate to nil disconnects the existing delegate and turns off message polling if it's running.
+//
+// Note: PdBase retains the delegates: call setDelegate or setMidiDelegate with nil in order to release delegate.
++ (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled;
++ (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled;
++ (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;         // Starts with polling enabled.
++ (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate; // Starts with polling enabled.
+
 + (NSObject<PdReceiverDelegate> *)delegate;
++ (NSObject<PdMidiReceiverDelegate> *)midiDelegate;
+
+// Process the message and midi input queues manually.
+// Only required if the respective delegate was set with pollingEnabled:NO.
++ (void)recieveMessages;
++ (void)recieveMidi;
 
 + (void)clearSearchPath;
 + (void)addToSearchPath:(NSString *)path;
