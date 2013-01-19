@@ -217,25 +217,25 @@ static PdMidiHandler *midiHandler;
 @implementation PdBase
 
 + (void)initialize {
-  libpd_queued_concatenated_printhook = (t_libpd_printhook) printHook;
+  libpd_queued_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
+  libpd_concatenated_printhook = (t_libpd_printhook) printHook;
+
   libpd_queued_banghook = (t_libpd_banghook) bangHook;
   libpd_queued_floathook = (t_libpd_floathook) floatHook;
   libpd_queued_symbolhook = (t_libpd_symbolhook) symbolHook;
   libpd_queued_listhook = (t_libpd_listhook) listHook;
   libpd_queued_messagehook = (t_libpd_messagehook) messageHook;
 	
-	libpd_queued_noteonhook = (t_libpd_noteonhook) noteonHook;
-	libpd_queued_controlchangehook = (t_libpd_controlchangehook) controlChangeHook;
-	libpd_queued_programchangehook = (t_libpd_programchangehook) programChangeHook;
-	libpd_queued_pitchbendhook = (t_libpd_pitchbendhook) pitchBendHook;
-	libpd_queued_aftertouchhook = (t_libpd_aftertouchhook) aftertouchHook;
-	libpd_queued_polyaftertouchhook = (t_libpd_polyaftertouchhook) polyAftertouchHook;
-	libpd_queued_midibytehook = (t_libpd_midibytehook) midiByteHook;
-	
-  libpd_concatenate_print_messages();
+  libpd_queued_noteonhook = (t_libpd_noteonhook) noteonHook;
+  libpd_queued_controlchangehook = (t_libpd_controlchangehook) controlChangeHook;
+  libpd_queued_programchangehook = (t_libpd_programchangehook) programChangeHook;
+  libpd_queued_pitchbendhook = (t_libpd_pitchbendhook) pitchBendHook;
+  libpd_queued_aftertouchhook = (t_libpd_aftertouchhook) aftertouchHook;
+  libpd_queued_polyaftertouchhook = (t_libpd_polyaftertouchhook) polyAftertouchHook;
+  libpd_queued_midibytehook = (t_libpd_midibytehook) midiByteHook;
   
   messageHandler = [[PdMessageHandler alloc] init];
-	midiHandler = [[PdMidiHandler alloc] init];
+  midiHandler = [[PdMidiHandler alloc] init];
   libpd_queued_init();
 }
 
