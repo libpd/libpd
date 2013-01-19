@@ -1,73 +1,44 @@
 /*
- * Copyright (c) 2012 Dan Wilcox (danomatika@gmail.com)
+ * Copyright (c) 2012 Dan Wilcox (danomatika@gmail.com) &
+ *                    Peter Brinkmann (peter.brinkmann@gmail.com)
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
-#include "z_queued.h"
+#include "z_util.h"
 
 #include <stdlib.h>
 #include <string.h>
 
 t_libpd_printhook libpd_concatenated_printhook = NULL;
-t_libpd_printhook libpd_queued_concatenated_printhook = NULL;
 
 #define PRINT_LINE_SIZE 2048
 
-static char *concatenated_print_line = NULL;
+void libpd_internal_concatenated_printhook(const char *s) {
+  if (!libpd_concatenated_printhook) return;
 
-static void internal_printhook(const char *s) {
+  static char concatenated_print_line[PRINT_LINE_SIZE];
+  static int len_line = 0;
+  concatenated_print_line[len_line] = '\0';
+
   int len = strlen(s);
-  int len_line = strlen(concatenated_print_line);
-  
-  if (len > 0 && s[len-1] == '\n') { // send message when an endline is detected
-	if (len + len_line >= PRINT_LINE_SIZE-1) { // flush if we're at the limit
-	  if (libpd_queued_concatenated_printhook) {
-	    libpd_queued_concatenated_printhook(concatenated_print_line);
-	  }
-	  else if (libpd_concatenated_printhook) {
-	    libpd_concatenated_printhook(concatenated_print_line);
-	  }
-	  concatenated_print_line[0] = '\0';
-	}
-	strncat(concatenated_print_line, s, len-1); // don't copy '\n'
-    
-    if (libpd_queued_concatenated_printhook) { // send the message
-	  libpd_queued_concatenated_printhook(concatenated_print_line);
-	}
-    else if (libpd_concatenated_printhook) {
-      libpd_concatenated_printhook(concatenated_print_line);
-    }
-	concatenated_print_line[0] = '\0';
-    return;
+  while (len_line + len >= PRINT_LINE_SIZE) {
+    int d = PRINT_LINE_SIZE - 1 - len_line;
+    strncat(concatenated_print_line, s, d);
+    libpd_concatenated_printhook(concatenated_print_line);
+    s += d;
+    len -= d;
+    len_line = 0;
+    concatenated_print_line[0] = '\0';
   }
-  
-  strncat(concatenated_print_line, s, len); // build the message
-}
 
-int libpd_concatenate_print_messages(void) {
-  concatenated_print_line = malloc(PRINT_LINE_SIZE);
-  concatenated_print_line[0] = '\0';
-  if (!concatenated_print_line) return -1;
-  if (libpd_queued_concatenated_printhook) {
-	libpd_queued_printhook = (t_libpd_printhook) internal_printhook;
-  }
-  else if (libpd_concatenated_printhook) {
-	libpd_printhook = (t_libpd_printhook) internal_printhook;
-  }
-  return 0;
-}
+  strncat(concatenated_print_line, s, len);
+  len_line += len;
 
-void libpd_segment_print_messages(void) {
-  if (libpd_queued_printhook == internal_printhook) {
-	libpd_queued_printhook = NULL;
-  }
-  if (libpd_printhook == internal_printhook) {
-	libpd_printhook = NULL;
-  }
-  if (concatenated_print_line) {
-    free(concatenated_print_line);
-    concatenated_print_line = NULL;
+  if (len_line > 0 && concatenated_print_line[len_line - 1] == '\n') {
+    concatenated_print_line[len_line - 1] = '\0';
+    libpd_concatenated_printhook(concatenated_print_line);
+    len_line = 0;
   }
 }

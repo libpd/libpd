@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2012 Dan Wilcox (danomatika@gmail.com)
+ * Copyright (c) 2012 Dan Wilcox (danomatika@gmail.com) &
+ *                    Peter Brinkmann (peter.brinkmann@gmail.com)
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -9,36 +10,29 @@
 #define __Z_UTIL_H__
 
 #include "z_libpd.h"
-#include "z_queued.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-// set one of these callbacks instead of the normal or queued printhook
-// before calling libpd_concatenate_print_messages()
-EXTERN t_libpd_printhook libpd_concatenated_printhook;
-EXTERN t_libpd_printhook libpd_queued_concatenated_printhook;
-
-// return print messages as single lines
+// Concatenate print messages into single lines before returning them to a print hook.
 // ie "hello 123" is sent in 1 part -> "hello 123"
 //
-// call this before libpd_init()
-//
-// note: one of the concateneated print hooks must be set,
-//       or this function has no effect
-void libpd_concatenate_print_messages();
-
-// return print messages as individual words and spaces, on by default
+// For comparison, the default behavior returns individual words and spaces.
 // ie "hello 123" is sent in 3 parts -> "hello", " ", "123"
+
+// Assign the pointer to your print handler to this variable.
+EXTERN t_libpd_printhook libpd_concatenated_printhook;
+
+// Assign this function pointer to libpd_printhook or libpd_queued_printhook,
+// depending on whether you're using queued messages, to intercept and
+// concatenate print messages:
 //
-// the libpd or queued print hook must be manually reconnected
-// after calling this function
+// libpd_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
+// libpd_concatenated_printhook = (t_libpd_printhook) yourPrintHandler;
 //
-// note: has no effect if libpd_concatenate_print_messages()
-//       was not called previously
-void libpd_segment_print_messages();
+void libpd_internal_concatenated_printhook(const char *s);
 
 #ifdef __cplusplus
 }

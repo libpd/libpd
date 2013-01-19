@@ -250,14 +250,15 @@ static PdMessageHandler *messageHandler;
 @implementation PdBase
 
 + (void)initialize {
+
+	libpd_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
   libpd_concatenated_printhook = (t_libpd_printhook) printHook;
-  libpd_banghook = (t_libpd_banghook) bangHook;
+  
+	libpd_banghook = (t_libpd_banghook) bangHook;
   libpd_floathook = (t_libpd_floathook) floatHook;
   libpd_symbolhook = (t_libpd_symbolhook) symbolHook;
   libpd_listhook = (t_libpd_listhook) listHook;
   libpd_messagehook = (t_libpd_messagehook) messageHook;   
-  
-  libpd_concatenate_print_messages();
   
   messageHandler = [[PdMessageHandler alloc] init];
   libpd_init();

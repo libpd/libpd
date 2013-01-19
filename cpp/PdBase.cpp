@@ -757,6 +757,7 @@ void PdBase::PdContext::removeBase() {
 bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 
     // attach callbacks
+	libpd_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
     libpd_concatenated_printhook = (t_libpd_printhook) _print;
 
     libpd_banghook = (t_libpd_banghook) _bang;
@@ -773,8 +774,6 @@ bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, 
     libpd_polyaftertouchhook = (t_libpd_polyaftertouchhook) _polyaftertouch;
 
     libpd_midibytehook = (t_libpd_midibytehook) _midibyte;
-	
-	libpd_concatenate_print_messages();
 
     // init libpd, should only be called once!
 	if(!bLibPDInited) {
