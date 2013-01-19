@@ -36,8 +36,8 @@
  */
 
 #import "PdBase.h"
-#import "ringbuffer.h"
 #include "z_libpd.h"
+#include "z_queued.h"
 #include "z_util.h"
 
 static NSObject<PdReceiverDelegate> *delegate = nil;

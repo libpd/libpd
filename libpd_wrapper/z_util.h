@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Dan Wilcox (danomatika@gmail.com) &
+ * Copyright (c) 2013 Dan Wilcox (danomatika@gmail.com) &
  *                    Peter Brinkmann (peter.brinkmann@gmail.com)
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL

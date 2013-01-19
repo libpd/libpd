@@ -177,7 +177,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = libpd;
 			};
-			buildConfigurationList = 3011354516A6ECD1005421C7 /* Build configuration list for PBXProject "iOSTest" */;
+			buildConfigurationList = 3011354516A6ECD1005421C7 /* Build configuration list for PBXProject "iosTest" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -347,7 +347,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3011354516A6ECD1005421C7 /* Build configuration list for PBXProject "iOSTest" */ = {
+		3011354516A6ECD1005421C7 /* Build configuration list for PBXProject "iosTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3011356D16A6ECD1005421C7 /* Debug */,

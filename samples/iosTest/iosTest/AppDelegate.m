@@ -215,7 +215,7 @@
 	NSLog(@"-- BEGIN Polling Test");
 	
 	// set delegates again, but disable polling
-	[PdBase setDelegate:nil];
+	[PdBase setDelegate:nil]; // clear delegate & stop polling timer
 	[PdBase setMidiDelegate:nil];
 	[PdBase setDelegate:self pollingEnabled:NO];
 	[PdBase setMidiDelegate:self pollingEnabled:NO];
