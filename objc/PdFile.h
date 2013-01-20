@@ -24,7 +24,7 @@
 @property (nonatomic, copy, readonly) NSString *pathName;           // stored file path name
 
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName;	// open a pd file/patch and return a representative PdFile object
-+ (id)openFileNamed:(PdFile*) file;									// open a new file using the baseName & patchName in an existing PdFile
++ (id)openNewInstanceOf:(PdFile*) file;								// open a new instance of an existing PdFile
 - (void)closeFile;													// close an opened pd file (also called in dealloc)
 
 @end

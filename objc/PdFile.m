@@ -45,7 +45,7 @@
 	return pdFile;
 }
 
-+ (id)openFileNamed:(PdFile*) file {
++ (id)openNewInstanceOf:(PdFile*) file {
 	PdFile *pdFile = [[[self alloc] init] autorelease];
 	if (pdFile) {
 		[pdFile openFile:file.baseName path:file.pathName];

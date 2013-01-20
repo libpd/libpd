@@ -200,66 +200,66 @@
     NSLog(@"Pd: %@\n", message);
 }
 
-- (void)receiveNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity {
+- (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity forChannel:(int)channel {
 	NSArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     for (NSObject<PdMidiListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveNoteOn:pitch:velocity:)]) {
-            [listener receiveNoteOn:channel pitch:pitch velocity:velocity];
+            [listener receiveNoteOn:pitch withVelocity:velocity forChannel:channel];
         } else {
             NSLog(@"Unhandled noteon on channel %d", channel);
         }
     }
 }
 
-- (void)receiveControlChange:(int)channel controller:(int)controller value:(int)value {
+- (void)receiveControlChange:(int)value forController:(int)controller forChannel:(int)channel {
 	NSArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     for (NSObject<PdMidiListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveControlChange:controller:value:)]) {
-            [listener receiveControlChange:channel controller:controller value:value];
+            [listener receiveControlChange:value forController:controller forChannel:channel];
         } else {
             NSLog(@"Unhandled control change on channel %d", channel);
         }
     }
 }
 
-- (void)receiveProgramChange:(int)channel value:(int)value {
+- (void)receiveProgramChange:(int)value forChannel:(int)channel {
 	NSArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     for (NSObject<PdMidiListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveProgramChange:value:)]) {
-            [listener receiveProgramChange:channel value:value];
+            [listener receiveProgramChange:value forChannel:channel];
         } else {
             NSLog(@"Unhandled program change on channel %d", channel);
         }
     }
 }
 
-- (void)receivePitchBend:(int)channel value:(int)value {
+- (void)receivePitchBend:(int)value forChannel:(int)channel {
 	NSArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     for (NSObject<PdMidiListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receivePitchBend:value:)]) {
-            [listener receivePitchBend:channel value:value];
+            [listener receivePitchBend:value forChannel:channel];
         } else {
             NSLog(@"Unhandled pitch bend on channel %d", channel);
         }
     }
 }
 
-- (void)receiveAftertouch:(int)channel value:(int)value {
+- (void)receiveAftertouch:(int)value forChannel:(int)channel {
 	NSArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     for (NSObject<PdMidiListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receiveAftertouch:value:)]) {
-            [listener receiveAftertouch:channel value:value];
+            [listener receiveAftertouch:value forChannel:channel];
         } else {
             NSLog(@"Unhandled aftertouch on channel %d", channel);
         }
     }
 }
 
-- (void)receivePolyAftertouch:(int)channel pitch:(int)pitch value:(int)value {
+- (void)receivePolyAftertouch:(int)value forPitch:(int)pitch forChannel:(int)channel {
 	NSArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     for (NSObject<PdMidiListener> *listener in listeners) {
         if ([listener respondsToSelector:@selector(receivePolyAftertouch:pitch:value:)]) {
-            [listener receivePolyAftertouch:channel pitch:pitch value:value];
+            [listener receivePolyAftertouch:value forPitch:pitch forChannel:channel];
         } else {
             NSLog(@"Unhandled poly aftertouch on channel %d", channel);
         }
@@ -267,11 +267,11 @@
 }
 
 // single midi bytes pass through as they aren't filtered by channel
-- (void)receiveMidiByte:(int)port byte:(int)byte {
+- (void)receiveMidiByte:(int)byte forPort:(int)port {
 	for (NSArray *listeners in listenerMap) {
 		for (NSObject<PdMidiListener> *listener in listeners) {
 			if ([listener respondsToSelector:@selector(receiveMidiByte:byte:)]) {
-				[listener receiveMidiByte:port byte:byte];
+				[listener receiveMidiByte:byte forPort:port];
 			} else {
 				NSLog(@"Unhandled midi byte to port %d", port);
 			}
@@ -314,39 +314,39 @@
 
 @implementation LoggingMidiDispatcher
 
-- (void)receiveNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity {
+- (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity forChannel:(int)channel {
 	NSLog(@"Received noteon %d %d %d", channel, pitch, velocity);
-	[super receiveNoteOn:channel pitch:pitch velocity:velocity];
+	[super receiveNoteOn:pitch withVelocity:velocity forChannel:channel];
 }
 
-- (void)receiveControlChange:(int)channel controller:(int)controller value:(int)value {
+- (void)receiveControlChange:(int)value forController:(int)controller forChannel:(int)channel {
 	NSLog(@"Received control change %d %d %d", channel, controller, value);
-	[super receiveControlChange:channel controller:controller value:value];
+	[super receiveControlChange:value forController:controller forChannel:channel];
 }
 
-- (void)receiveProgramChange:(int)channel value:(int)value {
+- (void)receiveProgramChange:(int)value forChannel:(int)channel {
 	NSLog(@"Received program change %d %d", channel, value);
-	[super receiveProgramChange:channel value:value];
+	[super receiveProgramChange:value forChannel:channel];
 }
 
-- (void)receivePitchBend:(int)channel value:(int)value {
+- (void)receivePitchBend:(int)value forChannel:(int)channel {
 	NSLog(@"Received pitch bend %d %d", channel, value);
-	[super receivePitchBend:channel value:value];
+	[super receivePitchBend:value forChannel:channel];
 }
 
-- (void)receiveAftertouch:(int)channel value:(int)value {
+- (void)receiveAftertouch:(int)value forChannel:(int)channel {
 	NSLog(@"Received aftertouch %d %d", channel, value);
-	[super receiveAftertouch:channel value:value];
+	[super receiveAftertouch:value forChannel:channel];
 }
 
-- (void)receivePolyAftertouch:(int)channel pitch:(int)pitch value:(int)value {
+- (void)receivePolyAftertouch:(int)value forPitch:(int)pitch forChannel:(int)channel {
 	NSLog(@"Received poly aftertouch: %d %d %d", channel, pitch, value);
-	[super receivePolyAftertouch:channel pitch:pitch value:value];
+	[super receivePolyAftertouch:value forPitch:pitch forChannel:channel];
 }
 
-- (void)receiveMidiByte:(int)port byte:(int)byte {
+- (void)receiveMidiByte:(int)byte forPort:(int)port {
 	NSLog(@"Received midi byte: %d 0x%X", port, byte);
-	[super receiveMidiByte:port byte:byte];
+	[super receiveMidiByte:byte forPort:port];
 }
 
 @end

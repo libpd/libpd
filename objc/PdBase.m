@@ -138,81 +138,51 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 }
 
 static void noteonHook(int channel, int pitch, int velocity) {
-  if ([midiDelegate respondsToSelector:@selector(receiveNoteOn:pitch:velocity:)]) {
-    [midiDelegate receiveNoteOn:channel pitch:pitch velocity:velocity];
+  if ([midiDelegate respondsToSelector:@selector(receiveNoteOn:withVelocity:forChannel:)]) {
+    [midiDelegate receiveNoteOn:pitch withVelocity:velocity forChannel:channel];
   }
 }
 
 static void controlChangeHook(int channel, int controller, int value) {
-  if ([midiDelegate respondsToSelector:@selector(receiveControlChange:controller:value:)]) {
-    [midiDelegate receiveControlChange:channel controller:controller value:value];
+  if ([midiDelegate respondsToSelector:@selector(receiveControlChange:forController:forChannel:)]) {
+    [midiDelegate receiveControlChange:value forController:controller forChannel:channel];
   }
 }
 
 static void programChangeHook(int channel, int value) {
-  if ([midiDelegate respondsToSelector:@selector(receiveProgramChange:value:)]) {
-    [midiDelegate receiveProgramChange:channel value:value];
+  if ([midiDelegate respondsToSelector:@selector(receiveProgramChange:forChannel:)]) {
+    [midiDelegate receiveProgramChange:value forChannel:channel];
   }
 }
 
 static void pitchBendHook(int channel, int value) {
-  if ([midiDelegate respondsToSelector:@selector(receivePitchBend:value:)]) {
-    [midiDelegate receivePitchBend:channel value:value];
+  if ([midiDelegate respondsToSelector:@selector(receivePitchBend:forChannel:)]) {
+    [midiDelegate receivePitchBend:value forChannel:channel];
   }
 }
 
 static void aftertouchHook(int channel, int value) {
-  if ([midiDelegate respondsToSelector:@selector(receiveAftertouch:value:)]) {
-    [midiDelegate receiveAftertouch:channel value:value];
+  if ([midiDelegate respondsToSelector:@selector(receiveAftertouch:forChannel:)]) {
+    [midiDelegate receiveAftertouch:value forChannel:channel];
   }
 }
 
 static void polyAftertouchHook(int channel, int pitch, int value) {
-  if ([midiDelegate respondsToSelector:@selector(receiveAftertouch:pitch:value:)]) {
-    [midiDelegate receivePolyAftertouch:channel pitch:pitch value:value];
+  if ([midiDelegate respondsToSelector:@selector(receiveAftertouch:forChannel:)]) {
+    [midiDelegate receivePolyAftertouch:value forPitch:pitch forChannel:channel];
   }
 }
 
 static void midiByteHook(int port, int byte) {
-  if ([midiDelegate respondsToSelector:@selector(receiveMidiByte:byte:)]) {
-    [midiDelegate receiveMidiByte:port byte:byte];
+  if ([midiDelegate respondsToSelector:@selector(receiveMidiByte:forPort:)]) {
+    [midiDelegate receiveMidiByte:byte forPort:port];
   }
 }
 
-#pragma mark - Message Handlers
-
-@interface PdMessageHandler : NSObject {}
--(void)pollQueue:(NSTimer *)timer;
-@end
-
-@implementation PdMessageHandler
-
--(void)pollQueue:(NSTimer *)timer {
-	libpd_queued_receive_pd_messages();
-}
-
-@end
-
-static NSTimer *pollTimer;
-static PdMessageHandler *messageHandler;
-
-
-@interface PdMidiHandler : NSObject {}
--(void)pollQueue:(NSTimer *)timer;
-@end
-
-@implementation PdMidiHandler
-
--(void)pollQueue:(NSTimer *)timer {
-	libpd_queued_receive_midi_messages();
-}
-
-@end
-
-static NSTimer *midiPollTimer;
-static PdMidiHandler *midiHandler;
-
 #pragma mark -
+
+static NSTimer *messagePollTimer;
+static NSTimer *midiPollTimer;
 
 @implementation PdBase
 
@@ -234,40 +204,8 @@ static PdMidiHandler *midiHandler;
   libpd_queued_polyaftertouchhook = (t_libpd_polyaftertouchhook) polyAftertouchHook;
   libpd_queued_midibytehook = (t_libpd_midibytehook) midiByteHook;
   
-  messageHandler = [[PdMessageHandler alloc] init];
-  midiHandler = [[PdMidiHandler alloc] init];
   libpd_queued_init();
 }
-
-// Only to called from main thread.
-//+ (size_t)setMessageBufferSize:(size_t)size {
-//  if (!ringBuffer) {
-//    ringBuffer = rb_create(size);
-//    if (!ringBuffer) return 0;
-//    tempBuffer = malloc(size);
-//    if (!tempBuffer) {
-//      rb_free(ringBuffer);
-//      ringBuffer = NULL;
-//      return 0;
-//    }
-//  }
-//  return ringBuffer->size;
-//}
-
-// Only to called from main thread.
-//+ (size_t)setMidiBufferSize:(size_t)size {
-//  if (!ringBuffer) {
-//    ringBuffer = rb_create(size);
-//    if (!ringBuffer) return 0;
-//    tempBuffer = malloc(size);
-//    if (!tempBuffer) {
-//      rb_free(ringBuffer);
-//      ringBuffer = NULL;
-//      return 0;
-//    }
-//  }
-//  return ringBuffer->size;
-//}
 
 // Only to be called from main thread.
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate {
@@ -280,37 +218,29 @@ static PdMidiHandler *midiHandler;
 }
 
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled {
-  if (newDelegate == delegate) return;
-  if (!newDelegate) {
-    [pollTimer invalidate]; // This also releases the timer.
-    pollTimer = nil;
+  if (messagePollTimer) {
+    [messagePollTimer invalidate]; // This also releases the timer.
+    messagePollTimer = nil;
   }
-//	else {
-//    [self setMessageBufferSize:32768]; // Will do nothing if buffer is already initialized.
-//  }
-  [newDelegate retain];
-  [delegate release];
-  delegate = newDelegate;
-  if (delegate && pollingEnabled && !pollTimer) {
-    pollTimer = [NSTimer timerWithTimeInterval:0.02 target:messageHandler selector:@selector(pollQueue:) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:pollTimer forMode:NSRunLoopCommonModes];
-  }
+	[newDelegate retain];
+	[delegate release];
+	delegate = newDelegate;
+	if (delegate && pollingEnabled) {
+		messagePollTimer = [NSTimer timerWithTimeInterval:0.02 target:@"PdBase" selector:@selector(receiveMessages:) userInfo:nil repeats:YES];
+		[[NSRunLoop mainRunLoop] addTimer:messagePollTimer forMode:NSRunLoopCommonModes];
+	}
 }
 
 + (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled {
-  if (newDelegate == midiDelegate) return;
-  if (!newDelegate) {
+  if (midiPollTimer) {
     [midiPollTimer invalidate]; // This also releases the timer.
     midiPollTimer = nil;
   }
-//	else {
-//    [self setMidiBufferSize:32768]; // Will do nothing if buffer is already initialized.
-//  }
   [newDelegate retain];
   [midiDelegate release];
   midiDelegate = newDelegate;
-  if (midiDelegate && pollingEnabled && !midiPollTimer) {
-    midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:midiHandler selector:@selector(pollQueue:) userInfo:nil repeats:YES];
+  if (midiDelegate && pollingEnabled) {
+    midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:@"PdBase" selector:@selector(receiveMidi:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:midiPollTimer forMode:NSRunLoopCommonModes];
   }
 }
@@ -325,12 +255,12 @@ static PdMidiHandler *midiHandler;
   return midiDelegate;
 }
 
-+ (void)recieveMessages {
-	[messageHandler pollQueue:nil];
++ (void)receiveMessages {
+	libpd_queued_receive_pd_messages();
 }
 
-+ (void)recieveMidi {
-	[midiHandler pollQueue:nil];
++ (void)receiveMidi {
+	libpd_queued_receive_midi_messages();
 }
 
 + (void *)subscribe:(NSString *)symbol {
