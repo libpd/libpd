@@ -119,7 +119,7 @@
 	NSLog(@"%@", patch);
 	
 	// open patch again
-	patch = [PdFile openFileNamed:patch];
+	patch = [PdFile openNewInstanceOf:patch];
 	NSLog(@"%@", patch);
 	
 	NSLog(@"-- FINISH Patch Test");
@@ -223,8 +223,8 @@
 	[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
 	
 	// process messages manually
-	[PdBase recieveMessages];
-	[PdBase recieveMidi];
+	[PdBase receiveMessages];
+	[PdBase receiveMidi];
 	
 	NSLog(@"-- FINISH Polling Test");
 }
@@ -256,31 +256,31 @@
 	NSLog(@"Message to %@ from %@", message, source);
 }
 
-- (void)receiveNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity {
+- (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity forChannel:(int)channel{
 	NSLog(@"NoteOn: %d %d %d", channel, pitch, velocity);
 }
 
-- (void)receiveControlChange:(int)channel controller:(int)controller value:(int)value {
+- (void)receiveControlChange:(int)value forController:(int)controller forChannel:(int)channel{
 	NSLog(@"Control Change: %d %d %d", channel, controller, value);
 }
 
-- (void)receiveProgramChange:(int)channel value:(int)value {
+- (void)receiveProgramChange:(int)value forChannel:(int)channel{
 	NSLog(@"Program Change: %d %d", channel, value);
 }
 
-- (void)receivePitchBend:(int)channel value:(int)value {
+- (void)receivePitchBend:(int)value forChannel:(int)channel{
 	NSLog(@"Pitch Bend: %d %d", channel, value);
 }
 
-- (void)receiveAftertouch:(int)channel value:(int)value {
+- (void)receiveAftertouch:(int)value forChannel:(int)channel{
 	NSLog(@"Aftertouch: %d %d", channel, value);
 }
 
-- (void)receivePolyAftertouch:(int)channel pitch:(int)pitch value:(int)value {
+- (void)receivePolyAftertouch:(int)value forPitch:(int)pitch forChannel:(int)channel{
 	NSLog(@"Poly Aftertouch: %d %d %d", channel, pitch, value);
 }
 
-- (void)receiveMidiByte:(int)port byte:(int)byte {
+- (void)receiveMidiByte:(int)byte forPort:(int)port{
 	NSLog(@"Midi Byte: %d 0x%X", port, byte);
 }
 
