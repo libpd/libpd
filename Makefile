@@ -69,8 +69,11 @@ PD_FILES = \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
 	pure-data/src/x_qlist.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
+	libpd_wrapper/z_libpd.c 
+
+PDUTIL_FILES = \
 	libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c \
-	libpd_wrapper/z_util.c libpd_wrapper/z_libpd.c 
+	libpd_wrapper/z_util.c
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
@@ -103,6 +106,9 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
 libpd: $(LIBPD)
 
 $(LIBPD): ${PD_FILES:.c=.o}
+	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
+
+libpd-util: ${PD_FILES:.c=.o} ${PDUTIL_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
