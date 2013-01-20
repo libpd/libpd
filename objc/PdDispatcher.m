@@ -147,15 +147,12 @@
     self = [super init];
     if (self) {
         listenerMap = [[NSMutableDictionary alloc] init];
-        channels = [[NSMutableSet alloc] init];
     }
     return self;
 }
 
 - (void)dealloc {
-	[channels removeAllObjects];
 	[listenerMap removeAllObjects];
-    [channels release];
     [listenerMap release];
     [super dealloc];
 }
@@ -163,9 +160,6 @@
 - (int)addListener:(NSObject<PdListener> *)listener forChannel:(int)channel {
     NSMutableArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     if (!listeners) {
-        if(![channels member:[NSNumber numberWithInt:channel]]) {
-			[channels addObject:[NSNumber numberWithInt:channel]];
-		}
         listeners = [[NSMutableArray alloc] init];
         [listenerMap setObject:listeners forKey:[NSNumber numberWithInt:channel]];
         [listeners release];
@@ -177,12 +171,8 @@
 - (int)removeListener:(NSObject<PdListener> *)listener forChannel:(int)channel {
     NSMutableArray *listeners = [listenerMap objectForKey:[NSNumber numberWithInt:channel]];
     if (listeners) {
-        [listeners removeObject:listener];
+		[listeners removeObject:listener];
         if ([listeners count] == 0) {
-			NSNumber *c = [channels member:[NSNumber numberWithInt:channel]];
-			if (c) {
-				[channels removeObject:c];
-			}
             [listenerMap removeObjectForKey:[NSNumber numberWithInt:channel]];
         }
     }
@@ -191,13 +181,6 @@
 
 - (void)removeAllListeners {
 	[listenerMap removeAllObjects];
-	[channels removeAllObjects];
-}
-
-// Override this method in subclasses if you want different printing behavior.
-// No need to synchronize here.
-- (void)receivePrint:(NSString *)message {
-    NSLog(@"Pd: %@\n", message);
 }
 
 - (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity forChannel:(int)channel {
@@ -266,17 +249,10 @@
     }
 }
 
-// single midi bytes pass through as they aren't filtered by channel
+// Override this method in subclasses if you want different printing behavior.
+// No need to synchronize here.
 - (void)receiveMidiByte:(int)byte forPort:(int)port {
-	for (NSArray *listeners in listenerMap) {
-		for (NSObject<PdMidiListener> *listener in listeners) {
-			if ([listener respondsToSelector:@selector(receiveMidiByte:byte:)]) {
-				[listener receiveMidiByte:byte forPort:port];
-			} else {
-				NSLog(@"Unhandled midi byte to port %d", port);
-			}
-		}
-	}
+	NSLog(@"Received midi byte: %d 0x%X", port, byte);
 }
 
 @end

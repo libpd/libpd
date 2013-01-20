@@ -48,7 +48,7 @@
 - (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source;
 @end
 
-// Receiver interface for printing and receiving messages from Pd
+// Receiver interface for printing and receiving messages from Pd.
 @protocol PdReceiverDelegate<PdListener>
 @optional
 - (void)receivePrint:(NSString *)message;
@@ -64,12 +64,13 @@
 - (void)receivePitchBend:(int)value forChannel:(int)channel;
 - (void)receiveAftertouch:(int)value forChannel:(int)channel;
 - (void)receivePolyAftertouch:(int)value forPitch:(int)pitch forChannel:(int)channel;
-- (void)receiveMidiByte:(int)byte forPort:(int)port;
 @end
 
 
 // Receiver interface for MIDI messages from Pd.
 @protocol PdMidiReceiverDelegate<PdMidiListener>
+@optional
+- (void)receiveMidiByte:(int)byte forPort:(int)port;
 @end
 
 

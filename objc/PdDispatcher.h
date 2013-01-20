@@ -44,11 +44,10 @@
 // registers one instance of this class with PdBase, and then listeners for individual
 // channels will be registered with the dispatcher object.
 //
-// Printing from Pd is done via NSLog by default; subclass and override the receivePrint
-// method if you want different printing behavior.
+// Raw MIDI bytes are only printed by default; subclass and override the receiveMidiByte
+// method if you want to handle raw MIDI aka data sent to [midiout].
 @interface PdMidiDispatcher : NSObject<PdMidiReceiverDelegate> {
     NSMutableDictionary *listenerMap;
-    NSMutableSet *channels;
 }
 
 // Adds a listener for the given MIDI channel in Pd.
@@ -63,7 +62,7 @@
 
 #pragma - Logging
 
-// Subclasses of PdDispatcher & PdMidiDisptcher that logs all callbacks, mostly for development and debugging.
+// Subclasses of PdDispatcher & PdMidiDisptcher that log all callbacks, mostly for development and debugging.
 @interface LoggingDispatcher : PdDispatcher {}
 @end
 
