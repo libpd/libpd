@@ -1,30 +1,30 @@
 /**
- * This software is copyrighted by Reality Jockey Ltd. and Peter Brinkmann. 
- * The following terms (the "Standard Improved BSD License") apply to 
- * all files associated with the software unless explicitly disclaimed 
+ * This software is copyrighted by Reality Jockey Ltd. and Peter Brinkmann.
+ * The following terms (the "Standard Improved BSD License") apply to
+ * all files associated with the software unless explicitly disclaimed
  * in individual files:
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above  
- * copyright notice, this list of conditions and the following 
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
  * disclaimer in the documentation and/or other materials provided
  * with the distribution.
  * 3. The name of the author may not be used to endorse or promote
- * products derived from this software without specific prior 
+ * products derived from this software without specific prior
  * written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
  * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR
  * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,   
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
@@ -70,10 +70,10 @@ static void encodeList(NSArray *list) {
   for (int i = 0; i < [list count]; i++) {
     NSObject *object = [list objectAtIndex:i];
     if ([object isKindOfClass:[NSNumber class]]) {
-      libpd_add_float([(NSNumber *)object floatValue]);
-    } else if ([object isKindOfClass:[NSString class]]) {
-      libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
-    } else {
+        libpd_add_float([(NSNumber *)object floatValue]);
+      } else if ([object isKindOfClass:[NSString class]]) {
+        libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
+      } else {
       NSLog(@"PdBase: message not supported. %@", [object class]);
     }
   }
@@ -82,7 +82,7 @@ static void encodeList(NSArray *list) {
 #pragma mark - Hooks
 
 static void printHook(const char *s) {
-	if ([delegate respondsToSelector:@selector(receivePrint:)]) {
+  if ([delegate respondsToSelector:@selector(receivePrint:)]) {
     NSString *msg = [[NSString alloc] initWithCString:s encoding:NSASCIIStringEncoding];
     [delegate receivePrint:msg];
     [msg release];
@@ -90,7 +90,7 @@ static void printHook(const char *s) {
 }
 
 static void bangHook(const char *src) {
-	if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
+  if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
     NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
     [delegate receiveBangFromSource:source];
     [source release];
@@ -98,7 +98,7 @@ static void bangHook(const char *src) {
 }
 
 static void floatHook(const char *src, float x) {
-	if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
+  if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
     NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
     [delegate receiveFloat:x fromSource:source];
     [source release];
@@ -106,7 +106,7 @@ static void floatHook(const char *src, float x) {
 }
 
 static void symbolHook(const char *src, const char *sym) {
-	if ([delegate respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
+  if ([delegate respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
     NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
     NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSASCIIStringEncoding];
     [delegate receiveSymbol:symbol fromSource:source];
@@ -116,7 +116,7 @@ static void symbolHook(const char *src, const char *sym) {
 }
 
 static void listHook(const char *src, int argc, t_atom *argv) {
-	if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
+  if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
     NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
     NSArray *args = decodeList(argc, argv);
     [delegate receiveList:args fromSource:source];
@@ -126,7 +126,7 @@ static void listHook(const char *src, int argc, t_atom *argv) {
 }
 
 static void messageHook(const char *src, const char* sym, int argc, t_atom *argv) {
-	if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
+  if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
     NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
     NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSASCIIStringEncoding];
     NSArray *args = decodeList(argc, argv);
@@ -195,7 +195,7 @@ static NSTimer *midiPollTimer;
   libpd_queued_symbolhook = (t_libpd_symbolhook) symbolHook;
   libpd_queued_listhook = (t_libpd_listhook) listHook;
   libpd_queued_messagehook = (t_libpd_messagehook) messageHook;
-	
+
   libpd_queued_noteonhook = (t_libpd_noteonhook) noteonHook;
   libpd_queued_controlchangehook = (t_libpd_controlchangehook) controlChangeHook;
   libpd_queued_programchangehook = (t_libpd_programchangehook) programChangeHook;
@@ -203,18 +203,18 @@ static NSTimer *midiPollTimer;
   libpd_queued_aftertouchhook = (t_libpd_aftertouchhook) aftertouchHook;
   libpd_queued_polyaftertouchhook = (t_libpd_polyaftertouchhook) polyAftertouchHook;
   libpd_queued_midibytehook = (t_libpd_midibytehook) midiByteHook;
-  
+
   libpd_queued_init();
 }
 
 // Only to be called from main thread.
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate {
-	[self setDelegate:newDelegate pollingEnabled:YES];
+  [self setDelegate:newDelegate pollingEnabled:YES];
 }
 
 // Only to be called from main thread.
 + (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate {
-	[self setMidiDelegate:newDelegate pollingEnabled:YES];
+  [self setMidiDelegate:newDelegate pollingEnabled:YES];
 }
 
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled {
@@ -222,13 +222,13 @@ static NSTimer *midiPollTimer;
     [messagePollTimer invalidate]; // This also releases the timer.
     messagePollTimer = nil;
   }
-	[newDelegate retain];
-	[delegate release];
-	delegate = newDelegate;
-	if (delegate && pollingEnabled) {
-		messagePollTimer = [NSTimer timerWithTimeInterval:0.02 target:@"PdBase" selector:@selector(receiveMessages:) userInfo:nil repeats:YES];
-		[[NSRunLoop mainRunLoop] addTimer:messagePollTimer forMode:NSRunLoopCommonModes];
-	}
+  [newDelegate retain];
+  [delegate release];
+  delegate = newDelegate;
+  if (delegate && pollingEnabled) {
+    messagePollTimer = [NSTimer timerWithTimeInterval:0.02 target:@"PdBase" selector:@selector(receiveMessages:) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:messagePollTimer forMode:NSRunLoopCommonModes];
+  }
 }
 
 + (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled {
@@ -256,11 +256,11 @@ static NSTimer *midiPollTimer;
 }
 
 + (void)receiveMessages {
-	libpd_queued_receive_pd_messages();
+  libpd_queued_receive_pd_messages();
 }
 
 + (void)receiveMidi {
-	libpd_queued_receive_midi_messages();
+  libpd_queued_receive_midi_messages();
 }
 
 + (void *)subscribe:(NSString *)symbol {
@@ -290,7 +290,7 @@ static NSTimer *midiPollTimer;
 + (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
   @synchronized(self) {
     return libpd_symbol([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-                        [symbol cStringUsingEncoding:NSASCIIStringEncoding]);
+    [symbol cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
@@ -307,7 +307,7 @@ static NSTimer *midiPollTimer;
     if (libpd_start_message([list count])) return -100;
     encodeList(list);
     return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-                                [message cStringUsingEncoding:NSASCIIStringEncoding]);
+    [message cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
@@ -371,7 +371,7 @@ static NSTimer *midiPollTimer;
   @synchronized(self) {
     const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
     const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
-		return libpd_openfile(base, path);
+    return libpd_openfile(base, path);
   }
 }
 

@@ -18,8 +18,8 @@
 // Printing from Pd is done via NSLog by default; subclass and override the receivePrint
 // method if you want different printing behavior.
 @interface PdDispatcher : NSObject<PdReceiverDelegate> {
-    NSMutableDictionary *listenerMap;
-    NSMutableDictionary *subscriptions;
+  NSMutableDictionary *listenerMap;
+  NSMutableDictionary *subscriptions;
 }
 
 // Adds a listener for the given source (i.e., send symbol) in Pd.  If this is the first
