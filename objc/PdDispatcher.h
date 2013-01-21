@@ -3,7 +3,6 @@
 //  libpd
 //
 //  Copyright (c) 2011 Peter Brinkmann (peter.brinkmann@gmail.com)
-//  Updated       2013 Dan Wilcox (danomatika@gmail.com)
 //
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -11,8 +10,6 @@
 
 #import <Foundation/Foundation.h>
 #import "PdBase.h"
-
-#pragma - Dispatcher
 
 // Implementation of the PdReceiverDelegate protocol from PdBase.h.  Client code
 // registers one instance of this class with PdBase, and then listeners for individual
@@ -38,33 +35,6 @@
 - (void)removeAllListeners;
 @end
 
-#pragma - Midi Dispatcher
-
-// Implementation of the PdMidiReceiverDelegate protocol from PdBase.h.  Client code
-// registers one instance of this class with PdBase, and then listeners for individual
-// channels will be registered with the dispatcher object.
-//
-// Raw MIDI bytes are only printed by default; subclass and override the receiveMidiByte
-// method if you want to handle raw MIDI aka data sent to [midiout].
-@interface PdMidiDispatcher : NSObject<PdMidiReceiverDelegate> {
-    NSMutableDictionary *listenerMap;
-}
-
-// Adds a listener for the given MIDI channel in Pd.
-- (int)addListener:(NSObject<PdMidiListener> *)listener forChannel:(int)channel;
-
-// Removes a listener for a channel.
-- (int)removeListener:(NSObject<PdMidiListener> *)listener forChannel:(int)channel;
-
-// Remove all listeners.
-- (void)removeAllListeners;
-@end
-
-#pragma - Logging
-
-// Subclasses of PdDispatcher & PdMidiDisptcher that log all callbacks, mostly for development and debugging.
+// Subclass of PdDispatcher that logs all callbacks, mostly for development and debugging.
 @interface LoggingDispatcher : PdDispatcher {}
-@end
-
-@interface LoggingMidiDispatcher : PdMidiDispatcher {}
 @end

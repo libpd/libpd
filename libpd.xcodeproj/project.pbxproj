@@ -180,6 +180,10 @@
 		301135AF16A75943005421C7 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 301135AC16A75942005421C7 /* ringbuffer.c */; };
 		301135B016A75943005421C7 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 301135AD16A75942005421C7 /* ringbuffer.h */; };
 		301135B116A75943005421C7 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 301135AD16A75942005421C7 /* ringbuffer.h */; };
+		30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
+		30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
+		30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
+		30E9358916ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
@@ -287,6 +291,8 @@
 		301130B516A4C88D005421C7 /* z_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_util.h; sourceTree = "<group>"; };
 		301135AC16A75942005421C7 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
 		301135AD16A75942005421C7 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
+		30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdMidiDispatcher.h; sourceTree = "<group>"; };
+		30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdMidiDispatcher.m; sourceTree = "<group>"; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -469,6 +475,8 @@
 		113A449E138139E1004C88F9 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */,
+				30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */,
 				5828C8B31409C8C600F8B9AC /* PdDispatcher.h */,
 				5828C8B41409C8C600F8B9AC /* PdDispatcher.m */,
 				0E8C8DC81312007F000B9D7A /* PdFile.h */,
@@ -503,6 +511,7 @@
 				301130B916A4C88D005421C7 /* z_queued.h in Headers */,
 				301130BD16A4C88D005421C7 /* z_util.h in Headers */,
 				301135B116A75943005421C7 /* ringbuffer.h in Headers */,
+				30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +528,7 @@
 				301130B816A4C88D005421C7 /* z_queued.h in Headers */,
 				301130BC16A4C88D005421C7 /* z_util.h in Headers */,
 				301135B016A75943005421C7 /* ringbuffer.h in Headers */,
+				30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +681,7 @@
 				301130B716A4C88D005421C7 /* z_queued.c in Sources */,
 				301130BB16A4C88D005421C7 /* z_util.c in Sources */,
 				301135AF16A75943005421C7 /* ringbuffer.c in Sources */,
+				30E9358916ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,6 +770,7 @@
 				301130B616A4C88D005421C7 /* z_queued.c in Sources */,
 				301130BA16A4C88D005421C7 /* z_util.c in Sources */,
 				301135AE16A75943005421C7 /* ringbuffer.c in Sources */,
+				30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
