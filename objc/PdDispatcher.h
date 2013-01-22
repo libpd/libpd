@@ -31,7 +31,7 @@
 // the listener was the last listener for this symbol.
 - (int)removeListener:(NSObject<PdListener> *)listener forSource:(NSString *)source;
 
-// Remove all listeners.
+// Removes all listeners.
 - (void)removeAllListeners;
 @end
 
