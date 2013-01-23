@@ -45,17 +45,6 @@
   return pdFile;
 }
 
-+ (id)openNewInstanceOf:(PdFile*) file {
-  PdFile *pdFile = [[[self alloc] init] autorelease];
-  if (pdFile) {
-    [pdFile openFile:file.baseName path:file.pathName];
-    if (![pdFile fileReference]) {
-      return nil;
-    }
-  }
-  return pdFile;
-}
-
 #pragma mark -
 #pragma mark - Dealloc
 
@@ -83,6 +72,10 @@
     self.fileReference = [NSValue valueWithPointer:x];
     self.dollarZero = [PdBase dollarZeroForFile:x];
   }
+}
+
+- (PdFile *)openNewInstance {
+  return [PdFile openFileNamed:self.baseName path:self.pathName];
 }
 
 - (void)closeFile {

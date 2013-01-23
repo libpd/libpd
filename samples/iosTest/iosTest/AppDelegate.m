@@ -119,7 +119,7 @@
 	NSLog(@"%@", patch);
 	
 	// open patch again
-	patch = [PdFile openNewInstanceOf:patch];
+	patch = [patch openNewInstance];
 	NSLog(@"%@", patch);
 	
 	NSLog(@"-- FINISH Patch Test");
