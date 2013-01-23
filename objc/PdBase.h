@@ -39,7 +39,7 @@
 
 
 // Listener interface for messages from Pd.
-@protocol PdListener
+@protocol PdListener<NSObject>
 @optional
 - (void)receiveBangFromSource:(NSString *)source;
 - (void)receiveFloat:(float)received fromSource:(NSString *)source;
@@ -56,7 +56,7 @@
 
 
 // Listener interface for MIDI from Pd.
-@protocol PdMidiListener
+@protocol PdMidiListener<NSObject>
 @optional
 - (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity forChannel:(int)channel;
 - (void)receiveControlChange:(int)value forController:(int)controller forChannel:(int)channel;
@@ -74,7 +74,7 @@
 @end
 
 
-@interface PdBase {
+@interface PdBase : NSObject {
   // Not meant to be instantiated. No member variables.
 }
 
