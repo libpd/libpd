@@ -290,7 +290,7 @@ static NSTimer *midiPollTimer;
 + (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
   @synchronized(self) {
     return libpd_symbol([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-    [symbol cStringUsingEncoding:NSASCIIStringEncoding]);
+                        [symbol cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
@@ -307,7 +307,7 @@ static NSTimer *midiPollTimer;
     if (libpd_start_message([list count])) return -100;
     encodeList(list);
     return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-    [message cStringUsingEncoding:NSASCIIStringEncoding]);
+                                [message cStringUsingEncoding:NSASCIIStringEncoding]);
   }
 }
 
