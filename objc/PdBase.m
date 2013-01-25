@@ -181,6 +181,14 @@ static void midiByteHook(int port, int byte) {
 
 #pragma mark -
 
+@interface PdBase () {}
+
+// timer methods, same as recieveMessage & recieveMidi
++ (void)receiveMessagesTimer:(NSTimer*)theTimer;
++ (void)receiveMidiTimer:(NSTimer*)theTimer;
+
+@end
+
 static NSTimer *messagePollTimer;
 static NSTimer *midiPollTimer;
 
@@ -226,7 +234,7 @@ static NSTimer *midiPollTimer;
   [delegate release];
   delegate = newDelegate;
   if (delegate && pollingEnabled) {
-    messagePollTimer = [NSTimer timerWithTimeInterval:0.02 target:@"PdBase" selector:@selector(receiveMessages:) userInfo:nil repeats:YES];
+    messagePollTimer = [NSTimer timerWithTimeInterval:0.02 target:self selector:@selector(receiveMessagesTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:messagePollTimer forMode:NSRunLoopCommonModes];
   }
 }
@@ -240,7 +248,7 @@ static NSTimer *midiPollTimer;
   [midiDelegate release];
   midiDelegate = newDelegate;
   if (midiDelegate && pollingEnabled) {
-    midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:@"PdBase" selector:@selector(receiveMidi:) userInfo:nil repeats:YES];
+    midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:self selector:@selector(receiveMidiTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:midiPollTimer forMode:NSRunLoopCommonModes];
   }
 }
@@ -261,6 +269,14 @@ static NSTimer *midiPollTimer;
 
 + (void)receiveMidi {
   libpd_queued_receive_midi_messages();
+}
+
++ (void)receiveMessagesTimer:(NSTimer*)theTimer {
+  libpd_queued_receive_pd_messages();
+}
+
++ (void)receiveMidiTimer:(NSTimer*)theTimer {
+  libpd_queued_receive_pd_messages();
 }
 
 + (void *)subscribe:(NSString *)symbol {
