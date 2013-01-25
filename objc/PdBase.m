@@ -187,7 +187,7 @@ static NSTimer *midiPollTimer;
 @implementation PdBase
 
 + (void)initialize {
-  libpd_queued_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
+  libpd_queued_printhook = (t_libpd_printhook) libpd_print_concatenator;
   libpd_concatenated_printhook = (t_libpd_printhook) printHook;
 
   libpd_queued_banghook = (t_libpd_banghook) bangHook;

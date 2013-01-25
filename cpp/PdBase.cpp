@@ -757,7 +757,7 @@ void PdBase::PdContext::removeBase() {
 bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 
     // attach callbacks
-	libpd_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
+	libpd_printhook = (t_libpd_printhook) libpd_print_concatenator;
     libpd_concatenated_printhook = (t_libpd_printhook) _print;
 
     libpd_banghook = (t_libpd_banghook) _bang;

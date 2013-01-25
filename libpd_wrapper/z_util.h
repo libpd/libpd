@@ -29,10 +29,10 @@ EXTERN t_libpd_printhook libpd_concatenated_printhook;
 // depending on whether you're using queued messages, to intercept and
 // concatenate print messages:
 //
-// libpd_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
+// libpd_printhook = (t_libpd_printhook) libpd_print_concatenator;
 // libpd_concatenated_printhook = (t_libpd_printhook) yourPrintHandler;
 //
-void libpd_internal_concatenated_printhook(const char *s);
+void libpd_print_concatenator(const char *s);
 
 #ifdef __cplusplus
 }
