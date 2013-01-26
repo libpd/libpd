@@ -32,8 +32,10 @@ EXTERN t_libpd_printhook libpd_concatenated_printhook;
 // libpd_printhook = (t_libpd_printhook) libpd_print_concatenator;
 // libpd_concatenated_printhook = (t_libpd_printhook) yourPrintHandler;
 //
-// Note: Make a defensive copy of the string as the char buffer is likely to change
-//       when print messages are received.
+// Note: The char buffer is safe to use when your print callback is executing,
+//       however you should make a defensive copy of the string instead of storing
+//       the pointer if you plan to use it outside of the print callback as it is
+//       likely to change when new print messages are received.
 //
 void libpd_print_concatenator(const char *s);
 
