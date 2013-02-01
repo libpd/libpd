@@ -81,11 +81,11 @@ PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/utils/PdDispatcher.java
 
 	
-JNI_FILE = libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c \
+JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
 	jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/z_csharp_helper.c
+HOOK_SET = libpd_wrapper/util/z_csharp_helper.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
@@ -95,7 +95,7 @@ PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
-         -I./libpd_wrapper $(PLATFORM_CFLAGS)
+         -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
 
 .PHONY: libpd csharplib javalib clean clobber
 

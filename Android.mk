@@ -29,8 +29,10 @@ PD_SRC_FILES := \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_qlist.c \
   pure-data/src/x_time.c pure-data/src/x_interface.c \
   libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-  libpd_wrapper/z_libpd.c libpd_wrapper/ringbuffer.c libpd_wrapper/z_queued.c
-PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper
+  libpd_wrapper/z_libpd.c libpd_wrapper/util/ringbuffer.c \
+  libpd_wrapper/util/z_queued.c
+PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
+  $(LOCAL_PATH)/libpd_wrapper/util
 PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY
 PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
 PD_LDLIBS := -ldl
