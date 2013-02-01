@@ -13,6 +13,7 @@
  */
 #include "PdBase.hpp"
 #include "z_libpd.h"
+#include "z_util.h"
 
 #include <iostream>
 
@@ -756,7 +757,8 @@ void PdBase::PdContext::removeBase() {
 bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 
     // attach callbacks
-    libpd_printhook = (t_libpd_printhook) _print;
+	libpd_printhook = (t_libpd_printhook) libpd_internal_concatenated_printhook;
+    libpd_concatenated_printhook = (t_libpd_printhook) _print;
 
     libpd_banghook = (t_libpd_banghook) _bang;
     libpd_floathook = (t_libpd_floathook) _float;
@@ -796,7 +798,7 @@ void PdBase::PdContext::clear() {
 
         computeAudio(false);
 
-        libpd_printhook = (t_libpd_printhook) NULL;
+        libpd_concatenated_printhook = (t_libpd_printhook) NULL;
 
         libpd_banghook = (t_libpd_banghook) NULL;
         libpd_floathook = (t_libpd_floathook) NULL;
@@ -864,30 +866,13 @@ PdBase::PdContext::~PdContext() {
 //----------------------------------------------------------
 void PdBase::PdContext::_print(const char* s) {
     PdContext& context = PdContext::instance();
-    string line(s);
-
-    if(line.size() > 0 && line.at(line.size()-1) == '\n') {
-
-        // build the message
-        if(line.size() > 1) {
-            line.erase(line.end()-1);
-            context.printMsg += line;
-        }
-
-        if(context.receiver)
-            context.receiver->print(context.printMsg);
-        else {
-            Message m(PRINT);
-            m.symbol = context.printMsg;
-            context.messages.push_back(m);
-        }
-
-        context.printMsg = "";
-        return;
-    }
-
-    // build the message
-    context.printMsg += line;
+	if(context.receiver)
+		context.receiver->print((string) s);
+	else {
+		Message m(PRINT);
+		m.symbol = (string) s;
+		context.messages.push_back(m);
+	}
 }
 
 void PdBase::PdContext::_bang(const char* source) {
