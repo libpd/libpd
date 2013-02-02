@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef __Z_HOOKSET_H__
-#define __Z_HOOKSET_H__
+#ifndef __Z_HOOK_UTIL_H__
+#define __Z_HOOK_UTIL_H__
 
 #ifdef __cplusplus
 extern "C"
