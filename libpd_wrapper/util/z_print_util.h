@@ -6,8 +6,8 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
-#ifndef __Z_UTIL_H__
-#define __Z_UTIL_H__
+#ifndef __Z_PRINT_UTIL_H__
+#define __Z_PRINT_UTIL_H__
 
 #include "z_libpd.h"
 

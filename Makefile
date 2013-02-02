@@ -85,7 +85,7 @@ JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
 	jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/util/z_csharp_helper.c
+HOOK_SET = libpd_wrapper/util/z_hook_util.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
