@@ -8,7 +8,7 @@
  *
  */
 
-#include "z_csharp_helper.h"
+#include "z_hook_util.h"
 
 // returns true if and only if an actual init was performed
 int libpd_safe_init() { 
