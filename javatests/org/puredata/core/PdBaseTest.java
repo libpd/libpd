@@ -263,11 +263,13 @@ public class PdBaseTest {
 	
 	@Test
 	public void testMidiByte() {
+		midiReceiver.receiveMidiByte(0, 64);
 		midiReceiver.receiveMidiByte(1, 144);
 		midiReceiver.receiveMidiByte(1, 48);
 		midiReceiver.receiveMidiByte(1, 127);
 		midiReceiver.receiveMidiByte(2, 0);
 		EasyMock.replay(midiReceiver);
+		assertEquals(0, PdBase.sendMidiByte(0, 64));
 		assertEquals(0, PdBase.sendMidiByte(1, 144));
 		assertEquals(0, PdBase.sendMidiByte(1, 48));
 		assertEquals(0, PdBase.sendMidiByte(1, 127));
