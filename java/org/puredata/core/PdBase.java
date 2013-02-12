@@ -49,6 +49,7 @@ public final class PdBase {
 
 	private final static Map<String, Long> bindings = new HashMap<String, Long>();
 	private final static Map<Integer, Long> patches = new HashMap<Integer, Long>();
+	private static PdMidiReceiver midiReceiver = null;
 	
 	static {
 		try {
@@ -122,7 +123,12 @@ public final class PdBase {
 	/**
 	 * Sets the handler for receiving MIDI events from Pd.
 	 */
-	public native static void setMidiReceiver(PdMidiReceiver receiver);
+	public static void setMidiReceiver(PdMidiReceiver receiver) {
+		midiReceiver = receiver;
+		setMidiReceiverInternal(receiver);
+	}
+	
+	private native static void setMidiReceiverInternal(PdMidiReceiver receiver);
 	
 	/**
 	 * Sets up Pd audio; must be called before rendering audio with process or startAudio.
@@ -524,7 +530,13 @@ public final class PdBase {
 	/**
 	 * Polls the MIDI queue and invokes MIDI callbacks as appropriate.
 	 */
-	public native static void pollMidiQueue();
+	public static void pollMidiQueue() {
+		midiReceiver.beginBlock();
+		pollMidiQueueInternal();
+		midiReceiver.endBlock();
+	}
+	
+	private native static void pollMidiQueueInternal();
 	
 	/**
 	 * Returns the number of frames per Pd tick (currently 64).

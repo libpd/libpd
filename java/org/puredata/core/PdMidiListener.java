@@ -65,4 +65,19 @@ public interface PdMidiListener {
 	 * @param value
 	 */
 	void receivePolyAftertouch(int channel, int pitch, int value);
+	
+	/**
+	 * Begin assembling subsequent MIDI messages into one buffer. This is an optional optimization that allows
+	 * wire format converters to reduce the number of buffers they need to send, and it provides a hint that
+	 * several messages are supposed to occur at the same time.
+	 * 
+	 * @return true if block mode is supported
+	 */
+	boolean beginBlock();
+	
+	/**
+	 * Optionally concludes a block of buffers. If block mode is supported, this call will cause the messages
+	 * received since the beginBlock() call to be handled, e.g., by writing them to a USB or other device.
+	 */
+	void endBlock();
 }

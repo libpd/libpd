@@ -193,7 +193,7 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollPdMessageQueue
   cached_env = NULL;
 }
 
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMidiQueue
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMidiQueueInternal
 (JNIEnv *env, jclass cls) {
   cached_env = env;
   libpd_queued_receive_midi_messages();
@@ -405,7 +405,7 @@ static void deleteMidiHandlerRef(JNIEnv *env) {
   midiByteMethod = NULL;
 }
 
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiverInternal
 (JNIEnv *env, jclass cls, jobject handler) {
   deleteMidiHandlerRef(env);
   if (!handler) return;
