@@ -531,9 +531,11 @@ public final class PdBase {
 	 * Polls the MIDI queue and invokes MIDI callbacks as appropriate.
 	 */
 	public static void pollMidiQueue() {
-		midiReceiver.beginBlock();
-		pollMidiQueueInternal();
-		midiReceiver.endBlock();
+		if (midiReceiver != null) {
+			midiReceiver.beginBlock();
+			pollMidiQueueInternal();
+			midiReceiver.endBlock();
+		}
 	}
 	
 	private native static void pollMidiQueueInternal();
