@@ -33,10 +33,10 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setReceiver
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    setMidiReceiver
+ * Method:    setMidiReceiverInternal
  * Signature: (Lorg/puredata/core/PdMidiReceiver;)V
  */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiver
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setMidiReceiverInternal
   (JNIEnv *, jclass, jobject);
 
 /*
@@ -241,10 +241,10 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollPdMessageQueue
 
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    pollMidiQueue
+ * Method:    pollMidiQueueInternal
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMidiQueue
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_pollMidiQueueInternal
   (JNIEnv *, jclass);
 
 /*
