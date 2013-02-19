@@ -276,7 +276,7 @@ static NSTimer *midiPollTimer;
 }
 
 + (void)receiveMidiTimer:(NSTimer*)theTimer {
-  libpd_queued_receive_pd_messages();
+  libpd_queued_receive_midi_messages();
 }
 
 + (void *)subscribe:(NSString *)symbol {
