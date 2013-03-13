@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 	pd.sendFloat("fromCPP", 100);
 	pd.sendSymbol("fromCPP", "test string");
     	
-    // stream interface
+	// stream interface
 	pd << Bang("fromCPP")
 		<< Float("fromCPP", 100)
 		<< Symbol("fromCPP", "test string");
