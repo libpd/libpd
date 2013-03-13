@@ -46,12 +46,12 @@ void PdObject::receiveList(const std::string& dest, const List& list) {
 		else if(list.isSymbol(i))
 			cout << list.getSymbol(i) << " ";
 	}
-    
-    // you can also use the built in toString function or simply stream it out
-    // cout << list.toString();
-    // cout << list;
 	
-    // print an OSC-style type string
+	// you can also use the built in toString function or simply stream it out
+	// cout << list.toString();
+	// cout << list;
+	
+	// print an OSC-style type string
 	cout << list.types() << endl;
 }
 
@@ -87,5 +87,3 @@ void PdObject::receivePolyAftertouch(const int channel, const int pitch, const i
 void PdObject::receiveMidiByte(const int port, const int byte) {
 	cout << "CPP MIDI: midi byte: " << port << " " << byte << endl;
 }
-
-
