@@ -19,15 +19,20 @@
 
 #include "opensl_io.h"
 
+#include <android/log.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/resource.h>
 #include <unistd.h>
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 
-#define NBUFFERS 4
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, "opensl_io", __VA_ARGS__)
+
+#define NBUFFERS 8
 
 struct _opensl_stream {
   int sampleRate;
@@ -62,8 +67,72 @@ struct _opensl_stream {
   void *context;
 
   pthread_t renderThread;
+  sem_t semWake;
+  sem_t semReady;
   int isRunning;
+  int isDone;
 };
+
+static void *render_loop(void *arg) {
+  setpriority(PRIO_PROCESS, gettid(), -20);
+  OPENSL_STREAM *p = (OPENSL_STREAM *) arg;
+  int renderInputIndex = 0;
+  int renderOutputIndex = 0;
+  int sampleIncrement = p->outputChannels ?
+      p->internalOutputBufferFrames : p->internalInputBufferFrames;
+  int samplesToCompute = 0;
+  int samplesComputed = 0;
+  while (!__sync_fetch_and_or(&p->isDone, 0)) {
+    for(samplesToCompute += sampleIncrement;
+        samplesToCompute >= p->externalBufferFrames;
+        samplesToCompute -= p->externalBufferFrames) {
+      p->callback(p->context, p->sampleRate, p->externalBufferFrames,
+          p->inputChannels,
+          p->inputBuffer + renderInputIndex * p->inputChannels,
+          p->outputChannels,
+          p->outputBuffer + renderOutputIndex * p->outputChannels);
+      if (p->inputChannels) {
+        renderInputIndex = (renderInputIndex + p->externalBufferFrames)
+            % p->totalInputBufferFrames;
+      }
+      if (p->outputChannels) {
+        renderOutputIndex = (renderOutputIndex + p->externalBufferFrames)
+            % p->totalOutputBufferFrames;
+        for(samplesComputed += p->externalBufferFrames;
+            samplesComputed >= p->internalOutputBufferFrames;
+            samplesComputed -= p->internalOutputBufferFrames) {
+          sem_post(&p->semReady);
+        }
+      }
+    }
+    sem_wait(&p->semWake);
+  }
+  return NULL;
+}
+
+static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
+  OPENSL_STREAM *p = (OPENSL_STREAM *) context;
+  (*bq)->Enqueue(bq, p->inputBuffer + p->inputIndex * p->inputChannels,
+      p->internalInputBufferFrames * p->inputChannels * sizeof(short));
+  p->inputIndex = (p->inputIndex + p->internalInputBufferFrames) %
+      p->totalInputBufferFrames;
+  if (!p->outputChannels) {
+    sem_post(&p->semWake);
+  }
+}
+
+static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
+  OPENSL_STREAM *p = (OPENSL_STREAM *) context;
+  if (sem_trywait(&p->semReady)) {
+    // LOGI("Underrun!");
+    return;
+  }
+  (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
+      p->internalOutputBufferFrames * p->outputChannels * sizeof(short));
+  p->outputIndex = (p->outputIndex + p->internalOutputBufferFrames) %
+      p->totalOutputBufferFrames;
+  sem_post(&p->semWake);
+}
 
 static SLuint32 convertSampleRate(SLuint32 sr) {
   switch(sr) {
@@ -98,31 +167,13 @@ static SLuint32 convertSampleRate(SLuint32 sr) {
 }
 
 static SLresult openSLCreateEngine(OPENSL_STREAM *p) {
-  SLresult result = slCreateEngine(&(p->engineObject), 0, NULL, 0, NULL, NULL);
+  SLresult result = slCreateEngine(&p->engineObject, 0, NULL, 0, NULL, NULL);
   if (result != SL_RESULT_SUCCESS) return result;
   result = (*p->engineObject)->Realize(p->engineObject, SL_BOOLEAN_FALSE);
   if (result != SL_RESULT_SUCCESS) return result;
   result = (*p->engineObject)->GetInterface(
-      p->engineObject, SL_IID_ENGINE, &(p->engineEngine));
+      p->engineObject, SL_IID_ENGINE, &p->engineEngine);
   return result;
-}
-
-static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
-  OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  int index = (p->inputIndex + p->internalInputBufferFrames) %
-      p->totalInputBufferFrames;
-  __sync_bool_compare_and_swap(&(p->inputIndex), p->inputIndex, index);
-  (*bq)->Enqueue(bq, p->inputBuffer + index * p->inputChannels,
-      p->internalInputBufferFrames * p->inputChannels * sizeof(short));
-}
-
-static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
-  OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  int index = (p->outputIndex + p->internalOutputBufferFrames) %
-      p->totalOutputBufferFrames;
-  __sync_bool_compare_and_swap(&(p->outputIndex), p->outputIndex, index);
-  (*bq)->Enqueue(bq, p->outputBuffer + index * p->outputChannels,
-      p->internalOutputBufferFrames * p->outputChannels * sizeof(short));
 }
 
 static SLresult openSLRecOpen(OPENSL_STREAM *p, SLuint32 sr) {
@@ -154,19 +205,19 @@ static SLresult openSLRecOpen(OPENSL_STREAM *p, SLuint32 sr) {
   const SLInterfaceID id[1] = {SL_IID_ANDROIDSIMPLEBUFFERQUEUE};
   const SLboolean req[1] = {SL_BOOLEAN_TRUE};
   SLresult result = (*p->engineEngine)->CreateAudioRecorder(
-      p->engineEngine, &(p->recorderObject), &audioSrc, &audioSnk, 1, id, req);
+      p->engineEngine, &p->recorderObject, &audioSrc, &audioSnk, 1, id, req);
   if (SL_RESULT_SUCCESS != result) return result;
 
   result = (*p->recorderObject)->Realize(p->recorderObject, SL_BOOLEAN_FALSE);
   if (SL_RESULT_SUCCESS != result) return result;
 
   result = (*p->recorderObject)->GetInterface(p->recorderObject,
-      SL_IID_RECORD, &(p->recorderRecord));
+      SL_IID_RECORD, &p->recorderRecord);
   if (SL_RESULT_SUCCESS != result) return result;
 
   result = (*p->recorderObject)->GetInterface(
       p->recorderObject, SL_IID_ANDROIDSIMPLEBUFFERQUEUE,
-      &(p->recorderBufferQueue));
+      &p->recorderBufferQueue);
   if (SL_RESULT_SUCCESS != result) return result;
 
   result = (*p->recorderBufferQueue)->RegisterCallback(
@@ -197,7 +248,7 @@ static SLresult openSLPlayOpen(OPENSL_STREAM *p, SLuint32 sr) {
   const SLInterfaceID mixIds[] = {SL_IID_VOLUME};
   const SLboolean mixReq[] = {SL_BOOLEAN_FALSE};
   SLresult result = (*p->engineEngine)->CreateOutputMix(
-      p->engineEngine, &(p->outputMixObject), 1, mixIds, mixReq);
+      p->engineEngine, &p->outputMixObject, 1, mixIds, mixReq);
   if (result != SL_RESULT_SUCCESS) return result;
 
   result = (*p->outputMixObject)->Realize(
@@ -212,7 +263,7 @@ static SLresult openSLPlayOpen(OPENSL_STREAM *p, SLuint32 sr) {
   const SLInterfaceID playIds[] = {SL_IID_ANDROIDSIMPLEBUFFERQUEUE};
   const SLboolean playRec[] = {SL_BOOLEAN_TRUE};
   result = (*p->engineEngine)->CreateAudioPlayer(
-      p->engineEngine, &(p->playerObject), &audioSrc, &audioSnk,
+      p->engineEngine, &p->playerObject, &audioSrc, &audioSnk,
       1, playIds, playRec);
   if (result != SL_RESULT_SUCCESS) return result;
 
@@ -220,12 +271,12 @@ static SLresult openSLPlayOpen(OPENSL_STREAM *p, SLuint32 sr) {
   if (result != SL_RESULT_SUCCESS) return result;
 
   result = (*p->playerObject)->GetInterface(
-      p->playerObject, SL_IID_PLAY, &(p->playerPlay));
+      p->playerObject, SL_IID_PLAY, &p->playerPlay);
   if (result != SL_RESULT_SUCCESS) return result;
 
   result = (*p->playerObject)->GetInterface(
       p->playerObject, SL_IID_ANDROIDSIMPLEBUFFERQUEUE,
-      &(p->playerBufferQueue));
+      &p->playerBufferQueue);
   if (result != SL_RESULT_SUCCESS) return result;
 
   result = (*p->playerBufferQueue)->RegisterCallback(
@@ -314,6 +365,7 @@ OPENSL_STREAM *opensl_open(
       opensl_close(p);
       return NULL;
     }
+    memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
   }
 
   if (outChans) {
@@ -323,6 +375,20 @@ OPENSL_STREAM *opensl_open(
       opensl_close(p);
       return NULL;
     }
+    memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
+  }
+
+  p->inputIndex = 0;
+  p->outputIndex = 0;
+  p->isRunning = 0;
+  p->isDone = 0;
+
+  sem_init(&p->semWake, 0, NBUFFERS);
+  sem_init(&p->semReady, 0, 0);
+
+  if (pthread_create(&p->renderThread, NULL, &render_loop, p)) {
+    opensl_close(p);
+    return NULL;
   }
 
   return p;
@@ -339,6 +405,9 @@ void opensl_close(OPENSL_STREAM *p) {
     (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
     (*p->playerPlay)->SetPlayState(p->playerPlay, SL_PLAYSTATE_STOPPED);
   }
+  __sync_bool_compare_and_swap(&p->isDone, 0, 1);
+  sem_post(&p->semWake);
+  pthread_join(p->renderThread, NULL);
   openSLDestroyEngine(p);
   if (p->inputBuffer) {
     free(p->inputBuffer);
@@ -349,70 +418,17 @@ void opensl_close(OPENSL_STREAM *p) {
   free(p);
 }
 
-static void *render_loop(void *arg) {
-  OPENSL_STREAM *p = (OPENSL_STREAM *) arg;
-  int renderInputIndex = p->totalInputBufferFrames / 2;
-  int renderOutputIndex = 0;
-  while (__sync_fetch_and_or(&(p->isRunning), 0)) {
-    int invokeCallback = 1;
-    if (p->inputChannels) {
-      int inputIndex = __sync_fetch_and_or(&(p->inputIndex), 0);
-      int d = (inputIndex - renderInputIndex + p->totalInputBufferFrames)
-          % p->totalInputBufferFrames;
-      if (d < p->externalBufferFrames) {
-        invokeCallback = 0;
-      }
-    }
-    if (p->outputChannels) {
-      int outputIndex = __sync_fetch_and_or(&(p->outputIndex), 0);
-      int d = (outputIndex - renderOutputIndex + p->totalOutputBufferFrames)
-          % p->totalOutputBufferFrames;
-      if (d < p->externalBufferFrames) {
-        invokeCallback = 0;
-      }
-    }
-    if (invokeCallback) {
-      p->callback(p->context, p->sampleRate, p->externalBufferFrames,
-          p->inputChannels,
-          p->inputBuffer + renderInputIndex * p->inputChannels,
-          p->outputChannels,
-          p->outputBuffer + renderOutputIndex * p->outputChannels);
-      if (p->inputChannels) {
-        renderInputIndex = (renderInputIndex + p->externalBufferFrames)
-            % p->totalInputBufferFrames;
-      }
-      if (p->outputChannels) {
-        renderOutputIndex = (renderOutputIndex + p->externalBufferFrames)
-            % p->totalOutputBufferFrames;
-      }
-    } else {
-      usleep(50);  // Seems short, but larger values tend to glitch on Nexus S.
-    }
-  }
-  return NULL;
-}
-
 int opensl_is_running(OPENSL_STREAM *p) {
-  return __sync_fetch_and_or(&(p->isRunning), 0);
+  return __sync_fetch_and_or(&p->isRunning, 0);
 }
 
 int opensl_start(OPENSL_STREAM *p) {
-  if (opensl_is_running(p)) return 0;
-
-  p->inputIndex = 0;
-  p->outputIndex = 0;
-  if (p->inputChannels) {
-    memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
-  }
-  if (p->outputChannels) {
-    memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
+  if (!__sync_bool_compare_and_swap(&p->isRunning, 0, 1)) {
+    return 0;  // Already running.
   }
 
-  p->isRunning = 1;
-  if (pthread_create(&(p->renderThread), NULL, render_loop, p)) {
-    p->isRunning = 0;
-    return -1;
-  }
+  sem_wait(&p->semReady);
+  sem_post(&p->semReady);
 
   if (p->recorderRecord) {
     recorderCallback(p->recorderBufferQueue, p);
@@ -435,8 +451,7 @@ int opensl_start(OPENSL_STREAM *p) {
 }
 
 void opensl_pause(OPENSL_STREAM *p) {
-  if (__sync_bool_compare_and_swap(&(p->isRunning), 1, 0)) {
-    pthread_join(p->renderThread, NULL);
+  if (__sync_bool_compare_and_swap(&p->isRunning, 1, 0)) {
     if (p->recorderRecord) {
       (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
       (*p->recorderRecord)->SetRecordState(p->recorderRecord,
