@@ -30,9 +30,12 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 
-#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
+#define LOGI(...) \
+  __android_log_print(ANDROID_LOG_INFO, "opensl_io", __VA_ARGS__)
+#define LOGW(...) \
+  __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
-#define NBUFFERS 8
+#define NBUFFERS 3
 
 struct _opensl_stream {
   int sampleRate;
@@ -60,6 +63,8 @@ struct _opensl_stream {
 
   int inputIndex;
   int outputIndex;
+  int isRunning;
+  int isDone;
 
   opensl_process_t callback;
   void *context;
@@ -67,16 +72,14 @@ struct _opensl_stream {
   pthread_t renderThread;
   sem_t semWake;
   sem_t semReady;
-  int isRunning;
-  int isDone;
 };
 
 static void *render_loop(void *arg) {
   setpriority(PRIO_PROCESS, gettid(), -20);
   OPENSL_STREAM *p = (OPENSL_STREAM *) arg;
-  int renderInputIndex = 0;
+  int renderInputIndex = p->totalBufferFrames / 2;
   int renderOutputIndex = 0;
-  int samplesToCompute = p->outputChannels ? p->totalBufferFrames / 2 : 0;
+  int samplesToCompute = p->totalBufferFrames / 4;
   int samplesComputed = 0;
   while (!__sync_fetch_and_or(&p->isDone, 0)) {
     while (samplesToCompute >= p->externalBufferFrames) {
@@ -318,15 +321,20 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
+  sem_init(&p->semWake, 0, 0);
+  sem_init(&p->semReady, 0, 0);
+
+  p->inputIndex = 0;
+  p->outputIndex = 0;
+  p->isRunning = 0;
+  p->isDone = 0;
+
+  p->inputBuffer = NULL;
+  p->outputBuffer = NULL;
   p->internalBufferFrames = internalBufferFrames;
   p->externalBufferFrames = externalBufferFrames;
-  int lcm = lowest_common_multiple(internalBufferFrames, externalBufferFrames);
-  int bufferSize = lcm;
-  while (bufferSize / internalBufferFrames < NBUFFERS) {
-    bufferSize += lcm;
-  }
-  bufferSize *= 2;
-  p->totalBufferFrames = bufferSize;
+  p->totalBufferFrames = lowest_common_multiple(
+      NBUFFERS * 4 * internalBufferFrames, NBUFFERS * 4 * externalBufferFrames);
 
   p->callback = proc;
   p->context = context;
@@ -359,14 +367,6 @@ OPENSL_STREAM *opensl_open(
     memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
   }
 
-  p->inputIndex = 0;
-  p->outputIndex = 0;
-  p->isRunning = 0;
-  p->isDone = 0;
-
-  sem_init(&p->semWake, 0, 0);
-  sem_init(&p->semReady, 0, 0);
-
   if (pthread_create(&p->renderThread, NULL, &render_loop, p)) {
     opensl_close(p);
     return NULL;
@@ -390,12 +390,8 @@ void opensl_close(OPENSL_STREAM *p) {
   sem_post(&p->semWake);
   pthread_join(p->renderThread, NULL);
   openSLDestroyEngine(p);
-  if (p->inputBuffer) {
-    free(p->inputBuffer);
-  }
-  if (p->outputBuffer) {
-    free(p->outputBuffer);
-  }
+  free(p->inputBuffer);
+  free(p->outputBuffer);
   sem_destroy(&p->semReady);
   sem_destroy(&p->semWake);
   free(p);
@@ -410,6 +406,7 @@ int opensl_start(OPENSL_STREAM *p) {
     return 0;  // Already running.
   }
 
+  // Wait for the rendering thread to spin up if we want output.
   if (p->outputChannels) {
     sem_wait(&p->semReady);
     sem_post(&p->semReady);
@@ -444,7 +441,8 @@ void opensl_pause(OPENSL_STREAM *p) {
     }
     if (p->playerPlay) {
       (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
-      (*p->playerPlay)->SetPlayState(p->playerPlay, SL_PLAYSTATE_PAUSED);
+      (*p->playerPlay)->SetPlayState(p->playerPlay,
+        SL_PLAYSTATE_PAUSED);
     }
   }
 }
