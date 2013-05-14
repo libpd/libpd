@@ -30,7 +30,7 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, "opensl_io", __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
 #define NBUFFERS 8
 
@@ -52,11 +52,9 @@ struct _opensl_stream {
   SLRecordItf recorderRecord;
   SLAndroidSimpleBufferQueueItf recorderBufferQueue;
 
-  int internalInputBufferFrames;
-  int internalOutputBufferFrames;
+  int internalBufferFrames;
   int externalBufferFrames;
-  int totalInputBufferFrames;
-  int totalOutputBufferFrames;
+  int totalBufferFrames;
   short *inputBuffer;
   short *outputBuffer;
 
@@ -78,34 +76,30 @@ static void *render_loop(void *arg) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) arg;
   int renderInputIndex = 0;
   int renderOutputIndex = 0;
-  int sampleIncrement = p->outputChannels ?
-      p->internalOutputBufferFrames : p->internalInputBufferFrames;
-  int samplesToCompute = 0;
+  int samplesToCompute = p->outputChannels ? p->totalBufferFrames / 2 : 0;
   int samplesComputed = 0;
   while (!__sync_fetch_and_or(&p->isDone, 0)) {
-    for(samplesToCompute += sampleIncrement;
-        samplesToCompute >= p->externalBufferFrames;
-        samplesToCompute -= p->externalBufferFrames) {
+    while (samplesToCompute >= p->externalBufferFrames) {
       p->callback(p->context, p->sampleRate, p->externalBufferFrames,
           p->inputChannels,
           p->inputBuffer + renderInputIndex * p->inputChannels,
           p->outputChannels,
           p->outputBuffer + renderOutputIndex * p->outputChannels);
-      if (p->inputChannels) {
-        renderInputIndex = (renderInputIndex + p->externalBufferFrames)
-            % p->totalInputBufferFrames;
-      }
+      renderInputIndex = (renderInputIndex + p->externalBufferFrames)
+          % p->totalBufferFrames;
+      renderOutputIndex = (renderOutputIndex + p->externalBufferFrames)
+          % p->totalBufferFrames;
       if (p->outputChannels) {
-        renderOutputIndex = (renderOutputIndex + p->externalBufferFrames)
-            % p->totalOutputBufferFrames;
         for(samplesComputed += p->externalBufferFrames;
-            samplesComputed >= p->internalOutputBufferFrames;
-            samplesComputed -= p->internalOutputBufferFrames) {
+            samplesComputed >= p->internalBufferFrames;
+            samplesComputed -= p->internalBufferFrames) {
           sem_post(&p->semReady);
         }
       }
+      samplesToCompute -= p->externalBufferFrames;
     }
     sem_wait(&p->semWake);
+    samplesToCompute += p->internalBufferFrames;
   }
   return NULL;
 }
@@ -113,9 +107,9 @@ static void *render_loop(void *arg) {
 static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
   (*bq)->Enqueue(bq, p->inputBuffer + p->inputIndex * p->inputChannels,
-      p->internalInputBufferFrames * p->inputChannels * sizeof(short));
-  p->inputIndex = (p->inputIndex + p->internalInputBufferFrames) %
-      p->totalInputBufferFrames;
+      p->internalBufferFrames * p->inputChannels * sizeof(short));
+  p->inputIndex = (p->inputIndex + p->internalBufferFrames) %
+      p->totalBufferFrames;
   if (!p->outputChannels) {
     sem_post(&p->semWake);
   }
@@ -124,13 +118,12 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
   if (sem_trywait(&p->semReady)) {
-    // LOGI("Underrun!");
-    return;
+    LOGW("Underrun!");
   }
   (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
-      p->internalOutputBufferFrames * p->outputChannels * sizeof(short));
-  p->outputIndex = (p->outputIndex + p->internalOutputBufferFrames) %
-      p->totalOutputBufferFrames;
+      p->internalBufferFrames * p->outputChannels * sizeof(short));
+  p->outputIndex = (p->outputIndex + p->internalBufferFrames) %
+      p->totalBufferFrames;
   sem_post(&p->semWake);
 }
 
@@ -309,8 +302,8 @@ static int lowest_common_multiple(int a, int b) {
 
 OPENSL_STREAM *opensl_open(
     int sRate, int inChans, int outChans,
-    int internalInputBufferFrames, int internalOutputBufferFrames,
-    int externalBufferFrames, opensl_process_t proc, void *context) {
+    int internalBufferFrames, int externalBufferFrames,
+    opensl_process_t proc, void *context) {
   if (!proc || (!inChans && !outChans)) {
     return NULL;
   }
@@ -325,28 +318,16 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
+  p->internalBufferFrames = internalBufferFrames;
   p->externalBufferFrames = externalBufferFrames;
-  if (inChans) {
-    p->internalInputBufferFrames = internalInputBufferFrames;
-    int lcm = lowest_common_multiple(internalInputBufferFrames,
-        externalBufferFrames);
-    p->totalInputBufferFrames = lcm;
-    while (p->totalInputBufferFrames / internalInputBufferFrames < NBUFFERS ||
-           p->totalInputBufferFrames / externalBufferFrames < NBUFFERS) {
-      p->totalInputBufferFrames += lcm;
-    }
-    p->totalInputBufferFrames *= 2;
+  int lcm = lowest_common_multiple(internalBufferFrames, externalBufferFrames);
+  int bufferSize = lcm;
+  while (bufferSize / internalBufferFrames < NBUFFERS) {
+    bufferSize += lcm;
   }
-  if (outChans) {
-    p->internalOutputBufferFrames = internalOutputBufferFrames;
-    int lcm = lowest_common_multiple(internalOutputBufferFrames,
-        externalBufferFrames);
-    p->totalOutputBufferFrames = lcm;
-    while (p->totalOutputBufferFrames / internalOutputBufferFrames < NBUFFERS ||
-           p->totalOutputBufferFrames / externalBufferFrames < NBUFFERS) {
-      p->totalOutputBufferFrames += lcm;
-    }
-  }
+  bufferSize *= 2;
+  p->totalBufferFrames = bufferSize;
+
   p->callback = proc;
   p->context = context;
   p->inputChannels = inChans;
@@ -359,7 +340,7 @@ OPENSL_STREAM *opensl_open(
   }
 
   if (inChans) {
-    int inBufSize = p->totalInputBufferFrames * inChans;
+    int inBufSize = p->totalBufferFrames * inChans;
     if (!(openSLRecOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
         (p->inputBuffer = (short *) calloc(inBufSize, sizeof(short))))) {
       opensl_close(p);
@@ -369,7 +350,7 @@ OPENSL_STREAM *opensl_open(
   }
 
   if (outChans) {
-    int outBufSize = p->totalOutputBufferFrames * outChans;
+    int outBufSize = p->totalBufferFrames * outChans;
     if (!(openSLPlayOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
         (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))))) {
       opensl_close(p);
@@ -383,7 +364,7 @@ OPENSL_STREAM *opensl_open(
   p->isRunning = 0;
   p->isDone = 0;
 
-  sem_init(&p->semWake, 0, NBUFFERS);
+  sem_init(&p->semWake, 0, 0);
   sem_init(&p->semReady, 0, 0);
 
   if (pthread_create(&p->renderThread, NULL, &render_loop, p)) {
@@ -415,6 +396,8 @@ void opensl_close(OPENSL_STREAM *p) {
   if (p->outputBuffer) {
     free(p->outputBuffer);
   }
+  sem_destroy(&p->semReady);
+  sem_destroy(&p->semWake);
   free(p);
 }
 
@@ -427,8 +410,10 @@ int opensl_start(OPENSL_STREAM *p) {
     return 0;  // Already running.
   }
 
-  sem_wait(&p->semReady);
-  sem_post(&p->semReady);
+  if (p->outputChannels) {
+    sem_wait(&p->semReady);
+    sem_post(&p->semReady);
+  }
 
   if (p->recorderRecord) {
     recorderCallback(p->recorderBufferQueue, p);

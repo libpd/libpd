@@ -48,7 +48,7 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * (which may be NULL if no context is needed).  The context is owned by the
  * caller.
  *
- * The internal buffer sizes are the buffer sizes (in frames) at which OpenSL
+ * The internal buffer size is the buffer size (in frames) at which OpenSL
  * operates; 512 is a reasonable default. As of Android 4.2, the AudioManager
  * class in Java offers a method that will yield the recommended sample rate
  * and buffer size for OpenSL.
@@ -63,8 +63,8 @@ typedef struct _opensl_stream OPENSL_STREAM;
  */
 OPENSL_STREAM *opensl_open(
     int sample_rate, int input_channels, int output_channels,
-    int internal__input_buffer_size, int internal__output_buffer_size,
-    int external_buffer_size, opensl_process_t proc, void *context);
+    int internal_buffer_size, int external_buffer_size,
+    opensl_process_t proc, void *context);
 
 /*
  * Stops playback and frees all resources associated with the given stream,

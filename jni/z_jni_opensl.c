@@ -12,8 +12,6 @@
 #include "z_jni_shared.c"
 
 #define KEY_BUFFER_SIZE "opensl.buffer_size"
-#define KEY_INPUT_BUFFER_SIZE "opensl.input_buffer_size"
-#define KEY_OUTPUT_BUFFER_SIZE "opensl.output_buffer_size"
 
 static OPENSL_STREAM *streamPtr = NULL;
 
@@ -43,8 +41,7 @@ jobject options) {
   pthread_mutex_unlock(&mutex);
   if (err) return err;
 
-  int input_buffer_size = 512;  // Reasonable default...
-  int output_buffer_size = 512;
+  int buffer_size = 512;  // Reasonable default...
   if (options != NULL) {
     jclass clazz = (*env)->GetObjectClass(env, options);
     jmethodID getMethod = (*env)->GetMethodID(env, clazz, "get",
@@ -54,26 +51,12 @@ jobject options) {
         getMethod, jkey);
     if (jvalue != NULL) {
       const char *s = (char *) (*env)->GetStringUTFChars(env, jvalue, NULL);
-      input_buffer_size = output_buffer_size = atoi(s);
-      (*env)->ReleaseStringUTFChars(env, jvalue, s);
-    }
-    jkey = (*env)->NewStringUTF(env, KEY_INPUT_BUFFER_SIZE);
-    jvalue = (jstring) (*env)->CallObjectMethod(env, options, getMethod, jkey);
-    if (jvalue != NULL) {
-      const char *s = (char *) (*env)->GetStringUTFChars(env, jvalue, NULL);
-      input_buffer_size = atoi(s);
-      (*env)->ReleaseStringUTFChars(env, jvalue, s);
-    }
-    jkey = (*env)->NewStringUTF(env, KEY_OUTPUT_BUFFER_SIZE);
-    jvalue = (jstring) (*env)->CallObjectMethod(env, options, getMethod, jkey);
-    if (jvalue != NULL) {
-      const char *s = (char *) (*env)->GetStringUTFChars(env, jvalue, NULL);
-      output_buffer_size = atoi(s);
+      buffer_size = atoi(s);
       (*env)->ReleaseStringUTFChars(env, jvalue, s);
     }
   }
   streamPtr = opensl_open(sRate, inChans, outChans,
-                          input_buffer_size, output_buffer_size, 64,
+                          buffer_size, 64,
                           process_callback, NULL);
   return !streamPtr;
 }
