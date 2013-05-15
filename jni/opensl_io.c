@@ -35,8 +35,6 @@
 #define LOGW(...) \
   __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
-#define NBUFFERS 3
-
 struct _opensl_stream {
   int sampleRate;
   int inputChannels;
@@ -333,8 +331,9 @@ OPENSL_STREAM *opensl_open(
   p->outputBuffer = NULL;
   p->internalBufferFrames = internalBufferFrames;
   p->externalBufferFrames = externalBufferFrames;
-  p->totalBufferFrames = lowest_common_multiple(
-      NBUFFERS * 4 * internalBufferFrames, NBUFFERS * 4 * externalBufferFrames);
+
+  p->totalBufferFrames =
+      8 * lowest_common_multiple(internalBufferFrames, externalBufferFrames);
 
   p->callback = proc;
   p->context = context;
@@ -372,6 +371,7 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
+  LOGI("Created OpenSL IO stream with buffer size %d", p->totalBufferFrames);
   return p;
 }
 
