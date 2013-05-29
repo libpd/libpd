@@ -342,7 +342,6 @@ OPENSL_STREAM *opensl_open(
     }
   }
 
-  LOGI("Tag: F");
   return p;
 }
 
