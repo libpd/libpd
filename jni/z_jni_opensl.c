@@ -40,24 +40,8 @@ jobject options) {
   jint err = libpd_init_audio(inChans, outChans, sRate);
   pthread_mutex_unlock(&mutex);
   if (err) return err;
-
-  int buffer_size = 512;  // Reasonable default...
-  if (options != NULL) {
-    jclass clazz = (*env)->GetObjectClass(env, options);
-    jmethodID getMethod = (*env)->GetMethodID(env, clazz, "get",
-        "(Ljava/lang/Object;)Ljava/lang/Object;");
-    jstring jkey = (*env)->NewStringUTF(env, KEY_BUFFER_SIZE);
-    jstring jvalue = (jstring) (*env)->CallObjectMethod(env, options,
-        getMethod, jkey);
-    if (jvalue != NULL) {
-      const char *s = (char *) (*env)->GetStringUTFChars(env, jvalue, NULL);
-      buffer_size = atoi(s);
-      (*env)->ReleaseStringUTFChars(env, jvalue, s);
-    }
-  }
-  streamPtr = opensl_open(sRate, inChans, outChans,
-                          buffer_size, 64,
-                          process_callback, NULL);
+  streamPtr = opensl_open(sRate, inChans, outChans, libpd_blocksize(),
+      process_callback, NULL);
   return !streamPtr;
 }
 
