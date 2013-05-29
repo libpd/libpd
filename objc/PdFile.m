@@ -79,7 +79,7 @@
 }
 
 - (bool)isValid {
-	return (bool) self.fileReference;
+  return (bool) self.fileReference;
 }
 
 - (void)closeFile {
