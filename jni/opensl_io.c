@@ -35,7 +35,7 @@
 #define LOGW(...) \
   __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
-#define INITIAL_DELAY 16
+#define INITIAL_DELAY 4
 
 struct _opensl_stream {
   int sampleRate;
@@ -90,17 +90,17 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
         if (p->intervals == INITIAL_DELAY) {
           sem_post(&p->semReady);
         } else {
-          p->inputIndex = 0;  // Start over at the beginning of an interval.
+          p->outputIndex = p->inputIndex;
         }
       }
     }
     p->inputTime.tv_sec = t.tv_sec;
     p->inputTime.tv_nsec = t.tv_nsec;
   }
-  (*bq)->Enqueue(bq, p->inputBuffer + p->inputIndex * p->inputChannels,
-      p->callbackBufferFrames * p->inputChannels * sizeof(short));
   p->inputIndex = (p->inputIndex + p->callbackBufferFrames) %
       p->totalBufferFrames;
+  (*bq)->Enqueue(bq, p->inputBuffer + p->inputIndex * p->inputChannels,
+      p->callbackBufferFrames * p->inputChannels * sizeof(short));
 }
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
@@ -177,7 +177,7 @@ static SLresult openSLRecOpen(OPENSL_STREAM *p, SLuint32 sr) {
     mics = SL_SPEAKER_FRONT_CENTER;
   }
   SLDataLocator_AndroidSimpleBufferQueue loc_bq =
-      {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 2};
+      {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 1};
   SLDataFormat_PCM format_pcm =
       {SL_DATAFORMAT_PCM, p->inputChannels, sr, SL_PCMSAMPLEFORMAT_FIXED_16,
        SL_PCMSAMPLEFORMAT_FIXED_16, mics, SL_BYTEORDER_LITTLEENDIAN};
@@ -224,7 +224,7 @@ static SLresult openSLPlayOpen(OPENSL_STREAM *p, SLuint32 sr) {
        SL_PCMSAMPLEFORMAT_FIXED_16, SL_PCMSAMPLEFORMAT_FIXED_16,
        speakers, SL_BYTEORDER_LITTLEENDIAN};
   SLDataLocator_AndroidSimpleBufferQueue loc_bufq =
-      {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 2};
+      {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 1};
   SLDataSource audioSrc = {&loc_bufq, &format_pcm};  // source: buffer queue
 
   const SLInterfaceID mixIds[] = {SL_IID_VOLUME};
@@ -306,14 +306,14 @@ OPENSL_STREAM *opensl_open(
   p->outputBuffer = NULL;
   p->callbackBufferFrames = callbackBufferFrames;
 
-  // A quarter of the buffer duration in milliseconds.
-  p->thresholdMillis = 250.0 * callbackBufferFrames / sampleRate;
+  // Three quarters of the buffer duration in milliseconds.
+  p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
 
   sem_init(&p->semReady, 0, 0);
 
-  // Probably bigger than necessary, but this won't affect performance.
+  // Bigger than necessary, but this won't affect performance.
   p->totalBufferFrames =
-      (sampleRate / callbackBufferFrames / 2) * callbackBufferFrames;
+      (8 * sampleRate / callbackBufferFrames) * callbackBufferFrames;
 
   p->inputChannels = inChans;
   p->outputChannels = outChans;
@@ -381,7 +381,7 @@ int opensl_start(OPENSL_STREAM *p) {
   p->intervals = 0;
 
   if (p->recorderRecord) {
-    sem_trywait(&p->semReady);  // Clear semaphore, just in case.
+    while (!sem_trywait(&p->semReady));  // Clear semaphore, just in case.
     memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
     recorderCallback(p->recorderBufferQueue, p);
     if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
