@@ -25,6 +25,7 @@
 
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName; // open a pd file/patch and return a representative PdFile object
 - (id)openNewInstance;                      // open a new instance of an existing PdFile
+- (bool)isValid;                            // is the file reference valid? (aka non-nil)
 - (void)closeFile;                          // close an opened pd file (also called in dealloc)
 
 @end

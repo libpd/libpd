@@ -78,6 +78,10 @@
   return [PdFile openFileNamed:self.baseName path:self.pathName];
 }
 
+- (bool)isValid {
+  return (bool) self.fileReference;
+}
+
 - (void)closeFile {
   void *x = [self.fileReference pointerValue];
   if (x) {
@@ -91,7 +95,7 @@
 
 - (NSString *)description {
   return [NSString stringWithFormat: @"Patch: \"%@\" $0: %d valid: %d",
-  self.baseName, self.dollarZero, (bool) self.fileReference];
+  self.baseName, self.dollarZero, [self isValid]];
 }
 
 @end
