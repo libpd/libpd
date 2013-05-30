@@ -20,7 +20,6 @@
 #include "opensl_io.h"
 
 #include <android/log.h>
-#include <semaphore.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/resource.h>
@@ -38,10 +37,6 @@
 #define INITIAL_DELAY 4
 
 struct _opensl_stream {
-  int sampleRate;
-  int inputChannels;
-  int outputChannels;
-
   SLObjectItf engineObject;
   SLEngineItf engineEngine;
 
@@ -55,13 +50,20 @@ struct _opensl_stream {
   SLRecordItf recorderRecord;
   SLAndroidSimpleBufferQueueItf recorderBufferQueue;
 
+  int sampleRate;
+  int inputChannels;
+  int outputChannels;
+
   int callbackBufferFrames;
   int totalBufferFrames;
+
   short *inputBuffer;
   short *outputBuffer;
+  short *dummyBuffer;
 
   int inputIndex;
   int outputIndex;
+  int initialIndex;
 
   int isRunning;
 
@@ -71,7 +73,6 @@ struct _opensl_stream {
   struct timespec inputTime;
   int intervals;
   double thresholdMillis;
-  sem_t semReady;
 };
 
 static double time_diff_millis(struct timespec *a, struct timespec *b) {
@@ -86,11 +87,10 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
     if (p->inputTime.tv_sec + p->inputTime.tv_nsec > 0) {
       double dt = time_diff_millis(&t, &p->inputTime);
       if (dt > p->thresholdMillis) {
-        p->intervals++;
-        if (p->intervals == INITIAL_DELAY) {
-          sem_post(&p->semReady);
-        } else {
-          p->outputIndex = p->inputIndex;
+        __sync_bool_compare_and_swap(
+            &p->intervals, p->intervals, p->intervals + 1);
+        if (p->intervals < INITIAL_DELAY) {
+          p->initialIndex = p->inputIndex;
         }
       }
     }
@@ -105,15 +105,24 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
-      p->inputChannels,
-      p->inputBuffer + p->outputIndex * p->inputChannels,
-      p->outputChannels,
-      p->outputBuffer + p->outputIndex * p->outputChannels);
-  (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
-      p->callbackBufferFrames * p->outputChannels * sizeof(short));
-  p->outputIndex = (p->outputIndex + p->callbackBufferFrames) %
-      p->totalBufferFrames;
+  if (p->outputIndex < 0 &&
+      __sync_fetch_and_or(&p->intervals, 0) == INITIAL_DELAY) {
+    p->outputIndex = p->initialIndex;
+  }
+  if (p->outputIndex >= 0) {
+    p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
+        p->inputChannels,
+        p->inputBuffer + p->outputIndex * p->inputChannels,
+        p->outputChannels,
+        p->outputBuffer + p->outputIndex * p->outputChannels);
+    (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
+        p->callbackBufferFrames * p->outputChannels * sizeof(short));
+    p->outputIndex = (p->outputIndex + p->callbackBufferFrames) %
+        p->totalBufferFrames;
+  } else {
+    (*bq)->Enqueue(bq, p->dummyBuffer,
+        p->callbackBufferFrames * p->outputChannels * sizeof(short));
+  }
 }
 
 static SLuint32 convertSampleRate(SLuint32 sr) {
@@ -304,16 +313,14 @@ OPENSL_STREAM *opensl_open(
 
   p->inputBuffer = NULL;
   p->outputBuffer = NULL;
+  p->dummyBuffer = NULL;
   p->callbackBufferFrames = callbackBufferFrames;
 
   // Three quarters of the buffer duration in milliseconds.
   p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
 
-  sem_init(&p->semReady, 0, 0);
-
-  // Bigger than necessary, but this won't affect performance.
   p->totalBufferFrames =
-      (8 * sampleRate / callbackBufferFrames) * callbackBufferFrames;
+      (sampleRate / callbackBufferFrames) * callbackBufferFrames;
 
   p->inputChannels = inChans;
   p->outputChannels = outChans;
@@ -336,7 +343,9 @@ OPENSL_STREAM *opensl_open(
   if (outChans) {
     int outBufSize = p->totalBufferFrames * outChans;
     if (!(openSLPlayOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
-        (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))))) {
+        (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))) &&
+        (p->dummyBuffer = (short *) calloc(callbackBufferFrames * outChans,
+             sizeof(short))))) {
       opensl_close(p);
       return NULL;
     }
@@ -346,21 +355,11 @@ OPENSL_STREAM *opensl_open(
 }
 
 void opensl_close(OPENSL_STREAM *p) {
-  opensl_pause(p);  // Overkill?
-  if (p->recorderRecord) {
-    (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
-    (*p->recorderRecord)->SetRecordState(p->recorderRecord,
-        SL_RECORDSTATE_STOPPED);
-  }
-  if (p->playerPlay) {
-    (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
-    (*p->playerPlay)->SetPlayState(p->playerPlay,
-        SL_PLAYSTATE_STOPPED);
-  }
+  opensl_pause(p);
   openSLDestroyEngine(p);
   free(p->inputBuffer);
   free(p->outputBuffer);
-  sem_destroy(&p->semReady);
+  free(p->dummyBuffer);
   free(p);
 }
 
@@ -374,32 +373,29 @@ int opensl_start(OPENSL_STREAM *p) {
   }
 
   p->inputIndex = 0;
-  p->outputIndex = 0;
+  p->outputIndex = (p->recorderRecord) ? -1 : 0;
+  p->initialIndex = 0;
 
   p->inputTime.tv_sec = 0;
   p->inputTime.tv_nsec = 0;
   p->intervals = 0;
 
   if (p->recorderRecord) {
-    while (!sem_trywait(&p->semReady));  // Clear semaphore, just in case.
     memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
-    recorderCallback(p->recorderBufferQueue, p);
     if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
             SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
       opensl_pause(p);
       return -1;
     }
-    sem_wait(&p->semReady);  // Now wait for the input thread to spin up.
+    recorderCallback(p->recorderBufferQueue, p);
   }
-  if (p->playerPlay) {
-    memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
-    playerCallback(p->playerBufferQueue, p);
-    if ((*p->playerPlay)->SetPlayState(p->playerPlay,
-           SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
-      opensl_pause(p);
-      return -1;
-    }
+  memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
+  if ((*p->playerPlay)->SetPlayState(p->playerPlay,
+         SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
+    opensl_pause(p);
+    return -1;
   }
+  playerCallback(p->playerBufferQueue, p);
 
   p->isRunning = 1;
   return 0;
@@ -409,16 +405,13 @@ void opensl_pause(OPENSL_STREAM *p) {
   if (!p->isRunning) {
     return;
   }
-
   if (p->recorderRecord) {
     (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
     (*p->recorderRecord)->SetRecordState(p->recorderRecord,
-        SL_RECORDSTATE_PAUSED);
+        SL_RECORDSTATE_STOPPED);
   }
-  if (p->playerPlay) {
-    (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
-    (*p->playerPlay)->SetPlayState(p->playerPlay,
-        SL_PLAYSTATE_PAUSED);
-  }
+  (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
+  (*p->playerPlay)->SetPlayState(p->playerPlay,
+      SL_PLAYSTATE_STOPPED);
   p->isRunning = 0;
 }
