@@ -113,7 +113,7 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   if (p->callbacks < 2) {
     p->callbacks++;
     if (p->callbacks == 2) {
-      sem_post(&p->semReady);  // Unblock input callback on second invocation.
+      sem_post(&p->semReady);  // Start reading input on the second invocation.
     }
   }
   if (p->readIndex < 0 &&
