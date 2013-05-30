@@ -20,6 +20,7 @@
 #include "opensl_io.h"
 
 #include <android/log.h>
+#include <semaphore.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/resource.h>
@@ -74,6 +75,9 @@ struct _opensl_stream {
   struct timespec inputTime;
   int intervals;
   double thresholdMillis;
+
+  sem_t semReady;
+  int callbacks;
 };
 
 static double time_diff_millis(struct timespec *a, struct timespec *b) {
@@ -106,11 +110,17 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
+  if (p->callbacks < 2) {
+    p->callbacks++;
+    if (p->callbacks == 2) {
+      sem_post(&p->semReady);  // Unblock input callback on second invocation.
+    }
+  }
   if (p->readIndex < 0 &&
       __sync_fetch_and_or(&p->intervals, 0) == INITIAL_DELAY) {
-    p->readIndex = p->initialReadIndex;
+    p->readIndex = p->initialReadIndex;  // Start reading input when ready.
   }
-  if (p->readIndex >= 0) {
+  if (p->readIndex >= 0) {  // Render with input if available.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels,
         p->inputBuffer + p->readIndex * p->inputChannels,
@@ -118,7 +128,7 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
         p->outputBuffer + p->outputIndex * p->outputChannels);
     p->readIndex = (p->readIndex + p->callbackBufferFrames) %
         p->totalBufferFrames;
-  } else {
+  } else {  // Render with empty input when input is not yet availabe.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels,
         p->dummyBuffer,
@@ -313,6 +323,8 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
+  sem_init(&p->semReady, 0, 0);
+
   p->callback = proc;
   p->context = context;
   p->isRunning = 0;
@@ -364,6 +376,7 @@ OPENSL_STREAM *opensl_open(
 void opensl_close(OPENSL_STREAM *p) {
   opensl_pause(p);
   openSLDestroyEngine(p);
+  sem_destroy(&p->semReady);
   free(p->inputBuffer);
   free(p->outputBuffer);
   free(p->dummyBuffer);
@@ -379,6 +392,8 @@ int opensl_start(OPENSL_STREAM *p) {
     return 0;  // Already running.
   }
 
+  while (!sem_trywait(&p->semReady));  // Clear semaphore, just in case.
+
   p->inputIndex = 0;
   p->outputIndex = 0;
   p->readIndex = -1;
@@ -387,23 +402,28 @@ int opensl_start(OPENSL_STREAM *p) {
   p->inputTime.tv_sec = 0;
   p->inputTime.tv_nsec = 0;
   p->intervals = 0;
+  p->callbacks = 0;
 
-  if (p->recorderRecord) {
-    memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
-    if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
-            SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
-      opensl_pause(p);
-      return -1;
-    }
-    recorderCallback(p->recorderBufferQueue, p);
-  }
   memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
   if ((*p->playerPlay)->SetPlayState(p->playerPlay,
          SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
     opensl_pause(p);
     return -1;
   }
+  LOGI("Starting player queue.");
   playerCallback(p->playerBufferQueue, p);
+
+  if (p->recorderRecord) {
+    memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
+    sem_wait(&p->semReady);
+    if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
+            SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
+      opensl_pause(p);
+      return -1;
+    }
+    LOGI("Starting recorder queue.");
+    recorderCallback(p->recorderBufferQueue, p);
+  }
 
   p->isRunning = 1;
   return 0;
