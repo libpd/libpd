@@ -34,7 +34,7 @@
 #define LOGW(...) \
   __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
-#define INITIAL_DELAY 4
+#define INITIAL_DELAY 4 
 
 struct _opensl_stream {
   SLObjectItf engineObject;
@@ -63,7 +63,8 @@ struct _opensl_stream {
 
   int inputIndex;
   int outputIndex;
-  int initialIndex;
+  int readIndex;
+  int initialReadIndex;
 
   int isRunning;
 
@@ -90,7 +91,7 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
         __sync_bool_compare_and_swap(
             &p->intervals, p->intervals, p->intervals + 1);
         if (p->intervals < INITIAL_DELAY) {
-          p->initialIndex = p->inputIndex;
+          p->initialReadIndex = p->inputIndex;
         }
       }
     }
@@ -105,24 +106,29 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  if (p->outputIndex < 0 &&
+  if (p->readIndex < 0 &&
       __sync_fetch_and_or(&p->intervals, 0) == INITIAL_DELAY) {
-    p->outputIndex = p->initialIndex;
+    p->readIndex = p->initialReadIndex;
   }
-  if (p->outputIndex >= 0) {
+  if (p->readIndex >= 0) {
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels,
-        p->inputBuffer + p->outputIndex * p->inputChannels,
+        p->inputBuffer + p->readIndex * p->inputChannels,
         p->outputChannels,
         p->outputBuffer + p->outputIndex * p->outputChannels);
-    (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
-        p->callbackBufferFrames * p->outputChannels * sizeof(short));
-    p->outputIndex = (p->outputIndex + p->callbackBufferFrames) %
+    p->readIndex = (p->readIndex + p->callbackBufferFrames) %
         p->totalBufferFrames;
   } else {
-    (*bq)->Enqueue(bq, p->dummyBuffer,
-        p->callbackBufferFrames * p->outputChannels * sizeof(short));
+    p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
+        p->inputChannels,
+        p->dummyBuffer,
+        p->outputChannels,
+        p->outputBuffer + p->outputIndex * p->outputChannels);
   }
+  (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
+      p->callbackBufferFrames * p->outputChannels * sizeof(short));
+  p->outputIndex = (p->outputIndex + p->callbackBufferFrames) %
+      p->totalBufferFrames;
 }
 
 static SLuint32 convertSampleRate(SLuint32 sr) {
@@ -334,18 +340,19 @@ OPENSL_STREAM *opensl_open(
   if (inChans) {
     int inBufSize = p->totalBufferFrames * inChans;
     if (!(openSLRecOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
-        (p->inputBuffer = (short *) calloc(inBufSize, sizeof(short))))) {
+        (p->inputBuffer = (short *) calloc(inBufSize, sizeof(short))) &&
+        (p->dummyBuffer = (short *) calloc(callbackBufferFrames * inChans,
+             sizeof(short))))) {
       opensl_close(p);
       return NULL;
     }
+    memset(p->dummyBuffer, 0, sizeof(p->dummyBuffer));
   }
 
   if (outChans) {
     int outBufSize = p->totalBufferFrames * outChans;
     if (!(openSLPlayOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
-        (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))) &&
-        (p->dummyBuffer = (short *) calloc(callbackBufferFrames * outChans,
-             sizeof(short))))) {
+        (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))))) {
       opensl_close(p);
       return NULL;
     }
@@ -373,8 +380,9 @@ int opensl_start(OPENSL_STREAM *p) {
   }
 
   p->inputIndex = 0;
-  p->outputIndex = (p->recorderRecord) ? -1 : 0;
-  p->initialIndex = 0;
+  p->outputIndex = 0;
+  p->readIndex = -1;
+  p->initialReadIndex = 0;
 
   p->inputTime.tv_sec = 0;
   p->inputTime.tv_nsec = 0;
