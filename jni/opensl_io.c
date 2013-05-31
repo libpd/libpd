@@ -111,8 +111,7 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
   if (p->callbacks < 2) {
-    p->callbacks++;
-    if (p->callbacks == 2) {
+    if (++p->callbacks == 2) {
       sem_post(&p->semReady);  // Start reading input on the second invocation.
     }
   }
@@ -334,8 +333,8 @@ OPENSL_STREAM *opensl_open(
   p->dummyBuffer = NULL;
   p->callbackBufferFrames = callbackBufferFrames;
 
-  // Three quarters of the buffer duration in milliseconds.
-  p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
+  // Half the buffer duration in milliseconds.
+  p->thresholdMillis = 500.0 * callbackBufferFrames / sampleRate;
 
   p->totalBufferFrames =
       (sampleRate / callbackBufferFrames) * callbackBufferFrames;
