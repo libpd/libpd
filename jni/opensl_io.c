@@ -97,7 +97,7 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
       if (dt > p->thresholdMillis) {
         __sync_bool_compare_and_swap(
             &p->intervals, p->intervals, p->intervals + 1);
-        if (p->intervals < INITIAL_DELAY) {
+        if (p->intervals < INITIAL_DELAY - 1) {
           p->initialReadIndex = p->inputIndex;
         }
       }
