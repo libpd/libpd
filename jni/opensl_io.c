@@ -90,6 +90,9 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
     struct timespec t;
     clock_gettime(CLOCK_MONOTONIC, &t);
     if (p->inputTime.tv_sec + p->inputTime.tv_nsec > 0) {
+      // If a significant amount of time has passed since the previous
+      // invocation, we take that as evidence that we're at the beginning of a
+      // new internal OpenSL buffer.
       double dt = time_diff_millis(&t, &p->inputTime);
       if (dt > p->thresholdMillis) {
         __sync_bool_compare_and_swap(
@@ -110,16 +113,14 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  if (p->callbacks < 2) {
-    if (++p->callbacks == 2) {
-      sem_post(&p->semReady);  // Start reading input on the second invocation.
-    }
+  if (p->callbacks < 2 && ++p->callbacks == 2) {
+    sem_post(&p->semReady);  // Launch the input queue on the second invocation.
   }
   if (p->readIndex < 0 &&
       __sync_fetch_and_or(&p->intervals, 0) == INITIAL_DELAY) {
     p->readIndex = p->initialReadIndex;  // Start reading input when ready.
   }
-  if (p->readIndex >= 0) {  // Render with input if available.
+  if (p->readIndex >= 0) {  // Synthesize audio with input if available.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels,
         p->inputBuffer + p->readIndex * p->inputChannels,
@@ -127,7 +128,7 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
         p->outputBuffer + p->outputIndex * p->outputChannels);
     p->readIndex = (p->readIndex + p->callbackBufferFrames) %
         p->totalBufferFrames;
-  } else {  // Render with empty input when input is not yet availabe.
+  } else {  // Synthesize audio with empty input when input is not yet availabe.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels,
         p->dummyBuffer,
@@ -333,7 +334,7 @@ OPENSL_STREAM *opensl_open(
   p->dummyBuffer = NULL;
   p->callbackBufferFrames = callbackBufferFrames;
 
-  // Half the buffer duration in milliseconds.
+  // Half the callback buffer duration in milliseconds.
   p->thresholdMillis = 500.0 * callbackBufferFrames / sampleRate;
 
   p->totalBufferFrames =
