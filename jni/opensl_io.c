@@ -20,7 +20,6 @@
 #include "opensl_io.h"
 
 #include <android/log.h>
-#include <semaphore.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/resource.h>
@@ -35,7 +34,7 @@
 #define LOGW(...) \
   __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
-#define INITIAL_DELAY 4 
+#define STARTUP_INTERVALS 8
 
 struct _opensl_stream {
   SLObjectItf engineObject;
@@ -51,12 +50,17 @@ struct _opensl_stream {
   SLRecordItf recorderRecord;
   SLAndroidSimpleBufferQueueItf recorderBufferQueue;
 
+  void *context;
+  opensl_process_t callback;
+
   int sampleRate;
   int inputChannels;
   int outputChannels;
 
   int callbackBufferFrames;
   int totalBufferFrames;
+
+  double thresholdMillis;
 
   short *inputBuffer;
   short *outputBuffer;
@@ -65,60 +69,74 @@ struct _opensl_stream {
   int inputIndex;
   int outputIndex;
   int readIndex;
-  int initialReadIndex;
 
   int isRunning;
 
-  void *context;
-  opensl_process_t callback;
-
   struct timespec inputTime;
-  int intervals;
-  double thresholdMillis;
+  int inputIntervals;
+  int previousInputIndex;
+  int inputOffset;
 
-  sem_t semReady;
-  int callbacks;
+  struct timespec outputTime;
+  int outputIntervals;
+  int previousOutputIndex;
+  int outputOffset;
 };
 
-static double time_diff_millis(struct timespec *a, struct timespec *b) {
-  return (a->tv_sec - b->tv_sec) * 1e3 + (a->tv_nsec - b->tv_nsec) * 1e-6;
+static void updateIntervals(
+    struct timespec *previousTime, double thresholdMillis,
+    int *intervals, int *offset, int *previousIndex, int index, int total) {
+  struct timespec t;
+  clock_gettime(CLOCK_MONOTONIC, &t);
+  if (previousTime->tv_sec + previousTime->tv_nsec > 0) {
+    // If a significant amount of time has passed since the previous
+    // invocation, we take that as evidence that we're at the beginning of a
+    // new internal OpenSL buffer.
+    double dt = (t.tv_sec - previousTime->tv_sec) * 1e3 +
+                (t.tv_nsec - previousTime->tv_nsec) * 1e-6;
+    if (dt > thresholdMillis) {
+      if (*intervals > STARTUP_INTERVALS / 2) {
+        int currentOffset = (index - *previousIndex + total) % total;
+        if (currentOffset > *offset) {
+          *offset = currentOffset;
+        }
+      }
+      *previousIndex = index;
+      __sync_bool_compare_and_swap(intervals, *intervals, *intervals + 1);
+    }
+  }
+  previousTime->tv_sec = t.tv_sec;
+  previousTime->tv_nsec = t.tv_nsec;
 }
 
 static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  if (p->intervals < INITIAL_DELAY) {
-    struct timespec t;
-    clock_gettime(CLOCK_MONOTONIC, &t);
-    if (p->inputTime.tv_sec + p->inputTime.tv_nsec > 0) {
-      // If a significant amount of time has passed since the previous
-      // invocation, we take that as evidence that we're at the beginning of a
-      // new internal OpenSL buffer.
-      double dt = time_diff_millis(&t, &p->inputTime);
-      if (dt > p->thresholdMillis) {
-        __sync_bool_compare_and_swap(
-            &p->intervals, p->intervals, p->intervals + 1);
-        if (p->intervals < INITIAL_DELAY - 1) {
-          p->initialReadIndex = p->inputIndex;
-        }
-      }
-    }
-    p->inputTime.tv_sec = t.tv_sec;
-    p->inputTime.tv_nsec = t.tv_nsec;
+  if (p->inputIntervals < STARTUP_INTERVALS) {
+    updateIntervals(&p->inputTime, p->thresholdMillis, &p->inputIntervals,
+        &p->inputOffset, &p->previousInputIndex, p->inputIndex,
+        p->totalBufferFrames);
   }
-  p->inputIndex = (p->inputIndex + p->callbackBufferFrames) %
-      p->totalBufferFrames;
+  __sync_bool_compare_and_swap(&p->inputIndex, p->inputIndex,
+      (p->inputIndex + p->callbackBufferFrames) % p->totalBufferFrames);
   (*bq)->Enqueue(bq, p->inputBuffer + p->inputIndex * p->inputChannels,
       p->callbackBufferFrames * p->inputChannels * sizeof(short));
 }
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  if (p->callbacks < 2 && ++p->callbacks == 2) {
-    sem_post(&p->semReady);  // Launch the input queue on the second invocation.
+  if (p->outputIntervals < STARTUP_INTERVALS) {
+    updateIntervals(&p->outputTime, p->thresholdMillis, &p->outputIntervals,
+        &p->outputOffset, &p->previousOutputIndex, p->outputIndex,
+        p->totalBufferFrames);
   }
   if (p->readIndex < 0 &&
-      __sync_fetch_and_or(&p->intervals, 0) == INITIAL_DELAY) {
-    p->readIndex = p->initialReadIndex;  // Start reading input when ready.
+      p->outputIntervals == STARTUP_INTERVALS &&
+      __sync_fetch_and_or(&p->inputIntervals, 0) == STARTUP_INTERVALS) {
+    int offset = p->inputOffset + p->outputOffset;
+    LOGI("Offsets: %d %d %d", p->inputOffset, p->outputOffset, offset);
+    int inputIndex = __sync_fetch_and_or(&p->inputIndex, 0);
+    p->readIndex =
+        (inputIndex - offset + p->totalBufferFrames) % p->totalBufferFrames;
   }
   if (p->readIndex >= 0) {  // Synthesize audio with input if available.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
@@ -323,8 +341,6 @@ OPENSL_STREAM *opensl_open(
     return NULL;
   }
 
-  sem_init(&p->semReady, 0, 0);
-
   p->callback = proc;
   p->context = context;
   p->isRunning = 0;
@@ -334,8 +350,7 @@ OPENSL_STREAM *opensl_open(
   p->dummyBuffer = NULL;
   p->callbackBufferFrames = callbackBufferFrames;
 
-  // Half the callback buffer duration in milliseconds.
-  p->thresholdMillis = 500.0 * callbackBufferFrames / sampleRate;
+  p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
 
   p->totalBufferFrames =
       (sampleRate / callbackBufferFrames) * callbackBufferFrames;
@@ -376,7 +391,6 @@ OPENSL_STREAM *opensl_open(
 void opensl_close(OPENSL_STREAM *p) {
   opensl_pause(p);
   openSLDestroyEngine(p);
-  sem_destroy(&p->semReady);
   free(p->inputBuffer);
   free(p->outputBuffer);
   free(p->dummyBuffer);
@@ -392,17 +406,21 @@ int opensl_start(OPENSL_STREAM *p) {
     return 0;  // Already running.
   }
 
-  while (!sem_trywait(&p->semReady));  // Clear semaphore, just in case.
-
   p->inputIndex = 0;
   p->outputIndex = 0;
   p->readIndex = -1;
-  p->initialReadIndex = 0;
 
   p->inputTime.tv_sec = 0;
   p->inputTime.tv_nsec = 0;
-  p->intervals = 0;
-  p->callbacks = 0;
+  p->inputIntervals = 0;
+  p->previousInputIndex = 0;
+  p->inputOffset = 0;
+
+  p->outputTime.tv_sec = 0;
+  p->outputTime.tv_nsec = 0;
+  p->outputIntervals = 0;
+  p->previousOutputIndex = 0;
+  p->outputOffset = 0;
 
   memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
   if ((*p->playerPlay)->SetPlayState(p->playerPlay,
@@ -415,7 +433,6 @@ int opensl_start(OPENSL_STREAM *p) {
 
   if (p->recorderRecord) {
     memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
-    sem_wait(&p->semReady);
     if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
             SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
       opensl_pause(p);
@@ -433,13 +450,13 @@ void opensl_pause(OPENSL_STREAM *p) {
   if (!p->isRunning) {
     return;
   }
+  (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
+  (*p->playerPlay)->SetPlayState(p->playerPlay,
+      SL_PLAYSTATE_STOPPED);
   if (p->recorderRecord) {
     (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
     (*p->recorderRecord)->SetRecordState(p->recorderRecord,
         SL_RECORDSTATE_STOPPED);
   }
-  (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
-  (*p->playerPlay)->SetPlayState(p->playerPlay,
-      SL_PLAYSTATE_STOPPED);
   p->isRunning = 0;
 }
