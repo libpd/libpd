@@ -55,6 +55,11 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * with a utility class, AudioParameters.java, that looks up this property if
  * available and provides a reasonable default otherwise.
  *
+ * If you don't know the native buffer size, or if your processing callback
+ * cannot operate at the native buffer size, then you should use a smallish
+ * buffer size, e.g., 64 frames. Somewhat surprisingly, large buffers will not
+ * improve stability.
+ * 
  * For the time being, the number of input channels must be 0, 1, or 2; the
  * number of output channels must be 1 or 2.
  *

@@ -58,7 +58,7 @@ struct _opensl_stream {
   int outputChannels;
 
   int callbackBufferFrames;
-  int totalBufferFrames;
+  int inputBufferFrames;
 
   double thresholdMillis;
 
@@ -66,26 +66,26 @@ struct _opensl_stream {
   short *outputBuffer;
   short *dummyBuffer;
 
-  int inputIndex;
-  int outputIndex;
-  int readIndex;
+  long inputIndex;
+  long outputIndex;
+  long readIndex;
 
   int isRunning;
 
   struct timespec inputTime;
   int inputIntervals;
-  int previousInputIndex;
+  long previousInputIndex;
   int inputOffset;
 
   struct timespec outputTime;
   int outputIntervals;
-  int previousOutputIndex;
+  long previousOutputIndex;
   int outputOffset;
 };
 
 static void updateIntervals(
     struct timespec *previousTime, double thresholdMillis,
-    int *intervals, int *offset, int *previousIndex, int index, int total) {
+    int *intervals, int *offset, long *previousIndex, long index) {
   struct timespec t;
   clock_gettime(CLOCK_MONOTONIC, &t);
   if (previousTime->tv_sec + previousTime->tv_nsec > 0) {
@@ -96,7 +96,7 @@ static void updateIntervals(
                 (t.tv_nsec - previousTime->tv_nsec) * 1e-6;
     if (dt > thresholdMillis) {
       if (*intervals > STARTUP_INTERVALS / 2) {
-        int currentOffset = (index - *previousIndex + total) % total;
+        int currentOffset = index - *previousIndex;
         if (currentOffset > *offset) {
           *offset = currentOffset;
         }
@@ -113,12 +113,12 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
   if (p->inputIntervals < STARTUP_INTERVALS) {
     updateIntervals(&p->inputTime, p->thresholdMillis, &p->inputIntervals,
-        &p->inputOffset, &p->previousInputIndex, p->inputIndex,
-        p->totalBufferFrames);
+        &p->inputOffset, &p->previousInputIndex, p->inputIndex);
   }
   __sync_bool_compare_and_swap(&p->inputIndex, p->inputIndex,
-      (p->inputIndex + p->callbackBufferFrames) % p->totalBufferFrames);
-  (*bq)->Enqueue(bq, p->inputBuffer + p->inputIndex * p->inputChannels,
+      p->inputIndex + p->callbackBufferFrames);
+  (*bq)->Enqueue(bq, p->inputBuffer +
+      (p->inputIndex % p->inputBufferFrames) * p->inputChannels,
       p->callbackBufferFrames * p->inputChannels * sizeof(short));
 }
 
@@ -126,37 +126,33 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
   if (p->outputIntervals < STARTUP_INTERVALS) {
     updateIntervals(&p->outputTime, p->thresholdMillis, &p->outputIntervals,
-        &p->outputOffset, &p->previousOutputIndex, p->outputIndex,
-        p->totalBufferFrames);
+        &p->outputOffset, &p->previousOutputIndex, p->outputIndex);
   }
   if (p->readIndex < 0 &&
       p->outputIntervals == STARTUP_INTERVALS &&
       __sync_fetch_and_or(&p->inputIntervals, 0) == STARTUP_INTERVALS) {
     int offset = p->inputOffset + p->outputOffset;
     LOGI("Offsets: %d %d %d", p->inputOffset, p->outputOffset, offset);
-    int inputIndex = __sync_fetch_and_or(&p->inputIndex, 0);
-    p->readIndex =
-        (inputIndex - offset + p->totalBufferFrames) % p->totalBufferFrames;
+    p->readIndex = __sync_fetch_and_or(&p->inputIndex, 0) - offset;
   }
   if (p->readIndex >= 0) {  // Synthesize audio with input if available.
+    int margin = __sync_fetch_and_or(&p->inputIndex, 0) - p->readIndex;
+    if (margin <= p->callbackBufferFrames) {
+      LOGI("Low safety margin: %d", margin);
+    }
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
-        p->inputChannels,
-        p->inputBuffer + p->readIndex * p->inputChannels,
-        p->outputChannels,
-        p->outputBuffer + p->outputIndex * p->outputChannels);
-    p->readIndex = (p->readIndex + p->callbackBufferFrames) %
-        p->totalBufferFrames;
+        p->inputChannels, p->inputBuffer +
+        (p->readIndex % p->inputBufferFrames) * p->inputChannels,
+        p->outputChannels, p->outputBuffer);
+    p->readIndex += p->callbackBufferFrames;
   } else {  // Synthesize audio with empty input when input is not yet availabe.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
-        p->inputChannels,
-        p->dummyBuffer,
-        p->outputChannels,
-        p->outputBuffer + p->outputIndex * p->outputChannels);
+        p->inputChannels, p->dummyBuffer,
+        p->outputChannels, p->outputBuffer);
   }
-  (*bq)->Enqueue(bq, p->outputBuffer + p->outputIndex * p->outputChannels,
+  (*bq)->Enqueue(bq, p->outputBuffer,
       p->callbackBufferFrames * p->outputChannels * sizeof(short));
-  p->outputIndex = (p->outputIndex + p->callbackBufferFrames) %
-      p->totalBufferFrames;
+  p->outputIndex += p->callbackBufferFrames;
 }
 
 static SLuint32 convertSampleRate(SLuint32 sr) {
@@ -352,8 +348,8 @@ OPENSL_STREAM *opensl_open(
 
   p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
 
-  p->totalBufferFrames =
-      (sampleRate / callbackBufferFrames) * callbackBufferFrames;
+  p->inputBufferFrames =
+      (sampleRate / callbackBufferFrames / 4) * callbackBufferFrames;
 
   p->inputChannels = inChans;
   p->outputChannels = outChans;
@@ -365,7 +361,7 @@ OPENSL_STREAM *opensl_open(
   }
 
   if (inChans) {
-    int inBufSize = p->totalBufferFrames * inChans;
+    int inBufSize = p->inputBufferFrames * inChans;
     if (!(openSLRecOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
         (p->inputBuffer = (short *) calloc(inBufSize, sizeof(short))) &&
         (p->dummyBuffer = (short *) calloc(callbackBufferFrames * inChans,
@@ -373,11 +369,10 @@ OPENSL_STREAM *opensl_open(
       opensl_close(p);
       return NULL;
     }
-    memset(p->dummyBuffer, 0, sizeof(p->dummyBuffer));
   }
 
   if (outChans) {
-    int outBufSize = p->totalBufferFrames * outChans;
+    int outBufSize = callbackBufferFrames * outChans;
     if (!(openSLPlayOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
         (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))))) {
       opensl_close(p);
@@ -385,6 +380,8 @@ OPENSL_STREAM *opensl_open(
     }
   }
 
+  LOGI("Created OPENSL_STREAM(%d, %d, %d, %d)",
+       sampleRate, inChans, outChans, callbackBufferFrames);
   return p;
 }
 
@@ -422,7 +419,6 @@ int opensl_start(OPENSL_STREAM *p) {
   p->previousOutputIndex = 0;
   p->outputOffset = 0;
 
-  memset(p->outputBuffer, 0, sizeof(p->outputBuffer));
   if ((*p->playerPlay)->SetPlayState(p->playerPlay,
          SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
     opensl_pause(p);
