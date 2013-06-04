@@ -34,6 +34,7 @@
 #define LOGW(...) \
   __android_log_print(ANDROID_LOG_WARN, "opensl_io", __VA_ARGS__)
 
+#define OUTPUT_BUFFERS 2
 #define STARTUP_INTERVALS 8
 
 struct _opensl_stream {
@@ -59,6 +60,7 @@ struct _opensl_stream {
 
   int callbackBufferFrames;
   int inputBufferFrames;
+  int outputBufferFrames;
 
   double thresholdMillis;
 
@@ -131,10 +133,12 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   if (p->readIndex < 0 &&
       p->outputIntervals == STARTUP_INTERVALS &&
       __sync_fetch_and_or(&p->inputIntervals, 0) == STARTUP_INTERVALS) {
-    int offset = p->inputOffset + p->outputOffset;
+    int offset = p->inputOffset + p->outputOffset + p->callbackBufferFrames;
     LOGI("Offsets: %d %d %d", p->inputOffset, p->outputOffset, offset);
     p->readIndex = __sync_fetch_and_or(&p->inputIndex, 0) - offset;
   }
+  short *currentOutputBuffer = p->outputBuffer +
+      (p->outputIndex % p->outputBufferFrames) * p->outputChannels;
   if (p->readIndex >= 0) {  // Synthesize audio with input if available.
     int margin = __sync_fetch_and_or(&p->inputIndex, 0) - p->readIndex;
     if (margin <= p->callbackBufferFrames) {
@@ -143,14 +147,14 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels, p->inputBuffer +
         (p->readIndex % p->inputBufferFrames) * p->inputChannels,
-        p->outputChannels, p->outputBuffer);
+        p->outputChannels, currentOutputBuffer);
     p->readIndex += p->callbackBufferFrames;
   } else {  // Synthesize audio with empty input when input is not yet availabe.
     p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
         p->inputChannels, p->dummyBuffer,
-        p->outputChannels, p->outputBuffer);
+        p->outputChannels, currentOutputBuffer);
   }
-  (*bq)->Enqueue(bq, p->outputBuffer,
+  (*bq)->Enqueue(bq, currentOutputBuffer,
       p->callbackBufferFrames * p->outputChannels * sizeof(short));
   p->outputIndex += p->callbackBufferFrames;
 }
@@ -263,7 +267,7 @@ static SLresult openSLPlayOpen(OPENSL_STREAM *p, SLuint32 sr) {
        SL_PCMSAMPLEFORMAT_FIXED_16, SL_PCMSAMPLEFORMAT_FIXED_16,
        speakers, SL_BYTEORDER_LITTLEENDIAN};
   SLDataLocator_AndroidSimpleBufferQueue loc_bufq =
-      {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 1};
+      {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, OUTPUT_BUFFERS};
   SLDataSource audioSrc = {&loc_bufq, &format_pcm};  // source: buffer queue
 
   const SLInterfaceID mixIds[] = {SL_IID_VOLUME};
@@ -341,19 +345,20 @@ OPENSL_STREAM *opensl_open(
   p->context = context;
   p->isRunning = 0;
 
-  p->inputBuffer = NULL;
-  p->outputBuffer = NULL;
-  p->dummyBuffer = NULL;
-  p->callbackBufferFrames = callbackBufferFrames;
-
-  p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
-
-  p->inputBufferFrames =
-      (sampleRate / callbackBufferFrames / 4) * callbackBufferFrames;
-
   p->inputChannels = inChans;
   p->outputChannels = outChans;
   p->sampleRate = sampleRate;
+
+  p->thresholdMillis = 750.0 * callbackBufferFrames / sampleRate;
+
+  p->inputBuffer = NULL;
+  p->outputBuffer = NULL;
+  p->dummyBuffer = NULL;
+
+  p->callbackBufferFrames = callbackBufferFrames;
+  p->inputBufferFrames =
+      (sampleRate / callbackBufferFrames / 4) * callbackBufferFrames;
+  p->outputBufferFrames = OUTPUT_BUFFERS * callbackBufferFrames;
 
   if (openSLCreateEngine(p) != SL_RESULT_SUCCESS) {
     opensl_close(p);
@@ -372,7 +377,7 @@ OPENSL_STREAM *opensl_open(
   }
 
   if (outChans) {
-    int outBufSize = callbackBufferFrames * outChans;
+    int outBufSize = p->outputBufferFrames * outChans;
     if (!(openSLPlayOpen(p, srmillihz) == SL_RESULT_SUCCESS &&
         (p->outputBuffer = (short *) calloc(outBufSize, sizeof(short))))) {
       opensl_close(p);
@@ -382,6 +387,7 @@ OPENSL_STREAM *opensl_open(
 
   LOGI("Created OPENSL_STREAM(%d, %d, %d, %d)",
        sampleRate, inChans, outChans, callbackBufferFrames);
+  LOGI("numBuffers: %d", OUTPUT_BUFFERS);
   return p;
 }
 
@@ -419,23 +425,26 @@ int opensl_start(OPENSL_STREAM *p) {
   p->previousOutputIndex = 0;
   p->outputOffset = 0;
 
+  LOGI("Starting player queue.");
+  int i;
+  for (i = 0; i < OUTPUT_BUFFERS; ++i) {
+    playerCallback(p->playerBufferQueue, p);
+  }
   if ((*p->playerPlay)->SetPlayState(p->playerPlay,
          SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
     opensl_pause(p);
     return -1;
   }
-  LOGI("Starting player queue.");
-  playerCallback(p->playerBufferQueue, p);
 
   if (p->recorderRecord) {
     memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
+    LOGI("Starting recorder queue.");
+    recorderCallback(p->recorderBufferQueue, p);
     if ((*p->recorderRecord)->SetRecordState(p->recorderRecord,
             SL_RECORDSTATE_RECORDING) != SL_RESULT_SUCCESS) {
       opensl_pause(p);
       return -1;
     }
-    LOGI("Starting recorder queue.");
-    recorderCallback(p->recorderBufferQueue, p);
   }
 
   p->isRunning = 1;
@@ -446,13 +455,13 @@ void opensl_pause(OPENSL_STREAM *p) {
   if (!p->isRunning) {
     return;
   }
-  (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
   (*p->playerPlay)->SetPlayState(p->playerPlay,
       SL_PLAYSTATE_STOPPED);
+  (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
   if (p->recorderRecord) {
-    (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
     (*p->recorderRecord)->SetRecordState(p->recorderRecord,
         SL_RECORDSTATE_STOPPED);
+    (*p->recorderBufferQueue)->Clear(p->recorderBufferQueue);
   }
   p->isRunning = 0;
 }
