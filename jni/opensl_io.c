@@ -117,11 +117,11 @@ static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
     updateIntervals(&p->inputTime, p->thresholdMillis, &p->inputIntervals,
         &p->inputOffset, &p->previousInputIndex, p->inputIndex);
   }
-  __sync_bool_compare_and_swap(&p->inputIndex, p->inputIndex,
-      p->inputIndex + p->callbackBufferFrames);
   (*bq)->Enqueue(bq, p->inputBuffer +
       (p->inputIndex % p->inputBufferFrames) * p->inputChannels,
       p->callbackBufferFrames * p->inputChannels * sizeof(short));
+  __sync_bool_compare_and_swap(&p->inputIndex, p->inputIndex,
+      p->inputIndex + p->callbackBufferFrames);
 }
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
@@ -133,7 +133,8 @@ static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   if (p->readIndex < 0 &&
       p->outputIntervals == STARTUP_INTERVALS &&
       __sync_fetch_and_or(&p->inputIntervals, 0) == STARTUP_INTERVALS) {
-    int offset = p->inputOffset + p->outputOffset + p->callbackBufferFrames;
+    int offset = p->inputOffset + p->outputOffset +
+        OUTPUT_BUFFERS * p->callbackBufferFrames;
     LOGI("Offsets: %d %d %d", p->inputOffset, p->outputOffset, offset);
     p->readIndex = __sync_fetch_and_or(&p->inputIndex, 0) - offset;
   }
