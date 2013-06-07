@@ -70,7 +70,7 @@ LOCAL_MODULE := pdnativeopensl
 LOCAL_C_INCLUDES := $(PD_C_INCLUDES) $(LOCAL_PATH)/jni
 LOCAL_CFLAGS := $(PD_JNI_CFLAGS)
 LOCAL_LDLIBS := -lOpenSLES -llog
-LOCAL_SRC_FILES := jni/opensl_io.c jni/z_jni_opensl.c
+LOCAL_SRC_FILES := jni/opensl_stream/opensl_stream.c jni/z_jni_opensl.c
 LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 

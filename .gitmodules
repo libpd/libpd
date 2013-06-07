@@ -1,0 +1,3 @@
+[submodule "jni/opensl_stream"]
+	path = jni/opensl_stream
+	url = git://github.com/nettoyeurny/opensl_stream.git

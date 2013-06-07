@@ -5,13 +5,11 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
-#include "opensl_io.h"
+#include "opensl_stream/opensl_stream.h"
 
 #include <stdio.h>
 
 #include "z_jni_shared.c"
-
-#define KEY_BUFFER_SIZE "opensl.buffer_size"
 
 static OPENSL_STREAM *streamPtr = NULL;
 
