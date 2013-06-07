@@ -113,30 +113,39 @@ static void updateIntervals(
 
 static void recorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  if (p->inputIntervals < STARTUP_INTERVALS) {
-    updateIntervals(&p->inputTime, p->thresholdMillis, &p->inputIntervals,
-        &p->inputOffset, &p->previousInputIndex, p->inputIndex);
+  if (p->outputChannels) {
+    if (p->inputIntervals < STARTUP_INTERVALS) {
+      updateIntervals(&p->inputTime, p->thresholdMillis, &p->inputIntervals,
+          &p->inputOffset, &p->previousInputIndex, p->inputIndex);
+    }
+  } else {
+    p->callback(p->context, p->sampleRate, p->callbackBufferFrames,
+        p->inputChannels, p->inputBuffer +
+        (p->inputIndex % p->inputBufferFrames) * p->inputChannels,
+        0, NULL);
   }
+  __sync_bool_compare_and_swap(&p->inputIndex, p->inputIndex,
+      p->inputIndex + p->callbackBufferFrames);
   (*bq)->Enqueue(bq, p->inputBuffer +
       (p->inputIndex % p->inputBufferFrames) * p->inputChannels,
       p->callbackBufferFrames * p->inputChannels * sizeof(short));
-  __sync_bool_compare_and_swap(&p->inputIndex, p->inputIndex,
-      p->inputIndex + p->callbackBufferFrames);
 }
 
 static void playerCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
   OPENSL_STREAM *p = (OPENSL_STREAM *) context;
-  if (p->outputIntervals < STARTUP_INTERVALS) {
-    updateIntervals(&p->outputTime, p->thresholdMillis, &p->outputIntervals,
-        &p->outputOffset, &p->previousOutputIndex, p->outputIndex);
-  }
-  if (p->readIndex < 0 &&
-      p->outputIntervals == STARTUP_INTERVALS &&
-      __sync_fetch_and_or(&p->inputIntervals, 0) == STARTUP_INTERVALS) {
-    int offset = p->inputOffset + p->outputOffset +
-        OUTPUT_BUFFERS * p->callbackBufferFrames;
-    LOGI("Offsets: %d %d %d", p->inputOffset, p->outputOffset, offset);
-    p->readIndex = __sync_fetch_and_or(&p->inputIndex, 0) - offset;
+  if (p->inputChannels) {
+    if (p->outputIntervals < STARTUP_INTERVALS) {
+      updateIntervals(&p->outputTime, p->thresholdMillis, &p->outputIntervals,
+          &p->outputOffset, &p->previousOutputIndex, p->outputIndex);
+    }
+    if (p->readIndex < 0 &&
+        p->outputIntervals == STARTUP_INTERVALS &&
+        __sync_fetch_and_or(&p->inputIntervals, 0) == STARTUP_INTERVALS) {
+      int offset = p->inputOffset + p->outputOffset +
+          OUTPUT_BUFFERS * p->callbackBufferFrames;
+      LOGI("Offsets: %d %d %d", p->inputOffset, p->outputOffset, offset);
+      p->readIndex = __sync_fetch_and_or(&p->inputIndex, 0) - offset;
+    }
   }
   short *currentOutputBuffer = p->outputBuffer +
       (p->outputIndex % p->outputBufferFrames) * p->outputChannels;
@@ -328,7 +337,10 @@ static void openSLDestroyEngine(OPENSL_STREAM *p) {
 OPENSL_STREAM *opensl_open(
     int sampleRate, int inChans, int outChans, int callbackBufferFrames,
     opensl_process_t proc, void *context) {
-  if (!proc || !outChans) {
+  if (!proc) {
+    return NULL;
+  }
+  if (inChans == 0 && outChans == 0) {
     return NULL;
   }
 
@@ -426,17 +438,18 @@ int opensl_start(OPENSL_STREAM *p) {
   p->previousOutputIndex = 0;
   p->outputOffset = 0;
 
-  LOGI("Starting player queue.");
-  int i;
-  for (i = 0; i < OUTPUT_BUFFERS; ++i) {
-    playerCallback(p->playerBufferQueue, p);
+  if (p->playerPlay) {
+    LOGI("Starting player queue.");
+    int i;
+    for (i = 0; i < OUTPUT_BUFFERS; ++i) {
+      playerCallback(p->playerBufferQueue, p);
+    }
+    if ((*p->playerPlay)->SetPlayState(p->playerPlay,
+           SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
+      opensl_pause(p);
+      return -1;
+    }
   }
-  if ((*p->playerPlay)->SetPlayState(p->playerPlay,
-         SL_PLAYSTATE_PLAYING) != SL_RESULT_SUCCESS) {
-    opensl_pause(p);
-    return -1;
-  }
-
   if (p->recorderRecord) {
     memset(p->inputBuffer, 0, sizeof(p->inputBuffer));
     LOGI("Starting recorder queue.");
@@ -456,9 +469,11 @@ void opensl_pause(OPENSL_STREAM *p) {
   if (!p->isRunning) {
     return;
   }
-  (*p->playerPlay)->SetPlayState(p->playerPlay,
-      SL_PLAYSTATE_STOPPED);
-  (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
+  if (p->playerPlay) {
+    (*p->playerPlay)->SetPlayState(p->playerPlay,
+        SL_PLAYSTATE_STOPPED);
+    (*p->playerBufferQueue)->Clear(p->playerBufferQueue);
+  }
   if (p->recorderRecord) {
     (*p->recorderRecord)->SetRecordState(p->recorderRecord,
         SL_RECORDSTATE_STOPPED);

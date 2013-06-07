@@ -60,8 +60,8 @@ typedef struct _opensl_stream OPENSL_STREAM;
  * buffer size, e.g., 64 frames. Somewhat surprisingly, large buffers will not
  * improve stability.
  * 
- * For the time being, the number of input channels must be 0, 1, or 2; the
- * number of output channels must be 1 or 2.
+ * For the time being, the number of input and output channels must be 0, 1,
+ * or 2; at least one of the channel numbers must be positive.
  *
  * Returns NULL on failure.
  */
