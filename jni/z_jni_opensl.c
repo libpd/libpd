@@ -15,7 +15,7 @@
 
 static OPENSL_STREAM *streamPtr = NULL;
 
-void libp_sync_process_raw(const short *inBuf, short *outBuf) {
+void libp_sync_process_raw(const float *inBuf, float *outBuf) {
   pthread_mutex_lock(&mutex);
   libpd_process_raw(inBuf, outBuf);
   pthread_mutex_unlock(&mutex);
