@@ -42,9 +42,9 @@ static jmethodID midiByteMethod = NULL;
 #define LIBPD_CLASS_REF(c) (*env)->NewGlobalRef(env, (*env)->FindClass(env, c));
 
 int libpd_sync_init_audio(
-    int input_channels, int output_channels, int sampleRate) {
+    int input_channels, int output_channels, int sample_rate) {
   pthread_mutex_lock(&mutex);
-  int err = libpd_init_audio(inChans, outChans, sRate);
+  int err = libpd_init_audio(input_channels, output_channels, sample_rate);
   pthread_mutex_unlock(&mutex);
   return err;
 }
