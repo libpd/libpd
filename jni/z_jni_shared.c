@@ -6,6 +6,7 @@
  */
 
 #include "z_jni.h"
+#include "z_jni_native_hooks.h"
 
 #include <pthread.h>
 #include <stdio.h>
@@ -39,6 +40,21 @@ static jmethodID polyAftertouchMethod = NULL;
 static jmethodID midiByteMethod = NULL;
 
 #define LIBPD_CLASS_REF(c) (*env)->NewGlobalRef(env, (*env)->FindClass(env, c));
+
+int libpd_sync_init_audio(
+    int input_channels, int output_channels, int sampleRate) {
+  pthread_mutex_lock(&mutex);
+  int err = libpd_init_audio(inChans, outChans, sRate);
+  pthread_mutex_unlock(&mutex);
+  return err;
+}
+
+int libpd_sync_process_raw(const float *inBuf, float *outBuf) {
+  pthread_mutex_lock(&mutex);
+  int err = libpd_process_raw(inBuf, outBuf);
+  pthread_mutex_unlock(&mutex);
+  return err;
+}
 
 static jobjectArray makeJavaArray(JNIEnv *env, int argc, t_atom *argv) {
   jobjectArray jarray = (*env)->NewObjectArray(env, argc, objClass, NULL);
