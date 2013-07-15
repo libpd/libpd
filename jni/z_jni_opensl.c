@@ -5,6 +5,8 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
+#include "z_libpd_raw.h"
+
 #include "opensl_stream/opensl_stream.h"
 
 #include <stdio.h>
@@ -12,6 +14,12 @@
 #include "z_jni_shared.c"
 
 static OPENSL_STREAM *streamPtr = NULL;
+
+void libp_sync_process_raw(const short *inBuf, short *outBuf) {
+  pthread_mutex_lock(&mutex);
+  libpd_process_raw(inBuf, outBuf);
+  pthread_mutex_unlock(&mutex);
+}
 
 static void process_callback(void *context, int sRate, int bufFrames,
     int nIn, const short *inBuf, int nOut, short *outBuf) {
