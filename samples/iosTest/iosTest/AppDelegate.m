@@ -69,7 +69,13 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView:self.viewController.view];
-	NSLog(@"touch at %.f %.f", pos.x, pos.y);
+
+	// scale pixel coords to midi pitches
+	int pitch = ((float)(pos.y/CGRectGetHeight(self.viewController.view.frame)) * -127) + 127;
+	[PdBase sendList:[NSArray arrayWithObjects:@"pitch", [NSNumber numberWithInt:pitch], nil] toReceiver:@"tone"];
+	[PdBase sendBangToReceiver:@"tone"];
+
+	NSLog(@"touch at %.f %.f, pitch %d", pos.x, pos.y, pitch);
 }
 
 #pragma mark - Pd
@@ -79,7 +85,7 @@
 	self.audioController = [[PdAudioController alloc] init];
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
 																  numberChannels:2
-																	inputEnabled:NO
+																	inputEnabled:YES
 																   mixingEnabled:YES];
 	if (status == PdAudioError) {
 		NSLog(@"Error! Could not configure PdAudioController");
@@ -88,11 +94,12 @@
 	} else {
 		NSLog(@"Audio Configuration successful.");
 	}
+	self.audioController.active = YES;
 
 	// log actual settings
 	[self.audioController print];
 
-	// set AppDelegate as PdRecieverDelegate to recieve messages from pd
+	// set AppDelegate as PdRecieverDelegate to receive messages from pd
     [PdBase setDelegate:self];
 	[PdBase setMidiDelegate:self]; // for midi too
 	
@@ -101,6 +108,9 @@
 	
 	// add search path
 	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [[NSBundle mainBundle] bundlePath]]];
+	
+	// enable audio
+	[PdBase computeAudio:YES];
 }
 
 - (void)testPd {
@@ -110,8 +120,7 @@
 	NSLog(@"-- BEGIN Patch Test");
 	
 	// open patch
-	PdFile *patch = [PdFile openFileNamed:@"test.pd"
-		path:[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle] bundlePath]]];
+	PdFile *patch = [PdFile openFileNamed:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle] bundlePath]]];
 	NSLog(@"%@", patch);
 	
 	// close patch
@@ -227,6 +236,10 @@
 	[PdBase receiveMidi];
 	
 	NSLog(@"-- FINISH Polling Test");
+	
+	// reset delegates
+	[PdBase setDelegate:self];
+	[PdBase setMidiDelegate:self];
 }
 
 #pragma mark - PdRecieverDelegate
