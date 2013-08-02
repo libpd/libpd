@@ -254,13 +254,13 @@
 	AU_LOG(@"----- AVAudioSession properties -----");
 	AU_LOG(@"category: %@", globalSession.category);
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-	AU_LOG(@"currentHardwareSampleRate: %.0f", globalSession.sampleRate);
-	AU_LOG(@"preferredHardwareSampleRate: %.0f", globalSession.preferredSampleRate);
+	AU_LOG(@"sampleRate: %.0f", globalSession.sampleRate);
+	AU_LOG(@"preferredSampleRate: %.0f", globalSession.preferredSampleRate);
 	AU_LOG(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
 
-	AU_LOG(@"inputIsAvailable: %@", (globalSession.inputAvailable ? @"YES" : @"NO"));
-	AU_LOG(@"currentHardwareInputNumberOfChannels: %d", globalSession.inputNumberOfChannels);
-	AU_LOG(@"currentHardwareOutputNumberOfChannels: %d", globalSession.outputNumberOfChannels);
+	AU_LOG(@"inputAvailable: %@", (globalSession.inputAvailable ? @"YES" : @"NO"));
+	AU_LOG(@"inputNumberOfChannels: %d", globalSession.inputNumberOfChannels);
+	AU_LOG(@"outputNumberOfChannels: %d", globalSession.outputNumberOfChannels);
 #else
 	AU_LOG(@"currentHardwareSampleRate: %.0f", globalSession.currentHardwareSampleRate);
 	AU_LOG(@"preferredHardwareSampleRate: %.0f", globalSession.preferredHardwareSampleRate);
