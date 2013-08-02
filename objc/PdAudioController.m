@@ -22,7 +22,7 @@
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;  // Not all inputs make sense, but that's okay in the private interface.
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#if __IPHONE_OS_VERSION_MIN_ALLOWED >= 60000
 // AVAudioSessionDelegate is deprecated starting in iOS 6, so we declare it's methods here
 - (void)beginInterruption;
 - (void)endInterruptionWithFlags:(NSUInteger)flags;
@@ -47,7 +47,7 @@
         AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 		
 		[AVAudioSession sharedInstance];
-	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(interruptionOcurred:) name:AVAudioSessionInterruptionNotification object:nil];
     #else
 		// AVAudioSessionDelegate is deprecated starting in iOS 6
@@ -128,7 +128,7 @@
 - (PdAudioStatus)updateSampleRate:(int)sampleRate {
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	NSError *error = nil;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	[globalSession setPreferredSampleRate:sampleRate error:&error];
 #else
 	[globalSession setPreferredHardwareSampleRate:sampleRate error:&error];
@@ -136,7 +136,7 @@
     if (error) {
         return PdAudioError;
     }
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	double currentHardwareSampleRate = globalSession.sampleRate;
 #else
 	double currentHardwareSampleRate = globalSession.currentHardwareSampleRate;
@@ -217,7 +217,7 @@
     active_ = self.audioUnit.isActive;
 }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 // receives interrupt notification and calls ex-AVAudioSessionDelegate methods
 - (void)interruptionOcurred:(NSNotification*)notification {
     NSDictionary *interuptionDict = notification.userInfo;
@@ -237,7 +237,7 @@
 }
 
 - (void)endInterruptionWithFlags:(NSUInteger)flags {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	if (flags == AVAudioSessionInterruptionOptionShouldResume) {
 #else
 	if (flags == AVAudioSessionInterruptionFlags_ShouldResume) {
@@ -253,7 +253,7 @@
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	AU_LOG(@"----- AVAudioSession properties -----");
 	AU_LOG(@"category: %@", globalSession.category);
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	AU_LOG(@"currentHardwareSampleRate: %.0f", globalSession.sampleRate);
 	AU_LOG(@"preferredHardwareSampleRate: %.0f", globalSession.preferredSampleRate);
 	AU_LOG(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
