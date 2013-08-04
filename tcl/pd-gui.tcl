@@ -699,6 +699,36 @@ proc load_startup_plugins {} {
     }
 }
 
+
+
+# ------------------------------------------------------------------------------
+# show and hide gui. Used in libpd.
+
+array set windowstate {}
+
+proc show_gui {} {
+    foreach x ". [winfo children .]" {
+        if { $x eq [winfo toplevel $x] && [catch {$x cget -tearoff}] } {
+            set state [lindex [array get ::windowstate $x] 1]
+            if { $state eq "normal" } {
+                wm deiconify $x
+                raise $x
+            }
+        }
+    }
+}
+
+proc hide_gui {} {
+    foreach x ". [winfo children .]" {
+        if { $x eq [winfo toplevel $x] && [catch {$x cget -tearoff}] } {
+            puts [wm state $x]
+            set ::windowstate($x) [wm state $x]
+            wm withdraw $x
+        }
+    }
+}
+
+
 # ------------------------------------------------------------------------------
 # main
 proc main {argc argv} {

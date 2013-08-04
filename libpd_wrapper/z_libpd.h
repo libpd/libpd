@@ -16,15 +16,20 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
+
 #include "m_pd.h"
 
-EXTERN void libpd_init(void);
+EXTERN bool libpd_init(const char *libdir);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
 
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
 EXTERN int libpd_getdollarzero(void *p);
+
+EXTERN void libpd_show_gui(void);
+EXTERN void libpd_hide_gui(void);
 
 EXTERN int libpd_blocksize(void);
 EXTERN int libpd_init_audio(int inChans, int outChans, int sampleRate);

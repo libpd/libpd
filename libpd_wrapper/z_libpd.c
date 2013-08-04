@@ -44,8 +44,10 @@ static void *get_object(const char *s) {
   return x;
 }
 
-/* this is called instead of sys_main() to start things */
-void libpd_init(void) {
+/* This is called instead of sys_main() to start things.
+   We're not using GUI if libdir==NULL.
+ */
+bool libpd_init(const char *libdir) {
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
@@ -59,7 +61,7 @@ void libpd_init(void) {
   sys_debuglevel = 0;
   sys_verbose = 0;
   sys_noloadbang = 0;
-  sys_nogui = 1;
+  sys_nogui = libdir==NULL ? 1 : 0;
   sys_hipriority = 0;
   sys_nmidiin = 0;
   sys_nmidiout = 0;
@@ -68,6 +70,11 @@ void libpd_init(void) {
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
+
+  if (sys_startgui(libdir))
+    return false;
+
+  return true;
 }
 
 void libpd_clear_search_path(void) {
@@ -102,6 +109,8 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   }
   memset(sys_soundout, 0, n_out * sizeof(t_sample));
   sched_tick(sys_time + sys_time_per_dsp_tick);
+  if (sys_nogui==0)
+    sys_pollgui();
   for (p = sys_soundout, i = 0; i < n_out; i++) {
     *outBuffer++ = *p++;
   }
@@ -111,23 +120,25 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
 static const t_sample sample_to_short = SHRT_MAX,
                    short_to_sample = 1.0 / (t_sample) SHRT_MAX;
 
-#define PROCESS(_x, _y) \
-  int i, j, k; \
-  t_sample *p0, *p1; \
-  for (i = 0; i < ticks; i++) { \
-    for (j = 0, p0 = sys_soundin; j < DEFDACBLKSIZE; j++, p0++) { \
+#define PROCESS(_x, _y)                                                 \
+  int i, j, k;                                                          \
+  t_sample *p0, *p1;                                                    \
+  for (i = 0; i < ticks; i++) {                                         \
+    for (j = 0, p0 = sys_soundin; j < DEFDACBLKSIZE; j++, p0++) {       \
       for (k = 0, p1 = p0; k < sys_inchannels; k++, p1 += DEFDACBLKSIZE) { \
-        *p1 = *inBuffer++ _x; \
-      } \
-    } \
+        *p1 = *inBuffer++ _x;                                           \
+      }                                                                 \
+    }                                                                   \
     memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_sample)); \
-    sched_tick(sys_time + sys_time_per_dsp_tick); \
-    for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) { \
+    if (sys_nogui==0)                                                   \
+      sched_tick(sys_time + sys_time_per_dsp_tick);                     \
+    sys_pollgui();                                                      \
+    for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) {      \
       for (k = 0, p1 = p0; k < sys_outchannels; k++, p1 += DEFDACBLKSIZE) { \
-        *outBuffer++ = *p1 _y; \
-      } \
-    } \
-  } \
+        *outBuffer++ = *p1 _y;                                          \
+      }                                                                 \
+    }                                                                   \
+  }                                                                     \
   return 0;
 
 int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
@@ -349,4 +360,12 @@ int libpd_getdollarzero(void *x) {
   int dzero = canvas_getdollarzero();
   pd_popsym((t_pd *)x);
   return dzero;
+}
+
+void libpd_show_gui(void) {
+  sys_vgui("show_gui\n");
+}
+
+void libpd_hide_gui(void) {
+  sys_vgui("hide_gui\n");
 }

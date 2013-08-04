@@ -2,6 +2,8 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
 
+#include <string.h>
+
 #include "m_pd.h"
 #include "s_stuff.h"
 #include "z_libpd.h"
@@ -50,8 +52,11 @@ void outmidi_byte(int port, int value) {
     libpd_midibytehook(CLAMP12BIT(port - 1), CLAMP8BIT(value));
 }
 
+void sys_get_midi_apis(char *buf) {
+  strcpy(buf, "{}");
+}
+
 // The rest is not relevant to libpd.
-void sys_get_midi_apis(char *buf) {}
 void sys_listmididevs(void) {}
 void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,
     int *pnmidioutdev, int *pmidioutdev) {}
