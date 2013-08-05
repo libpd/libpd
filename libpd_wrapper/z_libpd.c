@@ -47,7 +47,7 @@ static void *get_object(const char *s) {
 /* This is called instead of sys_main() to start things.
    We're not using GUI if libdir==NULL.
  */
-bool libpd_init(const char *libdir) {
+bool libpd_init(bool use_gui, const char *libdir) {
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
@@ -61,7 +61,7 @@ bool libpd_init(const char *libdir) {
   sys_debuglevel = 0;
   sys_verbose = 0;
   sys_noloadbang = 0;
-  sys_nogui = libdir==NULL ? 1 : 0;
+  sys_nogui = use_gui ? 0 : 1;
   sys_hipriority = 0;
   sys_nmidiin = 0;
   sys_nmidiout = 0;
@@ -75,6 +75,13 @@ bool libpd_init(const char *libdir) {
     return false;
 
   return true;
+}
+
+bool libpd_cleanup(void) {
+  // It's not unlikely that Pd has some allocated resources that should be freed as well. Just calling glob_quit() is probably not enough.
+  glob_quit(NULL);
+  free(argv);
+  libpd_clear_search_path();
 }
 
 void libpd_clear_search_path(void) {

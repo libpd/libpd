@@ -102,6 +102,8 @@ static t_fdpoll *sys_fdpoll;
 static int sys_maxfd;
 static int sys_guisock;
 
+static pid_t childpid;
+
 static t_binbuf *inbinbuf;
 static t_socketreceiver *sys_socketreceiver;
 extern int sys_addhist(int phase);
@@ -889,7 +891,6 @@ static void set_signal_handlers(void)
 
 int sys_startgui(const char *libdir)
 {
-    pid_t childpid;
     char cmdbuf[4*MAXPDSTRING];
     struct sockaddr_in server;
     int msgsock;
@@ -1100,7 +1101,11 @@ int sys_startgui(const char *libdir)
         }
         else if (!childpid)                     /* we're the child */
         {
+
+#if !defined(LIBPD)
             setuid(getuid());          /* lose setuid priveliges */
+#endif
+
 #ifndef __APPLE__
 // TODO this seems unneeded on any platform hans@eds.org
                 /* the wish process in Unix will make a wish shell and
@@ -1327,11 +1332,26 @@ void sys_bail(int n)
 void glob_quit(void *dummy)
 {
     sys_vgui("exit\n");
+
     if (!sys_nogui)
     {
         sys_closesocket(sys_guisock);
         sys_rmpollfn(sys_guisock);
+
+#if defined(LIBPD)
+        // Avoid defunct child processes.
+        int stat_lock;
+        int num_retries = 0;
+        for(num_retries=0; num_retries < 50; num_retries++) // give up after 5 seconds.
+          if (waitpid(childpid, &stat_lock, WNOHANG)==childpid)
+            break;
+          else
+            usleep(1000*1000/10);
+#endif // LIBPD
     }
+
+#if !defined(LIBPD)
     sys_bail(0); 
+#endif // NOT LIBPD
 }
 

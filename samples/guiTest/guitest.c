@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
   int srate = 44100;
   libpd_printhook = (t_libpd_printhook) pdprint;
   libpd_noteonhook = (t_libpd_noteonhook) pdnoteon;
-  libpd_init("../../pure-data");
+  libpd_init(true, "../../pure-data");
   libpd_init_audio(1, 2, srate);
 
   // compute audio    [; pd dsp 1(
@@ -43,7 +43,6 @@ int main(int argc, char **argv) {
 
   // open patch       [; pd open file folder(
   void *file = libpd_openfile(argv[1], argv[2]);
-
 
   // now run pd for 12 seconds (logical time)
   int iterations;
@@ -57,8 +56,11 @@ int main(int argc, char **argv) {
     runawhile(2);
   }
 
-  printf("Closing and exiting\n");
+  printf("Closing file\n");
   libpd_closefile(file);
+
+  printf("Cleaning up\n");
+  libpd_cleanup();
 
   return 0;
 }

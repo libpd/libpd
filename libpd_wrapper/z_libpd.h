@@ -20,7 +20,8 @@ extern "C"
 
 #include "m_pd.h"
 
-EXTERN bool libpd_init(const char *libdir);
+EXTERN bool libpd_init(bool use_gui, const char *libdir);
+EXTERN bool libpd_cleanup(void);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
 
