@@ -348,7 +348,9 @@ int libpd_sysrealtime(int port, int byte) {
 }
 
 void *libpd_openfile(const char *basename, const char *dirname) {
-  return (void *)glob_evalfile(NULL, gensym(basename), gensym(dirname));
+  void *ret = glob_evalfile(NULL, gensym(basename), gensym(dirname));
+  libpd_hide_gui();
+  return ret;
 }
 
 void libpd_closefile(void *x) {

@@ -101,6 +101,7 @@ set PD_MAJOR_VERSION 0
 set PD_MINOR_VERSION 0
 set PD_BUGFIX_VERSION 0
 set PD_TEST_VERSION ""
+set LIBPD 0
 set done_init 0
 
 set TCL_MAJOR_VERSION 0
@@ -493,12 +494,13 @@ proc fit_font_into_metrics {} {
 # ------------------------------------------------------------------------------
 # procs called directly by pd
 
-proc pdtk_pd_startup {major minor bugfix test
+proc pdtk_pd_startup {major minor bugfix test libpd
                       audio_apis midi_apis sys_font sys_fontweight} {
     set ::PD_MAJOR_VERSION $major
     set ::PD_MINOR_VERSION $minor
     set ::PD_BUGFIX_VERSION $bugfix
     set ::PD_TEST_VERSION $test
+    set ::LIBPD $libpd
     set oldtclversion 0
     set ::audio_apilist $audio_apis
     set ::midi_apilist $midi_apis

@@ -210,7 +210,11 @@ proc ::pdwindow::pdwindow_bindings {} {
     } else {
         # TODO should it possible to close the Pd window and keep Pd open?
         bind .pdwindow <$::modifier-Key-w>   "wm iconify .pdwindow"
-        wm protocol .pdwindow WM_DELETE_WINDOW "pdsend \"pd verifyquit\""
+        if {$::LIBPD eq 0} {
+            wm protocol .pdwindow WM_DELETE_WINDOW "pdsend \"pd verifyquit\""
+        } else {
+            wm protocol .pdwindow WM_DELETE_WINDOW "wm withdraw .pdwindow"
+        }
     }
 }
 
@@ -367,7 +371,11 @@ proc ::pdwindow::create_window {} {
     scrollbar .pdwindow.scroll -command ".pdwindow.text.internal yview"
     pack .pdwindow.scroll -side right -fill y
     pack .pdwindow.text -side right -fill both -expand 1
-    raise .pdwindow
+
+    if {$::LIBPD eq 0} {
+        raise .pdwindow
+    }
+
     focus .pdwindow.text
     # run bindings last so that .pdwindow.tcl.entry exists
     pdwindow_bindings
@@ -393,8 +401,13 @@ proc ::pdwindow::create_window {} {
     # set some layout variables
     ::pdwindow::set_layout
 
-    # wait until .pdwindow.tcl.entry is visible before opening files so that
-    # the loading logic can grab it and put up the busy cursor
-    tkwait visibility .pdwindow.text
-#    create_tcl_entry
+
+    if {$::LIBPD eq 0} {
+        # wait until .pdwindow.tcl.entry is visible before opening files so that
+        # the loading logic can grab it and put up the busy cursor
+        tkwait visibility .pdwindow.text
+        #    create_tcl_entry
+    } else {
+        wm withdraw .pdwindow
+    }
 }

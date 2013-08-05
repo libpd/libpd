@@ -543,10 +543,12 @@ proc ::pd_menus::build_file_menu_x11 {mymenu} {
     $mymenu add command -label [_ "Print..."]   -accelerator "$accelerator+P"
     $mymenu add  separator
     # the recent files get inserted in here by update_recentfiles_on_menu
-    $mymenu add  separator
     $mymenu add command -label [_ "Close"]      -accelerator "$accelerator+W"
-    $mymenu add command -label [_ "Quit"]       -accelerator "$accelerator+Q" \
-        -command {pdsend "pd verifyquit"}
+    if {$::LIBPD eq 0} {
+        $mymenu add  separator
+        $mymenu add command -label [_ "Quit"]       -accelerator "$accelerator+Q" \
+            -command {pdsend "pd verifyquit"}
+    }
 }
 
 # the "Edit", "Put", and "Find" menus do not have cross-platform differences
@@ -590,10 +592,12 @@ proc ::pd_menus::build_file_menu_win32 {mymenu} {
     $mymenu add command -label [_ "Print..."] -accelerator "$accelerator+P"
     $mymenu add  separator
     # the recent files get inserted in here by update_recentfiles_on_menu
-    $mymenu add  separator
     $mymenu add command -label [_ "Close"]    -accelerator "$accelerator+W"
-    $mymenu add command -label [_ "Quit"]     -accelerator "$accelerator+Q"\
-        -command {pdsend "pd verifyquit"}
+    if {$::LIBPD eq 0} {
+        $mymenu add  separator
+        $mymenu add command -label [_ "Quit"]     -accelerator "$accelerator+Q"\
+            -command {pdsend "pd verifyquit"}
+    }
 }
 
 # the "Edit", "Put", and "Find" menus do not have cross-platform differences

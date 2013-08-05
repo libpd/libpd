@@ -865,6 +865,28 @@ static int defaultfontshit[MAXFONTS] = {
         24, 15, 28};
 #define NDEFAULTFONT (sizeof(defaultfontshit)/sizeof(*defaultfontshit))
 
+static void set_signal_handlers(void)
+{
+#if !defined(_WIN32) && !defined(__CYGWIN__) && !defined(LIBPD)
+    signal(SIGHUP, sys_huphandler);
+    signal(SIGINT, sys_exithandler);
+    signal(SIGQUIT, sys_exithandler);
+    signal(SIGILL, sys_exithandler);
+# ifdef SIGIOT
+    signal(SIGIOT, sys_exithandler);
+# endif
+    signal(SIGFPE, SIG_IGN);
+    /* signal(SIGILL, sys_exithandler);
+    signal(SIGBUS, sys_exithandler);
+    signal(SIGSEGV, sys_exithandler); */
+    signal(SIGPIPE, SIG_IGN);
+    signal(SIGALRM, SIG_IGN);
+#if 0  /* GG says: don't use that */
+    signal(SIGSTKFLT, sys_exithandler);
+#endif
+#endif /* NOT _WIN32 && NOT __CYGWIN__ && NOT LIBPD */
+}
+
 int sys_startgui(const char *libdir)
 {
     pid_t childpid;
@@ -886,24 +908,7 @@ int sys_startgui(const char *libdir)
     sys_nfdpoll = 0;
     inbinbuf = binbuf_new();
 
-#if !defined(_WIN32) && !defined(__CYGWIN__)
-    signal(SIGHUP, sys_huphandler);
-    signal(SIGINT, sys_exithandler);
-    signal(SIGQUIT, sys_exithandler);
-    signal(SIGILL, sys_exithandler);
-# ifdef SIGIOT
-    signal(SIGIOT, sys_exithandler);
-# endif
-    signal(SIGFPE, SIG_IGN);
-    /* signal(SIGILL, sys_exithandler);
-    signal(SIGBUS, sys_exithandler);
-    signal(SIGSEGV, sys_exithandler); */
-    signal(SIGPIPE, SIG_IGN);
-    signal(SIGALRM, SIG_IGN);
-#if 0  /* GG says: don't use that */
-    signal(SIGSTKFLT, sys_exithandler);
-#endif
-#endif /* NOT _WIN32 && NOT __CYGWIN__ */
+    set_signal_handlers();
 
 #ifdef _WIN32
     if (WSAStartup(version, &nobby)) sys_sockerror("WSAstartup");
@@ -1224,13 +1229,17 @@ int sys_startgui(const char *libdir)
         }
     }
 
+#if !defined(LIBPD)
     setuid(getuid());          /* lose setuid priveliges */
+#endif // NOT LIBPD
+
 #endif /* __linux__ */
 
-#ifdef _WIN32
+#if defined(_WIN32) &&  !defined(LIBPD)
     if (!SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS))
         fprintf(stderr, "pd: couldn't set high priority class\n");
-#endif
+#endif // _WIN32 && NOT LIBPD
+
 #ifdef __APPLE__
     if (sys_hipriority)
     {
@@ -1278,9 +1287,14 @@ int sys_startgui(const char *libdir)
          sys_set_extrapath();
          sys_set_startup();
                             /* ... and about font, medio APIS, etc */
-         sys_vgui("pdtk_pd_startup %d %d %d {%s} %s %s {%s} %s\n",
+         sys_vgui("pdtk_pd_startup %d %d %d {%s} %d %s %s {%s} %s\n",
                   PD_MAJOR_VERSION, PD_MINOR_VERSION, 
                   PD_BUGFIX_VERSION, PD_TEST_VERSION,
+#if defined(LIBPD)
+                  1,
+#else
+                  0,
+#endif
                   buf, buf2, sys_font, sys_fontweight); 
     }
     return (0);

@@ -166,7 +166,12 @@ proc ::pd_bindings::patch_bindings {mytoplevel} {
     }
 
     # window protocol bindings
-    wm protocol $mytoplevel WM_DELETE_WINDOW "pdsend \"$mytoplevel menuclose 0\""
+    if {$::LIBPD eq 0} {
+        wm protocol $mytoplevel WM_DELETE_WINDOW "pdsend \"$mytoplevel menuclose 0\""
+    } else {
+        wm protocol $mytoplevel WM_DELETE_WINDOW {hide_gui}
+    }
+
     bind $tkcanvas <Destroy> "::pd_bindings::window_destroy %W"
 }
 
