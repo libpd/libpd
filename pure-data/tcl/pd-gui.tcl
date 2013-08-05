@@ -723,7 +723,6 @@ proc show_gui {} {
 proc hide_gui {} {
     foreach x ". [winfo children .]" {
         if { $x eq [winfo toplevel $x] && [catch {$x cget -tearoff}] } {
-            puts [wm state $x]
             set ::windowstate($x) [wm state $x]
             wm withdraw $x
         }
