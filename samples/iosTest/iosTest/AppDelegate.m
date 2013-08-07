@@ -99,7 +99,7 @@
 	// log actual settings
 	[self.audioController print];
 
-	// set AppDelegate as PdRecieverDelegate to recieve messages from pd
+	// set AppDelegate as PdRecieverDelegate to receive messages from pd
     [PdBase setDelegate:self];
 	[PdBase setMidiDelegate:self]; // for midi too
 	

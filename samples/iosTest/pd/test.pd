@@ -122,6 +122,7 @@
 #X obj 3 201 -~ 0.5;
 #X obj 3 225 *~ 2;
 #X text 11 183 make saw;
+#X msg 135 52 bang;
 #X connect 0 0 1 1;
 #X connect 0 0 9 0;
 #X connect 1 0 14 0;
@@ -144,6 +145,7 @@
 #X connect 18 0 1 0;
 #X connect 19 0 20 0;
 #X connect 20 0 18 0;
+#X connect 22 0 13 0;
 #X restore 340 194 pd tone;
 #X obj 203 52 print PD dollar zero;
 #X obj 98 53 print PD;
@@ -256,17 +258,19 @@
 #X connect 6 0 8 0;
 #X connect 7 0 9 0;
 #X restore 78 177 pd test message;
-#N canvas 554 232 235 238 delay 0;
+#N canvas 554 232 202 271 delay 0;
 #X obj 35 22 inlet~;
-#X obj 35 197 outlet~;
+#X obj 35 240 outlet~;
 #X obj 35 167 delread~ \$0-delay1;
 #X obj 35 55 delwrite~ \$0-delay1 5000;
 #X msg 35 137 1000;
 #X obj 35 107 loadbang;
+#X obj 35 204 *~ 0.25;
 #X connect 0 0 3 0;
-#X connect 2 0 1 0;
+#X connect 2 0 6 0;
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
+#X connect 6 0 1 0;
 #X restore 205 192 pd delay;
 #X obj 205 166 adc~;
 #N canvas 742 363 377 181 license 0;
