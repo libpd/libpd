@@ -16,6 +16,7 @@
 @interface AppDelegate () {}
 
 @property (nonatomic, retain) PdAudioController *audioController;
+@property (nonatomic, retain) PdFile *patch;
 
 - (void)setupPd;
 - (void)testPd;
@@ -67,9 +68,15 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	
 	UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView:self.viewController.view];
-	NSLog(@"touch at %.f %.f", pos.x, pos.y);
+	int pitch = (-1 * (pos.y/CGRectGetHeight(self.viewController.view.frame)) + 1) * 127;
+	
+	[PdBase sendList:[NSArray arrayWithObjects:@"pitch", [NSNumber numberWithInt:pitch], nil] toReceiver:@"tone"];
+	[PdBase sendBangToReceiver:@"tone"];
+	
+	NSLog(@"touch at %.f %.f with pitch: %d", pos.x, pos.y, pitch);
 }
 
 #pragma mark - Pd
@@ -79,7 +86,7 @@
 	self.audioController = [[PdAudioController alloc] init];
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
 																  numberChannels:2
-																	inputEnabled:NO
+																	inputEnabled:YES
 																   mixingEnabled:YES];
 	if (status == PdAudioError) {
 		NSLog(@"Error! Could not configure PdAudioController");
@@ -101,6 +108,10 @@
 	
 	// add search path
 	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [[NSBundle mainBundle] bundlePath]]];
+	
+	// turn on dsp
+	self.audioController.active = YES;
+	[PdBase computeAudio:YES];
 }
 
 - (void)testPd {
@@ -110,17 +121,16 @@
 	NSLog(@"-- BEGIN Patch Test");
 	
 	// open patch
-	PdFile *patch = [PdFile openFileNamed:@"test.pd"
-		path:[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle] bundlePath]]];
-	NSLog(@"%@", patch);
+	self.patch = [PdFile openFileNamed:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle] bundlePath]]];
+	NSLog(@"%@", self.patch);
 	
 	// close patch
-	[patch closeFile];
-	NSLog(@"%@", patch);
+	[self.patch closeFile];
+	NSLog(@"%@", self.patch);
 	
 	// open patch again
-	patch = [patch openNewInstance];
-	NSLog(@"%@", patch);
+	self.patch = [self.patch openNewInstance];
+	NSLog(@"%@", self.patch);
 	
 	NSLog(@"-- FINISH Patch Test");
 	
@@ -138,7 +148,7 @@
 	[PdBase sendList:list toReceiver:@"toPd"];
 	
 	// send a list to the $0 receiver ie $0-toOF
-	[PdBase sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", patch.dollarZero]];
+	[PdBase sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", self.patch.dollarZero]];
 	
     // send a message
 	[PdBase sendMessage:@"msg" withArguments:list toReceiver:@"toPD"];
@@ -227,6 +237,10 @@
 	[PdBase receiveMidi];
 	
 	NSLog(@"-- FINISH Polling Test");
+	
+	// reenable delegates
+	[PdBase setDelegate:self];
+	[PdBase setMidiDelegate:self];
 }
 
 #pragma mark - PdRecieverDelegate
