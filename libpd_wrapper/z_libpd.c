@@ -77,7 +77,7 @@ bool libpd_init(bool use_gui, const char *libdir) {
   return true;
 }
 
-bool libpd_cleanup(void) {
+void libpd_cleanup(void) {
   // It's not unlikely that Pd has some allocated resources that should be freed as well. Just calling glob_quit() is probably not enough.
   glob_quit(NULL);
   free(argv);
@@ -278,6 +278,22 @@ int libpd_blocksize(void) {
 int libpd_exists(const char *sym) {
   return get_object(sym) != NULL;
 }
+
+void libpd_set_printhook(t_libpd_printhook hook) { sys_printhook = hook; }
+void libpd_set_banghook(t_libpd_banghook hook) { libpd_banghook = hook; }
+void libpd_set_floathook(t_libpd_floathook hook) { libpd_floathook = hook; }
+void libpd_set_symbolhook(t_libpd_symbolhook hook) { libpd_symbolhook = hook; }
+void libpd_set_listhook(t_libpd_listhook hook) { libpd_listhook = hook; }
+void libpd_set_messagehook(t_libpd_messagehook hook) { libpd_messagehook = hook; }
+
+void libpd_set_noteonhook(t_libpd_noteonhook hook) { libpd_noteonhook = hook; }
+void libpd_set_controlchangehook(t_libpd_controlchangehook hook) { libpd_controlchangehook = hook; }
+void libpd_set_programchangehook(t_libpd_programchangehook hook) { libpd_programchangehook = hook; }
+void libpd_set_pitchbendhook(t_libpd_pitchbendhook hook) { libpd_pitchbendhook = hook; }
+void libpd_set_aftertouchhook(t_libpd_aftertouchhook hook) { libpd_aftertouchhook = hook; }
+void libpd_set_polyaftertouchhook(t_libpd_polyaftertouchhook hook) { libpd_polyaftertouchhook = hook; }
+void libpd_set_midibytehook(t_libpd_midibytehook hook) { libpd_midibytehook = hook; }
+
 
 #define CHECK_CHANNEL if (channel < 0) return -1;
 #define CHECK_PORT if (port < 0 || port > 0x0fff) return -1;

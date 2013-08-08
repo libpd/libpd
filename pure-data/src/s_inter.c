@@ -1342,7 +1342,7 @@ void glob_quit(void *dummy)
         // Avoid defunct child processes.
         int stat_lock;
         int num_retries = 0;
-        for(num_retries=0; num_retries < 50; num_retries++) // give up after 5 seconds.
+        for(num_retries=0; num_retries < 20; num_retries++) // give up after 2 seconds.
           if (waitpid(childpid, &stat_lock, WNOHANG)==childpid)
             break;
           else

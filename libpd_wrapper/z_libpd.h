@@ -21,7 +21,7 @@ extern "C"
 #include "m_pd.h"
 
 EXTERN bool libpd_init(bool use_gui, const char *libdir);
-EXTERN bool libpd_cleanup(void);
+EXTERN void libpd_cleanup(void);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
 
@@ -86,6 +86,13 @@ EXTERN t_libpd_symbolhook libpd_symbolhook;
 EXTERN t_libpd_listhook libpd_listhook;
 EXTERN t_libpd_messagehook libpd_messagehook;
 
+EXTERN void libpd_set_printhook(t_libpd_printhook hook);
+EXTERN void libpd_set_banghook(t_libpd_banghook hook);
+EXTERN void libpd_set_floathook(t_libpd_floathook hook);
+EXTERN void libpd_set_symbolhook(t_libpd_symbolhook hook);
+EXTERN void libpd_set_listhook(t_libpd_listhook hook);
+EXTERN void libpd_set_messagehook(t_libpd_messagehook hook);
+
 EXTERN int libpd_noteon(int channel, int pitch, int velocity);
 EXTERN int libpd_controlchange(int channel, int controller, int value);
 EXTERN int libpd_programchange(int channel, int value);
@@ -112,6 +119,14 @@ EXTERN t_libpd_pitchbendhook libpd_pitchbendhook;
 EXTERN t_libpd_aftertouchhook libpd_aftertouchhook;
 EXTERN t_libpd_polyaftertouchhook libpd_polyaftertouchhook;
 EXTERN t_libpd_midibytehook libpd_midibytehook;
+
+EXTERN void libpd_set_noteonhook(t_libpd_noteonhook hook);
+EXTERN void libpd_set_controlchangehook(t_libpd_controlchangehook hook);
+EXTERN void libpd_set_programchangehook(t_libpd_programchangehook hook);
+EXTERN void libpd_set_pitchbendhook(t_libpd_pitchbendhook hook);
+EXTERN void libpd_set_aftertouchhook(t_libpd_aftertouchhook hook);
+EXTERN void libpd_set_polyaftertouchhook(t_libpd_polyaftertouchhook hook);
+EXTERN void libpd_set_midibytehook(t_libpd_midibytehook hook);
 
 #ifdef __cplusplus
 }
