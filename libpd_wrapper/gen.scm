@@ -248,7 +248,8 @@ exec guile -e main -s $0 $*
   (for-each (lambda (funcdef)
               (parse-c-proto funcdef
                              (lambda (rettype name args)
-                               (if (not (string=? name "libpd_init"))
+                               (if (and (not (string=? name "libpd_init"))
+                                        (not (string=? name "libpd_cleanup")))
                                    (begin
                                      (display (<-> rettype " libpds_" (get-stripped-name name) "(pd_t *pd"))
                                      (for-each (lambda (arg)
