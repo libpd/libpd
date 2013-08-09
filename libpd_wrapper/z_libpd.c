@@ -71,7 +71,7 @@ bool libpd_init(bool use_gui, const char *libdir) {
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
 
-  if (sys_startgui(libdir))
+  if (use_gui && sys_startgui(libdir))
     return false;
 
   return true;
