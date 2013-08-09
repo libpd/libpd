@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "m_libpd.h"
+#include <libpds.h>
 
 void pdprint(const char *s) {
   printf("%s", s);
