@@ -243,6 +243,7 @@ exec guile -e main -s $0 $*
   (c-display "typedef struct _pd pd_t;")
   (newline)
   (c-display "pd_t *libpds_create(bool use_gui, const char* libdir);")
+  (c-display "void libpds_delete(pd_t *pd);")
 
   (for-each (lambda (funcdef)
               (parse-c-proto funcdef

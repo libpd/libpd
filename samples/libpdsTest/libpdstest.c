@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "m_libpd.h"
 
 void pdprint(const char *s) {

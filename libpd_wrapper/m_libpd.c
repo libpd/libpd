@@ -33,8 +33,11 @@ static void write_libpd_so_to_tempfile(char *template){
 pd_t *libpds_create(bool use_gui, const char *libdir){
   pd_t *pd = calloc(1, sizeof(pd_t));
 
+  struct timeval my_timeval;
+  gettimeofday(&my_timeval, NULL);
 
-  char filename[] = "/tmp/XXXXXX";
+  char filename[1024];
+  sprintf(filename, "/tmp/%llu_%llu_%d_XXXXXX", (unsigned long long)my_timeval.tv_sec, (unsigned long long)my_timeval.tv_usec, rand());
   write_libpd_so_to_tempfile(filename);
 
   pd->handle = dlopen(filename, RTLD_NOW | RTLD_LOCAL );  
