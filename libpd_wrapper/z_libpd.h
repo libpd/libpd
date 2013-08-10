@@ -35,6 +35,7 @@ EXTERN void libpd_hide_gui(void);
 EXTERN int libpd_blocksize(void);
 EXTERN int libpd_init_audio(int inChans, int outChans, int sampleRate);
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
+EXTERN int libpd_process_float_noninterleaved(int ticks, const float **inBuffer, float **outBuffer);
 EXTERN int libpd_process_short(const int ticks,
     const short *inBuffer, short *outBuffer);
 EXTERN int libpd_process_float(int ticks,

@@ -124,6 +124,52 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   return 0;
 }
 
+static void memcpy_sample_float(t_sample *dst, const float *src, int num_samples){
+  if(__builtin_types_compatible_p(float, t_sample))
+    memcpy(dst, src, num_samples*sizeof(float));
+  else {
+    int i;
+    for(i=0; i<num_samples; i++)
+      dst[i] = src[i];
+  }
+}
+
+static void memcpy_float_sample(float *dst, const t_sample *src, int num_samples){
+  if(__builtin_types_compatible_p(float, t_sample))
+    memcpy(dst, src, num_samples*sizeof(float));
+  else {
+    int i;
+    for(i=0; i<num_samples; i++)
+      dst[i] = src[i];
+  }
+}
+
+int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, float **outputs) {
+  int n_in = sys_inchannels * DEFDACBLKSIZE;
+  int n_out = sys_outchannels * DEFDACBLKSIZE;
+
+  float *soundin = sys_soundin;
+  float *soundout = sys_soundout;
+
+  int i;
+  for(i=0; i<DEFDACBLKSIZE*num_ticks; i+= DEFDACBLKSIZE) {
+
+    int ch;
+    for(ch=0; ch<sys_inchannels; ch++)
+      memcpy_sample_float(soundin+(0*DEFDACBLKSIZE), inputs[0], DEFDACBLKSIZE);
+
+    memset(soundout, 0, n_out * sizeof(t_sample));
+    sched_tick(sys_time + sys_time_per_dsp_tick);
+    if (sys_nogui==0)
+      sys_pollgui();
+
+    for(ch=0; ch<sys_outchannels; ch++)
+      memcpy_float_sample(outputs[ch]+i, sys_soundout+(ch*DEFDACBLKSIZE), DEFDACBLKSIZE);
+  }
+
+  return 0;
+}
+
 static const t_sample sample_to_short = SHRT_MAX,
                    short_to_sample = 1.0 / (t_sample) SHRT_MAX;
 
@@ -137,9 +183,9 @@ static const t_sample sample_to_short = SHRT_MAX,
       }                                                                 \
     }                                                                   \
     memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_sample)); \
+    sched_tick(sys_time + sys_time_per_dsp_tick);                       \
     if (sys_nogui==0)                                                   \
-      sched_tick(sys_time + sys_time_per_dsp_tick);                     \
-    sys_pollgui();                                                      \
+      sys_pollgui();                                                    \
     for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) {      \
       for (k = 0, p1 = p0; k < sys_outchannels; k++, p1 += DEFDACBLKSIZE) { \
         *outBuffer++ = *p1 _y;                                          \

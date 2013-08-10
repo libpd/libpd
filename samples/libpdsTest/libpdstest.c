@@ -52,7 +52,7 @@ static pd_t *start_instance(const char *filename, void **file) {
   libpds_finish_message(pd, "pd", "dsp");
 
   // open patch       [; pd open file folder(
-  *file = libpds_openfile(pd, (const char*)filename, ".");
+  *file = libpds_openfile(pd, filename, ".");
 
   return pd;
 }
