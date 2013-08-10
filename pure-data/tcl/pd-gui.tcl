@@ -707,7 +707,7 @@ proc load_startup_plugins {} {
 # show and hide gui. Used in libpd.
 
 array set windowstate {}
-set gui_is_shown 0
+set gui_is_shown 1 ;# gui is not supposed to show during startup, but sometimes it does (which is a bug), and therefore we set 'gui_is_shown' to 1 to allow the user to close it.
 
 proc show_gui {} {
     foreach x ". [winfo children .]" {
