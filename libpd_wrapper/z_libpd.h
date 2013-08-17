@@ -64,7 +64,7 @@ EXTERN int libpd_finish_list(const char *recv);
 EXTERN int libpd_finish_message(const char *recv, const char *msg);
 
 EXTERN int libpd_exists(const char *sym);
-EXTERN void *libpd_bind(const char *sym);
+EXTERN void *libpd_bind(const char *sym, void *data);
 EXTERN void libpd_unbind(void *p);
 
 #define libpd_is_float(a) ((a).a_type == A_FLOAT)
@@ -73,11 +73,11 @@ EXTERN void libpd_unbind(void *p);
 #define libpd_get_symbol(a) ((a).a_w.w_symbol->s_name)
 
 typedef void (*t_libpd_printhook)(const char *recv);
-typedef void (*t_libpd_banghook)(const char *recv);
-typedef void (*t_libpd_floathook)(const char *recv, float x);
-typedef void (*t_libpd_symbolhook)(const char *recv, const char *sym);
-typedef void (*t_libpd_listhook)(const char *recv, int argc, t_atom *argv);
-typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
+typedef void (*t_libpd_banghook)(void *data, const char *recv);
+typedef void (*t_libpd_floathook)(void *data, const char *recv, float x);
+typedef void (*t_libpd_symbolhook)(void *data, const char *recv, const char *sym);
+typedef void (*t_libpd_listhook)(void *data, const char *recv, int argc, t_atom *argv);
+typedef void (*t_libpd_messagehook)(void *data, const char *recv, const char *msg,
     int argc, t_atom *argv);
 
 EXTERN t_libpd_printhook libpd_printhook;

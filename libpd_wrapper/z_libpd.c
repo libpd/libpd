@@ -288,8 +288,8 @@ int libpd_finish_message(const char *recv, const char *msg) {
   return libpd_message(recv, msg, argc, argv);
 }
 
-void *libpd_bind(const char *sym) {
-  return libpdreceive_new(gensym(sym));
+void *libpd_bind(const char *sym, void *data) {
+  return libpdreceive_new(gensym(sym), data);
 }
 
 void libpd_unbind(void *p) {

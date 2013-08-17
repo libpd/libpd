@@ -68,7 +68,7 @@ exec guile -e main -s $0 $*
  int libpd_finish_message(const char* recv, const char* msg);
 
  int libpd_exists(const char* sym);
- void* libpd_bind(const char* sym);
+ void* libpd_bind(const char* sym, void* data);
  void libpd_unbind(void* p);
 
  void libpd_set_printhook(t_libpd_printhook hook);
