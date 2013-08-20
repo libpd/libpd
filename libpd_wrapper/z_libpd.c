@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
+#include <locale.h>
 #include "z_libpd.h"
 #include "x_libpdreceive.h"
 #include "s_stuff.h"
@@ -49,6 +50,8 @@ static void *get_object(const char *s) {
  */
 bool libpd_init(bool use_gui, const char *libdir) {
   signal(SIGFPE, SIG_IGN);
+  setlocale(LC_NUMERIC, "C"); // Ensure we don't get comma/colon problems when converting between strings and floats.
+
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;
