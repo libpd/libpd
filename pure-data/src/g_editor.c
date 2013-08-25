@@ -1903,6 +1903,10 @@ void glob_verifyquit(void *dummy, t_floatarg f)
 #endif
 }
 
+#if defined(LIBPD)
+char *libpd_get_main_patchname(void);
+#endif
+
     /* close a window (or possibly quit Pd), checking for dirty flags.
     The "force" parameter is interpreted as follows:
         0 - request from GUI to close, verifying whether clean or dirty
@@ -1914,14 +1918,19 @@ void canvas_menuclose(t_canvas *x, t_floatarg fforce)
 {
     int force = fforce;
     t_glist *g;
+
     if (x->gl_owner && (force == 0 || force == 1))
         canvas_vis(x, 0);   /* if subpatch, just invis it */
+
 #if defined(LIBPD)
+
+    else if (libpd_get_main_patchname()!=NULL && strcmp(x->gl_name->s_name, libpd_get_main_patchname()))
+      canvas_vis(x, 0);   /* if not main patch, just invis it too */
     else
-    {
       sys_vgui("libpd_hide_gui\n");
-    }
+
 #else
+
     else if (force == 0)    
     {
         g = glist_finddirty(x);
