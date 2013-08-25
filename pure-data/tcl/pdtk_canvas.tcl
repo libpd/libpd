@@ -30,12 +30,12 @@ namespace eval ::pdtk_canvas:: {
 #winfo rootx . returns contentsLeftEdge
 
 
-# this proc is split out on its own to make it easy to override. This makes it
-# easy for people to customize these calculations based on their Window
-# Manager, desires, etc.
-proc pdtk_canvas_place_window {width height geometry} {
-    set screenwidth [lindex [wm maxsize .] 0]
-    set screenheight [lindex [wm maxsize .] 1]
+#------------------------------------------------------------------------------#
+# canvas new/saveas
+
+proc pdtk_canvas_new {mytoplevel width height geometry editable} {
+    set screenwidth [winfo screenwidth .]
+    set screenheight [winfo screenheight .]
 
     # read back the current geometry +posx+posy into variables
     scan $geometry {%[+]%d%[+]%d} - x - y
@@ -50,18 +50,7 @@ proc pdtk_canvas_place_window {width height geometry} {
         set height [expr $screenheight - $::menubarsize - 30] ;# 30 for window framing
         set y $::menubarsize
     }
-    return [list $width $height ${width}x$height+$x+$y]
-}
-
-
-#------------------------------------------------------------------------------#
-# canvas new/saveas
-
-proc pdtk_canvas_new {mytoplevel width height geometry editable} {
-    set l [pdtk_canvas_place_window $width $height $geometry]
-    set width [lindex $l 0]
-    set height [lindex $l 1]
-    set geometry [lindex $l 2]
+    set geometry ${width}x$height+$x+$y
 
     # release the window grab here so that the new window will
     # properly get the Map and FocusIn events when its created
@@ -88,12 +77,6 @@ proc pdtk_canvas_new {mytoplevel width height geometry editable} {
     scrollbar $mytoplevel.xscroll -orient horizontal -command "$tkcanvas xview"
     scrollbar $mytoplevel.yscroll -orient vertical -command "$tkcanvas yview"
     pack $tkcanvas -side left -expand 1 -fill both
-
-    # for some crazy reason, win32 mousewheel scrolling is in units of
-    # 120, and this forces Tk to interpret 120 to mean 1 scroll unit
-    if {$::windowingsystem eq "win32"} {
-        $tkcanvas configure -xscrollincrement 1 -yscrollincrement 1
-    }
 
     ::pd_bindings::patch_bindings $mytoplevel
 

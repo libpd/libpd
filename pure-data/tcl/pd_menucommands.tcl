@@ -16,7 +16,9 @@ proc ::pd_menucommands::menu_new {} {
     # to localize "Untitled" there will need to be changes in g_canvas.c and
     # g_readwrite.c, where it tests for the string "Untitled"
     set untitled_name "Untitled"
-    pdsend "pd menunew $untitled_name-$untitled_number [enquote_path $::filenewdir]"
+    pdsend "pd filename $untitled_name-$untitled_number [enquote_path $::filenewdir]"
+    pdsend "#N canvas"
+    pdsend "#X pop 1"
     incr untitled_number
 }
 
@@ -79,14 +81,6 @@ proc ::pd_menucommands::menu_send {window message} {
     set mytoplevel [winfo toplevel $window]
     if {[winfo class $mytoplevel] eq "PatchWindow"} {
         pdsend "$mytoplevel $message"
-    } elseif {$mytoplevel eq ".pdwindow"} {
-        if {$message eq "copy"} {
-            tk_textCopy .pdwindow.text
-        } elseif {$message eq "selectall"} {
-            .pdwindow.text tag add sel 1.0 end
-        } elseif {$message eq "menusaveas"} {
-            ::pdwindow::save_logbuffer_to_file
-        }
     }
 }
 

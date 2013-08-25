@@ -17,6 +17,7 @@ package require Tk
 #namespace import -force ttk::*
 
 package require msgcat
+# TODO figure out msgcat issue on Windows
 # TODO create a constructor in each package to create things at startup, that
 #  way they can be easily be modified by startup scripts
 # TODO create alt-Enter/Cmd-I binding to bring up Properties panels
@@ -43,7 +44,6 @@ package require pd_menucommands
 package require opt_parser
 package require pdtk_canvas
 package require pdtk_text
-package require pdtk_textwindow
 # TODO eliminate this kludge:
 package require wheredoesthisgo
 package require pd_guiprefs
@@ -148,8 +148,6 @@ set sys_searchpath {}
 set sys_staticpath {}
 # the path to the folder where the current plugin is being loaded from
 set current_plugin_loadpath {}
-# a list of plugins that were loaded
-set loaded_plugins {}
 # list of command line flags set at startup
 set startup_flags {}
 # list of libraries loaded on startup
@@ -216,12 +214,6 @@ set canvas_minheight 20
 set ::undo_action "no"
 set ::redo_action "no"
 set ::undo_toplevel "."
-
-
-namespace eval ::pdgui:: {
-    variable scriptname [ file normalize [ info script ] ]
-}
-
 
 #------------------------------------------------------------------------------#
 # coding style
@@ -553,13 +545,8 @@ proc parse_args {argc argv} {
             set ::port $argv 
         } else {
             set hostport [split $argv ":"]
+            set ::host [lindex $hostport 0]
             set ::port [lindex $hostport 1]
-            if { [string is int $::port] && $::port > 0} {
-                set ::host [lindex $hostport 0]
-            } else {
-                set ::port 0
-            }
-
         }
     } elseif {$unflagged_files ne ""} {
         foreach filename $unflagged_files {
@@ -588,15 +575,14 @@ proc singleton {key} {
 }
 
 proc singleton_request {offset maxbytes} {
-## the next 2 lines raise the focus to the given window (and change desktop)
-#    wm deiconify .pdwindow
-#    raise .pdwindow
+    wm deiconify .pdwindow
+    raise .pdwindow
     return [tk appname]
 }
 
 proc first_lost {} {
-    receive_args [selection get -selection ${::pdgui::scriptname} ]
-    selection own -command first_lost -selection ${::pdgui::scriptname} .
+    receive_args [selection get -selection PUREDATA]
+    selection own -command first_lost -selection PUREDATA .
  }
 
 proc others_lost {} {
@@ -617,18 +603,12 @@ proc send_args {offset maxChars} {
 # this command will open files received from a 2nd instance of Pd
 proc receive_args {filelist} {
     raise .
-    wm deiconify .pdwindow
-    raise .pdwindow
     foreach filename $filelist {
         open_file $filename
     }
 }
 
-proc dde_open_handler {cmd} {
-    open_file [file normalize $cmd]
-}
-
-proc check_for_running_instances { } {
+proc check_for_running_instances {argc argv} {
     switch -- $::windowingsystem {
         "aqua" {
             # handled by ::tk::mac::OpenDocument in apple_events.tcl
@@ -636,28 +616,21 @@ proc check_for_running_instances { } {
             # http://wiki.tcl.tk/1558
             # TODO replace PUREDATA name with path so this code is a singleton
             # based on install location rather than this hard-coded name
-            if {![singleton ${::pdgui::scriptname}_MANAGER ]} {
-                # if pd-gui gets called from pd ('pd-gui 5400') or is told otherwise
-                # to connect to a running instance of Pd (by providing [<host>:]<port>)
-                # then we don't want to connect to a running instance
-                if { $::port > 0 && $::host ne "" } { return }
-                selection handle -selection ${::pdgui::scriptname} . "send_args"
-                selection own -command others_lost -selection ${::pdgui::scriptname} .
+            if {![singleton PUREDATA_MANAGER]} {
+                # other instances called by wish/pd-gui (exempt 'pd' by 5400 arg)
+                if {$argc == 1 && [string is int $argv] && $argv >= 5400} {return}
+                selection handle -selection PUREDATA . "send_args"
+                selection own -command others_lost -selection PUREDATA .
                 after 5000 set ::singleton_state "timeout"
                 vwait ::singleton_state
                 exit
             } else {
                 # first instance
-                selection own -command first_lost -selection ${::pdgui::scriptname} .
+                selection own -command first_lost -selection PUREDATA .
             }
         } "win32" {
-            ## http://wiki.tcl.tk/8940
-            package require dde ;# 1.4 or later needed for full unicode support
-            set topic "Pure_Data_DDE_Open"
-            # if no DDE service is running, start one and claim the name
-            if { [dde services TclEval $topic] == {} } {
-                dde servername -handler dde_open_handler $topic
-            }
+            ## http://wiki.tcl.tk/1558
+            # TODO on Win: http://tcl.tk/man/tcl8.4/TclCmd/dde.htm
         }
     }
 }
@@ -669,23 +642,15 @@ proc check_for_running_instances { } {
 proc load_plugin_script {filename} {
     global errorInfo
 
-    set basename [file tail $filename]
-    if {[lsearch $::loaded_plugins $basename] > -1} {
-        ::pdwindow::post [_ "'$basename' already loaded, ignoring: '$filename'\n"]
-        return
-    }
-
-    ::pdwindow::debug [_ "Loading plugin: $filename\n"]
+    ::pdwindow::debug "Loading plugin: $filename\n"
     set tclfile [open $filename]
     set tclcode [read $tclfile]
     close $tclfile
     if {[catch {uplevel #0 $tclcode} errorname]} {
         ::pdwindow::error "-----------\n"
-        ::pdwindow::error [_ "UNHANDLED ERROR: $errorInfo\n"]
-        ::pdwindow::error [_ "FAILED TO LOAD $filename\n"]
+        ::pdwindow::error "UNHANDLED ERROR: $errorInfo\n"
+        ::pdwindow::error "FAILED TO LOAD $filename\n"
         ::pdwindow::error "-----------\n"
-    } else {
-        lappend ::loaded_plugins $basename
     }
 }
 
@@ -746,7 +711,7 @@ proc main {argc argv} {
     tk appname pd-gui
     load_locale
     parse_args $argc $argv
-    check_for_running_instances
+    check_for_running_instances $argc $argv
     set_pd_paths
     init_for_platform
 
