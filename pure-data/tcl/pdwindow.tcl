@@ -210,7 +210,11 @@ proc ::pdwindow::pdwindow_bindings {} {
     } else {
         # TODO should it possible to close the Pd window and keep Pd open?
         bind .pdwindow <$::modifier-Key-w>   "wm iconify .pdwindow"
-        wm protocol .pdwindow WM_DELETE_WINDOW "pdsend \"pd verifyquit\""
+        if {$::LIBPD eq 0} {
+            wm protocol .pdwindow WM_DELETE_WINDOW "pdsend \"pd verifyquit\""
+        } else {
+            wm protocol .pdwindow WM_DELETE_WINDOW "wm withdraw .pdwindow"
+        }
     }
 }
 
