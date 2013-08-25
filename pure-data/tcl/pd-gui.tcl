@@ -720,6 +720,7 @@ proc libpd_show_gui {} {
         }
     }
     set ::gui_is_shown 1
+    pdsend "libpd gui_is_visible"
 }
 
 
@@ -732,8 +733,10 @@ proc libpd_hide_gui {} {
                }
        }
        set ::gui_is_shown 0
+       pdsend "libpd gui_is_hidden"
    }
 }
+
 
 # ------------------------------------------------------------------------------
 # main
