@@ -437,9 +437,9 @@ int libpd_getdollarzero(void *x) {
 }
 
 void libpd_show_gui(void) {
-  sys_vgui("show_gui\n");
+  sys_vgui("libpd_show_gui\n");
 }
 
 void libpd_hide_gui(void) {
-  sys_vgui("hide_gui\n");
+  sys_vgui("libpd_hide_gui\n");
 }

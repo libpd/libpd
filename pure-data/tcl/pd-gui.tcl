@@ -709,7 +709,7 @@ proc load_startup_plugins {} {
 array set windowstate {}
 set gui_is_shown 1 ;# gui is not supposed to show during startup, but sometimes it does (which is a bug), and therefore we set 'gui_is_shown' to 1 to allow the user to close it.
 
-proc show_gui {} {
+proc libpd_show_gui {} {
     foreach x ". [winfo children .]" {
         if { $x eq [winfo toplevel $x] && [catch {$x cget -tearoff}] } {
             set state [lindex [array get ::windowstate $x] 1]
@@ -722,7 +722,8 @@ proc show_gui {} {
     set ::gui_is_shown 1
 }
 
-proc hide_gui {} {
+
+proc libpd_hide_gui {} {
     if { $::gui_is_shown eq 1 } {
        foreach x ". [winfo children .]" {
            if { $x eq [winfo toplevel $x] && [catch {$x cget -tearoff}] } {
