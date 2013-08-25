@@ -1884,6 +1884,9 @@ static t_glist *glist_finddirty(t_glist *x)
     the user really wants to discard changes  */
 void glob_verifyquit(void *dummy, t_floatarg f)
 {
+#if defined(LIBPD)
+  sys_vgui("libpd_hide_gui\n");
+#else
     t_glist *g, *g2;
         /* find all root canvases */
     for (g = canvas_list; g; g = g->gl_next)
@@ -1897,6 +1900,7 @@ void glob_verifyquit(void *dummy, t_floatarg f)
     if (f == 0 && sys_perf)
         sys_vgui("pdtk_check .pdwindow {really quit?} {pd quit} yes\n");
     else glob_quit(0);
+#endif
 }
 
     /* close a window (or possibly quit Pd), checking for dirty flags.
@@ -1912,6 +1916,12 @@ void canvas_menuclose(t_canvas *x, t_floatarg fforce)
     t_glist *g;
     if (x->gl_owner && (force == 0 || force == 1))
         canvas_vis(x, 0);   /* if subpatch, just invis it */
+#if defined(LIBPD)
+    else
+    {
+      sys_vgui("libpd_hide_gui\n");
+    }
+#else
     else if (force == 0)    
     {
         g = glist_finddirty(x);
@@ -1951,6 +1961,7 @@ void canvas_menuclose(t_canvas *x, t_floatarg fforce)
         canvas_dirty(x, 0);
         glob_verifyquit(0, 1);
     }
+#endif // else defined(LIBPD)
 }
 
     /* put up a dialog which may call canvas_font back to do the work */
