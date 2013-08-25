@@ -419,26 +419,23 @@ int libpd_sysrealtime(int port, int byte) {
   return 0;
 }
 
-static char *main_patchname = NULL;
+static void *main_file = NULL;
 
-char *libpd_get_main_patchname(void) {
-  return main_patchname;
+void *libpd_get_main_file(void) {
+  return main_file;
 }
 
 void *libpd_openfile(const char *basename, const char *dirname) {
-  if(main_patchname==NULL)
-    main_patchname = strdup(basename);
-
   void *ret = glob_evalfile(NULL, gensym(basename), gensym(dirname));
+  if(main_file==NULL)
+    main_file = ret;
+
   libpd_hide_gui();
   return ret;
 }
 
 void libpd_closefile(void *x) {
   pd_free((t_pd *)x);
-
-  free(main_patchname);
-  main_patchname = NULL;
 }
 
 int libpd_getdollarzero(void *x) {

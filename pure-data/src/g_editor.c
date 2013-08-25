@@ -1904,7 +1904,7 @@ void glob_verifyquit(void *dummy, t_floatarg f)
 }
 
 #if defined(LIBPD)
-char *libpd_get_main_patchname(void);
+char *libpd_get_main_file(void);
 #endif
 
     /* close a window (or possibly quit Pd), checking for dirty flags.
@@ -1920,16 +1920,12 @@ void canvas_menuclose(t_canvas *x, t_floatarg fforce)
     t_glist *g;
 
     if (x->gl_owner && (force == 0 || force == 1))
-        canvas_vis(x, 0);   /* if subpatch, just invis it */
+      canvas_vis(x, 0);   /* if subpatch, just invis it */
 
 #if defined(LIBPD)
-
-    else if (libpd_get_main_patchname()!=NULL && strcmp(x->gl_name->s_name, libpd_get_main_patchname()))
-      canvas_vis(x, 0);   /* if not main patch, just invis it too */
-    else
+    else if (libpd_get_main_file()== (void*)(&x->gl_pd))
       sys_vgui("libpd_hide_gui\n");
-
-#else
+#endif
 
     else if (force == 0)    
     {
@@ -1970,7 +1966,6 @@ void canvas_menuclose(t_canvas *x, t_floatarg fforce)
         canvas_dirty(x, 0);
         glob_verifyquit(0, 1);
     }
-#endif // else defined(LIBPD)
 }
 
     /* put up a dialog which may call canvas_font back to do the work */

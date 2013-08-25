@@ -1501,5 +1501,6 @@ t_pd *glob_evalfile(t_pd *ignore, t_symbol *name, t_symbol *dir)
     }
     pd_doloadbang();
     canvas_resume_dsp(dspstate);
+
     return x;
 }
