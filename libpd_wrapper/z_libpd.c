@@ -69,7 +69,25 @@ bool libpd_init(bool use_gui, const char *libdir) {
   sys_nmidiin = 0;
   sys_nmidiout = 0;
   sys_time = 0;
+  sys_libdir = gensym(libdir);
+
   pd_init();
+
+  { // from s_main.c / sys_afterargparse()
+    char sbuf[MAXPDSTRING];
+
+    strncpy(sbuf, sys_libdir->s_name, MAXPDSTRING-30);
+
+    sbuf[MAXPDSTRING-30] = 0;
+    strcat(sbuf, "/extra");
+    sys_setextrapath(sbuf);
+            /* add "doc/5.reference" library to helppath */
+    strncpy(sbuf, sys_libdir->s_name, MAXPDSTRING-30);
+    sbuf[MAXPDSTRING-30] = 0;
+    strcat(sbuf, "/doc/5.reference");
+    sys_helppath = namelist_append_files(sys_helppath, sbuf);
+  }
+
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
