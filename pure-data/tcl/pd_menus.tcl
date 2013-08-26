@@ -475,10 +475,12 @@ proc ::pd_menus::create_preferences_menu {mymenu} {
         -command {pdsend "pd start-path-dialog"}
     $mymenu add command -label [_ "Startup..."] \
         -command {pdsend "pd start-startup-dialog"}
-    $mymenu add command -label [_ "Audio Settings..."] \
-        -command {pdsend "pd audio-properties"}
-    $mymenu add command -label [_ "MIDI Settings..."] \
-        -command {pdsend "pd midi-properties"}
+    if {$::LIBPD eq 0} {
+        $mymenu add command -label [_ "Audio Settings..."] \
+            -command {pdsend "pd audio-properties"}
+        $mymenu add command -label [_ "MIDI Settings..."] \
+            -command {pdsend "pd midi-properties"}
+    }
 }
 
 # ------------------------------------------------------------------------------
