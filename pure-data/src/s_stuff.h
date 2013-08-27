@@ -330,6 +330,7 @@ EXTERN void sys_set_midi_api(int whichapi);
 EXTERN void sys_set_audio_api(int whichapi);
 extern int sys_audioapi;
 EXTERN void sys_set_audio_state(int onoff);
+EXTERN int sys_get_audio_state(void);
 
 /* API dependent audio flags and settings */
 void oss_set32bit( void);

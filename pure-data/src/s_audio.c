@@ -957,6 +957,11 @@ void sys_set_audio_state(int onoff)
     }
 }
 
+int sys_get_audio_state(void)
+{
+  return audio_isopen();
+}
+
 void sys_get_audio_apis(char *buf)
 {
     int n = 0;
