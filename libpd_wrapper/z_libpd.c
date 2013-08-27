@@ -114,9 +114,16 @@ void libpd_add_to_search_path(const char *s) {
   sys_searchpath = namelist_append(sys_searchpath, s, 0);
 }
 
+static int g_inChans = 0;
+static int g_outChans = 0;
+
 int libpd_init_audio(int inChans, int outChans, int sampleRate) {
   int indev[MAXAUDIOINDEV], inch[MAXAUDIOINDEV],
        outdev[MAXAUDIOOUTDEV], outch[MAXAUDIOOUTDEV];
+
+  g_inChans = inChans;
+  g_outChans = outChans;
+
   indev[0] = outdev[0] = DEFAULTAUDIODEV;
   inch[0] = inChans;
   outch[0] = outChans;
@@ -169,23 +176,35 @@ int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, floa
   int n_in = sys_inchannels * DEFDACBLKSIZE;
   int n_out = sys_outchannels * DEFDACBLKSIZE;
 
-  float *soundin = sys_soundin;
-  float *soundout = sys_soundout;
+  bool audio_state_was_off = false;
+  if (sys_get_audio_state()==0)
+    audio_state_was_off;
 
   int i;
   for(i=0; i<DEFDACBLKSIZE*num_ticks; i+= DEFDACBLKSIZE) {
 
     int ch;
-    for(ch=0; ch<sys_inchannels; ch++)
-      memcpy_sample_float(soundin+(0*DEFDACBLKSIZE), inputs[0], DEFDACBLKSIZE);
 
-    memset(soundout, 0, n_out * sizeof(t_sample));
+    for(ch=0; ch<sys_inchannels; ch++)
+      memcpy_sample_float(sys_soundin+(ch*DEFDACBLKSIZE), inputs[ch]+i, DEFDACBLKSIZE);
+
     sched_tick(sys_time + sys_time_per_dsp_tick);
     if (sys_nogui==0)
       sys_pollgui();
 
+    // Check again
+    if (sys_get_audio_state()==0)
+      audio_state_was_off;
+
     for(ch=0; ch<sys_outchannels; ch++)
       memcpy_float_sample(outputs[ch]+i, sys_soundout+(ch*DEFDACBLKSIZE), DEFDACBLKSIZE);
+  }
+
+  if(audio_state_was_off)
+    for(ch=0; ch<g_outChans; ch++) {
+      memset(outputs[0], 0, DEFDACBLKSIZE*sizeof(float)*num_ticks);
+      memset(outputs[1], 0, DEFDACBLKSIZE*sizeof(float)*num_ticks);
+    }
   }
 
   return 0;
