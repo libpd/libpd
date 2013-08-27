@@ -173,14 +173,11 @@ static void memcpy_float_sample(float *dst, const t_sample *src, int num_samples
 }
 
 int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, float **outputs) {
-  int n_in = sys_inchannels * DEFDACBLKSIZE;
-  int n_out = sys_outchannels * DEFDACBLKSIZE;
-
   int ch;
 
   bool audio_state_was_off = false;
   if (sys_get_audio_state()==0)
-    audio_state_was_off;
+    audio_state_was_off = true;
 
   int i;
   for(i=0; i<DEFDACBLKSIZE*num_ticks; i+= DEFDACBLKSIZE) {
@@ -188,13 +185,15 @@ int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, floa
     for(ch=0; ch<sys_inchannels; ch++)
       memcpy_sample_float(sys_soundin+(ch*DEFDACBLKSIZE), inputs[ch]+i, DEFDACBLKSIZE);
 
+    memset(sys_soundout, 0, sys_outchannels * DEFDACBLKSIZE * sizeof(t_sample));
+
     sched_tick(sys_time + sys_time_per_dsp_tick);
     if (sys_nogui==0)
       sys_pollgui();
 
     // Check again
     if (sys_get_audio_state()==0)
-      audio_state_was_off;
+      audio_state_was_off = true;
 
     for(ch=0; ch<sys_outchannels; ch++)
       memcpy_float_sample(outputs[ch]+i, sys_soundout+(ch*DEFDACBLKSIZE), DEFDACBLKSIZE);
