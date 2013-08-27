@@ -176,14 +176,14 @@ int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, floa
   int n_in = sys_inchannels * DEFDACBLKSIZE;
   int n_out = sys_outchannels * DEFDACBLKSIZE;
 
+  int ch;
+
   bool audio_state_was_off = false;
   if (sys_get_audio_state()==0)
     audio_state_was_off;
 
   int i;
   for(i=0; i<DEFDACBLKSIZE*num_ticks; i+= DEFDACBLKSIZE) {
-
-    int ch;
 
     for(ch=0; ch<sys_inchannels; ch++)
       memcpy_sample_float(sys_soundin+(ch*DEFDACBLKSIZE), inputs[ch]+i, DEFDACBLKSIZE);
