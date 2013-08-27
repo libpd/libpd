@@ -205,7 +205,6 @@ int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, floa
       memset(outputs[0], 0, DEFDACBLKSIZE*sizeof(float)*num_ticks);
       memset(outputs[1], 0, DEFDACBLKSIZE*sizeof(float)*num_ticks);
     }
-  }
 
   return 0;
 }
