@@ -1904,7 +1904,7 @@ void glob_verifyquit(void *dummy, t_floatarg f)
 }
 
 #if defined(LIBPD)
-char *libpd_get_main_file(void);
+void *libpd_get_main_file(void);
 #endif
 
     /* close a window (or possibly quit Pd), checking for dirty flags.

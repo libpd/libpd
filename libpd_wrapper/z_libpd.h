@@ -27,6 +27,7 @@ EXTERN void libpd_add_to_search_path(const char *sym);
 
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
+EXTERN void libpd_savefile(void *x);
 EXTERN int libpd_getdollarzero(void *p);
 
 EXTERN void libpd_show_gui(void);

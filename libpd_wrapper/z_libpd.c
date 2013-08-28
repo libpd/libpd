@@ -473,6 +473,13 @@ void libpd_closefile(void *x) {
   pd_free((t_pd *)x);
 }
 
+void libpd_savefile(void *x) {
+  void *the_real_main_file = main_file;
+  main_file = x;
+  sys_vgui("libpd_save_main_patch\n");
+  main_file = the_real_main_file;
+}
+
 int libpd_getdollarzero(void *x) {
   pd_pushsym((t_pd *)x);
   int dzero = canvas_getdollarzero();

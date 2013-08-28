@@ -702,6 +702,14 @@ proc libpd_hide_gui {} {
    }
 }
 
+proc libpd_save_main_patch {} {
+    foreach x ". [winfo children .]" {
+        if { $x eq [winfo toplevel $x] && [winfo class $x] eq "PatchWindow" && [catch {$x cget -tearoff}] } {
+                pdsend "$x saveifmain"
+            }
+    }
+}
+
 
 # ------------------------------------------------------------------------------
 # main

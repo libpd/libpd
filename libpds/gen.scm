@@ -31,6 +31,7 @@ exec guile -e main -s $0 $*
 
  void* libpd_openfile(const char* basename, const char* dirname);
  void libpd_closefile(void* p);
+ void libpd_savefile(void* p);
  int libpd_getdollarzero(void* p);
 
  void libpd_show_gui(void);
