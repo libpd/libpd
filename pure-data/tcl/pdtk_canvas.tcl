@@ -239,7 +239,7 @@ proc pdtk_canvas_enteritem {tkcanvas x y item enterid} {
 		after cancel $afterid
 	    }
 	    set current_window $tkcanvas
-            set afterid [after 600 pdtk_canvas_enteritem_gettags \
+            set afterid [after 1 pdtk_canvas_enteritem_gettags \
 		$tkcanvas $x $y $item]
         } else {
 	    set afterid 0
