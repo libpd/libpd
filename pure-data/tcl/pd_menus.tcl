@@ -76,7 +76,7 @@ proc ::pd_menus::configure_for_canvas {mytoplevel} {
     # File menu
     $menubar.file entryconfigure [_ "Save"] -state normal
     $menubar.file entryconfigure [_ "Save As..."] -state normal
-#    $menubar.file entryconfigure [_ "Print..."] -state normal
+    $menubar.file entryconfigure [_ "Print..."] -state normal
     $menubar.file entryconfigure [_ "Close"] -state normal
     # Edit menu
     $menubar.edit entryconfigure [_ "Duplicate"] -state normal
