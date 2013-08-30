@@ -49,6 +49,7 @@ proc ::pd_bindings::global_bindings {} {
     bind all <$::modifier-Key-q>      {pdsend "pd verifyquit"}
     bind all <$::modifier-Key-r>      {menu_raise_pdwindow}
     bind all <$::modifier-Key-s>      {menu_send %W menusave}
+    bind all <$::modifier-Key-t>      {menu_font_dialog}
     bind all <$::modifier-Key-v>      {menu_send %W paste}
     bind all <$::modifier-Key-w>      {menu_send_float %W menuclose 0}
     bind all <$::modifier-Key-x>      {menu_send %W cut}
@@ -60,6 +61,9 @@ proc ::pd_bindings::global_bindings {} {
     bind all <$::modifier-Key-5>      {menu_send_float %W text 0}
     bind all <$::modifier-Key-slash>  {pdsend "pd dsp 1"}
     bind all <$::modifier-Key-period> {pdsend "pd dsp 0"}
+    bind all <$::modifier-greater>    {menu_raisenextwindow}
+    bind all <$::modifier-less>       {menu_raisepreviouswindow}
+    bind all <$::modifier-Key-Return> {menu_reselect}
 
     # annoying, but Tk's bind needs uppercase letter to get the Shift
     bind all <$::modifier-Shift-Key-B> {menu_send %W bng}
@@ -77,12 +81,19 @@ proc ::pd_bindings::global_bindings {} {
     bind all <$::modifier-Shift-Key-W> {menu_send_float %W menuclose 1}
     bind all <$::modifier-Shift-Key-Z> {menu_redo}
 
+    # command that change the editor behavior, always with Alt/Option
+    bind all <$::modifier-$::altkey-Key-a> {menu_toggle_autopatch}
+    bind all <$::modifier-$::altkey-Key-e> {menu_toggle_editmode}
+    bind all <$::modifier-$::altkey-Key-g> {menu_toggle_magicglass}
+    bind all <$::modifier-$::altkey-Key-p> {menu_toggle_perfmode}
+    bind all <$::modifier-$::altkey-Key-t> {menu_toggle_autotips}
+
     # OS-specific bindings
     if {$::windowingsystem eq "aqua"} {
-        # Cmd-m = Minimize and Cmd-t = Font on Mac OS X for all apps
+        # Cmd-m = Minimize and Cmd-, = Preferences on Mac OS X for all apps
         bind all <$::modifier-Key-m>       {menu_minimize %W}
-        bind all <$::modifier-Key-t>       {menu_font_dialog}
         bind all <$::modifier-quoteleft>   {menu_raisenextwindow}
+        bind all <$::modifier-Key-comma>   {pdsend "pd start-path-dialog"}
         bind all <$::modifier-Shift-Key-M> {menu_message_dialog}
     } else {
         bind all <$::modifier-Key-m>       {menu_message_dialog}
@@ -95,6 +106,10 @@ proc ::pd_bindings::global_bindings {} {
     bind all <KeyRelease>       {::pd_bindings::sendkey %W 0 %K %A 0}
     bind all <Shift-KeyPress>   {::pd_bindings::sendkey %W 1 %K %A 1}
     bind all <Shift-KeyRelease> {::pd_bindings::sendkey %W 0 %K %A 1}
+
+    # "bind all <KeyPress>" does not get Tab KeyPress, only KeyRelease
+    bind all <Key-Tab>          {+::pd_bindings::sendkey %W 1 %K %A 0}
+    bind all <Shift-Key-Tab>    {+::pd_bindings::sendkey %W 1 %K %A 1}
 }
 
 # this is for the dialogs: find, font, sendmessage, gatom properties, array
@@ -131,6 +146,15 @@ proc ::pd_bindings::patch_bindings {mytoplevel} {
     bind $tkcanvas <$::modifier-ButtonPress-1>  "pdtk_canvas_mouse %W %x %y %b 2"
     bind $tkcanvas <Shift-ButtonPress-1>        "pdtk_canvas_mouse %W %x %y %b 1"
 
+    # canvas bindings ---------------------------------------------------------
+    # just for tooltips right now
+    $tkcanvas bind inlet <Enter> "pdtk_canvas_enteritem %W %x %y inlet %#"
+    $tkcanvas bind outlet <Enter> "pdtk_canvas_enteritem %W %x %y outlet %#"
+    $tkcanvas bind text <Enter> "pdtk_canvas_enteritem %W %x %y text %#"
+    $tkcanvas bind inlet <Leave> "pdtk_canvas_leaveitem %W inlet"
+    $tkcanvas bind outlet <Leave> "pdtk_canvas_leaveitem %W outlet"
+    $tkcanvas bind text <Leave> "pdtk_canvas_leaveitem %W text"
+
     if {$::windowingsystem eq "x11"} {
         # from http://wiki.tcl.tk/3893
         bind all <Button-4> \
@@ -144,6 +168,7 @@ proc ::pd_bindings::patch_bindings {mytoplevel} {
     }
     bind $tkcanvas <MouseWheel>       {::pdtk_canvas::scroll %W y %D}
     bind $tkcanvas <Shift-MouseWheel> {::pdtk_canvas::scroll %W x %D}
+    bind $tkcanvas <$::altkey-ButtonPress-1> "pdtk_canvas_mouse %W %x %y %b 3"
 
     # "right clicks" are defined differently on each platform
     switch -- $::windowingsystem { 
@@ -151,15 +176,12 @@ proc ::pd_bindings::patch_bindings {mytoplevel} {
             bind $tkcanvas <ButtonPress-2>      "pdtk_canvas_rightclick %W %x %y %b"
             # on Mac OS X, make a rightclick with Ctrl-click for 1 button mice
             bind $tkcanvas <Control-Button-1> "pdtk_canvas_rightclick %W %x %y %b"
-            bind $tkcanvas <Option-ButtonPress-1> "pdtk_canvas_mouse %W %x %y %b 3"    
         } "x11" {
             bind $tkcanvas <ButtonPress-3>    "pdtk_canvas_rightclick %W %x %y %b"
             # on X11, button 2 "pastes" from the X windows clipboard
             bind $tkcanvas <ButtonPress-2>   "pdtk_canvas_clickpaste %W %x %y %b"
-            bind $tkcanvas <Alt-ButtonPress-1> "pdtk_canvas_mouse %W %x %y %b 3"
         } "win32" {
             bind $tkcanvas <ButtonPress-3>   "pdtk_canvas_rightclick %W %x %y %b"
-            bind $tkcanvas <Alt-ButtonPress-1> "pdtk_canvas_mouse %W %x %y %b 3"
         }
     }
 

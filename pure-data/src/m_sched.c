@@ -441,6 +441,8 @@ static void m_pollingscheduler( void)
             /* T.Grill - done */
             sys_lock();
 #endif
+/* this code causes more issues than it solves on Mac OS X and maybe Windows */
+#ifdef __linux__
                 /* if dacs remain "idle" for 1 sec, they're hung up. */
             if (timeforward != 0)
                 idlecount = 0;
@@ -468,6 +470,7 @@ static void m_pollingscheduler( void)
                     }
                 }
             }
+#endif /* __linux__ */
         }
         else
         {

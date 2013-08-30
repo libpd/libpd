@@ -39,13 +39,13 @@ proc ::dialog_gatom::apply {mytoplevel} {
     global gatomlabel_radio
     
     pdsend "$mytoplevel param \
-                 [$mytoplevel.width.entry get] \
-                 [$mytoplevel.limits.lower.entry get] \
-                 [$mytoplevel.limits.upper.entry get] \
-                 [::dialog_gatom::escape [$mytoplevel.gatomlabel.name.entry get]] \
-                 $gatomlabel_radio($mytoplevel) \
-                 [::dialog_gatom::escape [$mytoplevel.s_r.receive.entry get]] \
-                 [::dialog_gatom::escape [$mytoplevel.s_r.send.entry get]]"
+        [$mytoplevel.width.entry get] \
+        [$mytoplevel.limits.lower.entry get] \
+        [$mytoplevel.limits.upper.entry get] \
+        [::dialog_gatom::escape [$mytoplevel.gatomlabel.name.entry get]] \
+        $gatomlabel_radio($mytoplevel) \
+        [::dialog_gatom::escape [$mytoplevel.s_r.receive.entry get]] \
+        [::dialog_gatom::escape [$mytoplevel.s_r.send.entry get]]"
 }
 
 proc ::dialog_gatom::cancel {mytoplevel} {
@@ -72,17 +72,21 @@ proc ::dialog_gatom::pdtk_gatom_dialog {mytoplevel initwidth initlower initupper
     }
 
     $mytoplevel.width.entry insert 0 $initwidth
+    $mytoplevel.width.entry selection range 0 end
     $mytoplevel.limits.lower.entry insert 0 $initlower
     $mytoplevel.limits.upper.entry insert 0 $initupper
     if {$initgatomlabel ne "-"} {
-        $mytoplevel.gatomlabel.name.entry insert 0 $initgatomlabel
+        $mytoplevel.gatomlabel.name.entry insert 0 \
+            [::dialog_gatom::unescape $initgatomlabel]
     }
     set gatomlabel_radio($mytoplevel) $initgatomlabel_radio
         if {$initsend ne "-"} {
-        $mytoplevel.s_r.send.entry insert 0 $initsend
+        $mytoplevel.s_r.send.entry insert 0 \
+            [::dialog_gatom::unescape $initsend]
     }
     if {$initreceive ne "-"} {
-        $mytoplevel.s_r.receive.entry insert 0 $initreceive
+        $mytoplevel.s_r.receive.entry insert 0 \
+            [::dialog_gatom::unescape $initreceive]
     }
 }
 
@@ -157,11 +161,9 @@ proc ::dialog_gatom::create_dialog {mytoplevel} {
     button $mytoplevel.buttonframe.cancel -text [_ "Cancel"] \
         -command "::dialog_gatom::cancel $mytoplevel"
     pack $mytoplevel.buttonframe.cancel -side left -expand 1 -fill x -padx 10
-    if {$::windowingsystem ne "aqua"} {
-        button $mytoplevel.buttonframe.apply -text [_ "Apply"] \
-            -command "::dialog_gatom::apply $mytoplevel"
+    button $mytoplevel.buttonframe.apply -text [_ "Apply"] \
+        -command "::dialog_gatom::apply $mytoplevel"
     pack $mytoplevel.buttonframe.apply -side left -expand 1 -fill x -padx 10
-    }
     button $mytoplevel.buttonframe.ok -text [_ "OK"] \
         -command "::dialog_gatom::ok $mytoplevel"
     pack $mytoplevel.buttonframe.ok -side left -expand 1 -fill x -padx 10

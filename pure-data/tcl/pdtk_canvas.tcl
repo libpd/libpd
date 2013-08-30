@@ -1,11 +1,19 @@
 
 package provide pdtk_canvas 0.1
 
+#TODO: make a separate tcl file for tooltips and put
+#afterid in its scope    
+variable afterid 0
+variable duplicate_tags -1
+variable current_window 0
+
 package require pd_bindings
 
 namespace eval ::pdtk_canvas:: {
     namespace export pdtk_canvas_popup
     namespace export pdtk_canvas_editmode
+    namespace export pdtk_canvas_autopatch
+    namespace export pdtk_canvas_magicglass
     namespace export pdtk_canvas_getscroll
     namespace export pdtk_canvas_setparents
     namespace export pdtk_canvas_reflecttitle
@@ -29,13 +37,12 @@ namespace eval ::pdtk_canvas:: {
 #winfo rooty . returns contentsTop
 #winfo rootx . returns contentsLeftEdge
 
-
-#------------------------------------------------------------------------------#
-# canvas new/saveas
-
-proc pdtk_canvas_new {mytoplevel width height geometry editable} {
-    set screenwidth [winfo screenwidth .]
-    set screenheight [winfo screenheight .]
+# this proc is split out on its own to make it easy to override. This makes it
+# easy for people to customize these calculations based on their Window
+# Manager, desires, etc.
+proc pdtk_canvas_place_window {width height geometry} {
+    set screenwidth [lindex [wm maxsize .] 0]
+    set screenheight [lindex [wm maxsize .] 1]
 
     # read back the current geometry +posx+posy into variables
     scan $geometry {%[+]%d%[+]%d} - x - y
@@ -50,7 +57,18 @@ proc pdtk_canvas_new {mytoplevel width height geometry editable} {
         set height [expr $screenheight - $::menubarsize - 30] ;# 30 for window framing
         set y $::menubarsize
     }
-    set geometry ${width}x$height+$x+$y
+    return [list $width $height ${width}x$height+$x+$y]
+}
+
+
+#------------------------------------------------------------------------------#
+# canvas new/saveas
+
+proc pdtk_canvas_new {mytoplevel width height geometry editable} {
+    set l [pdtk_canvas_place_window $width $height $geometry]
+    set width [lindex $l 0]
+    set height [lindex $l 1]
+    set geometry [lindex $l 2]
 
     # release the window grab here so that the new window will
     # properly get the Map and FocusIn events when its created
@@ -73,10 +91,17 @@ proc pdtk_canvas_new {mytoplevel width height geometry editable} {
     canvas $tkcanvas -width $width -height $height \
         -highlightthickness 0 -scrollregion [list 0 0 $width $height] \
         -xscrollcommand "$mytoplevel.xscroll set" \
-        -yscrollcommand "$mytoplevel.yscroll set"
+        -yscrollcommand "$mytoplevel.yscroll set" \
+        -background "$::canvas_fill"
     scrollbar $mytoplevel.xscroll -orient horizontal -command "$tkcanvas xview"
     scrollbar $mytoplevel.yscroll -orient vertical -command "$tkcanvas yview"
     pack $tkcanvas -side left -expand 1 -fill both
+
+    # for some crazy reason, win32 mousewheel scrolling is in units of
+    # 120, and this forces Tk to interpret 120 to mean 1 scroll unit
+    if {$::windowingsystem eq "win32"} {
+        $tkcanvas configure -xscrollincrement 1 -yscrollincrement 1
+    }
 
     ::pd_bindings::patch_bindings $mytoplevel
 
@@ -90,6 +115,8 @@ proc pdtk_canvas_new {mytoplevel width height geometry editable} {
     # init patch properties arrays
     set ::editingtext($mytoplevel) 0
     set ::childwindows($mytoplevel) {}
+    set ::autopatch($mytoplevel) 0
+    set ::magicglass($mytoplevel) 0
 
     # this should be at the end so that the window and canvas are all ready
     # before this variable changes.
@@ -135,7 +162,7 @@ proc pdtk_canvas_saveas {name initialfile initialdir} {
 proc ::pdtk_canvas::pdtk_canvas_menuclose {mytoplevel reply_to_pd} {
     raise $mytoplevel
     set filename [wm title $mytoplevel]
-    set message [format {Do you want to save the changes you made in "%s"?} $filename]
+    set message [format [_ "Do you want to save the changes you made in '%s'?"] $filename]
     set answer [tk_messageBox -message $message -type yesnocancel -default "yes" \
                     -parent $mytoplevel -icon question]
     switch -- $answer {
@@ -177,6 +204,176 @@ proc pdtk_canvas_rightclick {tkcanvas x y b} {
     set mytoplevel [winfo toplevel $tkcanvas]
     pdsend "$mytoplevel mouse [$tkcanvas canvasx $x] [$tkcanvas canvasy $y] $b 8"
 }
+
+proc pdtk_canvas_enteritem_gettags {tkcanvas x y item} {
+    set mytoplevel [winfo toplevel $tkcanvas]
+    set id [$tkcanvas find withtag current]
+    set tags [$tkcanvas gettags $id]
+    set xletno -1 
+    foreach tag $tags {
+	if [regexp "\.x.*\.t.*\[io\](\[0-9\]+)$" $tag -- xletno] {
+	    break
+	} else {
+	    # iemgui tag
+	    regexp ".*OUT(\[0-9\]+)$" $tag -- xletno
+            regexp ".*IN(\[0-9\]+)$" $tag -- xletno
+	}
+    }
+    pdsend "$mytoplevel enter $item \
+        [$tkcanvas canvasx $x] [$tkcanvas canvasy $y] $xletno"
+}
+
+proc pdtk_canvas_enteritem {tkcanvas x y item enterid} {
+    variable afterid
+    variable duplicate_tags
+    variable current_window
+    if {$::autotips_button == 0} {return}
+    if {$enterid != $duplicate_tags} {
+	if {$::editmode([winfo toplevel $tkcanvas]) == 1} {
+	    set duplicate_tags $enterid
+	    if {$item eq "inlet" ||
+	        $item eq "outlet"} {
+                $tkcanvas itemconfigure $item -activewidth 5 
+	    }
+            if {$current_window eq $tkcanvas} {
+		after cancel $afterid
+	    }
+	    set current_window $tkcanvas
+            set afterid [after 600 pdtk_canvas_enteritem_gettags \
+		$tkcanvas $x $y $item]
+        } else {
+	    set afterid 0
+        }
+    }
+}
+
+# move activewidth to toggle on editmode?
+proc pdtk_canvas_leaveitem {w item} {
+    variable afterid
+    variable current_window
+    if {$::autotips_button == 0} {return}
+    after cancel $afterid
+    if {[lsearch -exact [$w gettags $w.tipwindow] "sticky"] == -1} {
+        if {$item eq "inlet" ||
+	    $item eq "outlet"} {
+            $w itemconfigure $item -activewidth 0
+        }
+	if {[winfo exists $w.tiplabel]} {
+            set afterid [after 1500 "pdtk_tip $w 0 0"]
+            set current_window $w
+	}	
+    }
+}
+
+proc pdtk_tip {w fromc show args} {
+    set exists [winfo exists $w.tiplabel]
+    if {$show == 0} {
+        catch {destroy $w.tiplabel}
+        catch {$w delete $w.tipwindow}
+    } else {
+	if {$exists} {
+	    $w.tiplabel configure -text [join $args]
+	    $w dtag $w.tipwindow "sticky"
+	    if {$fromc == 1} {
+		$w addtag "sticky" withtag $w.tipwindow
+	    }  
+	} else {
+            label $w.tiplabel -text [join $args] -bd 1 \
+	        -wraplength [winfo width $w] -bg "#c4dcdc" -bd 1 \
+	        -padx 2 -pady 2 -relief raised
+	} 
+        set yreal [expr [$w canvasy 0] * -1 + \
+	    [winfo pointery $w]-[winfo rooty $w]]
+        set yoffset 0
+        if {$yreal < [expr [winfo height $w] - \
+	    [winfo reqheight $w.tiplabel]] - 5} {
+	    set yoffset [winfo height $w]
+            set anchor "sw"
+        } else {
+	    set anchor "nw"
+        }
+        set x [$w canvasx 0]
+        set y [expr [$w canvasy 0] + $yoffset]
+	set tags $w.tipwindow
+	if {$fromc == 1} {
+	    lappend tags "sticky"
+	} 
+	if {$exists} {
+	    $w coords $w.tipwindow $x $y
+	    $w itemconfigure $w.tipwindow -anchor $anchor
+	} else {
+            $w create window $x $y -window $w.tiplabel -anchor $anchor \
+	        -tags $tags
+	    $w bind $w.tipwindow <Enter> "pdtk_tip_mouseover $w"
+	}
+    }
+}
+
+# move the tip if the user happens to mouse over it
+proc pdtk_tip_mouseover {w} {
+    set msg [$w.tiplabel cget -text]
+    set sticky [expr [lsearch -exact [$w gettags $w.tipwindow] \
+	"sticky"] != -1]
+    pdtk_tip $w $sticky 1 $msg 
+}
+
+proc pdtk_gettip { w item xletno name helpname dir } {
+    if {$dir eq {}} {
+	set dir $::sys_libdir/doc/5.reference
+    }
+    # trim off trailing ".pd" for abstractions
+    regexp {^(.*)(?:\.pd)} $name -- name
+    # use $varxlet to see if an object has a 
+    # variable xlet (marked in the docs as
+    # "INLET_N" or "OUTLET_N") 
+    set varxlet {}
+    set metatag description
+    if {$item eq "inlet" ||
+	$item eq "outlet"} {
+	set varxlet [join [list $item "n"] "_"]
+        set metatag [join [list $item $xletno] "_"]
+	set msg "[string toupper [string map {_ " "} $metatag] 0 0] of $name"
+    } elseif {$item eq "text"} {
+	set metatag "description"
+        set msg $name
+    }
+    set filefound 0
+    if {![catch {set fp [open [file join $dir \
+	    "$name-help.pd"]]}] ||
+        ![catch {set fp [open [file join $dir \
+	"$helpname-help.pd"]]}] } {
+        set filefound 1
+    }
+    if {$filefound} {
+	set filecontents [read $fp]
+	close $fp
+	# leave in pd's linebreaks-- serendipitously it
+	# makes the tipwindow more compact/easier to read
+	regsub -all {[{}]} $filecontents "" filecontents
+	# turn escaped semicolons into linebreaks
+	regsub -all {[\n\s]\\;[\n\s]} $filecontents "\n" filecontents
+	set match {}
+	# if $varxlet ne {} then the $item is an inlet or outlet
+	if { $varxlet ne {}  &&
+	    [regexp -nocase \
+	    "#X text \[0-9\]+ \[0-9\]+ $varxlet (\[^;\]+)" \
+	    $filecontents] } {
+	    set match "(variable inlet)"
+	}
+        regexp -nocase \
+	    "#X text \[0-9\]+ \[0-9\]+ $metatag (\[^;\]+)" \
+	    $filecontents -- match
+	if { $match ne {} } {
+	    set msg [string trim "$msg: $match"]
+	}
+    }
+    # make Pd's comma atoms look pretty
+    regsub -all { \\,} $msg {,} msg
+    regsub -all {\n\\,} $msg ",\n" msg
+    pdtk_tip $w 0 1 $msg
+}
+
+
 
 # on X11, button 2 pastes from X11 clipboard, so simulate normal paste actions
 proc pdtk_canvas_clickpaste {tkcanvas x y b} {
@@ -276,6 +473,22 @@ proc ::pdtk_canvas::pdtk_canvas_editmode {mytoplevel state} {
     event generate $mytoplevel <<EditMode>>
 }
 
+# check or uncheck the "Autopatch" menu item
+proc ::pdtk_canvas::pdtk_canvas_autopatch {mytoplevel state} {
+    set ::autopatch_button $state
+    set ::autopatch($mytoplevel) $state
+    event generate $mytoplevel <<Autopatch>>
+    # 'pd' doesn't know about autopatch per-canvas, so we tell it here
+    pdsend "pd autopatch $state"
+}
+
+# check or uncheck the "Magic Glass" menu item
+proc ::pdtk_canvas::pdtk_canvas_magicglass {mytoplevel state} {
+    set ::magicglass_button $state
+    set ::magicglass($mytoplevel) $state
+    event generate $mytoplevel <<MagicGlass>>
+}
+
 # message from Pd to update the currently available undo/redo action
 proc pdtk_undomenu {mytoplevel undoaction redoaction} {
     set ::undo_toplevel $mytoplevel
@@ -290,7 +503,14 @@ proc pdtk_undomenu {mytoplevel undoaction redoaction} {
 # been updated.  It should always receive a tkcanvas, which is then
 # used to generate the mytoplevel, needed to address the scrollbars.
 proc ::pdtk_canvas::pdtk_canvas_getscroll {tkcanvas} {
-    set mytoplevel [winfo toplevel $tkcanvas]    
+    # wait for Tk to finish drawing before resetting the scrollbars
+    after idle ::pdtk_canvas::pdtk_canvas_do_getscroll $tkcanvas
+}
+
+proc ::pdtk_canvas::pdtk_canvas_do_getscroll {tkcanvas} {
+    # check canvas exists, windows close before [after idle] returns
+    if {![winfo exists $tkcanvas]} {return}
+    set mytoplevel [winfo toplevel $tkcanvas]
     set bbox [$tkcanvas bbox all]
     if {$bbox eq "" || [llength $bbox] != 4} {return}
     set xupperleft [lindex $bbox 0]

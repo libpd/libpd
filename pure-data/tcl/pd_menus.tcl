@@ -38,9 +38,14 @@ proc ::pd_menus::create_menubar {} {
     menu $menubar
     set menulist "file edit put find media window help"
     foreach mymenu $menulist {    
+        if {$mymenu eq "find"} {
+            set underlined 3
+        } {
+            set underlined 0
+        }
         menu $menubar.$mymenu
         $menubar add cascade -label [_ [string totitle $mymenu]] \
-            -menu $menubar.$mymenu
+            -underline $underlined -menu $menubar.$mymenu
         [format build_%s_menu $mymenu] $menubar.$mymenu
     }
     if {$::windowingsystem eq "aqua"} {create_apple_menu $menubar}
@@ -53,14 +58,18 @@ proc ::pd_menus::configure_for_pdwindow {} {
     # these are meaningless for the Pd window, so disable them
     # File menu
     $menubar.file entryconfigure [_ "Save"] -state disabled
-    $menubar.file entryconfigure [_ "Save As..."] -state disabled
-    $menubar.file entryconfigure [_ "Print..."] -state disabled
+    $menubar.file entryconfigure [_ "Save As..."] -state normal
+#    $menubar.file entryconfigure [_ "Print..."] -state disabled
     $menubar.file entryconfigure [_ "Close"] -state disabled
     # Edit menu
     $menubar.edit entryconfigure [_ "Duplicate"] -state disabled
     $menubar.edit entryconfigure [_ "Tidy Up"] -state disabled
+    $menubar.edit entryconfigure [_ "Autopatch"] -state disabled
+    $menubar.edit entryconfigure [_ "Magic Glass"] -state disabled
     $menubar.edit entryconfigure [_ "Edit Mode"] -state disabled
     pdtk_canvas_editmode .pdwindow 0
+    pdtk_canvas_autopatch .pdwindow 0
+    pdtk_canvas_magicglass .pdwindow 0
     # Undo/Redo change names, they need to have the asterisk (*) after
     $menubar.edit entryconfigure 0 -state disabled -label [_ "Undo"]
     $menubar.edit entryconfigure 1 -state disabled -label [_ "Redo"]
@@ -76,13 +85,17 @@ proc ::pd_menus::configure_for_canvas {mytoplevel} {
     # File menu
     $menubar.file entryconfigure [_ "Save"] -state normal
     $menubar.file entryconfigure [_ "Save As..."] -state normal
-    $menubar.file entryconfigure [_ "Print..."] -state normal
+#    $menubar.file entryconfigure [_ "Print..."] -state normal
     $menubar.file entryconfigure [_ "Close"] -state normal
     # Edit menu
     $menubar.edit entryconfigure [_ "Duplicate"] -state normal
     $menubar.edit entryconfigure [_ "Tidy Up"] -state normal
+    $menubar.edit entryconfigure [_ "Autopatch"] -state normal
+    $menubar.edit entryconfigure [_ "Magic Glass"] -state normal
     $menubar.edit entryconfigure [_ "Edit Mode"] -state normal
     pdtk_canvas_editmode $mytoplevel $::editmode($mytoplevel)
+    pdtk_canvas_autopatch $mytoplevel $::autopatch($mytoplevel)
+    pdtk_canvas_magicglass $mytoplevel $::magicglass($mytoplevel)
     # Put menu
     for {set i 0} {$i <= [$menubar.put index end]} {incr i} {
         # catch errors that happen when trying to disable separators
@@ -101,14 +114,18 @@ proc ::pd_menus::configure_for_dialog {mytoplevel} {
     if {$mytoplevel ne ".find"} {
         $menubar.file entryconfigure [_ "Save"] -state disabled
         $menubar.file entryconfigure [_ "Save As..."] -state disabled
-        $menubar.file entryconfigure [_ "Print..."] -state disabled
+#        $menubar.file entryconfigure [_ "Print..."] -state disabled
     }
     $menubar.file entryconfigure [_ "Close"] -state disabled
     # Edit menu
     $menubar.edit entryconfigure [_ "Duplicate"] -state disabled
     $menubar.edit entryconfigure [_ "Tidy Up"] -state disabled
+    $menubar.edit entryconfigure [_ "Autopatch"] -state disabled
+    $menubar.edit entryconfigure [_ "Magic Glass"] -state disabled
     $menubar.edit entryconfigure [_ "Edit Mode"] -state disabled
     pdtk_canvas_editmode $mytoplevel 0
+    pdtk_canvas_autopatch $mytoplevel 0
+    pdtk_canvas_magicglass $mytoplevel 0
     # Undo/Redo change names, they need to have the asterisk (*) after
     $menubar.edit entryconfigure 0 -state disabled -label [_ "Undo"]
     $menubar.edit entryconfigure 1 -state disabled -label [_ "Redo"]
@@ -132,7 +149,7 @@ proc ::pd_menus::build_file_menu {mymenu} {
     #$mymenu entryconfigure [_ "Revert*"]    -command {menu_revert $::focused_window}
     $mymenu entryconfigure [_ "Close"]      -command {menu_send_float $::focused_window menuclose 0}
     $mymenu entryconfigure [_ "Message..."] -command {menu_message_dialog}
-    $mymenu entryconfigure [_ "Print..."]   -command {menu_print $::focused_window}
+#    $mymenu entryconfigure [_ "Print..."]   -command {menu_print $::focused_window}
     # update recent files
     if {[llength $::recentfiles_list] > 0} {
         ::pd_menus::update_recentfiles_menu false
@@ -142,9 +159,9 @@ proc ::pd_menus::build_file_menu {mymenu} {
 proc ::pd_menus::build_edit_menu {mymenu} {
     variable accelerator
     $mymenu add command -label [_ "Undo"]       -accelerator "$accelerator+Z" \
-        -command {menu_undo $::focused_window}
+        -command menu_undo
     $mymenu add command -label [_ "Redo"]       -accelerator "Shift+$accelerator+Z" \
-        -command {menu_redo $::focused_window}
+        -command menu_redo
     $mymenu add  separator
     $mymenu add command -label [_ "Cut"]        -accelerator "$accelerator+X" \
         -command {menu_send $::focused_window cut}
@@ -157,21 +174,33 @@ proc ::pd_menus::build_edit_menu {mymenu} {
     $mymenu add command -label [_ "Select All"] -accelerator "$accelerator+A" \
         -command {menu_send $::focused_window selectall}
     $mymenu add  separator
-    if {$::windowingsystem eq "aqua"} {
-#        $mymenu add command -label [_ "Text Editor"] \
-#            -command {menu_texteditor}
-        $mymenu add command -label [_ "Font"]  -accelerator "$accelerator+T" \
-            -command {menu_font_dialog}
-    } else {
-#        $mymenu add command -label [_ "Text Editor"] -accelerator "$accelerator+T"\
-#            -command {menu_texteditor}
-        $mymenu add command -label [_ "Font"] \
-            -command {menu_font_dialog}
-    }
+    $mymenu add command -label [_ "Font"]  -accelerator "$accelerator+T" \
+        -command {menu_font_dialog}
     $mymenu add command -label [_ "Tidy Up"] \
         -command {menu_send $::focused_window tidy}
     $mymenu add command -label [_ "Clear Console"] \
         -accelerator "Shift+$accelerator+L" -command {menu_clear_console}
+    $mymenu add  separator
+    $mymenu add check -label [_ "Autopatch"] -accelerator "$::altkey-$accelerator+A" \
+        -variable ::autopatch_button \
+        -command {menu_autopatch $::autopatch_button}
+    $mymenu add check -label [_ "Edit Mode"] -accelerator "$::altkey-$accelerator+E" \
+        -variable ::editmode_button \
+        -command {menu_editmode $::editmode_button}
+    $mymenu add check -label [_ "Magic Glass"] -accelerator "$::altkey-$accelerator+G" \
+        -variable ::magicglass_button \
+        -command {menu_magicglass $::magicglass_button}
+    $mymenu add check -label [_ "Perf Mode"] -accelerator "$::altkey-$accelerator+P" \
+        -variable ::perfmode_button \
+        -command {menu_perfmode $::perfmode_button}
+    $mymenu add checkbutton -label [_ "Autotips"] \
+		-accelerator "$::altkey-$accelerator+T" \
+		-variable ::autotips_button
+    if {$::windowingsystem ne "aqua"} {
+        $mymenu add  separator
+        $mymenu add command -label [_ "Preferences"] \
+            -command {pdsend "pd start-path-dialog"}
+    }
     $mymenu add  separator
     #TODO madness! how to set the state of the check box without invoking the menu!
     $mymenu add check -label [_ "Edit Mode"] -accelerator "$accelerator+E" \
@@ -258,10 +287,12 @@ proc ::pd_menus::build_media_menu {mymenu} {
             -value [lindex [lindex $::midi_apilist $x] 1]\
             -command {pdsend "pd midi-setapi $::pd_whichmidiapi"}
     }
-    if {$::windowingsystem ne "aqua"} {
+    if {$::LIBPD eq 0} {
         $mymenu add  separator
-        create_preferences_menu $mymenu.preferences
-        $mymenu add cascade -label [_ "Preferences"] -menu $mymenu.preferences
+        $mymenu add command -label [_ "Audio Settings..."] \
+            -command {pdsend "pd audio-properties"}
+        $mymenu add command -label [_ "MIDI Settings..."] \
+            -command {pdsend "pd midi-properties"}
     }
 }
 
@@ -292,22 +323,17 @@ proc ::pd_menus::build_window_menu {mymenu} {
 }
 
 proc ::pd_menus::build_help_menu {mymenu} {
+    variable accelerator
     if {$::windowingsystem ne "aqua"} {
         $mymenu add command -label [_ "About Pd"] -command {menu_aboutpd} 
     }
-    $mymenu add command -label [_ "HTML Manual..."] \
-        -command {menu_doc_open doc/1.manual index.htm}
-    $mymenu add command -label [_ "Browser..."] \
-        -command {menu_helpbrowser} 
+    $mymenu add command -label [_ "Pd Help Browser..."] \
+        -command {menu_helpbrowser} -accelerator "$accelerator+B"
+    $mymenu add command -label [_ "Start Here!"] \
+        -command "menu_openfile [_ http://puredata.info/docs/StartHere]"
     $mymenu add  separator
-    $mymenu add command -label [_ "puredata.info"] \
-        -command {menu_openfile {http://puredata.info}} 
     $mymenu add command -label [_ "Report a bug"] -command {menu_openfile \
         {http://sourceforge.net/tracker/?func=add&group_id=55736&atid=478070}} 
-    $mymenu add  separator
-    $mymenu add command -label [_ "Tcl prompt"] -command \
-        {::pdwindow::create_tcl_entry} 
-
 }
 
 #------------------------------------------------------------------------------#
@@ -380,15 +406,17 @@ proc ::pd_menus::update_recentfiles_on_menu {mymenu {write}} {
     }
     # insert the list from the end because we insert each element on the top
     set i [llength $::recentfiles_list]
-    while {[incr i -1] > 0} {
-
+    while {[incr i -1] > -1} {
         set filename [lindex $::recentfiles_list $i]
+        set j [expr $i + 1]
+        if {$::windowingsystem eq "aqua"} {
+            set label [file tail $filename]
+        } else {
+            set label [concat "$j. " [file tail $filename]]
+        }
         $mymenu insert [expr $top_separator+1] command \
-            -label [file tail $filename] -command "open_file {$filename}"
+            -label $label -command "open_file {$filename}" -underline 0
     }
-    set filename [lindex $::recentfiles_list 0]
-    $mymenu insert [expr $top_separator+1] command \
-        -label [file tail $filename] -command "open_file {$filename}"
 
     # write to config file
     if {$write == true} { ::pd_guiprefs::write_recentfiles }
@@ -467,23 +495,6 @@ proc ::pd_menus::update_window_menu {} {
 }
 
 # ------------------------------------------------------------------------------
-# submenu for Preferences, now used on all platforms
-
-proc ::pd_menus::create_preferences_menu {mymenu} {
-    menu $mymenu
-    $mymenu add command -label [_ "Path..."] \
-        -command {pdsend "pd start-path-dialog"}
-    $mymenu add command -label [_ "Startup..."] \
-        -command {pdsend "pd start-startup-dialog"}
-    if {$::LIBPD eq 0} {
-        $mymenu add command -label [_ "Audio Settings..."] \
-            -command {pdsend "pd audio-properties"}
-        $mymenu add command -label [_ "MIDI Settings..."] \
-            -command {pdsend "pd midi-properties"}
-    }
-}
-
-# ------------------------------------------------------------------------------
 # menu building functions for Mac OS X/aqua
 
 # for Mac OS X only
@@ -492,9 +503,6 @@ proc ::pd_menus::create_apple_menu {mymenu} {
     menu $mymenu.apple
     $mymenu.apple add command -label [_ "About Pd"] -command {menu_aboutpd}
     $mymenu.apple add  separator
-    create_preferences_menu $mymenu.apple.preferences
-    $mymenu.apple add cascade -label [_ "Preferences"] \
-        -menu $mymenu.apple.preferences
     # this needs to be last for things to function properly
     $mymenu add cascade -label "Apple" -menu $mymenu.apple
     
@@ -514,9 +522,12 @@ proc ::pd_menus::build_file_menu_aqua {mymenu} {
     #$mymenu add command -label [_ "Save All"]
     #$mymenu add command -label [_ "Revert to Saved"]
     $mymenu add  separator
-    $mymenu add command -label [_ "Message..."]
+    $mymenu add command -label [_ "Make app from patch..."] -command {menu_makeapp 0}
+    $mymenu add command -label [_ "Make app from folder..."] -command {menu_makeapp 1}
     $mymenu add  separator
-    $mymenu add command -label [_ "Print..."]   -accelerator "$accelerator+P"
+    $mymenu add command -label [_ "Message..."]
+#    $mymenu add  separator
+#    $mymenu add command -label [_ "Print..."]   -accelerator "$accelerator+P"
 }
 
 # the "Edit", "Put", and "Find" menus do not have cross-platform differences
@@ -542,7 +553,7 @@ proc ::pd_menus::build_file_menu_x11 {mymenu} {
     #    $mymenu add command -label "Revert"
     $mymenu add  separator
     $mymenu add command -label [_ "Message..."]    -accelerator "$accelerator+M"
-    $mymenu add command -label [_ "Print..."]   -accelerator "$accelerator+P"
+#    $mymenu add command -label [_ "Print..."]   -accelerator "$accelerator+P"
     $mymenu add  separator
     # the recent files get inserted in here by update_recentfiles_on_menu
     $mymenu add command -label [_ "Close"]      -accelerator "$accelerator+W"
@@ -589,9 +600,7 @@ proc ::pd_menus::build_file_menu_win32 {mymenu} {
     #    $mymenu add command -label "Revert"
     $mymenu add  separator
     $mymenu add command -label [_ "Message..."]  -accelerator "$accelerator+M"
-    create_preferences_menu $mymenu.preferences
-    $mymenu add cascade -label [_ "Preferences"] -menu $mymenu.preferences
-    $mymenu add command -label [_ "Print..."] -accelerator "$accelerator+P"
+#    $mymenu add command -label [_ "Print..."] -accelerator "$accelerator+P"
     $mymenu add  separator
     # the recent files get inserted in here by update_recentfiles_on_menu
     $mymenu add command -label [_ "Close"]    -accelerator "$accelerator+W"

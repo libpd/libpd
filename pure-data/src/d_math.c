@@ -67,25 +67,21 @@ static void clip_setup(void)
 #define DUMTAB1SIZE 256
 #define DUMTAB2SIZE 1024
 
-#ifdef _MSC_VER
- typedef __int32 int32_t; /* use MSVC's internal type */
-#elif defined(IRIX)
- typedef long int32_t;  /* a data type that has 32 bits */
-#else
-# include <stdint.h>  /* this is where int32_t is defined in C99 */
-#endif
-
 static float rsqrt_exptab[DUMTAB1SIZE], rsqrt_mantissatab[DUMTAB2SIZE];
 
 static void init_rsqrt(void)
 {
     int i;
+    union {
+      float f;
+      int32_t l;
+    } u;
     for (i = 0; i < DUMTAB1SIZE; i++)
     {
         float f;
         int32_t l = (i ? (i == DUMTAB1SIZE-1 ? DUMTAB1SIZE-2 : i) : 1)<< 23;
-        *(int32_t *)(&f) = l;
-        rsqrt_exptab[i] = 1./sqrt(f);   
+        u.l=l;
+        rsqrt_exptab[i] = 1./sqrt(u.f);
     }
     for (i = 0; i < DUMTAB2SIZE; i++)
     {
@@ -98,20 +94,26 @@ static void init_rsqrt(void)
 
 t_float q8_rsqrt(t_float f0)
 {
-    float f = (float)f0;
-    long l = *(long *)(&f);
-    if (f < 0) return (0);
-    else return (rsqrt_exptab[(l >> 23) & 0xff] *
-            rsqrt_mantissatab[(l >> 13) & 0x3ff]);
+    union {
+      float f;
+      long l;
+    } u;
+    u.f=f0;
+    if (u.f < 0) return (0);
+    else return (rsqrt_exptab[(u.l >> 23) & 0xff] *
+            rsqrt_mantissatab[(u.l >> 13) & 0x3ff]);
 }
 
 t_float q8_sqrt(t_float f0)
 {
-    float f = (float)f0;
-    long l = *(long *)(&f);
-    if (f < 0) return (0);
-    else return (f * rsqrt_exptab[(l >> 23) & 0xff] *
-            rsqrt_mantissatab[(l >> 13) & 0x3ff]);
+    union {
+      float f;
+      long l;
+    } u;
+    u.f=f0;
+    if (u.f < 0) return (0);
+    else return (u.f * rsqrt_exptab[(u.l >> 23) & 0xff] *
+            rsqrt_mantissatab[(u.l >> 13) & 0x3ff]);
 }
 
     /* the old names are OK unless we're in IRIX N32 */
@@ -197,16 +199,21 @@ t_int *sigsqrt_perform(t_int *w)    /* not static; also used in d_fft.c */
 {
     t_sample *in = *(t_sample **)(w+1), *out = *(t_sample **)(w+2);
     t_int n = *(t_int *)(w+3);
+    union {
+      t_sample f;
+      long     l;
+    } u;
+
     while (n--)
     {   
-        t_sample f = *in;
-        long l = *(long *)(in++);
-        if (f < 0) *out++ = 0;
+        u.f=*in++;
+
+        if (u.f < 0) *out++ = 0;
         else
         {
-            t_sample g = rsqrt_exptab[(l >> 23) & 0xff] *
-                rsqrt_mantissatab[(l >> 13) & 0x3ff];
-            *out++ = f * (1.5 * g - 0.5 * g * g * g * f);
+            t_sample g = rsqrt_exptab[(u.l >> 23) & 0xff] *
+                rsqrt_mantissatab[(u.l >> 13) & 0x3ff];
+            *out++ = u.f * (1.5 * g - 0.5 * g * g * g * u.f);
         }
     }
     return (w + 4);

@@ -32,6 +32,55 @@ static t_binbuf *copy_binbuf;
 static char *canvas_textcopybuf;
 static int canvas_textcopybufsize;
 static t_glist *glist_finddirty(t_glist *x);
+static int paste_xyoffset = 0; /* a counter of pastes to make x,y offsets */
+
+/* ------------------ for magicglass --------------- */
+/* from m_obj.c */
+struct _outlet
+{
+    t_object *o_owner;
+    struct _outlet *o_next;
+    t_outconnect *o_connections;
+    t_symbol *o_sym;
+};
+
+/* ------------------ for inlet/outlet highlighting --------------- */
+static char canvas_cnct_inlet_tag[4096];
+static char canvas_cnct_outlet_tag[4096];
+static int outlet_issignal = 0;
+static int inlet_issignal = 0;
+static int last_inlet_filter = 0;
+static int last_outlet_filter = 0;
+
+/* iemgui uses black inlets and outlets while default objects use gray ones
+   add here more as necessary */
+int gobj_filter_highlight_behavior(t_rtext *y)
+{
+    char *buf;
+    char name[4];
+    int bufsize, i;
+    rtext_gettext(y, &buf, &bufsize);
+    for (i = 0; i < 3; i++)
+    {
+        name[i] = buf[i];
+    }
+    name[3]='\0';
+    if (!strcmp(name, "bng") ||
+        !strcmp(name, "nbx") ||
+        !strcmp(name, "hdl") ||
+        !strcmp(name, "hsl") ||
+        !strcmp(name, "tgl") ||
+        !strcmp(name, "vdl") ||
+        !strcmp(name, "vsl") ||
+        !strcmp(name, "vu ") ||
+/* alternative names for hradio and vradio when invoked from the menu */
+        !strcmp(name, "hra") ||
+        !strcmp(name, "vra")
+        )
+        return 1;
+    else
+        return 0;
+}
 
 /* ---------------- generic widget behavior ------------------------- */
 
@@ -129,7 +178,9 @@ void glist_selectline(t_glist *x, t_outconnect *oc, int index1,
         x->gl_editor->e_selectline_index2 = index2;
         x->gl_editor->e_selectline_inno = inno;
         x->gl_editor->e_selectline_tag = oc;
-        sys_vgui(".x%lx.c itemconfigure l%lx -fill blue\n",
+        sys_vgui(".x%lx.c itemconfigure l%lx -fill $select_color\n",
+            x, x->gl_editor->e_selectline_tag);
+        sys_vgui(".x%lx.c raise l%lx\n",
             x, x->gl_editor->e_selectline_tag);
     }    
 }
@@ -138,9 +189,21 @@ void glist_deselectline(t_glist *x)
 {
     if (x->gl_editor)
     {
+        t_linetraverser t;
+        t_outconnect *oc;
         x->gl_editor->e_selectedline = 0;
-        sys_vgui(".x%lx.c itemconfigure l%lx -fill black\n",
-            x, x->gl_editor->e_selectline_tag);
+        linetraverser_start(&t, glist_getcanvas(x));
+        do {
+            oc = linetraverser_next(&t);
+        } while (oc && oc != x->gl_editor->e_selectline_tag);
+        int issignal;
+        if(outlet_getsymbol(t.tr_outlet) == &s_signal)
+            issignal = 1;
+        else
+            issignal = 0;
+        sys_vgui(".x%lx.c itemconfigure l%lx -fill %s\n",
+            x, x->gl_editor->e_selectline_tag,
+            (issignal ? "$signal_cord" : "$msg_cord"));
     }    
 }
 
@@ -430,6 +493,13 @@ void canvas_disconnect(t_canvas *x,
             sinkno == index2 && t.tr_inno == inno)
         {
             sys_vgui(".x%lx.c delete l%lx\n", x, oc);
+            // jsarlo
+            if(x->gl_magic_glass)
+            {
+                magicGlass_unbind(x->gl_magic_glass);
+                magicGlass_hide(x->gl_magic_glass);
+            }
+            // end jsarlo
             obj_disconnect(t.tr_ob, t.tr_outno, t.tr_ob2, t.tr_inno);
             break;
         }
@@ -1335,8 +1405,39 @@ void canvas_doclick(t_canvas *x, int xpos, int ypos, int which,
                           ".x%lx.c create line %d %d %d %d -width %d -tags x\n",
                                 x, xpos, ypos, xpos, ypos,
                                     (issignal ? 2 : 1));
-                    }                                   
-                    else canvas_setcursor(x, CURSOR_EDITMODE_CONNECT);
+                    }
+                    else
+                    { // jsarlo
+                        t_rtext *y = glist_findrtext(x, (t_text *)&ob->ob_g);
+                        if (canvas_cnct_outlet_tag[0] != 0)
+                        {
+                            sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                                     x, canvas_cnct_outlet_tag,
+                                     (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                                     (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                        }
+                        if (y)
+                        {
+                            last_outlet_filter = gobj_filter_highlight_behavior(y);
+                            sprintf(canvas_cnct_outlet_tag,
+                                    "%so%d", rtext_gettag(y), closest);
+                            sys_vgui(".x%lx.c itemconfigure %s -outline $select_color -width 3\n",
+                                     x, canvas_cnct_outlet_tag);
+                            //sys_vgui(".x%lx.c raise %s\n",
+                            //         x,
+                            //         canvas_cnct_outlet_tag);
+                            outlet_issignal = obj_issignaloutlet(ob,closest);
+                        }
+                        // jsarlo
+                        if(x->gl_magic_glass)
+                        {
+                            magicGlass_unbind(x->gl_magic_glass);
+                            magicGlass_hide(x->gl_magic_glass);
+                        }
+                        // end jsarlo
+                        canvas_setcursor(x, CURSOR_EDITMODE_CONNECT);
+                    }
+                    // end jsarlo
                 }
                 else if (doit)
                     goto nooutletafterall;
@@ -1367,7 +1468,24 @@ void canvas_doclick(t_canvas *x, int xpos, int ypos, int which,
                     x->gl_editor->e_onmotion = MA_MOVE;
                 }
             }
-            else canvas_setcursor(x, CURSOR_EDITMODE_NOTHING); 
+            else
+            { // jsarlo
+                if (canvas_cnct_outlet_tag[0] != 0)
+                {
+                    sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                             x, canvas_cnct_outlet_tag,
+                             (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                             (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                    canvas_cnct_outlet_tag[0] = 0;
+                }
+                if(x->gl_magic_glass)
+                {
+                    magicGlass_unbind(x->gl_magic_glass);
+                    magicGlass_hide(x->gl_magic_glass);
+                }
+                canvas_setcursor(x, CURSOR_EDITMODE_NOTHING);
+            }
+            // end jsarlo
         }
         return;
     }
@@ -1393,6 +1511,11 @@ void canvas_doclick(t_canvas *x, int xpos, int ypos, int which,
         linetraverser_start(&t, glist2);
         while (oc = linetraverser_next(&t))
         {
+            // jsarlo
+            int parseOutno;
+            t_object *parseOb = NULL;
+            t_outlet *parseOutlet = NULL;
+            // end jsarlo
             t_float lx1 = t.tr_lx1, ly1 = t.tr_ly1,
                 lx2 = t.tr_lx2, ly2 = t.tr_ly2;
             t_float area = (lx2 - lx1) * (fy - ly1) -
@@ -1407,10 +1530,59 @@ void canvas_doclick(t_canvas *x, int xpos, int ypos, int which,
                     canvas_getindex(glist2, &t.tr_ob->ob_g), t.tr_outno,
                     canvas_getindex(glist2, &t.tr_ob2->ob_g), t.tr_inno);
             }
+            // jsarlo
+            parseOutno = t.tr_outno;
+            parseOb = t.tr_ob;
+            for (parseOutlet = parseOb->ob_outlet;
+                 parseOutlet && parseOutno;
+                 parseOutlet = parseOutlet->o_next, parseOutno--);
+            if (parseOutlet && magicGlass_isOn(x->gl_magic_glass))
+            {
+                magicGlass_bind(x->gl_magic_glass,
+                                t.tr_ob,
+                                t.tr_outno);
+                magicGlass_setDsp(x->gl_magic_glass,
+                                  obj_issignaloutlet(t.tr_ob, t.tr_outno));
+            }
+            magicGlass_moveText(x->gl_magic_glass, xpos, ypos);
+            if (magicGlass_isOn(x->gl_magic_glass))
+                magicGlass_show(x->gl_magic_glass);
+            if (canvas_cnct_inlet_tag[0] != 0)
+            {
+                sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                         x, canvas_cnct_inlet_tag,
+                         (last_inlet_filter ? "black" : (inlet_issignal ? "$signal_cord" : "$msg_cord")),
+                         (inlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                canvas_cnct_inlet_tag[0] = 0;
+            }
+            if (canvas_cnct_outlet_tag[0] != 0)
+            {
+                sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                         x, canvas_cnct_outlet_tag,
+                         (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                         (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                canvas_cnct_outlet_tag[0] = 0;
+            }
+            // end jsarlo
             canvas_setcursor(x, CURSOR_EDITMODE_DISCONNECT);
             return;
         }
     }
+    // jsarlo
+    if (canvas_cnct_outlet_tag[0] != 0)
+    {
+        sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                 x, canvas_cnct_outlet_tag,
+                 (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                 (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+        canvas_cnct_outlet_tag[0] = 0;
+    }
+    if(x->gl_magic_glass)
+    {
+        magicGlass_unbind(x->gl_magic_glass);
+        magicGlass_hide(x->gl_magic_glass);
+    }
+    // end jsarlo
     canvas_setcursor(x, CURSOR_EDITMODE_NOTHING);
     if (doit)
     {
@@ -1493,6 +1665,13 @@ void canvas_doconnect(t_canvas *x, int xpos, int ypos, int which, int doit)
 
             if (canvas_isconnected (x, ob1, closest1, ob2, closest2))
             {
+                // jsarlo
+                if(x->gl_magic_glass)
+                {
+                    magicGlass_unbind(x->gl_magic_glass);
+                    magicGlass_hide(x->gl_magic_glass);
+                }
+                // end jsarlo
                 canvas_setcursor(x, CURSOR_EDITMODE_NOTHING);
                 return;
             }
@@ -1501,11 +1680,19 @@ void canvas_doconnect(t_canvas *x, int xpos, int ypos, int which, int doit)
             {
                 if (doit)
                     error("can't connect signal outlet to control inlet");
+                // jsarlo
+                if(x->gl_magic_glass)
+                {
+                    magicGlass_unbind(x->gl_magic_glass);
+                    magicGlass_hide(x->gl_magic_glass);
+                }
+                // end jsarlo
                 canvas_setcursor(x, CURSOR_EDITMODE_NOTHING);
                 return;
             }
             if (doit)
             {
+                int issignal = obj_issignaloutlet(ob1, closest1);
                 oc = obj_connect(ob1, closest1, ob2, closest2);
                 lx1 = x11 + (noutlet1 > 1 ?
                         ((x12-x11-IOWIDTH) * closest1)/(noutlet1-1) : 0)
@@ -1515,10 +1702,30 @@ void canvas_doconnect(t_canvas *x, int xpos, int ypos, int which, int doit)
                         ((x22-x21-IOWIDTH) * closest2)/(ninlet2-1) : 0)
                             + IOMIDDLE;
                 ly2 = y21;
-                sys_vgui(".x%lx.c create line %d %d %d %d -width %d -tags [list l%lx cord]\n",
+                sys_vgui(".x%lx.c create line %d %d %d %d -fill %s -width %d -tags [list l%lx cord]\n",
                     glist_getcanvas(x),
                         lx1, ly1, lx2, ly2,
-                            (obj_issignaloutlet(ob1, closest1) ? 2 : 1), oc);
+                    (issignal ? "$signal_cord" : "$msg_cord"),
+                    (issignal ? 2 : 1), 
+                    oc);
+                // jsarlo
+                if (canvas_cnct_inlet_tag[0] != 0)
+                {
+                    sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                             x, canvas_cnct_inlet_tag,
+                             (last_inlet_filter ? "black" : (obj_issignaloutlet(ob1, closest1) ? "$signal_cord" : "$msg_cord")),
+                             (inlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                    canvas_cnct_inlet_tag[0] = 0;
+                }
+                if (canvas_cnct_outlet_tag[0] != 0)
+                {
+                    sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                             x, canvas_cnct_outlet_tag,
+                             (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                             (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                    canvas_cnct_outlet_tag[0] = 0;
+                }
+                // end jsarlo
                 canvas_dirty(x, 1);
                 canvas_setundo(x, canvas_undo_connect,
                     canvas_undo_set_connect(x, 
@@ -1526,10 +1733,52 @@ void canvas_doconnect(t_canvas *x, int xpos, int ypos, int which, int doit)
                         canvas_getindex(x, &ob2->ob_g), closest2),
                         "connect");
             }
-            else canvas_setcursor(x, CURSOR_EDITMODE_CONNECT);
+            else
+                // jsarlo
+            {
+                t_rtext *y = glist_findrtext(x, (t_text *)&ob2->ob_g);
+                if (canvas_cnct_inlet_tag[0] != 0)
+                {
+                    sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                             x, canvas_cnct_inlet_tag,
+                             (last_inlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                             (inlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                }
+                if (y)
+                {
+                    last_inlet_filter = gobj_filter_highlight_behavior(y);
+                    sprintf(canvas_cnct_inlet_tag,
+                            "%si%d",
+                            rtext_gettag(y),
+                            closest2);
+                    sys_vgui(".x%lx.c itemconfigure %s -outline $select_color -width 3\n",
+                             x,
+                             canvas_cnct_inlet_tag);
+                    //sys_vgui(".x%lx.c raise %s\n",
+                    //         x,
+                    //         canvas_cnct_inlet_tag);
+                    inlet_issignal = obj_issignalinlet(ob2, closest2);
+                }
+                canvas_setcursor(x, CURSOR_EDITMODE_CONNECT);
+            }
+            // end jsarlo
             return;
         }
     }
+    // jsarlo
+    if (canvas_cnct_inlet_tag[0] != 0)
+    {
+        sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                 x, canvas_cnct_inlet_tag,
+                 (last_inlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                 (inlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+    }
+    if(x->gl_magic_glass)
+    {
+        magicGlass_unbind(x->gl_magic_glass);
+        magicGlass_hide(x->gl_magic_glass);
+    }
+    // end jsarlo
     canvas_setcursor(x, CURSOR_EDITMODE_NOTHING);
 }
 
@@ -1611,7 +1860,23 @@ void canvas_mouseup(t_canvas *x,
             gobj_activate(x->gl_editor->e_selection->sel_what, x, 1);
         }
     }
-
+    // jsarlo
+    if (canvas_cnct_outlet_tag[0] != 0)
+    {
+        sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                 x, canvas_cnct_outlet_tag,
+                 (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                 (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+    }
+    if (canvas_cnct_inlet_tag[0] != 0)
+    {
+        sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                 x, canvas_cnct_inlet_tag,
+                 (last_inlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                 (inlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+        canvas_cnct_inlet_tag[0] = 0;
+    }
+// end jsarlo
     x->gl_editor->e_onmotion = MA_NONE;
 }
 
@@ -1857,6 +2122,69 @@ void canvas_startmotion(t_canvas *x)
     x->gl_editor->e_ywas = yval; 
 }
 
+static void canvas_enterobj(t_canvas *x, t_symbol *item, t_floatarg xpos,
+    t_floatarg ypos, t_floatarg xletno)
+{
+    t_symbol *name = 0, *helpname, *dir;
+    int yoffset = 0, xoffset = 0;
+    if (item == gensym("inlet"))
+    {
+	yoffset = 1;
+        xoffset = xletno==0 ? 1 : -1;
+    }
+    else if (item == gensym("outlet"))
+    {
+	yoffset = -1;
+	xoffset = xletno== 0 ? 1 : -1;
+    }
+    int x1, y1, x2, y2;
+    t_gobj *g;
+    if (g = canvas_findhitbox(x, xpos+xoffset, ypos+yoffset,
+	&x1, &y1, &x2, &y2))
+    {
+        if (pd_class((t_pd *)g)==canvas_class ?
+	    canvas_isabstraction((t_canvas *)g) : 0)
+	{
+	    t_canvas *z = (t_canvas *)g;
+	    name = z->gl_name;
+	    helpname = z->gl_name;
+	    dir = canvas_getdir(z);
+	}
+	else
+	{
+	    name = g->g_pd->c_name;
+	    helpname = g->g_pd->c_helpname;
+	    dir = g->g_pd->c_externdir;
+	}
+        sys_vgui("pdtk_gettip .x%lx.c %s %d \
+	    [list %s] [list %s] [list %s]\n",
+	    x, item->s_name, (int)xletno,
+	    name->s_name, helpname->s_name, dir->s_name);
+    }
+}
+
+static void canvas_tip(t_canvas *x, t_symbol *s, int argc, t_atom *argv)
+{
+    if (s == gensym("echo"))
+	return;
+    if (argv->a_type != A_FLOAT)
+        error("canvas_tip: bad argument");
+    else
+    {
+	    sys_vgui("pdtk_tip .x%lx.c 1", x);
+	    t_atom *at = argv;
+	    int i;
+	    for (i=0; i<argc; i++)
+	    {
+		if (at[i].a_type == A_FLOAT)
+		    sys_vgui(" %g", at[i].a_w.w_float);
+		else if (at[i].a_type == A_SYMBOL)
+		    sys_vgui(" %s", at[i].a_w.w_symbol->s_name);
+	    }
+	    sys_gui("\n");
+    }
+}
+
 /* ----------------------------- window stuff ----------------------- */
 extern int sys_perf;
 
@@ -1878,6 +2206,19 @@ static t_glist *glist_finddirty(t_glist *x)
             (g2 = glist_finddirty((t_glist *)g)))
                 return (g2);
     return (0);
+}
+
+void canvas_menuclose(t_canvas *x, t_floatarg fforce);
+/* properly close all open root canvases */
+void glob_closeall(void*dummy, t_floatarg fforce)
+{
+  t_canvas*x, *y;
+  for (x = canvas_list; x; )
+    {
+      y=x->gl_next;
+      canvas_menuclose(x, fforce); /* forced closing of this root canvas */
+      x=y;
+    }
 }
 
     /* quit, after calling glist_finddirty() on all toplevels and verifying
@@ -2193,6 +2534,7 @@ static void canvas_copy(t_canvas *x)
         return;
     binbuf_free(copy_binbuf);
     copy_binbuf = canvas_docopy(x);
+    paste_xyoffset = 1;
     if (x->gl_editor->e_textedfor)
     {
         char *buf;
@@ -2302,6 +2644,7 @@ static void canvas_cut(t_canvas *x)
             canvas_undo_set_cut(x, UCUT_CUT), "cut");
         canvas_copy(x);
         canvas_doclear(x);
+        paste_xyoffset = 0;
         sys_vgui("pdtk_canvas_getscroll .x%lx.c\n", x);
     }
 }
@@ -2318,6 +2661,14 @@ static void glist_donewloadbangs(t_glist *x)
             if (pd_class(&sel->sel_what->g_pd) == canvas_class)
                 canvas_loadbang((t_canvas *)(&sel->sel_what->g_pd));
     }
+}
+
+static void canvas_paste_xyoffset(t_canvas *x)
+{
+    t_selection *sel;
+    for (sel = x->gl_editor->e_selection; sel; sel = sel->sel_next)
+        gobj_displace(sel->sel_what, x, paste_xyoffset*10, paste_xyoffset*10);
+    paste_xyoffset++;
 }
 
 static void canvas_dopaste(t_canvas *x, t_binbuf *b)
@@ -2359,6 +2710,7 @@ static void canvas_paste(t_canvas *x)
         canvas_setundo(x, canvas_undo_paste, canvas_undo_set_paste(x),
             "paste");
         canvas_dopaste(x, copy_binbuf);
+        canvas_paste_xyoffset(x);
     }
 }
 
@@ -2368,14 +2720,11 @@ static void canvas_duplicate(t_canvas *x)
         return;
     if (x->gl_editor->e_onmotion == MA_NONE && x->gl_editor->e_selection)
     {
-        t_selection *y;
         canvas_copy(x);
         canvas_setundo(x, canvas_undo_paste, canvas_undo_set_paste(x),
             "duplicate");
         canvas_dopaste(x, copy_binbuf);
-        for (y = x->gl_editor->e_selection; y; y = y->sel_next)
-            gobj_displace(y->sel_what, x,
-                10, 10);
+        canvas_paste_xyoffset(x);
         canvas_dirty(x, 1);
     }
 }
@@ -2465,9 +2814,10 @@ void canvas_connect(t_canvas *x, t_floatarg fwhoout, t_floatarg foutno,
     if (!(oc = obj_connect(objsrc, outno, objsink, inno))) goto bad;
     if (glist_isvisible(x))
     {
-        sys_vgui(".x%lx.c create line %d %d %d %d -width %d -tags [list l%lx cord]\n",
+        sys_vgui(".x%lx.c create line %d %d %d %d -width %d -fill %s -tags [list l%lx cord]\n",
             glist_getcanvas(x), 0, 0, 0, 0,
-            (obj_issignaloutlet(objsrc, outno) ? 2 : 1),oc);
+            (obj_issignaloutlet(objsrc, outno) ? 2 : 1),
+            (obj_issignaloutlet(objsrc, outno) ? "$signal_cord" : "$msg_cord"), oc);
         canvas_fixlinesfor(x, objsrc);
     }
     return;
@@ -2614,11 +2964,60 @@ void canvas_editmode(t_canvas *x, t_floatarg state)
     {
         glist_noselect(x);
         if (glist_isvisible(x) && glist_istoplevel(x))
+        {
             canvas_setcursor(x, CURSOR_RUNMODE_NOTHING);
+            // jsarlo
+            if (canvas_cnct_inlet_tag[0] != 0)
+            {
+                sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                         x, canvas_cnct_inlet_tag,
+                         (last_inlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                         (inlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                canvas_cnct_inlet_tag[0] = 0;
+            }
+            if (canvas_cnct_outlet_tag[0] != 0)
+            {
+                sys_vgui(".x%lx.c itemconfigure %s -outline %s -fill %s -width 1\n",
+                         x, canvas_cnct_outlet_tag,
+                         (last_outlet_filter ? "black" : (outlet_issignal ? "$signal_cord" : "$msg_cord")),
+                         (outlet_issignal ? "$signal_nlet" : "$msg_nlet"));
+                canvas_cnct_outlet_tag[0] = 0;
+            }
+            if(x->gl_magic_glass)
+            {
+                magicGlass_unbind(x->gl_magic_glass);
+                magicGlass_hide(x->gl_magic_glass);
+            }
+            // end jsarlo
+        }
     }
-    sys_vgui("pdtk_canvas_editmode .x%lx %d\n",
-        glist_getcanvas(x), x->gl_edit);
+    if (glist_isvisible(x))
+      sys_vgui("pdtk_canvas_editmode .x%lx %d\n",
+          glist_getcanvas(x), x->gl_edit);
 }
+
+// jsarlo
+void canvas_magicglass(t_canvas *x, t_floatarg fyesplease)
+{
+    int yesplease = fyesplease;
+    if (yesplease && magicGlass_isOn(x->gl_magic_glass))
+        return;
+    if (!magicGlass_isOn(x->gl_magic_glass))
+    {
+        canvas_editmode(x, 1.);
+        magicGlass_setOn(x->gl_magic_glass, 1);
+        if (magicGlass_bound(x->gl_magic_glass))
+            magicGlass_show(x->gl_magic_glass);
+    }
+    else
+    {
+        magicGlass_setOn(x->gl_magic_glass, 0);
+        magicGlass_hide(x->gl_magic_glass);
+    }
+    sys_vgui("pdtk_canvas_magicglass .x%lx %d\n",
+             glist_getcanvas(x), magicGlass_isOn(x->gl_magic_glass));
+}
+// end jsarlo
 
     /* called by canvas_font below */
 static void canvas_dofont(t_canvas *x, t_floatarg font, t_floatarg xresize,
@@ -2695,6 +3094,12 @@ void g_editor_setup(void)
         A_GIMME, A_NULL);
     class_addmethod(canvas_class, (t_method)canvas_motion, gensym("motion"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_NULL);
+    class_addmethod(canvas_class, (t_method)canvas_enterobj, gensym("enter"),
+	A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_NULL);
+    class_addmethod(canvas_class, (t_method)canvas_tip, gensym("tip"),
+	A_GIMME, A_NULL);
+    class_addmethod(canvas_class, (t_method)canvas_tip, gensym("echo"),
+        A_GIMME, A_NULL);
 
 /* ------------------------ menu actions ---------------------------- */
     class_addmethod(canvas_class, (t_method)canvas_menuclose,
@@ -2721,6 +3126,10 @@ void g_editor_setup(void)
         gensym("texteditor"), A_NULL);
     class_addmethod(canvas_class, (t_method)canvas_editmode,
         gensym("editmode"), A_DEFFLOAT, A_NULL);
+    // jsarlo
+    class_addmethod(canvas_class, (t_method)canvas_magicglass,
+        gensym("magicglass"), A_DEFFLOAT, A_NULL);
+    //end jsarlo
     class_addmethod(canvas_class, (t_method)canvas_print,
         gensym("print"), A_SYMBOL, A_NULL);
     class_addmethod(canvas_class, (t_method)canvas_menufont,

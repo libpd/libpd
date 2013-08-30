@@ -282,8 +282,8 @@ static void vslider_properties(t_gobj *z, t_glist *owner)
             --------dimensions(pix)(pix):-------- %d %d width: %d %d height: \
             -----------output-range:----------- %g bottom: %g top: %d \
             %d lin log %d %d empty %d \
-            %s %s \
-            %s %d %d \
+            {%s} {%s} \
+            {%s} %d %d \
             %d %d \
             %d %d %d\n",
             x->x_gui.x_w, IEM_GUI_MINSIZE, x->x_gui.x_h, IEM_SL_MINSIZE,

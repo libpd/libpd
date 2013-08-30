@@ -45,6 +45,67 @@ proc ::scrollboxwindow::ok {mytoplevel commit_method } {
     do_apply $mytoplevel $commit_method $listdata
 }
 
+proc ::scrollboxwindow::reset_to_defaults {mytoplevel} {
+    switch -- $::windowingsystem {
+        "x11" {
+            set preffile "$::env(HOME)/.pdextended"
+            if {[file exists $preffile]} {
+                pdwindow::debug [format [_ "Deleting preferences file: %s"]\n $preffile]
+                file delete -- $preffile
+            }
+        }
+        "aqua" {
+            set preffile "$::env(HOME)/Library/Preferences/org.puredata.pdextended.plist"
+            if {[file exists $preffile]} {
+                pdwindow::debug [format [_ "Deleting preferences file: %s"]\n $preffile]
+                file delete -- $preffile
+            }
+        }
+        "win32" {
+            pdwindow::debug [_ "Deleting preferences in HKEY_CURRENT_USER\\Software\\Pd-extended"]\n
+            registry delete "HKEY_CURRENT_USER\\Software\\Pd-extended"
+            pdwindow::debug [_ "Deleting preferences in HKEY_LOCAL_MACHINE\\Software\\Pd-extended"]\n
+            if {[catch {registry delete "HKEY_LOCAL_MACHINE\\Software\\Pd-extended"} fid]} {
+                pdwindow::post [_ "Could not delete 'HKEY_LOCAL_MACHINE\\Software\\Pd-extended':"]
+                pdwindow::post "\n$fid"
+            }
+            set regfilename "$::sys_libdir/bin/pd-settings.reg"
+            if {[file exists $regfilename]} {
+                pdwindow::debug [format [_ "Reseting registry from %s"]\n $regfilename]
+                set regfile [open $regfilename]
+                set regdata [read $regfile]
+
+                # use the first HKEY name found, ignore the rest
+                if {![regexp -line -- {\[(HKEY_[A-Za-z0-9_\\-]+).*\]} $regdata ignored hkey]} {
+                    ::pdwindow::error [format [_ "Could not parse registry file: '%s'"]\n $regfilename]
+                    return
+                }
+
+                set lines [split $regdata "\n"]
+                foreach line $lines {
+                    if {[regexp -- {"(\w+)"="(.*)"} $line ignored valueName data]} {
+                        registry set $hkey $valueName $data
+                    }
+                    if {[regexp -- {"(\w+)"=hex\([0-9]+\):([0-9a-f,]+)} $line ignored valueName data]} {
+                        set str ""
+                        foreach {byte0 byte1} [split $data ","] {
+                            set char [expr 0x$byte0 + (0x$byte1 * 10)]
+                            set str "$str[format %c $char]"
+                        }
+                        registry set $hkey $valueName $str expand_sz
+                    }
+                }
+            }
+        }
+    }
+    set ::startup_flags ""
+    pdsend "pd startup-flags [pdtk_encodedialog $::startup_flags]"
+    pdsend "pd path-dialog 1 0"
+    pdsend "pd load-preferences"
+    ::scrollboxwindow::cancel $mytoplevel
+    destroy $mytoplevel
+}
+
 # "Constructor" function for building the window
 # id -- the window id to use
 # listdata -- the data used to populate the scrollbox
@@ -62,6 +123,10 @@ proc ::scrollboxwindow::make {mytoplevel listdata add_method edit_method commit_
     wm transient $mytoplevel .pdwindow
     wm protocol $mytoplevel WM_DELETE_WINDOW "::scrollboxwindow::cancel $mytoplevel"
 
+    if {$::windowingsystem eq "aqua" } {
+        ::tk::unsupported::MacWindowStyle style $mytoplevel moveableModal {}
+    }
+
     # Enforce a minimum size for the window
     wm minsize $mytoplevel $width $height
 
@@ -75,6 +140,10 @@ proc ::scrollboxwindow::make {mytoplevel listdata add_method edit_method commit_
     # bottom and right
     frame $mytoplevel.nb
     pack $mytoplevel.nb -side bottom -fill x -pady 2m
+
+    button $mytoplevel.nb.saveall -text [_ "Reset to Defaults"] \
+        -command "::scrollboxwindow::reset_to_defaults $mytoplevel"
+    pack $mytoplevel.nb.saveall -side left -padx 2m
 
     frame $mytoplevel.nb.buttonframe
     pack $mytoplevel.nb.buttonframe -side right -padx 2m

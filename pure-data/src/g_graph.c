@@ -62,6 +62,9 @@ int canvas_setdeleting(t_canvas *x, int flag)
     return (ret);
 }
 
+/* JMZ: emit a closebang message */
+void canvas_closebang(t_canvas *x);
+
     /* delete an object from a glist and free it */
 void glist_delete(t_glist *x, t_gobj *y)
 {
@@ -71,7 +74,12 @@ void glist_delete(t_glist *x, t_gobj *y)
     t_canvas *canvas = glist_getcanvas(x);
     int drawcommand = class_isdrawcommand(y->g_pd);
     int wasdeleting;
-    
+
+    if (pd_class(&y->g_pd) == canvas_class) {
+      /* JMZ: send a closebang to the canvas */
+      canvas_closebang((t_canvas *)y);
+    }
+ 
     wasdeleting = canvas_setdeleting(canvas, 1);
     if (x->gl_editor)
     {
@@ -699,6 +707,7 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
  %d %d %d %d %d %d %d %d %d %d -tags [list %s graph] -fill #c0c0c0\n",
                 glist_getcanvas(x->gl_owner),
                 x1, y1, x1, y2, x2, y2, x2, y1, x1, y1, tag);
+            sys_vgui(".x%lx.c raise cord\n", glist_getcanvas(x->gl_owner));
         }
         else
         {
@@ -717,7 +726,7 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
         t_garray *ga;
             /* draw a rectangle around the graph */
         sys_vgui(".x%lx.c create line\
-            %d %d %d %d %d %d %d %d %d %d -tags [list %s graph]\n",
+            %d %d %d %d %d %d %d %d %d %d -fill $graph_outline -tags [list %s graph]\n",
             glist_getcanvas(x->gl_owner),
             x1, y1, x1, y2, x2, y2, x2, y1, x1, y1, tag);
         
@@ -729,7 +738,7 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
         {
             i -= sys_fontheight(glist_getfont(x));
             sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor nw\
-             -font {{%s} -%d %s} -tags [list %s label graph]\n",
+             -font {{%s} %d %s} -tags [list %s label graph]\n",
              (long)glist_getcanvas(x),  x1, i, arrayname->s_name, sys_font,
                 sys_hostfontsize(glist_getfont(x)), sys_fontweight, tag);
         }
@@ -811,7 +820,7 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
             /* draw x labels */
         for (i = 0; i < x->gl_nxlabels; i++)
             sys_vgui(".x%lx.c create text\
-        %d %d -text {%s} -font {{%s} -%d %s} -tags [list %s label graph]\n",
+        %d %d -text {%s} -font {{%s} %d %s} -tags [list %s label graph]\n",
                 glist_getcanvas(x),
                 (int)glist_xtopixels(x, atof(x->gl_xlabel[i]->s_name)),
                 (int)glist_ytopixels(x, x->gl_xlabely),
@@ -821,7 +830,7 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
             /* draw y labels */
         for (i = 0; i < x->gl_nylabels; i++)
             sys_vgui(".x%lx.c create text\
-        %d %d -text {%s} -font {{%s} -%d %s} -tags [list %s label graph]\n",
+        %d %d -text {%s} -font {{%s} %d %s} -tags [list %s label graph]\n",
                 glist_getcanvas(x),
                 (int)glist_xtopixels(x, x->gl_ylabelx),
                 (int)glist_ytopixels(x, atof(x->gl_ylabel[i]->s_name)),
@@ -939,9 +948,10 @@ static void graph_select(t_gobj *z, t_glist *glist, int state)
         if (canvas_showtext(x))
             rtext_select(y, state);
         sys_vgui(".x%lx.c itemconfigure %sR -fill %s\n", glist, 
-        rtext_gettag(y), (state? "blue" : "black"));
+                 rtext_gettag(y), (state? "$select_color" : "black"));
         sys_vgui(".x%lx.c itemconfigure graph%lx -fill %s\n",
-            glist_getcanvas(glist), z, (state? "blue" : "black"));
+                 glist_getcanvas(glist), z, 
+                 (state? "$select_color" : "$graph_outline"));
     }
 }
 

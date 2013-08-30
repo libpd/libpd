@@ -35,6 +35,7 @@ proc ::dialog_midi::cancel {mytoplevel} {
 
 proc ::dialog_midi::ok {mytoplevel} {
     ::dialog_midi::apply $mytoplevel
+    pdsend "pd save-preferences"
     ::dialog_midi::cancel $mytoplevel
 }
 
@@ -92,6 +93,9 @@ proc ::dialog_midi::pdtk_midi_dialog {id indev1 indev2 indev3 indev4 \
     ::pd_bindings::dialog_bindings $id "midi"
     # not all Tcl/Tk versions or platforms support -topmost, so catch the error
     catch {wm attributes $id -topmost 1}
+    if {$::windowingsystem eq "aqua" } {
+        ::tk::unsupported::MacWindowStyle style $id moveableModal {}
+    }
 
     frame $id.buttonframe
     pack $id.buttonframe -side bottom -fill x -pady 2m

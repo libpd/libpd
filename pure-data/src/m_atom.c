@@ -28,6 +28,14 @@ t_symbol *atom_getsymbol(t_atom *a)  /* LATER think about this more carefully */
     else return (&s_float);
 }
 
+t_blob *atom_getblob(t_atom *a)  /* MP 20070108 */
+{
+    static unsigned char c = 0;/* a default blob to avoid null pointers. This should be somewhere else...? */
+    static t_blob st = {1L, &c};
+    if (a->a_type == A_BLOB) return (a->a_w.w_blob);
+    else return (&st);
+}
+
 t_symbol *atom_gensym(t_atom *a)  /* this works  better for graph labels */
 {
     char buf[30];
@@ -86,10 +94,13 @@ void atom_string(t_atom *a, char *buf, unsigned int bufsize)
         char *sp;
         unsigned int len;
         int quote;
-        for (sp = a->a_w.w_symbol->s_name, len = 0, quote = 0; *sp; sp++, len++)
-            if (*sp == ';' || *sp == ',' || *sp == '\\' || 
-                (*sp == '$' && sp[1] >= '0' && sp[1] <= '9'))
-                quote = 1;
+        if(!strcmp(a->a_w.w_symbol->s_name, "$@")) /* JMZ: #@ quoting */
+            quote=1;
+        else
+            for (sp = a->a_w.w_symbol->s_name, len = 0, quote = 0; *sp; sp++, len++)
+                if (*sp == ';' || *sp == ',' || *sp == '\\' ||
+                    (*sp == '$' && sp[1] >= '0' && sp[1] <= '9'))
+                    quote = 1;
         if (quote)
         {
             char *bp = buf, *ep = buf + (bufsize-2);
@@ -97,8 +108,9 @@ void atom_string(t_atom *a, char *buf, unsigned int bufsize)
             while (bp < ep && *sp)
             {
                 if (*sp == ';' || *sp == ',' || *sp == '\\' ||
-                    (*sp == '$' && sp[1] >= '0' && sp[1] <= '9'))
-                        *bp++ = '\\';
+                    (*sp == '$' &&  /* JMZ: #@ quoting */
+                     ((sp[1] >= '0' && sp[1] <= '9') || sp[1]=='@')))
+                    *bp++ = '\\';
                 *bp++ = *sp++;
             }
             if (*sp) *bp++ = '*';
@@ -117,7 +129,11 @@ void atom_string(t_atom *a, char *buf, unsigned int bufsize)
     }
         break;
     case A_DOLLAR:
-        sprintf(buf, "$%d", a->a_w.w_index);
+        if(a->a_w.w_symbol==gensym("@")) { /* JMZ: $@ expansion */
+            sprintf(buf, "$@");
+        } else {
+            sprintf(buf, "$%d", a->a_w.w_index);
+        }
         break;
     case A_DOLLSYM:
         strncpy(buf, a->a_w.w_symbol->s_name, bufsize);

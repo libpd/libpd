@@ -12,7 +12,9 @@ namespace eval ::pd_menucommands:: {
 
 proc ::pd_menucommands::menu_new {} {
     variable untitled_number
-    if { ! [file isdirectory $::filenewdir]} {set ::filenewdir $::env(HOME)}
+    if { ! [file isdirectory $::filenewdir]} {
+        set ::filenewdir [file normalize $::env(HOME)]
+    }
     # to localize "Untitled" there will need to be changes in g_canvas.c and
     # g_readwrite.c, where it tests for the string "Untitled"
     set untitled_name "Untitled"
@@ -23,7 +25,9 @@ proc ::pd_menucommands::menu_new {} {
 }
 
 proc ::pd_menucommands::menu_open {} {
-    if { ! [file isdirectory $::fileopendir]} {set ::fileopendir $::env(HOME)}
+    if { ! [file isdirectory $::filenewdir]} {
+        set ::filenewdir [file normalize $::env(HOME)]
+    }
     set files [tk_getOpenFile -defaultextension .pd \
                        -multiple true \
                        -filetypes $::filetypes \
@@ -42,7 +46,15 @@ proc ::pd_menucommands::menu_print {mytoplevel} {
                       -filetypes { {{postscript} {.ps}} }]
     if {$filename ne ""} {
         set tkcanvas [tkcanvas_name $mytoplevel]
-        $tkcanvas postscript -file $filename 
+
+        set pad 10 
+        set bbox [$tkcanvas bbox all]
+        set x [expr [lindex $bbox 0] - $pad]
+        set y [expr [lindex $bbox 1] - $pad]
+        set width  [expr [lindex $bbox 2] - $x + $pad]
+        set height [expr [lindex $bbox 3] - $y + $pad]
+
+        $tkcanvas postscript -x $x -y $y -width $width -height $height -file $filename 
     }
 }
 
@@ -73,6 +85,52 @@ proc ::pd_menucommands::menu_toggle_editmode {} {
     menu_editmode [expr {! $::editmode_button}]
 }
 
+proc ::pd_menucommands::menu_autopatch {state} {
+    if {[winfo class $::focused_window] ne "PatchWindow"} {return}
+    set ::autopatch_button $state
+    set ::autopatch($::focused_window) $state
+    # TODO does 'pd' need to track the autopatch state per patch?
+    pdsend "pd autopatch $state"
+}
+
+proc ::pd_menucommands::menu_toggle_autopatch {} {
+    menu_autopatch [expr {! $::autopatch_button}]
+}
+
+proc ::pd_menucommands::menu_magicglass {state} {
+    if {[winfo class $::focused_window] ne "PatchWindow"} {return}
+    set ::magicglass_button $state
+    set ::magicglass($::focused_window) $state
+    pdsend "$::focused_window magicglass $state"
+}
+
+proc ::pd_menucommands::menu_toggle_magicglass {} {
+    menu_magicglass [expr {! $::magicglass_button}]
+}
+
+proc ::pd_menucommands::menu_perfmode {state} {
+    set ::perfmode_button $state
+    pdsend "pd perf $state"
+}
+
+proc ::pd_menucommands::menu_toggle_perfmode {} {
+    menu_perfmode [expr {! $::perfmode_button}]
+}
+
+proc ::pd_menucommands::menu_autotips {state} {
+    set ::autotips_button $state
+}
+
+proc ::pd_menucommands::menu_toggle_autotips {} {
+    menu_autotips [expr {! $::autotips_button}]
+}
+
+proc ::pd_menucommands::menu_reselect {} {
+    if {[winfo class $::focused_window] eq "PatchWindow"} {
+        pdsend "$::focused_window reselect"
+    }
+}
+
 # ------------------------------------------------------------------------------
 # generic procs for sending menu events
 
@@ -81,6 +139,14 @@ proc ::pd_menucommands::menu_send {window message} {
     set mytoplevel [winfo toplevel $window]
     if {[winfo class $mytoplevel] eq "PatchWindow"} {
         pdsend "$mytoplevel $message"
+    } elseif {$mytoplevel eq ".pdwindow"} {
+        if {$message eq "copy"} {
+            tk_textCopy .pdwindow.text
+        } elseif {$message eq "selectall"} {
+            .pdwindow.text tag add sel 1.0 end
+        } elseif {$message eq "menusaveas"} {
+            ::pdwindow::save_logbuffer_to_file
+        }
     }
 }
 
@@ -181,42 +247,18 @@ proc menu_clear_console {} {
 
 # this gets the dir from the path of a window's title
 proc ::pd_menucommands::set_filenewdir {mytoplevel} {
-    # TODO add Aqua specifics once g_canvas.c has [wm attributes -titlepath]
     if {$mytoplevel eq ".pdwindow"} {
         set ::filenewdir $::fileopendir
+    } elseif {$::windowingsystem eq "aqua"} {
+        set ::filenewdir [file dirname [wm attributes $mytoplevel -titlepath]]
     } else {
-        regexp -- ".+ - (.+)" [wm title $mytoplevel] ignored ::filenewdir
+        regexp -- {[^/]+ - (.+)} [wm title $mytoplevel] ignored ::filenewdir
     }
 }
 
 # parse the textfile for the About Pd page
 proc ::pd_menucommands::menu_aboutpd {} {
-    set versionstring "Pd $::PD_MAJOR_VERSION.$::PD_MINOR_VERSION.$::PD_BUGFIX_VERSION$::PD_TEST_VERSION"
-    set filename "$::sys_libdir/doc/1.manual/1.introduction.txt"
-    if {[winfo exists .aboutpd]} {
-        wm deiconify .aboutpd
-        raise .aboutpd
-    } else {
-        toplevel .aboutpd -class TextWindow
-        wm title .aboutpd [_ "About Pd"]
-        wm group .aboutpd .
-        .aboutpd configure -menu $::dialog_menubar
-        text .aboutpd.text -relief flat -borderwidth 0 \
-            -yscrollcommand ".aboutpd.scroll set" -background white
-        scrollbar .aboutpd.scroll -command ".aboutpd.text yview"
-        pack .aboutpd.scroll -side right -fill y
-        pack .aboutpd.text -side left -fill both -expand 1
-        bind .aboutpd <$::modifier-Key-w>   "wm withdraw .aboutpd"
-        
-        set textfile [open $filename]
-        while {![eof $textfile]} {
-            set bigstring [read $textfile 1000]
-            regsub -all PD_BASEDIR $bigstring $::sys_guidir bigstring2
-            regsub -all PD_VERSION $bigstring2 $versionstring bigstring3
-            .aboutpd.text insert end $bigstring3
-        }
-        close $textfile
-    }
+    ::pd_menucommands::menu_doc_open doc/5.reference about.pd
 }
 
 # ------------------------------------------------------------------------------
@@ -269,4 +311,39 @@ proc ::pd_menucommands::menu_bringalltofront {} {
         }
     }
     wm deiconify .
+}
+
+proc ::pd_menucommands::menu_makeapp {isdir} {
+    set top_window [lindex [wm stackorder .] end]
+    set patch [::makeapp::getpatchname $top_window]
+    if {$patch == ""} {
+        pdtk_post \
+            [_ "No patch found! Select an open parent patch with the mouse, then try again."]\n
+        return
+    }
+    # TODO set -parent to patch being turned into app
+    pdtk_post [_ "Select name for app to build...\n"]
+    set appdir [tk_getSaveFile -filetypes { {{Mac OS X Application} {.app}} } \
+                    -parent $top_window -defaultextension .app \
+                    -title [_ "Save application to..."]]
+    if {$appdir != ""} {
+        if {![string match "*.app" $appdir]} {
+            set appdir "$appdir.app"
+            #			pdtk_post "Adding .app extension: $appdir\n"
+        }
+        if {[::makeapp::promptreplace $appdir]} {
+            ::makeapp::busypanel $appdir
+            ::makeapp::createapp $appdir
+            .makeapp.label configure -text [_ "Configuring Info.plist..."]
+            ::makeapp::makeinfoplist $appdir
+            .makeapp.label configure -text [_ "Setting patch name..."]
+            regexp {.*/(.*?)\.pd} $patch -> patchname
+            .makeapp.label configure -text [_ "Copying current patch..."]
+            ::makeapp::copycurrentpatch $appdir $patch $patchname $isdir
+            .makeapp.label configure -text [_ "Setting embedded preferences..."]
+            ::makeapp::embedprefs $appdir "app-auto-load/$patchname.pd"
+            pdtk_post [format [_ "%s is complete!"]\n $appdir]
+            destroy .makeapp
+        }
+    }
 }

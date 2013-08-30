@@ -508,7 +508,7 @@ static void tabread4_tilde_setup(void)
 #include <machine/endian.h>
 #endif
 
-#if defined(__linux__) || defined(__CYGWIN__) || defined(__GNU__) || defined(ANDROID)
+#if defined(__linux__) || defined(__CYGWIN__) || defined(__GNU__) || defined(__ANDROID__)
 #include <endian.h>
 #endif
 
@@ -532,14 +532,6 @@ static void tabread4_tilde_setup(void)
 #else                                                                           
 # define HIOFFSET 0    /* word offset to find MSB */                             
 # define LOWOFFSET 1    /* word offset to find LSB */                            
-#endif
-
-#ifdef _MSC_VER
- typedef __int32 int32_t; /* use MSVC's internal type */
-#elif defined(IRIX)
- typedef long int32_t;  /* a data type that has 32 bits */
-#else
-# include <stdint.h>  /* this is where int32_t is defined in C99 */
 #endif
 
 union tabfudge

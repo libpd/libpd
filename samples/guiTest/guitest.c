@@ -46,6 +46,8 @@ int main(int argc, char **argv) {
   libpd_init(true, "../../pure-data");
   libpd_init_audio(1, 2, srate);
 
+  libpd_add_to_search_path("/home/kjetil/temp/pd-extended/externals/build/lib/pd-extended/extra/vanilla/");
+
   // compute audio    [; pd dsp 1(
   libpd_start_message(1); // one entry in list
   libpd_add_float(1.0f);

@@ -141,9 +141,10 @@ void binbuf_text(t_binbuf *x, char *text, size_t size)
                         if (!digit) floatstate = -1;
                     }
                 }
-                if (!lastslash && c == '$' && (textp != etext && 
-                    textp[0] >= '0' && textp[0] <= '9'))
-                        dollar = 1;
+                if (!lastslash && c == '$' &&
+                    (textp != etext && ((textp[0] >= '0' && textp[0] <= '9') ||
+                      textp[0]=='@'))) /* JMZ: $@ and $# expansion */
+                    dollar = 1;
                 if (!slash) bufp++;
             }
             while (textp != etext && bufp != ebuf && 
@@ -162,14 +163,25 @@ void binbuf_text(t_binbuf *x, char *text, size_t size)
                 was. */
             else if (dollar)
             {
-                if (buf[0] != '$') 
-                    dollar = 0;
-                for (bufp = buf+1; *bufp; bufp++)
-                    if (*bufp < '0' || *bufp > '9')
-                        dollar = 0;
-                if (dollar)
-                    SETDOLLAR(ap, atoi(buf+1));
-                else SETDOLLSYM(ap, gensym(buf));
+                if(buf[1]=='@') /* JMZ: $@ expansion */
+                {
+                    if(buf[2]==0) /* only expand A_DOLLAR $@ */
+                    {
+                        ap->a_type = A_DOLLAR;
+                        ap->a_w.w_symbol = gensym("@");
+                    }
+                    else /* there is no A_DOLLSYM $@ */
+                        SETSYMBOL(ap, gensym(buf));
+                } else {
+		            if (buf[0] != '$')
+		                dollar = 0;
+		            for (bufp = buf+1; *bufp; bufp++)
+		                if (*bufp < '0' || *bufp > '9')
+		                    dollar = 0;
+		            if (dollar)
+		                SETDOLLAR(ap, atoi(buf+1));
+		            else SETDOLLSYM(ap, gensym(buf));
+				}
             }
             else SETSYMBOL(ap, gensym(buf));
         }
@@ -306,8 +318,12 @@ void binbuf_addbinbuf(t_binbuf *x, t_binbuf *y)
             SETSYMBOL(ap, gensym(","));
             break;
         case A_DOLLAR:
-            sprintf(tbuf, "$%d", ap->a_w.w_index);
-            SETSYMBOL(ap, gensym(tbuf));
+            if(ap->a_w.w_symbol==gensym("@")){ /* JMZ: $@ expansion */
+                SETSYMBOL(ap, gensym("$@"));
+            } else {
+                sprintf(tbuf, "$%d", ap->a_w.w_index);
+                SETSYMBOL(ap, gensym(tbuf));
+            }
             break;
         case A_DOLLSYM:
             atom_string(ap, tbuf, MAXPDSTRING);
@@ -358,6 +374,11 @@ void binbuf_restore(t_binbuf *x, int argc, t_atom *argv)
             char *str = argv->a_w.w_symbol->s_name, *str2;
             if (!strcmp(str, ";")) SETSEMI(ap);
             else if (!strcmp(str, ",")) SETCOMMA(ap);
+            else if (!strcmp(str, "$@")) /* JMZ: $@ expansion */
+            {
+                ap->a_type = A_DOLLAR;
+                ap->a_w.w_symbol = gensym("@");
+            }
             else if ((str2 = strchr(str, '$')) && str2[1] >= '0'
                 && str2[1] <= '9')
             {
@@ -551,6 +572,13 @@ void binbuf_eval(t_binbuf *x, t_pd *target, int argc, t_atom *argv)
     t_atom *at = x->b_vec;
     int ac = x->b_n;
     int nargs, maxnargs = 0;
+
+	/* first we need to check if the list of arguments has $@ */
+	int count;
+	for (count = 0; count < ac; count++)
+		if (at[count].a_type == A_DOLLAR && at[count].a_w.w_symbol==gensym("@"))
+			ac = ac + argc;
+
     if (ac <= SMALLMSG)
         mstack = smallstack;
     else
@@ -678,7 +706,24 @@ void binbuf_eval(t_binbuf *x, t_pd *target, int argc, t_atom *argv)
                 *msp = *at;
                 break;
             case A_DOLLAR:
-                if (at->a_w.w_index > 0 && at->a_w.w_index <= argc)
+                if (at->a_w.w_symbol==gensym("@"))
+                { /* JMZ: $@ expansion */
+                    int i;
+                    /*if(msp+argc >= ems)
+                    {
+                        error("message stack overflow");
+                        goto broken;
+                    }*/
+                    for (i=0; i<argc; i++)
+                    {
+                        *msp++=argv[i];
+                        nargs++;
+						ac--;
+                    }
+                    msp--;
+                    nargs--;
+                }
+                else if (at->a_w.w_index > 0 && at->a_w.w_index <= argc)
                     *msp = argv[at->a_w.w_index-1];
                 else if (at->a_w.w_index == 0)
                     SETFLOAT(msp, canvas_getdollarzero());
@@ -725,6 +770,10 @@ void binbuf_eval(t_binbuf *x, t_pd *target, int argc, t_atom *argv)
                 if (nargs == 1) pd_float(target, mstack->a_w.w_float);
                 else pd_list(target, 0, nargs, mstack);
                 break;
+            case A_BLOB: /* MP 20070106 blob type */
+                if (nargs == 1) pd_blob(target, mstack->a_w.w_blob);
+                else pd_list(target, 0, nargs, mstack);
+                break;
             }
         }
         msp = mstack;
@@ -736,23 +785,6 @@ void binbuf_eval(t_binbuf *x, t_pd *target, int argc, t_atom *argv)
 broken: 
     if (maxnargs > SMALLMSG)
          ATOMS_FREEA(mstack, maxnargs);
-}
-
-static int binbuf_doopen(char *s, int mode)
-{
-    char namebuf[MAXPDSTRING];
-#ifdef _WIN32
-    mode |= O_BINARY;
-#endif
-    sys_bashfilename(s, namebuf);
-    return (open(namebuf, mode));
-}
-
-static FILE *binbuf_dofopen(char *s, char *mode)
-{
-    char namebuf[MAXPDSTRING];
-    sys_bashfilename(s, namebuf);
-    return (fopen(namebuf, mode));
 }
 
 int binbuf_read(t_binbuf *b, char *filename, char *dirname, int crflag)
@@ -768,7 +800,7 @@ int binbuf_read(t_binbuf *b, char *filename, char *dirname, int crflag)
         strcat(namebuf, dirname), strcat(namebuf, "/");
     strcat(namebuf, filename);
     
-    if ((fd = binbuf_doopen(namebuf, 0)) < 0)
+    if ((fd = sys_open(namebuf, 0)) < 0)
     {
         fprintf(stderr, "open: ");
         perror(namebuf);
@@ -869,7 +901,7 @@ int binbuf_write(t_binbuf *x, char *filename, char *dir, int crflag)
         deleteit = 1;
     }
     
-    if (!(f = binbuf_dofopen(fbuf, "w")))
+    if (!(f = sys_fopen(fbuf, "w")))
     {
         fprintf(stderr, "open: ");
         sys_unixerror(fbuf);
@@ -1501,6 +1533,5 @@ t_pd *glob_evalfile(t_pd *ignore, t_symbol *name, t_symbol *dir)
     }
     pd_doloadbang();
     canvas_resume_dsp(dspstate);
-
     return x;
 }

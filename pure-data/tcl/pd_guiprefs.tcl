@@ -39,20 +39,20 @@ proc ::pd_guiprefs::init {} {
 
 proc ::pd_guiprefs::init_aqua {} {
     # osx has a "Open Recent" menu with 10 recent files (others have 5 inlined)
-    set ::recentfiles_domain org.puredata
+    set ::recentfiles_domain org.puredata.pdextended.pd-gui
     set ::recentfiles_key "NSRecentDocuments"
     set ::total_recentfiles 10
 }
 
 proc ::pd_guiprefs::init_win {} {
     # windows uses registry
-    set ::recentfiles_domain "HKEY_CURRENT_USER\\Software\\Pure-Data"
+    set ::recentfiles_domain "HKEY_CURRENT_USER\\Software\\Pd-extended"
     set ::recentfiles_key "RecentDocs"
 }
 
 proc ::pd_guiprefs::init_x11 {} {
-    # linux uses ~/.config/pure-data dir
-    set ::recentfiles_domain "~/.config/pure-data"
+    # linux uses ~/.config/pd-extended dir
+    set ::recentfiles_domain "~/.config/pd-extended"
     set ::recentfiles_key "recentfiles.conf"
     prepare_configdir
 }
@@ -143,16 +143,15 @@ proc ::pd_guiprefs::get_config_win {adomain {akey} {arr false}} {
 proc ::pd_guiprefs::get_config_x11 {adomain {akey} {arr false}} {
     set filename [file join $adomain $akey]
     set conf {}
-    if {
-        [file exists $filename] == 1
-        && [file readable $filename]
-    } else {
+    if {[file readable $filename]} {
         set fl [open $filename r]
         while {[gets $fl line] >= 0} {
            lappend conf $line
         }
         close $fl
-    }
+    } else {
+		::pdwindow::debug [_ "Cannot read GUI prefs file: "]"$filename"
+	}
     return $conf
 }
 
@@ -168,11 +167,11 @@ proc ::pd_guiprefs::write_config_aqua {data {adomain} {akey} {arr false}} {
     if {$arr} {
         foreach filepath $data {
             set escaped [escape_for_plist $filepath]
-            exec defaults write $adomain $akey -array-add "$escaped"
+            exec defaults write $adomain $akey -array-add $escaped
         }
     } else {
         set escaped [escape_for_plist $data]
-        exec defaults write $adomain $akey '$escaped'
+        exec defaults write $adomain $akey $escaped
     }
 }
 
@@ -234,6 +233,7 @@ proc ::pd_guiprefs::plist_array_to_tcl_list {arr} {
     regsub -all -- {^\(} $filelist {} filelist
     regsub -all -- {\)$} $filelist {} filelist
     regsub -line -- {^'(.*)'$} $filelist {\1} filelist
+    regsub -all -- {\\\\U} $filelist {\\u} filelist
 
     foreach file $filelist {
         set filename [regsub -- {,$} $file {}]
@@ -245,5 +245,5 @@ proc ::pd_guiprefs::plist_array_to_tcl_list {arr} {
 # the Mac OS X 'defaults' command uses single quotes to quote things,
 # so they need to be escaped
 proc ::pd_guiprefs::escape_for_plist {str} {
-    return [regsub -all -- {'} $str {\\'}]
+    return \"[regsub -all -- {"} $str {\\"}]\"
 }

@@ -204,7 +204,7 @@ static void scalar_drawselectrect(t_scalar *x, t_glist *glist, int state)
         scalar_getrect(&x->sc_gobj, glist, &x1, &y1, &x2, &y2);
         x1--; x2++; y1--; y2++;
         sys_vgui(".x%lx.c create line %d %d %d %d %d %d %d %d %d %d \
-            -width 0 -fill blue -tags select%lx\n",
+            -width 0 -fill $select_color -tags select%lx\n",
                 glist_getcanvas(glist), x1, y1, x1, y2, x2, y2, x2, y1, x1, y1,
                 x);
     }

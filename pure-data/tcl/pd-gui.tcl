@@ -17,7 +17,6 @@ package require Tk
 #namespace import -force ttk::*
 
 package require msgcat
-# TODO figure out msgcat issue on Windows
 # TODO create a constructor in each package to create things at startup, that
 #  way they can be easily be modified by startup scripts
 # TODO create alt-Enter/Cmd-I binding to bring up Properties panels
@@ -40,6 +39,7 @@ package require dialog_midi
 package require dialog_path
 package require dialog_startup
 package require helpbrowser
+package require makeapp
 package require pd_menucommands
 package require opt_parser
 package require pdtk_canvas
@@ -66,6 +66,8 @@ namespace import ::pdwindow::pdtk_pd_dsp
 namespace import ::pdwindow::pdtk_pd_meters
 namespace import ::pdtk_canvas::pdtk_canvas_popup
 namespace import ::pdtk_canvas::pdtk_canvas_editmode
+namespace import ::pdtk_canvas::pdtk_canvas_autopatch
+namespace import ::pdtk_canvas::pdtk_canvas_magicglass
 namespace import ::pdtk_canvas::pdtk_canvas_getscroll
 namespace import ::pdtk_canvas::pdtk_canvas_setparents
 namespace import ::pdtk_canvas::pdtk_canvas_reflecttitle
@@ -125,18 +127,17 @@ set font_weight "normal"
 # sizes of chars for each of the Pd fixed font sizes:
 #  fontsize  width(pixels)  height(pixels)
 set font_fixed_metrics {
-    8 6 11
+    8 5 11
     9 6 12
-    10 7 13
-    12 9 16
+    10 6 13
+    12 7 16
     14 8 17
-    16 10 20
+    16 10 19
     18 11 22
-    24 15 25
+    24 14 29
     30 18 37
-    36 25 45
+    36 22 44
 }
-set font_measured_metrics {}
 
 # root path to lib of Pd's files, see s_main.c for more info
 set sys_libdir {}
@@ -148,6 +149,8 @@ set sys_searchpath {}
 set sys_staticpath {}
 # the path to the folder where the current plugin is being loaded from
 set current_plugin_loadpath {}
+# a list of plugins that were loaded
+set loaded_plugins {}
 # list of command line flags set at startup
 set startup_flags {}
 # list of libraries loaded on startup
@@ -181,8 +184,13 @@ set popup_xcanvas 0
 set popup_ycanvas 0
 # modifier for key commands (Ctrl/Control on most platforms, Cmd/Mod1 on MacOSX)
 set modifier ""
-# current state of the Edit Mode menu item
+# Alt key for key commands (Alt on most platforms, Option on Mac OS X)
+set altkey ""
+# current state of each 'editor meta' menu item
+set autopatch_button 0
 set editmode_button 0
+set magicglass_button 0
+set perfmode_button 0
 
 
 ## per toplevel/patch data
@@ -191,7 +199,9 @@ set menubarsize 0           ;# Mac OS X and other platforms have a menubar on to
 set windowframex 0      ;# different platforms have different window frames
 set windowframey 0      ;# different platforms have different window frames
 # patch properties
-array set editmode {}   ;# store editmode for each open patch canvas
+array set editmode {}   ;# store editmode state for each open PatchWindow
+array set autopatch {}  ;# store autopatch state for each open PatchWindow
+array set magicglass {} ;# store magicglass state for each open PatchWindow
 array set editingtext {};# if an obj, msg, or comment is being edited, per patch
 array set loaded {}     ;# store whether a patch has completed loading
 array set xscrollable {};# keep track of whether the scrollbars are present
@@ -214,6 +224,25 @@ set canvas_minheight 20
 set ::undo_action "no"
 set ::redo_action "no"
 set ::undo_toplevel "."
+
+# color scheme
+set ::canvas_fill "white"
+set ::text_color "#000"
+set ::select_color "#00f"
+set ::dash_outline "#f00"
+set ::dash_fill "#fff"
+set ::box_outline "#ccc"
+set ::graph_outline "#777"
+set ::atom_box_fill "#eee"
+set ::msg_box_fill "#f8f8f6"
+set ::obj_box_fill "#f6f8f8"
+set ::signal_cord_highlight "#58a"
+set ::signal_cord "#558"
+set ::signal_nlet $signal_cord
+set ::msg_cord_highlight "#474"
+set ::msg_cord "#121"
+set ::msg_nlet "#fff"
+set :mixed_nlet "#88aaff"
 
 #------------------------------------------------------------------------------#
 # coding style
@@ -267,6 +296,7 @@ proc init_for_platform {} {
     switch -- $::windowingsystem {
         "x11" {
             set ::modifier "Control"
+            set ::altkey "Alt"
             option add *PatchWindow*Canvas.background "white" startupFile
             # add control to show/hide hidden files in the open panel (load
             # the tk_getOpenFile dialog once, otherwise it will not work)
@@ -276,10 +306,12 @@ proc init_for_platform {} {
             # set file types that open/save recognize
             set ::filetypes \
                 [list \
-                     [list [_ "Associated Files"]  {.pd .pat .mxt} ] \
+                     [list [_ "Associated Files"]  {.pd .pat .mxt .mxb .help} ] \
                      [list [_ "Pd Files"]          {.pd}  ] \
                      [list [_ "Max Patch Files"]   {.pat} ] \
                      [list [_ "Max Text Files"]    {.mxt} ] \
+                     [list [_ "Max Binary Files"]  {.mxb} ] \
+                     [list [_ "Max Help Files"]    {.help} ] \
                     ]
             # some platforms have a menubar on the top, so place below them
             set ::menubarsize 0
@@ -288,7 +320,6 @@ proc init_for_platform {} {
             # frame's upper left corner. http://wiki.tcl.tk/11502
             set ::windowframex 3
             set ::windowframey 53
-			# TODO add wm iconphoto/iconbitmap here if it makes sense
             # mouse cursors for all the different modes
             set ::cursor_runmode_nothing "left_ptr"
             set ::cursor_runmode_clickme "arrow"
@@ -300,6 +331,7 @@ proc init_for_platform {} {
         }
         "aqua" {
             set ::modifier "Mod1"
+            set ::altkey "Option"
             option add *DialogWindow*background "#E8E8E8" startupFile
             option add *DialogWindow*Entry.highlightBackground "#E8E8E8" startupFile
             option add *DialogWindow*Button.highlightBackground "#E8E8E8" startupFile
@@ -309,10 +341,12 @@ proc init_for_platform {} {
             # set file types that open/save recognize
             set ::filetypes \
                 [list \
-                     [list [_ "Associated Files"]       {.pd .pat .mxt} ] \
+                     [list [_ "Associated Files"]       {.pd .pat .mxt .mxb .help} ] \
                      [list [_ "Pd Files"]               {.pd}  ] \
-                     [list [_ "Max Patch Files (.pat)"] {.pat} ] \
-                     [list [_ "Max Text Files (.mxt)"]  {.mxt} ] \
+                     [list [concat [_ "Max Patch Files"] " (.pat)"] {.pat} ] \
+                     [list [concat [_ "Max Text Files"] " (.mxt)"]  {.mxt} ] \
+                     [list [concat [_ "Max Binary Files"] " (.mxb)"] {.mxb} ] \
+                     [list [concat [_ "Max Help Files"] "(.help)"] {.help} ] \
                 ]
             # some platforms have a menubar on the top, so place below them
             set ::menubarsize 22
@@ -332,6 +366,7 @@ proc init_for_platform {} {
         }
         "win32" {
             set ::modifier "Control"
+            set ::altkey "Alt"
             option add *PatchWindow*Canvas.background "white" startupFile
             # fix menu font size on Windows with tk scaling = 1
             font create menufont -family Tahoma -size -11
@@ -343,10 +378,12 @@ proc init_for_platform {} {
             # set file types that open/save recognize
             set ::filetypes \
                 [list \
-                     [list [_ "Associated Files"]  {.pd .pat .mxt} ] \
+                     [list [_ "Associated Files"]  {.pd .pat .mxt .mxb .help} ] \
                      [list [_ "Pd Files"]          {.pd}  ] \
                      [list [_ "Max Patch Files"]   {.pat} ] \
                      [list [_ "Max Text Files"]    {.mxt} ] \
+                     [list [_ "Max Binary Files"]  {.mxb} ] \
+                     [list [_ "Max Help Files"]    {.help} ] \
                     ]
             # some platforms have a menubar on the top, so place below them
             set ::menubarsize 0
@@ -356,8 +393,6 @@ proc init_for_platform {} {
             # TODO this probably needs a script layer: http://wiki.tcl.tk/11291
             set ::windowframex 0
             set ::windowframey 0
-            # TODO use 'winico' package for full, hicolor icon support
-            wm iconbitmap . -default [file join $::sys_guidir pd.ico]
             # mouse cursors for all the different modes
             set ::cursor_runmode_nothing "right_ptr"
             set ::cursor_runmode_clickme "arrow"
@@ -370,6 +405,15 @@ proc init_for_platform {} {
     }
 }
 
+proc add_app_icon {} {
+    # add an icon for all windows, mostly viewable in Alt-Tab.  As of writing
+    # this code, "wm iconphoto" is ignored by Mac OS X, and the icon is
+    # instead handled in the standard Mac OS X app wrapper in Info.plist
+    if {$::windowingsystem eq "aqua"} return
+	set im [image create photo -file [file join $::sys_guidir ".." tcl pd.gif]]
+	wm iconphoto . -default $im
+}
+
 # ------------------------------------------------------------------------------
 # locale handling
 
@@ -377,10 +421,11 @@ proc init_for_platform {} {
 proc _ {s} {return [::msgcat::mc $s]}
 
 proc load_locale {} {
-    # on any UNIX-like environment, Tcl should automatically use LANG, LC_ALL,
-    # etc. otherwise we need to dig it up.  Mac OS X only uses LANG, etc. from
-    # the Terminal, and Windows doesn't have LANG, etc unless you manually set
-    # it up yourself.  Windows apps don't use the locale env vars usually.
+    # On any UNIX-like environment, Tcl should automatically use LANG,
+    # LC_ALL, etc.  On Windows, ::msgcat::Init automatically fetches
+    # the locale info from the registry and sets it for us.  This is
+    # supposed to happen on Mac OS X also, but it only seems to work
+    # for the $LANG env var.
     if {$::tcl_platform(os) eq "Darwin" && ! [info exists ::env(LANG)]} {
         # http://thread.gmane.org/gmane.comp.lang.tcl.mac/5215
         # http://thread.gmane.org/gmane.comp.lang.tcl.mac/6433
@@ -389,20 +434,11 @@ proc load_locale {} {
         } elseif {![catch "exec defaults read NSGlobalDomain AppleLocale" lang]} {
             ::msgcat::mclocale $lang
         }
-    } elseif {$::tcl_platform(platform) eq "windows"} {
-        # using LANG on Windows is useful for easy debugging
-        if {[info exists ::env(LANG)] && $::env(LANG) ne "C" && $::env(LANG) ne ""} {  
-            ::msgcat::mclocale $::env(LANG)
-        } elseif {![catch {package require registry}]} {
-            ::msgcat::mclocale [string tolower \
-                                    [string range \
-                                         [registry get {HKEY_CURRENT_USER\Control Panel\International} sLanguage] 0 1] ]
-        }
     }
     ::msgcat::mcload [file join [file dirname [info script]] .. po]
 
     ##--moo: force default system and stdio encoding to UTF-8
-    encoding system utf-8
+    encoding system utf-8 ;# TODO this is probably unnecessary
     fconfigure stderr -encoding utf-8
     fconfigure stdout -encoding utf-8
     ##--/moo
@@ -429,7 +465,7 @@ proc find_default_font {} {
             break
         }
     }
-    ::pdwindow::verbose 0 "Default font: $::font_family\n"
+    ::pdwindow::verbose 0 [format [_ "Default font: %s"]\n $::font_family]
 }
 
 proc set_base_font {family weight} {
@@ -437,7 +473,7 @@ proc set_base_font {family weight} {
         set ::font_family $family
     } else {
         ::pdwindow::post [format \
-            [_ "WARNING: Font family '%s' not found, using default (%s)\n"] \
+            [_ "WARNING: Font family '%s' not found, using default (%s)"]\n \
                 $family $::font_family]
     }
     if {[lsearch -exact {bold normal} $weight] > -1} {
@@ -445,7 +481,7 @@ proc set_base_font {family weight} {
         set using_defaults 0
     } else {
         ::pdwindow::post [format \
-            [_ "WARNING: Font weight '%s' not found, using default (%s)\n"] \
+            [_ "WARNING: Font weight '%s' not found, using default (%s)"]\n \
                 $weight $::font_weight]
     }
 }
@@ -453,32 +489,20 @@ proc set_base_font {family weight} {
 # creates all the base fonts (i.e. pd_font_8 thru pd_font_36) so that they fit
 # into the metrics given by $::font_fixed_metrics for any given font/weight
 proc fit_font_into_metrics {} {
-# TODO the fonts picked seem too small, probably on fixed width
     foreach {size width height} $::font_fixed_metrics {
-        set myfont [get_font_for_size $size]
-        font create $myfont -family $::font_family -weight $::font_weight \
-            -size [expr {-$height}]
-        set height2 $height
-        set giveup 0
-        while {[font measure $myfont M] > $width || \
-            [font metrics $myfont -linespace] > $height} {
-            incr height2 -1
-            font configure $myfont -size [expr {-$height2}]
-            if {$height2 * 2 <= $height} {
-                set giveup 1
-                set ::font_measured_metrics $::font_fixed_metrics
-                break
-            }
+        set pixelheight [expr -1 * $height]
+        font create tmpfont -family $::font_family -weight $::font_weight \
+            -size $pixelheight
+        while {[font measure tmpfont M] > $width || \
+            [font metrics tmpfont -linespace] > $height} {
+            # this actually makes it smaller since pixel heights are negative
+            incr pixelheight 1
+            font configure tmpfont -size $pixelheight
         }
-        set ::font_measured_metrics \
-            "$::font_measured_metrics  $size\
-                [font measure $myfont M] [font metrics $myfont -linespace]"
-        if {$giveup} {
-            ::pdwindow::post [format \
-    [_ "WARNING: %s failed to find font size (%s) that fits into %sx%s!\n"]\
-               [lindex [info level 0] 0] $size $width $height]
-            continue
-        }
+        ::pdwindow::logpost "" 8 "Creating $size font at {$pixelheight $width $height}\n"
+        font create [get_font_for_size $size] \
+            -family $::font_family -weight $::font_weight -size $pixelheight
+        font delete tmpfont
     }
 }
 
@@ -500,7 +524,7 @@ proc pdtk_pd_startup {major minor bugfix test libpd
     set_base_font $sys_font $sys_fontweight
     fit_font_into_metrics
     ::pd_guiprefs::init
-    pdsend "pd init [enquote_path [pwd]] $oldtclversion $::font_measured_metrics"
+    pdsend "pd init [enquote_path [pwd]] $oldtclversion $::font_fixed_metrics"
     ::pd_bindings::class_bindings
     ::pd_bindings::global_bindings
     ::pd_menus::create_menubar
@@ -538,7 +562,7 @@ proc parse_args {argc argv} {
     }
     set unflagged_files [opt_parser::get_options $argv]
     # if we have a single arg that is not a file, its a port or host:port combo
-    if {$argc == 1 && ! [file exists $argv]} {
+    if {$argc == 1 && ! [file exists [lindex $argv 0]]} {
         if { [string is int $argv] && $argv > 0} {
             # 'pd-gui' got the port number from 'pd'
             set ::host "localhost"
@@ -569,7 +593,7 @@ proc singleton {key} {
     if {![catch { selection get -selection $key }]} {
         return 0
     }
-    selection handle -selection $key . "singleton_request"
+    selection handle -selection $key -format UTF8_STRING . "singleton_request"
     selection own -command first_lost -selection $key .
     return 1
 }
@@ -608,6 +632,10 @@ proc receive_args {filelist} {
     }
 }
 
+proc dde_open_handler {cmd} {
+    open_file [file normalize $cmd]
+}
+
 proc check_for_running_instances {argc argv} {
     switch -- $::windowingsystem {
         "aqua" {
@@ -619,7 +647,7 @@ proc check_for_running_instances {argc argv} {
             if {![singleton PUREDATA_MANAGER]} {
                 # other instances called by wish/pd-gui (exempt 'pd' by 5400 arg)
                 if {$argc == 1 && [string is int $argv] && $argv >= 5400} {return}
-                selection handle -selection PUREDATA . "send_args"
+                selection handle -selection PUREDATA -format UTF8_STRING . "send_args"
                 selection own -command others_lost -selection PUREDATA .
                 after 5000 set ::singleton_state "timeout"
                 vwait ::singleton_state
@@ -629,8 +657,13 @@ proc check_for_running_instances {argc argv} {
                 selection own -command first_lost -selection PUREDATA .
             }
         } "win32" {
-            ## http://wiki.tcl.tk/1558
-            # TODO on Win: http://tcl.tk/man/tcl8.4/TclCmd/dde.htm
+            ## http://wiki.tcl.tk/8940
+            package require dde ;# 1.4 or later needed for full unicode support
+            set topic "Pd-extended_DDE_Open"
+            # if no DDE service is running, start one and claim the name
+            if { [dde services TclEval $topic] == {} } {
+                dde servername -handler dde_open_handler $topic
+            }
         }
     }
 }
@@ -642,22 +675,42 @@ proc check_for_running_instances {argc argv} {
 proc load_plugin_script {filename} {
     global errorInfo
 
-    ::pdwindow::debug "Loading plugin: $filename\n"
+    set basename [file tail $filename]
+    if {[lsearch $::loaded_plugins $basename] > -1} {
+        ::pdwindow::post \
+            [format [_ "'%s' already loaded, ignoring %s"]\n \
+                 $basename $filename]
+        return
+    }
+
+    ::pdwindow::debug [format [_ "Loading plugin: %s"]\n $filename]
     set tclfile [open $filename]
     set tclcode [read $tclfile]
     close $tclfile
+    # if the plugin folder includes translations, load them
+    set podir "[file dirname $filename]/po"
+    if {[file exists $podir] && [file isdir $podir]} {
+        ::pdwindow::debug [format [_ "Loading translations for %s"]\n $basename]
+        ::msgcat::mcload $podir
+    }
     if {[catch {uplevel #0 $tclcode} errorname]} {
         ::pdwindow::error "-----------\n"
-        ::pdwindow::error "UNHANDLED ERROR: $errorInfo\n"
-        ::pdwindow::error "FAILED TO LOAD $filename\n"
+        ::pdwindow::error [concat [_ "(Tcl) UNHANDLED ERROR: "] $errorInfo "\n"]
+        ::pdwindow::error [format [_ "FAILED TO LOAD %s"]\n $filename]
         ::pdwindow::error "-----------\n"
+    } else {
+        lappend ::loaded_plugins $basename
     }
 }
 
 proc load_startup_plugins {} {
     foreach pathdir [concat $::sys_searchpath $::sys_staticpath] {
         set dir [file normalize $pathdir]
-        if { ! [file isdirectory $dir]} {continue}
+        if { ! [file readable $dir] || ! [file isdirectory $dir]} {
+            ::pdwindow::debug \
+                [format [_ "Cannot read plugins folder: '%s'"]\n $dir]
+            continue
+        }
         foreach filename [glob -directory $dir -nocomplain -types {f} -- \
                               *-plugin/*-plugin.tcl *-plugin.tcl] {
             set ::current_plugin_loadpath [file dirname $filename]
@@ -722,6 +775,7 @@ proc main {argc argv} {
     check_for_running_instances $argc $argv
     set_pd_paths
     init_for_platform
+    add_app_icon
 
     # ::host and ::port are parsed from argv by parse_args
     if { $::port > 0 && $::host ne "" } {

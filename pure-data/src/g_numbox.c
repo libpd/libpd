@@ -457,8 +457,8 @@ static void my_numbox_properties(t_gobj *z, t_glist *owner)
             -------dimensions(digits)(pix):------- %d %d width: %d %d height: \
             -----------output-range:----------- %g min: %g max: %d \
             %d lin log %d %d log-height: %d \
-            %s %s \
-            %s %d %d \
+            {%s} {%s} \
+            {%s} %d %d \
             %d %d \
             %d %d %d\n",
             x->x_gui.x_w, 1, x->x_gui.x_h, 8,

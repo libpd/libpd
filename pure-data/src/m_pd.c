@@ -284,6 +284,12 @@ void pd_symbol(t_pd *x, t_symbol *s)
     (*(*x)->c_symbolmethod)(x, s);
 }
 
+void pd_blob(t_pd *x, t_blob *st) /* MP20061226 blob type */
+{
+    /*post("pd_blob: st %p length %lu (*x)->c_blobmethod %p", st, st->s_length, (*x)->c_blobmethod);*/
+    (*(*x)->c_blobmethod)(x, st);
+}
+
 void pd_list(t_pd *x, t_symbol *s, int argc, t_atom *argv)
 {
     (*(*x)->c_listmethod)(x, &s_list, argc, argv);

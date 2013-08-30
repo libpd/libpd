@@ -39,21 +39,26 @@ a fat binary or an indication of the instruction set. */
 #ifdef __FreeBSD__
 static char sys_dllextent[] = ".b_i386", sys_dllextent2[] = ".pd_freebsd";
 #elif defined(__linux__) || defined(__FreeBSD_kernel__) || defined(__GNU__)
+static char sys_dllextent2[] = ".pd_linux";
 # ifdef __x86_64__
-static char sys_dllextent[] = ".l_ia64", sys_dllextent2[] = ".pd_linux";
+static char sys_dllextent[] = ".l_ia64"; // this should be .l_x86_64 or .l_amd64
+# elif defined(__i386__) || defined(_M_IX86)
+static char sys_dllextent[] = ".l_i386";
+# elif defined(__arm__)
+static char sys_dllextent[] = ".l_arm";
 # else
-static char sys_dllextent[] = ".l_i386", sys_dllextent2[] = ".pd_linux";
+static char sys_dllextent[] = ".so";
 # endif
 #elif defined(__APPLE__)
 # ifndef MACOSX3
-static char sys_dllextent[] = ".d_fat", sys_dllextent2[] = ".pd_darwin";
+static char sys_dllextent[] = ".pd_darwin", sys_dllextent2[] = ".pd_darwin";
 # else
-static char sys_dllextent[] = ".d_ppc", sys_dllextent2[] = ".pd_darwin";
+static char sys_dllextent[] = ".pd_darwin", sys_dllextent2[] = ".pd_darwin";
 # endif
 #elif defined(_WIN32) || defined(__CYGWIN__)
 static char sys_dllextent[] = ".m_i386", sys_dllextent2[] = ".dll";
-#elif defined(ANDROID)
-static char sys_dllextent[] = ".l_arm", sys_dllextent2[] = ".pd_linux";
+#else
+static char sys_dllextent[] = ".so", sys_dllextent2[] = ".so";
 #endif
 
     /* maintain list of loaded modules to avoid repeating loads */
@@ -100,7 +105,7 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
     else classname = objectname;
     if (sys_onloadlist(objectname))
     {
-        post("%s: already loaded", objectname);
+        logpost(NULL, 3, "%s: already loaded", objectname);
         return (1);
     }
     for (i = 0, nameptr = classname; i < MAXPDSTRING-7 && *nameptr; nameptr++)
@@ -141,9 +146,11 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
             goto gotone;
         /* same, with the more generic sys_dllextent2 */
+#ifndef __APPLE__
     if ((fd = canvas_open(canvas, objectname, sys_dllextent2,
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
             goto gotone;
+#endif /* __APPLE__ */
         /* next try (objectname)/(classname).(sys_dllextent) ... */
     strncpy(filename, objectname, MAXPDSTRING);
     filename[MAXPDSTRING-2] = 0;
@@ -153,10 +160,12 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
     if ((fd = canvas_open(canvas, filename, sys_dllextent,
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
             goto gotone;
+#ifndef __APPLE__
     if ((fd = canvas_open(canvas, filename, sys_dllextent2,
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
             goto gotone;
-#ifdef ANDROID
+#endif /* __APPLE__ */
+#ifdef __ANDROID__
     /* Android libs always have a 'lib' prefix, '.so' suffix and don't allow ~ */
     char libname[MAXPDSTRING] = "lib";
     strncat(libname, objectname, MAXPDSTRING - 4);
@@ -201,7 +210,7 @@ gotone:
         ntdll = LoadLibrary(filename);
         if (!ntdll)
         {
-            post("%s: couldn't load", filename);
+            error("%s: couldn't load", filename);
             class_set_extern_dir(&s_);
             return (0);
         }
@@ -214,20 +223,21 @@ gotone:
     dlobj = dlopen(filename, RTLD_NOW | RTLD_GLOBAL);
     if (!dlobj)
     {
-        post("%s: %s", filename, dlerror());
+        error("%s: %s", filename, dlerror());
         class_set_extern_dir(&s_);
         return (0);
     }
     makeout = (t_xxx)dlsym(dlobj,  symname);
     if(!makeout)
         makeout = (t_xxx)dlsym(dlobj,  "setup");
+    /* fprintf(stderr, "symbol %s\n", symname); */
 #else
-#warning "No dynamic loading mechanism specified, libdl or WIN32 required for loading externals!"
+# warning "No dynamic loading mechanism specified, libdl or WIN32 required for loading externals!"
 #endif
 
     if (!makeout)
     {
-        post("load_object: Symbol \"%s\" not found", symname);
+        error("load_object: Symbol \"%s\" not found", symname);
         class_set_extern_dir(&s_);
         return 0;
     }
@@ -291,7 +301,7 @@ int sys_run_scheduler(const char *externalschedlibname,
         HINSTANCE ntdll = LoadLibrary(filename);
         if (!ntdll)
         {
-            post("%s: couldn't load external scheduler lib ", filename);
+            error("%s: couldn't load external scheduler lib ", filename);
             return (1);
         }
         externalmainfunc =
@@ -311,7 +321,7 @@ int sys_run_scheduler(const char *externalschedlibname,
         dlobj = dlopen(filename, RTLD_NOW | RTLD_GLOBAL);
         if (!dlobj)
         {
-            post("%s: %s", filename, dlerror());
+            error("%s: %s", filename, dlerror());
             fprintf(stderr, "dlopen failed for %s: %s\n", filename, dlerror());
             return (1);
         }

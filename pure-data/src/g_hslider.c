@@ -289,8 +289,8 @@ static void hslider_properties(t_gobj *z, t_glist *owner)
             --------dimensions(pix)(pix):-------- %d %d width: %d %d height: \
             -----------output-range:----------- %g left: %g right: %g \
             %d lin log %d %d empty %d \
-            %s %s \
-            %s %d %d \
+            {%s} {%s} \
+            {%s} %d %d \
             %d %d \
             %d %d %d\n",
             x->x_gui.x_w, IEM_SL_MINSIZE, x->x_gui.x_h, IEM_GUI_MINSIZE,
