@@ -143,12 +143,15 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
     *p++ = *inBuffer++;
   }
   memset(sys_soundout, 0, n_out * sizeof(t_sample));
-  sched_tick(sys_time + sys_time_per_dsp_tick);
+  //sched_tick(sys_time + sys_time_per_dsp_tick);
+  sched_audio_callbackfn();
   if (sys_nogui==0)
     sys_pollgui();
   for (p = sys_soundout, i = 0; i < n_out; i++) {
     *outBuffer++ = *p++;
   }
+
+  sys_send_dacs();
   return 0;
 }
 
@@ -187,7 +190,8 @@ int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, floa
 
     memset(sys_soundout, 0, sys_outchannels * DEFDACBLKSIZE * sizeof(t_sample));
 
-    sched_tick(sys_time + sys_time_per_dsp_tick);
+    sched_audio_callbackfn();
+    //sched_tick(sys_time + sys_time_per_dsp_tick);
     if (sys_nogui==0)
       sys_pollgui();
 
@@ -205,6 +209,9 @@ int libpd_process_float_noninterleaved(int num_ticks, const float **inputs, floa
       memset(outputs[1], 0, DEFDACBLKSIZE*sizeof(float)*num_ticks);
     }
 
+  // Just to update the vu.
+  sys_send_dacs();
+
   return 0;
 }
 
@@ -221,7 +228,7 @@ static const t_sample sample_to_short = SHRT_MAX,
       }                                                                 \
     }                                                                   \
     memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_sample)); \
-    sched_tick(sys_time + sys_time_per_dsp_tick);                       \
+    sched_audio_callbackfn();                                           \
     if (sys_nogui==0)                                                   \
       sys_pollgui();                                                    \
     for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) {      \
@@ -230,6 +237,7 @@ static const t_sample sample_to_short = SHRT_MAX,
       }                                                                 \
     }                                                                   \
   }                                                                     \
+  sys_send_dacs();                                                      \
   return 0;
 
 int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
