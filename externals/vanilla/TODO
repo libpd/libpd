@@ -1,0 +1,14 @@
+
+- figure out how Pd-extended is going to load this stuff in order to maintain
+  maximum capatibility
+
+- move relevant help patches from pd-extended's pd/doc/5.reference to here
+
+- move relevent help patches from doc/pddp to here
+
+- fix objects so if instantiated with vanilla/bng they retain the namespace prefix
+
+- x_midi.c is very intertwined with s_midi.c
+
+- figure out why delread~ can't get sigdelwrite_class
+

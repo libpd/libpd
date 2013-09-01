@@ -1,0 +1,80 @@
+#N canvas 0 0 555 619 10;
+#X obj 0 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 0 0 cnv 15 552 40 empty \$0-pddp.cnv.header dbtorms~ 3 12 0
+18 -204280 -1 0;
+#X obj 0 409 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#N canvas 52 246 494 344 META 0;
+#X text 12 105 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Miller Puckette;
+#X text 12 185 HELP_PATCH_AUTHORS Updated for Pd version 0.33. Jonathan
+Wilkes revised the patch to conform to the PDDP template for Pd version
+0.42.;
+#X text 12 5 KEYWORDS signal conversion;
+#X text 12 45 DESCRIPTION dB to linear amplitude for audio signals
+;
+#X text 12 65 INLET_0 signal float;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 165 RELEASE_DATE 1997;
+#X restore 500 597 pd META;
+#X obj 0 446 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 0 483 cnv 3 550 3 empty \$0-pddp.cnv.argument argument 8 12
+0 13 -228856 -1 0;
+#X obj 0 510 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#X obj 78 418 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 98 487 (none);
+#N canvas 47 452 428 139 Related_objects 0;
+#X obj 116 42 rmstodb~;
+#X obj 185 42 dbtopow~;
+#X obj 251 42 powtodb~;
+#X obj 21 105 mtof;
+#X obj 66 105 ftom;
+#X obj 109 105 dbtorms;
+#X obj 174 105 rmstodb;
+#X obj 240 105 dbtopow;
+#X obj 302 105 powtodb;
+#X text 18 78 Control objects for conversion:;
+#X obj 21 42 mtof~;
+#X obj 68 42 ftom~;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 7 1 [dbtorms~] Related Objects;
+#X restore 102 597 pd Related_objects;
+#X obj 209 195 snapshot~;
+#X floatatom 209 226 0 0 0 0 - - -;
+#X floatatom 209 90 0 0 0 0 - - -;
+#X obj 209 114 sig~;
+#X obj 276 169 metro 100;
+#X obj 276 139 loadbang;
+#X text 98 417 signal;
+#X obj 78 455 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 98 455 signal;
+#X obj 475 3 dbtorms~;
+#X obj 445 20 pddp/pddplink http://wiki.puredata.info/en/dbtorms~ -text
+pdpedia: dbtorms~;
+#X obj 209 139 dbtorms~;
+#X text 11 23 dB to linear amplitude for audio signals;
+#X text 99 251 The [dbtorms~] object converts from decibels to linear
+("RMS") amplitude \, so that 100 dB corresponds to an "RMS" of 1 .
+Zero dB \, which should correspond to 0.0001 in "RMS" \, is instead
+rounded down to zero.;
+#X text 99 514 This object takes an audio signal as input and output
+(and works sample by sample). Since it calls a library math function
+\, it may be much more expensive than other workaday tilde objects
+such as [*~] and [osc~] \, depending on your hardware and math library.
+;
+#X obj 4 597 pddp/pddplink pddp/help.pd -text help;
+#X obj 455 51 pddp/dsp-reminder;
+#X connect 10 0 11 0;
+#X connect 12 0 13 0;
+#X connect 13 0 21 0;
+#X connect 14 0 10 0;
+#X connect 15 0 14 0;
+#X connect 21 0 10 0;

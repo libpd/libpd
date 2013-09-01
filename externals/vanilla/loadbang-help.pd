@@ -1,0 +1,127 @@
+#N canvas 0 0 555 619 10;
+#X obj 0 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 0 0 cnv 15 552 40 empty \$0-pddp.cnv.header loadbang 3 12 0
+18 -204280 -1 0;
+#X obj 0 422 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#N canvas 52 244 494 344 META 0;
+#X text 12 85 LIBRARY internal;
+#X text 12 125 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Miller Puckette;
+#X text 12 165 HELP_PATCH_AUTHORS Dave Sabine \, November 12 \, 2002
+Jonathan Wilkes revised the patch to conform to the PDDP template for
+Pd version 0.42.;
+#X text 12 45 DESCRIPTION send "bang" automatically when patch loads
+;
+#X text 12 65 OUTLET_0 bang;
+#X text 12 5 KEYWORDS control bang_op;
+#X text 12 145 RELEASE_DATE 1997;
+#X restore 500 597 pd META;
+#X obj 0 450 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 0 492 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 -228856 -1 0;
+#X obj 0 520 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#X text 98 495 (none);
+#N canvas 89 493 428 100 Related_objects 0;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X obj 21 42 bang;
+#X obj 61 42 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 92 42 trigger;
+#X obj 160 42 initbang;
+#X text 7 1 [loadbang] Related Objects;
+#X restore 102 597 pd Related_objects;
+#X obj 78 459 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 466 3 loadbang;
+#X obj 435 20 pddp/pddplink http://wiki.puredata.info/en/loadbang -text
+pdpedia: loadbang;
+#X obj 89 264 loadbang;
+#X obj 89 312 f 1;
+#X obj 132 312 f 4;
+#X obj 89 337 +;
+#X floatatom 89 361 5 0 0 0 - - -;
+#X obj 89 287 t b b;
+#X obj 87 122 loadbang;
+#X obj 87 147 metro 1000;
+#X obj 87 171 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 86 216 In this example \, [loadbang] was used to process a
+simple mathematic equation when this patch was loaded. In this case:
+1 + 4 = 5;
+#X text 86 86 In this example \, [loadbang] was used simply to start
+a process automatically when this patch was loaded.;
+#X text 98 426 (none);
+#X text 98 458 bang;
+#X text 99 572 Pd Documentation Chapter 3.6 - doc/1.manual/x3.htm;
+#N canvas 96 135 428 388 More_Info 0;
+#X obj 15 149 print foo;
+#X obj 15 101 loadbang;
+#X text 13 177 As well \, the following [float]s were set with a group
+of numbers. Click the [bng] below to verify that the numbers were stored
+in the [float] objects.;
+#X obj 25 327 f;
+#X floatatom 25 352 2 0 0 0 - - -;
+#X obj 64 327 f;
+#X floatatom 64 352 2 0 0 0 - - -;
+#X obj 104 327 f;
+#X floatatom 103 352 2 0 0 0 - - -;
+#X obj 25 235 bng 15 250 50 0 empty empty Click_here_to_see_the_numbers_stored_in_the_float_objects.
+0 -6 0 8 -262144 -1 -1;
+#X obj 194 288 random 10;
+#X obj 103 289 random 10;
+#X text 14 30 The loadbang object will send a "bang" message when a
+canvas/patch loads and is used most often to 'initialize' or set default
+values in a patch. For example \, when you opened this patch \, the
+message below was immediately printed in the terminal window.;
+#X obj 103 255 loadbang;
+#X obj 287 289 random 10;
+#X msg 15 124 you have opened the [loadbang] help document;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 7 1 [loadbang] More Info;
+#X connect 1 0 15 0;
+#X connect 3 0 4 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 9 0 3 0;
+#X connect 9 0 5 0;
+#X connect 9 0 7 0;
+#X connect 10 0 5 1;
+#X connect 11 0 3 1;
+#X connect 13 0 11 0;
+#X connect 13 0 10 0;
+#X connect 13 0 14 0;
+#X connect 14 0 7 1;
+#X connect 15 0 0 0;
+#X restore 102 529 pd More_Info;
+#X text 11 23 send "bang" automatically when patch loads;
+#X text 168 458 - a "bang" message is sent automatically when the containing
+patch is loaded.;
+#N canvas 100 356 428 191 Important_Note 0;
+#X text 49 159 c:/pd/pd.exe -noloadbang;
+#X text 19 37 Loadbangs are a useful tool to set initial values in
+a patch - however \, there are times when it might be necessary to
+debug a patch and "turn off" all the loadbang objects. This can be
+accomplished by opening Pd with the -noloadbang flag.;
+#X text 19 102 For example \, to suppress all loadbangs \, your command
+line might look something like this: (more info about Pd's command
+line can be found in Chapter 3.6 of the HTML documentation.;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 7 1 [loadbang] Important Note;
+#X restore 102 551 pd Important_Note;
+#X obj 4 597 pddp/pddplink pddp/help.pd -text help;
+#X connect 12 0 17 0;
+#X connect 13 0 15 0;
+#X connect 14 0 15 1;
+#X connect 15 0 16 0;
+#X connect 17 0 13 0;
+#X connect 17 1 14 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;

@@ -1,0 +1,7 @@
+#N canvas 192 364 450 300 10;
+#X obj 149 110 inlet~;
+#X obj 149 169 outlet~;
+#X obj 149 136 rsqrt~;
+#X text 84 56 q8_rsqrt~ is an alias for rsqrt~;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

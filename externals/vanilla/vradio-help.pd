@@ -1,0 +1,387 @@
+#N canvas 0 0 555 619 10;
+#X obj 0 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 0 0 cnv 15 552 40 empty \$0-pddp.cnv.header vradio 3 12 0 18
+-204280 -1 0;
+#X obj 0 316 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#N canvas 54 247 494 344 META 0;
+#X text 12 115 LIBRARY internal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 135 AUTHOR Thomas Musil;
+#X text 12 155 WEBSITE;
+#X text 12 195 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 5 KEYWORDS control storage GUI nonlocal;
+#X text 12 45 DESCRIPTION vertical column of gui-radio buttons;
+#X text 12 65 INLET_0 float bang size init number send receive label
+label_pos label_font color pos delta;
+#X text 12 95 OUTLET_0 float;
+#X text 12 175 RELEASE_DATE 1997;
+#X restore 500 597 pd META;
+#X obj 0 438 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 0 492 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 -228856 -1 0;
+#X obj 0 571 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#X obj 78 325 cnv 17 3 85 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#N canvas 83 461 428 129 Related_objects 0;
+#X obj 22 43 bang;
+#X obj 69 43 trigger;
+#X obj 145 43 until;
+#X obj 201 43 bang~;
+#X msg 257 43;
+#X obj 20 93 x_all_guis bng tgl vsl hsl hradio vradio vu cnv nbx;
+#X text 18 69 All iem-gui objects:;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 8 2 [vradio] Related Objects;
+#X restore 100 597 pd Related_objects;
+#X obj 78 447 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 291 174 and receive names. Right-;
+#X text 291 189 click and choose;
+#X text 290 205 "Properties" to set them \,;
+#X floatatom 292 63 5 0 5 0 - - -;
+#X floatatom 292 137 5 0 0 0 - - -;
+#X text 98 324 float;
+#X text 98 389 list;
+#X text 98 447 float;
+#X text 291 219 or change them with messages (see below);
+#X text 168 447 - output the number of the cell that has been clicked
+or sent to the inlet of [hradio]. Cell's are numbered from right to
+left \, in increasing order \, starting from zero.;
+#X text 97 270 Use the UP- \, DOWN- \, LEFT- or RIGHT-key to move a
+selected gui-object. Right-click and choose "Properties" to modify
+its appearance.;
+#X text 11 21 vertical column of gui-radio buttons;
+#X obj 455 20 pddp/pddplink http://wiki.puredata.info/en/vradio -text
+pdpedia: vradio;
+#X obj 529 45 vradio 15 1 0 8 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 91 48 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X floatatom 11 230 4 0 0 0 - - -;
+#X obj 11 252 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X obj 126 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X msg 226 76 set \$1;
+#X floatatom 226 55 4 0 5 0 - - -;
+#X floatatom 114 48 4 0 9 0 - - -;
+#X obj 148 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X obj 170 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X obj 192 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X obj 214 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X obj 236 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X obj 259 255 tgl 12 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X obj 59 230 print;
+#X obj 91 100 vradio 20 1 0 6 vradio-help-snd vradio-help-rcv vradio
+30 40 0 10 -4032 -86277 -1 0;
+#X msg 161 71 2;
+#X msg 161 48 6;
+#X obj 126 230 route 0 1 2 3 4 5;
+#X obj 292 84 s vradio-help-rcv;
+#X obj 292 114 r vradio-help-snd;
+#X text 290 158 [vradio] has settable send;
+#N canvas 83 190 428 345 vradio-creation-arguments 0;
+#X obj 23 208 s pd-vradio-creation-arguments;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 8 2 [vradio] Creation Arguments and Dynamic Patching;
+#X text 20 38 [vradio] can be called with 15 creation arguments. These
+are not "optional" - all parameters must be filled or the gui-bng will
+not instantiate correctly.;
+#X text 20 81 [vradio] creation arguments: Size Unknown Init Number
+sendName receiveName Label labelXOff labelYOff font# fontSize bgColor
+foregroundColor labelColor initValue;
+#X text 20 125 For example \, click the msg-box to dynamically create
+a [vradio]:;
+#X msg 23 166 obj 180 260 vradio 25 1 0 3 empty empty Taygete -10 -10
+0 12 6 25 13 0 \;;
+#X connect 6 0 0 0;
+#X restore 170 547 pd vradio-creation-arguments;
+#X text 168 389 - a list is truncated to the first element.;
+#X text 168 324 - a float highlights the corresponding button and outputs
+the button number. Buttons are numbered from top to bottom \, starting
+from zero. For incoming numbers that are out of range \, the nearest
+button number is selected.;
+#N canvas 66 12 428 601 Setting_vradio_properties_through_messages
+0;
+#X text 111 33 no init;
+#X text 175 160 label;
+#X msg 175 180 label blabla;
+#X msg 121 104 init 1;
+#X msg 111 52 init 0;
+#X text 120 71 init value;
+#X text 121 85 on loadbang;
+#X text 317 33 change send name;
+#X text 23 160 change receive name;
+#X obj 38 233 s z_rcv;
+#X msg 21 182 receive z_rcv;
+#N canvas 313 106 164 268 init 0;
+#X obj 16 11 loadbang;
+#X obj 16 42 f \$0;
+#X msg 16 73 \; \$1-xpos 349 \; \$1-ypos 432 \; \$1-xlabel 0 \; \$1-ylabel
+-8 \; \$1-number 8 \; \$1-font-size 10 \; \$1-size 15 \; \$1-font-size
+10 \; \$1-font 0 \; \$1-bg 0 \; \$1-front 12 \; \$1-label 12;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 315 389 pd init;
+#X text 111 33 no init;
+#X msg 121 104 init 1;
+#X msg 111 52 init 0;
+#X text 120 71 init value;
+#X text 121 85 on loadbang;
+#X floatatom 204 52 3 0 20 0 - #0-number -;
+#X text 204 33 number (of cells);
+#X msg 204 104 number \$1;
+#X obj 204 128 s vradio_rcv;
+#X obj 316 128 s vradio_rcv;
+#X obj 21 259 s vradio_rcv;
+#X obj 175 259 s vradio_rcv;
+#X msg 316 56 send vradio1_snd;
+#X msg 325 104 send vradio_snd;
+#X msg 38 208 receive vradio_rcv;
+#X msg 185 234 label myVradio;
+#X msg 21 104 size \$1;
+#X text 20 33 dimensions;
+#X obj 21 54 nbx 3 14 8 200 0 0 empty \$0-size empty 0 -8 0 12 -262144
+-1 -1 15 256;
+#X text 71 51 size;
+#X obj 21 128 s vradio_rcv;
+#X text 314 160 label position;
+#X text 19 287 font properties;
+#X msg 316 234 label_pos \$1 \$2;
+#X msg 21 355 label_font \$1 \$2;
+#X text 70 311 1.font(0-2);
+#X text 70 332 2.height;
+#X text 365 183 1.x-offset;
+#X text 365 204 2.y-offset;
+#N canvas 366 206 174 259 flash-time 0;
+#X obj 68 180 pack;
+#X obj 103 149 t b a;
+#X obj 68 205 outlet;
+#X obj 103 104 nbx 3 14 -1e+37 1e+37 0 0 \$0-dummy \$0-xlabel empty
+0 -8 0 12 -262144 -1 -1 0 256;
+#X obj 103 124 nbx 3 14 -1e+37 1e+37 0 0 \$0-dummy \$0-ylabel empty
+0 -8 0 12 -262144 -1 -1 -8 256;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 1 0 1;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X coords 0 -1 1 1 48 42 2 100 100;
+#X restore 316 182 pd flash-time;
+#N canvas 366 206 174 259 flash-time 0;
+#X obj 68 180 pack;
+#X obj 103 149 t b a;
+#X obj 68 205 outlet;
+#X obj 103 104 nbx 3 14 0 2 0 0 \$0-dummy \$0-font empty 0 -8 0 12
+-262144 -1 -1 0 256;
+#X obj 103 124 nbx 3 14 -1e+37 1e+37 0 0 \$0-dummy \$0-font-size empty
+0 -8 0 12 -262144 -1 -1 10 256;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 1 0 1;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X coords 0 -1 1 1 48 42 2 100 100;
+#X restore 21 309 pd flash-time;
+#X text 175 287 preset-colors;
+#X text 314 287 RGB-colors;
+#X msg 175 391 color \$1 \$2 \$3;
+#N canvas 364 205 306 317 flash-time 0;
+#X obj 69 196 t b a;
+#X obj 33 262 outlet;
+#X obj 33 237 pack 0 0 0;
+#X obj 120 197 t b a;
+#X obj 103 104 nbx 3 14 0 29 0 0 \$0-dummy \$0-bg empty 0 -8 0 12 -262144
+-1 -1 0 256;
+#X obj 103 124 nbx 3 14 0 29 0 0 \$0-dummy \$0-front empty 0 -8 0 12
+-262144 -1 -1 12 256;
+#X obj 103 144 nbx 3 14 0 29 0 0 \$0-dummy \$0-label empty 0 -8 0 12
+-262144 -1 -1 12 256;
+#X connect 0 0 2 0;
+#X connect 0 1 2 1;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 3 1 2 2;
+#X connect 4 0 2 0;
+#X connect 5 0 0 0;
+#X connect 6 0 3 0;
+#X coords 0 -1 1 1 48 62 2 100 100;
+#X restore 175 309 pd flash-time;
+#N canvas 0 0 306 317 flash-time 0;
+#X obj 96 521 outlet;
+#X obj 162 230 t b f;
+#X obj 96 268 +;
+#X obj 96 293 t b f;
+#X obj 96 324 +;
+#X obj 19 208 * -65536;
+#X obj 96 208 * -256;
+#X obj 162 208 * -1;
+#X obj 96 355 - 1;
+#X obj 96 385 list prepend 0;
+#X obj 96 410 route 0 1 2;
+#X obj 96 497 pack 0 0 0;
+#X obj 115 456 t b a;
+#X obj 168 455 t b a;
+#X obj 104 124 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X text 120 120 1.bg;
+#X text 120 137 2.front;
+#X text 120 153 3.label;
+#X obj 103 105 nbx 3 14 0 255 0 0 \$0-dummy \$0-r empty 0 -8 0 10 -262144
+-258113 -1 0 256;
+#X obj 133 105 nbx 3 14 0 255 0 0 \$0-dummy \$0-g empty 0 -8 0 10 -262144
+-13381 -1 0 256;
+#X obj 163 105 nbx 3 14 0 255 0 0 \$0-dummy \$0-b empty 0 -8 0 10 -262144
+-4160 -1 0 256;
+#X connect 1 0 2 0;
+#X connect 1 1 2 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 8 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
+#X connect 7 0 1 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 10 2 13 0;
+#X connect 11 0 0 0;
+#X connect 12 0 11 0;
+#X connect 12 1 11 1;
+#X connect 13 0 11 0;
+#X connect 13 1 11 2;
+#X connect 14 0 9 1;
+#X connect 18 0 5 0;
+#X connect 19 0 6 0;
+#X connect 20 0 7 0;
+#X coords 0 -1 1 1 102 74 2 100 100;
+#X restore 315 306 pd flash-time;
+#X text 224 311 1.bg;
+#X text 224 331 2.front;
+#X text 224 352 3.label;
+#X text 174 448 delta;
+#X text 20 448 position;
+#X msg 21 545 pos \$1 \$2;
+#X msg 175 545 delta \$1 \$2;
+#X obj 175 521 list;
+#X obj 175 470 bng 20 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 69 469 1.x-position;
+#X text 69 491 2.y-position;
+#X text 254 469 1.x-delta;
+#X text 254 491 2.y-delta;
+#N canvas 366 206 174 259 flash-time 0;
+#X obj 68 180 pack;
+#X obj 103 149 t b a;
+#X obj 68 205 outlet;
+#X obj 103 104 nbx 3 14 -1e+37 1e+37 0 0 \$0-dummy \$0-xpos empty 0
+-8 0 12 -262144 -1 -1 349 256;
+#X obj 103 124 nbx 3 14 -1e+37 1e+37 0 0 \$0-dummy \$0-ypos empty 0
+-8 0 12 -262144 -1 -1 432 256;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 1 0 1;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X coords 0 -1 1 1 48 42 2 100 100;
+#X restore 21 470 pd flash-time;
+#N canvas 366 206 174 259 flash-time 0;
+#X obj 68 180 pack;
+#X obj 103 149 t b a;
+#X obj 68 205 outlet;
+#X obj 103 104 nbx 3 14 -20 20 0 0 \$0-dummy \$0-xdelta empty 0 -8
+0 12 -262144 -1 -1 0 256;
+#X obj 103 124 nbx 3 14 -20 20 0 0 \$0-dummy \$0-ydelta empty 0 -8
+0 12 -262144 -1 -1 0 256;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 1 0 1;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X coords 0 -1 1 1 48 42 2 100 100;
+#X restore 204 470 pd flash-time;
+#X obj 317 415 cnv 15 102 177 empty empty empty 20 12 0 14 -1 -66577
+0;
+#X obj 318 416 cnv 15 100 175 empty empty empty 20 12 0 14 -261682
+-66577 0;
+#X floatatom 350 567 5 0 0 0 - - -;
+#X obj 349 432 vradio 15 1 0 8 vradio_snd vradio_rcv myVradio 0 -8
+0 10 -262144 -33289 -33289 0;
+#X obj 316 259 s vradio_rcv;
+#X obj 21 380 s vradio_rcv;
+#X obj 175 416 s vradio_rcv;
+#X obj 21 570 s vradio_rcv;
+#X obj 175 570 s vradio_rcv;
+#X obj 111 128 s vradio_rcv;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 8 2 [vradio] Set Properties through Messages;
+#X connect 2 0 23 0;
+#X connect 3 0 72 0;
+#X connect 4 0 72 0;
+#X connect 10 0 22 0;
+#X connect 17 0 19 0;
+#X connect 19 0 20 0;
+#X connect 24 0 21 0;
+#X connect 25 0 21 0;
+#X connect 26 0 9 0;
+#X connect 27 0 23 0;
+#X connect 28 0 32 0;
+#X connect 30 0 28 0;
+#X connect 35 0 67 0;
+#X connect 36 0 68 0;
+#X connect 41 0 35 0;
+#X connect 42 0 36 0;
+#X connect 45 0 69 0;
+#X connect 46 0 45 0;
+#X connect 47 0 45 0;
+#X connect 53 0 70 0;
+#X connect 54 0 71 0;
+#X connect 55 0 54 0;
+#X connect 56 0 55 0;
+#X connect 61 0 53 0;
+#X connect 62 0 55 1;
+#X connect 66 0 65 0;
+#X restore 100 410 pd Setting_vradio_properties_through_messages;
+#X text 98 496 15;
+#X text 168 496 - creating an [vradio] without any arguments sets default
+values for its gui-properties. See the subpatch below to learn how
+to dynamically instantiate a [vradio] object with custom properties:
+;
+#X obj 4 597 pddp/pddplink pddp/help.pd -text help;
+#X text 98 372 bang;
+#X text 168 372 - output the current value.;
+#X connect 13 0 42 0;
+#X connect 24 0 38 0;
+#X connect 25 0 26 0;
+#X connect 28 0 38 0;
+#X connect 29 0 28 0;
+#X connect 30 0 38 0;
+#X connect 38 0 25 0;
+#X connect 38 0 37 0;
+#X connect 38 0 41 0;
+#X connect 39 0 38 0;
+#X connect 40 0 38 0;
+#X connect 41 0 27 0;
+#X connect 41 1 31 0;
+#X connect 41 2 32 0;
+#X connect 41 3 33 0;
+#X connect 41 4 34 0;
+#X connect 41 5 35 0;
+#X connect 41 6 36 0;
+#X connect 43 0 14 0;

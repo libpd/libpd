@@ -1,0 +1,78 @@
+#N canvas 0 0 555 619 10;
+#X obj 0 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 0 0 cnv 15 552 40 empty \$0-pddp.cnv.header powtodb~ 3 12 0
+18 -204280 -1 0;
+#X obj 0 418 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#N canvas 51 245 494 344 META 0;
+#X text 12 105 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Miller Puckette;
+#X text 12 185 HELP_PATCH_AUTHORS Updated for Pd version 0.33. Jonathan
+Wilkes revised the patch to conform to the PDDP template for Pd version
+0.42.;
+#X text 12 5 KEYWORDS signal conversion acoustic_units;
+#X text 12 45 DESCRIPTION convert power units to dB for audio signals
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 165 RELEASE_DATE 1997;
+#X restore 500 597 pd META;
+#X obj 0 455 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 0 492 cnv 3 550 3 empty \$0-pddp.cnv.argument argument 8 12
+0 13 -228856 -1 0;
+#X obj 0 520 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#X obj 78 427 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 98 496 (none);
+#N canvas 102 446 428 141 Related_objects 0;
+#X obj 23 102 mtof;
+#X obj 68 102 ftom;
+#X obj 111 102 dbtorms;
+#X obj 176 102 rmstodb;
+#X obj 242 102 dbtopow;
+#X obj 304 102 powtodb;
+#X text 20 79 Control objects for conversion:;
+#X obj 23 43 mtof~;
+#X obj 70 43 ftom~;
+#X obj 118 43 dbtorms~;
+#X obj 187 43 rmstodb~;
+#X obj 253 43 dbtopow~;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 8 2 [powtodb~] Related Objects;
+#X restore 102 597 pd Related_objects;
+#X obj 209 225 snapshot~;
+#X floatatom 209 256 0 0 0 0 - - -;
+#X floatatom 209 120 0 0 0 0 - - -;
+#X obj 209 144 sig~;
+#X obj 276 199 metro 100;
+#X obj 276 169 loadbang;
+#X text 98 426 signal;
+#X obj 78 464 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 98 464 signal;
+#X text 99 524 This object takes an audio signal as input and output
+(and works sample by sample.) Since it calls a library math function
+\, it may be much more expensive than other workaday tilde objects
+such as *~ and osc~ \, depending on your hardware and math library.
+;
+#X obj 209 169 dbtopow~;
+#X text 99 292 The powtodb~ object converts power units \, equal to
+the square of the "RMS" amplitude \, to decibels.;
+#X obj 471 3 powtodb~;
+#X obj 445 20 pddp/pddplink http://wiki.puredata.info/en/powtodb~ -text
+pdpedia: powtodb~;
+#X text 11 23 convert power units to dB for audio signals;
+#X obj 4 597 pddp/pddplink pddp/help.pd -text help;
+#X obj 455 51 pddp/dsp-reminder;
+#X connect 10 0 11 0;
+#X connect 12 0 13 0;
+#X connect 13 0 20 0;
+#X connect 14 0 10 0;
+#X connect 15 0 14 0;
+#X connect 20 0 10 0;

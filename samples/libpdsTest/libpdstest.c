@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <libpds.h>
 
+#if 0
 void pdprint(const char *s) {
   printf("%s", s);
 }
@@ -18,6 +19,7 @@ void pdprint(const char *s) {
 void pdnoteon(int ch, int pitch, int vel) {
   printf("noteon: %d %d %d\n", ch, pitch, vel);
 }
+#endif
 
 float inbuf[64], outbuf[128];  // one input channel, two output channels
                                // block size 64, one tick per buffer
@@ -40,10 +42,15 @@ static void *file2;
 static pd_t *start_instance(const char *filename, void **file) {
   pd_t *pd = libpds_create(true, "../../pure-data");
 
+  if(pd==NULL){
+    fprintf(stderr, "libpds_create returned NULL. Message: \"%s\"\n", libpds_strerror());
+    return NULL;
+  }
+  
   // init pd
   int srate = 44100;
-  libpds_set_printhook(pd, pdprint);
-  libpds_set_noteonhook(pd, pdnoteon);
+  //libpds_set_printhook(pd, pdprint);
+  //libpds_set_noteonhook(pd, pdnoteon);
   libpds_init_audio(pd, 1, 2, srate);
 
   // compute audio    [; pd dsp 1(

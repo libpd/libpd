@@ -90,6 +90,10 @@ void sys_putonloadlist(char *classname) /* add to list of loaded modules */
 
 void class_set_extern_dir(t_symbol *s);
 
+#if defined(LIBPD)
+int libpd_load_lib(char *classname);
+#endif // defined(LIBPD)
+
 static int sys_do_load_lib(t_canvas *canvas, char *objectname)
 {
     char symname[MAXPDSTRING], filename[MAXPDSTRING], dirbuf[MAXPDSTRING],
@@ -189,7 +193,16 @@ gotone:
     strncat(filename, nameptr, MAXPDSTRING-strlen(filename));
     filename[MAXPDSTRING-1] = 0;
 
-#ifdef _WIN32
+#ifdef LIBPD
+    fprintf(stderr,"aaa\n");
+    int ret = libpd_load_lib(classname);
+    fprintf(stderr,"b\n");
+    class_set_extern_dir(&s_); // ???
+    if (ret!=0)
+      sys_putonloadlist(objectname);
+    return ret;
+
+#elif _WIN32
     {
         char dirname[MAXPDSTRING], *s, *basename;
         sys_bashfilename(filename, filename);

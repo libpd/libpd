@@ -1,0 +1,134 @@
+#N canvas 0 0 555 619 10;
+#X obj 0 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 0 0 cnv 15 552 40 empty \$0-pddp.cnv.header keyup 3 12 0 18
+-204280 -1 0;
+#X obj 0 223 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#N canvas 52 245 494 344 META 0;
+#X text 12 85 LIBRARY internal;
+#X text 12 125 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 145 RELEASE_DATE 2009-06-12;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Miller Puckette;
+#X text 12 165 HELP_PATCH_AUTHORS Dave Sabine \, July 11 \, 2003 Jonathan
+Wilkes revised the patch to conform to the PDDP template for Pd version
+0.42.;
+#X text 12 45 DESCRIPTION get input from the keyboard on key release
+;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control user_input;
+#X restore 500 597 pd META;
+#X obj 0 250 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 0 400 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 -228856 -1 0;
+#X obj 0 427 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#X text 98 404 (none);
+#N canvas 107 446 428 145 Related_objects 0;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X obj 52 42 keyname;
+#X text 19 72 Externals and other object libraries;
+#X obj 21 42 key;
+#X text 7 1 [keyup] Related Objects;
+#X obj 18 93 pddp/helplink Gem/gemkeyboard;
+#X obj 18 113 pddp/helplink Gem/gemkeyname;
+#X restore 102 597 pd Related_objects;
+#X text 98 258 float;
+#X obj 78 259 cnv 17 3 130 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 98 227 (none);
+#X text 98 366 Also note that key combinations \, such as SHIFT+7 produce
+a different result than SHIFT or 7 alone.;
+#X text 168 301 Some keys \, such as SHIFT or the F1-F12 series all
+produce a zero \, but we can see by the [bng] that the event is not
+ignored completely...but the numeric "ID" of the key is not captured
+successfully. (This may produce different results on different systems.)
+;
+#X obj 83 162 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 103 162 5 0 0 0 - - -;
+#N canvas 107 160 428 356 reacting_to_user_input 0;
+#X text 19 37 Most \, if not all \, programming environments provide
+us with tools to capture 'user initiated' events from the operating
+system. Keyboard input \, mouse clicks \, and mouse movements are the
+most common events in this 'user event' category.;
+#X text 19 103 Pd's [key] \, [keyup] \, and [keyname] are complimented
+by the externals such as [gemmouse] and [nimouse] to provide us with
+a full range of tools to gleen a user's activities at the computer.
+;
+#X text 33 240 onKeyUp;
+#X text 33 221 onKeyDown;
+#X text 33 259 onKeyPress;
+#X text 20 290 hmmm...wouldn't it be great if Pd also gave us onChange
+\, onBlur \, onFocus \, onClick \, onDblClick \, onDragDrop \, onLoad
+\, onMouseDown \, onMouseOver \, onMouseOut \, onMouseMove \, onUnload...?
+;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 20 169 It's interesting to note that with these tools \, PD
+can mimic some of the functions in other languages - Javascript for
+example has:;
+#X text 7 1 [keyup] Reacing to User Input;
+#X restore 102 525 pd reacting_to_user_input;
+#X obj 483 3 keyup;
+#X obj 455 20 pddp/pddplink http://wiki.puredata.info/en/keyup -text
+pdpedia: keyup;
+#X text 100 83 [keyup] reports the (system dependent) numbers of "printing"
+keys of the keyboard.;
+#X obj 103 125 keyup;
+#X text 142 125 When you release a key \, [keyup] sends data to Pd
+;
+#X text 168 258 - the number at this outlets represents the numeric
+"ID" of a key on the computer's keyboard. This even occurs when the
+key is released. Only one event is captured at a time.;
+#X text 98 431 The [key] and [keyup] objects can mimic the functionality
+of the [noteon] and [noteoff] objects. A key combination such as SHIFT+7
+could be considered a 'chord'!;
+#X text 99 471 Caveat - this object only works if Pd actually gets
+the key events which can depend on the stacking order of windows and/or
+the pointer location. This is dependent on the system.;
+#X obj 276 572 pddp/pddplink all_about_hid.pd -text all_about_hid;
+#X text 101 573 for more on HIDs:;
+#N canvas 107 163 330 381 some_keyboard_fun 0;
+#X obj 52 75 loadbang;
+#X msg 23 16 bang;
+#X obj 33 158 qlist;
+#X floatatom 33 185 5 0 0 0 - - -;
+#X obj 218 30 r keyboard_fun;
+#X msg 52 105 read keyboard_fun.txt;
+#X msg 45 51 rewind;
+#X obj 218 112 symbol add2;
+#X obj 218 83 t b s;
+#X obj 218 138 pack s s;
+#X obj 218 164 route list;
+#X msg 47 245 set;
+#X msg 47 278;
+#X obj 218 57 symbol;
+#X text 71 17 Click here to start...;
+#X msg 62 131 tempo 0.8;
+#X obj 47 217 loadbang;
+#X connect 0 0 5 0;
+#X connect 0 0 15 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 13 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 8 1 9 1;
+#X connect 9 0 10 0;
+#X connect 10 0 12 0;
+#X connect 11 0 12 0;
+#X connect 13 0 8 0;
+#X connect 15 0 2 0;
+#X connect 16 0 11 0;
+#X restore 102 550 pd some_keyboard_fun;
+#X text 11 23 get input from the keyboard on key release;
+#X text 168 227 - [keyup] gets input directly from the keyboard.;
+#X obj 4 597 pddp/pddplink pddp/help.pd -text help;
+#X connect 20 0 14 0;
+#X connect 20 0 15 0;
