@@ -241,7 +241,6 @@ bool create_custom_loader_source(char *template, const lib_t *libs){
   }
 
   fprintf(file, "int libpd_load_lib(char *classname){\n");
-  fputs(        " fprintf(stderr,\"HALLO! \%s\\n\", classname);\n", file);
 
   libs2 = (lib_t*)libs;
   while(libs2 != NULL) {
@@ -283,7 +282,7 @@ static bool link_library(char *unlibered, char *libered, char *loader_filename, 
 
   if(system(temp)!=0) {
     printf("libpd: Was trying to run command \"%s\"\n",temp);
-    sprintf(error_string,"Couldn't link file \"%s\". See terminal output for more info about what went wrong.", libered);
+    sprintf(error_string,"Execution of gcc failed. Couldn't link file \"%s\". See terminal output for more info about what went wrong.", libered);
     free(temp);
     return false;
   }

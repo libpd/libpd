@@ -194,9 +194,7 @@ gotone:
     filename[MAXPDSTRING-1] = 0;
 
 #ifdef LIBPD
-    fprintf(stderr,"aaa\n");
     int ret = libpd_load_lib(classname);
-    fprintf(stderr,"b\n");
     class_set_extern_dir(&s_); // ???
     if (ret!=0)
       sys_putonloadlist(objectname);
