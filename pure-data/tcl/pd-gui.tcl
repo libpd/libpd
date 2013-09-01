@@ -599,8 +599,10 @@ proc singleton {key} {
 }
 
 proc singleton_request {offset maxbytes} {
-    wm deiconify .pdwindow
-    raise .pdwindow
+    if {$::LIBPD eq 0} {
+        wm deiconify .pdwindow
+        raise .pdwindow
+    }
     return [tk appname]
 }
 
