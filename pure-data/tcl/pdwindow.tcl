@@ -509,8 +509,8 @@ proc ::pdwindow::create_window {} {
         # the loading logic can grab it and put up the busy cursor
         tkwait visibility .pdwindow.text
     } else {
-        tkwait visibility .pdwindow.text
-#        wm withdraw .pdwindow
+#        tkwait visibility .pdwindow.text
+        wm withdraw .pdwindow
     }
 
     # hack to make a good read-only text widget from http://wiki.tcl.tk/1152
