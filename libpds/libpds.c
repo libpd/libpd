@@ -412,6 +412,7 @@ pd_t *libpds_create(bool use_gui, const char *libdir){
 
   pd->handle = dlopen(libered_filename, RTLD_NOW | RTLD_LOCAL);
   if (!pd->handle) {
+    sprintf(error_string, "Unable to create libpds instance. Error message: \"%s\"\n", dlerror());
     fprintf(stderr, "Unable to create libpds instance. Error message: \"%s\"\n", dlerror());
     return NULL;
   }
