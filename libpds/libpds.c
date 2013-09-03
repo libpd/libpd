@@ -264,7 +264,7 @@ static bool link_library(char *unlibered, char *libered, char *loader_filename, 
   int size=1600;
   char *temp = malloc(size);
 
-  sprintf(temp,"gcc -Wall -shared -o %s %s %s -fPIC",libered,unlibered,loader_filename);
+  sprintf(temp,"gcc -Wall -shared -o %s %s -fPIC -Xlinker -start-group %s ",libered,loader_filename, unlibered);
   while(libs != NULL) {
     int new_len = strlen(temp) + strlen(" ") + strlen(libs->copy_filename) + 10;
     if(new_len > size) {
@@ -279,6 +279,9 @@ static bool link_library(char *unlibered, char *libered, char *loader_filename, 
 
     libs=libs->next;
   }
+
+  strcat(temp, " -end-group");
+  //printf("Running -%s-\n",temp);
 
   if(system(temp)!=0) {
     printf("libpd: Was trying to run command \"%s\"\n",temp);
@@ -412,8 +415,8 @@ pd_t *libpds_create(bool use_gui, const char *libdir){
 
   pd->handle = dlopen(libered_filename, RTLD_NOW | RTLD_LOCAL);
   if (!pd->handle) {
-    sprintf(error_string, "Unable to create libpds instance. Error message: \"%s\"\n", dlerror());
-    fprintf(stderr, "Unable to create libpds instance. Error message: \"%s\"\n", dlerror());
+    sprintf(error_string, "Unable to create libpds instance. Error message: \"%s\" Filename: %s", dlerror(), libered_filename);
+    fprintf(stderr, "%s\n", error_string);
     return NULL;
   }
 
