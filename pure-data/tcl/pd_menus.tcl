@@ -224,6 +224,13 @@ proc ::pd_menus::build_put_menu {mymenu} {
     $mymenu add command -label [_ "Comment"] -accelerator "$accelerator+5" \
         -command {menu_send_float $::focused_window text 0}
     $mymenu add  separator
+    $mymenu add command -label [_ "Radium Float"] \
+        -command {menu_send_float $::focused_window obj "-16000 -16000 r_float <set name here>"}
+    $mymenu add command -label [_ "Radium Integer"] \
+        -command {menu_send_float $::focused_window obj "-16000 -16000 r_int <set name here>"}
+    $mymenu add command -label [_ "Radium Toggle"] \
+        -command {menu_send_float $::focused_window obj "-16000 -16000 r_bool <set name here>"}
+    $mymenu add  separator
     $mymenu add command -label [_ "Bang"]    -accelerator "Shift+$accelerator+B" \
         -command {menu_send $::focused_window bng}
     $mymenu add command -label [_ "Toggle"]  -accelerator "Shift+$accelerator+T" \

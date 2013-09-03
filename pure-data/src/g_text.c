@@ -186,7 +186,7 @@ static void canvas_howputnew(t_canvas *x, int *connectp, int *xpixp, int *ypixp,
 void canvas_obj(t_glist *gl, t_symbol *s, int argc, t_atom *argv)
 {
     t_text *x;
-    if (argc >= 2)
+    if (argc >= 2 && atom_getintarg(0, argc, argv) != -16000 && atom_getintarg(1, argc, argv) != -16000)
     {
         t_binbuf *b = binbuf_new();
         binbuf_restore(b, argc-2, argv+2);
@@ -200,6 +200,8 @@ void canvas_obj(t_glist *gl, t_symbol *s, int argc, t_atom *argv)
     {
             /* interactively create new obect */
         t_binbuf *b = binbuf_new();
+        if(argc >=2)
+          binbuf_restore(b, argc-2, argv+2);
         int connectme, xpix, ypix, indx, nobj;
         canvas_howputnew(gl, &connectme, &xpix, &ypix, &indx, &nobj);
         pd_vmess(&gl->gl_pd, gensym("editmode"), "i", 1);
