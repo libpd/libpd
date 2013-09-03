@@ -32,6 +32,9 @@ exec guile -e main -s $0 $*
  void* libpd_openfile(const char* basename, const char* dirname);
  void libpd_closefile(void* p);
  void libpd_savefile(void* p);
+ void* libpd_request_savefile(void* x);
+ bool libpd_wait_until_file_is_saved(void* request, float max_seconds_to_wait);
+
  int libpd_getdollarzero(void* p);
 
  void libpd_show_gui(void);

@@ -27,7 +27,8 @@ EXTERN void libpd_add_to_search_path(const char *sym);
 
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
-EXTERN void libpd_savefile(void *x);
+EXTERN void *libpd_request_savefile(void *x);
+EXTERN bool libpd_wait_until_file_is_saved(void *request, float max_seconds_to_wait); // returns true if file was saved. Can be called simultaneously with other libpd functions, except for libpd_request_savefile and libpd_wait_until_file_is_saved. It's optional whether to call this function after calling libpd_request_savefile.
 EXTERN int libpd_getdollarzero(void *p);
 
 EXTERN void libpd_show_gui(void);

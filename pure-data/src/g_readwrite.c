@@ -736,13 +736,16 @@ static void canvas_menusave(t_canvas *x)
 
 #if defined(LIBPD)
 void *libpd_get_main_file(void);
+void libpd_file_is_saved(void);
 
 static void canvas_saveifmain(t_canvas *x)
 {
   if (libpd_get_main_file() != (void*)(&x->gl_pd))
     return;
-  else
+  else {
     canvas_menusave(x);
+    libpd_file_is_saved();
+  }
 }
 #endif
 

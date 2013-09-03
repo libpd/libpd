@@ -481,11 +481,31 @@ void libpd_closefile(void *x) {
   pd_free((t_pd *)x);
 }
 
-void libpd_savefile(void *x) {
+static bool file_has_been_saved = false;
+
+void libpd_file_is_saved(void) {
+  file_has_been_saved = true;
+}
+
+void *libpd_request_savefile(void *x) {
+  file_has_been_saved = false;
+
   void *the_real_main_file = main_file;
   main_file = x;
   sys_vgui("libpd_save_main_patch\n");
-  main_file = the_real_main_file;
+
+  return the_real_main_file;
+}
+
+bool libpd_wait_until_file_is_saved(void *request, float max_seconds_to_wait){
+  int num_iterations = 0;
+  do{
+    usleep(50);
+  }while(file_has_been_saved==false && num_iterations<((1000000*max_seconds_to_wait)/50));
+  
+  main_file = request;
+
+  return file_has_been_saved;
 }
 
 int libpd_getdollarzero(void *x) {
