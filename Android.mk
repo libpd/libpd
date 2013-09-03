@@ -33,7 +33,7 @@ PD_SRC_FILES := \
   libpd_wrapper/util/z_queued.c
 PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
   $(LOCAL_PATH)/libpd_wrapper/util
-PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY
+PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w
 PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
 PD_LDLIBS := -ldl
 
