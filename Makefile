@@ -184,18 +184,22 @@ libpds/libpds.h: libpds/gen.scm
 	which guile
 	libpds/gen.scm h-file >libpds/libpds.h
 
-
 vanilla_install: vanilla
 	make -C externals/vanilla STRIP="$(STRIP)" \
 		DESTDIR=../../pure-data/extra objectsdir="$(objectsdir)" install
 
-vanilla:
+vanilla: extra
 	make -j8 -C externals/vanilla CFLAGS="$(CFLAGS) -fno-tree-vectorize -fno-strict-aliasing" \
 		PD_PATH=../../pure-data/src PD_INCLUDE=../../pure-data/src
 
 vanilla_clean:
 	make -C externals/vanilla clean DESTDIR=../../pure-data/extra
 	rm -f pure-data/extra/vanilla/*
+
+extra: pure-data/extra/choice/choice.pd_linux
+
+pure-data/extra/choice/choice.pd_linux:
+	cd pure-data/extra && make all
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 

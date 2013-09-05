@@ -316,6 +316,25 @@ static bool get_searchpaths(searchpath_t **sp, const char *libdir){
   sprintf(temp, "%s/extra/vanilla/", libdir);
   (*sp)->path=(const char*)strdup(temp);
 
+#define ADD_EXTRA(WHERE) { \
+    searchpath_t *extra = calloc(1,sizeof(searchpath_t));       \
+    sprintf(temp, "%s/extra/" WHERE "/", libdir);           \
+    extra->path=(const char*)strdup(temp);                      \
+    extra->next = *sp;                                          \
+    *sp = extra;                                                \
+  }
+
+  ADD_EXTRA("bonk~");
+  ADD_EXTRA("choice");
+  ADD_EXTRA(""); // expr~
+  ADD_EXTRA("fiddle~");
+  ADD_EXTRA("loop~");
+  ADD_EXTRA("lrshift~");
+  //  ADD_EXTRA("pd~");
+  ADD_EXTRA("pique");
+  ADD_EXTRA("sigmund~");
+  ADD_EXTRA("stdout");
+
   {
     sprintf(temp,"%s/.pdextended",getenv("HOME"));
     FILE *file=fopen(temp, "r");
