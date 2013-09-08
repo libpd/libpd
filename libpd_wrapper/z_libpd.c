@@ -98,6 +98,11 @@ bool libpd_init(bool use_gui, const char *libdir) {
   return true;
 }
 
+void *libpd_hook_data = NULL;
+void libpd_set_hook_data(void *data){
+  libpd_hook_data = data;
+}
+
 void libpd_cleanup(void) {
   // It's not unlikely that Pd has some allocated resources that should be freed as well. Just calling glob_quit() is probably not enough.
   glob_quit(NULL);

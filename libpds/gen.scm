@@ -26,6 +26,7 @@ exec guile -e main -s $0 $*
 
  bool libpd_init(bool use_gui, const char* libdir);
  void libpd_cleanup(void);
+ void libpd_set_hook_data(void* data);
  void libpd_clear_search_path(void);
  void libpd_add_to_search_path(const char* sym);
 

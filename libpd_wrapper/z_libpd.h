@@ -106,14 +106,13 @@ EXTERN int libpd_midibyte(int port, int byte);
 EXTERN int libpd_sysex(int port, int byte);
 EXTERN int libpd_sysrealtime(int port, int byte);
 
-typedef void (*t_libpd_noteonhook)(int channel, int pitch, int velocity);
-typedef void (*t_libpd_controlchangehook)(int channel,
-    int controller, int value);
-typedef void (*t_libpd_programchangehook)(int channel, int value);
-typedef void (*t_libpd_pitchbendhook)(int channel, int value);
-typedef void (*t_libpd_aftertouchhook)(int channel, int value);
-typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
-typedef void (*t_libpd_midibytehook)(int port, int byte);
+typedef void (*t_libpd_noteonhook)(void *data, int channel, int pitch, int velocity);
+typedef void (*t_libpd_controlchangehook)(void *data, int channel, int controller, int value);
+typedef void (*t_libpd_programchangehook)(void *data, int channel, int value);
+typedef void (*t_libpd_pitchbendhook)(void *data, int channel, int value);
+typedef void (*t_libpd_aftertouchhook)(void *data, int channel, int value);
+typedef void (*t_libpd_polyaftertouchhook)(void *data, int channel, int pitch, int value);
+typedef void (*t_libpd_midibytehook)(void *data, int port, int byte);
 
 EXTERN t_libpd_noteonhook libpd_noteonhook;
 EXTERN t_libpd_controlchangehook libpd_controlchangehook;
