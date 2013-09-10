@@ -4,6 +4,8 @@
 
 /*  send~, delread~, throw~, catch~ */
 
+#include <math.h>
+
 #include "m_pd.h"
 extern int ugen_getsortno(void);
 
@@ -271,7 +273,11 @@ static t_int *sigvd_perform(t_int *w)
     t_sample zerodel = x->x_zerodel;
     while (n--)
     {
-        t_sample delsamps = x->x_sr * *in++ - zerodel, frac;
+        t_sample inval = *in++;
+        if(!isfinite(inval))
+          inval = 0.0f;
+
+        t_sample delsamps = x->x_sr * inval - zerodel, frac;
         int idelsamps;
         t_sample a, b, c, d, cminusb;
         if (delsamps < 1.00001f) delsamps = 1.00001f;

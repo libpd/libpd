@@ -264,7 +264,7 @@ static bool link_library(char *unlibered, char *libered, char *loader_filename, 
   int size=1600;
   char *temp = malloc(size);
 
-  sprintf(temp,"gcc -Wall -shared -o %s %s -fPIC -Xlinker -start-group %s ",libered,loader_filename, unlibered);
+  sprintf(temp,"gcc -Wall -shared -o %s %s -fPIC -lm -Xlinker -start-group %s ",libered,loader_filename, unlibered);
   while(libs != NULL) {
     int new_len = strlen(temp) + strlen(" ") + strlen(libs->copy_filename) + 10;
     if(new_len > size) {
