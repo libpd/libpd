@@ -58,10 +58,13 @@ void sys_get_midi_apis(char *buf) {
   strcpy(buf, "{}");
 }
 
+void sys_get_midi_params(int *pnmidiindev, int *pmidiindev, int *pnmidioutdev, int *pmidioutdev){
+  *pnmidiindev = 0;
+  *pnmidioutdev = 0;
+}
+
 // The rest is not relevant to libpd.
 void sys_listmididevs(void) {}
-void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,
-    int *pnmidioutdev, int *pmidioutdev) {}
 void sys_open_midi(int nmidiindev, int *midiindev,
     int nmidioutdev, int *midioutdev, int enable) {}
 void sys_close_midi() {}
