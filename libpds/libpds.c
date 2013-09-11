@@ -263,8 +263,7 @@ bool create_custom_loader_source(char *template, const lib_t *libs){
 static bool link_library(char *unlibered, char *libered, char *loader_filename, lib_t *libs){
   int size=1600;
   char *temp = malloc(size);
-
-  sprintf(temp,"gcc -Wall -shared -o %s %s -fPIC -Xlinker -start-group %s ",libered,loader_filename, unlibered);
+  sprintf(temp,"gcc -Wall -shared -o %s %s -fPIC -lm -Xlinker -start-group %s ",libered,loader_filename, unlibered);
   while(libs != NULL) {
     int new_len = strlen(temp) + strlen(" ") + strlen(libs->copy_filename) + 10;
     if(new_len > size) {
@@ -364,15 +363,15 @@ static bool get_searchpaths(searchpath_t **sp, const char *libdir){
     fclose(file);
     return true;
 
+    /*
   failed:
     fclose(file);
     return false;
+    */
   }
 }
 
 static bool add_all_libs(lib_t **libs, searchpath_t *sp){
-  char temp[1024];
-
   while(sp!=NULL){
     if(add_libs(libs, sp->path)==false)
       return false;
