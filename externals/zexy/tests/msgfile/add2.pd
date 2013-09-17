@@ -1,0 +1,13 @@
+#N canvas 401 102 550 495 10;
+#X obj 91 117 inlet bang;
+#X obj 91 270 outlet result;
+#X obj 91 138 t b b b;
+#X obj 110 212 msgfile;
+#X msg 110 186 add2 1 2 3 4;
+#X obj 91 240 i 1;
+#X text 57 56 crasher bug;
+#X connect 0 0 2 0;
+#X connect 2 0 5 0;
+#X connect 2 1 4 0;
+#X connect 4 0 3 0;
+#X connect 5 0 1 0;

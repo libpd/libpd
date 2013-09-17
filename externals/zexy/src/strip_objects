@@ -1,0 +1,8 @@
+#!/bin/sh
+TMPFILE=/tmp/pdobjects
+touch $TMPFILE
+rm $TMPFILE
+grep --no-filename class_new *.c | awk '{print $3}' >> $TMPFILE
+for i in `cat $TMPFILE`; do i=${i##class_new(gensym(\"};  i=${i%%\"),}; echo $i ; done | sort -u
+touch $TMPFILE
+rm $TMPFILE

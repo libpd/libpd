@@ -1,0 +1,33 @@
+#N canvas 3 3 728 317 10;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array my_array66 5 float 0;
+#X array my_array77 8 float 0;
+#X coords 0 1 8 -1 200 140 1;
+#X restore 513 117 graph;
+#X obj 193 138 loadbang;
+#X obj 23 168 tabdump my_array66;
+#X msg 23 100 bang;
+#X obj 23 193 print;
+#X msg 73 148 set my_array77;
+#X msg 193 164 \; my_array66 resize 5 \; my_array77 resize 8 \; my_array66
+0.1 0.3 0.2 0.5 0.2 -0.1 \; my_array77 0.1 0.1 0.2 0.3 0.5 0.8 0.13
+0.21 0.34;
+#X obj 116 22 tabdump;
+#X text 213 24 dump the contents of a table as a list;
+#X msg 72 126 set my_array66;
+#X text 555 22 part of zexy;
+#N canvas 515 193 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 85 OUTLET_0 list;
+#X text 12 45 DESCRIPTION dump the contents of a table as a list;
+#X text 12 65 INLET_0 bang set;
+#X text 12 5 KEYWORDS control array list_op;
+#X restore 668 286 pd META;
+#X connect 1 0 6 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 5 0 2 0;
+#X connect 9 0 2 0;

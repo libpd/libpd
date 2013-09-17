@@ -1,0 +1,16 @@
+#N canvas 462 214 450 382 10;
+#X obj 253 162 length;
+#X obj 223 181 /;
+#X obj 223 116 t l l;
+#X obj 223 140 sum;
+#X text 272 20 part of zexy;
+#X text 58 60 the mean of a list of floats is the sum of its elements
+divided by its length;
+#X obj 223 87 inlet list;
+#X obj 223 203 outlet mean;
+#X connect 0 0 1 1;
+#X connect 1 0 7 0;
+#X connect 2 0 3 0;
+#X connect 2 1 0 0;
+#X connect 3 0 1 0;
+#X connect 6 0 2 0;

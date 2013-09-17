@@ -1,0 +1,50 @@
+#N canvas 7 5 666 402 10;
+#X obj 51 91 metro 320;
+#X msg 51 69 1;
+#X msg 76 69 0;
+#X text 271 237 alias;
+#X text 549 33 part of zexy;
+#X obj 111 12 multiplex;
+#X text 231 10 multiplex the selected inlet to the outlet;
+#X text 277 81 the rightmost inlet specifies \, which inlet is routed
+to the outlet;
+#X text 280 119 inlets number from 0..(n-1);
+#X text 268 166 creation: "multiplex [<in1?> [<in2?> [<in3?> ... ]]]"
+;
+#X obj 51 311 mux 1 2 3 4;
+#X text 303 185 the number of arguments defines the number of inlets
+;
+#X obj 315 236 mux;
+#X obj 51 369 print output;
+#X obj 123 240 vradio 15 1 0 4 empty empty select 20 7 0 8 -262144
+-1 -1 0;
+#X obj 51 111 t b b b b;
+#X msg 69 161 bang;
+#X floatatom 51 143 5 0 0 0 - - -;
+#X msg 87 183 list 4 2;
+#X msg 105 211 symbol coppenrath;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION multiplex the selected inlet to the outlet
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_N anything;
+#X text 12 85 INLET_R float;
+#X text 12 105 OUTLET_0 anything;
+#X restore 608 373 pd META;
+#X connect 0 0 15 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 10 0 13 0;
+#X connect 14 0 10 4;
+#X connect 15 0 17 0;
+#X connect 15 1 16 0;
+#X connect 15 2 18 0;
+#X connect 15 3 19 0;
+#X connect 16 0 10 1;
+#X connect 17 0 10 0;
+#X connect 18 0 10 2;
+#X connect 19 0 10 3;

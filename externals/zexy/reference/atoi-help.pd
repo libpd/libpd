@@ -1,0 +1,55 @@
+#N canvas 0 31 615 317 10;
+#X obj 95 21 atoi;
+#X text 144 19 convert ascii to integer;
+#X obj 42 178 atoi;
+#X floatatom 42 201 4 0 0 0 - - -;
+#X obj 42 132 makefilename %4d;
+#X symbolatom 42 155 10 0 0 0 - - -;
+#X floatatom 42 110 4 0 0 0 - - -;
+#X floatatom 147 110 4 0 0 0 - - -;
+#X obj 147 132 makefilename 0%d;
+#X floatatom 250 110 4 0 0 0 - - -;
+#X obj 250 132 makefilename 0x%d;
+#X text 44 92 decimal;
+#X text 148 94 octal;
+#X text 250 93 sedecimal;
+#X floatatom 387 109 4 0 0 0 - - -;
+#X obj 387 127 makefilename %d;
+#X floatatom 472 106 4 0 0 0 - - -;
+#X text 476 93 base;
+#X obj 387 146 pack s 2;
+#X msg 387 86 101;
+#X msg 413 86 10011;
+#X text 211 194 symbols starting with "0x" are converted as hex-numbers
+;
+#X text 212 208 symbols starting with "0" are converted as octal numbers
+;
+#X text 211 223 symbols starting with numbers but "0" are converted
+as decimal numbers;
+#X text 330 285 updated for zexy-2.0;
+#X text 330 285 updated for zexy-2.0;
+#X text 509 17 part of zexy;
+#N canvas 515 193 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 45 DESCRIPTION convert ascii to integer;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 OUTLET_0 float;
+#X restore 565 297 pd META;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 6 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 5 0;
+#X connect 14 0 15 0;
+#X connect 15 0 18 0;
+#X connect 16 0 18 1;
+#X connect 18 0 2 0;
+#X connect 19 0 14 0;
+#X connect 20 0 14 0;

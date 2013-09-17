@@ -1,0 +1,46 @@
+# ----------------------- NT -----------------------
+
+.PHONY: clean cleaner all zexy
+
+LIBNAME=zexy
+
+current: $(LIBNAME)
+
+PREFIX=C:\Programme\pd
+
+EXT=dll
+CC=cl
+LD=link
+
+DEFS=/D__WIN32__ /DPD /DZEXY_LIBRARY
+IFLAGS=/I. /I$(PREFIX)\src
+WFLAGS=/W3 /WX /nologo
+
+## for LinePrinter-support: (if you don't want it, comment it out)
+DEFS += /DZ_WANT_LPT
+
+.SUFFIXES: .$(EXT)
+
+SOURCES=$(sort $(filter %.c, $(wildcard *.c)))
+
+CFLAGS = /O2 $(DEFS) $(IFLAGS) $(WFLAGS)
+LIBS = libc.lib oldnames.lib kernel32.lib pd.lib
+LFLAGS = /dll /export:$(LIBNAME)_setup /LIBPATH:"$(PREFIX)\bin"
+
+
+TARGETS = $(SOURCES:.c=.obj)
+
+
+$(TARGETS): %.obj : %.c
+	$(CC) $(CFLAGS) /c $*.c
+
+
+$(LIBNAME): $(TARGETS)
+	$(LD) $(LFLAGS) /out:$(LIBNAME).$(EXT) *.obj $(LIBS)
+
+clean:
+	del /f *.obj $(LIBNAME).$(EXT)
+
+cleaner: clean
+	del /f *~ _* config.* $(LIBNAME).$(EXT)
+

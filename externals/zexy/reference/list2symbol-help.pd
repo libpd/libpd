@@ -1,0 +1,44 @@
+#N canvas 0 31 716 373 10;
+#X obj 85 28 list2symbol;
+#X text 178 29 convert a list into a symbol;
+#X obj 407 30 l2s;
+#X symbolatom 25 266 0 0 0 0 - - -;
+#X msg 25 77 list this was a list and is now a symbol;
+#X msg 109 98 anythings work fine too;
+#X obj 457 268 print;
+#X symbolatom 97 203 10 0 0 0 - - -;
+#X msg 97 138 symbol --;
+#X text 180 137 by default \, list-elements are separated by spaces.
+You can set the separator to any symbol;
+#X text 486 11 part of zexy;
+#X msg 106 181 symbol;
+#X obj 25 238 list2symbol;
+#X text 172 183 even to a zero-length symbol!;
+#X msg 457 227 my bonnie is over the ovean;
+#X obj 457 248 l2s .;
+#X text 487 41 updated for zexy-2.2;
+#X text 504 250 argument: default delimiter;
+#X text 266 306 in prior versions of [list2symbol] \, the default delimiter
+was not settable via arguments \; instead the arguments denoted the
+incoming list. this has changed!!!!;
+#X text 271 282 Attention:;
+#N canvas 460 154 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 145 AUTHOR IOhannes m zmoelnig;
+#X text 12 25 KEYWORDS control conversion symbol_op;
+#X text 12 65 DESCRIPTION convert a list into a symbol;
+#X text 12 85 INLET_0 anything;
+#X text 12 105 INLET_1 symbol;
+#X text 12 125 OUTLET_0 symbol;
+#X text 12 5 ALIAS l2s;
+#X restore 661 344 pd META;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 7 0 12 1;
+#X connect 8 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 3 0;
+#X connect 14 0 15 0;
+#X connect 15 0 6 0;

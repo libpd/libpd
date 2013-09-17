@@ -1,0 +1,22 @@
+#N canvas 80 348 644 425 10;
+#X obj 56 37 inlet;
+#X obj 56 224 route bang float symbol list gpointer;
+#X obj 56 282 outlet BANG;
+#X obj 106 262 outlet FLOAT;
+#X obj 157 282 outlet SYMBOL;
+#X obj 208 382 outlet LIST;
+#X obj 259 282 outlet POINTER;
+#X obj 208 360 a2l;
+#X text 239 362 since the "list" selector gets stripped by [route]
+;
+#X text 478 28 part of zexy;
+#X text 141 72 [segregate] a message based on it's type.;
+#X obj 310 262 outlet reject;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 1 3 7 0;
+#X connect 1 4 6 0;
+#X connect 1 5 11 0;
+#X connect 7 0 5 0;

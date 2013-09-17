@@ -96,6 +96,7 @@ int libpd_load_lib(char *classname);
 
 static int sys_do_load_lib(t_canvas *canvas, char *objectname)
 {
+
     char symname[MAXPDSTRING], filename[MAXPDSTRING], dirbuf[MAXPDSTRING],
         *classname, *nameptr, altsymname[MAXPDSTRING];
     void *dlobj;
@@ -135,16 +136,28 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
         }
     }
     symname[i] = 0;
+
     if (hexmunge)
     {
         memmove(symname+6, symname, strlen(symname)+1);
         strncpy(symname, "setup_", 6);
     }
     else strcat(symname, "_setup");
-    
+
+    {
+      int ret = libpd_load_lib(symname);
+      class_set_extern_dir(&s_); // ???
+      if (ret!=0)
+        sys_putonloadlist(symname);
+      return ret;
+    }
+
+
+
 #if 0
     fprintf(stderr, "lib: %s\n", classname);
 #endif
+  printf("       ********************** HERE1 %s *********************\n",objectname);
         /* try looking in the path for (objectname).(sys_dllextent) ... */
     if ((fd = canvas_open(canvas, objectname, sys_dllextent,
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
@@ -156,6 +169,7 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
             goto gotone;
 #endif /* __APPLE__ */
         /* next try (objectname)/(classname).(sys_dllextent) ... */
+  printf("       ********************** HERE2 %s *********************\n",objectname);
     strncpy(filename, objectname, MAXPDSTRING);
     filename[MAXPDSTRING-2] = 0;
     strcat(filename, "/");
@@ -181,19 +195,23 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
         dirbuf, &nameptr, MAXPDSTRING, 1)) >= 0)
             goto gotone;
 #endif
+  printf("       ********************** HERE2.5 %s *********************\n",objectname);
     return (0);
 gotone:
     close(fd);
+  printf("       ********************** HERE3 %s *********************\n",objectname);
     class_set_extern_dir(gensym(dirbuf));
 
         /* rebuild the absolute pathname */
     strncpy(filename, dirbuf, MAXPDSTRING);
     filename[MAXPDSTRING-2] = 0;
+  printf("       ********************** HERE4 %s *********************\n",objectname);
     strcat(filename, "/");
     strncat(filename, nameptr, MAXPDSTRING-strlen(filename));
     filename[MAXPDSTRING-1] = 0;
 
 #ifdef LIBPD
+  printf("       ********************** HERE5 %s *********************\n",objectname);
     int ret = libpd_load_lib(classname);
     class_set_extern_dir(&s_); // ???
     if (ret!=0)

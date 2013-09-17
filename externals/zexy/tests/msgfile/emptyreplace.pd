@@ -1,0 +1,20 @@
+#N canvas 0 0 454 304 10;
+#X obj 182 147 msgfile;
+#X msg 207 78 goto 12;
+#X msg 182 118 replace crash;
+#X obj 182 60 t b b;
+#X obj 86 43 t b b;
+#X obj 86 20 inlet run_test;
+#X msg 86 190 1;
+#X obj 86 218 outlet;
+#X text 128 192 if we survive the test \, we automatically pass it
+;
+#X text 190 37 this is a crash-test!;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 3 1 1 0;
+#X connect 4 0 6 0;
+#X connect 4 1 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;

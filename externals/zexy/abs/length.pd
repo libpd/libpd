@@ -1,0 +1,11 @@
+#N canvas 78 147 450 289 10;
+#X obj 62 145 inlet;
+#X obj 62 209 outlet;
+#X obj 62 189 list length;
+#X text 225 36 part of zexy;
+#X text 64 87 get the length of a list;
+#X text 188 190 requires pd>=0.40;
+#X obj 62 166 list;
+#X connect 0 0 6 0;
+#X connect 2 0 1 0;
+#X connect 6 0 2 0;

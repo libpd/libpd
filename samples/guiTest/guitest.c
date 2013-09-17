@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
   for(iterations=0;iterations<2;iterations++) {
     printf("Showing gui for 5 seconds\n");
     libpd_show_gui();
-    runawhile(5);
+    runawhile(500);
 
     printf("Hiding gui for 2 seconds\n");
     libpd_hide_gui();

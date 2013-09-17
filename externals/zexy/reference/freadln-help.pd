@@ -1,0 +1,44 @@
+#N canvas 0 31 859 326 10;
+#X obj 443 239 print done;
+#X text 72 260 see also:;
+#X msg 433 149 bang;
+#X text 334 293 this outlet gets the lines in sequence.;
+#X obj 130 281 textfile;
+#X text 482 150 output one line as a list and move to the next;
+#X text 508 222 This outlet gets a bang when you hit the end of the
+sequence \; it will also get the current position when using "when"
+;
+#X text 618 7 part of zexy;
+#X obj 406 267 print data;
+#X obj 73 9 freadln;
+#X text 18 57 The [freadln] object is a simplified version if [textfile].
+It only supports reading files.;
+#X text 15 95 features are :;
+#X text 60 108 the file is not read into the objects buffer. instead
+only the current line will be streamed from the file. this allows to
+read _large_ files (which need not fit into the main memory at all)
+;
+#X text 58 199 no random access!;
+#X text 9 183 drawbacks are :;
+#X obj 130 262 fwriteln;
+#X msg 433 178 close;
+#X text 548 117 open a file in 'cr' mode;
+#X obj 406 201 freadln;
+#X msg 435 116 open test.mtx cr;
+#N canvas 708 249 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control storage filesystem;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 105 OUTLET_1 bang;
+#X text 12 65 INLET_0 bang open close;
+#X text 12 45 DESCRIPTION read text files line by line;
+#X restore 806 297 pd META;
+#X text 127 9 read text-files line-by-line;
+#X connect 2 0 18 0;
+#X connect 16 0 18 0;
+#X connect 18 0 8 0;
+#X connect 18 1 0 0;
+#X connect 19 0 18 0;

@@ -1,0 +1,28 @@
+#N canvas 0 31 497 302 10;
+#X obj 26 246 print;
+#X msg 61 139 3.14159 2 hello 1;
+#X msg 70 170 gosh 2.3 1;
+#X obj 26 212 list2int;
+#X text 65 23 list to integer;
+#X text 18 49 cast all floats of a list to integers;
+#X msg 26 110 1 2 -1.567 3 2;
+#X text 158 110 list of floats;
+#X text 224 139 list with symbols;
+#X obj 332 248 l2i;
+#X text 285 248 alias;
+#X text 371 15 part of zexy;
+#X text 168 169 not really a list;
+#N canvas 515 193 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION cast all floats of a list to integers;
+#X text 12 65 INLET_0 anything;
+#X text 12 5 KEYWORDS control conversion anything_op;
+#X text 12 85 OUTLET_0 anything;
+#X restore 433 271 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 6 0 3 0;

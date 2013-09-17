@@ -1,0 +1,16 @@
+#N canvas 86 70 450 300 10;
+#X obj 30 88 inlet~;
+#X obj 30 186 outlet~;
+#X text 33 209 using [expr~] is slower than doing it in C...;
+#X text 319 21 part of zexy;
+#X text 36 44 [sgn~];
+#X text 33 227 therefore we _also_ provide [sgn~] as external.;
+#X obj 71 124 <~ 0;
+#X obj 70 148 *~ -1;
+#X text 250 261 updated for zexy-2.1;
+#X obj 31 124 >~ 0;
+#X connect 0 0 6 0;
+#X connect 0 0 9 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 9 0 1 0;

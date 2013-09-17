@@ -1,0 +1,38 @@
+#N canvas 0 31 499 300 10;
+#X text 303 9 part of zexy;
+#X obj 34 32 rawprint;
+#X text 104 34 print a message as raw as possible;
+#X msg 194 64 1;
+#X msg 218 94 symbol bla;
+#X msg 229 131 list 4 2 crash;
+#X text 40 253 this is similar to the built-in [print] but without
+trying to hide things from you;
+#X obj 194 222 rawprint raw;
+#X obj 318 223 print cooked;
+#X msg 259 154 gully;
+#X msg 354 152 symbol \$1;
+#X msg 354 130 symbol;
+#N canvas 0 0 450 300 nop 0;
+#X obj 75 51 inlet;
+#X obj 75 73 outlet;
+#X text 57 158 i don't use [trigger anything] here \, as this might
+do something to the messages.;
+#X connect 0 0 1 0;
+#X restore 194 200 pd nop;
+#N canvas 509 158 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION print a message as raw as possible;
+#X text 12 65 INLET_0 anything;
+#X restore 442 275 pd META;
+#X connect 3 0 12 0;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 9 0 12 0;
+#X connect 10 0 12 0;
+#X connect 11 0 10 0;
+#X connect 12 0 7 0;
+#X connect 12 0 8 0;

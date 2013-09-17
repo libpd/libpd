@@ -1,0 +1,97 @@
+#N canvas 0 31 776 744 10;
+#X obj 57 15 makesymbol;
+#X text 152 13 makesymbol is something between the "symbol" and the
+"makefilename" object.;
+#X text 57 42 Any list (with up to 10 members) on the first input will
+be applied on a C-like format-string that can be either given as an
+argument on the second input or as a creation-argument.;
+#X obj 59 281 makesymbol;
+#X obj 61 591 makesymbol %s_is_%s;
+#X msg 14 260 bang;
+#X msg 11 380 bang;
+#X msg 10 570 bang;
+#X msg 232 260 symbol cat;
+#X msg 65 222 symbol horse;
+#X msg 69 247 symbol cow;
+#X obj 58 401 makesymbol house;
+#X msg 67 370 symbol castle;
+#X msg 232 235 symbol %ss;
+#X symbolatom 233 210 0 0 0 0 - - -;
+#X symbolatom 59 196 0 0 0 0 - - -;
+#X symbolatom 200 340 0 0 0 0 - - -;
+#X msg 71 568 list conan back;
+#X floatatom 128 521 0 0 0 0 - - -;
+#X obj 61 546 pack s 12;
+#X msg 69 498 symbol eleven;
+#X msg 200 359 symbol %d;
+#X msg 200 378 symbol %s;
+#X text 288 380 only %s does;
+#X text 278 357 %d \, %f... won't work properly;
+#X text 321 255 if the right inlet (mask) does not have any format-tags
+\, the left one won't get through !!;
+#X floatatom 61 458 0 0 0 0 - - -;
+#X text 177 473 it doesn't matter whether you are using numbers \,
+symbols...;
+#X text 235 567 note:: every member of the list will be converted to
+a STRING \, so there's no use \, using %d \, %f...;
+#X floatatom 58 340 0 0 0 0 - - -;
+#X text 317 367 (at least \, you won't get what you normally want)
+;
+#X symbolatom 92 427 25 0 0 0 - - -;
+#X symbolatom 72 306 25 0 0 0 - - -;
+#X symbolatom 80 619 25 0 0 0 - - -;
+#X symbolatom 58 166 0 0 0 0 - - -;
+#X text 58 98 The result will always be a symbol.;
+#X msg 58 118 list you can have up to ten members in your list.;
+#X obj 58 142 makesymbol 1%s_2%s_3%s_4%s_5%s_6%s_7%s_8%s_9%s_10%s;
+#X obj 19 426 print B;
+#X obj 10 618 print C;
+#X obj 13 305 print A;
+#X obj 61 478 makefilename %d;
+#X text 551 18 part of zexy;
+#X obj 167 684 makefilename;
+#X obj 167 714 l2s;
+#X text 260 683 (plain pd!);
+#X text 260 717 (zexy);
+#X text 25 651 a personal note: this object is somewhat obsolete \;
+use the following instead:;
+#N canvas 460 154 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION something between the "symbol" and the "makefilename"
+object.;
+#X text 12 75 INLET_0 symbol bang list;
+#X text 12 95 INLET_1 symbol;
+#X text 12 115 OUTLET_0 symbol;
+#X text 12 5 KEYWORDS control symbol_op;
+#X restore 723 717 pd META;
+#X connect 3 0 32 0;
+#X connect 3 0 40 0;
+#X connect 4 0 33 0;
+#X connect 4 0 39 0;
+#X connect 5 0 3 0;
+#X connect 6 0 11 0;
+#X connect 7 0 4 0;
+#X connect 8 0 3 1;
+#X connect 9 0 3 0;
+#X connect 10 0 3 0;
+#X connect 11 0 31 0;
+#X connect 11 0 38 0;
+#X connect 12 0 11 0;
+#X connect 13 0 3 1;
+#X connect 14 0 3 1;
+#X connect 15 0 3 0;
+#X connect 16 0 11 1;
+#X connect 17 0 4 0;
+#X connect 18 0 19 1;
+#X connect 19 0 4 0;
+#X connect 20 0 19 0;
+#X connect 21 0 11 1;
+#X connect 22 0 11 1;
+#X connect 26 0 41 0;
+#X connect 29 0 11 0;
+#X connect 36 0 37 0;
+#X connect 37 0 34 0;
+#X connect 41 0 19 0;

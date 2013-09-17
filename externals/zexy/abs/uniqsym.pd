@@ -1,0 +1,91 @@
+#N canvas 144 0 541 589 10;
+#X obj 26 104 inlet;
+#X obj 123 178 symbol;
+#X msg 26 246 compact \, sort \, bang \, dump;
+#X msg 123 199 add \$1;
+#X msg 74 269 reset;
+#X obj 26 219 t b;
+#X obj 26 322 index;
+#X obj 26 294 nop;
+#X obj 26 537 outlet;
+#X obj 74 221 t b;
+#X text 21 11 filter out duplicate names;
+#X text 21 37 any symbol that comes in \, gets added to a list of symbols.
+;
+#X text 20 51 when "bang" is received \, the symbols are output as
+a sorted list with uniqs removed.;
+#X text 22 79 "reset" cleans the entire list;
+#X obj 26 345 route list float;
+#X text 403 156 part of zexy;
+#X obj 245 202 repack 1;
+#X obj 220 177 t b l b;
+#X obj 79 468 spigot;
+#X obj 26 468 spigot;
+#X obj 122 447 == 0;
+#X obj 87 427 t f f;
+#X obj 79 497 repack;
+#N canvas 0 0 653 431 LICENSE 0;
+#X text 195 60 forum::fuer::umlaeute;
+#X text 195 79 institute of electronic music and acoustics \, IEM;
+#X text 197 95 university of music and dramatic arts \, graz \, austria
+;
+#X text 19 165 This program is free software \; you can redistribute
+it and/or modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation \; either version 2 of
+the License \, or (at your option) any later version.;
+#X text 19 246 This program is distributed in the hope that it will
+be useful \, but WITHOUT ANY WARRANTY \; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.;
+#X text 20 326 You should have received a copy of the GNU General Public
+License along with this program \; if not \, write to the Free Software
+Foundation \, Inc. \, 51 Franklin St \, Fifth Floor \, Boston \, MA
+02110-1301 USA;
+#X text 17 42 copyright (C) 2006 IOhannes m zmoelnig;
+#X text 175 118 zmoelnig iem.at;
+#X text 239 117 @;
+#X restore 405 180 pd LICENSE;
+#X obj 220 154 list;
+#X floatatom 140 431 5 0 0 0 - - -;
+#X obj 87 407 i \$1;
+#X obj 26 366 symbol;
+#X obj 26 387 t s b;
+#X obj 26 446 t s s;
+#X obj 26 127 route bang reset add symbol list mode;
+#X obj 268 152 t f;
+#X connect 0 0 30 0;
+#X connect 1 0 3 0;
+#X connect 2 0 7 0;
+#X connect 3 0 7 0;
+#X connect 4 0 7 0;
+#X connect 5 0 2 0;
+#X connect 6 0 14 0;
+#X connect 7 0 6 0;
+#X connect 9 0 4 0;
+#X connect 14 0 27 0;
+#X connect 14 1 22 1;
+#X connect 16 0 1 0;
+#X connect 17 0 5 0;
+#X connect 17 1 16 0;
+#X connect 17 2 4 0;
+#X connect 18 0 22 0;
+#X connect 19 0 8 0;
+#X connect 20 0 18 1;
+#X connect 21 0 19 1;
+#X connect 21 1 20 0;
+#X connect 22 0 8 0;
+#X connect 24 0 17 0;
+#X connect 26 0 21 0;
+#X connect 26 0 25 0;
+#X connect 27 0 28 0;
+#X connect 28 0 29 0;
+#X connect 28 1 26 0;
+#X connect 29 0 19 0;
+#X connect 29 1 18 0;
+#X connect 30 0 5 0;
+#X connect 30 1 9 0;
+#X connect 30 2 1 0;
+#X connect 30 3 1 0;
+#X connect 30 4 24 0;
+#X connect 30 5 31 0;
+#X connect 31 0 26 1;

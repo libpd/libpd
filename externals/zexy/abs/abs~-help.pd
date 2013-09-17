@@ -1,0 +1,25 @@
+#N canvas 201 257 575 388 10;
+#X obj 92 103 sig~;
+#X text 272 20 part of zexy;
+#X text 351 61 updated for zexy-2.0;
+#X obj 93 178 snapshot~;
+#X floatatom 93 204 5 0 0 0 - - -;
+#X obj 146 153 metro 100;
+#X obj 146 131 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X floatatom 92 81 5 0 0 0 - - -;
+#X text 16 243 note:;
+#X text 45 283 performance is worse than with the external version
+;
+#X text 45 315 if you want to use the external version of this object
+\, you have to load zexy;
+#X text 43 255 this is the abstraction version of this object \, which
+is using [expr~];
+#X obj 92 152 abs~;
+#X text 67 46 absolute value of a signal;
+#X connect 0 0 12 0;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 7 0 0 0;
+#X connect 12 0 3 0;

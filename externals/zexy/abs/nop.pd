@@ -1,0 +1,6 @@
+#N canvas 343 308 450 300 10;
+#X obj 142 91 inlet;
+#X obj 142 179 outlet;
+#X text 113 53 do nothing...;
+#X text 170 134 part of zexy;
+#X connect 0 0 1 0;

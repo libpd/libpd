@@ -1,0 +1,35 @@
+#N canvas 0 31 610 291 10;
+#X obj 75 23 multiplex~;
+#X obj 72 193 multiplex~ . . . . .;
+#X text 210 23 multiplex 1-of-n signals to 1 outlet;
+#X obj 72 139 sig~ 1;
+#X obj 110 161 sig~ 0.5;
+#X obj 149 137 sig~ 50;
+#X obj 227 158 sig~ 0.1;
+#X floatatom 110 93 4 0 0 0 - - -;
+#X obj 72 229 env~;
+#X floatatom 72 255 4 0 0 0 - - -;
+#X text 156 93 select a signal;
+#X obj 306 262 mux~;
+#X text 254 261 alias;
+#X text 135 214 the number of arguments specifies the number of inlets
+;
+#X text 510 3 part of zexy;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION multiplex 1-of-n signals to 1 outlet;
+#X text 12 65 INLET_0 float signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X restore 548 263 pd META;
+#X connect 1 0 8 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 1;
+#X connect 5 0 1 2;
+#X connect 6 0 1 4;
+#X connect 7 0 1 0;
+#X connect 8 0 9 0;

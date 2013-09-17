@@ -1,0 +1,190 @@
+#N canvas 0 31 854 331 10;
+#X obj 425 235 print done;
+#X text 72 260 see also:;
+#X msg 423 39 bang;
+#X text 314 293 this outlet gets the lines in sequence.;
+#X obj 73 9 msgfile;
+#X text 127 9 read and write messages into text files;
+#X obj 386 201 msgfile;
+#X obj 133 261 textfile;
+#X text 18 57 The msgfile object is derived from the textfile object
+and expands its features.;
+#X text 15 97 new features are :;
+#X text 127 110 insert \, append \, delete \, replace;
+#X text 472 36 output one line as a list and move to the next;
+#X text 90 201 add2 : read "add too" \; append to an existing line
+;
+#X text 508 222 This outlet gets a bang when you hit the end of the
+sequence \; it will also get the current position when using "when"
+;
+#X text 127 97 end \, goto \, skip;
+#X text 131 127 flush \, where \, this \, prev \, next;
+#X text 128 145 find;
+#X text 73 163 read/write can handle csv files too;
+#X text 598 7 part of zexy;
+#N canvas 112 31 646 300 navigation 0;
+#X obj 54 272 outlet;
+#X msg 91 140 rewind;
+#X text 140 139 go to beginning;
+#X msg 92 163 end;
+#X text 139 163 go the the end;
+#X msg 92 214 skip -1;
+#X msg 92 238 where;
+#X text 145 237 where are we now ?;
+#X text 146 214 go to the <n>th line from here;
+#X text 142 188 go to line number <n>;
+#X text 44 38 navigating through the lines of a [msgfile];
+#X text 42 62 these messages will not output any data;
+#X text 41 80 'where' will output the position of the "cursor" at the
+2nd outlet of [msgfile];
+#X msg 92 189 goto 8;
+#X connect 1 0 0 0;
+#X connect 3 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 13 0 0 0;
+#X restore 423 84 pd navigation;
+#N canvas 0 0 458 426 data 0;
+#X obj 54 332 outlet;
+#X msg 105 143 bang;
+#X msg 103 231 next;
+#X msg 102 189 prev;
+#X msg 103 210 this;
+#X text 154 140 output one line as a list and move to the next;
+#X text 151 189 output the previous line;
+#X text 153 229 output the next line;
+#X text 151 209 output the current line;
+#X msg 104 264 flush;
+#X text 153 263 output all lines;
+#X text 39 37 get the contents of the [msgfile] line-by-line;
+#X text 37 63 'prev' \, 'this' \, 'next' and 'flush' will not alter
+the current "cursor" position.;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 9 0 0 0;
+#X restore 423 64 pd data retrieval;
+#N canvas 0 31 669 573 editing 0;
+#X obj 54 512 outlet;
+#X msg 137 101 clear;
+#X msg 140 481 set 2 4 6 8;
+#X text 246 480 clear and then add one message;
+#X msg 136 258 add cis boom bah;
+#X msg 136 277 add2 bang;
+#X text 190 102 empty the object;
+#X msg 137 161 delete 2;
+#X text 272 303 insert a message before the current line;
+#X text 238 255 add a message at the end of the object;
+#X msg 137 359 append after the break of dawn;
+#X text 331 356 add a message at the current position;
+#X msg 138 437 replace the new day;
+#X text 330 437 replace the current line;
+#X msg 136 306 insert before sunrise;
+#X msg 136 325 insert2 inserted;
+#X msg 137 378 append2 appendix;
+#X msg 137 141 delete;
+#X text 191 142 delete the current line;
+#X text 194 161 delete the specified line;
+#X msg 137 180 delete 4 7;
+#X text 205 181 delete the specified region;
+#X msg 137 200 delete 7 4;
+#X text 208 200 delete all but the specified region;
+#X text 56 39 editing (adding \, modifying \, deleting) the content
+if the [msgfile];
+#X text 237 275 add to the last line (INCOMPATIBLE with [textfile])
+;
+#X text 275 325 add to the previous line (INCOMPATIBLE with [textfile])
+;
+#X text 330 379 add to the current line (INCOMPATIBLE with [textfile])
+;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 7 0 0 0;
+#X connect 10 0 0 0;
+#X connect 12 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 20 0 0 0;
+#X connect 22 0 0 0;
+#X restore 423 104 pd editing;
+#N canvas 0 21 676 304 searching 0;
+#X obj 54 272 outlet;
+#X msg 70 180 find test 6;
+#X msg 70 239 find test * 7 *;
+#X text 73 61 searching (and finding) lines within the [msgfile];
+#X text 177 241 you can use '*' as a wildchard for a single atom. '*'
+is the only wildcard supported;
+#X text 174 178 find a matching list \, starting at the current position
+;
+#X msg 72 208 find the new day;
+#X text 76 130 if the search fails \, a 'bang' is emitted at the 2nd
+outlet;
+#X text 77 99 if the searched list is found \, then the linenumber
+and the list is output (via the 2nd and 1st outlet).;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 6 0 0 0;
+#X restore 423 124 pd searching;
+#N canvas 0 0 853 402 file-i/o 0;
+#X obj 54 312 outlet;
+#X text 265 75 read a file;
+#X text 299 96 write one;
+#X text 305 164 write a file \, terminating lines only with carriage
+return (omitting semicolons.) You can read files this way too \, in
+which case carriage returns are mapped to semicolons.;
+#X msg 87 76 read msgfile.txt;
+#X msg 87 168 write /tmp/msgfile2.txt cr;
+#X msg 87 191 read msgfile2.txt cr;
+#X msg 87 97 write /tmp/msgfile.txt;
+#X text 51 26 reading from and writing the contents of [msgfile] to
+files;
+#X msg 111 248 write /tmp/msgfile3.txt $$;
+#X text 331 238 on writing replace every occurence of $$ with a single
+$. This way you can write pd-patches which can handle arguments.;
+#X msg 146 291 add #X obj f $\$1;
+#X msg 92 130 read2 msgfile.txt;
+#X text 264 131 read file and append it to the current buffer;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 9 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 0;
+#X restore 423 144 pd file-i/o;
+#N canvas 67 162 450 397 misc 0;
+#X obj 84 282 outlet;
+#X msg 84 112 print;
+#X text 40 72 miscellaneous functionality of [msgfile];
+#X text 126 114 debugging printout of the contents to the console;
+#X connect 1 0 0 0;
+#X restore 423 164 pd misc;
+#X obj 386 267 print data;
+#X text 9 183 incompatible with [textfile] :;
+#N canvas 652 236 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION read and write messages into text files;
+#X text 12 65 INLET_0 bang prev this next flush rewind end goto skip
+where clear delete add add2 insert insert2 append append2 replace set
+find read write read2;
+#X text 12 135 OUTLET_1 bang;
+#X text 12 115 OUTLET_0 list;
+#X restore 800 302 pd META;
+#X connect 2 0 6 0;
+#X connect 6 0 25 0;
+#X connect 6 1 0 0;
+#X connect 19 0 6 0;
+#X connect 20 0 6 0;
+#X connect 21 0 6 0;
+#X connect 22 0 6 0;
+#X connect 23 0 6 0;
+#X connect 24 0 6 0;

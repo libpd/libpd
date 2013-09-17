@@ -1,0 +1,31 @@
+#N canvas 0 0 598 301 10;
+#X obj 61 163 dfreq~;
+#X obj 61 133 osc~ 440;
+#X obj 61 231 print~;
+#X msg 96 208 bang;
+#X obj 85 28 dfreq~;
+#X text 146 27 a frequency detector that counts zero-crossings;
+#X floatatom 61 109 0 0 0 0 - - -;
+#X text 182 104 every zero-crossing the frequency-estimation is updated
+\, therefore this estimation is given as a signal...;
+#X text 179 170 this detector won't work properly on complex signals
+(e.g. zero-crossings should not be caused by higher partials);
+#X text 177 205 on the other hand \, this is much cheaper than fft's
+or fiddle...;
+#X text 503 7 part of zexy;
+#X text 183 265 thanks to w.ritsch for this one;
+#N canvas 515 193 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS signal analysis;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION a frequency detector that counts zero-crossings
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X restore 540 272 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 2 0;
+#X connect 6 0 1 0;

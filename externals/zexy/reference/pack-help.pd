@@ -1,0 +1,59 @@
+#N canvas 0 31 686 432 10;
+#X text 491 16 part of zexy;
+#X obj 28 24 pack;
+#X text 73 23 - combine several atoms into one message;
+#X obj 101 238 zexy/pack;
+#X obj 101 267 print pack;
+#X floatatom 101 180 5 0 0 0 - - -;
+#X floatatom 164 197 5 0 0 0 - - -;
+#X symbolatom 121 160 10 0 0 0 - - -;
+#X symbolatom 169 215 10 0 0 0 - - -;
+#X text 46 58 this object is quite the same as pd's built-in [pack]
+\, but it does not have fixed types;
+#X text 48 88 an atom can be intialized as a number \, then become
+a symbol \, later become a number again \, ....;
+#X floatatom 319 181 5 0 0 0 - - -;
+#X floatatom 382 198 5 0 0 0 - - -;
+#X symbolatom 339 161 10 0 0 0 - - -;
+#X symbolatom 387 216 10 0 0 0 - - -;
+#X obj 319 239 zexy/pack 1 2 3;
+#X obj 319 268 print pack1;
+#X obj 488 273 print pack1;
+#X msg 488 216 bang;
+#X msg 277 205 bang;
+#X msg 65 204 bang;
+#X obj 488 244 zexy/pack s f another symbol;
+#X text 65 140 default;
+#X text 278 142 initialization;
+#X text 482 139 initialization with symbols;
+#X text 57 325 a note on symbol-initialization:;
+#X text 100 344 pd's built-in [pack] does not allow you to initialize
+symbols in a list \; instead things like 's' and 'f' are used for specifying
+the _type_ of the atoms.;
+#X text 103 391 therefore [pack f] will output the number "0" \, while
+[zexy/pack f] will output a symbol "f";
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION combine several atoms into one message;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 INLET_N float symbol pointer;
+#X restore 631 405 pd META;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 1;
+#X connect 7 0 3 0;
+#X connect 8 0 3 1;
+#X connect 11 0 15 0;
+#X connect 12 0 15 1;
+#X connect 13 0 15 0;
+#X connect 14 0 15 1;
+#X connect 15 0 16 0;
+#X connect 18 0 21 0;
+#X connect 19 0 15 0;
+#X connect 20 0 3 0;
+#X connect 21 0 17 0;

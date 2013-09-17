@@ -1,0 +1,50 @@
+#N canvas 0 31 568 508 10;
+#X text 471 31 part of;
+#X obj 533 30 zexy;
+#X obj 58 192 lifop;
+#X msg 58 85 1 2 3 4 5;
+#X msg 69 110 list a list;
+#X msg 81 137 5;
+#X msg 199 107 bang;
+#X floatatom 200 143 5 0 0 1 priority - -;
+#X text 45 61 input lists;
+#X text 247 90 bang to output the last list that came in \; bang again
+to output the second last list \; and so on;
+#X obj 58 223 print LIFO;
+#X text 47 18 lifop:: Last-In-First-Out stack with Priorities;
+#X text 54 263 [lifop] manages a number of LIFO-stacks \; each stack
+has assigned a priority value \; the lower the value \, the higher
+the priority;
+#X text 52 312 banging the object will first empty the LIFO with the
+highest priority \, then the LIFO with the second highest priority
+until the LIFO with the lowest priority is emptied.;
+#X text 52 363 when all LIFOs are emptied \, nothing will come out
+of the object any more.;
+#X text 50 400 priorities can be floating-point numbers (1.8 has a
+higher priority then 10);
+#X text 52 445 note: you can store any number of lists into the [fifop]
+\, but just pushing lists on the stack without popping them back will
+eat your memory.;
+#X msg 200 167 info;
+#X obj 112 203 print info;
+#X text 247 168 query the number of arguments in the LIFO;
+#N canvas 515 193 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION last in first out stack with priorities;
+#X text 12 5 KEYWORDS control storage list_op;
+#X text 12 65 INLET_0 list float bang info;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 OUTLET_1 float;
+#X restore 513 481 pd META;
+#X connect 2 0 10 0;
+#X connect 2 1 18 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 1;
+#X connect 17 0 2 0;

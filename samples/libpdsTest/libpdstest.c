@@ -68,13 +68,16 @@ int main(int argc, char **argv) {
   pd_t *pd1 = start_instance("test1.pd", &file1);
   pd_t *pd2 = start_instance("test2.pd", &file2);
 
+  if(pd1==NULL || pd1==NULL)
+    return -1;
+
   // now run pd for 14 seconds (logical time)
   int iterations;
   for(iterations=0;iterations<2;iterations++) {
     printf("Showing guis for 5 seconds\n");
     libpds_show_gui(pd1);
     libpds_show_gui(pd2);
-    runawhile(pd1, pd2, 5);
+    runawhile(pd1, pd2, 500);
 
     printf("Hiding guis for 2 seconds\n");
     libpds_hide_gui(pd1);

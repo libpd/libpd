@@ -1,0 +1,3 @@
+zexy_la-z_zexy.lo: z_zexy.c z_zexy.h
+
+z_zexy.h:

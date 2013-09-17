@@ -1,0 +1,32 @@
+#N canvas 0 31 597 383 10;
+#X text 497 29 part of zexy;
+#X obj 63 13 list2lists;
+#X text 136 13 - split a list into sublists;
+#X obj 88 220 print sublists;
+#X obj 88 175 list2lists;
+#X msg 88 83 1 2 3 4 5 6 7 8 9 10;
+#X text 232 153 an array of lengths of the sublists;
+#X text 226 84 a list to be split;
+#X text 186 214 outputs a number of sublists each having the length
+as specified to the object.;
+#X text 91 266 if the total length of the sublists exceeds the length
+of the input list \, the rest of the sublists is discarded;
+#X msg 143 153 4 3 0 0 -1 -2;
+#X text 94 293 zero-length sublists are "bangs";
+#X text 77 351 see also;
+#X obj 150 350 repack;
+#X text 206 351 fixed sized sublists;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control conversion list_op;
+#X text 12 45 DESCRIPTION split a list into sublists;
+#X text 12 65 INLET_0 list;
+#X text 12 85 INLET_1 list;
+#X restore 541 357 pd META;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 10 0 4 1;

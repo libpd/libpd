@@ -1,0 +1,51 @@
+#N canvas 0 31 587 503 10;
+#X text 471 31 part of;
+#X msg 58 85 1 2 3 4 5;
+#X msg 69 110 list a list;
+#X msg 81 137 5;
+#X msg 199 97 bang;
+#X floatatom 200 133 5 0 0 1 priority - -;
+#X text 45 61 input lists;
+#X text 50 400 priorities can be floating-point numbers (1.8 has a
+higher priority then 10);
+#X obj 58 192 fifop;
+#X text 47 18 fifop:: First-In-First-Out stack with Priorities;
+#X text 247 80 bang to output the first list that came in \; bang again
+to output the second list \; and so on;
+#X text 54 263 [fifop] manages a number of FIFO-stacks \; each stack
+has a priority value assigned \; the lower the value \, the higher
+the priority;
+#X text 52 310 banging the object will first empty the FIFO with the
+highest priority \, then the FIFO with the second highest priority
+and so on \, until the FIFO with the lowest priority is emptied.;
+#X text 51 368 when all FIFOs are emptied \, nothing will come out
+of the object any more.;
+#X obj 58 223 print FIFO;
+#X text 52 445 note: you can store any number of lists into the [fifop]
+\, but just pushing lists on the stack without popping them back will
+eat your memory.;
+#X msg 201 159 info;
+#X text 247 158 query the number of arguments in the LIFO;
+#X obj 156 209 print info;
+#X obj 533 30 zexy;
+#N canvas 593 163 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION first in first out stack with Priorities
+;
+#X text 12 65 INLET_0 list float bang;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 OUTLET_1 float;
+#X text 12 5 KEYWORDS control list_op storage;
+#X text 12 85 INLET_1 float info;
+#X restore 535 473 pd META;
+#X connect 1 0 8 0;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 8 1;
+#X connect 8 0 14 0;
+#X connect 8 1 18 0;
+#X connect 16 0 8 0;
