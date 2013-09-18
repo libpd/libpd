@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/usr/local/bin/pd -r 44100 -channels 2 -audiobuf 400 -audiodev 1 -nomidi \
+-path iemabs \
+-lib iemlib1:iemlib2:iem_mp3:iem_t3_lib

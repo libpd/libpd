@@ -1,0 +1,29 @@
+#N canvas 1 53 489 500 10;
+#X text 124 68 GEM object;
+#X text 138 24 tripleLine;
+#X obj 123 223 tripleLine;
+#X obj 123 273 unpack 0 0 0;
+#X floatatom 123 319 0 0 0 0 - - -;
+#X floatatom 168 348 0 0 0 0 - - -;
+#X floatatom 214 319 0 0 0 0 - - -;
+#X msg 123 157 1 0 0 2000;
+#X msg 234 158 0 1 0.1 2000;
+#X text 46 406 tripleLine is like the line object except that it works
+with 3 values at once.;
+#N canvas 458 199 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 115 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control ramp;
+#X text 12 45 DESCRIPTION like the line object except that it works
+with 3 values at once;
+#X text 12 75 INLET_0 list;
+#X text 12 95 OUTLET_0 list;
+#X restore 423 458 pd META;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 5 0;
+#X connect 3 2 6 0;
+#X connect 7 0 2 0;
+#X connect 8 0 2 0;

@@ -1,0 +1,29 @@
+#N canvas 1 53 461 503 10;
+#X msg 77 213 symbol list;
+#X msg 157 247 symbol until;
+#X obj -1 29 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 4 85 author: mrtoftrash@gmail.com;
+#X msg 178 298 symbol zexy/list2symbol;
+#X text 4 28 description: searches for an external's or an abstraction's
+help file and tries to open it.;
+#X text 4 106 version: 2009-09-25;
+#X text 3 65 tags: file patch;
+#X obj 77 340 tof/openHelp;
+#X obj 2 135 cnv 15 400 30 empty empty empty 20 12 0 14 -261234 -66577
+0;
+#X text 10 141 openHelp is deprecated. Please use open_help instead.
+;
+#N canvas 236 174 494 344 META 0;
+#X text 12 115 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 55 LICENSE GPL v2;
+#X text 12 95 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION searches for an external's or an abstraction's
+help file and tries to open it;
+#X text 12 75 INLET_0 bang;
+#X text 12 5 KEYWORDS control filesystem patch_op deprecated;
+#X restore 367 424 pd META;
+#X connect 0 0 8 0;
+#X connect 1 0 8 0;
+#X connect 4 0 8 0;

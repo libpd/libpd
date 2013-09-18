@@ -1,0 +1,45 @@
+#N canvas 0 26 443 294 10;
+#X msg 56 49 symbol root;
+#X msg 75 81 symbol hans;
+#X floatatom 56 240 5 0 0 0 - - -;
+#X text 12 14 convert a username to a UID.;
+#X msg 14 148 bang;
+#X msg 143 162 symbol daemon;
+#X obj 30 240 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 93 109 symbol lp;
+#X msg 99 135 symbol trash;
+#X floatatom 272 231 5 0 0 0 - - -;
+#X msg 272 159 bang;
+#X text 192 136 ignore bad usernames;
+#X obj 142 240 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 145 262 ^-- bang if not found;
+#X obj 409 228 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 280 175 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION convert a username to a UID;
+#X text 12 65 INLET_0 bang symbol;
+#X text 12 85 INLET_1 symbol;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 bang;
+#X restore 391 271 pd META;
+#X obj 56 190 username2uid;
+#X obj 272 201 username2uid daemon;
+#X connect 0 0 16 0;
+#X connect 1 0 16 0;
+#X connect 4 0 16 0;
+#X connect 5 0 16 1;
+#X connect 7 0 16 0;
+#X connect 8 0 16 0;
+#X connect 10 0 17 0;
+#X connect 16 0 2 0;
+#X connect 16 0 6 0;
+#X connect 16 1 12 0;
+#X connect 17 0 9 0;
+#X connect 17 1 14 0;

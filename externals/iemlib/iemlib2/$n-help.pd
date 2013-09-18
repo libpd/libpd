@@ -1,0 +1,95 @@
+#N canvas 0 26 885 297 10;
+#X floatatom 27 77 5 -14 14 0 - - -;
+#X obj 98 81 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 471 151 5 0 0 0 - - -;
+#X obj 471 179 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X symbolatom 202 218 10 0 0 0 - - -;
+#X floatatom 150 219 5 0 0 0 - - -;
+#X obj 98 156 route list float symbol;
+#X obj 98 181 pp set;
+#X obj 75 261 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 150 242 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 202 240 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 98 113 test_dollarg aa bb cc dd ee ff gg 33 44 55 66 77 88 99
+;
+#X text 11 6 dollarg;
+#X text 93 7 receives the parent initial arguments <list> \, like a
+$n;
+#X text 168 92 open test_dollarg abstraction;
+#X obj 330 45 dollarg;
+#X text 398 44 abbrv.;
+#X obj 448 44 $n 1;
+#X text 490 46 1.arg: n <float> (optional \, default 0);
+#X msg 98 261;
+#N canvas 8 40 450 300 reset________ 0;
+#X obj 48 41 inlet;
+#X obj 53 210 outlet;
+#X obj 48 73 route list float symbol;
+#X obj 121 212 outlet;
+#X obj 197 212 outlet;
+#X msg 53 187 set;
+#X obj 48 99 bang;
+#X obj 100 97 bang;
+#X obj 152 97 bang;
+#X msg 121 187 set 0;
+#X msg 197 186 set symbol;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 2 1 7 0;
+#X connect 2 2 8 0;
+#X connect 5 0 1 0;
+#X connect 6 0 10 0;
+#X connect 6 0 9 0;
+#X connect 7 0 5 0;
+#X connect 7 0 10 0;
+#X connect 8 0 5 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 0;
+#X connect 10 0 4 0;
+#X restore 125 134 pd reset________;
+#X msg 27 53 0;
+#X msg 63 53 1;
+#X msg 96 53 2;
+#X msg 211 53 -1;
+#X text 451 6 (like float \$1 \, or symbol \$1);
+#X text 559 91 eg. m = number of parent arguments + 1;
+#X text 531 64 if (n = 0) -> dollarg output all parent arguments;
+#X text 531 78 if (n > 0) -> dollarg output the n-th parent argument
+;
+#X text 532 102 if (n < 0) -> dollarg output the (m+n)-th parent argument
+;
+#X msg 173 53 -2;
+#X msg 135 53 12;
+#X text 384 254 IEM KUG;
+#X text 368 242 musil;
+#X text 398 242 @;
+#X text 404 242 iem.at;
+#X text 367 264 Graz \, Austria;
+#X text 319 231 (c) Thomas Musil 2000 - 2006;
+#X connect 0 0 11 0;
+#X connect 1 0 11 0;
+#X connect 2 0 3 0;
+#X connect 4 0 10 0;
+#X connect 5 0 9 0;
+#X connect 6 0 7 0;
+#X connect 6 1 5 0;
+#X connect 6 2 4 0;
+#X connect 7 0 19 0;
+#X connect 7 0 8 0;
+#X connect 11 0 6 0;
+#X connect 11 0 20 0;
+#X connect 11 1 2 0;
+#X connect 20 0 19 0;
+#X connect 20 1 5 0;
+#X connect 20 2 4 0;
+#X connect 21 0 0 0;
+#X connect 22 0 0 0;
+#X connect 23 0 0 0;
+#X connect 24 0 0 0;
+#X connect 30 0 0 0;
+#X connect 31 0 0 0;

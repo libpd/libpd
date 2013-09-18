@@ -1,0 +1,8 @@
+#N canvas 452 332 450 300 10;
+#X obj 58 42 inlet;
+#X obj 58 186 iemlib/iem_send;
+#X obj 145 42 inlet sample;
+#X msg 145 96 set \$1;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 1;

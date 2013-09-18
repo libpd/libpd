@@ -1,0 +1,75 @@
+#N canvas 0 26 433 557 10;
+#X obj 57 -77 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 12500 1;
+#X msg 57 223 rc 0 \$1;
+#X obj 88 -78 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 6432 1;
+#X obj 119 -77 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 3732 1;
+#X obj 149 -77 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 4332 1;
+#X obj 179 -77 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 21232 1;
+#X obj 210 -78 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 24900 1;
+#X obj 241 -78 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 18232 1;
+#X obj 271 -77 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 16932 1;
+#X msg 86 199 rc 1 \$1;
+#X msg 118 224 rc 2 \$1;
+#X msg 147 200 rc 3 \$1;
+#X msg 179 223 rc 4 \$1;
+#X msg 208 199 rc 5 \$1;
+#X msg 240 224 rc 6 \$1;
+#X msg 269 200 rc 7 \$1;
+#X floatatom 154 -125 5 -1 1 0 - - -;
+#X obj 64 302 lattice~ 8;
+#X obj 6 254 noise~;
+#X obj 63 363 vol~;
+#X obj 63 397 dac~;
+#X floatatom 85 333 5 0 0 0 - - -;
+#X text 159 298 lattice~ a lattice filter;
+#X text 139 333 [rc <index> <val>] sets reflection coefficient;
+#X text 159 311 creation argument sets order;
+#X obj 27 330 dist~ 1;
+#N canvas 379 254 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE;
+#X text 12 45 DESCRIPTION a lattic filter;
+#X text 12 5 KEYWORDS signal filter;
+#X text 12 65 INLET_0 signal rc;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 383 409 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 17 0;
+#X connect 2 0 9 0;
+#X connect 3 0 10 0;
+#X connect 4 0 11 0;
+#X connect 5 0 12 0;
+#X connect 6 0 13 0;
+#X connect 7 0 14 0;
+#X connect 8 0 15 0;
+#X connect 9 0 17 0;
+#X connect 10 0 17 0;
+#X connect 11 0 17 0;
+#X connect 12 0 17 0;
+#X connect 13 0 17 0;
+#X connect 14 0 17 0;
+#X connect 15 0 17 0;
+#X connect 16 0 0 0;
+#X connect 16 0 2 0;
+#X connect 16 0 3 0;
+#X connect 16 0 4 0;
+#X connect 16 0 5 0;
+#X connect 16 0 6 0;
+#X connect 16 0 7 0;
+#X connect 16 0 8 0;
+#X connect 17 0 25 0;
+#X connect 18 0 17 0;
+#X connect 19 0 20 1;
+#X connect 19 0 20 0;
+#X connect 21 0 19 1;
+#X connect 25 0 19 0;

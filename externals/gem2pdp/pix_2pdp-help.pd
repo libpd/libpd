@@ -1,0 +1,86 @@
+#N canvas 0 22 889 703 10;
+#X declare -lib Gem -lib pdp;
+#X obj 92 298 gemwin;
+#X obj 399 302 gemhead;
+#X obj 151 557 pix_texture;
+#X obj 151 589 rectangle 4 4;
+#X obj 501 531 pdp_glx;
+#X msg 546 478 create;
+#X msg 546 502 destroy;
+#X obj 399 436 pix_2pdp;
+#X obj 399 379 t a b;
+#X obj 399 345 pix_film;
+#X floatatom 466 331 5 0 1000 0 - - -;
+#X msg 466 275 set open \$1;
+#X text 507 331 <- frame;
+#X obj 466 252 openpanel;
+#X obj 466 232 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 466 300 open ../examples/Gem/data/homer.avi;
+#X msg 92 251 create \, 1;
+#X msg 104 273 0 \, destroy;
+#X text 90 229 Gem Control:;
+#X text 382 273 Gem input:;
+#X text 446 379 <- so you can trigger pdp automatically each frame
+;
+#X text 462 441 pdp outlet;
+#X text 322 441 Gem outlet;
+#X obj 151 528 spigot;
+#X obj 188 508 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 210 514 chain to save CPU;
+#X obj 429 407 spigot;
+#X obj 480 408 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 502 408 <- turn on/off pdp processing;
+#X text 210 499 cut Gem render-;
+#X obj 501 572 pdp_rec~;
+#X text 499 592 (record a gem-pix !!!);
+#X text 45 321 (Gem rendering must be on \,;
+#X text 47 335 but you can cut the Gem;
+#X text 48 348 render-chain after pix_2pdp;
+#X text 46 362 and hide the Gem-window;
+#X text 46 376 to save CPU !);
+#X text 264 667 =%)!(%= (c) Georg Holzmann <grh@mur.at> \, 2005 =%)!(%=
+;
+#X text 27 79 pix_2pdp captures the contents of a Gem pix and transforms
+it to a PDP packet with almost no cpu power. So it's possible to convert
+from Gem to PDP to Gem to PDP to ... if you use the Gem pix objects!
+;
+#X text 490 77 So what can you do with it?;
+#X text 503 96 - use pix_video/pix_2pdp for firewire input in PDP;
+#X text 503 111 - use pix_2pdp/pdp_rec~ to record Gem pixes;
+#X text 503 125 - maybe switch between Gem and PDP all the time;
+#X text 503 140 - ...;
+#X text 395 25 pix_2pdp;
+#X msg 276 180 colorspace YUV;
+#X msg 276 225 colorspace RGBA;
+#X msg 276 202 colorspace Gray;
+#X text 382 181 <- use YUV if possible to be fast;
+#X obj 276 158 loadbang;
+#X obj 679 17 declare -lib Gem -lib pdp;
+#X connect 1 0 9 0;
+#X connect 2 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 23 0;
+#X connect 7 1 4 0;
+#X connect 7 1 30 0;
+#X connect 8 0 7 0;
+#X connect 8 1 26 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 1;
+#X connect 11 0 15 0;
+#X connect 13 0 11 0;
+#X connect 14 0 13 0;
+#X connect 15 0 9 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 23 0 2 0;
+#X connect 24 0 23 1;
+#X connect 26 0 7 0;
+#X connect 27 0 26 1;
+#X connect 45 0 9 0;
+#X connect 46 0 9 0;
+#X connect 47 0 9 0;
+#X connect 49 0 45 0;

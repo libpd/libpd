@@ -1,0 +1,138 @@
+#N canvas 102 92 665 538 10;
+#X text 452 8 GEM object;
+#X obj 7 206 cnv 15 430 280 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 11 208 Inlets:;
+#X text 11 458 Outlets:;
+#X obj 8 166 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 168 Arguments:;
+#X obj 8 56 cnv 15 430 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 447 85 cnv 15 190 400 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 451 68 Example:;
+#X obj 531 420 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 536 459 pd gemwin;
+#X msg 536 440 create;
+#X text 532 419 Create window:;
+#X obj 456 146 cnv 15 175 215 empty empty empty 20 12 0 14 -106138
+-66577 0;
+#X text 71 31 Class: pix object;
+#X text 63 179 <none>;
+#X text 29 471 Outlet 1: gemlist;
+#X text 22 226 Inlet 1: gemlist;
+#X text 50 12 Synopsis: [pix_kaleidoscope];
+#X text 28 56 Description: kaleidoscope effect;
+#X text 13 72 This effect is similar to a traditional kaleidoscope
+\, and allows you to reflect a part of the image multiple times around
+a centre point. You can set how many segments you want the image reflected
+as \, how the mirrors are rotated \, where the center of the output
+images is \, and what part of the source image is used as the source.
+;
+#X obj 446 364 cnv 15 120 25 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 449 92 gemhead;
+#X obj 508 93 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 181 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 449 121 pd image;
+#X obj 449 391 pix_texture;
+#X obj 449 413 square 3;
+#X floatatom 464 149 5 0 64 1 segments - -;
+#X floatatom 479 169 5 0 0 1 sourceAngle - -;
+#X text 514 113 open an image;
+#X text 507 126 (JPEG \, TIFF \, ..);
+#X obj 449 369 pix_kaleidoscope;
+#X floatatom 510 245 5 0 0 1 outputAngle - -;
+#X floatatom 556 341 5 0.1 10 1 sap - -;
+#X floatatom 540 325 5 0 1 1 rlp - -;
+#X obj 525 304 pack;
+#X obj 579 304 t b f;
+#X floatatom 525 265 4 0 100 0 - - -;
+#X floatatom 577 265 4 0 100 0 - - -;
+#X text 22 243 Inlet 2: float: number of segments (0..64 \, default:
+7);
+#X text 22 260 Inlet 3: float: rotation of the input-segment (in degree)
+;
+#X text 22 277 Inlet 4: list <x> <y>: normalized center-position of
+the of the segment of the input image. (0..1 \, default 0.5);
+#X text 22 307 Inlet 5: float: rotation of the output-segment (in degree)
+;
+#X text 22 325 Inlet 6: list <x> <y>: normalized center-position of
+the of the segments in the output image. (0..1 \, default 0.5);
+#X text 22 353 Inlet 7: float: reflection line proportion \, controls
+the relative sizes of each pair of adjacent segments in the output
+image (0..1 \, default 0.5);
+#X text 22 400 Inlet 8: float: source angle proportion \, sets the
+angular size of the source segment \, relative to the size of the output
+segment \; altering this value will squash or expand (0.1..10 \, default:
+1);
+#X obj 71 498 cnv 15 370 20 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X text 80 501 (ported from "pete's_plugins" \, www.petewarden.com)
+;
+#X obj 525 284 * 0.01;
+#X obj 577 284 * 0.01;
+#X obj 495 226 pack;
+#X obj 549 226 t b f;
+#X floatatom 495 187 4 0 100 0 - - -;
+#X floatatom 547 187 4 0 100 0 - - -;
+#X obj 495 206 * 0.01;
+#X obj 547 206 * 0.01;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 22 0 24 0;
+#X connect 23 0 24 1;
+#X connect 24 0 31 0;
+#X connect 25 0 26 0;
+#X connect 27 0 31 1;
+#X connect 28 0 31 2;
+#X connect 31 0 25 0;
+#X connect 32 0 31 4;
+#X connect 33 0 31 7;
+#X connect 34 0 31 6;
+#X connect 35 0 31 5;
+#X connect 36 0 35 0;
+#X connect 36 1 35 1;
+#X connect 37 0 48 0;
+#X connect 38 0 49 0;
+#X connect 48 0 35 0;
+#X connect 49 0 36 0;
+#X connect 50 0 31 3;
+#X connect 51 0 50 0;
+#X connect 51 1 50 1;
+#X connect 52 0 54 0;
+#X connect 53 0 55 0;
+#X connect 54 0 50 0;
+#X connect 55 0 51 0;

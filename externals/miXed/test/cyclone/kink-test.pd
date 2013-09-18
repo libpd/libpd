@@ -1,0 +1,22 @@
+#N canvas 289 161 465 369 12;
+#X obj 31 88 kink~;
+#X floatatom 99 88 0 0 0 0 - - -;
+#X obj 32 156 Scope~ 400 200 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 30 16 phasor~ 3;
+#X obj 30 53 *~ 1;
+#X floatatom 100 53 0 0 0 0 - - -;
+#X obj 242 53 kink~;
+#X floatatom 242 120 5 0 0 0 - - -;
+#X floatatom 242 16 5 0 0 0 - - -;
+#X floatatom 315 16 5 0 0 0 - - -;
+#X obj 242 88 Snapshot~ 10;
+#X connect 0 0 2 0;
+#X connect 1 0 0 1;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 1;
+#X connect 6 0 10 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 1;
+#X connect 10 0 7 0;

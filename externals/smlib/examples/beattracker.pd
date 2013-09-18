@@ -1,0 +1,125 @@
+#N canvas 145 39 541 656 10;
+#X declare -lib smlib -lib creb -lib zexy;
+#X obj 28 22 adc~;
+#X obj 20 330 vmin;
+#X floatatom 69 348 5 0 0 0 - - -;
+#X obj 10 127 bang;
+#X obj 58 473 /;
+#X floatatom 59 526 5 0 0 0 - - -;
+#X floatatom 1 361 5 0 0 0 - - -;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array arrayP 140 float 1;
+#A 0 12.745 12.6021 12.4917 12.4624 12.4428 12.4083 12.357 12.3169
+12.2838 12.3642 12.4992 12.6125 12.8334 13.1195 13.2091 13.3636 13.427
+13.3262 13.1274 13.0323 12.8959 12.4778 12.1279 11.7467 11.1084 10.6082
+10.4762 10.5106 10.7249 11.0192 11.4685 11.8969 12.1991 12.4113 12.6745
+12.9505 13.0786 13.2169 13.2771 13.2021 12.9841 12.5133 12.0669 11.549
+11.0624 10.5936 10.3689 10.1306 10.1064 10.2099 10.1462 10.0187 10.1388
+10.2314 10.366 10.447 10.7786 11.1631 11.4977 11.6852 11.9644 12.0264
+11.8789 11.6583 11.5462 11.2125 10.9489 10.555 10.1705 9.70149 9.28413
+9.1935 9.21485 9.45742 9.79504 10.2243 10.7402 11.2532 11.698 12.1547
+12.5026 12.7131 12.8981 12.8903 12.784 12.7157 12.6072 12.4176 12.101
+11.7283 11.4631 11.1951 10.8678 10.6743 10.553 10.5304 10.5276 10.6795
+10.932 11.0555 11.1699 11.4492 11.7819 12.0798 12.2656 12.2123 12.1171
+11.9876 11.7143 11.5564 11.2613 10.9105 10.6654 10.5599 10.4874 10.6588
+10.8811 11.2697 11.5855 12.0241 12.4281 12.8351 13.1598 13.4953 13.6783
+13.6874 13.5532 13.2183 12.8892 12.5378 12.0966 11.7289 11.3947 11.0228
+10.7229 10.5954 10.4147 10.2329 10.1179 10.0109;
+#X coords 0 100 139 0 200 140 1;
+#X restore 324 155 graph;
+#X obj 292 486 tabset arrayP;
+#X obj 291 454 spigot;
+#X msg 347 454 0;
+#X msg 330 427 1;
+#X obj 292 380 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 109 208 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 194 189 loadbang;
+#X obj 133 281 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 107 252 vpow 2;
+#X obj 129 321 vpow 2;
+#X obj 69 315 vvplus;
+#X msg 85 102 0;
+#X obj 26 56 ear~ 256;
+#X obj 107 228 linspace 1 0.1 140;
+#X obj 130 299 linspace 0.1 1 140;
+#X obj 20 171 deltas 60 200 200;
+#X obj 56 421 + 60;
+#X obj 20 196 vabs;
+#X obj 121 49 env~ 256;
+#X floatatom 206 55 5 0 0 0 - - -;
+#X obj 57 375 moses 2;
+#X obj 55 400 moses 138;
+#X obj 324 297 hsl 200 15 0 140 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 11 75 samplerate = 44100/256 = 172.26 Hz = 0.348 BPM resolution
+;
+#X obj 57 500 * 172.26;
+#X obj 291 398 metro 200;
+#X obj 19 245 vlavg 100;
+#X text 102 122 172.26Hz/60 = 172 BPM;
+#X text 103 138 172.26Hz/200 = 51.6 BPM;
+#X obj 39 95 vsum;
+#X obj 20 300 vvplus;
+#X obj 55 138 * 0.1;
+#X obj 59 572 ftom;
+#X floatatom 169 574 5 0 0 0 - - -;
+#X obj 96 573 vfmod 12;
+#X text 109 524 BPM;
+#X msg 56 451 60;
+#X text 3 -31 beattracker based on average mean difference funtion
+(amdf);
+#X obj 1 395 vmax;
+#X obj 1 431 -;
+#X obj 1 470 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X text 441 593 j#|@2002;
+#X obj 362 -26 declare -lib smlib -lib creb -lib zexy;
+#X connect 0 0 20 0;
+#X connect 0 0 26 0;
+#X connect 1 0 6 0;
+#X connect 1 0 47 1;
+#X connect 1 1 2 0;
+#X connect 1 1 28 0;
+#X connect 2 0 30 0;
+#X connect 3 0 23 0;
+#X connect 4 0 32 0;
+#X connect 5 0 40 0;
+#X connect 9 0 10 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 1;
+#X connect 11 0 9 1;
+#X connect 12 0 33 0;
+#X connect 13 0 21 0;
+#X connect 14 0 22 0;
+#X connect 14 0 21 0;
+#X connect 15 0 22 0;
+#X connect 16 0 18 0;
+#X connect 17 0 18 1;
+#X connect 20 0 37 0;
+#X connect 21 0 16 0;
+#X connect 22 0 17 0;
+#X connect 23 0 25 0;
+#X connect 24 0 4 1;
+#X connect 24 0 44 0;
+#X connect 25 0 34 0;
+#X connect 26 0 27 0;
+#X connect 28 1 29 0;
+#X connect 29 0 24 0;
+#X connect 32 0 5 0;
+#X connect 33 0 11 0;
+#X connect 34 0 38 0;
+#X connect 37 0 3 0;
+#X connect 37 0 19 0;
+#X connect 37 0 39 0;
+#X connect 38 0 1 0;
+#X connect 38 0 9 0;
+#X connect 38 0 46 0;
+#X connect 39 0 23 0;
+#X connect 40 0 42 0;
+#X connect 42 0 41 0;
+#X connect 44 0 4 0;
+#X connect 46 0 47 0;
+#X connect 47 0 48 0;

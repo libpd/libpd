@@ -1,0 +1,31 @@
+#N canvas 1 53 454 322 10;
+#X text 342 226 j#|@2002;
+#X obj 109 230 print;
+#X obj 109 55 random 10;
+#X obj 109 36 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 129 34 feed data;
+#X msg 130 124 -10;
+#X floatatom 132 91 5 0 0 0 - - -;
+#X obj 109 191 decimator 0.4;
+#X msg 226 144 clear;
+#X msg 201 92 factor 4;
+#N canvas 66 268 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float factor clear;
+#X text 12 45 DESCRIPTION pass 1 in n input values;
+#X restore 393 265 pd META;
+#X obj 370 201 SMLib-help;
+#X connect 2 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 5 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;

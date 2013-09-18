@@ -1,0 +1,26 @@
+#N canvas 0 26 497 181 10;
+#X text 15 35 Arcsine(x);
+#X obj 198 74 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 198 133 0 0 0 0 - - -;
+#X floatatom 93 133 0 0 0 0 - - -;
+#X floatatom 93 74 0 0 0 0 - - -;
+#X text 264 107 optional arg;
+#X obj 93 105 asin;
+#X obj 198 105 asin 0.5;
+#N canvas 430 169 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible trigonometry;
+#X text 12 45 DESCRIPTION arcsine - arcsine(x);
+#X text 12 65 INLET_0 float bang;
+#X text 12 85 OUTLET_0 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 447 160 pd META;
+#X connect 1 0 7 0;
+#X connect 4 0 6 0;
+#X connect 6 0 3 0;
+#X connect 7 0 2 0;

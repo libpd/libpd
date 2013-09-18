@@ -1,0 +1,90 @@
+#N canvas 178 103 949 490 10;
+#X obj 60 52 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 31 331 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 249 306 1.arg: <symbol> source-name;
+#X floatatom 94 372 5 0 0 0 - - -;
+#X floatatom 143 373 5 0 0 0 - - -;
+#X msg 88 78 src src;
+#X msg 118 102 amp_sort;
+#X msg 120 124 freq_sort;
+#X floatatom 198 371 5 0 0 0 - - -;
+#X obj 263 369 pack 0 0 0;
+#X obj 263 392 print;
+#X msg 233 173 abs_min_height_diff 10;
+#X text 69 385 sort_index;
+#X text 204 382 amp;
+#X text 147 387 index;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array src 100 float 1;
+#A 0 9.99997 9.28569 9.28569 10.7143 7.14284 7.85712 8.5714 39 10 11
+38 8.5714 7.85712 8.5714 9.28569 8.5714 9.99997 39 40 41 38 12.8571
+12.8571 14.2857 12.8571 11.4285 12.1428 11.4285 9.99997 10.7143 11.4285
+9.99997 9.28569 9.28569 9.99997 10.7143 10.7143 45 9.99997 9.99997
+10.7143 11.4285 12.1428 10.7143 11.4285 12.1428 11.4285 46 11.4285
+11.4285 11.4285 12.1428 12.8571 11.4285 11.4285 12.1428 12.8571 12.1428
+12.1428 12.1428 12.1428 12.1428 11.4285 11.4285 11.4285 11.4285 10.7143
+48 49 43 11.4285 12.1428 13.5714 15 13.5714 13.5714 14.2857 14.2857
+15 15 14.2857 14.2857 14.2857 15 15 15.7142 15.7142 51 53 15 15 15
+15 15 14.2857 14.2857 15 15.7142 16.4285 16.4285;
+#X coords 0 100 99 0 200 140 1;
+#X restore 658 93 graph;
+#X msg 171 149 max_peaks 9;
+#X text 20 347 ready;
+#X msg 289 194 width_range 1 4;
+#X msg 289 216 width_range 1 1;
+#N canvas 0 22 466 316 (subpatch) 0;
+#X msg 355 125 \; src const 0;
+#X msg 303 175 \; src 37 45;
+#X msg 310 223 \; src 47 46;
+#X msg 187 177 \; src 67 48 49 43;
+#X msg 180 218 \; src 87 51 53;
+#X msg 44 223 \; src 7 39 10 11 38;
+#X msg 50 181 \; src 17 39 40 41 38;
+#X obj 65 25 loadbang;
+#X msg 33 50 \; src xticks 0 1 5;
+#X msg 34 84 \; src xlabel -5.15 0 10 20 30 40 50 60 70 80 90;
+#X connect 7 0 8 0;
+#X connect 7 0 9 0;
+#X restore 716 289 pd;
+#X obj 314 73 loadbang;
+#X text 89 50 <bang> calculate all peaks (index bin amplitude);
+#X text 218 61 of an array;
+#X text 78 442 IEM KUG;
+#X text 57 430 musil;
+#X text 92 430 @;
+#X text 100 430 iem.at;
+#X text 61 452 Graz \, Austria;
+#X text 267 296 initial arguments:;
+#X text 192 111 kind of order;
+#X text 258 150 maximum number of peaks detected;
+#X text 395 168 vertical difference between peak;
+#X text 399 177 and noise;
+#X text 406 205 width range of peak in bins;
+#X text 21 6 tab_exact_find_peaks;
+#X obj 60 302 tab_find_exact_peaks src;
+#X text 184 7 same like tab_find_peaks;
+#X text 13 419 (c) Thomas Musil 2000 - 2009;
+#X msg 289 240 width_range 3 5;
+#X connect 0 0 36 0;
+#X connect 5 0 36 0;
+#X connect 6 0 36 0;
+#X connect 7 0 36 0;
+#X connect 9 0 10 0;
+#X connect 11 0 36 0;
+#X connect 16 0 36 0;
+#X connect 18 0 36 0;
+#X connect 19 0 36 0;
+#X connect 21 0 6 0;
+#X connect 21 0 16 0;
+#X connect 21 0 11 0;
+#X connect 21 0 18 0;
+#X connect 36 0 1 0;
+#X connect 36 1 3 0;
+#X connect 36 1 9 0;
+#X connect 36 2 4 0;
+#X connect 36 2 9 1;
+#X connect 36 3 8 0;
+#X connect 36 3 9 2;
+#X connect 39 0 36 0;

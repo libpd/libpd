@@ -1,0 +1,56 @@
+#N canvas 0 31 499 378 10;
+#X obj 35 100 shell;
+#X msg 35 65 ls;
+#X msg 360 97 date +%k%M;
+#X floatatom 360 141 4 0 0 0 - - -;
+#X obj 360 118 shell;
+#X obj 51 319 shell;
+#X msg 74 288 cvs commit -m fixed_bug_in_shell;
+#X msg 65 264 cvs -q update;
+#X msg 12 193 xedit;
+#X msg 36 213 /usr/bin/perl;
+#X text 343 79 Getting the time;
+#X obj 362 233 shell;
+#X text 345 194 Getting the date;
+#X symbolatom 362 274 0 0 0 0 - - -;
+#X msg 362 212 date +%Y.%m.%d;
+#X obj 362 253 symbol;
+#X obj 409 234 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 65 126 print DONE;
+#X obj 35 147 print STDOUT;
+#X text 30 7 This object allows you to run commands in a UNIX shell.
+STDIN is received on the inlet. STDOUT is output on the left inlet
+\, STDERR is output to the Pd console. When execution is complete \,
+the right outlet is banged.;
+#X floatatom 61 234 5 0 0 0 - - -;
+#X floatatom 408 142 5 0 0 0 - - -;
+#X obj 408 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#N canvas 479 242 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 125 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 65 INLET_0 anything;
+#X text 12 45 DESCRIPTION run commands in a UNIX shell;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 105 OUTLET_1 float;
+#X restore 440 345 pd META;
+#X connect 0 0 18 0;
+#X connect 0 1 17 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
+#X connect 4 1 21 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 11 0 15 0;
+#X connect 11 1 16 0;
+#X connect 14 0 11 0;
+#X connect 15 0 13 0;
+#X connect 20 0 5 0;
+#X connect 21 0 22 0;

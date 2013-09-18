@@ -1,0 +1,30 @@
+#N canvas 0 26 350 295 10;
+#X floatatom 76 60 9 0 127 0 - - -;
+#X obj 68 118 vu 15 120 empty empty -1 -8 0 8 -66577 -1 1 0;
+#X obj 50 110 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 100 88 - 100;
+#X text 139 60 midi-dB;
+#X obj 50 88 dbtofad;
+#X text 10 4 dbtofad;
+#X text 99 5 convert midi-db to fader-scale;
+#X text 184 218 IEM KUG;
+#X text 168 206 musil;
+#X text 198 206 @;
+#X text 204 206 iem.at;
+#X text 119 195 (c) Thomas Musil 2000 - 2005;
+#X text 167 228 Graz \, Austria;
+#N canvas 271 182 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION convert midi-db to fader-scale;
+#X restore 300 274 pd META;
+#X connect 0 0 3 0;
+#X connect 0 0 5 0;
+#X connect 3 0 1 1;
+#X connect 5 0 2 0;

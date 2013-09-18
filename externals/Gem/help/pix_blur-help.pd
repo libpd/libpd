@@ -1,0 +1,16 @@
+#N canvas 100 27 658 384 10;
+#X text 452 8 GEM object;
+#X obj 8 216 cnv 15 430 125 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 176 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X obj 8 76 cnv 15 430 90 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X text 71 31 Class: pix object;
+#X text 50 12 Synopsis: [pix_blur];
+#X text 29 77 Description: this object in deprecated \, you should
+use [pix_motionblur] instead.;
+#X obj 484 189 pix_motionblur;

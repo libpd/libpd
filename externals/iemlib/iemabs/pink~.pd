@@ -1,0 +1,20 @@
+#N canvas 142 265 410 241 10;
+#X text 27 150 signal-out;
+#X obj 29 129 outlet~;
+#X obj 29 49 noise~;
+#X text 14 7 pink~;
+#X text 65 8 pink-noise-generator with -3 dB per oktave;
+#X obj 29 88 biquad~ 1.83221 -0.836851 0.271264 -0.456311 0.18969;
+#X obj 29 108 biquad~ 0.273097 0.087865 0.505803 0.171365 -0.03813
+;
+#X obj 29 68 biquad~ 1.98893 -0.988954 1.00554 -1.9889 0.983444;
+#X text 166 195 IEM KUG;
+#X text 150 183 musil;
+#X text 180 183 @;
+#X text 186 183 iem.at;
+#X text 101 172 (c) Thomas Musil 2000 - 2005;
+#X text 149 205 Graz \, Austria;
+#X connect 2 0 7 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 7 0 5 0;

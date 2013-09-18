@@ -1,0 +1,21 @@
+#N canvas 128 118 680 254 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X text 136 10 print a matrix to the console;
+#X obj 595 63 print;
+#X msg 48 80 bang;
+#X obj 48 100 mtx_ones 5;
+#X obj 48 141 t a a a;
+#X obj 92 164 mtx_print;
+#X obj 48 228 print oops;
+#X obj 70 194 mtx_print label;
+#X text 211 116 [mtx_print] will print the matrix in a formatted way
+;
+#X text 216 143 you can give labels \, just like with [print];
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 8 1 11 0;
+#X connect 8 2 9 0;

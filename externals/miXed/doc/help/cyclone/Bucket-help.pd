@@ -1,0 +1,73 @@
+#N canvas 0 26 458 345 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 40 295 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 39 309 ___________________________________________________
+;
+#X obj 36 19 Bucket 3;
+#X obj 82 145 Bucket 3;
+#X floatatom 82 167 5 0 0 0 - - -;
+#X floatatom 107 188 5 0 0 0 - - -;
+#X floatatom 133 208 5 0 0 0 - - -;
+#X text 108 22 pass numbers from outlet to outlet;
+#X msg 82 76 1 2 3 4;
+#X obj 82 100 unpack f f f f;
+#X floatatom 38 78 5 0 0 0 - - -;
+#X text 146 144 creation arg sets nr of outlets;
+#X obj 88 121 r to-bucket;
+#N canvas 161 281 595 273 more... 0;
+#X msg 48 32 bang;
+#X text 93 30 sends out all values without shifting;
+#X msg 48 52 freeze;
+#X text 101 54 suspend output but continue shifting;
+#X msg 48 73 thaw;
+#X text 86 76 resume output;
+#X msg 48 94 set 4;
+#X obj 48 229 s to-bucket;
+#X text 94 95 send the arg out each outlet and set it to the next number
+;
+#X text 505 95 to output;
+#X msg 56 119 L2R;
+#X text 84 120 shift from left to right (default);
+#X msg 66 143 R2L;
+#X text 97 143 shift from right to left;
+#X msg 20 119 l2r;
+#X msg 29 144 r2l;
+#X msg 85 197 roll \$1;
+#X floatatom 85 175 5 0 0 0 - - -;
+#X text 158 188 I don't really get it --- anyone ?;
+#X connect 0 0 7 0;
+#X connect 2 0 7 0;
+#X connect 4 0 7 0;
+#X connect 6 0 7 0;
+#X connect 10 0 7 0;
+#X connect 12 0 7 0;
+#X connect 14 0 7 0;
+#X connect 15 0 7 0;
+#X connect 16 0 7 0;
+#X connect 17 0 16 0;
+#X restore 41 244 pd more...;
+#N canvas 309 151 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION pass numbers from outlet to outlet;
+#X text 12 5 KEYWORDS control max_compatible needs_work (roll message)
+;
+#X text 12 65 INLET_0 float list bang freeze thaw set roll l2r r2l
+L2R R2L;
+#X text 12 85 OUTLET_N float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 406 324 pd META;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 4 2 7 0;
+#X connect 9 0 10 0;
+#X connect 10 0 4 0;
+#X connect 10 1 4 0;
+#X connect 10 2 4 0;
+#X connect 10 3 4 0;
+#X connect 11 0 4 0;
+#X connect 13 0 4 0;

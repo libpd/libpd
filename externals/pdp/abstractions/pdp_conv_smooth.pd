@@ -1,0 +1,14 @@
+#N canvas 490 446 522 199 10;
+#X obj 29 17 inlet;
+#X obj 29 156 outlet;
+#X obj 29 97 pdp_conv;
+#X obj 95 13 loadbang;
+#X obj 292 12 inlet;
+#X msg 95 36 mask 0.33 0.33 0.33;
+#X text 107 108 pdp_conv_smooth is an averaging convolution filter.
+second inlet sets number of passes.;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 1;
+#X connect 5 0 2 0;

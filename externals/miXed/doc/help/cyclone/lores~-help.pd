@@ -1,0 +1,50 @@
+#N canvas 0 26 573 402 10;
+#X text 10 2 Low-pass filter with resonance;
+#X msg 255 149 200 \, 2000 500 200 1000;
+#X floatatom 211 201 0 0 0 0 - - -;
+#X floatatom 119 150 0 0 0 0 - - -;
+#X msg 119 175 \$1 30;
+#X obj 119 199 line~ 200;
+#X obj 27 321 dac~;
+#X obj 27 285 *~ 0.15;
+#X obj 27 125 phasor~ 150;
+#X text 17 25 lores~ implements a cheap lowpass with an adjustment
+that lets you add the resonance you've been looking for. The middle
+inlet sets a kind of cutoff frequency \, but the sharpness of the filter
+depends on the resonance. 0 is a little bit sharp and 1 as sharp as
+you're going to get.;
+#X text 128 230 frequency;
+#X text 36 230 input;
+#X text 209 312 A special shout out to Jean Laroche for the formula.
+;
+#X text 219 226 resonance (signal or float);
+#X text 27 106 harmonically rich input source;
+#X text 36 263 output;
+#X text 225 248 arguments for initial cutoff frequency (default 0)
+and resonance (default 0);
+#X text 114 134 set cutoff frequency;
+#X text 256 134 filter sweep;
+#X obj 27 244 lores~ 200 0.75;
+#N canvas 309 151 494 384 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal filter max_compatible;
+#X text 12 45 DESCRIPTION low-pass filter with resonance;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 522 381 pd META;
+#X connect 1 0 5 0;
+#X connect 2 0 19 2;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 19 1;
+#X connect 7 0 6 0;
+#X connect 7 0 6 1;
+#X connect 8 0 19 0;
+#X connect 19 0 7 0;

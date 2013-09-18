@@ -1,0 +1,238 @@
+#N canvas 496 25 656 859 10;
+#X obj 7 360 pix_drum;
+#X obj 7 424 pix_texture;
+#N canvas 593 327 562 332 inlet1 0;
+#X floatatom 83 178 5 0 0 0 - - -;
+#X obj 37 20 loadbang;
+#X floatatom 39 178 5 0 0 0 - - -;
+#X obj 83 219 t b f;
+#X floatatom 138 178 5 0 0 0 - - -;
+#X msg 35 133 0;
+#X msg 20 111 1;
+#X msg 1 92 2;
+#X text 79 190 thresh;
+#X floatatom 191 178 5 0 0 0 - - -;
+#X obj 185 222 t b f;
+#X floatatom 247 178 5 0 0 0 - - -;
+#X obj 232 223 t b f;
+#X obj 138 219 t b f;
+#X text 127 190 pix_dist;
+#X text 187 190 minpeak;
+#X floatatom 300 178 5 0 0 0 - - -;
+#X obj 280 221 t b f;
+#X obj 160 278 pack f f f f f f;
+#X obj 160 298 outlet;
+#X text 41 190 mode;
+#X text 169 14 first inlet takes the threshold value (0-1);
+#X text 240 190 min_wid;
+#X text 290 190 dist_ctr;
+#X msg 144 106 12;
+#X msg 222 108 0.12;
+#X msg 307 108 10;
+#X msg 390 109 12;
+#X msg 83 105 0.4;
+#X connect 0 0 3 0;
+#X connect 1 0 28 0;
+#X connect 1 0 24 0;
+#X connect 1 0 7 0;
+#X connect 1 0 25 0;
+#X connect 1 0 26 0;
+#X connect 1 0 27 0;
+#X connect 2 0 18 0;
+#X connect 3 0 18 0;
+#X connect 3 1 18 1;
+#X connect 4 0 13 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 9 0 10 0;
+#X connect 10 0 18 0;
+#X connect 10 1 18 3;
+#X connect 11 0 12 0;
+#X connect 12 0 18 0;
+#X connect 12 1 18 4;
+#X connect 13 0 18 0;
+#X connect 13 1 18 2;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 17 1 18 5;
+#X connect 18 0 19 0;
+#X connect 24 0 4 0;
+#X connect 25 0 9 0;
+#X connect 26 0 11 0;
+#X connect 27 0 16 0;
+#X connect 28 0 0 0;
+#X coords 0 -1 1 1 310 40 1 35 165;
+#X restore 29 23 pd inlet1;
+#N canvas 125 312 331 303 inlet2 0;
+#X floatatom 19 147 5 0 0 0 - - -;
+#X floatatom 63 147 5 0 0 0 - - -;
+#X obj 61 208 t b f;
+#X floatatom 109 147 5 0 0 0 - - -;
+#X obj 107 208 t b f;
+#X floatatom 155 147 5 0 0 0 - - -;
+#X obj 153 208 t b f;
+#X obj 18 237 pack f f f f;
+#X obj 18 265 outlet;
+#X obj 96 96 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 124 94 r refresh;
+#X text 18 160 bottom;
+#X text 66 160 head;
+#X text 112 160 left;
+#X text 156 160 right;
+#X obj 18 54 r i-bottom;
+#X obj 96 55 r i-head;
+#X obj 157 53 r i-left;
+#X obj 222 54 r i-right;
+#X connect 0 0 7 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 2 1 7 1;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 1 7 2;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 6 1 7 3;
+#X connect 7 0 8 0;
+#X connect 9 0 0 0;
+#X connect 9 0 1 0;
+#X connect 9 0 3 0;
+#X connect 9 0 5 0;
+#X connect 10 0 9 0;
+#X connect 15 0 0 0;
+#X connect 16 0 1 0;
+#X connect 17 0 3 0;
+#X connect 18 0 5 0;
+#X coords 0 -1 1 1 195 40 1 10 135;
+#X restore 52 246 pd inlet2;
+#X obj 7 297 gemhead 1;
+#X obj 7 318 pix_video;
+#X obj 7 339 pix_grey;
+#N canvas 716 528 225 177 gemwin 0;
+#X obj 61 138 gemwin;
+#X msg 46 83 create \, 1;
+#X msg 142 99 0 \, destroy;
+#X obj 24 12 loadbang;
+#X obj 24 38 t b b b;
+#X msg 126 65 dimen 320 240;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 1 1 0;
+#X connect 4 2 5 0;
+#X connect 5 0 0 0;
+#X restore 407 29 pd gemwin;
+#N canvas 730 589 294 136 presets 0;
+#X obj 21 54 r refresh;
+#X msg 21 73 \; ver-dim 240 \; hor-dim 320 \; dimen 320 240 \;;
+#X obj 39 14 loadbang;
+#X obj 21 15 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 21 34 s refresh;
+#X obj 153 13 loadbang;
+#X obj 21 -5 inlet;
+#X msg 186 39 \; i-bottom 200 \; i-head 116 \; i-left 19 \; i-right
+302 \;;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 0;
+#X restore 409 52 pd presets;
+#X text 292 269 bottom \, top \, right \, left;
+#X text 57 83 mode: selescts mode of operation (0 \, 1 or 2);
+#X text 56 121 thresh: threshold for contrast (0-1);
+#X text 6 494 pix_drum looks for black pixels incoming from the top
+a video frame.;
+#X text 6 522 The algorithm makes a histogram of how many black pixels
+there are per column.;
+#X text 7 631 the convexity test takes the form of:;
+#X text 62 645 y = hist[i] - (hist[i-x]*.05 + hist[i+x]);
+#X text 6 551 It then finds the highet point in the histogram \, that
+is \, the highest peak \, called the primary peak.;
+#X text 56 131 pix_dist: number of pixels around a center \, x in function
+below;
+#X text 98 97 mode 2 is the current regular function (others used for
+debugging);
+#X text 56 155 tip scalar: scalar of maximum height in concavity test
+graph \, values higher than this scaled height are part of a peak;
+#X text 57 189 min_width: minimum number of contiguous values higher
+than scaled height to report a peak;
+#X text 57 213 dist_ctr: minimum distance from primary peak to report
+a secondary peak.;
+#X text 265 257 INLET 2: defines the bounds of the anrea of analysis
+;
+#X text 56 68 INLET 1: Analysis Parameters;
+#X text 6 471 INFORMATION;
+#X text 6 579 It then finds the area of black pixels on either side
+of the primary peak. (Left Area and Right Area);
+#X text 7 605 It then performs a convexity test \, on both sides of
+the primary peak.;
+#X text 9 660 where (x) is a deviation from the center (i). If the
+line is straight y=0 \, if it is concave or convex \, hey are negative
+or positive.;
+#X text 11 699 The results of this test are recroded in a graph. secondary
+peaks are the point where two concave curves meet \, which therefore
+has a higher value for y in the concavity text.;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 31 395 pd print;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 99 386 pd print;
+#X text 189 302 OUTLETS;
+#X text 188 323 outlet 0: the analyzed video image;
+#X text 188 337 outlet 1: primary peak information;
+#X text 211 368 Areas are normalized;
+#X text 189 383 outlet 2: secondary peak information;
+#X text 212 415 side: At which side of the 1ry preak is the secondary
+peak.;
+#X text 246 427 Left = 0 \, Right = 1;
+#X text 220 353 [x coord. \, y coord. \, Left Area \, Right Area];
+#X text 222 399 [side \, index \, x coord. \, y coord.];
+#X text 213 440 index: index 0 - n of each secondary peak.;
+#X obj 7 448 rectangle 5.33 4;
+#X text 115 808 support information in www.jaimeoliver.pe;
+#X text 229 822 jaime.oliver@gmail.com;
+#X text 249 837 joliverl-2010 v0.01;
+#X text 193 454 outlets 3 and 4 are currently not supported;
+#X text 12 756 This object was programmed as part of the Silent Percussion
+Proect \, for use in the Silent Drum Controller. For more infomation:
+http://www.jaimeoliver.pe/drum;
+#X connect 0 0 1 0;
+#X connect 0 1 29 0;
+#X connect 0 2 30 0;
+#X connect 1 0 41 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 2;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;

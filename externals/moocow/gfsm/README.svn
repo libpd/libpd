@@ -1,0 +1,21 @@
+To build from subversion sources, do the following:
+
+ ./svn-prepare.sh
+ ./configure
+ make
+ make install
+
+The './svn-prepare.sh' script requires some shared code
+in the directory ../common (relative to the package root
+directory).
+
+If you make changes to any autotools files (e.g. Makefile.am,
+configure.ac), you will need to re-run automake, autoconf, etc.
+This can be accomplished by running the wrapper script ./autogen.sh.
+
+The README.txt file in the distribution is auto-generated
+from perl ".pod" format by the "pod2text" included in most
+Perl distributions.
+
+marmosets,
+	Bryan

@@ -1,0 +1,22 @@
+#N canvas 64 291 617 246 10;
+#X text 201 77 main usage is to compute block synchronous frequencies
+;
+#X text 200 92 for spectral domain processing;
+#X text 201 49 out = left + right * (sys samplerate / blocksize);
+#X obj 36 36 inlet~;
+#X obj 37 198 outlet~;
+#X obj 102 110 samplerate~;
+#X text 200 35 fblock~: compute block relative frequencies;
+#X obj 102 83 loadbang;
+#X obj 57 165 *~;
+#X obj 101 35 inlet~;
+#X obj 102 138 / \$1;
+#X obj 171 86 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X connect 3 0 4 0;
+#X connect 5 0 10 0;
+#X connect 7 0 5 0;
+#X connect 8 0 4 0;
+#X connect 9 0 8 0;
+#X connect 10 0 8 1;
+#X connect 11 0 5 0;

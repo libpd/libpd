@@ -1,0 +1,114 @@
+#N canvas 1 53 979 642 10;
+#X obj 26 538 tof/menubutton 132 22 \$0s \$0r 1 green red orange purple
+0 \, a \, b \, c \, d \, e \, f \, with spaces;
+#X msg 43 66 add a b c d e f;
+#X msg 28 46 clear;
+#X msg 118 159 saveitems \$1;
+#X obj 118 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 392 560 5 0 0 0 - - -;
+#X text 71 45 Clear menu items;
+#X text 147 64 Add menu items;
+#X obj 242 540 r \$0s;
+#X obj 392 589 send \$0r;
+#X text 542 315 1: width;
+#X text 542 329 2: height;
+#X text 542 342 3: send name;
+#X text 542 354 4: receive name;
+#X text 139 130 Set the saving of the menu items in the patch. Off
+by default.;
+#X floatatom 188 303 5 0 0 0 - - -;
+#X obj 26 574 unpack f s;
+#X floatatom 26 597 5 0 0 0 - - -;
+#X symbolatom 85 595 10 0 0 0 - - -;
+#X floatatom 243 595 5 0 0 0 - - -;
+#X symbolatom 300 593 10 0 0 0 - - -;
+#X obj 243 564 unpack f s;
+#X msg 189 327 set b;
+#X msg 189 351 set 2;
+#X text 126 196 values can be tk colors(red \, blue \, etc) or html
+colors (#ffffff);
+#X msg 184 275 colors default;
+#X text 125 180 colors: background foreground highlight contour;
+#X msg 126 230 colors green red orange purple;
+#X msg 146 255 colors #000000 #ffffff #ff0000 #3a12ff;
+#X text 145 88 Set its size;
+#X msg 66 89 size 102 32;
+#X text 165 110 Set its size;
+#X msg 86 111 size 132 22;
+#X msg 186 421 align -1;
+#X msg 188 401 align 0;
+#X msg 187 380 align 1;
+#X obj 542 224 cnv 15 400 60 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 547 232 To move the [menubutton] \, switch to edit mode and
+draw a selection rectangle around it. The [menubutton] will temporarly
+be disabled allowing you to drag it.;
+#X obj 540 295 cnv 15 400 15 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X text 543 293 Creation arguments:;
+#X text 542 365 5: save menu items flag;
+#X msg 183 510 add \$1;
+#X obj 183 487 cyclone/tosymbol;
+#X text 543 402 8: highlight color (#000000 html or tk colors);
+#X text 543 391 7: foreground color (#000000 hmtl or tk colors);
+#X text 541 378 6: background color (#000000 html or tk colors);
+#X text 542 415 9: contour color (#000000 html or tk colors);
+#X text 541 428 10: horizontal alignement;
+#X text 537 443 \, : anything after a comma will be parsed as the menu
+items. Each menu item must be separated by a comma.;
+#X text 229 348 Select an item by index without outputing it;
+#X text 242 380 align right;
+#X text 245 398 align center;
+#X text 249 418 align left;
+#X text 228 302 Select and output a menu item by index;
+#X obj 28 9 cnv 15 400 30 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 30 8 description: a button with a popup menu;
+#X text 31 21 tags: ui;
+#X msg 183 464 with spaces;
+#X text 180 444 Adding items with spaces;
+#X obj 540 521 cnv 15 400 30 empty empty empty 20 12 0 14 -232576 -66577
+0;
+#X text 544 499 The [menubutton] at left was created with the following:
+;
+#X text 546 519 [tof/menubutton 132 22 \$0s \$0r 1 green red orange
+purple 0 \, a \, b \, c \, d \, e \, f \, with spaces];
+#X text 105 572 output: index name;
+#X text 235 325 Select an item by name without outputing it;
+#N canvas 166 140 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 5 KEYWORDS control GUI user_input;
+#X text 12 25 DESCRIPTION a button with a popup menu;
+#X text 12 65 INLET_0 float clear add size saveitems colors set align
+;
+#X text 12 85 OUTLET_0 list;
+#X restore 921 581 pd META;
+#X connect 0 0 16 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 9 0;
+#X connect 8 0 21 0;
+#X connect 15 0 0 0;
+#X connect 16 0 17 0;
+#X connect 16 1 18 0;
+#X connect 21 0 19 0;
+#X connect 21 1 20 0;
+#X connect 22 0 0 0;
+#X connect 23 0 0 0;
+#X connect 25 0 0 0;
+#X connect 27 0 0 0;
+#X connect 28 0 0 0;
+#X connect 30 0 0 0;
+#X connect 32 0 0 0;
+#X connect 33 0 0 0;
+#X connect 34 0 0 0;
+#X connect 35 0 0 0;
+#X connect 41 0 0 0;
+#X connect 42 0 41 0;
+#X connect 57 0 42 0;

@@ -1,0 +1,11 @@
+#N canvas 0 0 450 300 10;
+#X obj 38 57 mtof;
+#X obj 38 33 inlet;
+#X obj 38 82 expr \$1 / 261.626 * $f1;
+#X obj 38 106 outlet;
+#X text 74 249 creation argument: samplerate at middle C.;
+#X text 25 190 takes midi note value and converts to a samplerate for
+sample playback.;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;

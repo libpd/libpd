@@ -1,0 +1,427 @@
+#N canvas 187 140 841 379 10;
+#X text 483 27 part of iemmatrix;
+#N canvas 0 0 450 300 convert2tablemsg 0;
+#X obj 130 35 inlet;
+#X obj 169 216 outlet;
+#X obj 130 60 t a a;
+#X obj 160 82 mtx_size;
+#X obj 130 107 list split 3;
+#X obj 220 107 change;
+#X msg 220 129 resize \$1;
+#X obj 169 154 list prepend 0;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 3 1 5 0;
+#X connect 4 1 7 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X restore 33 284 pd convert2tablemsg;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array view_window 101 float 1;
+#A 0 0.000448756 0.000945109 0.00165503 0.00268316 0.00407733 0.00591581
+0.00828443 0.0112762 0.0149904 0.019532 0.0250102 0.0315369 0.0392254
+0.0481884 0.0585358 0.0703731 0.0837981 0.0988997 0.115755 0.134427
+0.154961 0.177385 0.201708 0.227912 0.255959 0.285784 0.317297 0.35038
+0.384891 0.420659 0.457489 0.495163 0.53344 0.572058 0.610739 0.649192
+0.687112 0.724189 0.760109 0.794559 0.827231 0.857827 0.886059 0.911661
+0.934386 0.954011 0.970343 0.983219 0.99251 0.998122 1 0.998122 0.99251
+0.98322 0.970343 0.954011 0.934386 0.911661 0.886059 0.857827 0.827231
+0.794559 0.76011 0.724189 0.687112 0.649192 0.61074 0.572058 0.53344
+0.495163 0.457489 0.420659 0.384891 0.350381 0.317297 0.285784 0.255959
+0.227912 0.201708 0.177386 0.154961 0.134427 0.115755 0.0988999 0.0837981
+0.0703731 0.0585359 0.0481884 0.0392254 0.0315369 0.0250102 0.019532
+0.0149904 0.0112762 0.00828444 0.00591582 0.00407733 0.00268316 0.00165504
+0.000945111 0.000448758;
+#X coords 0 1.1 100 0 101 80 1;
+#X restore 326 212 graph;
+#X text 43 34 [mtx_window];
+#X text 166 69 creates a row vector with windows of different specifications.
+;
+#X text 271 157 outletB: window vector;
+#X obj 33 306 s view_window;
+#X text 268 138 inletA: <window type> <length>;
+#X msg 33 68 rectangular 101;
+#X msg 42 87 bartlett 101;
+#X msg 50 106 sine 101;
+#X msg 54 126 hamming 101;
+#X msg 60 147 hanning 101;
+#X msg 63 169 blackman 101;
+#X msg 71 189 gauss 101 -77;
+#X text 227 315 note: the third parameter for gaussian windows describes
+the attenuation at the borders;
+#X text 480 241 use this e.g. for:;
+#X msg 80 216 kaiser 101 \$1;
+#X obj 33 242 mtx_window;
+#X msg 174 187 0;
+#X msg 296 188 10;
+#X msg 266 188 8;
+#X msg 235 188 5;
+#X msg 204 188 2;
+#N canvas 625 163 842 574 fft_analysis 0;
+#X msg 477 0 sine 64;
+#X msg 477 42 hanning 64;
+#X msg 475 -41 rectangular 64;
+#X obj 461 160 s array1;
+#N canvas 0 0 450 300 mtx2arraysend 0;
+#X obj 150 16 inlet;
+#X obj 148 254 outlet;
+#X obj 170 64 t a a;
+#X obj 204 85 mtx_size;
+#X msg 205 129 resize \$1;
+#X obj 205 108 change;
+#X obj 172 149 list split 3;
+#X obj 170 169 list prepend 0;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 2 1 3 0;
+#X connect 3 1 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 1 7 0;
+#X connect 7 0 1 0;
+#X restore 461 137 pd mtx2arraysend;
+#X obj 385 250 mtx_.*;
+#X obj 385 276 mtx_rowrfft;
+#X obj 385 298 mtx_.^ 2;
+#X obj 457 299 mtx_.^ 2;
+#X obj 385 320 mtx_+;
+#X obj 385 383 mtx_powtodb;
+#N canvas 0 0 450 300 mtx2arraysend 0;
+#X obj 150 16 inlet;
+#X obj 148 254 outlet;
+#X obj 170 64 t a a;
+#X obj 204 85 mtx_size;
+#X msg 205 129 resize \$1;
+#X obj 205 108 change;
+#X obj 172 149 list split 3;
+#X obj 170 169 list prepend 0;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 2 1 3 0;
+#X connect 3 1 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 1 7 0;
+#X connect 7 0 1 0;
+#X restore 385 404 pd mtx2arraysend;
+#N canvas 51 277 450 396 normalize 0;
+#X obj 107 27 inlet;
+#X obj 104 360 outlet;
+#X obj 227 117 mtx_sum;
+#X obj 227 96 mtx_transpose;
+#X obj 129 97 mtx_transpose;
+#X obj 129 118 mtx_.^ 2;
+#X obj 128 139 mtx_sum;
+#X obj 128 160 sqrt;
+#X obj 340 20 inlet;
+#X obj 238 227 f;
+#X obj 129 226 f;
+#X obj 129 295 mux 0 1;
+#X obj 107 66 t a a a;
+#X obj 104 295 mtx;
+#X obj 104 328 mtx_./ 1;
+#X obj 109 199 t b b b f;
+#X connect 0 0 12 0;
+#X connect 2 0 9 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 10 0;
+#X connect 8 0 15 0;
+#X connect 9 0 11 1;
+#X connect 10 0 11 0;
+#X connect 11 0 14 1;
+#X connect 12 0 13 0;
+#X connect 12 1 4 0;
+#X connect 12 2 3 0;
+#X connect 13 0 14 0;
+#X connect 14 0 1 0;
+#X connect 15 0 13 0;
+#X connect 15 1 10 0;
+#X connect 15 2 9 0;
+#X connect 15 3 11 2;
+#X restore 394 230 pd normalize;
+#X msg 476 -20 bartlett 64;
+#X msg 477 21 hamming 64;
+#X msg 477 63 blackman 64;
+#X obj 385 362 mtx_+;
+#X obj 474 210 tgl 15 1 empty empty broad/narrow 0 -6 0 8 -262144 -1
+-1 1 1;
+#X obj 37 353 dbtorms;
+#X obj 41 317 hsl 128 15 0 127 0 1 empty empty ampl -2 -6 0 12 -262144
+-1 -1 0 1;
+#X floatatom 38 336 5 0 0 0 - - -;
+#X obj 79 197 dbtorms;
+#X obj 83 161 hsl 128 15 0 127 0 1 empty empty ampl -2 -6 0 10 -262144
+-1 -1 9900 1;
+#X floatatom 80 180 5 0 0 0 - - -;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array spectrum 129 float 1;
+#A 0 56.377 77.3304 80.1692 76.3056 66.8052 80.5651 82.465 74.9327
+82.4891 91.8709 96.2977 98.4686 99.0234 98.1252 95.6622 91.1155 82.4891
+66.9537 78.6591 77.4688 68.019 67.7708 73.5005 71.7182 60.2204 65.3425
+69.9818 67.9057 54.6513 63.1717 67.3292 65.0647 50.2597 61.3407 65.221
+62.8226 46.6091 59.7915 63.4904 60.9916 43.4733 58.4672 62.0381 59.4612
+40.7174 57.3238 60.7997 58.1604 38.2504 56.3288 59.7315 57.0415 36.0149
+55.4562 58.8013 56.0695 33.9678 54.6867 57.9852 55.2182 32.0684 54.0057
+57.2658 54.4691 30.298 53.4006 56.6287 53.8066 28.6325 52.8621 56.063
+53.2186 27.0424 52.3832 55.5605 52.6966 25.5223 51.9567 55.1137 52.2326
+24.0564 51.5776 54.7167 51.8203 22.6263 51.2422 54.3654 51.4551 21.2226
+50.9464 54.0553 51.1324 19.8274 50.6876 53.7836 50.849 18.4236 50.4638
+53.5478 50.6023 16.9878 50.2726 53.3455 50.3899 15.5157 50.1124 53.175
+50.2099 14.0048 49.9819 53.0348 50.0604 12.4079 49.8806 52.9241 49.9408
+10.7623 49.8072 52.8418 49.8498 9.20872 49.7614 52.7872 49.7866 7.94681
+49.7429 52.7602 49.7513 7.39902;
+#X array sineamp 129 float 1;
+#A 0 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99
+99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99
+99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99
+99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99
+99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99
+99 99 99 99 99 99 99 99 99 99 99 99 99 99 99 99;
+#X array noiseamp 129 float 1;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 100 128 0 200 140 1;
+#X restore 51 -51 graph;
+#X obj 133 198 s sineamp;
+#X msg 133 178 const \$1;
+#X msg 91 333 const \$1;
+#X obj 91 353 s noiseamp;
+#X obj 385 342 mtx_* 0.1;
+#X obj 462 341 mtx_* 0.9;
+#X obj 502 381 loadbang;
+#X msg 502 403 ylabel -2 0 20 40 60 80 100 \, yticks 0 10 2;
+#X msg 532 342 xlabel -10 narrowband_dB;
+#X msg 596 319 xlabel -10 broadband_dB;
+#X obj 532 319 sel 1 0;
+#X text -5 133 1 choose sine/frequency+amplitude;
+#N canvas 61 0 443 338 mtx_oscillator 0;
+#X obj 84 12 inlet;
+#X obj 68 308 outlet;
+#X obj 68 131 f;
+#X obj 14 29 bang~;
+#X obj 183 27 loadbang;
+#X obj 183 69 mtx_:;
+#X obj 298 6 loadbang;
+#X msg 298 26 1;
+#X obj 297 46 atan;
+#X obj 68 245 mtx_* 1;
+#X obj 68 266 mtx_cos;
+#X obj 297 67 * 8;
+#X msg 183 49 0 63;
+#X obj 120 69 /;
+#X obj 68 201 mtx_* 1;
+#X obj 68 179 mtx;
+#N canvas 576 37 450 300 accumulate_modulo 0;
+#X obj 148 33 inlet;
+#X obj 148 232 outlet;
+#X obj 148 107 mtx_mod 1;
+#X obj 148 129 t a a;
+#X obj 249 33 inlet df;
+#X obj 188 129 mtx_slice 1 end 1 end;
+#X msg 339 129 \$3;
+#X obj 192 65 +;
+#X obj 148 86 mtx_+ 0;
+#X connect 0 0 8 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 3 1 5 0;
+#X connect 4 0 7 1;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 1;
+#X connect 8 0 2 0;
+#X restore 68 223 pd accumulate_modulo;
+#X obj 68 155 t b f f;
+#X msg 121 50 1 64;
+#X obj 121 31 loadbang;
+#X obj 84 108 *;
+#X obj 68 288 mtx_* 2;
+#X connect 0 0 20 0;
+#X connect 2 0 17 0;
+#X connect 3 0 2 0;
+#X connect 4 0 12 0;
+#X connect 5 0 15 1;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 11 0;
+#X connect 9 0 10 0;
+#X connect 10 0 21 0;
+#X connect 11 0 9 1;
+#X connect 12 0 5 0;
+#X connect 13 0 20 1;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;
+#X connect 16 0 9 0;
+#X connect 17 0 15 0;
+#X connect 17 1 14 1;
+#X connect 17 2 16 1;
+#X connect 18 0 13 0;
+#X connect 19 0 18 0;
+#X connect 20 0 2 1;
+#X connect 21 0 1 0;
+#X restore -8 219 pd mtx_oscillator;
+#X obj -8 239 mtx_* 0;
+#X obj 385 203 mtx_+;
+#X text -7 268 2 choose sine/frequency+amplitude;
+#X obj -7 376 mtx_* 0;
+#N canvas 0 0 450 300 mtx_noise~ 0;
+#X obj 180 137 mtx_* 2;
+#X obj 180 158 mtx_- 1;
+#X obj 323 116 loadbang;
+#X msg 323 140 3;
+#X obj 323 162 sqrt;
+#X obj 180 204 mtx_* 1;
+#X obj 180 235 outlet;
+#X obj 180 85 bang~;
+#X obj 180 106 mtx_rand 1 64;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 1;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
+#X restore -7 286 pd mtx_noise~;
+#X obj 339 63 dsp;
+#X obj 339 45 tgl 15 0 empty dsp_tgl empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 343 -39 3 choose window;
+#X text 343 180 4 choose broadband/narrow band normalization;
+#X floatatom 347 93 5 0 0 0 - - -;
+#X floatatom 306 94 5 0 0 0 - - -;
+#N canvas 0 0 450 300 mtx2arraysend 0;
+#X obj 150 16 inlet;
+#X obj 148 254 outlet;
+#X obj 170 64 t a a;
+#X obj 204 85 mtx_size;
+#X msg 205 129 resize \$1;
+#X obj 205 108 change;
+#X obj 172 149 list split 3;
+#X obj 170 169 list prepend 0;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 2 1 3 0;
+#X connect 3 1 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 1 7 0;
+#X connect 7 0 1 0;
+#X restore 469 255 pd mtx2arraysend;
+#X floatatom 29 163 6 0 0 0 freq - -;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array signal 64 float 1;
+#A 0 0.332393 -0.190103 -0.696238 -1.14245 -1.49035 -1.70998 -1.78244
+-1.70151 -1.47414 -1.1199 -0.669277 -0.161057 0.361022 0.852032 1.26971
+1.57812 1.75071 1.77263 1.642 1.37004 0.980184 0.505969 -0.0117945
+-0.528541 -0.999799 -1.38501 -1.65103 -1.77496 -1.74612 -1.56702 -1.25305
+-0.831239 -0.337892 0.184535 0.69108 1.13815 1.48727 1.70839 1.78248
+1.70317 1.47728 1.12425 0.674464 0.166635 -0.355539 -0.847111 -1.26578
+-1.57551 -1.74965 -1.77321 -1.64417 -1.37362 -0.984858 -0.511333 0.00619539
+0.52319 0.995158 1.38148 1.64891 1.77443 1.74724 1.56968 1.25702 0.836189
+;
+#X coords 0 2 63 -2 200 140 1;
+#X restore 589 -66 graph;
+#X obj 385 427 s spectrum;
+#X obj 469 278 s signal;
+#X msg 532 278 ylabel -2 0 -2 -1 0 1 2 \, yticks 0 0.5 2;
+#X obj 588 254 loadbang;
+#X obj 116 237 loadbang;
+#X obj 404 47 loadbang;
+#X msg 117 218 2.999;
+#X obj 211 353 mtx_resize 0 256;
+#X msg 472 87 gauss 64 -85;
+#X obj 461 113 mtx_window;
+#X msg 650 130 kaiser 64 \$1;
+#X msg 649 96 0;
+#X msg 743 96 8;
+#X msg 713 96 5;
+#X msg 777 95 10;
+#X msg 682 96 2;
+#X connect 0 0 61 0;
+#X connect 1 0 61 0;
+#X connect 2 0 61 0;
+#X connect 4 0 3 0;
+#X connect 5 0 59 0;
+#X connect 6 0 7 0;
+#X connect 6 1 8 0;
+#X connect 7 0 9 0;
+#X connect 8 0 9 1;
+#X connect 9 0 29 0;
+#X connect 10 0 11 0;
+#X connect 11 0 52 0;
+#X connect 12 0 5 1;
+#X connect 13 0 61 0;
+#X connect 14 0 61 0;
+#X connect 15 0 61 0;
+#X connect 16 0 10 0;
+#X connect 16 0 30 0;
+#X connect 17 0 12 1;
+#X connect 17 0 35 0;
+#X connect 18 0 41 1;
+#X connect 19 0 20 0;
+#X connect 20 0 18 0;
+#X connect 20 0 27 0;
+#X connect 21 0 38 1;
+#X connect 22 0 23 0;
+#X connect 23 0 21 0;
+#X connect 23 0 26 0;
+#X connect 26 0 25 0;
+#X connect 27 0 28 0;
+#X connect 29 0 16 0;
+#X connect 30 0 16 1;
+#X connect 31 0 32 0;
+#X connect 32 0 52 0;
+#X connect 33 0 52 0;
+#X connect 34 0 52 0;
+#X connect 35 0 33 0;
+#X connect 35 1 34 0;
+#X connect 37 0 38 0;
+#X connect 38 0 39 0;
+#X connect 39 0 5 0;
+#X connect 39 0 49 0;
+#X connect 41 0 39 1;
+#X connect 42 0 41 0;
+#X connect 43 0 48 0;
+#X connect 43 1 47 0;
+#X connect 44 0 43 0;
+#X connect 49 0 53 0;
+#X connect 50 0 37 0;
+#X connect 54 0 53 0;
+#X connect 55 0 54 0;
+#X connect 56 0 58 0;
+#X connect 57 0 2 0;
+#X connect 58 0 50 0;
+#X connect 59 0 6 0;
+#X connect 60 0 61 0;
+#X connect 61 0 4 0;
+#X connect 61 0 12 0;
+#X connect 62 0 61 0;
+#X connect 63 0 62 0;
+#X connect 64 0 62 0;
+#X connect 65 0 62 0;
+#X connect 66 0 62 0;
+#X connect 67 0 62 0;
+#X restore 616 242 pd fft_analysis;
+#X connect 1 0 6 0;
+#X connect 8 0 18 0;
+#X connect 9 0 18 0;
+#X connect 10 0 18 0;
+#X connect 11 0 18 0;
+#X connect 12 0 18 0;
+#X connect 13 0 18 0;
+#X connect 14 0 18 0;
+#X connect 17 0 18 0;
+#X connect 18 0 1 0;
+#X connect 19 0 17 0;
+#X connect 20 0 17 0;
+#X connect 21 0 17 0;
+#X connect 22 0 17 0;
+#X connect 23 0 17 0;

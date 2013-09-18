@@ -1,0 +1,82 @@
+#N canvas 130 41 696 468 10;
+#X text 54 30 Class: geometric object;
+#X obj 479 107 cnv 15 200 250 empty empty empty 20 12 0 14 -228992
+-66577 0;
+#X obj 494 284 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 499 323 pd gemwin;
+#X msg 499 304 create;
+#X text 495 283 Create window:;
+#X obj 7 65 cnv 15 450 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 196 cnv 15 450 200 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 201 Inlets:;
+#X obj 8 156 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 155 Arguments:;
+#X text 27 227 Inlet 1: message: draw [line|fill|point];
+#X text 27 241 Inlet 2: float: size;
+#X text 452 8 GEM object;
+#X text 27 213 Inlet 1: gemlist;
+#X text 9 350 Outlets:;
+#X text 21 363 Outlet 1: gemlist;
+#X text 485 89 Example:;
+#X obj 482 137 cnv 15 190 110 empty empty empty 20 12 0 14 -81876 -66577
+0;
+#X text 33 14 Synopsis: [colorSquare];
+#X obj 534 252 cnv 15 100 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 485 145 draw line;
+#X msg 485 166 draw fill;
+#X msg 485 188 draw point;
+#X obj 543 114 gemhead;
+#X floatatom 557 143 5 0 0 1 size - -;
+#X text 7 69 Description: Renders a square with several colors.;
+#X text 63 166 size of the square;
+#X obj 543 259 colorSquare;
+#X msg 615 222 1 1 0;
+#X msg 600 203 0 0 1;
+#X msg 586 184 0 1 0;
+#X msg 571 165 1 0 0;
+#X text 27 268 Inlet 3: list: 3(RGB) float values for the lowerleft
+corner;
+#X text 27 285 Inlet 4: list: 3(RGB) float values for the lowerright
+corner;
+#X text 27 305 Inlet 5: list: 3(RGB) float values for the upperright
+corner;
+#X text 27 322 Inlet 6: list: 3(RGB) float values for the upperleft
+corner;
+#X text 16 86 The colorSquare object renders a square at the current
+position. The size of the square can be changed via the second inlet.
+The colors of the 4 corners can be specified separately and are drawn
+as gradients.;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 21 0 28 0;
+#X connect 22 0 28 0;
+#X connect 23 0 28 0;
+#X connect 24 0 28 0;
+#X connect 25 0 28 1;
+#X connect 29 0 28 5;
+#X connect 30 0 28 4;
+#X connect 31 0 28 3;
+#X connect 32 0 28 2;

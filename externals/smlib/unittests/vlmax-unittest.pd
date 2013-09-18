@@ -1,0 +1,27 @@
+#N canvas 374 132 746 533 10;
+#X obj 49 165 testtools/unit-test-frame;
+#X obj 49 97 loadbang;
+#X obj 370 -34 & 127;
+#X obj 370 -3 / 64;
+#X obj 370 24 - 1;
+#X obj 370 103 pack;
+#X obj 370 55 t f f;
+#X obj 397 80 + 0.1;
+#X obj 370 131 smlib/vlmax 10;
+#X msg 49 126 vlmax 0;
+#X text 13 -13 the argument is the half-decay expressed in number of
+activations;
+#X text 12 -30 vlmax: vector leaky maximum;
+#X text 12 23 This test only works one time after patch load because
+the object has no reset option.;
+#X connect 0 2 2 0;
+#X connect 1 0 9 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 0;
+#X connect 6 1 7 0;
+#X connect 7 0 5 1;
+#X connect 8 0 0 1;
+#X connect 9 0 0 0;

@@ -1,0 +1,27 @@
+#N canvas 1 53 283 224 10;
+#X floatatom 23 99 9 0 0 0 - - -;
+#X text 57 75 no arg;
+#X obj 23 76 db2v;
+#X floatatom 23 52 9 0 0 0 - - -;
+#X text 89 53 input_level [dB];
+#X text 24 11 db2v;
+#X text 104 12 dB to value converter;
+#X text 91 102 output_value [-];
+#X text 114 184 IEM KUG;
+#X text 91 172 musil;
+#X text 128 172 @;
+#X text 138 172 iem.at;
+#X text 49 161 (c) Thomas Musil 2000 - 2005;
+#X text 97 194 Graz \, Austria;
+#N canvas 263 204 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION dB to value converter;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X restore 230 196 pd META;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;

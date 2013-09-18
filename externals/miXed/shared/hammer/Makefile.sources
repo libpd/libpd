@@ -1,0 +1,4 @@
+OTHER_SOURCES = \
+file.c \
+gui.c \
+tree.c

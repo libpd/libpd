@@ -1,0 +1,53 @@
+#N canvas 10 17 695 631 10;
+#X text 317 6 masse;
+#X text 153 80 M is positive. negative value give non physical things.
+;
+#X text 152 37 the somme of the forces apply to a masse modifie its
+velocity (depending of it's weight). the position his change according
+to the velocity and the weight of the masse;
+#X text 259 169 2 : M = weith of the masse;
+#X text 304 321 if the position of the masse is < Xmin then position
+will be Xmin;
+#X msg 123 448 resetF;
+#X text 258 452 reset the total forces applied to the masse;
+#X msg 124 417 reset;
+#X text 258 413 reset position (to it's initial value) and forces to
+zero. send it's position to it's outlet.;
+#X text 281 224 change position of the masse \, and reset memory (for
+history).;
+#X text 283 188 change weith of the masse;
+#X text 302 307 set the minimum and maximum position of the masse;
+#X msg 124 356 bang;
+#X msg 122 483 loadbang;
+#X text 251 485 output curent position;
+#X text 262 353 compute position and output it;
+#X text 260 387 add force to this mass;
+#X msg 120 173 setM 1;
+#X text 261 117 1 : name;
+#X text 282 135 this is the name of the mass. you can set value to
+this name instead of making a pd connection.;
+#X text 156 23 mass : get liaison forces and output position;
+#X msg 120 283 setXmin -10000 \, setXmax 10000;
+#X msg 121 209 setX 0;
+#X text 259 208 3 : position of the masse;
+#X obj 36 520 mass;
+#X floatatom 36 589 5 0 0 0 - - -;
+#X floatatom 45 572 5 0 0 0 - - -;
+#X floatatom 55 554 5 0 0 0 - - -;
+#X text 97 553 X velocity of the masse;
+#X text 95 572 X force apply to the masse;
+#X text 95 590 X positin of the masse;
+#X text 260 308 Xmin;
+#X text 260 324 Xmax;
+#X obj 124 386 0;
+#X connect 5 0 24 0;
+#X connect 7 0 24 0;
+#X connect 12 0 24 0;
+#X connect 13 0 24 0;
+#X connect 17 0 24 0;
+#X connect 21 0 24 0;
+#X connect 22 0 24 0;
+#X connect 24 0 25 0;
+#X connect 24 1 26 0;
+#X connect 24 2 27 0;
+#X connect 33 0 24 0;

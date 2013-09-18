@@ -1,0 +1,55 @@
+#N canvas 12 4 455 328 10;
+#X declare -lib iemlib;
+#X text 38 49 dsp ON/OFF;
+#X floatatom 212 173 7 0 0 0 - - -;
+#X text 279 175 dB;
+#X floatatom 21 89 5 0 0 0 - - -;
+#X text 69 90 % cpu;
+#X obj 21 69 dsp;
+#X obj 21 49 tgl 15 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X obj 32 230 dac~;
+#X obj 32 205 gainvu~ 300;
+#X obj 259 51 vu 15 120 empty empty 8 -8 0 10 -66577 -1 1 0;
+#X obj 352 74 vsl 15 128 0 127 0 1 empty empty empty 8 -8 0 10 -262144
+-1 -1 9000 1;
+#X floatatom 324 223 7 0 0 0 - - -;
+#X text 382 225 dB;
+#X obj 32 142 LFO_noise~ 2;
+#X text 121 141 1.arg: cutoff-freq.;
+#X floatatom 32 116 4 0 500 0 - - -;
+#X text 15 7 LFO_noise~ : 2-point-interpolated time-stretched white
+noise;
+#X text 118 21 between -0.5 and +0.5;
+#X text 106 285 IEM KUG;
+#X text 90 273 musil;
+#X text 120 273 @;
+#X text 126 273 iem.at;
+#X text 41 262 (c) Thomas Musil 2000 - 2005;
+#X text 89 295 Graz \, Austria;
+#N canvas 496 267 494 344 META 0;
+#X text 12 65 TEMPLATE template-help.pd v0.1;
+#X text 12 85 PLATFORM windows macosx gnulinux;
+#X text 12 5 GENRE help;
+#X text 12 165 WEBSITE;
+#X text 12 205 RELEASE_VERSION 0.42;
+#X text 12 225 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE;
+#X text 12 185 RELEASE_DATE 2000;
+#X text 12 145 AUTHOR Thomas Musil;
+#X text 12 25 KEYWORDS signal;
+#X text 12 125 LIBRARY external iemlib;
+#X text 12 105 DATATYPE signal float;
+#X restore 402 301 pd META;
+#X obj 366 279 import iemlib;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 8 0 7 0;
+#X connect 8 0 7 1;
+#X connect 8 1 11 0;
+#X connect 8 2 9 0;
+#X connect 9 1 1 0;
+#X connect 10 0 8 1;
+#X connect 13 0 8 0;
+#X connect 15 0 13 0;

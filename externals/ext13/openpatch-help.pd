@@ -1,0 +1,22 @@
+#N canvas 0 31 373 263 10;
+#X obj 47 87 openpatch;
+#X text 120 88 =;
+#X obj 136 89 opa;
+#X text 43 13 this would open /tmp/tst.pd;
+#X text 24 161 but you can also use;
+#X msg 176 160 \; pd open foo.pd /tmp/ 1 1 \;;
+#X msg 155 49 symbol /tmp;
+#N canvas 463 219 494 344 META 0;
+#X text 12 125 RELEASE_DATE 2009-06-12;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR d13@klingt.org;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control patchfile_op;
+#X text 12 45 DESCRIPTION open a patch;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 INLET_1 symbol;
+#X restore 320 235 pd META;
+#X msg 47 49 symbol tst.pd;
+#X connect 6 0 0 1;
+#X connect 8 0 0 0;

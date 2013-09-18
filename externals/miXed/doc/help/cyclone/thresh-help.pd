@@ -1,0 +1,33 @@
+#N canvas 0 26 448 277 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 11 237 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 10 251 ___________________________________________________
+;
+#X obj 12 33 thresh;
+#X text 71 35 combine numbers into a list that are received close together
+;
+#X obj 13 151 thresh 100;
+#X obj 13 175 print thresh;
+#X floatatom 13 82 5 0 0 0 - - -;
+#X text 62 83 move fast!!!;
+#X floatatom 78 112 5 0 0 0 - - -;
+#X text 123 111 period length;
+#X text 93 150 inital arg sets period length (default 10msecs);
+#N canvas 380 180 494 373 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 155 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION combine numbers into a list that are received
+close together;
+#X text 12 75 INLET_0 list float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 list;
+#X text 12 5 KEYWORDS control conversion max_compatible list_op;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 135 AUTHOR Krzysztof Czaja;
+#X restore 397 256 pd META;
+#X connect 5 0 6 0;
+#X connect 7 0 5 0;
+#X connect 9 0 5 1;

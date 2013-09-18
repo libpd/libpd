@@ -1,0 +1,21 @@
+#N canvas 222 642 607 202 10;
+#X obj 15 35 pdp_conv_sobel_hor;
+#X obj 149 34 pdp_conv_sobel_ver;
+#X obj 15 114 pdp_add;
+#X obj 15 74 pdp_mul;
+#X obj 149 71 pdp_mul;
+#X text 123 105 this uses the horizontal and vertical sobel directional
+masks squared as an edge detector.;
+#X obj 14 -6 inlet;
+#X obj 15 151 outlet;
+#X obj 15 15 pdp_trigger p p;
+#X connect 0 0 3 0;
+#X connect 0 0 3 1;
+#X connect 1 0 4 0;
+#X connect 1 0 4 1;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 1;
+#X connect 6 0 8 0;
+#X connect 8 0 0 0;
+#X connect 8 1 1 0;

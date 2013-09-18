@@ -1,0 +1,20 @@
+#N canvas 1 53 292 161 10;
+#X text 194 88 j#|@2002;
+#X obj 216 68 SMLib-help;
+#X msg 15 33 100 97 94;
+#X text 10 6 db to rms on a vector;
+#X obj 15 56 vdbtorms;
+#X obj 15 80 print vdbtorms;
+#N canvas 177 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 65 INLET_0 list float;
+#X text 12 85 OUTLET_0 list float;
+#X text 12 45 DESCRIPTION db to rms on a vector;
+#X restore 229 113 pd META;
+#X connect 2 0 4 0;
+#X connect 4 0 5 0;

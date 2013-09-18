@@ -1,0 +1,58 @@
+#N canvas 369 22 790 417 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array src 100 float 1;
+#A 0 0.0214324 5.77858 10.0643 15.0643 17.2072 22.2072 31.4929 33.6358
+37.2072 38.9929 40.7786 45.0644 49.3501 51.4929 53.6358 55.4215 57.2072
+59.3501 61.493 62.6834 63.8739 65.0644 66.8501 68.6358 70.4215 70.7787
+71.493 72.9215 73.2787 73.6358 75.0644 75.4216 75.7787 76.493 76.8501
+77.2073 77.5644 77.9216 78.6358 79.3501 80.0644 80.7787 81.493 81.8501
+82.2073 83.6358 84.3501 85.0644 85.4216 85.7787 87.2073 87.5644 87.9216
+88.6359 89.3501 90.0644 90.7787 90.7787 91.493 92.2073 92.2073 92.2073
+92.2073 92.2073 92.2073 92.2073 93.6359 93.6359 93.6359 93.6359 93.6359
+93.6359 93.6359 93.6359 93.6359 93.6359 93.6359 93.6359 93.6359 94.3502
+94.3502 94.3502 95.0644 95.0644 95.7787 96.493 96.493 96.493 97.9216
+98.6359 98.6359 99.3502 99.3502 99.3502 100.064 100.064 100.064 100.064
+100.779 100.779;
+#X coords 0 100 99 0 200 140 1;
+#X restore 534 10 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array dst 100 float 0;
+#X coords 0 1 99 0 200 140 1;
+#X restore 534 166 graph;
+#X obj 61 31 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 106 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 59 301 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 59 211 50 20 50;
+#X text 44 154 list of 3 floats:;
+#X text 222 273 1.arg: <symbol> source-name;
+#X text 222 286 2.arg: <symbol> destination-name;
+#X msg 154 213 src src;
+#X msg 185 234 dst dst;
+#X text 78 365 IEM KUG;
+#X text 57 353 musil;
+#X text 92 353 @;
+#X text 100 353 iem.at;
+#X text 61 375 Graz \, Austria;
+#X text 56 165 1.) src onset;
+#X text 56 175 2.) dst onset;
+#X text 231 261 initial arguments:;
+#X text 68 283 <bang> output;
+#X text 208 213 <src> xxx : change source name;
+#X text 240 233 <dst> xxx : change destination name;
+#X text 205 69 (the number of samples which are copied are:;
+#X text 218 83 the minimum of both array lengths);
+#X text 13 342 (c) Thomas Musil 2000 - 2010;
+#X text 12 4 tab_dbtorms;
+#X text 90 30 <bang> calculates the dbtorms-value from src to dst;
+#X obj 61 79 tab_dbtorms src dst;
+#X obj 59 264 tab_dbtorms src dst;
+#X text 57 185 3.) n samples of dbtorms;
+#X connect 2 0 27 0;
+#X connect 5 0 28 0;
+#X connect 9 0 28 0;
+#X connect 10 0 28 0;
+#X connect 27 0 3 0;
+#X connect 28 0 4 0;

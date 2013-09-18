@@ -1,0 +1,31 @@
+#N canvas 414 20 609 368 10;
+#X floatatom 107 116 5 0 0 0 - - -;
+#X floatatom 64 207 5 0 0 0 - - -;
+#X obj 20 60 pdp_help_input;
+#X msg 20 31 start;
+#X msg 72 30 stop;
+#X obj 20 236 pdp_mix;
+#X obj 20 268 pdp_help_output;
+#X msg 64 183 0.5;
+#X text 164 116 right inlet sets current delay length;
+#X text 164 149 a packet delay line.;
+#X text 164 180 (dont make this too large \, packets are not compressed!)
+;
+#X obj 42 147 pdp_del 50;
+#X text 164 165 first creation arg = max delay length;
+#X text 165 213 second creation arg: initial delay (default = max)
+;
+#X obj 176 259 pdp_description;
+#X obj 176 285 print;
+#X msg 339 259 _debug;
+#X connect 0 0 11 1;
+#X connect 1 0 5 2;
+#X connect 2 0 5 0;
+#X connect 2 0 11 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 7 0 1 0;
+#X connect 11 0 5 1;
+#X connect 11 0 14 0;
+#X connect 16 0 11 0;

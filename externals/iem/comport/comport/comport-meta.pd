@@ -1,0 +1,6 @@
+#N canvas 15 49 200 200 10;
+#N canvas 25 49 420 300 META 1;
+#X text 13 41 NAME comport;
+#X text 10 25 AUTHOR Winfried Ritsch and others;
+#X text 10 10 VERSION 0.2;
+#X restore 10 10 pd META;

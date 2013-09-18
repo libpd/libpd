@@ -1,0 +1,13 @@
+#N canvas 0 31 450 300 10;
+#X obj 148 137 debug testing;
+#X text 31 46 a simple object to control the flow of print messages
+\, and label them.;
+#N canvas 329 160 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 85 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION debounce;
+#X text 12 65 INLET_0 anything;
+#X text 12 5 KEYWORDS control;
+#X restore 388 268 pd META;

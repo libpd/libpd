@@ -1,0 +1,59 @@
+#N canvas 57 47 659 349 10;
+#X text 452 8 GEM object;
+#X obj 8 226 cnv 15 430 90 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 233 Inlets:;
+#X text 63 246 Inlet 1: gemlist;
+#X text 39 276 Outlets:;
+#X text 57 289 Outlet 1: gemlist;
+#X obj 8 176 cnv 15 430 40 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X obj 8 76 cnv 15 440 90 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 453 60 Example:;
+#X text 71 31 Class: manipulation object;
+#X text 29 77 Description: shear;
+#X text 50 12 Synopsis: [shearXZ];
+#X text 41 91 [shearXZ] accepts a gemList and changes the current transformation
+matrix by the specified shear;
+#X text 60 194 1st argument: shear factor (XZ);
+#X text 63 261 Inlet 2: float: XZ shear factor;
+#X obj 449 77 cnv 15 170 239 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 514 249 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 288 pd gemwin;
+#X msg 519 269 create;
+#X text 515 248 Create window:;
+#X obj 450 108 cnv 15 160 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 458 82 gemhead;
+#X obj 458 177 square;
+#X floatatom 507 115 3 -4 4 0 - - -;
+#X obj 458 136 shearXZ 1;
+#X text 36 122 the X translation depend on Z position and the shear
+factor (float).;
+#X connect 18 0 19 0;
+#X connect 19 0 18 0;
+#X connect 22 0 25 0;
+#X connect 24 0 25 1;
+#X connect 25 0 23 0;

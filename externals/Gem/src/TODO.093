@@ -1,0 +1,49 @@
+What is on the TODO-list for release 0.93
+=========================================
+
+How to read this document
+: pending
+:+ will likely be resolved for gem-0.93
+:- will unlikely be resolved for gem-0.93
++ resolved
+- will NOT be resolved for gem-0.93
+
+
+General Rendering Issues
+: alpha in gemwindow?
+
+Missing help-patches
+
+Untested objects
+: vertex_* ?
+
+
+intial arguments:
+	pix_threshold
+	pix_crop: arguments/inlets differ!
+
+
+
+Object specific bugs
+: pix_freeframe not supported on x86_64 architectures (needs discussion on the freeframe list: people there are a bit reluctant to change the specs (like enforcing 32bit pointers)
+: incorporate new libparticle API
+: make [gemhead] an abstraction
+: make [gemwin] an abstraction
+. [gemwindow] object: [gemXwindow] [gemCocoaWindow] [gemw32indow]
+: upside-down orientation of images:  see http://stackoverflow.com/questions/443086/opengl-topdown-bottomup-textures
+
+
+OS specific bugs
+linux:
+: sometimes window freezes on "destroy"; (JMZ: i experience this sometimes on improper shutdown, but after some (up to 30) seconds, the window finally gets destroyed and pd exits fine; if this is the same as the reported bug, than it is rather an inconvenience than a real bug)
+: resizing the window yields weird results
+
+
+
+osx:
+: pix_movie flickers
+: carbon not supported anymore on 10.6
+
+w32:
+: [pix_share_*] does not exist since the shared-memory concept has not made it to redmond yet
+: crashes when texturing movies (related to GLEW?)

@@ -1,0 +1,29 @@
+#N canvas 1 53 469 354 10;
+#X obj 60 211 listto;
+#X msg 60 92 1 2 3 4;
+#X obj 60 276 print list;
+#X obj 97 236 print end;
+#X text 45 49 separate a list into a stream of atoms;
+#X text 166 237 outputs a bang at the end of the list;
+#X msg 75 113 list uno dos tres quatro;
+#X msg 75 168 one two three four;
+#X text 191 168 must be a "list" \, so this doesn't work;
+#X obj 5 2 cnv 15 450 20 empty empty listto 2 11 1 18 -233017 -66577
+0;
+#N canvas 464 140 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION return the amplitude covered by the last
+n (n>1) values;
+#X text 12 5 KEYWORDS control abstraction list_op;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 INLET_1 float symbol pointer;
+#X text 12 115 OUTLET_0 bang;
+#X restore 410 324 pd META;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;

@@ -1,0 +1,10 @@
+what's new in iemnet?
+
+0.1
+
+- forked away from mrpeach/net
+- one thread for each socket
+- default-target concept: either send to all clients, a single client or all-but
+  a single client
+- getting rid of cruft either not related to networking (e.g. file-handling) or
+  workarounds for bugs/design problems

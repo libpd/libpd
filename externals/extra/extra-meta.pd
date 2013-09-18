@@ -1,0 +1,7 @@
+#N canvas 15 49 200 200 10;
+#N canvas 25 49 420 300 META 1;
+#X text 13 10 NAME extra;
+#X text 10 30 VERSION 0.43.3;
+#X text 10 50 AUTHOR Miller Puckette and others;
+#X text 10 50 LICENSE GPLv2 for expr and BSD for the rest;
+#X restore 10 10 pd META;

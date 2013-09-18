@@ -1,0 +1,26 @@
+#N canvas 0 26 427 299 10;
+#X obj 49 54 uname;
+#X msg 49 17 bang;
+#X obj 49 115 unpack symbol symbol symbol symbol symbol;
+#X symbolatom 331 143 0 0 0 0 - - -;
+#X symbolatom 49 259 0 0 0 0 - - -;
+#X symbolatom 118 236 0 0 0 0 - - -;
+#X symbolatom 189 215 0 0 0 0 - - -;
+#X symbolatom 258 169 0 0 0 0 - - -;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION get uname;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 anything;
+#X restore 377 277 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 2 1 5 0;
+#X connect 2 2 6 0;
+#X connect 2 3 7 0;
+#X connect 2 4 3 0;

@@ -1,0 +1,67 @@
+Installation/Compilation instructions for "iemmatrix"
+=====================================================
+
+
+1) linux (and other autoconf-systems):
+======================================
+	"cd" into iemmatrix/src/
+	run "aclocal"
+	run "autoconf"
+	run "./configure" (see "./configure --help" for valid options)
+	run "make"
+	run "make install"
+	enjoy.
+
+	this should install iemmatrix into /usr/local/lib/pd (unless you specify otherwise)
+	the dynamic-lib (iemmatrix.pd_linux) is installed into extra/
+	the configure-script tries to detect whether you are running a pd>=0.37; if so, the 
+	help-patches are installed into extra/iemmatrix; if you are running an old version
+	of pd, the help-files will be installed into doc/5.reference/iemmatrix
+
+	
+2) mac OS-X:
+============
+	there is nothing special in the code, so it should compile out of the box:
+	"cd" to iemmatrix/src
+	run "./bootstrap.sh; ./configure; make" (for further details please see "1) linux")
+	building with a special version of Pd:
+		to build iemmatrix with your special version of Pd, you should specify the path to your Pd ressources
+		(e.g. "./configure --with-pd=/Applications/Pd.app/Contents/Resources")
+	fat-binaries
+		if you want to build a multi-arch binary you have to specify this as well
+		(e.g. "./configure --enable-fat-binary=i386,ppc --with-extension=d_fat")
+
+3) irix:
+========
+	i don't have any irix machine at hand, so i don't know whether it works
+	but again, since iemmatrix does not use anything special, it should work out of the box
+	try using configure in iemmatrix/src
+	(for further details please see "1) linux")
+
+4) W32:
+=======
+	with MinGW installed, you probably might be able to use the configure in iemmatrix/src
+	users have reported that they were able to build it (with problems)
+	http://lists.puredata.info/pipermail/pd-list/2005-05/028266.html
+	i will support a makefile for msvc as soon as i boot into windows again
+
+CrossCompilation for w32 with MinGW (http://www.mingw.org) on linux-systems
+	you need a cross-compilation tool-chain for windows (there is a debian-package mingw32)
+	run "./configure" and specify the path to your windows installation of pd
+	the simplest way is to give the PDPATH via the "--with-pd=PDPATH" flag; you have to make 
+	sure that the pd-sources are in PDPATH/src and the compiled pd-binaries in PDPATH/bin
+	if those are scattered across you filesystem you can alternatively give explicitely the paths
+	to your "m_pd.h" (with --includedir) and to your "pd.lib" (with --libdir)
+	don't forget to override the default extension ("pd_linux" on linux-systems) with the more appropriate "dll".
+	on bash this looks like:
+	 % ./configure --disable-PIC --with-extension=dll --host=i586-mingw32msvc --with-pd=/path/to/w32-pd/
+	now run "make" and enjoy.
+	
+
+
+5) FreeBSD et al:
+=================
+	i don't know, but why it shouldn't run there ?
+	try the configure in iemmatrix/src (see 1)linux for more information)
+	and report any success or failure
+

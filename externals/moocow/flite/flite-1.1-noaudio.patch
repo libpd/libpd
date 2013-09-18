@@ -1,0 +1,20 @@
+diff -uNr flite-1.1-release/src/audio/native_audio.h flite-1.1-release-noaudio/src/audio/native_audio.h
+--- flite-1.1-release/src/audio/native_audio.h	Tue Dec  4 19:05:59 2001
++++ flite-1.1-release-noaudio/src/audio/native_audio.h	Sun Nov  3 19:12:44 2002
+@@ -41,6 +41,16 @@
+ #ifndef _NATIVE_AUDIO_H__
+ #define _NATIVE_AUDIO_H__
+ 
++/* -- begin HACK: turn off all audio -- */
++#undef  CST_AUDIO_COMMAND
++#undef  CST_AUDIO_SUNOS
++#undef  CST_AUDIO_LINUX
++#undef  CST_AUDIO_ALSA
++#undef  CST_AUDIO_FREEBSD
++#undef  CST_AUDIO_WINCE
++#define CST_AUDIO_NONE
++/* -- end HACK -- */
++
+ #ifdef CST_AUDIO_COMMAND
+ 
+ #define AUDIO_OPEN_NATIVE audio_open_command

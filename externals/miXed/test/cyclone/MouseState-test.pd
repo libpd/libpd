@@ -1,0 +1,54 @@
+#N canvas 228 259 751 304 12;
+#X obj 179 129 MouseState;
+#X obj 179 264 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 200 238 5 0 0 0 - - -;
+#X floatatom 221 213 5 0 0 0 - - -;
+#X floatatom 242 185 5 0 0 0 - - -;
+#X floatatom 264 159 5 0 0 0 - - -;
+#X obj 179 19 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 179 54 metro 50;
+#X msg 272 54 zero;
+#X msg 272 86 reset;
+#X msg 35 87 poll;
+#X msg 99 87 nopoll;
+#X obj 523 129 MouseState;
+#X obj 523 264 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 544 238 5 0 0 0 - - -;
+#X floatatom 565 213 5 0 0 0 - - -;
+#X floatatom 586 185 5 0 0 0 - - -;
+#X floatatom 608 159 5 0 0 0 - - -;
+#X obj 523 19 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 523 54 metro 50;
+#X msg 616 54 zero;
+#X msg 616 86 reset;
+#X msg 379 87 poll;
+#X msg 443 87 nopoll;
+#X obj 53 213 capture;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 1 24 0;
+#X connect 0 2 3 0;
+#X connect 0 2 24 0;
+#X connect 0 3 4 0;
+#X connect 0 4 5 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 13 0;
+#X connect 12 1 14 0;
+#X connect 12 2 15 0;
+#X connect 12 3 16 0;
+#X connect 12 4 17 0;
+#X connect 18 0 19 0;
+#X connect 19 0 12 0;
+#X connect 20 0 12 0;
+#X connect 21 0 12 0;
+#X connect 22 0 12 0;
+#X connect 23 0 12 0;

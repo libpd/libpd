@@ -1,0 +1,18 @@
+#N canvas 0 31 450 300 10;
+#X obj 127 148 screensaver;
+#X obj 130 96 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X text 43 31 set the screensaver timer (in seconds). 0 turns the screensaver
+off;
+#X floatatom 141 126 5 0 0 1 seconds - -;
+#N canvas 404 246 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 85 AUTHOR Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION set the screensaver timer (in seconds);
+#X restore 392 266 pd META;
+#X connect 1 0 0 0;
+#X connect 1 0 3 0;

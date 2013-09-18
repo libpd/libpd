@@ -1,0 +1,10 @@
+#N canvas 0 22 450 300 10;
+#X obj 58 171 errors;
+#X msg 31 64 moo;
+#X msg 100 100 list moo baa;
+#X msg 130 132 1;
+#X msg 70 67 symbol baa;
+#X connect 1 0 0 0;
+#X connect 2 0 0 2;
+#X connect 3 0 0 3;
+#X connect 4 0 0 1;

@@ -1,0 +1,65 @@
+Installation-guide for iemlib under linux
+
+iemlib_R1.17 is written by Thomas Musil from IEM Graz Austria
+ and it is compatible to miller puckette's pd-0.38-3 to pd-0.39-2.
+see also LICENCE.txt, GnuLGPL.txt and README.txt.
+
+
+1.) open a unix-shell, login as superuser, download and copy iemlib_R1.17_lin.tgz into your source-directory
+ (e.g. /usr/local/src/iemlib_R1.17_lin.tgz)
+
+2.) untar and unzip iemlib_R1.17_lin.tgz
+ "shell">  tar xzvf iemlib_R1.17_lin.tgz
+      (and a directory iemlib_R1.17 will be created)
+
+3.) install external library folders
+ "shell">  cp -R /usr/local/src/iemlib_R1.17/iemlib1 /usr/local/lib/pd/extra/
+ "shell">  cp -R /usr/local/src/iemlib_R1.17/iemlib2 /usr/local/lib/pd/extra/
+ "shell">  cp -R /usr/local/src/iemlib_R1.17/iem_mp3 /usr/local/lib/pd/extra/
+ "shell">  cp -R /usr/local/src/iemlib_R1.17/iem_t3_lib /usr/local/lib/pd/extra/
+
+ ( help files and sources are included )
+
+4.) install pd abstractions folder
+ "shell">  cp -R /usr/local/src/iemlib_R1.17/iemabs /usr/local/lib/pd/extra/
+
+ ( help files are included )
+
+5.) add to your pd_start_script, or into your pd-resource-file ~/.pdrc,
+ the following configuration-options:
+
+ -path /usr/local/lib/pd/extra/iemabs -lib iemlib1:iemlib2:iem_mp3:iem_t3_lib
+
+ or create an executable textfile script start_pd with this content:
+
+#!/bin/sh
+/usr/local/bin/pd -r 44100 -channels 2 -audiobuf 160 -audiodev 1 -nomidi \
+-path /usr/local/lib/pd/extra/iemabs \
+-lib iemlib1:iemlib2:iem_mp3:iem_t3_lib
+
+
+
+How to compile iemlib under linux
+
+after installing iemlib:
+
+6a.) edit Makefile
+ change to directory /usr/local/src/iemlib_R1.17
+ and edit the following line of Makefile and save
+ ( PREFIX     =/usr/local/lib/pd
+   INSTALL_BIN=$(PREFIX)/extra )
+
+6b.) edit Make.include
+ edit the following line of Make.include and save
+ ( PDSOURCE = /usr/local/src/pd-0.39-2/src )
+
+7.) compile iemlib1, iemlib2, iem_mp3, iem_t3_lib
+ change to directory /usr/local/src/iemlib_R1.17
+ "shell">  make
+ ( iemlib1.pd_linux will be created in /usr/local/src/iemlib_R1.17/iemlib1/ 
+   iemlib2.pd_linux will be created in /usr/local/src/iemlib_R1.17/iemlib2/ 
+   iem_mp3.pd_linux will be created in /usr/local/src/iemlib_R1.17/iem_mp3/ 
+   iem_t3_lib.pd_linux will be created in /usr/local/src/iemlib_R1.17/iem_t3_lib/ ).
+
+8.) copy external-libraries via install
+ "shell">  make install

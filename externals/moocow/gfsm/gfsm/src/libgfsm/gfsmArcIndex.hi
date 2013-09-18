@@ -1,0 +1,325 @@
+
+/*=============================================================================*\
+ * File: gfsmArcIndex.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library: arc indices: inline definitions
+ *
+ * Copyright (c) 2006-2007 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+#include <gfsmAssert.h>
+
+/*======================================================================
+ * ReverseArcIndex
+ */
+
+//--------------------------------------------------------------
+// reverse_arc_index_new()
+GFSM_INLINE
+gfsmReverseArcIndex *gfsm_reverse_arc_index_new(void)
+{ return g_ptr_array_new(); }
+
+//--------------------------------------------------------------
+// reverse_arc_index_sized_new()
+GFSM_INLINE
+gfsmReverseArcIndex *gfsm_reverse_arc_index_sized_new(gfsmStateId n_states)
+{ return g_ptr_array_sized_new(n_states); }
+
+//--------------------------------------------------------------
+// automaton_to_reverse_arc_index()
+//--extern
+
+//--------------------------------------------------------------
+// reverse_arc_index_free()
+//--extern
+
+//@}
+
+/*======================================================================
+ * gfsmWeightVector
+ */
+
+//--------------------------------------------------------------
+// weight_vector_new()
+GFSM_INLINE
+gfsmWeightVector *gfsm_weight_vector_new(void)
+{ return g_array_new(FALSE,FALSE,sizeof(gfsmWeight)); }
+
+//--------------------------------------------------------------
+// weight_vector_sized_new()
+GFSM_INLINE
+gfsmWeightVector *gfsm_weight_vector_sized_new(gfsmStateId n_states)
+{ return g_array_sized_new(FALSE,FALSE,sizeof(gfsmWeight),n_states); }
+
+//--------------------------------------------------------------
+// weight_vector_copy()
+GFSM_INLINE
+gfsmWeightVector *gfsm_weight_vector_copy(gfsmWeightVector *dst, gfsmWeightVector *src)
+{
+  g_array_set_size(dst, src->len);
+  dst->len = 0;
+  g_array_append_vals(dst, src->data, src->len);
+  return dst;
+}
+
+//--------------------------------------------------------------
+// weight_vector_clone()
+GFSM_INLINE
+gfsmWeightVector *gfsm_weight_vector_clone(gfsmWeightVector *src)
+{
+  return gfsm_weight_vector_copy(gfsm_weight_vector_sized_new(src->len), src);
+}
+
+
+//--------------------------------------------------------------
+// weight_vector_resize()
+GFSM_INLINE
+void gfsm_weight_vector_resize(gfsmWeightVector *wv, gfsmStateId n_states)
+{
+  g_array_set_size(wv,n_states);
+  wv->len = n_states;
+}
+
+//--------------------------------------------------------------
+// weight_vector_free()
+GFSM_INLINE
+void gfsm_weight_vector_free(gfsmWeightVector *wv)
+{ g_array_free(wv,TRUE); }
+
+//--------------------------------------------------------------
+// automaton_weight_vector()
+//-- extern
+
+
+/*======================================================================
+ * gfsmArcTable
+ */
+
+//--------------------------------------------------------------
+// arc_table_new()
+GFSM_INLINE
+gfsmArcTable *gfsm_arc_table_new(void)
+{ return g_array_new(FALSE,FALSE,sizeof(gfsmArc)); }
+
+//--------------------------------------------------------------
+// arc_table_sized_new()
+GFSM_INLINE
+gfsmArcTable *gfsm_arc_table_sized_new(guint n_arcs)
+{ return g_array_sized_new(FALSE,FALSE,sizeof(gfsmArc),n_arcs); }
+
+//--------------------------------------------------------------
+// arc_table_resize()
+GFSM_INLINE
+void gfsm_arc_table_resize(gfsmArcTable *tab, guint n_arcs)
+{
+  g_array_set_size(tab,n_arcs);
+  tab->len = n_arcs;
+}
+
+//--------------------------------------------------------------
+// arc_table_copy()
+GFSM_INLINE
+gfsmArcTable *gfsm_arc_table_copy(gfsmArcTable *dst, gfsmArcTable *src)
+{
+  g_array_set_size(dst, src->len);
+  dst->len = 0;
+  g_array_append_vals(dst, src->data, src->len);
+  return dst;
+}
+
+//--------------------------------------------------------------
+// arc_table_clone()
+GFSM_INLINE
+gfsmArcTable *gfsm_arc_table_clone(gfsmArcTable *src)
+{
+  return gfsm_arc_table_copy(gfsm_arc_table_sized_new(src->len), src);
+}
+
+//--------------------------------------------------------------
+// arc_table_free()
+GFSM_INLINE
+void gfsm_arc_table_free(gfsmArcTable *tab)
+{ g_array_free(tab,TRUE); }
+
+//--------------------------------------------------------------
+// arc_table_sort_with_data()
+GFSM_INLINE
+void gfsm_arc_table_sort_with_data(gfsmArcTable *tab, GCompareDataFunc compare_func, gpointer data)
+{ g_array_sort_with_data(tab,compare_func,data); }
+
+//--------------------------------------------------------------
+// arc_table_sort_bymask()
+GFSM_INLINE
+void gfsm_arc_table_sort_bymask(gfsmArcTable *tab, gfsmArcCompMask m, gfsmSemiring *sr)
+{
+  gfsmArcCompData acdata = { m,sr,NULL,NULL };
+  gfsm_arc_table_sort_with_data(tab, (GCompareDataFunc)gfsm_arc_compare_bymask, &acdata);
+}
+
+
+/*======================================================================
+ * gfsmArcTableIndex
+ */
+
+//--------------------------------------------------------------
+// arc_table_index_new()
+GFSM_INLINE
+gfsmArcTableIndex *gfsm_arc_table_index_new(void)
+{
+  gfsmArcTableIndex *tabx = g_new(gfsmArcTableIndex,1);
+  tabx->tab   = gfsm_arc_table_new();
+  tabx->first = g_ptr_array_new();
+  return tabx;
+}
+
+//--------------------------------------------------------------
+// arc_table_index_init() [UNDECLARED]
+GFSM_INLINE
+void gfsm_arc_table_index_init(gfsmArcTableIndex *tabx, gfsmStateId n_states, guint n_arcs)
+{
+  tabx->tab   = gfsm_arc_table_sized_new(n_arcs);
+  tabx->first = g_ptr_array_sized_new(n_states+1);
+}
+
+//--------------------------------------------------------------
+// arc_table_index_sized_new()
+GFSM_INLINE
+gfsmArcTableIndex *gfsm_arc_table_index_sized_new(gfsmStateId n_states, guint n_arcs)
+{
+  gfsmArcTableIndex *tabx = g_new(gfsmArcTableIndex,1);
+  gfsm_arc_table_index_init(tabx, n_states, n_arcs);
+  return tabx;
+}
+
+//--------------------------------------------------------------
+// arc_table_index_resize()
+GFSM_INLINE
+void gfsm_arc_table_index_resize(gfsmArcTableIndex *tabx, gfsmStateId n_states, guint n_arcs)
+{
+  gfsm_arc_table_resize(tabx->tab,  n_arcs);
+  g_ptr_array_set_size(tabx->first, n_states+1);
+  tabx->first->len = n_states+1;
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gfsmStateId gfsm_arc_table_index_n_states(gfsmArcTableIndex *tabx)
+{ return tabx->first->len - 1; }
+
+//--------------------------------------------------------------
+GFSM_INLINE
+guint gfsm_arc_table_index_n_arcs(gfsmArcTableIndex *tabx)
+{ return tabx->tab->len; }
+
+
+//--------------------------------------------------------------
+// arc_table_index_clone()
+GFSM_INLINE
+gfsmArcTableIndex *gfsm_arc_table_index_clone(gfsmArcTableIndex *src)
+{
+  return gfsm_arc_table_index_copy(gfsm_arc_table_index_sized_new(gfsm_arc_table_index_n_states(src),
+								  gfsm_arc_table_index_n_arcs(src)),
+				   src);
+}
+
+
+//--------------------------------------------------------------
+// arc_table_index_free()
+GFSM_INLINE
+void gfsm_arc_table_index_free(gfsmArcTableIndex *tabx)
+{
+  if (!tabx) return;
+  if (tabx->tab)   gfsm_arc_table_free(tabx->tab);
+  if (tabx->first) g_ptr_array_free(tabx->first, TRUE);
+  g_free(tabx);
+}
+
+//--------------------------------------------------------------
+// arc_table_index_sort_bymask()
+GFSM_INLINE
+void gfsm_arc_table_index_sort_bymask(gfsmArcTableIndex *tabx, gfsmArcCompMask m, gfsmSemiring *sr)
+{
+  gfsmArcCompData acdata = { m,sr,NULL,NULL };
+  gfsm_arc_table_index_sort_with_data(tabx, (GCompareDataFunc)gfsm_arc_compare_bymask, &acdata);
+}
+
+//--------------------------------------------------------------
+// arc_table_index_out_degree()
+GFSM_INLINE
+guint gfsm_arc_table_index_out_degree(gfsmArcTableIndex *tabx, gfsmStateId qid)
+{
+  //if (qid+1 >= tabx->first->len) return 0;
+  gfsm_assert( (qid+1) < tabx->first->len );
+  return ((gfsmArc*)g_ptr_array_index(tabx->first,qid+1)) - ((gfsmArc*)g_ptr_array_index(tabx->first,qid));
+}
+
+
+
+/*======================================================================
+ * gfsmArcRange
+ */
+
+//--------------------------------------------------------------
+// arcrange_open_table_index()
+GFSM_INLINE
+void gfsm_arcrange_open_table_index(gfsmArcRange *range, gfsmArcTableIndex *tabx, gfsmStateId qid)
+{
+  gfsm_assert(range!=NULL);
+  gfsm_assert(qid < tabx->first->len-1);
+  range->min = (gfsmArc*)g_ptr_array_index(tabx->first, qid  );
+  range->max = (gfsmArc*)g_ptr_array_index(tabx->first, qid+1);
+}
+
+//--------------------------------------------------------------
+// arcrange_close()
+GFSM_INLINE
+void gfsm_arcrange_close(gfsmArcRange *range)
+{
+  gfsm_assert(range!=NULL);
+  range->min = range->max = NULL;
+}
+
+//--------------------------------------------------------------
+// arcrange_ok()
+GFSM_INLINE
+gboolean gfsm_arcrange_ok(gfsmArcRange *range)
+{
+  gfsm_assert(range!=NULL);
+  return range->min < range->max;
+}
+
+//--------------------------------------------------------------
+// arcrange_arc()
+GFSM_INLINE
+gfsmArc *gfsm_arcrange_arc(gfsmArcRange *range)
+{
+  gfsm_assert(range!=NULL);
+  return range->min;
+}
+
+//--------------------------------------------------------------
+// arcrange_next()
+GFSM_INLINE
+void gfsm_arcrange_next(gfsmArcRange *range)
+{
+  gfsm_assert(range!=NULL);
+  range->min++;
+}
+
+/*======================================================================
+ * END
+ */

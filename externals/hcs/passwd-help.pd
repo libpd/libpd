@@ -1,0 +1,59 @@
+#N canvas 0 26 517 370 10;
+#X obj 98 40 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 95 63 5 0 0 0 User_ID - -;
+#X obj 47 200 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 194 148 10;
+#X msg 112 86 bang;
+#X text 209 168 <-- set by argument or cold inlet;
+#X text 148 85 output current;
+#X obj 94 167 passwd;
+#X text 37 20 fetch passwd data based on UID or username;
+#X msg 271 83 symbol hans;
+#X symbolatom 22 318 0 0 0 3 username - -;
+#X symbolatom 88 317 0 0 0 3 password - -;
+#X floatatom 184 317 0 0 0 3 uid - -;
+#X floatatom 215 317 0 0 0 3 gid - -;
+#X symbolatom 264 317 0 0 0 3 gecos - -;
+#X symbolatom 335 282 0 0 0 3 home_folder - -;
+#X symbolatom 395 250 0 0 0 3 shell - -;
+#X msg 269 105 symbol trash;
+#X text 361 105 ignore bad usernames;
+#X text 363 83 use a symbolic username;
+#X msg 269 56 symbol daemon;
+#X text 188 195 bang on right inlet if no match;
+#X obj 138 195 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 76 224 unpack symbol symbol float float symbol symbol symbol
+;
+#N canvas 280 175 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION fetch passwd data based on UID or username
+;
+#X text 12 65 INLET_0 float bang;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 anything;
+#X text 12 125 OUTLET_1 bang;
+#X restore 468 349 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 7 0;
+#X connect 3 0 7 1;
+#X connect 4 0 7 0;
+#X connect 7 0 2 0;
+#X connect 7 0 23 0;
+#X connect 7 1 22 0;
+#X connect 9 0 7 0;
+#X connect 17 0 7 0;
+#X connect 20 0 7 0;
+#X connect 23 0 10 0;
+#X connect 23 1 11 0;
+#X connect 23 2 12 0;
+#X connect 23 3 13 0;
+#X connect 23 4 14 0;
+#X connect 23 5 15 0;
+#X connect 23 6 16 0;

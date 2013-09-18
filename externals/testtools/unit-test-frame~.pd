@@ -1,0 +1,490 @@
+#N canvas 61 63 724 590 10;
+#N canvas 654 121 435 584 write-reference 0;
+#X obj 51 436 soundfiler;
+#X obj 51 379 list;
+#X obj 50 16 inlet;
+#X floatatom 82 470 5 0 0 0 - - -;
+#X text 90 16 bang;
+#X obj 51 124 r \$0-do-write-reference;
+#X obj 143 152 r \$0-abort-write-reference;
+#X obj 51 471 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 241 538 s \$0-do-test;
+#X obj 70 500 tabplay~ \$0-signal-under-test;
+#X msg 51 407 write -wave -bytes 4 \$1 \$2-signal-under-test;
+#X obj 51 542 tabwrite~ \$0-reference;
+#X obj 72 153 delay 500;
+#X obj 257 20 r \$0-refname;
+#X msg 257 46 \$1.wav;
+#X obj 257 71 symbol;
+#X obj 257 99 s \$0-ref-wav-name;
+#N canvas 682 430 395 255 write-reference-popup\$0 0;
+#X obj 88 174 bng 60 400 50 0 \$0-do-write-reference empty continue
+2 28 0 12 -260097 -262144 -1;
+#X obj 234 174 bng 60 300 50 0 \$0-abort-write-reference empty abort
+8 28 0 12 -204786 -262144 -1;
+#X obj 91 67 hsl 200 80 0 127 0 0 \$0-dummysend \$0-dummyreceive empty
+-2 -8 0 10 -262144 -262144 -1 0 1;
+#X symbolatom 95 85 30 0 0 0 - #0-refname #0-dummysend;
+#X symbolatom 95 125 30 0 0 0 - #0-ref-wav-name #0-dummysend;
+#X text 93 67 reference name:;
+#X text 93 108 file name:;
+#X text 24 11 This action will overwrite your reference .wav file with
+the content of \$0-signal-under-test. The action can not be undone!
+;
+#X restore 51 95 pd write-reference-popup\$0;
+#X obj 50 68 s pd-write-reference-popup\$0;
+#X msg 50 43 vis 1;
+#X obj 72 230 s pd-write-reference-popup\$0;
+#X msg 72 205 vis 0;
+#X obj 143 177 delay 200;
+#X obj 72 264 r \$0-refpath;
+#X obj 72 292 t a b;
+#X obj 99 321 f \$0;
+#X obj 72 350 pack s f;
+#X connect 0 0 3 0;
+#X connect 0 0 7 0;
+#X connect 1 0 10 0;
+#X connect 2 0 19 0;
+#X connect 5 0 1 0;
+#X connect 5 0 12 0;
+#X connect 6 0 22 0;
+#X connect 7 0 9 0;
+#X connect 7 0 11 0;
+#X connect 9 0 11 0;
+#X connect 9 1 8 0;
+#X connect 10 0 0 0;
+#X connect 12 0 21 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;
+#X connect 19 0 18 0;
+#X connect 21 0 20 0;
+#X connect 22 0 21 0;
+#X connect 23 0 24 0;
+#X connect 24 0 26 0;
+#X connect 24 1 25 0;
+#X connect 25 0 26 1;
+#X connect 26 0 1 1;
+#X restore 43 219 pd write-reference;
+#X obj 42 319 bng 50 250 50 0 empty empty write 4 25 0 14 -260097 -262144
+-1;
+#X obj 255 318 bng 50 250 50 0 empty empty test 5 25 0 14 -260097 -262144
+-1;
+#N canvas 0 22 324 199 record-test&diff 0;
+#X obj 34 18 inlet~;
+#X obj 80 83 -~;
+#X obj 229 158 outlet;
+#X obj 224 19 inlet;
+#X text 262 18 bang;
+#X text 76 19 signal under test;
+#X obj 34 157 tabwrite~ \$0-signal-under-test;
+#X obj 80 114 tabwrite~ \$0-difference;
+#X obj 95 53 tabplay~ \$0-reference;
+#X connect 0 0 6 0;
+#X connect 0 0 1 0;
+#X connect 1 0 7 0;
+#X connect 3 0 6 0;
+#X connect 3 0 8 0;
+#X connect 3 0 7 0;
+#X connect 8 0 1 1;
+#X connect 8 1 2 0;
+#X restore 255 88 pd record-test&diff;
+#N canvas 45 41 288 479 std.deviation 0;
+#X obj 83 46 until;
+#X obj 98 74 + 1;
+#X obj 83 99 f;
+#X obj 83 18 t f b;
+#X msg 159 82 0;
+#X msg 83 -8 512;
+#X obj 110 229 +;
+#X floatatom 110 256 8 0 0 0 - - -;
+#X obj 95 280 f;
+#X text 159 61 clear sums;
+#X obj 55 153 == 511;
+#X obj 55 177 sel 1;
+#X obj 83 122 t f f;
+#X obj 83 -34 inlet;
+#X obj 110 180 t f f;
+#X obj 110 205 *;
+#X obj 95 302 / 512;
+#X obj 95 329 sqrt;
+#X text 122 -32 bang;
+#X obj 95 358 outlet;
+#X text 140 360 stddev;
+#X obj 189 358 s \$0-stddev;
+#X obj 110 152 tabread \$0-difference;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 1 0;
+#X connect 2 0 12 0;
+#X connect 3 0 0 0;
+#X connect 3 1 4 0;
+#X connect 4 0 2 1;
+#X connect 4 0 6 1;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 6 1;
+#X connect 7 0 8 1;
+#X connect 8 0 16 0;
+#X connect 10 0 11 0;
+#X connect 11 0 8 0;
+#X connect 12 0 10 0;
+#X connect 12 1 22 0;
+#X connect 13 0 5 0;
+#X connect 14 0 15 0;
+#X connect 14 1 15 1;
+#X connect 15 0 6 0;
+#X connect 16 0 17 0;
+#X connect 17 0 19 0;
+#X connect 17 0 21 0;
+#X connect 22 0 14 0;
+#X restore 255 113 pd std.deviation;
+#N canvas 346 419 376 223 check-samplerate 0;
+#X obj 96 53 samplerate~;
+#X obj 96 85 == 44100;
+#X obj 96 21 loadbang;
+#X obj 96 119 sel 0;
+#X obj 33 182 outlet;
+#X obj 141 182 stdout;
+#X obj 96 182 print;
+#X obj 33 20 inlet;
+#X obj 33 150 spigot;
+#X msg 96 150 SAMPLE-RATE-ERROR samplerate must be 44100;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 0 8 1;
+#X connect 2 0 0 0;
+#X connect 3 0 9 0;
+#X connect 7 0 8 0;
+#X connect 8 0 4 0;
+#X connect 9 0 5 0;
+#X connect 9 0 6 0;
+#X restore 255 137 pd check-samplerate;
+#X msg 619 125 \; pd dsp 1;
+#X obj 619 95 loadbang;
+#X obj 29 188 s \$0-refname;
+#X obj 472 390 hsl 195 100 0 127 0 0 empty empty empty -2 -8 0 10 -204786
+-204786 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-difference 512 float 0;
+#X coords 0 1 511 -1 200 100 1;
+#X restore 469 390 graph;
+#X obj 258 390 hsl 195 100 0 127 0 0 empty empty empty -2 -8 0 10 -204786
+-204786 -1 0 1;
+#X obj 44 390 hsl 195 100 0 127 0 0 empty empty empty -2 -8 0 10 -204786
+-204786 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-reference 512 float 0;
+#X coords 0 1 511 -1 200 100 1;
+#X restore 41 390 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-signal-under-test 512 float 0;
+#X coords 0 1 511 -1 200 100 1;
+#X restore 255 390 graph;
+#X obj 294 550 outlet;
+#X obj 267 518 t b b;
+#N canvas 739 28 261 427 test-result-messages 0;
+#X obj 32 23 inlet;
+#X obj 59 310 stdout;
+#X obj 32 84 sel 0;
+#X obj 89 166 r \$0-refname;
+#X obj 89 193 symbol;
+#X obj 32 56 moses 1e-05;
+#X obj 32 277 t b a;
+#X msg 32 336 UNIT-TEST-DONE;
+#X obj 32 373 stdout;
+#X obj 32 221 pack s f s;
+#X obj 112 309 print unit-test;
+#X obj 85 373 print unit-test;
+#X obj 32 249 list trim;
+#X msg 59 113 STDDEV-SMALL \$1;
+#X msg 32 141 STDDEV-ZERO 0;
+#X msg 95 84 STDDEV-LARGE \$1;
+#N canvas 49 312 252 304 stddev-label 0;
+#X obj 40 29 inlet;
+#X obj 40 92 sel 0;
+#X obj 40 64 moses 1e-05;
+#X msg 103 92 STDDEV-LARGE;
+#X msg 67 121 STDDEV-SMALL;
+#X msg 40 149 STDDEV-ZERO;
+#X msg 40 221 label \$1;
+#X obj 40 191 symbol;
+#X obj 40 250 s \$0-stddev-label;
+#X connect 0 0 2 0;
+#X connect 1 0 5 0;
+#X connect 1 1 4 0;
+#X connect 2 0 1 0;
+#X connect 2 1 3 0;
+#X connect 3 0 7 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X restore 126 50 pd stddev-label;
+#X connect 0 0 5 0;
+#X connect 0 0 16 0;
+#X connect 2 0 14 0;
+#X connect 2 1 13 0;
+#X connect 3 0 4 0;
+#X connect 4 0 9 2;
+#X connect 5 0 2 0;
+#X connect 5 1 15 0;
+#X connect 6 0 7 0;
+#X connect 6 1 1 0;
+#X connect 6 1 10 0;
+#X connect 7 0 8 0;
+#X connect 7 0 11 0;
+#X connect 9 0 12 0;
+#X connect 12 0 6 0;
+#X connect 13 0 9 0;
+#X connect 14 0 9 0;
+#X connect 15 0 9 0;
+#X restore 255 162 pd test-result-messages;
+#X text 232 549 test-bang;
+#X obj 472 318 hsl 130 50 0 127 0 0 \$0-dummysend \$0-stddev-label
+STDDEV-ZERO 4 35 0 10 -204786 -204786 -1 0 1;
+#X obj 618 257 bng 50 250 50 0 empty empty ? 15 25 0 30 -260097 -262144
+-1;
+#X floatatom 475 325 18 0 0 0 - #0-stddev -;
+#X obj 29 68 symbol;
+#X obj 45 258 hsl 195 50 0 112 0 0 \$0-dummysend \$0-dummyreceive empty
+-2 -8 0 10 -204786 -204786 -1 0 1;
+#X symbolatom 47 266 25 0 0 0 - #0-refname #0-dummysend;
+#X obj 255 217 r \$0-do-test;
+#X obj 255 258 bng 50 250 50 0 \$0-dummysend \$0-dummyreceive empty
+17 7 0 10 -262144 -204786 -1;
+#X obj 255 258 bng 50 1000 50 0 \$0-dummysend \$0-dummyreceive done
+7 25 0 14 -204786 -1 -204786;
+#X obj 105 319 bng 50 250 50 0 empty empty list 5 25 0 14 -204786 -262144
+-1;
+#N canvas 0 22 254 177 view-difference 0;
+#X obj 39 39 inlet;
+#X obj 39 112 s \$0-difference;
+#X msg 39 75 arrayviewlistnew;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 584 512 pd view-difference;
+#N canvas 453 143 247 130 view-reference 0;
+#X obj 27 31 inlet;
+#X obj 27 86 s \$0-reference;
+#X msg 27 59 arrayviewlistnew;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 105 515 pd view-reference;
+#N canvas 0 22 268 168 view-signal 0;
+#X obj 39 39 inlet;
+#X obj 39 108 s \$0-signal-under-test;
+#X msg 39 75 arrayviewlistnew;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 319 518 pd view-signal;
+#X obj 341 550 outlet;
+#X obj 388 550 outlet;
+#X obj 366 58 delay;
+#X obj 255 14 inlet~;
+#X obj 29 13 inlet;
+#X obj 630 17 inlet;
+#X obj 29 41 unpack s f;
+#X obj 618 318 bng 50 250 50 0 empty empty list 5 25 0 14 -204786 -262144
+-1;
+#X obj 319 318 bng 50 250 50 0 empty empty list 5 25 0 14 -204786 -262144
+-1;
+#X floatatom 205 266 5 0 0 0 - #0-test-delay -;
+#X text 46 286 reference;
+#X text 202 286 delay;
+#X obj 86 73 s \$0-test-delay;
+#X text 557 18 dummy inlet;
+#X text 300 12 signal under test;
+#X obj 463 257 cnv 15 150 25 empty empty [unit-test-frame~] 2 12 0
+14 -262144 -1 0;
+#N canvas 673 76 412 506 load-reference 0;
+#X obj 36 27 inlet;
+#X obj 36 203 soundfiler;
+#X obj 81 112 f \$0;
+#X obj 36 136 pack s f;
+#X obj 36 94 t a b;
+#X obj 36 461 s \$0-do-test;
+#X obj 75 375 pack s s s s s s;
+#X obj 168 297 r \$0-refname;
+#X obj 75 432 stdout;
+#X obj 36 235 sel 512;
+#X obj 36 60 spigot 1;
+#X msg 81 27 0;
+#X text 119 29 at load \, try to read reference file and do test;
+#X msg 75 271 REFERENCE-FILE-ERROR reference file not found:;
+#X msg 168 324 \$1.wav;
+#X obj 168 349 symbol;
+#X obj 75 402 list trim;
+#X obj 127 432 print unit-test;
+#X msg 125 135 read ./\$1.wav \$2-reference;
+#X msg 36 173 read \$1.wav \$2-reference;
+#X connect 0 0 10 0;
+#X connect 1 0 9 0;
+#X connect 2 0 3 1;
+#X connect 3 0 19 0;
+#X connect 4 0 3 0;
+#X connect 4 1 2 0;
+#X connect 6 0 16 0;
+#X connect 7 0 14 0;
+#X connect 9 0 5 0;
+#X connect 9 1 13 0;
+#X connect 10 0 4 0;
+#X connect 10 0 11 0;
+#X connect 11 0 10 1;
+#X connect 13 0 6 0;
+#X connect 14 0 15 0;
+#X connect 15 0 6 5;
+#X connect 16 0 8 0;
+#X connect 16 0 17 0;
+#X connect 19 0 1 0;
+#X restore 48 159 pd load-reference;
+#N canvas 473 125 566 541 info-unit-test\$0 0;
+#X text 144 337 STDDEV-ZERO 0;
+#X text 144 379 STDDEV-LARGE <stddev>;
+#X text 144 357 STDDEV-SMALL <stddev>;
+#X text 296 358 when standard deviation < 1e-05;
+#X text 296 379 when standard deviation >= 1e-05;
+#X text 296 337 when standard deviation = 0;
+#X text 130 22 how to use [unit-test-frame~.pd] in unit test patches
+;
+#X text 129 46 ------------------------------------------------------------
+;
+#X text 127 241 ------------------------------------------------------------
+;
+#X text 126 407 ------------------------------------------------------------
+;
+#X text 131 769 Katja Vetter & Fred Jan Kraan \, October 2011;
+#X text 125 672 ------------------------------------------------------------
+;
+#X text 127 421 The reference file must be in the same directory as
+the test. If it is not found when the patch is loaded \, an error is
+reported to the Pd window and stdout:;
+#X text 122 782 ------------------------------------------------------------
+;
+#X text 129 67 1: Test arguments must be sent as a list into the first
+inlet:;
+#X text 130 116 - delaytime between test trigger and test snapshot
+\, for example to exclude overshoot and ripple from the test.;
+#X text 149 471 REFERENCE-FILE-ERROR reference file not found: <reference>
+;
+#X text 150 648 SAMPLE-RATE-ERROR samplerate must be 44100;
+#X text 128 261 The test is automatically executed when the patch is
+loaded \, and can also be started with button 'test'. Difference between
+signal under test and reference is graphed \, and standard deviation
+is computed. A test result message is sent to the Pd window and stdout:
+;
+#X text 127 496 A reference file can be created from the content of
+\$0-signal-under-test \, using a Pd which is known to work well (the
+latest release). Use button 'write'. The file will have 512 samples
+in 32 bit .wav format.;
+#X text 126 592 The samplerate norm for [unit-test-frame~.pd] is 44100
+Hz. If a different samplerate is detected when the test patch is loaded
+\, an error is reported to the Pd window and stdout:;
+#X text 124 740 ------------------------------------------------------------
+;
+#X msg 29 66 osc~440 0;
+#X text 26 19 arguments;
+#X obj 29 39 loadbang;
+#X obj 32 270 bng 50 250 50 0 empty empty test 5 25 0 14 -260097 -262144
+-1;
+#X obj 38 424 bng 50 250 50 0 empty empty write 4 25 0 14 -260097 -262144
+-1;
+#X text 123 564 ------------------------------------------------------------
+;
+#X obj 29 94 loadbang;
+#X msg 29 121 bp~ 200;
+#X text 129 204 Use a bang from one of [unit-test-frame~.pd] outlets
+to reset a phase etc. when the test starts.;
+#X text 130 98 - reference name \, matching the name of the test patch
+;
+#X text 129 155 2: The signal under test must be sent into the second
+inlet. When testing an external object \, consider instantiating it
+with namespace \, like [zexy/wrap].;
+#X text 127 692 Apart from [ggee/getdir] \, [unit-test-frame~.pd] uses
+only vanilla Pd classes. For testing external classes \, consider using
+namespaces like in [zexy/wrap].;
+#X connect 24 0 22 0;
+#X connect 28 0 29 0;
+#X restore 488 96 pd info-unit-test\$0;
+#X msg 538 512 vis 1;
+#X text 337 215 auto-test (after loading / writing reference);
+#X obj 539 541 s pd-info-unit-test\$0;
+#X obj 321 258 hsl 130 50 0 1 0 0 \$0-audiolevel \$0-dummyreceive listen
+88 35 0 10 -204786 -258113 -1 0 0;
+#X floatatom 411 266 5 0 0 0 - #0-audiolevel #0-dummysend;
+#N canvas 0 22 193 209 listen 0;
+#X obj 47 22 inlet~;
+#X obj 68 52 r \$0-audiolevel;
+#X obj 47 161 dac~;
+#X obj 47 88 *~ 0;
+#X obj 47 124 clip~ -1 1;
+#X connect 0 0 3 0;
+#X connect 1 0 3 1;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 0 2 1;
+#X restore 276 63 pd listen;
+#N canvas 405 322 429 358 prepend-path 0;
+#X obj 21 13 inlet;
+#X obj 48 131 ggee/getdir 2;
+#X obj 48 104 t b a;
+#X obj 21 283 spigot 1;
+#X msg 66 235 0;
+#X obj 21 45 t a a;
+#X obj 21 169 pack s s;
+#X msg 21 200 \$1/\$2;
+#X msg 102 235 1;
+#X obj 102 266 pipe 100;
+#X obj 21 314 outlet;
+#X text 76 11 Try to prepend absolute path of the abstraction's parent.
+If [ggee/getdir] is not present \, the path is relative to the abstraction.
+;
+#X msg 21 75 .;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 0;
+#X connect 2 1 6 1;
+#X connect 3 0 4 0;
+#X connect 3 0 8 0;
+#X connect 3 0 10 0;
+#X connect 4 0 3 1;
+#X connect 5 0 12 0;
+#X connect 5 1 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 3 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 1;
+#X connect 12 0 6 0;
+#X restore 48 105 pd prepend-path;
+#X text 68 13 reference name + delay;
+#X obj 64 132 s \$0-refpath;
+#X connect 1 0 0 0;
+#X connect 2 0 16 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 17 0;
+#X connect 7 0 6 0;
+#X connect 16 0 34 0;
+#X connect 16 1 15 0;
+#X connect 16 1 32 0;
+#X connect 16 1 33 0;
+#X connect 20 0 50 0;
+#X connect 22 0 8 0;
+#X connect 22 0 56 0;
+#X connect 25 0 2 0;
+#X connect 28 0 30 0;
+#X connect 34 0 3 1;
+#X connect 34 0 27 0;
+#X connect 35 0 3 0;
+#X connect 35 0 55 0;
+#X connect 36 0 38 0;
+#X connect 38 0 22 0;
+#X connect 38 1 34 1;
+#X connect 38 1 44 0;
+#X connect 39 0 29 0;
+#X connect 40 0 31 0;
+#X connect 50 0 52 0;
+#X connect 56 0 58 0;
+#X connect 56 0 48 0;
+#X coords 0 -1 1 1 650 250 2 30 250;

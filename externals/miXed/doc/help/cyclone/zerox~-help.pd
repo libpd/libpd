@@ -1,0 +1,62 @@
+#N canvas 0 26 444 409 10;
+#N canvas 247 115 494 383 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION zero crossing counter or transient detector
+;
+#X text 12 65 INLET_0 signal set;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 OUTLET_1 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 393 388 pd META;
+#X obj 20 14 zerox~;
+#X text 68 14 zero crossing counter or transient detector;
+#X obj 197 225 osc~ 0.2;
+#X obj 197 249 zerox~;
+#X obj 229 274 edge~;
+#X obj 229 302 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 269 233 synchronize;
+#X text 273 248 a control event;
+#X text 276 264 with the;
+#X text 280 279 zero-crossing;
+#X obj 144 92 loadbang;
+#X obj 144 114 samplerate~;
+#X obj 144 136 / 64;
+#X obj 75 92 osc~ 500;
+#X obj 75 129 zerox~;
+#X obj 74 166 *~ 0;
+#X obj 74 188 *~ 0.5;
+#X obj 74 236 snapshot~;
+#X floatatom 74 263 5 0 0 0 - - -;
+#X obj 107 211 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 223 105 derive the frequency;
+#X text 223 120 of an oscillator;
+#X text 222 135 (accuracy is;
+#X text 223 150 dependent on the;
+#X text 223 165 signal vector size).;
+#X text 284 295 of an lfo.;
+#X text 23 331 arg: a float sets the output volume for the click sent
+out the right outlet. Volume values are in the range 0.0-1.0. The default
+value is 1.0.;
+#X msg 22 50 set 0.5;
+#X text 74 47 sets the volume of the click (impulse) sent out the right
+outlet. The default value is 1.0.;
+#X connect 3 0 4 0;
+#X connect 4 1 5 0;
+#X connect 5 0 6 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 16 1;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 20 0 18 0;
+#X connect 28 0 15 0;

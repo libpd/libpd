@@ -1,0 +1,52 @@
+#N canvas 1 53 565 501 10;
+#X floatatom 361 86 5 0 0 0 - - -;
+#X floatatom 410 87 5 0 0 0 - - -;
+#X obj 323 140 listto;
+#X obj 323 239 tolist;
+#X obj 324 270 multi_slider 25;
+#X floatatom 463 89 5 0 0 0 - - -;
+#X text 23 41 built a list from a stream of data;
+#X obj 323 114 wave_loop 25 0.4;
+#X obj 323 209 breakpoint_smooth 0.67 0.33;
+#X obj 405 164 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 10 -262130
+-1 -1 0 1;
+#X floatatom 411 183 5 0 0 0 - - -;
+#X msg 323 49 bang;
+#X obj 24 227 tolist;
+#X obj 27 135 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 10 -203904
+-1 -1 0 1;
+#X obj 57 195 bng 25 250 50 0 empty empty empty 0 -6 0 10 -4034 -1
+-1;
+#X text 24 111 add data to the list;
+#X obj 24 285 print LIST;
+#X msg 33 165 bang;
+#X text 69 165 clears the current contents;
+#X text 90 196 output the current contents;
+#X obj 5 2 cnv 15 450 20 empty empty tolist 2 11 1 18 -233017 -66577
+0;
+#N canvas 465 169 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction list_op;
+#X text 12 45 DESCRIPTION built a list from a stream of data;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 INLET_1 bang;
+#X text 12 105 OUTLET_0 list;
+#X restore 515 466 pd META;
+#X connect 0 0 7 1;
+#X connect 1 0 7 2;
+#X connect 2 0 8 0;
+#X connect 2 1 3 1;
+#X connect 3 0 4 0;
+#X connect 5 0 7 3;
+#X connect 7 0 2 0;
+#X connect 8 0 3 0;
+#X connect 9 0 8 1;
+#X connect 9 0 10 0;
+#X connect 11 0 7 0;
+#X connect 12 0 16 0;
+#X connect 13 0 12 0;
+#X connect 14 0 12 1;
+#X connect 17 0 12 0;

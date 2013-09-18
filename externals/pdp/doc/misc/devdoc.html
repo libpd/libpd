@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>PDP Developer Documentation</title>
+  </head>
+
+  <body>
+	<p> FIXME: This is probably a bit out of date.
+
+
+    <h1>PDP Developer Documentation</h1>
+
+    <h2>Introduction</h2>
+
+    <p>There is not yet much developer information, partly because pdp is not that big and since the goals are
+      not completely clear yet, a lot will probably change on the inside in the future. I believe it is
+      not too hard to figure out how it works, once you get started somewhere. This document is a minimalistic 
+      attempt to provide that starting point.  For full prototypes see the header files. I suggest you have a look at the pdp_base base class, and some simple
+      modules: pdp_add, pdp_noise and pdp_gain for examples.
+
+    <h2> PDP architecture </h2>
+    <p> Architecture is a big word, but pdp is organized as modules. A packet pool module (a reuse pool memory manager), 
+    a packet class, a processing queue module, a high level type conversion module, an image packet class, and some
+    low level modules for image type conversion, image resampling and all sorts of other image processing. Besides that
+    there are 2 extension libraries: pdp_scaf, a cellular automata extension and pdp_opengl, a 3d rendering extension.
+    These are separate because of portability issues. The different pdp_* externs in the main pdp library use the 
+    core modules' functionality to minimize code duplication. I'm relatively happy with how it fits together,
+    but some things need to change for future plans. Most objects are written in the object oriented c style of pd.
+    To prevent namespace conflicts, (almost) all routines start with the pdp_ prefix. The second name is the name of the
+    object or module they belong to. The first argument is always a pointer to an object or an integer (for packets).
+
+    
+    <h2> PD ties </h2>
+    <p> PDP is written as an extension for PD. One of the goals of pdp is to evolve to a separate library that can
+      be reused in other software. The architecture will be split into two parts. A pd-independent part (the packet classes,
+      the packet pool, the type conversion system and the forth system) and a part with pd specific stuff (the process queue and interfaces to the
+      pd system like the base classes and the pd communication protocol). In order to do this the packet class will probably
+      evolve to a proper object model, supporting run time attribute binding (inspired by the python object model).
+
+    <p>There are some things that put a stamp on the current pdp design. Most importantly pd's processor object model and
+      communication protocol. (i.e. the fact that pd only supports unidirectional messaging creates the awkward concept
+      of a "passing packet" to eliminate excessive data copying.)
+
+    <p> In pd, the pdp messaging protocol is implemented as pd messages. The protocol is however 3 phase. 
+      With a read only register phase, a read/write register phase and a process phase. This functionality
+      is part of the base class or the forth processor object. The dpd protocol is entirely different, 
+      and is used in the opengl library. It is
+      not based on parallel dataflow but serial context passing.
+
+      <h2> Packets </h2>
+    <p> PDP introduces a new atom: the data packet. This can contain all kinds of data. Images (16bit/8bit), cellular
+      automata (1bit), matrices (real/complex float/double), opengl textures and 3d rendering contexts. Packets
+      are stored in a pool to ensure fast reuse, and to enable sharing. The paradigm is centered around a
+      combination of an object oriented approach and a dataflow approach. 
+    <p>The methods operating on packets 
+      (pdp_packet_*) are mainly for administrative purposes: memory management (construction, registering, copying)
+      and getting or setting info. 
+    <p>All processing is done in the pd modules. Processors can be defined using
+      the forth scripting language, but this is still experimental. The forth system can be accessed
+      from the guile library.
+    <p> There is a central mechanism for packet type conversion. This is to facilitate the combination of different
+      media types. Whenever a packet class is constructed (i.e. in an extension library), a number of conversion
+      routines should be defined to convert the added type to one or some of the main pdp types.
+      
+      
+
+
+
+    
+    <h2>PDP API Overview</h2>
+
+    The pdp public api contains only a single class: the packet. (The internal api has more classes, that can be used
+    too if necessary, but i won't document them.) A packet is a class in pdp. The table below lists the supported methods. 
+    The first argument of a call is a packet id. 
+
+    <TABLE border = "1">
+	<TR><TH colspan = "2">pdp_packet_*
+	<TR><TD>new                <TD>construct a raw packet (depreciated)
+	<TR><TD>new_*              <TD>construct packet of specific type/subtype/...
+	<TR><TD>mark_unused        <TD>release
+	<TR><TD>mark_passing       <TD>conditional release (release on first copy ro/rw)
+	<TR><TD>copy_ro            <TD>readonly (shared) copy
+	<TR><TD>copy_rw            <TD>private copy
+	<TR><TD>clone_rw           <TD>private copy (copies only meta data, not the content)
+	<TR><TD>header             <TD>get the raw header (t_pdp *)
+	<TR><TD>data               <TD>get the raw data (void *)
+	<TR><TD>pass_if_valid      <TD>send a packet to pd outlet, if it is valid, and mark unused
+	<TR><TD>replace_if_valid   <TD>delete packet and replace with new one, if new is valid
+	<TR><TD>copy_ro_or_drop    <TD>copy readonly, or don't copy if dest slot is full + send drop notify
+	<TR><TD>copy_rw_or_drop    <TD>same, but private copy
+	<TR><TD>get_description    <TD>retrieve type info
+	<TR><TD>convert_ro         <TD>same as copy_ro, but with an automatic conversion matching a type template
+	<TR><TD>convert_rw         <TD>same as convert_ro, but producing a private copy
+    </TABLE>
+
+
+    <p>The pool object methods. All the packets are stored in a central packet pool.
+
+    <TABLE border = "1">
+	<TR><TH colspan = "2">pdp_pool_*
+	<TR><TD>collect_garbage    <TD>manually free all unused resources in packet pool
+    </TABLE>
+
+    <p>The process queue object methods. PDP supports a separate processing thread.
+
+    <TABLE border = "1">
+	<TR><TH colspan = "2"> pdp_queue_*
+	<TR><TD>add                <TD>add a process method + callback
+	<TR><TD>finish             <TD>wait until a specific task is done
+	<TR><TD>wait               <TD>wait until processing queue is done
+    </TABLE>
+
+    <p>The control methods. General pdp control messages.
+
+    <TABLE border = "1">
+	<TR><TH colspan = "2"> pdp_control_*
+	<TR><TD>notify_drop        <TD>notify that a packet has been dropped
+    </TABLE>
+
+    <p> The type mediator methods.
+    <TABLE border = "1">
+      <TR><TH colspan = "2"> pdp_type_* 
+	<TR><TD>description_match   <TD>check if two type templates match
+	<TR><TD>register_conversion <TD>register a type conversion program
+
+
+</TABLE>
+
+
+   <p>NOTE: it is advised to derive your module from the pdp base class defined in pdp_base.h
+         instead of communicating directly with the pdp core
+
+
+
+    <h2>pdp_base class</h2>
+    If you want to write a pdp extern, you can derive it from the pdp_base class, instead of t_object.
+    This class abstracts a lot of the hassle of writing ordinary (inplace) packet processors. The base
+    allows you to register process callbacks. There are 3 kinds of callbacks: preproc, process and postproc.
+    The preproc method is called inside the pd thread. This can be used to setup some things that can only
+    be done inside the pd thread. The process method should do most of the work, and is called from the
+    pdp processing thread if it is enabled, after the preproc method is finished. You can't use most
+    of pd's calls in this method. The postproc method is called
+    from the pd thread after the process method is finished, and can be used to send data to pd outlets. Simple
+    packet processors only need the process method (packet input/output is handled by the pdp_base class).
+
+    <h2>pdp_imageproc_* modules</h2>
+    Most of the image processing code is organized as planar 16 bit signed processors. 
+    This is crude and oversimplified, but it helps to keep the code size small and fast
+    at the same time (platform dependent assembly code is reduced to a bare minimum). These
+    routines can be used to build higher level image processing objects that are more (cache)
+    efficient than an abstraction using separate pdp modules. If you plan to write your own image
+    processing routines, you can use the pdp_imageproc_dispatch_ routine to support all 16bit image
+    types at once (greyscale, subsampled YCrCb, multichannel planar). This requires you write the
+    image processing routine as a planar (greyscale) processor using the pdp_imageproc_
+    interface. (see pdp_imageproc.h)
+
+    <h2>pdp_llconv call</h2>
+    Low level image conversion routines. (operating on raw data buffers). You probably won't need this,
+    since the high level type conversion (pdp_packet_convert_ro/rw) covers most of its functionality.
+
+
+
+    <hr>
+    <address><a href="mailto:tom@zwizwa.be">Tom Schouten</a></address>
+<!-- Created: Mon Apr 28 15:35:12 CEST 2003 -->
+<!-- hhmts start -->
+Last modified: Fri Sep 19 04:52:12 CEST 2003
+<!-- hhmts end -->
+  </body>
+</html>

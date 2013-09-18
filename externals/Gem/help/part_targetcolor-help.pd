@@ -1,0 +1,13 @@
+#N canvas 853 285 600 500 10;
+#X msg 199 131 gemList;
+#X text 176 62 GEM object;
+#X text 185 27 part_targetcolor;
+#X obj 199 224 part_targetcolor;
+#X msg 252 156 R G B A;
+#X msg 306 185 scale;
+#X text 89 291 part_targetcolor changes the color of the particles
+by a scale factor every frame. The target color can be an RGB or RGBA
+vector. The scale value defaults to 0.05;
+#X connect 0 0 3 0;
+#X connect 4 0 3 1;
+#X connect 5 0 3 2;

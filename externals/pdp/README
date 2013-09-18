@@ -1,0 +1,266 @@
+PDP - Pure Data Packet v0.12.7
+a packet processing library for pure data
+
+Copyright (c) by Tom Schouten <tom@zwizwa.be>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+The GNU Public Licence can be found in the file COPYING
+
+
+------------------------------------------------------------------
+
+This external pd library is a framework for image/video processing (and 
+other raw data packets) that is fast, simple and flexible and as much 
+as possible compatible with the pd messaging system.
+
+This distro contains the main pdp library and 3 extension libs:
+* pdp_scaf (in directory scaf/)
+* pdp_opengl (in directory opengl/)
+
+Features:
+
+* packet formats: greyscale and YCrCb encoded images,
+  binary cellular automata (CA), textures, render buffers,
+  matrices.
+* sources: noise, video4linux and quicktime (with audio), CA, plasma
+* sinks: xvideo display, sdl, glx display
+* filters: convolution, biquad time, biquad space, CA
+* warping: rotate, zoom, stretch
+* transforms: colour translation/scaling, grey->palette
+* add, mul, mix, random pixel mix
+* utility objs: packet register, snapshot, trigger
+* packet delay line, loop, ..
+* and more.. (see doc/reference.txt)
+
+Optional features
+
+* cellular automata simulator and effects processor with
+  built in forth extension language (only for mmx)
+* opengl 3d processing (gem like, but built around packets)
+
+
+See the README files in the scaf/ and opengl/ dirs for more
+info on the extension libraries.
+
+
+Requirements:
+
+* pd
+* linux
+* libgsl
+* a video4linux device for video input. special support for 
+philips webcam included.
+* libquicktime (not quicktime4linux!) for quicktime playback.
+* libpng for png image loading/saving
+* an X display with XVideo extension, glx or SDL for video display.
+
+
+Documentation:
+
+When you use "make install" to install pd, all docs will be in
+the pd doc directory. Right click on an object and select help
+for a help patch. The pdp directory in pd's doc contains a
+reference.txt file which lists all objects and abstractions and
+an introduction and example section. 
+
+NOTE: all help patches use a pdp_help_input and pdp_help_output
+abstraction. you can edit these to choose which input or output
+object you want for the help patches.
+
+
+Building:
+
+./configure
+make
+
+Options for configure:
+--enable-mmx		compile with mmx support
+--enable-pwc		force pdp_v4l to use philips web cam
+
+If pd is not installed in /usr/local you'll have to
+specify the prefix on the configure command line with
+
+./configure --prefix=/prefix
+
+type
+
+make install
+
+To install pdp in $prefix/lib/pd: the library in externs/
+the abstractions in extra/ and the documentation in doc/5.reference
+and doc/pdp
+
+You can also try the "buildall" script. This will configure, build
+and install the whole distribution. It works for intel/mmx.
+
+NOTE: If you're not using the standard pd install location, and have
+everything in a single tree, just untar pdp next to the pd source tree,
+or set the prefix dir to the location of the pd source.
+
+
+Bugs:
+
+See the TODO file. Apart from the few items listed on top of this
+file, pdp is fairly stable: i am unaware of crash bugs. If you encounter 
+a crash please consider sending a bug report.
+
+
+PiDiP Is Definitely In Pieces
+
+Have a look at Yves Degoyon's PiDiP library, the must have addition
+to the basic pdp library. It contains a lot of extra effects (from 
+EffecTV and FreeJ), a quicktime recording object, streaming modules,
+ascii art objects ... (the list is growing rapidly ;)
+Yves also did a gem2pd and a pdp2gem object to connect pdp and gem
+together.
+
+http://ydegoyon.free.fr/
+
+
+Acknowledgements
+
+PDP is no longer a one man show. Many thanks to the people who 
+directly or indirectly contributed to this project. Either by 
+writing a giant extension lib (thanks Yves) or by contributing code 
+snippets (Thanks Martin, CK), or by giving mental support, feedback, 
+bug reports and ideas. 
+
+I also wish to thank the GEM crew. This project borrows a lot of ideas 
+and some code from the GEM project. And while i'm at it, i wish to
+thank everyone who contributed code to the PD project as a whole and
+the people that are very helpful at answering questions on the mailing
+list.
+
+Last but not least i wish to thank Miller for making the PD project
+open source. If that didn't happen i wouldn't know what i'd be doing
+now :)
+
+
+Some Remarks: 
+
+* New versions of this package can be found at
+http://zwizwa.be/pd/pdp
+Experimental relases are in the subdirectory test/
+But best to track the darcs archive at http://zwizwa.be/darcs/pdp-12
+
+* If you have libquicktime and quicktime4linux installed, this can 
+give problems with the configure script. Consider removing 
+quicktime4linux. (libquicktime is a drop-in replacement).
+
+* The modules that depend on system libraries only get compiled when
+the configure script can locate them. If compilation or linking fails 
+please let me know. 
+
+* Packets can be processed in a low priority thread with a dropping 
+mechanism to prevent overload or audio drops, or they can be processed 
+in the main pd thread. This can be set/unset by sending a "thread x"
+message to pdp_control. Processing in pdp thread is off by default.
+Use the pd thread for rock solid video timing. Increase the audio 
+latency to avoid dropouts. If you want low audio latency, and don't
+care about a dropped video frame here and there, switch on the pdp
+thread. Note that when using the pdp thread, the control flow is no
+longer depth first. Additinal delays will be introduced.
+
+* Pdp runs on osx, using an x server (apple or fink) and libquickime 
+(fink). pdp_xv does not work yet. Once apple includes xv support in
+their x server, it should. Until then, use pdp_glx for output.
+
+* Some quicktime remarks: pdp_qt~ is still a bit experimental, you might 
+try pdp_yqt in yves' lib to see if it works better for you. Also, it 
+seems that libquicktime does not work with compressed headers. The 
+suggested codec is jpeg (photo) and uncompressed audio with the same 
+samplerate as the one pd is using. You can use other codecs, but i've
+found this one to perform the best. (hint: compile libquicktime with
+mmx jpeg support) Try to avoid the mpga codec. It is haunted.
+
+* The reason i use YV12 and not RGB is simple: it's faster, and for 
+linear operations it doesn't make much difference. Most camera's and
+codecs use a luma/chroma system, and most video cards support hardware
+accellerated display. Note that in YUV, the u (Cb) and v (Cr) components 
+can be negative, so saturation after multiplication with a positive 
+(or negative) value produces not only black and white, but also red, 
+green, blue and their complements. In short, in YUV, nonlinear operations 
+have a different effect than in RGB. Another thing: all the spatial 
+operations are not implemented "correctly" because of the subsampling 
+involved.The image packets are 16bit/component planar. This is to 
+simplify  the mmx code and to have a little more headroom and precision 
+for processing.
+
+* Since version 0.11 there is a type system used for identifying a
+packet type and performing type conversion. A type is represented
+by a symbol, with subtypes separated by the "/" character. I.e.
+"image/grey/320x240" is a grey 16 bit/component image with dimensions
+320 by 240. For conversions a wildcard can be specified. I.e.
+"image/*/*" which matches image type packets with all encodings
+and dimensions.
+
+* Since version 0.12 there are 2 different image data types: "image/*/*"
+and "bitmap/*/*". The image type is the native 16 bit/component pdp
+type. It supports the subtypes "image/grey/*": one channel grey
+scale images, "image/YCrCb/*": luma/chroma packets with subsampled
+chroma planes and "image/multi/*": a multi channel planar format (i.e.
+to store 3 or 4 channel rgb or rgba data). Almost all processors
+use this data type. The bitmap type is an intermediate type which
+can contain standard fourcc encoded 8 bit/component images i.e.
+"bitmap/rgb/*", "bitmap/yv12/*", "bitmap/grey/*". Currently no processors
+support this type natively, so you have to use pdp_convert to convert
+them to "image/*/*".
+
+* Writing new objects is not much different than normal pd externs.
+Pdp just adds some functions to the pd kernel for package allocation,
+manipulation and communication. The api is very raw to keep it as
+simple as possible. Since 0.10 there is a pdp_base object you can
+derive your objects from. Have a look at pdp_add, pdp_gain and 
+pdp_noise to see how it works. There is not much documentation, but
+i do my best to keep things clean so the code and the header files
+should get you started. You can always just send me an email for info,
+or ask on the pd-dev list. Since version 0.12 there is a simple forth
+scripting language in pdp. This is far from finished, but it should
+make pdp programming a lot easier.
+
+* Philips webcam detection is now automatic. However this requires a 
+fairly recent kernel (one which includes the pwc driver version 8.6 
+or higher). If you have a pwc and pdp_v4l does not display a
+"pwc detected" message, you can conifigure with --enable-pwc. This
+forces pdp_v4l to use the pwc api extensions.
+
+
+
+Directory structure:
+
+abstractions/		some abstractions that use the pdp objects
+doc/introduction/	getting started with pdp
+doc/examples/		some example patches
+doc/objects/		pd style reference documentation
+include/		header files
+modules/		pd object code
+opengl/			opengl extension lib (experimental)
+scaf/			CA extension lib
+system/			core pdp system
+
+
+
+
+Bugreports, feature suggestions, code, documentation, example patches
+and general comments and questions are welcome.
+
+Have Fun,
+
+Tom
+
+
+last modified: 2003/07/20
+

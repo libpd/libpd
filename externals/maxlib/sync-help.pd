@@ -1,0 +1,68 @@
+#N canvas 0 26 761 574 12;
+#X text 78 16 sync :: extended trigger object based;
+#X text 143 35 on sync from jMax;
+#X floatatom 18 485 5 0 0 0 - - -;
+#X floatatom 39 457 5 0 0 0 - - -;
+#X floatatom 61 433 5 0 0 0 - - -;
+#X floatatom 18 124 5 0 0 0 - - -;
+#X floatatom 39 152 5 0 0 0 - - -;
+#X floatatom 61 177 5 0 0 0 - - -;
+#X msg 205 143 mode any;
+#X msg 187 116 mode all;
+#X msg 216 169 mode left;
+#X msg 229 198 mode right;
+#X msg 243 226 mode none;
+#X text 295 142 any input triggers the outputs;
+#X text 305 169 trigger output when left inlet changes;
+#X text 325 199 trigger output when right inlet changes;
+#X text 333 228 never trigger output;
+#X obj 18 404 sync 3;
+#X text 146 415 the creation argument determines the number of inlets
+/ outlets sync will have.;
+#X obj 149 462 sync 23 17.3;
+#X text 147 490 alternatively it's possible to specify the number of
+inlets / outlets by giving initial values for every outlet. these values
+will be output in case no input has been received in the corresponding
+inlet until the time when the output is triggered.;
+#X text 274 116 all inputs have to change to trigger output (default)
+;
+#X msg 223 270 trigger 2;
+#X msg 230 335 require 1;
+#X text 324 320 additionally another input can be defined to be required
+for the trigger event to take place. i.e. the second inlet (inlet #1)
+from the left must have been changed since the last triggering occured.
+;
+#X text 324 265 use this message to make the n-th input (counting from
+0 to <number of inputs - 1>) a triggering input. only one input at
+a time can be triggering!;
+#X text 212 90 the easy way:;
+#X msg 228 299 trigger 1;
+#N canvas 415 162 494 344 META 0;
+#X text 12 210 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 190 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 150 OUTLET_1 float;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION extended trigger object based on sync from
+jMax;
+#X text 12 70 INLET_0 mode trigger float require;
+#X text 12 90 INLET_1 float;
+#X text 12 110 INLET_2 float;
+#X text 12 130 OUTLET_0 float;
+#X text 12 170 OUTLET_2 float;
+#X restore 699 546 pd META;
+#X connect 5 0 17 0;
+#X connect 6 0 17 1;
+#X connect 7 0 17 2;
+#X connect 8 0 17 0;
+#X connect 9 0 17 0;
+#X connect 10 0 17 0;
+#X connect 11 0 17 0;
+#X connect 12 0 17 0;
+#X connect 17 0 2 0;
+#X connect 17 1 3 0;
+#X connect 17 2 4 0;
+#X connect 22 0 17 0;
+#X connect 23 0 17 0;
+#X connect 27 0 17 0;

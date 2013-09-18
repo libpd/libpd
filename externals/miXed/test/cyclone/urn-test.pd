@@ -1,0 +1,15 @@
+#N canvas 433 476 450 300 12;
+#X obj 152 131 urn 10;
+#X obj 152 190 print;
+#X msg 152 73 bang;
+#X msg 220 73 clear;
+#X msg 94 73 99;
+#X msg 28 73 99.9;
+#X msg 295 72 10000;
+#X connect 0 0 1 0;
+#X connect 0 1 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 1;

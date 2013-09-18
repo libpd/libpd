@@ -1,0 +1,68 @@
+#N canvas 52 27 918 567 10;
+#X msg 36 286 \; pd dsp 1;
+#X msg 102 286 \; pd dsp 0;
+#X msg 323 51 disconnect;
+#X floatatom 221 227 5 0 0;
+#X obj 221 199 speexout~;
+#X obj 36 265 loadbang;
+#X symbolatom 679 245 20 0 0;
+#X text 662 261 Incomer's address;
+#X text 26 8 speex~ : speexout~ / speexin~;
+#X msg 343 161 quality 3;
+#X msg 345 327 quality 10;
+#X text 432 91 <-- settings for encoding quality;
+#X obj 87 145 adc~;
+#X obj 615 206 speexin~ 5000 1;
+#X text 321 8 Step 1 : connect the emitter to the receiver;
+#X text 30 124 Step 2 : speak in your microphone;
+#X text 541 487 bugs and comments @ ydegoyon@free.fr [-_-];
+#X text 541 469 part of unauthorized PD ( http://ydegoyon.free.fr )
+;
+#X msg 344 301 quality 9;
+#X msg 344 276 quality 8;
+#X msg 344 254 quality 7;
+#X msg 344 231 quality 6;
+#X msg 343 208 quality 5;
+#X msg 343 185 quality 4;
+#X msg 343 139 quality 2;
+#X msg 343 116 quality 1;
+#X msg 343 92 quality 0;
+#X text 461 104 quality: lowest = 0 \, highest = 10 \, default = 5
+;
+#X text 497 173 constructor : speexin~ <portno> <graphics>;
+#X msg 444 356 bang;
+#X obj 445 384 tabwrite~ speex-output;
+#N canvas 0 0 450 300 graph2 0;
+#X array speex-output 100 float 1;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 172 360 graph;
+#X text 26 24 speech quality encoder/decoder/streamer;
+#X obj 611 316 dac~;
+#X msg 323 70 connect localhost 5000;
+#X msg 323 29 connect 81.65.246.123 5000;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
+#X connect 5 0 0 0;
+#X connect 9 0 4 0;
+#X connect 10 0 4 0;
+#X connect 12 0 4 0;
+#X connect 13 0 30 0;
+#X connect 13 0 33 0;
+#X connect 13 0 33 1;
+#X connect 13 1 6 0;
+#X connect 18 0 4 0;
+#X connect 19 0 4 0;
+#X connect 20 0 4 0;
+#X connect 21 0 4 0;
+#X connect 22 0 4 0;
+#X connect 23 0 4 0;
+#X connect 24 0 4 0;
+#X connect 25 0 4 0;
+#X connect 26 0 4 0;
+#X connect 29 0 30 0;
+#X connect 34 0 4 0;
+#X connect 35 0 4 0;

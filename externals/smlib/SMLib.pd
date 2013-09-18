@@ -1,0 +1,4 @@
+#N canvas 180 534 450 300 10;
+#X text 41 77 SMlib;
+#X text 41 104 this is just a placeholder so you can access SMlib-help.pd
+;

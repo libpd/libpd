@@ -1,0 +1,12 @@
+#N canvas 693 326 361 208 10;
+#X obj 9 7 inlet;
+#X obj 9 135 unpackOSC;
+#X obj 9 158 outlet;
+#X obj 60 158 outlet;
+#X text 172 144 Author: Roman Haefeli;
+#X text 172 160 Version: 2011-02-01;
+#X obj 9 71 mrpeach/slipdec 65536;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 6 0 1 0;

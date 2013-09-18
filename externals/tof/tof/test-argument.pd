@@ -1,0 +1,30 @@
+#N canvas 336 203 651 389 10;
+#X obj 158 36 inlet;
+#X obj 158 92 t b b b;
+#X text 220 105 first;
+#X text 159 192 second;
+#X text 73 282 third;
+#X obj 158 67 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 210 166 print arg1;
+#X obj 134 246 print arg2;
+#X obj 11 330 print arg3;
+#X obj 210 130 tof/argument 1;
+#X obj 134 213 tof/argument 2 100;
+#X obj 11 303 tof/argument 3 500;
+#X text 204 24 This patch is part of [tof/argument]'s help file.;
+#X text 207 42 Its creation arguments are: a b;
+#X text 305 127 <-Outputs the first patch creation argument: "a";
+#X text 131 300 <- Outputs 500 because there is not third patch argument.
+;
+#X text 257 206 <-Outputs "100" because the type of the default value
+\, a float 100 \, does not match the type of the patch's second argument
+\, a symbol "b".;
+#X connect 0 0 5 0;
+#X connect 1 0 11 0;
+#X connect 1 1 10 0;
+#X connect 1 2 9 0;
+#X connect 5 0 1 0;
+#X connect 9 0 6 0;
+#X connect 10 0 7 0;
+#X connect 11 0 8 0;

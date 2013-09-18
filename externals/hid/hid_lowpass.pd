@@ -1,0 +1,19 @@
+#N canvas 666 425 438 310 10;
+#X obj 67 31 inlet;
+#X obj 67 235 outlet;
+#X text 7 266 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 224 280 released under the GNU GPL;
+#X obj 252 30 inlet;
+#X obj 69 157 snapshot~;
+#X obj 68 58 t b f;
+#X obj 97 85 sig~;
+#X obj 97 115 lop~ 10;
+#X text 9 9 [hid_lowpass];
+#X connect 0 0 6 0;
+#X connect 4 0 8 1;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 6 1 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;

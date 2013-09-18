@@ -1,0 +1,37 @@
+#N canvas 0 26 414 252 10;
+#X obj 87 75 symbol;
+#X msg 87 43 abcdefghijk;
+#X msg 26 59 set 2;
+#X text 116 14 characters of a symbol;
+#X text 10 1 stripfilename: strip the first or last;
+#X obj 47 138 stripfilename -5;
+#X msg 11 39 set -7;
+#X obj 47 160 print;
+#X text 190 92 1.arg: <float> number of first;
+#X text 227 105 or last characters to strip;
+#X text 218 132 if positiv -> first;
+#X text 218 144 if negativ -> last;
+#X msg 40 81 set 8;
+#X text 115 218 IEM KUG;
+#X text 99 206 musil;
+#X text 129 206 @;
+#X text 135 206 iem.at;
+#X text 50 195 (c) Thomas Musil 2000 - 2005;
+#X text 98 228 Graz \, Austria;
+#N canvas 328 134 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 5 KEYWORDS control symbol_op;
+#X text 12 45 DESCRIPTION strip the first or last characters of a symbol
+;
+#X text 12 65 INLET_0 symbol set;
+#X text 12 85 OUTLET_0 symbol;
+#X restore 359 225 pd META;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 5 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 12 0 5 0;

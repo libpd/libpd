@@ -1,0 +1,17 @@
+#N canvas 0 31 359 137 10;
+#X text 15 35 Standard C function for arctan(y/x);
+#X obj 80 85 atan2~;
+#N canvas 430 169 494 366 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION standard C function for arctan - arctan(y/x)
+;
+#X text 12 5 KEYWORDS signal storage max_compatible trigonometry;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 309 116 pd META;

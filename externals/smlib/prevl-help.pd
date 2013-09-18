@@ -1,0 +1,48 @@
+#N canvas 1 53 489 300 10;
+#X text 364 181 j#|@2002;
+#X obj 386 159 SMLib-help;
+#X floatatom -12 16 5 0 0 0 - - -;
+#X floatatom 42 50 5 0 0 0 - - -;
+#X floatatom 94 49 5 0 0 0 - - -;
+#X obj -2 46 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj -12 -4 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text -19 167 ...;
+#X text 127 79 [deltas a b c];
+#X text 94 28 b;
+#X text 40 29 a;
+#X text 126 125 requires a<b and b<=c;
+#X text 126 109 c = buffer size;
+#X text 9 -8 x(i);
+#X obj -14 107 print prevl;
+#X text -17 -54 prevl: generates vector with past input values (float)
+;
+#X text -17 128 x(i-a);
+#X text -17 142 x(i-(a+1));
+#X text -17 156 x(i-(a+2));
+#X text -17 182 x(i-(b));
+#X obj -14 80 prevl 0 10 10;
+#X msg 71 2 clear;
+#N canvas 131 167 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION generate vector with past input values (float)
+;
+#X text 12 65 INLET_0 float bang clear;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 list;
+#X restore 395 212 pd META;
+#X connect 2 0 20 0;
+#X connect 2 0 5 0;
+#X connect 3 0 20 1;
+#X connect 4 0 20 2;
+#X connect 5 0 20 0;
+#X connect 6 0 2 0;
+#X connect 20 0 14 0;
+#X connect 21 0 20 0;

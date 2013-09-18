@@ -1,0 +1,21 @@
+#N canvas 1 53 293 276 10;
+#X obj 5 6 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144 -1
+-1 0 1;
+#X floatatom 43 -78 5 0 0 0 - - -;
+#X text 89 -80 from 0 to 1;
+#X obj 43 -60 resample 30;
+#X obj 43 -10 oscillo;
+#N canvas 464 140 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 INLET_1 float;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION return the amplitude covered by the last
+n (n>1) values;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction GUI;
+#X restore 231 161 pd META;
+#X connect 0 0 3 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;

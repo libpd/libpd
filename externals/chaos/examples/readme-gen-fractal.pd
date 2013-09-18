@@ -1,0 +1,6 @@
+#N canvas 0 22 478 328 10;
+#X text 25 23 This will explain the usage of 'gen_fractal_framework'
+\, once the program has become more "stable" and generates what would
+be unique to each fractal. Currently \, there is still some redundancy
+in the code.;
+#X text 282 136 more later...;

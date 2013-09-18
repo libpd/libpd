@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+
+LIBRARY_NAME = pmpd
+PACKAGE = pd-$(LIBRARY_NAME)
+pkglibdir = /usr/lib/pd/extra
+
+%:
+	dh $@
+
+override_dh_auto_install:
+	make DESTDIR=$(CURDIR)/debian/$(PACKAGE) pkglibdir=$(pkglibdir) install
+
+override_dh_shlibdeps:
+	dpkg-shlibdeps $(CURDIR)/debian/$(PACKAGE)$(pkglibdir)/$(LIBRARY_NAME)/*.pd_linux \
+		-T$(CURDIR)/debian/$(PACKAGE).substvars
+

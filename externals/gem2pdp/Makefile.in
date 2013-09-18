@@ -1,0 +1,59 @@
+PD_DIR = @PD_DIR@
+PDP_DIR = @PDP_DIR@
+GEM_DIR = @GEM_DIR@
+
+LIBS = @LIBS@
+LDFLAGS = @LDFLAGS@
+EXTENSION = @EXTENSION@
+
+GEM2PDP_VERSION = @GEM2PDP_VERSION@
+
+GEM2PDP_DISTRO = /mnt/c/ydegoyon.free.fr/gem2pdp-$(GEM2PDP_VERSION)
+GEM2PDP_TARBALL = $(GEM2PDP_DISTRO).tar.gz
+# build flags
+
+INCLUDES = @INCLUDES@ -I$(PD_DIR)/src -I. -I$(PDP_DIR)/include  -I$(GEM_DIR)/src -I$(GEM_DIR)/src/deprecated
+CFLAGS = -fPIC -DPD -O2 -funroll-loops -fomit-frame-pointer  -ffast-math \
+    -Wall -W -Wno-unused -Wno-parentheses -Wno-switch \
+    -DGEM2PDP_VERSION=\"$(GEM2PDP_VERSION)\" -g  @CFLAGS@
+PDP_PIDIP_CFLAGS  = -O
+
+export MACOSX_DEPLOYMENT_TARGET = 10.3
+
+all: gem2pdp.$(EXTENSION) pdp2gem.$(EXTENSION) pix_2pdp.$(EXTENSION)
+
+pdp2gem.$(EXTENSION): pdp2gem.o yuv.o
+	gcc $(LDFLAGS) -o pdp2gem.$(EXTENSION) pdp2gem.o yuv.o $(LIBS)
+
+gem2pdp.$(EXTENSION): gem2pdp.o yuv.o
+	gcc $(LDFLAGS) -o gem2pdp.$(EXTENSION) gem2pdp.o yuv.o $(LIBS)
+
+pix_2pdp.$(EXTENSION): pix_2pdp.o yuv.o
+	gcc $(LDFLAGS) -o pix_2pdp.$(EXTENSION) pix_2pdp.o yuv.o $(LIBS)
+
+clean:
+	-rm -f -- *.o
+	-rm -f gem2pdp.$(EXTENSION)
+	-rm -f pdp2gem.$(EXTENSION)
+	-rm -f pix_2pdp.$(EXTENSION)
+
+dist_clean: clean
+	-rm -rf autom4te.cache
+	-rm -f configure Makefile config.log
+
+distro: clean all
+	rm *.o
+	strip --strip-unneeded gem2pdp.$(EXTENSION)
+	cd .. && cp -rf gem2pdp /tmp/gem2pdp-$(GEM2PDP_VERSION)
+	cd /tmp && tar vczf $(GEM2PDP_TARBALL) gem2pdp-$(GEM2PDP_VERSION)
+	cp /mnt/c/ydegoyon.free.fr/gem2pdp-$(GEM2PDP_VERSION).tar.gz /mnt/c/Yves
+	rm -rf /tmp/gem2pdp-$(GEM2PDP_VERSION)
+
+.cpp.o:
+	g++ $(CFLAGS) $(INCLUDES) -o $*.o -c $*.cpp
+
+.c.o:
+	gcc $(CFLAGS) $(INCLUDES) -o $*.o -c $*.c
+
+install:
+	cp -f --remove-destination *.pd $(PD_DIR)/doc/5.reference

@@ -1,0 +1,25 @@
+#N canvas 0 31 450 297 10;
+#N canvas 463 219 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR d13@klingt.org;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 5 ALIAS fsize;
+#X text 12 25 KEYWORDS control filesystem;
+#X text 12 65 DESCRIPTION get the size of a file in bytes;
+#X text 12 85 INLET_0 symbol bang;
+#X text 12 105 OUTLET_0 float;
+#X restore 391 267 pd META;
+#X obj 111 164 filesize;
+#X msg 111 94 symbol filesize-help.pd;
+#X floatatom 111 198 5 0 0 0 - - -;
+#X obj 123 29 fsize;
+#X obj 27 29 filesize;
+#X text 92 29 or;
+#X text 172 29 - get the size of a file in bytes;
+#X obj 129 129 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 153 126 return last value;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 8 0 1 0;

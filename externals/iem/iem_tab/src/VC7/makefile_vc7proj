@@ -1,0 +1,71 @@
+TARGET = iem_tab
+
+all: ..\$(TARGET).dll
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio .NET 2003\Vc7"
+VIS_SDK_PATH = "C:\Programme\Microsoft Visual Studio .NET 2003\Vc7\PlatformSDK"
+PD_INST_PATH = "C:\Programme\pd-0.42-5"
+PD_WIN_INCLUDE_PATH = /I. /I$(PD_INST_PATH)\src /I$(VIS_CPP_PATH)\include
+PD_WIN_C_FLAGS = /nologo /W3 /WX /DMSW /DNT /DPD /DWIN32 /DWINDOWS /Ox -D_CRT_SECURE_NO_WARNINGS
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = /NODEFAULTLIB:libcmt /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel32 \
+	$(VIS_CPP_PATH)\lib\libcmt.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_SDK_PATH)\lib\kernel32.lib \
+	$(PD_INST_PATH)\bin\pd.lib
+
+SRC =	tab_abs.c \
+	tab_add.c \
+	tab_add_scalar.c \
+	tab_carth2polar.c \
+	tab_complex_inv.c \
+	tab_complex_mul.c \
+	tab_const.c \
+	tab_conv.c \
+	tab_copy.c \
+	tab_counter.c \
+	tab_cross_corr.c \
+	tab_div.c \
+	tab_eq.c \
+	tab_eq_scalar.c \
+	tab_fft.c \
+	tab_find_exact_peaks.c \
+	tab_find_peaks.c \
+	tab_ge.c \
+	tab_ge_scalar.c \
+	tab_gt.c \
+	tab_gt_scalar.c \
+	tab_get_size.c \
+	tab_ifft.c \
+	tab_le.c \
+	tab_le_scalar.c \
+	tab_lt.c \
+	tab_lt_scalar.c \
+	tab_max_index.c \
+	tab_min_index.c \
+	tab_min_max.c \
+	tab_mul.c \
+	tab_mul_scalar.c \
+	tab_ne.c \
+	tab_ne_scalar.c \
+	tab_reverse.c \
+	tab_rfft.c \
+	tab_rifft.c \
+	tab_sqrt.c \
+	tab_sub.c \
+	tab_sum.c \
+	iem_tab.c
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	cl $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+..\$(TARGET).dll: $(OBJ)
+	link $(PD_WIN_L_FLAGS) /dll /export:$(TARGET)_setup \
+	/out:..\$(TARGET).dll $(OBJ) $(PD_WIN_LIB)
+
+clean:
+	del *.obj

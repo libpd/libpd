@@ -1,0 +1,89 @@
+#N canvas 1413 30 695 382 10;
+#X text 92 6 [pix_data];
+#X text 93 25 get pixel-data of an image;
+#X obj 14 57 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 14 182 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 23 181 Arguments:;
+#X text 69 192 <none>;
+#X obj 14 216 cnv 15 430 140 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 21 218 Inlets:;
+#X text 24 296 Outlets:;
+#X text 42 309 Outlet 1: gemlist;
+#X obj 450 57 cnv 15 220 300 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 454 195 cnv 15 210 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 462 253 pix_data;
+#X msg 462 68 bang;
+#X floatatom 515 279 5 0 0 0 - - -;
+#X obj 488 313 unpack 0 0 0;
+#X floatatom 593 336 5 0 0 0 - - -;
+#X floatatom 539 336 5 0 0 0 - - -;
+#X floatatom 488 336 5 0 0 0 - - -;
+#X text 569 278 gray-value;
+#X text 499 296 color-list;
+#X floatatom 497 210 5 0 0 0 - - -;
+#X floatatom 515 233 5 0 0 0 - - -;
+#X text 553 209 x-pos;
+#X text 567 229 y-pos;
+#X obj 479 94 gemhead;
+#X obj 479 168 pix_image;
+#X obj 562 98 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 562 116 openpanel;
+#X msg 562 139 open \$1;
+#X text 17 62 [pix_data] will get the colour of a specified pixel within
+an image when triggered.;
+#X text 17 97 The coordinates within the image (x-pos \, y-pos) range
+from (0.0f \, 0.0f) (left-bottom) to (1.0f \, 1.0f) (right-top).;
+#X text 17 136 After the first inlet is triggered with a "bang" \,
+the color of the specified pixels is output both as gray-value and
+as RGB-triplet.;
+#X text 453 15 GEM object;
+#X text 34 233 Inlet 1: bang;
+#X text 34 247 Inlet 2: gemlist;
+#X text 34 261 Inlet 3: float: post X in the image (0 to 1);
+#X text 34 274 Inlet 4: float: post Y in the image (0 to 1);
+#X text 42 324 Outlet 2: list RGB value;
+#X text 42 336 Outlet 3: float: grey value;
+#X obj 340 293 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 345 332 pd gemwin;
+#X msg 345 313 create;
+#X text 341 292 Create window:;
+#X connect 12 1 15 0;
+#X connect 12 2 14 0;
+#X connect 13 0 12 0;
+#X connect 15 0 18 0;
+#X connect 15 1 17 0;
+#X connect 15 2 16 0;
+#X connect 21 0 12 2;
+#X connect 22 0 12 3;
+#X connect 25 0 26 0;
+#X connect 26 0 12 1;
+#X connect 27 0 28 0;
+#X connect 28 0 29 0;
+#X connect 29 0 26 0;
+#X connect 41 0 42 0;
+#X connect 42 0 41 0;

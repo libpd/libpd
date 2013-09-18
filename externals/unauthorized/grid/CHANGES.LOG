@@ -1,0 +1,18 @@
+0.8
+  path from alberto zin : change color thru messages
+0.7
+  fixed coordinates for GOP support
+0.6
+  added GOP support
+0.5
+  Adapted for pd 0.37
+0.4
+  Added functions bang, values, valuemotion, xvalues, xvaluemotion made by Maurizio Umberto Puxeddu
+  Integrated patch from Joseph A. Sarlo for connections 
+0.3
+  Fixed "goto x y" message 
+  ( hall of shame contest : confusion between absolute and relative coordinates )
+0.2
+  Added "goto x y" message
+0.1
+  first implementation

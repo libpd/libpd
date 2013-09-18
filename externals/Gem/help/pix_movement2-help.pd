@@ -1,0 +1,106 @@
+#N canvas 315 171 666 422 10;
+#X text 452 8 GEM object;
+#X obj 9 270 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 277 Inlets:;
+#X text 39 369 Outlets:;
+#X obj 9 227 cnv 15 430 40 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 226 Arguments:;
+#X obj 8 56 cnv 15 430 165 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 200 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 544 290 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 549 329 pd gemwin;
+#X msg 549 310 create;
+#X text 545 289 Create window:;
+#X obj 451 173 cnv 15 155 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 83 gemhead;
+#X text 17 383 Outlet 1: gemlist;
+#X text 24 291 Inlet 1: gemlist;
+#X obj 451 322 square 3;
+#X obj 451 300 pix_texture;
+#X text 71 31 Class: pix object (timebased effect);
+#X obj 451 151 pix_film;
+#X obj 515 151 t f;
+#X obj 464 103 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 open 0;
+#X obj 85 49 inlet;
+#X obj 85 237 outlet;
+#X obj 85 145 openpanel;
+#X msg 85 179 open \$1;
+#X msg 259 213 auto 1;
+#X obj 268 179 loadbang;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X restore 464 131 pd open;
+#X text 505 77 open a supported;
+#X text 506 88 movie-clip;
+#X text 523 114 macOS: quicktime;
+#X text 516 104 windos: *.AVI;
+#X text 523 124 linux: depends...;
+#X floatatom 495 190 3 0 100 2 lo_threshold - -;
+#X obj 494 206 / 100;
+#X text 50 12 Synopsis: [pix_movement2];
+#X obj 451 232 pix_movement2;
+#X floatatom 549 211 3 0 100 2 threshold - -;
+#X obj 548 227 / 100;
+#X msg 456 194 bang;
+#X text 29 57 Description: timebase IIR-filter for motion detection
+;
+#X text 14 130 since image-noise can disturb this processing \, changes
+between two corresponding pixels that are smaller than "threshold"
+are ignored. The "threshold" is initially set to <threshold> and adjusts
+itself dynamically downwards towards <lo_threshold> (which is the absolute
+minimum);
+#X text 15 78 [pix_movement] detects movement in a frame with respect
+to the 2 previous frames and a "background"-image and stores it as
+a b/w-image (greyscale).;
+#X text 64 237 float: <lo_threshold> (0..1);
+#X text 66 252 float: <initial_threshold> (0..1);
+#X text 24 306 Inlet 1: bang: set the current frame as "background"
+;
+#X text 24 323 Inlet 2: float: <lo_threshold> changes in the image
+that are smaller then <lo_threshold> are ignored;
+#X text 24 348 Inlet 3: float: <initial_threshold>;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 20 0;
+#X connect 18 0 17 0;
+#X connect 20 0 32 0;
+#X connect 20 2 21 0;
+#X connect 21 0 20 1;
+#X connect 22 0 23 0;
+#X connect 23 0 20 0;
+#X connect 29 0 30 0;
+#X connect 30 0 32 1;
+#X connect 32 0 18 0;
+#X connect 33 0 34 0;
+#X connect 34 0 32 2;
+#X connect 35 0 32 0;

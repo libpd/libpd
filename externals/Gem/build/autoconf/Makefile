@@ -1,0 +1,2 @@
+default %:
+	make -C ../../src/ $@

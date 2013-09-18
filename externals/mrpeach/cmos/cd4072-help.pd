@@ -1,0 +1,19 @@
+#N canvas 670 174 470 224 12;
+#X obj 86 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 121 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 86 137 tgl 15 0 empty empty empty 17 7 0 10 -258699 -241291
+-1 0 1;
+#X obj 157 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 193 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X text 210 170 20070312_Martin_Peach;
+#X text 18 47 cd4072 emulates 1/2 of the CMOS quad OR gate;
+#X obj 86 106 cd4072 quad or;
+#X connect 0 0 7 0;
+#X connect 1 0 7 1;
+#X connect 3 0 7 2;
+#X connect 4 0 7 3;
+#X connect 7 0 2 0;

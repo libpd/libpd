@@ -1,0 +1,25 @@
+#N canvas 0 26 450 300 10;
+#N canvas 248 148 494 372 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 65 INLET_0 signal;
+#X text 12 165 AUTHOR Tom Shouten;
+#X text 12 45 DESCRIPTION volume for a stereo signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 float;
+#X text 12 145 OUTLET_1 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS signal filter abstraction;
+#X restore 393 274 pd META;
+#X obj 152 129 vols~;
+#X obj 137 36 osc~ 440;
+#X floatatom 176 95 5 0 100 0 - - -;
+#X obj 153 165 dac~;
+#X obj 156 66 osc~ 440.1;
+#X text 210 126 volume for a stereo signal;
+#X connect 1 0 4 0;
+#X connect 1 1 4 1;
+#X connect 2 0 1 0;
+#X connect 3 0 1 2;
+#X connect 5 0 1 1;

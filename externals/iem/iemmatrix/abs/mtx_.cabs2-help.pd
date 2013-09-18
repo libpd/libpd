@@ -1,0 +1,26 @@
+#N canvas 88 457 841 379 10;
+#X text 482 28 part of iemmatrix;
+#X msg 33 172 matrix 1 2 1 2;
+#X msg 49 193 matrix 1 2 0 1;
+#X obj 33 124 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 33 148 t b b b b;
+#X obj 33 216 t a a;
+#X text 441 116 inletA: real part of matrix;
+#X text 440 135 inletB: imaginary part of matrix;
+#X text 439 157 outletA: real valued output;
+#X obj 165 216 mtx_print realA;
+#X obj 165 195 mtx_print imagA;
+#X obj 33 280 mtx_print cabs2;
+#X obj 33 242 mtx_.cabs2;
+#X text 44 34 [mtx_.cabs2];
+#X text 166 69 complex valued element wise matrix absolute value;
+#X connect 1 0 5 0;
+#X connect 2 0 12 1;
+#X connect 2 0 10 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 1 2 0;
+#X connect 5 0 12 0;
+#X connect 5 1 9 0;
+#X connect 12 0 11 0;

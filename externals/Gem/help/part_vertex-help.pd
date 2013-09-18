@@ -1,0 +1,15 @@
+#N canvas 318 36 664 366 10;
+#X msg 180 86 gemList;
+#X text 176 62 GEM object;
+#X msg 180 195 gemList;
+#X text 260 196 partList;
+#X text 254 89 partList;
+#X obj 180 152 part_vertex;
+#X text 184 25 [part_vertex];
+#X msg 274 128 <x y z>;
+#X text 51 252 add a particle at the specified offset. You will need
+this if you want any particles in your particle-system \, especially
+with moving particle sources.;
+#X connect 0 0 5 0;
+#X connect 5 0 2 0;
+#X connect 7 0 5 1;

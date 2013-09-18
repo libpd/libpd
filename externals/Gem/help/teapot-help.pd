@@ -1,0 +1,69 @@
+#N canvas 312 148 709 361 10;
+#X text 54 30 Class: geometric object;
+#X obj 519 47 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 584 224 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 589 263 pd gemwin;
+#X msg 589 244 create;
+#X text 585 223 Create window:;
+#X text 525 29 Example:;
+#X obj 7 65 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 236 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 11 235 Inlets:;
+#X obj 8 176 cnv 15 450 50 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X text 29 275 Inlet 2: float: size;
+#X text 452 8 GEM object;
+#X text 29 247 Inlet 1: gemlist;
+#X text 11 304 Outlets:;
+#X text 23 317 Outlet 1: gemlist;
+#X text 33 14 Synopsis: [teapot];
+#X text 7 69 Description: Renders a teapot.;
+#X text 63 186 size of the teapot;
+#X obj 522 81 cnv 15 150 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 525 88 draw line;
+#X msg 525 111 draw fill;
+#X obj 593 54 gemhead;
+#X floatatom 611 99 5 -5 5 2 size - -;
+#X floatatom 630 131 5 0 20 2 grid - -;
+#X text 29 289 Inlet 3: float: number of slices;
+#X text 29 261 Inlet 1: message: draw [line|fill|points];
+#X text 14 130 You can also specify the "number of slices" via the
+3rd inlet.;
+#X msg 526 132 draw point;
+#X text 15 88 The teapot object renders a teapot at the current position
+with current color. The size of the teapot can be changed via the second
+inlet.;
+#X obj 593 159 teapot 2 14;
+#X text 63 200 number of slices;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 21 0 31 0;
+#X connect 22 0 31 0;
+#X connect 23 0 31 0;
+#X connect 24 0 31 1;
+#X connect 25 0 31 2;
+#X connect 29 0 31 0;

@@ -1,0 +1,22 @@
+#N canvas 614 448 575 277 10;
+#X obj 46 40 pdp_help_input;
+#X msg 46 10 start;
+#X msg 95 10 stop;
+#X obj 46 225 pdp_help_output;
+#X obj 46 172 pdp_gain 1;
+#X obj 130 172 pdp_gain 2;
+#X obj 118 69 hdl 15 1 0 2 empty empty empty 0 -6 0 8 -262144 -1 -1
+0;
+#X text 155 88 routes a packet to a specified outlet \, determined
+by the right inlet;
+#X text 155 124 creation argument = number of outlets (default = 2)
+;
+#X obj 46 90 pdp_route 2;
+#X connect 0 0 9 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 6 0 9 1;
+#X connect 9 0 4 0;
+#X connect 9 1 5 0;

@@ -1,0 +1,75 @@
+#N canvas 450 81 710 345 10;
+#X obj 519 47 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 529 233 cnv 15 140 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X msg 544 253 create;
+#X text 540 232 Create window:;
+#X obj 7 65 cnv 15 450 140 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 256 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 261 Inlets:;
+#X obj 8 216 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 215 Arguments:;
+#X text 452 8 GEM object;
+#X text 27 273 Inlet 1: gemlist;
+#X text 9 290 Outlets:;
+#X text 21 303 Outlet 1: gemlist;
+#X text 525 29 Example:;
+#X text 33 14 Synopsis: [render_trigger];
+#X obj 522 78 cnv 15 160 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 530 52 gemhead;
+#X obj 530 87 render_trigger;
+#X obj 530 133 t b a b;
+#X obj 552 208 square;
+#X text 54 30 Class: control object;
+#X text 7 69 Description: triggers on rendering;
+#X text 29 85 render_trigger allows you to know when the actual rendering
+is occuring in a gemList. If you think of the gemList as a list of
+actions which occur \, the pre-bang outlet sends a bang out before
+any of the actions below the render_trigger in the gemList. The post-bang
+sends out a bang after all of the actions have occured.;
+#X text 72 225 (none);
+#X text 21 316 Outlet 2: bang : pre-render;
+#X text 21 330 Outlet 2: bang : post-render;
+#X text 9 172 !THIS IS OBOLETE AS YOU CAN NOW USE THE [trigger] OBJECT
+FOR THE SAME PURPOSE!;
+#X obj 622 108 bng 15 250 50 0 empty empty post 20 8 0 8 -262144 -1
+-1;
+#X obj 576 108 bng 15 250 50 0 empty empty pre 20 8 0 8 -262144 -1
+-1;
+#X obj 530 177 bng 15 250 50 0 empty empty post 20 8 0 8 -262144 -1
+-1;
+#X obj 574 158 bng 15 250 50 0 empty empty pre 20 8 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 93 create \, 1 \, frame 2;
+#X msg 198 112 destroy \, reset;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 544 273 pd gemwin (2fps);
+#X connect 2 0 31 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 17 1 28 0;
+#X connect 17 2 27 0;
+#X connect 18 0 29 0;
+#X connect 18 1 19 0;
+#X connect 18 2 30 0;
+#X connect 31 0 2 0;

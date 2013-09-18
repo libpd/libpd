@@ -1,0 +1,26 @@
+#N canvas 649 489 450 300 10;
+#X obj 133 212 *~ 2;
+#X obj 134 235 -~ 1;
+#X obj 230 141 + 0.5;
+#X obj 133 188 phasor~;
+#X msg 190 112 0;
+#X obj 190 90 loadbang;
+#X obj 135 258 outlet~;
+#X obj 133 165 fblock \$1;
+#X msg 190 141 1;
+#X obj 132 92 inlet;
+#X text 28 4 frequor~: frequency domain phasor~ (for traversing spectra)
+;
+#X text 98 75 nb windings;
+#X text 102 25 output: (0 \, N/2-1) -> (0 \, 1);
+#X text 152 41 (N/2 \, N-1) -> (-1 \, 0);
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 2 0 3 1;
+#X connect 3 0 0 0;
+#X connect 4 0 2 0;
+#X connect 4 0 8 0;
+#X connect 5 0 4 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 1;
+#X connect 9 0 7 1;

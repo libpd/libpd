@@ -1,0 +1,8 @@
+0.4
+  fixed coordinates for GOP support
+0.3
+  added GOP support
+0.2
+  adapted for pd 0.37
+0.1
+  first implementation

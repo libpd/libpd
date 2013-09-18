@@ -1,0 +1,45 @@
+#N canvas 1 53 556 321 10;
+#X declare -lib zexy;
+#X declare -lib zexy;
+#X declare -lib zexy;
+#X obj 16 105 cnv 15 60 60 empty empty empty 20 12 0 14 -258699 -66577
+0;
+#X floatatom 22 30 5 0 0 0 - - -;
+#X floatatom 22 220 5 0 0 0 - - -;
+#X text 112 93 Calculates the median of the last n numbers in a stream
+of numbers.;
+#X text 349 254 )c( Alexandre Quessy 2006;
+#X obj 414 225 zexy;
+#X text 348 225 Requires;
+#N canvas 0 0 342 294 more 0;
+#X obj 90 103 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 267 103 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X text 71 66 Play with the left one.;
+#X obj 127 139 median_n 25;
+#X connect 0 0 3 0;
+#X connect 3 0 1 0;
+#X restore 117 172 pd more examples;
+#X obj 498 225 expr;
+#X text 460 225 and;
+#X text 352 268 Release under the GPL v2;
+#X obj 22 115 median_n 6;
+#X text 108 55 [median_n <sample set size>];
+#X text 112 119 Useful for discarding irrealistic values received from
+electronic sensors.;
+#X text 119 268 See also;
+#X obj 187 266 median;
+#N canvas 498 307 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X text 12 45 DESCRIPTION calculate the median of the last n numbers
+in a stream of numbers;
+#X text 12 75 INLET_0 float;
+#X restore 502 294 pd META;
+#X connect 1 0 11 0;
+#X connect 11 0 2 0;

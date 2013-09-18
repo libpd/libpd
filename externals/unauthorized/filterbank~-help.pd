@@ -1,0 +1,199 @@
+#N canvas 122 3 868 640 10;
+#X text 387 606 bugs and comments @ ydegoyon@free.fr [-_-];
+#X text 256 524 (invoke with <right mouse>Properties );
+#X text 256 506 You can set the following properties :;
+#X text 321 108 Constructor : filterbank~ <lower freq> <higher freq>
+<nbfilters> | filterbank~;
+#X text 264 543 * Lower Frequency : lower frequency of all filters
+;
+#X text 264 556 * Higher Frequency : higher frequency of all filters
+;
+#X text 321 77 filterbank~ outputs the frequency response against a
+set of band-pass filters;
+#X obj 127 279 filterbank~ 0 2000 30;
+#X text 387 588 part of unauthorized PD ( http://ydegoyon.free.fr )
+;
+#X msg 31 20 bang;
+#X obj 31 41 openpanel;
+#X obj 31 62 t s b;
+#X obj 77 62 float \$0;
+#X text 31 1 Step 1 : Load a sound file;
+#X obj 31 83 route float;
+#X msg 336 250 bang;
+#X obj 32 179 soundfiler;
+#X obj 125 250 tabplay~ \$0-filterbank-sample;
+#X obj 31 104 makefilename %d-filterbank-sample;
+#X obj 32 137 pack s s;
+#X msg 32 158 read -resize \$1 \$2;
+#X obj 72 599 table \$0-filterbank-sample;
+#X text 321 139 Example : filterbank~ 0 3000 30;
+#X obj 86 330 env~;
+#X obj 122 307 env~;
+#X obj 121 329 env~;
+#X obj 87 306 env~;
+#X obj 101 359 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 113 359 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 125 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 138 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 91 250 dac~;
+#X obj 156 331 env~;
+#X obj 191 307 env~;
+#X obj 191 330 env~;
+#X obj 158 307 env~;
+#X obj 171 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 183 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 195 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 208 361 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 227 331 env~;
+#X obj 262 307 env~;
+#X obj 262 330 env~;
+#X obj 228 307 env~;
+#X obj 242 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 254 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 266 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 279 361 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 297 331 env~;
+#X obj 332 307 env~;
+#X obj 332 330 env~;
+#X obj 298 307 env~;
+#X obj 312 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 324 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 336 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 349 361 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 367 331 env~;
+#X obj 403 308 env~;
+#X obj 402 330 env~;
+#X obj 368 307 env~;
+#X obj 382 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 394 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 406 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 419 361 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 438 330 env~;
+#X obj 473 306 env~;
+#X obj 473 329 env~;
+#X obj 439 306 env~;
+#X obj 453 359 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 465 359 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 477 359 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 490 360 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 513 328 env~;
+#X obj 548 304 env~;
+#X obj 548 327 env~;
+#X obj 514 304 env~;
+#X obj 528 357 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 540 357 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 552 357 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 565 358 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 580 328 env~;
+#X obj 581 304 env~;
+#X obj 595 357 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 607 357 vsl 8 128 0 127 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X text 203 228 Step 2 : See the filterbank~ output;
+#X text 451 252 Step 3 : shift all the outputs randomly;
+#X msg 458 274 randomize 1;
+#X msg 547 274 randomize 0;
+#X connect 7 0 26 0;
+#X connect 7 1 23 0;
+#X connect 7 2 24 0;
+#X connect 7 3 25 0;
+#X connect 7 4 35 0;
+#X connect 7 5 32 0;
+#X connect 7 6 33 0;
+#X connect 7 7 34 0;
+#X connect 7 8 43 0;
+#X connect 7 9 40 0;
+#X connect 7 10 41 0;
+#X connect 7 11 42 0;
+#X connect 7 12 51 0;
+#X connect 7 13 48 0;
+#X connect 7 14 49 0;
+#X connect 7 15 50 0;
+#X connect 7 16 59 0;
+#X connect 7 17 56 0;
+#X connect 7 18 57 0;
+#X connect 7 18 58 0;
+#X connect 7 20 67 0;
+#X connect 7 21 64 0;
+#X connect 7 22 65 0;
+#X connect 7 23 66 0;
+#X connect 7 24 75 0;
+#X connect 7 25 72 0;
+#X connect 7 26 73 0;
+#X connect 7 27 74 0;
+#X connect 7 28 81 0;
+#X connect 7 29 80 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 19 0;
+#X connect 11 1 12 0;
+#X connect 12 0 14 0;
+#X connect 14 0 18 0;
+#X connect 15 0 17 0;
+#X connect 17 0 31 0;
+#X connect 17 0 7 0;
+#X connect 17 0 31 1;
+#X connect 18 0 19 1;
+#X connect 19 0 20 0;
+#X connect 20 0 16 0;
+#X connect 23 0 28 0;
+#X connect 24 0 29 0;
+#X connect 25 0 30 0;
+#X connect 26 0 27 0;
+#X connect 32 0 37 0;
+#X connect 33 0 38 0;
+#X connect 34 0 39 0;
+#X connect 35 0 36 0;
+#X connect 40 0 45 0;
+#X connect 41 0 46 0;
+#X connect 42 0 47 0;
+#X connect 43 0 44 0;
+#X connect 48 0 53 0;
+#X connect 49 0 54 0;
+#X connect 50 0 55 0;
+#X connect 51 0 52 0;
+#X connect 56 0 61 0;
+#X connect 57 0 62 0;
+#X connect 58 0 63 0;
+#X connect 59 0 60 0;
+#X connect 64 0 69 0;
+#X connect 65 0 70 0;
+#X connect 66 0 71 0;
+#X connect 67 0 68 0;
+#X connect 72 0 77 0;
+#X connect 73 0 78 0;
+#X connect 74 0 79 0;
+#X connect 75 0 76 0;
+#X connect 80 0 83 0;
+#X connect 81 0 82 0;
+#X connect 86 0 7 0;
+#X connect 87 0 7 0;

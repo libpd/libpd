@@ -1,0 +1,67 @@
+#N canvas 1 53 561 517 10;
+#X declare -lib windowing;
+#X obj 4 479 cnv 15 550 20 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 4 -17 cnv 15 550 40 empty \$0-pddp.cnv.header blackman~ 3 12
+0 18 -204280 -1 0;
+#X obj 3 239 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#X obj 3 299 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlet 8 12 0 13
+-228856 -1 0;
+#X obj 3 359 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#X obj 72 259 cnv 17 3 30 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 168 40 formula:;
+#X obj 97 86 hsl 71 15 -1 1 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 7000 1;
+#X msg 94 66 1;
+#X obj 94 46 loadbang;
+#X obj 102 365 pddp/pddplink http://en.wikipedia.org/wiki/Window_function
+-text wikipedia: window functions;
+#X obj 438 -14 import windowing;
+#X msg 36 154 \; pd dsp 1;
+#X text 21 85 height --->;
+#X text 15 6 description: generates a blackman window for each dsp
+block;
+#X obj 127 109 sig~ 1;
+#X obj 127 132 blackman~;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-blackman 64 float 0;
+#X coords 0 1 63 -1 200 140 1;
+#X restore 326 65 graph;
+#X text 168 70 0.8*cos(2*pi*x);
+#X text 168 55 0.42+(0.5*cos(pi*x))+;
+#X obj 102 380 pddp/pddplink http://mathworld.wolfram.com/BlackmanFunction.html
+-text mathworld link;
+#X obj 435 6 pddp/pddplink http://wiki.puredata.info/en/blackman~ -text
+pdpedia: blackman~;
+#X text 102 394 Windowing functions are used with FFTs. These transform
+the signal block-by-block into a spectral representation whose resolution
+in both the frequency and time domains are proportional to their size
+(as a power-of-two in PD). The different windows have different characteristics
+in terms of stopband attenuation and noise bandwidth.;
+#X obj 127 158 tabsend~ \$0-blackman;
+#X obj 73 319 cnv 17 3 30 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 102 259 signal;
+#X text 102 318 signal;
+#X text 152 259 - the height (amplitude) of the window is controlled
+by the signal on its inlet.;
+#X text 152 318 - a blackman window with size=dsp blocksize;
+#N canvas 308 206 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS signal;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 AUTHOR Joe Sarlo;
+#X text 12 45 DESCRIPTION generate a blackman window for each dsp block
+;
+#X restore 505 480 pd META;
+#X connect 7 0 15 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 15 0 16 0;
+#X connect 16 0 23 0;

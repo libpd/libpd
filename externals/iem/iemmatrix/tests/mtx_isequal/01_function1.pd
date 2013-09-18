@@ -1,0 +1,17 @@
+#N canvas 386 139 508 466 10;
+#X obj 122 68 inlet bang;
+#X obj 122 385 outlet 1==OK;
+#X msg 122 366 1;
+#X obj 122 161 mtx_isequal;
+#X obj 122 347 select 1;
+#X text 67 37 test whether [mtx_isequal] correctly detects the equality
+of 2 matrices;
+#X obj 122 139 t a a a;
+#X obj 122 112 mtx_rand 4;
+#X connect 0 0 7 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 6 0 3 0;
+#X connect 6 1 3 1;
+#X connect 7 0 6 0;

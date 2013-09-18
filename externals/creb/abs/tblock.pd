@@ -1,0 +1,26 @@
+#N canvas 506 229 617 246 10;
+#X obj 36 36 inlet;
+#X obj 101 35 inlet;
+#X obj 42 196 outlet;
+#X obj 144 99 samplerate~;
+#X obj 59 158 +;
+#X text 222 78 right inlet is also "active";
+#X text 222 133 for spectral domain processing;
+#X text 222 34 tblock: compute block relative time delays;
+#X text 223 48 out = left + right * (blocksize / sys_samplerate);
+#X obj 104 115 /;
+#X obj 101 92 * \$1;
+#X obj 103 59 t b f b;
+#X text 223 118 main usage is to compute block synchronous time delays
+;
+#X obj 95 141 * 1000;
+#X connect 0 0 4 0;
+#X connect 1 0 11 0;
+#X connect 3 0 9 1;
+#X connect 4 0 2 0;
+#X connect 9 0 13 0;
+#X connect 10 0 9 0;
+#X connect 11 0 4 0;
+#X connect 11 1 10 0;
+#X connect 11 2 3 0;
+#X connect 13 0 4 1;

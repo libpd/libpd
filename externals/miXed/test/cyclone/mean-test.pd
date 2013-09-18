@@ -1,0 +1,16 @@
+#N canvas 368 260 327 204 12;
+#X obj 84 84 mean;
+#X msg 141 34 1 2 3 4;
+#X msg 233 34 99;
+#X floatatom 84 123 5 0 0;
+#X floatatom 156 123 5 0 0;
+#X msg 21 34 clear;
+#X msg 84 34 bang;
+#X floatatom 233 64 5 0 0;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;

@@ -1,0 +1,28 @@
+#N canvas 111 51 545 429 10;
+#X text 137 42 This object sould be used for testing the masse position.
+;
+#X text 137 59 It receive masse position \, and output 0/1 according
+to the position of the masse (1 if the mass is in the square);
+#X text 296 15 test cube;
+#X text 190 241 minimum and maximum position of the interactor.;
+#X text 77 112 message to change parametter / default value / creation
+arg number / description;
+#X msg 83 156 setXmin -1;
+#X msg 83 178 setXmax 1;
+#X msg 83 200 setYmin -1;
+#X msg 83 223 setYmax 1;
+#X floatatom 15 360 5 0 0 0 - - -;
+#X text 175 362 0/1 according to the position of the masse;
+#X text 194 284 position of the tested mass;
+#X obj 15 326 tSquare2D;
+#X text 186 157 1 : X minimum;
+#X text 186 178 2 : X maximum;
+#X text 186 200 3 : Y minimum;
+#X text 185 222 4 : Y maximum;
+#X msg 86 284 position2D 0 0 0;
+#X connect 5 0 12 0;
+#X connect 6 0 12 0;
+#X connect 7 0 12 0;
+#X connect 8 0 12 0;
+#X connect 12 0 9 0;
+#X connect 17 0 12 0;

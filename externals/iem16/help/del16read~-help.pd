@@ -1,0 +1,41 @@
+#N canvas 24 20 800 531 12;
+#X text 372 274 1st argument: name of delay line;
+#X floatatom 116 253 0 0 0 0 - - -;
+#X text 151 255 float input (delay time in ms);
+#X text 127 310 signal output (delayed signal);
+#X floatatom 383 177 0 0 0 0 - - -;
+#X obj 116 375 snapshot~;
+#X floatatom 116 399 0 0 0 0 - - -;
+#X obj 24 246 loadbang;
+#X obj 24 313 metro 200;
+#X msg 32 273 \; pd dsp 1;
+#X text 424 176 input to delay line;
+#X obj 383 201 sig~;
+#X text 372 290 2nd argument: (initial) delay time in ms;
+#X text 36 443 see also:;
+#X obj 383 226 del16write~ del_example 1000;
+#X obj 24 16 del16read~;
+#X obj 126 444 del16write~;
+#X obj 239 444 vd16~;
+#X text 133 14 - read a 16bit signal from a 16bit-delay line;
+#X obj 368 52 delread~;
+#X text 21 52 This is very similar to the pd-object;
+#X text 49 82 It uses only 16bit to store the samples \, which will
+need only half of the memory of pd's floatingpoint-based object.;
+#X text 50 120 However \, there are 2 drawbacks: there will be some
+additional noise (because floats are more precise than 16bit) \, and
+you cannot have values>1 stored in the delay-line;
+#X text 38 490 similar pd-objects:;
+#X obj 223 489 delread~;
+#X obj 307 489 delwrite~;
+#X obj 400 489 vd~;
+#X text 433 443 updated for iem16 version1.0;
+#X obj 116 286 del16read~ del_example 1000;
+#X connect 1 0 28 0;
+#X connect 4 0 11 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 7 0 9 0;
+#X connect 8 0 5 0;
+#X connect 11 0 14 0;
+#X connect 28 0 5 0;

@@ -1,0 +1,104 @@
+#N canvas 419 114 799 646 10;
+#X obj 450 429 pdp_glx;
+#X obj 545 76 pdp_control;
+#X msg 545 48 thread \$1;
+#X obj 545 24 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 134 40 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 471 397 size 640 480;
+#X obj 239 393 +;
+#X obj 190 432 vsl 15 128 1 0 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 190 393 -;
+#X obj 59 386 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 59 401 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 59 416 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 205 432 vsl 15 128 1 0 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 220 432 vsl 15 128 1 0 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 190 366 unpack f f;
+#X obj 62 317 unpack f f;
+#X obj 68 360 +;
+#X obj 45 360 -;
+#X obj 151 264 pack f f;
+#X obj 215 265 pack f f;
+#X msg 295 77 dim 320 240;
+#X obj 134 72 metro 40;
+#X msg 294 54 dim 640 480;
+#X obj 134 100 pdp_v4l;
+#X obj 450 366 pdp_zoom;
+#X floatatom 450 308 5 0 0;
+#X msg 553 311 centerx \$1;
+#X floatatom 553 289 5 0 0;
+#X floatatom 636 292 5 0 0;
+#X msg 635 310 centery \$1;
+#X obj 511 197 unpack f f f f;
+#X obj 450 287 min;
+#X obj 446 252 expr .5/($f1+.02);
+#X obj 572 252 expr .5/($f1+.02);
+#X msg 450 339 zoomx \$1 \, zoomy \$1;
+#X msg 295 8 open /dev/video0;
+#X msg 295 30 open /dev/video1;
+#X obj 309 244 pack f f f f;
+#X obj 134 156 pdp_diff;
+#X text 208 156 <- compute difference between current and previous
+frame;
+#X obj 134 226 pdp_cog_abs_thresh 0.15;
+#X text 331 492 using the blob tracker on a difference signal to detect
+motion;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 21 0;
+#X connect 5 0 0 0;
+#X connect 6 0 13 0;
+#X connect 8 0 7 0;
+#X connect 14 0 12 0;
+#X connect 14 0 8 0;
+#X connect 14 0 6 0;
+#X connect 14 1 8 1;
+#X connect 14 1 6 1;
+#X connect 15 0 17 0;
+#X connect 15 0 16 0;
+#X connect 15 0 10 0;
+#X connect 15 1 16 1;
+#X connect 15 1 17 1;
+#X connect 16 0 11 0;
+#X connect 17 0 9 0;
+#X connect 18 0 15 0;
+#X connect 19 0 14 0;
+#X connect 20 0 23 0;
+#X connect 21 0 23 0;
+#X connect 22 0 23 0;
+#X connect 23 0 38 0;
+#X connect 24 0 0 0;
+#X connect 25 0 34 0;
+#X connect 26 0 24 0;
+#X connect 27 0 26 0;
+#X connect 28 0 29 0;
+#X connect 29 0 24 0;
+#X connect 30 0 27 0;
+#X connect 30 1 32 0;
+#X connect 30 2 28 0;
+#X connect 30 3 33 0;
+#X connect 31 0 25 0;
+#X connect 32 0 31 0;
+#X connect 33 0 31 1;
+#X connect 34 0 24 0;
+#X connect 35 0 23 0;
+#X connect 36 0 23 0;
+#X connect 37 0 30 0;
+#X connect 38 0 24 0;
+#X connect 38 0 40 0;
+#X connect 40 1 18 0;
+#X connect 40 1 37 0;
+#X connect 40 2 19 0;
+#X connect 40 2 37 2;
+#X connect 40 3 18 1;
+#X connect 40 3 37 1;
+#X connect 40 4 19 1;
+#X connect 40 4 37 3;

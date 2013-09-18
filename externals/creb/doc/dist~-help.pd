@@ -1,0 +1,28 @@
+#N canvas 3 4 450 300 10;
+#X text 156 35 dist~ waveshaper;
+#X text 154 53 creation argument: type (see dist.c);
+#X floatatom 136 120 5 0 0 0 - - -;
+#X obj 64 121 osc~;
+#X obj 66 206 dac~;
+#X floatatom 63 84 5 0 0 0 - - -;
+#X text 189 119 right inlet: pre gain;
+#X obj 148 95 hsl 128 15 0.5 20 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 64 157 dist~ 1;
+#N canvas 379 254 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION waveshaper;
+#X text 12 85 INLET_1 float;
+#X text 12 65 INLET_0 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 400 279 pd META;
+#X connect 2 0 8 1;
+#X connect 3 0 8 0;
+#X connect 5 0 3 0;
+#X connect 7 0 2 0;
+#X connect 8 0 4 0;
+#X connect 8 0 4 1;

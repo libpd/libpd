@@ -1,0 +1,50 @@
+current: all
+
+.SUFFIXES: .d_ppc
+
+PD_INSTALL_PATH = "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+CFLAGS =-DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
+        -Wno-unused -Wno-parentheses -Wno-switch
+
+LFLAGS = -bundle -undefined suppress -flat_namespace
+
+# the sources
+
+SRC = bin_ambi_calc_HRTF.c \
+	bin_ambi_reduced_decode2.c \
+	bin_ambi_reduced_decode.c \
+	bin_ambi_reduced_decode_fft2.c \
+	bin_ambi_reduced_decode_fft.c \
+	bin_ambi_reduced_decode_fir2.c \
+	bin_ambi_reduced_decode_fir.c \
+	iem_bin_ambi.c
+
+TARGET = iem_bin_ambi.d_ppc
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) $(LFLAGS) -o $(TARGET) *.o
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

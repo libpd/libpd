@@ -1,0 +1,78 @@
+#N canvas 1 53 556 485 10;
+#X obj 63 213 loadbang;
+#X msg 123 213 set a;
+#X msg 165 214 set b;
+#X msg 208 214 set;
+#X obj 270 214 loadbang;
+#X msg 330 214 set a;
+#X msg 373 216 set b;
+#X msg 415 216 set;
+#X msg 270 305 1;
+#X msg 345 305 0;
+#X msg 63 305 1;
+#X msg 138 305 0;
+#X obj 63 279 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 138 279 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 270 279 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 345 277 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 63 250 tof/onlyone a;
+#X obj 270 250 tof/onlyone b;
+#X obj 39 33 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 44 84 author: mrtoftrash@gmail.com;
+#X text 44 64 tags: initialization control;
+#X text 44 105 version: 2009-10-24;
+#X text 44 33 description: makes sure it is the first or only [onlyone]
+to use that name.;
+#X text 77 399 Outlet 1: bangs if it is the first or only one to use
+that name.;
+#X text 78 431 Outlet 2: bangs if it not the the first and not the
+only one to use that name.;
+#X obj 63 367 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 63 339 metro 500;
+#X obj 270 339 metro 500;
+#X obj 270 367 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 62 171 If both [onlyone] have the same name \, only one metro
+will be active.;
+#N canvas 152 214 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 55 LICENSE GPL v2;
+#X text 12 135 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION make sure it is the first or only [onlyone]
+to use that name.;
+#X text 12 5 KEYWORDS control nonlocal;
+#X text 12 75 INLET_0 bang set;
+#X text 12 95 OUTLET_0 bang;
+#X text 12 115 OUTLET_1 bang;
+#X restore 479 432 pd META;
+#X text 62 139 Try to "set" the name of each [onlyone] to the same
+name and then to different names.;
+#X connect 0 0 16 0;
+#X connect 1 0 16 0;
+#X connect 2 0 16 0;
+#X connect 3 0 16 0;
+#X connect 4 0 17 0;
+#X connect 5 0 17 0;
+#X connect 6 0 17 0;
+#X connect 7 0 17 0;
+#X connect 8 0 27 0;
+#X connect 9 0 27 0;
+#X connect 10 0 26 0;
+#X connect 11 0 26 0;
+#X connect 12 0 10 0;
+#X connect 13 0 11 0;
+#X connect 14 0 8 0;
+#X connect 15 0 9 0;
+#X connect 16 0 12 0;
+#X connect 16 1 13 0;
+#X connect 17 0 14 0;
+#X connect 17 1 15 0;
+#X connect 26 0 25 0;
+#X connect 27 0 28 0;

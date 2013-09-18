@@ -1,0 +1,37 @@
+#N canvas 57 13 531 504 10;
+#X msg 40 145 bang;
+#X symbolatom 29 73 10 0 0 0 - - -;
+#X obj 29 184 canvasname-abs;
+#X obj 21 14 canvasname;
+#X msg 29 265 bang;
+#X symbolatom 67 310 10 0 0 0 - - -;
+#X text 90 14 query and modify the name of a canvas;
+#X obj 29 217 print canvasname;
+#X text 99 69 change the name of the canvas initially named 'canvasname-abs'.
+When the patch is saved \, the new name for the canvas is saved with
+the patch. This is a good way to break patches!;
+#N canvas 146 26 145 217 subpatch 0;
+#X obj 28 25 inlet;
+#X obj 28 85 canvasname;
+#X obj 28 169 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 29 338 pd subpatch;
+#X text 74 261 This even works for subpatches \, though only the 'pd'
+part can be modifed. This way you can have subpatches whose names start
+with something different than 'pd'.;
+#X text 140 310 1 change the name;
+#X text 140 328 2 save a copy of this patch;
+#X text 140 347 3 reopen the copy to inspect the modification;
+#X text 30 415 NOTE:;
+#X text 76 145 <- get the current canvas name;
+#X text 30 432 According to the sources of [canvasname] \, it is supposed
+to enable an abstraction to change its own arguments. This feature
+is not documented here \, since it does not seem to work.;
+#X obj 29 364 print pd-subpatch;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 4 0 9 0;
+#X connect 5 0 9 0;
+#X connect 9 0 17 0;

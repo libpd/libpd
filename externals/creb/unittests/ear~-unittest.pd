@@ -1,0 +1,18 @@
+#N canvas 0 22 792 504 10;
+#X obj 65 212 testtools/unit-test-frame~;
+#X msg 386 60 start;
+#X obj 65 151 loadbang;
+#X obj 450 57 loadbang;
+#X obj 386 141 creb/ear~ 0 0;
+#X msg 65 179 ear~ 0;
+#X msg 461 96 1;
+#X msg 423 96 16;
+#X connect 0 2 1 0;
+#X connect 1 0 4 0;
+#X connect 2 0 5 0;
+#X connect 3 0 7 0;
+#X connect 3 0 6 0;
+#X connect 4 0 0 1;
+#X connect 5 0 0 0;
+#X connect 6 0 4 2;
+#X connect 7 0 4 1;

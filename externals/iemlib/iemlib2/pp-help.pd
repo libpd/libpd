@@ -1,0 +1,75 @@
+#N canvas 0 26 496 493 10;
+#X obj 117 376 print;
+#X msg 117 61 1;
+#X obj 238 41 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 117 40 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 117 149 11 22;
+#X msg 238 150 33 44;
+#X msg 238 63 3;
+#X msg 117 105 symbol foo;
+#X msg 238 107 symbol zyx;
+#X msg 117 83 float 1.1;
+#X msg 238 85 float 3.3;
+#X msg 117 127 set;
+#X msg 238 128 open;
+#X msg 117 172 list -55 -66;
+#X msg 238 172 list -77 -88;
+#X msg 238 195 list bbb 987;
+#X msg 117 195 list aaa 123;
+#X msg 117 218 jkl 555 uuu;
+#X msg 238 218 poi 777 ttt;
+#X obj 191 377 route bang float symbol list;
+#X obj 242 395 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 281 395 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 324 395 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 367 395 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 421 395 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 400 376 anything;
+#X text 262 39 bang clears message-buffer;
+#X text 175 319 head of output-message;
+#X text 180 308 initials-arguments:;
+#X text 5 281 tail of output-message;
+#X text 183 287 head of output-message;
+#X text 181 277 <- cold inlet;
+#X obj 117 300 pp set;
+#X text 115 448 IEM KUG;
+#X text 99 436 musil;
+#X text 129 436 @;
+#X text 135 436 iem.at;
+#X text 50 425 (c) Thomas Musil 2000 - 2005;
+#X text 98 458 Graz \, Austria;
+#X text 151 8 merge the head-message in front of the tail-message;
+#X text 13 7 pp = iem_prepend;
+#X text 42 273 hot inlet ->;
+#X connect 1 0 32 0;
+#X connect 2 0 32 1;
+#X connect 3 0 32 0;
+#X connect 4 0 32 0;
+#X connect 5 0 32 1;
+#X connect 6 0 32 1;
+#X connect 7 0 32 0;
+#X connect 8 0 32 1;
+#X connect 9 0 32 0;
+#X connect 10 0 32 1;
+#X connect 11 0 32 0;
+#X connect 12 0 32 1;
+#X connect 13 0 32 0;
+#X connect 14 0 32 1;
+#X connect 15 0 32 1;
+#X connect 16 0 32 0;
+#X connect 17 0 32 0;
+#X connect 18 0 32 1;
+#X connect 19 0 20 0;
+#X connect 19 1 21 0;
+#X connect 19 2 22 0;
+#X connect 19 3 23 0;
+#X connect 19 4 24 0;
+#X connect 32 0 0 0;
+#X connect 32 0 19 0;

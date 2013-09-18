@@ -1,0 +1,42 @@
+#N canvas 0 26 394 308 10;
+#X floatatom 22 215 9 0 0 0 - - -;
+#X text 28 155 ~signal_in~;
+#X text 41 44 dsp ON/OFF;
+#X obj 22 65 dsp;
+#X floatatom 22 86 5 0 0 0 - - -;
+#X text 62 88 % cpu;
+#X obj 22 171 unsig~;
+#X obj 22 125 osc~ 0.03;
+#X obj 22 45 tgl 15 1 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X text 14 5 unsig~;
+#X text 75 18 convert signal to float;
+#X floatatom 110 214 9 0 0 0 - - -;
+#X obj 110 153 unsig~ 1000;
+#X text 177 191 (opt. 300 ms);
+#X text 125 178 1.arg: <float> metro-time in ms;
+#X text 78 5 counterpart to sig~;
+#X text 195 268 IEM KUG;
+#X text 179 256 musil;
+#X text 209 256 @;
+#X text 215 256 iem.at;
+#X text 130 245 (c) Thomas Musil 2000 - 2005;
+#X text 178 278 Graz \, Austria;
+#N canvas 352 26 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Thomas Musil;
+#X text 12 45 LICENSE LGPL v2.1;
+#X text 12 5 ALIAS tm;
+#X text 12 65 DESCRIPTION counterpart to sig~ - convert signal to float
+;
+#X text 12 25 KEYWORDS signal conversion;
+#X text 12 85 INLET_0 signal;
+#X text 12 105 OUTLET_0 float;
+#X restore 340 282 pd META;
+#X connect 3 0 4 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;
+#X connect 7 0 12 0;
+#X connect 8 0 3 0;
+#X connect 12 0 11 0;

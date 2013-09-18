@@ -1,0 +1,18 @@
+PD_INCLUDE_DIR = @PD_INCLUDE_DIR@
+LIBNAME = @LIBNAME@
+LIBFLAGS = @LIBFLAGS@
+
+prefix=@prefix@
+CREB_VERSION = 0.9.2.svn15787
+
+DEFS = -DPD -DCREB_VERSION=\"$(CREB_VERSION)\"
+CFLAGS = $(DEFS) -O2 -funroll-loops -fomit-frame-pointer \
+    -Wall -W -Wstrict-prototypes \
+    -Wno-unused -Wno-parentheses -Wno-switch # -Wshadow
+INCLUDE =  -I$(PD_INCLUDE_DIR) -I../include -I../include/dspi
+
+.c.o:
+	$(CC) $(CFLAGS) $(INCLUDE) -o $*.o -c $*.c 
+.cc.o:
+	$(CXX) $(CFLAGS) $(INCLUDE) -o $*.o -c $*.cc
+

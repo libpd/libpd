@@ -1,0 +1,77 @@
+#N canvas 542 122 669 675 10;
+#X obj 23 70 metro 40;
+#X obj 23 40 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 23 517 3dp_mouserotate;
+#X obj 171 520 3dp_light 0;
+#X obj 23 444 3dp_push;
+#X obj 171 492 3dp_view transz 5;
+#X obj 23 112 3dp_windowcontext;
+#X obj 205 311 3dp_snap;
+#X obj 205 213 3dp_draw clear;
+#X obj 23 406 3dp_draw clear;
+#X obj 60 347 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 23 157 3dp_subcontext 64 64;
+#X obj 23 380 spigot;
+#X text 384 210 <- clear it;
+#X text 380 309 <- snap to texture;
+#X obj 205 261 3dp_view rota 1 1 0;
+#X floatatom 333 236 5 0 0;
+#X text 69 10 multipass rendering to texture using a subcontext (subwindow)
+;
+#X text 381 285 <- draw a wireframe sphere;
+#X text 383 235 <- rotate around (1 \, 1 \, 0);
+#X text 135 406 <- clear the window;
+#X obj 205 286 3dp_draw wsphere 3 10 10;
+#X obj 323 429 3dp_draw clear;
+#X obj 323 405 3dp_view reset;
+#X obj 323 507 3dp_draw wdodeca;
+#X obj 323 532 3dp_snap;
+#X obj 22 613 3dp_draw cube 10;
+#X obj 360 348 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 323 381 spigot;
+#X text 381 346 <- enable/disable second pass;
+#X text 87 345 <- enable/disable third pass;
+#X text 443 404 <- reset context;
+#X text 442 427 <- clear context;
+#X text 442 507 <- draw wire dodecahedron;
+#X text 441 532 <- snap to texture;
+#X obj 323 483 3dp_view rota 1 1 0;
+#X floatatom 451 458 5 0 0;
+#X text 501 457 <- rotate around (1 \, 1 \, 0);
+#X obj 23 562 3dp_draw cube 2;
+#X text 204 142 NOTE: the part you use as a subcontext must be visible
+for the texture snap to work.;
+#X text 203 91 use the lower left 64x64 part of the window as a subcontext
+(right outlet) the left outlet is a new full window context reset to
+default.;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 38 0;
+#X connect 4 0 2 0;
+#X connect 4 1 5 0;
+#X connect 5 0 3 0;
+#X connect 6 0 11 0;
+#X connect 6 1 2 1;
+#X connect 7 0 28 0;
+#X connect 7 1 38 1;
+#X connect 8 0 15 0;
+#X connect 9 0 4 0;
+#X connect 10 0 12 1;
+#X connect 11 0 12 0;
+#X connect 11 1 8 0;
+#X connect 12 0 9 0;
+#X connect 15 0 21 0;
+#X connect 16 0 15 4;
+#X connect 21 0 7 0;
+#X connect 22 0 35 0;
+#X connect 23 0 22 0;
+#X connect 24 0 25 0;
+#X connect 25 1 26 1;
+#X connect 27 0 28 1;
+#X connect 28 0 23 0;
+#X connect 35 0 24 0;
+#X connect 36 0 35 4;
+#X connect 38 0 26 0;

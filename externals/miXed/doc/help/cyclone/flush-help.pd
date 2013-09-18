@@ -1,0 +1,45 @@
+#N canvas 0 26 564 390 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 26 359 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 25 363 ___________________________________________________
+;
+#X obj 40 17 flush;
+#X text 96 20 provide note offs for held notes;
+#X obj 95 248 flush;
+#X msg 84 120 clear;
+#X floatatom 95 297 5 0 0 0 - - -;
+#X floatatom 125 276 5 0 0 0 - - -;
+#X text 142 297 pitch;
+#X msg 95 161 64 111;
+#X text 169 275 velocity;
+#X msg 67 80 bang;
+#X text 130 120 clear pitch list;
+#X text 154 161 list is treated as pitch/velocity pair;
+#X floatatom 113 206 5 0 0 0 - - -;
+#X floatatom 125 226 5 0 0 0 - - -;
+#X text 157 205 pitch;
+#X text 169 224 velocity;
+#N canvas 380 180 494 414 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control MIDI storage max_compatible;
+#X text 12 45 DESCRIPTION provide note offs for held notes;
+#X text 12 65 INLET_0 float list bang clear;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 513 368 pd META;
+#X text 107 79 send note off for all pitches for which only a noteon
+was received;
+#X connect 5 0 7 0;
+#X connect 5 1 8 0;
+#X connect 6 0 5 0;
+#X connect 10 0 5 0;
+#X connect 12 0 5 0;
+#X connect 15 0 5 0;
+#X connect 16 0 5 1;

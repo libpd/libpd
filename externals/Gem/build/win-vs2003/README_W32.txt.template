@@ -1,0 +1,22 @@
+this Gem.dll is the Gem-binary for w32
+
+it is optimized for Pentium-Pro, so it should run on quite every machine
+
+this file has been compiled and tested on winXP
+it probably can be used on w2k too, but chances are low that you can run it on older versions of w32.
+
+you might have to install a recent version of DirectX (>9.0)
+if you want to play-back QuickTime-videos, you have to install QuickTime first (current version is 7.2)
+
+
+
+this is an alpha-release: please test it an report back any bugs you encounter
+
+
+
+mfga.sdr
+IOhannes m zmölnig
+
+contact emails:
+zmoelnig <at> iem <tod> at
+gem-dev <at> iem <tod> at

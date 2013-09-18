@@ -1,0 +1,55 @@
+#N canvas 0 31 637 475 10;
+#X obj 84 255 list_sum;
+#X floatatom 101 358 0 0 0 3 length - -;
+#X floatatom 84 391 0 0 0 3 total - -;
+#X msg 150 82 set 2 100;
+#X msg 149 98 set 2 498;
+#X msg 32 106 clear;
+#X msg 149 121 set 5 777;
+#X text 215 81 individual elements can be set;
+#X text 206 286 list_sum;
+#X text 205 327 Edward Kelly 2007;
+#X msg 84 55 all 200.5 498 166.3 81.7 94.4;
+#X text 84 36 all in the left inlet calculates the sum of its elements.
+;
+#X msg 173 145 3;
+#X msg 173 162 9;
+#X msg 211 162 4;
+#X msg 211 179 8;
+#X text 200 144 max length;
+#X text 241 162 wrap value;
+#X obj 300 116 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 331 116 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 206 301 calculate the sum of elements in a list \, wrapping
+the list.;
+#N canvas 239 251 494 344 META 0;
+#X text 12 199 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 179 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 5 KEYWORDS control storage list_op;
+#X text 12 45 DESCRIPTION calculate the sum of elements in a list \,
+wrapping the list;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 79 INLET_0 all set clear;
+#X text 12 99 INLET_1 float;
+#X text 12 119 INLET_2 float;
+#X text 12 139 OUTLET_0 float;
+#X text 12 159 OUTLET_1 float;
+#X restore 577 446 pd META;
+#X connect 0 0 2 0;
+#X connect 0 1 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 10 0 0 0;
+#X connect 12 0 0 1;
+#X connect 13 0 0 1;
+#X connect 14 0 0 2;
+#X connect 15 0 0 2;
+#X connect 18 0 13 0;
+#X connect 18 0 14 0;
+#X connect 19 0 12 0;
+#X connect 19 0 15 0;

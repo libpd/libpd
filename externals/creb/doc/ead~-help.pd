@@ -1,0 +1,52 @@
+#N canvas 0 26 413 265 10;
+#X obj 105 111 ead~ 0 0;
+#X obj 89 179 *~;
+#X obj 105 40 metro;
+#X obj 41 144 osc~;
+#X floatatom 41 112 5 0 0 0 - - -;
+#X floatatom 135 12 5 0 0 0 - - -;
+#X floatatom 130 64 5 0 0 0 - - -;
+#X floatatom 156 86 5 0 0 0 - - -;
+#X obj 78 242 dac~;
+#X text 202 71 60db attack and decay time;
+#X obj 70 76 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 58 12 stop;
+#X text 201 51 exponential attack/decay envelope;
+#X obj 89 212 vol~;
+#X floatatom 117 193 5 0 0 0 - - -;
+#X obj 265 119 table t 5000;
+#X obj 265 176 tabwrite~ t;
+#X obj 265 152 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 105 13 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#N canvas 379 254 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION exponential attack/decay envelope;
+#X text 12 5 KEYWORDS signal ramp;
+#X text 12 85 INLET_1 float;
+#X text 12 65 INLET_0 bang;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 362 242 pd META;
+#X connect 0 0 1 1;
+#X connect 0 0 16 0;
+#X connect 1 0 13 0;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 1;
+#X connect 6 0 0 1;
+#X connect 7 0 0 2;
+#X connect 10 0 0 0;
+#X connect 11 0 2 0;
+#X connect 13 0 8 0;
+#X connect 13 0 8 1;
+#X connect 14 0 13 1;
+#X connect 17 0 16 0;
+#X connect 17 0 0 0;
+#X connect 18 0 2 0;

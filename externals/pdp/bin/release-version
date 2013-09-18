@@ -1,0 +1,1 @@
+cat configure.ac |grep PDP_VERSION= | sed s/PDP_VERSION=// | sed s/-darcs//

@@ -1,0 +1,13 @@
+#N canvas 592 253 450 300 10;
+#X text 28 24 Test for URL loader;
+#X obj 28 56 baseurl http://localhost/pd;
+#X obj 32 140 unknown;
+#X floatatom 32 111 5 0 0 0 - - -;
+#X floatatom 32 171 5 0 0 0 - - -;
+#X obj 135 139 another;
+#X floatatom 135 112 5 0 0 0 - - -;
+#X floatatom 135 171 5 0 0 0 - - -;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;

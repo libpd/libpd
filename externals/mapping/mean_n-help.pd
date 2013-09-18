@@ -1,0 +1,42 @@
+#N canvas 1 53 821 556 10;
+#X obj 68 174 t f f;
+#X floatatom 338 197 5 0 0 0 - - -;
+#X text 333 174 order: n;
+#X text 49 37 Fir_mean_n computes a fir low pass mean filter of order
+n;
+#X obj 499 307 -;
+#X floatatom 68 126 5 0 1 0 - - -;
+#X obj 68 148 resample 30;
+#X obj 68 336 timeroll;
+#X obj 280 336 timeroll;
+#X obj 499 335 timeroll;
+#X obj 280 220 mean_n 25;
+#X msg 280 148 mode \$1;
+#X obj 280 125 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 310 131 mode 1 : slow \, but accurate;
+#X text 310 115 mode 0 (defult) : fast but inanuracy can grow with
+time;
+#N canvas 497 278 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X text 12 45 DESCRIPTION compute a fir low pass mean filter of order
+n;
+#X text 12 65 INLET_0 float mode;
+#X text 12 85 INLET_1 float;
+#X restore 761 521 pd META;
+#X connect 0 0 4 0;
+#X connect 0 0 7 0;
+#X connect 0 1 10 0;
+#X connect 1 0 10 1;
+#X connect 4 0 9 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 10 0 4 1;
+#X connect 10 0 8 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;

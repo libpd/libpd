@@ -1,0 +1,13 @@
+#N canvas 0 22 454 304 10;
+#X text 27 16 hid_one2three;
+#X obj 184 19 inlet;
+#X obj 66 248 outlet;
+#X obj 177 249 outlet;
+#X obj 121 124 hid_one2two \$1;
+#X obj 196 159 hid_one2two \$2;
+#X obj 293 250 outlet;
+#X connect 1 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 1 5 0;
+#X connect 5 0 3 0;
+#X connect 5 1 6 0;

@@ -1,0 +1,29 @@
+#N canvas 406 86 746 629 10;
+#X declare -path ../;
+#X declare -stdpath extra/testtools/;
+#X obj 53 300 unit-test-frame;
+#X obj 26 104 cnv 15 150 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 34 143 1 - reference name;
+#X text 34 162 2 - test delay in ms;
+#X text 33 123 test arguments (list):;
+#X obj 53 197 loadbang;
+#X obj 359 106 cnv 15 150 150 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#X obj 374 200 sqrt;
+#X obj 374 156 / 512;
+#X text 495 278 more info behind the question mark;
+#X text 358 18 Optionally use index 0 - 511 to get a series of outputs
+from the object or system under test.;
+#X text 416 155 normalization;
+#X text 394 112 system under test;
+#X text 358 52 Normalizing the object output is recommendable \, as
+it makes stddev more meaningful.;
+#X msg 53 226 example 0;
+#X obj 28 19 declare -path ../;
+#X obj 28 51 declare -stdpath extra/testtools/;
+#X connect 0 2 8 0;
+#X connect 5 0 14 0;
+#X connect 7 0 0 1;
+#X connect 8 0 7 0;
+#X connect 14 0 0 0;

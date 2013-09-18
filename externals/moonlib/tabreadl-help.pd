@@ -1,0 +1,36 @@
+#N canvas 0 31 650 395 10;
+#X obj 10 11 tabreadl;
+#X text 22 332 (c) Antoine Rousseau 2004;
+#X floatatom 15 173 0 0 0 0 - - -;
+#X floatatom 15 278 0 0 0 0 - - -;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-array 10 float 0;
+#X coords 0 0 10 10 250 200 1;
+#X restore 362 139 graph;
+#X text 60 276 output = array99[index];
+#X text 34 50 click here to initialize;
+#X text 159 236 creation argument;
+#X text 155 254 gives array name;
+#X text 137 204 change array name;
+#X msg 25 204 set \$0-array99;
+#X msg 33 65 resize 10 \, bounds 0 0 10 10 \, xlabel -0.5 0 1 2 3 4
+5 6 7 8 9 10 \, ylabel -1 0 1 2 3 4 5 6 7 8 9 10 \, 0 1 4 2 8 5 6 1
+4 2 8;
+#X obj 34 139 s \$0-array;
+#X text 110 8 - linear interpolating read from a table;
+#X text 46 174 index(float);
+#X obj 15 245 tabreadl \$0-array;
+#N canvas 502 150 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Antoine Rousseau;
+#X text 12 125 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION linear interpolating read from a table;
+#X text 12 5 KEYWORDS control array;
+#X text 12 65 INLET_0 float set;
+#X restore 592 367 pd META;
+#X connect 2 0 15 0;
+#X connect 10 0 15 0;
+#X connect 11 0 12 0;
+#X connect 15 0 3 0;

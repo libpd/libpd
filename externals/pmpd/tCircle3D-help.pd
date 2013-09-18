@@ -1,0 +1,58 @@
+#N canvas 181 15 585 661 10;
+#X text 254 13 Circlular test;
+#X text 97 490 this object is like tPlane3D \, but it's action is limited
+in space (circular).;
+#X text 143 147 1 : X coordonate of the orientation vector of the circle
+;
+#X text 143 173 2 : Y coordonate of the orientation vector of the circle
+;
+#X text 144 198 3 : Z coordonate of the orientation vector of the circle
+;
+#X text 144 226 4 : center circle X;
+#X text 143 252 5 : center circle Y;
+#X text 142 275 6 : center circle Z;
+#X text 140 414 9 : maximum profound of the test;
+#X text 140 45 This object sould be used for testing the masse position.
+;
+#X text 140 62 It receive masse position \, and output 0/1 according
+to the position of the masse (1 if the mass is in the circle);
+#X text 65 101 message to change parametter / default value / creation
+arg number / description;
+#X msg 50 325 setRmin 0;
+#X msg 51 349 setRmax 1;
+#X text 164 304 center of the circle defining the interactor;
+#X text 167 367 minimal and maximal radius of the circle. If the mass
+is outside or inside this circles \, it will not interact with this
+link.;
+#X floatatom 12 619 5 0 0 0 - - -;
+#X text 149 618 0/1 according to the position of the masse;
+#X floatatom 36 597 5 0 0 0 - - -;
+#X floatatom 61 574 5 0 0 0 - - -;
+#X text 147 453 position of the tested mass;
+#X text 148 596 distance of the mass from the center of the circle
+;
+#X text 148 572 speed of the mass regarding the center of the circle
+;
+#X obj 12 541 tCircle3D;
+#X msg 50 149 setVX 0;
+#X msg 50 174 setVY 0;
+#X msg 50 199 setVZ 0;
+#X msg 51 228 setX 0;
+#X msg 51 252 setY 0;
+#X msg 51 277 setZ 0;
+#X msg 48 415 setPmax 10000;
+#X text 138 326 7 : Minimum Radius;
+#X text 139 349 8 : Maximum Radius;
+#X msg 48 454 position3D 0 0 0;
+#X connect 12 0 23 0;
+#X connect 13 0 23 0;
+#X connect 23 0 16 0;
+#X connect 23 1 18 0;
+#X connect 23 2 19 0;
+#X connect 24 0 23 0;
+#X connect 25 0 23 0;
+#X connect 27 0 23 0;
+#X connect 28 0 23 0;
+#X connect 29 0 23 0;
+#X connect 30 0 23 0;
+#X connect 33 0 23 0;

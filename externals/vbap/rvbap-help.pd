@@ -1,0 +1,279 @@
+#N canvas 143 28 813 728 10;
+#X declare -lib hexloader -lib iemmatrix;
+#X obj 98 144 define_loudspeakers 3 -45 0 45 0 0 45 180 45;
+#X msg 32 62 bang;
+#X floatatom 136 276 5 0 0 2 azi - -;
+#X floatatom 180 276 5 0 0 2 ele - -;
+#X floatatom 224 276 5 0 100 2 spread - -;
+#X msg 115 173 bang;
+#X text 428 231 In two dimensions \, only specify the azimuth. (for
+example "define_loudspeakers 2 -45 45 0 180";
+#X text 63 21 VBAP and define_loudspeakers;
+#X text 430 368 The spread-parameter can be used to prevent a situation
+where sound is coming from one speaker only \, which would make speaker
+positions "visible". The range is 0 to 100;
+#X text 231 410 actual location;
+#X obj 115 350 rvbap 0 0;
+#X floatatom 277 277 5 1 20 2 dist - -;
+#X text 131 241 azimuth \, elevation \, spread and distance;
+#X msg 98 119 bang;
+#X text 428 141 1) Use define_loudspeakers to list the speaker positions.
+The example here defines loudspeakers in three dimensions (the first
+parameter). For each speaker \, define its azimuth and elevation. Here
+we have speakers front left and right with no elevation (-45 0 45 0)
+and front and back with 45 degrees of elevation (0 45 180 45). Send
+the data to vbap.;
+#X floatatom 159 381 5 0 0 3 azi - -;
+#X floatatom 203 381 5 0 0 3 ele - -;
+#X floatatom 247 381 5 0 0 3 spread - -;
+#X floatatom 300 382 5 0 0 3 dist - -;
+#X floatatom 277 597 5 0 100 1 dB_after_1sec - -;
+#X obj 114 691 dac~ 1 2 3 4;
+#N canvas 0 22 699 527 sig 0;
+#X obj 58 72 line~;
+#X msg 58 49 0 \, 10000 5;
+#X obj 58 118 cos~;
+#X msg 146 70 1;
+#X obj 146 47 loadbang;
+#X obj 58 95 clip~ 0 0.25;
+#X obj 251 134 line~;
+#X obj 251 157 cos~;
+#X msg 324 54 -0.25 \, 0.25 100;
+#X obj 251 8 loadbang;
+#X msg 251 31 -0.25;
+#X obj 251 203 *~;
+#X obj 58 140 hip~ 5;
+#X msg 324 77 -0.25 \, 0.25 400;
+#X floatatom 324 145 0 0 0 0 - - -;
+#X obj 324 191 osc~ 440;
+#X obj 324 168 mtof;
+#X msg 324 31 -0.25 \, 0.25 20;
+#X obj 251 180 *~ 0.1;
+#X msg 324 100 -0.25 \, 0.25 1000;
+#X msg 324 122 -0.25 \, 0.25 2000;
+#X obj 324 226 *~;
+#X obj 342 252 *~;
+#X msg 324 8 0;
+#X obj 308 257 *~;
+#X obj 58 26 metro 2000;
+#X floatatom 58 4 0 0 0 0 - - -;
+#X text 1 51 impulse;
+#X text 362 7 tone;
+#X obj 59 184 outlet~;
+#X obj 170 6 inlet;
+#X obj 442 18 metro 500;
+#X obj 91 8 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 12 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 18 0;
+#X connect 8 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 6 0;
+#X connect 11 0 12 0;
+#X connect 12 0 29 0;
+#X connect 13 0 6 0;
+#X connect 14 0 16 0;
+#X connect 15 0 11 1;
+#X connect 15 0 21 0;
+#X connect 15 0 21 1;
+#X connect 15 0 22 0;
+#X connect 16 0 15 0;
+#X connect 17 0 6 0;
+#X connect 18 0 11 0;
+#X connect 19 0 6 0;
+#X connect 20 0 6 0;
+#X connect 21 0 22 1;
+#X connect 21 0 11 1;
+#X connect 21 0 24 0;
+#X connect 21 0 24 1;
+#X connect 22 0 11 1;
+#X connect 23 0 6 0;
+#X connect 24 0 11 1;
+#X connect 25 0 1 0;
+#X connect 26 0 25 0;
+#X connect 30 0 31 0;
+#X connect 31 0 8 0;
+#X connect 32 0 25 0;
+#X restore 159 545 pd sig;
+#X obj 159 517 tgl 24 0 empty empty test-sigs 26 7 1 10 -262144 -1
+-1 0 1;
+#X obj 115 488 mtx 8 1;
+#N canvas 352 196 547 360 set-element 0;
+#X obj 70 81 unpack 0 0;
+#X obj 70 104 + 1;
+#X obj 70 137 pack 0 1 0;
+#X obj 70 179 list trim;
+#X obj 70 158 list prepend element;
+#X obj 70 59 inlet;
+#X obj 70 261 outlet;
+#X obj 70 221 t b a;
+#X text 48 33 transforms rvbap-output to be used with [mtx] from iemmatrix
+;
+#X connect 0 0 1 0;
+#X connect 0 1 2 2;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 7 0;
+#X connect 4 0 3 0;
+#X connect 5 0 0 0;
+#X connect 7 0 6 0;
+#X connect 7 1 6 0;
+#X restore 115 464 pd set-element;
+#N canvas 203 642 802 273 peek 0;
+#X floatatom 55 198 10 0 0 0 - - -;
+#X floatatom 134 198 10 0 0 0 - - -;
+#X floatatom 213 198 10 0 0 0 - - -;
+#X floatatom 292 198 10 0 0 0 - - -;
+#X obj 55 74 route 0 1 2 3 4 5 6 7;
+#X floatatom 366 197 10 0 0 0 - - -;
+#X floatatom 445 197 10 0 0 0 - - -;
+#X floatatom 524 197 10 0 0 0 - - -;
+#X floatatom 603 197 10 0 0 0 - - -;
+#X obj 55 49 inlet;
+#X connect 4 0 0 0;
+#X connect 4 1 1 0;
+#X connect 4 2 2 0;
+#X connect 4 3 3 0;
+#X connect 4 4 5 0;
+#X connect 4 5 6 0;
+#X connect 4 6 7 0;
+#X connect 4 7 8 0;
+#X connect 9 0 4 0;
+#X restore 129 438 pd peek;
+#X floatatom 201 567 5 0 0 1 interp - -;
+#X msg 297 622 clear;
+#N canvas 0 22 450 300 tba 0;
+#X obj 143 51 inlet;
+#X obj 96 49 inlet;
+#X obj 191 51 inlet;
+#X obj 238 51 inlet;
+#X obj 173 180 outlet;
+#X obj 61 178 outlet;
+#X obj 221 180 outlet;
+#X obj 268 180 outlet;
+#X obj 126 180 outlet;
+#X obj 96 73 t b a;
+#X obj 143 72 t b a;
+#X obj 191 72 t b a;
+#X obj 238 72 t b a;
+#X connect 0 0 10 0;
+#X connect 1 0 9 0;
+#X connect 2 0 11 0;
+#X connect 3 0 12 0;
+#X connect 9 0 5 0;
+#X connect 9 1 8 0;
+#X connect 10 0 5 0;
+#X connect 10 1 4 0;
+#X connect 11 0 5 0;
+#X connect 11 1 6 0;
+#X connect 12 0 5 0;
+#X connect 12 1 7 0;
+#X restore 136 316 pd tba;
+#X obj 318 262 hsl 64 15 1 20 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#N canvas 0 22 766 594 four-reverbs 0;
+#X obj 67 179 rev1~;
+#X obj 114 179 rev1~;
+#X obj 160 179 rev1~;
+#X obj 210 179 rev1~;
+#X obj 282 55 inlet;
+#X obj 67 54 inlet~;
+#X obj 113 54 inlet~;
+#X obj 160 53 inlet~;
+#X obj 211 53 inlet~;
+#X obj 67 286 outlet~;
+#X obj 114 268 outlet~;
+#X obj 159 246 outlet~;
+#X obj 209 226 outlet~;
+#X obj 339 55 inlet;
+#X obj 339 76 b;
+#X connect 0 0 9 0;
+#X connect 1 0 10 0;
+#X connect 2 0 11 0;
+#X connect 3 0 12 0;
+#X connect 4 0 3 1;
+#X connect 4 0 2 1;
+#X connect 4 0 1 1;
+#X connect 4 0 0 1;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 2 0;
+#X connect 8 0 3 0;
+#X connect 13 0 14 0;
+#X connect 14 0 3 2;
+#X connect 14 0 2 2;
+#X connect 14 0 1 2;
+#X connect 14 0 0 2;
+#X restore 197 644 pd four-reverbs;
+#X text 429 45 rvbap is almost compatible to;
+#X obj 33 82 define_loudspeakers 2 -45 45 0 180;
+#X obj 115 599 mtx_*~ 8 1 20;
+#X text 431 65 Additionally it generates additional commands for controlling
+a reverberated signal and has control to set the radial distance of
+a sound.;
+#X text 430 427 3) rvbap also will generate messages to control the
+amount of reverberated signal to generate. This is meant to be used
+with [matrix~] or [mtx_*~] from the IEMmatrix collection of externals.
+;
+#X text 431 285 2) For rvbap \, give azimuth and elevation and a distance
+(1-inf \, default 1) for the desired location. Bang the first inlet
+and vbap will output gain-factors for each speaker and the actual location
+produced. This can be different from the desired one depending where
+your speakers are.;
+#X text 433 619 See rvbap-demo.pd for a more complex setup.;
+#X text 429 497 To use it \, create a [mtx_*~] object that has double
+the amount of outlets as you have speakers. Send the first half of
+the matrix-signals to the speakers and the second half through a reverbarator
+and add them to the respective speaker outs. The example shows this
+in action for four speakers. Pay attention to the "set-element" subpatch
+which translates the [rvbap] output to set matrix elements correctly.
+;
+#X text 193 439 <= here's the output of [rvbap];
+#X obj 633 7 import hexloader iemmatrix;
+#X obj 610 45 pddp/helplink vbap;
+#X connect 0 0 10 0;
+#X connect 1 0 32 0;
+#X connect 2 0 28 0;
+#X connect 3 0 28 1;
+#X connect 4 0 28 2;
+#X connect 5 0 10 0;
+#X connect 10 0 24 0;
+#X connect 10 0 25 0;
+#X connect 10 1 15 0;
+#X connect 10 2 16 0;
+#X connect 10 3 17 0;
+#X connect 10 4 18 0;
+#X connect 11 0 28 3;
+#X connect 13 0 0 0;
+#X connect 19 0 30 4;
+#X connect 21 0 33 1;
+#X connect 22 0 21 0;
+#X connect 23 0 33 0;
+#X connect 24 0 23 0;
+#X connect 26 0 33 2;
+#X connect 27 0 30 5;
+#X connect 28 0 10 0;
+#X connect 28 1 10 1;
+#X connect 28 2 10 2;
+#X connect 28 3 10 3;
+#X connect 28 4 10 4;
+#X connect 29 0 11 0;
+#X connect 30 0 20 0;
+#X connect 30 1 20 1;
+#X connect 30 2 20 2;
+#X connect 30 3 20 3;
+#X connect 32 0 10 0;
+#X connect 33 0 20 0;
+#X connect 33 1 20 1;
+#X connect 33 2 20 2;
+#X connect 33 3 20 3;
+#X connect 33 4 30 0;
+#X connect 33 5 30 1;
+#X connect 33 6 30 2;
+#X connect 33 7 30 3;

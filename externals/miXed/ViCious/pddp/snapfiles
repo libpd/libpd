@@ -1,0 +1,10 @@
+SNAPFILES = \
+	miXed\bin\pddplink.dll \
+	miXed\bin\pddpboot.tcl \
+	miXed\bin\pddpclient.tcl \
+	miXed\bin\pddpserver.tcl \
+	miXed\ViCious\pddp\makefile \
+	miXed\ViCious\pddp\objects \
+	miXed\ViCious\pddp\snapfiles \
+	miXed\LICENSE.txt \
+	miXed\test\pddp\*.*

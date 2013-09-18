@@ -1,0 +1,54 @@
+Distortion (algorithm 3)
+------------------------
+
+Similar to Distortion (algorithm 1) but uses Hi & Low Pass Filters from
+Filters. Algorithm is HPF -> Distortion -> LPF. There are parameters for
+Hi & Low Pass Filters : hipassfreq & lowpassfreq is the cutoff frequencies,
+and the hipassQ & lowpassQ in the EE kinda definition for bandwidth. The
+larger the Q, the wider the band, and vice versa. The drive controls the
+amount of overdrive. The volume to balance the effect volume with the
+bypassed level. The dry_mix is the volume of input signal & the wet_mix is
+the volume of distorted signal. The feedback sets feedback of distortion.
+
+Controls:
+
+    drive       - distortion drive
+                  (0<= <=5)
+    dry_mix     - dry (unaffected) signal mix
+                  (-5<= <=5)
+    wet_mix     - wet (affected) signal mix
+                  (-5<= <=5)
+    feedback    - feedback
+                  (-1<= <=1)
+    volume      - distortion volume
+                  (0=< <=2)
+    hipassfreq  - cutoff frequency for hi pass filter
+                  (0< <RATE/2)
+    hipassQ     - the EE kinda definition for hi pass filter
+                  (0< <=1)
+    lowpassfreq - cutoff frequency for low pass filter
+                  (0< <RATE/2)
+    lowpassQ    - the EE kinda definition for low pass filter
+                  (0< <=1)
+
+Work formula implemented in this distortion algorithm is
+out[i] = in[i] * dry + sign(in[i] - in[i-1]) * exp(abs(in[i]) * drive) * wet.
+See. Its do next wave:
+    Normal Sin Wave              Wave distorted by algorithm
+                                     *
+                                    * *
+    ****                            * *
+   *    *                           * *  *
+  *      *                         *  * * *
+ *        *                       *   * *  *
+*          *                     *    * *   *
+*          *                     *     *    *
+------------*-------------       ------------*-------------
+             *          *                     *     *    *
+             *          *                     *    * *   *
+              *        *                       *   * *  *
+               *      *                         *  * * *
+                *    *                           * *  *
+                 ****                            * *
+                                                 * *
+                                                  *

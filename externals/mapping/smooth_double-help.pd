@@ -1,0 +1,53 @@
+#N canvas 1 53 710 386 10;
+#X obj 241 157 mapping/timeroll;
+#X obj 20 157 mapping/timeroll;
+#N canvas 0 22 450 300 get 0;
+#X obj 115 19 inlet;
+#X obj 125 250 outlet;
+#X obj 108 100 cyclone/MouseState;
+#X msg 108 73 poll;
+#X obj 160 127 mapping/autoscale;
+#X obj 160 152 mapping/reverse;
+#X msg 144 73 nopoll;
+#X obj 114 44 select 1;
+#X connect 0 0 7 0;
+#X connect 2 2 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X connect 6 0 2 0;
+#X connect 7 0 3 0;
+#X connect 7 1 6 0;
+#X restore 278 72 pd get mouse Y;
+#X obj 278 50 tgl 15 0 empty empty empty 17 7 0 10 -204786 -1 -1 0
+1;
+#X text 22 309 (idea from Fredrik Olofsson);
+#X obj 413 72 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262130
+-1 -1 0 1;
+#X floatatom 425 92 5 0 0 0 - - -;
+#X text 23 14 Double Exponential Smoothing (des);
+#X obj 40 333 pddp/pddplink http://www.itl.nist.gov/div898/handbook/pmc/section4/pmc433.htm
+;
+#X obj 461 157 mapping/timeroll;
+#X obj 339 114 smooth_double;
+#X text 498 132 trend (+-1):;
+#N canvas 468 256 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 125 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction trigonometry;
+#X text 12 45 DESCRIPTION double exponential smoothing (des);
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 145 OUTLET_1 float;
+#X restore 652 356 pd META;
+#X connect 2 0 1 0;
+#X connect 2 0 10 0;
+#X connect 3 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 0 10 1;
+#X connect 10 0 0 0;
+#X connect 10 1 9 0;

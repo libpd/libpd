@@ -1,0 +1,35 @@
+#N canvas 392 517 588 334 10;
+#X declare -lib pdlua;
+#X obj 89 10 import pdlua;
+#X msg 99 130 1 2 3 a b c;
+#X msg 121 152 list twig branch root;
+#X floatatom 77 109 5 0 0 0 - - -;
+#X obj 199 274 print dripped;
+#X symbolatom 36 68 10 0 0 0 - - -;
+#X obj 36 44 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 56 89 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 187 218 alpha;
+#X msg 165 196 list alpha;
+#X msg 143 174 alpha beta gamma 1.234 -2;
+#X text 307 173 <- a message is interpreted as a list;
+#X text 259 152 <- a true list;
+#X text 239 196 <- a list with one element is still a list;
+#X text 229 217 <- a message is taken to be a oone-element list;
+#X text 178 130 <- a list beginning with a float is still a list;
+#X text 137 81 <- any single items are passed through unchanged;
+#X text 375 292 by Martin Peach \, 2012_04_19;
+#X text 196 37 [llist-rdrip] outputs any input as a reverse sequence
+;
+#X obj 199 247 llist-rdrip;
+#X connect 1 0 19 0;
+#X connect 2 0 19 0;
+#X connect 3 0 19 0;
+#X connect 5 0 19 0;
+#X connect 6 0 5 0;
+#X connect 7 0 19 0;
+#X connect 8 0 19 0;
+#X connect 9 0 19 0;
+#X connect 10 0 19 0;
+#X connect 19 0 4 0;

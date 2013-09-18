@@ -1,0 +1,11 @@
+#N canvas 297 485 422 322 10;
+#X obj 31 45 inlet;
+#X obj 31 282 outlet;
+#X text 79 45 input range: 0 to 1;
+#X text 87 282 output range: 0 to 1;
+#X text 9 5 [hid_log];
+#X obj 30 145 rmstodb;
+#X obj 30 175 / 100;
+#X connect 0 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;

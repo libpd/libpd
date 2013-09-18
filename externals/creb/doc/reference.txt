@@ -1,0 +1,82 @@
+abstractions
+
+64k		a beat shuffler using raw 64k/break sample banks
+bdft,bdfts	set decay time (ms/sec) and osc frequency (for bdiag~)
+bhip~		butterworth high pass filter
+blop~		butterworth low pass filter
+bpm		convert bpm to metro time and phasor freq
+cadd~		complex add
+ccmap~		conformal self map of the unit disk
+cconj~		complex conjugate
+cep~/icep~	complex cepstrum and inverse
+cinv~		complex inverse
+cmul~		complex multiplication
+count		modulo counter
+cosc~		complex oscillator
+csub~		complex subtraction
+dsfosc~		(finite) discrete summation formula oscillator
+eadh~		exponential attack decay (with hold == duration)
+eadsrh~		exponential attack decay sustain release (..)
+expmap~		exponential map
+fblock		block relative frequency conversion
+fmod		floating point modulo
+fmop~		fm operator
+frequor~	like phasor, but for block spectra
+idsfosc~	infinite discrete summation formula
+inv		inverse
+lattice3	expand a 3D harmonic lattice vector
+lpfft~		ifft + lowpass (for anti-aliased dynwav)
+pdynwav~	phasor~ + dynwav~
+scale7		arbitrary 7 tone scale
+ti_hihat	hihat gop object
+ti_snare	snare drum gop object
+tblock		block relative time conversion
+ucnorm~		normalize a complex signal to unit norm
+ucmod~		unit circle modulator
+vols~		volume for a stereo signal
+vol~		volume for a mono signal
+
+externs
+
+ffpoly		finite field polynomial
+fwarp		tangent warp frequency
+ratio		multiply by 2^k so result is 1<=r<2 (transposer)		
+
+
+tilde externs
+
+abs~		absolute value
+bdiag~		block diagonal state space system (spectral processor)
+bfft~		reordered fft
+bitsplit~	convert signal to binary vector
+bwin~		several windowing functions and spectral envelopes
+biquadseries~	biquad second order sections (i.e. butterworth)
+bitsplit~	convert a signal to binary representation
+blocknorm~	normalize a (set of) dsp block(s) (i.e. for spectral processing)
+blosc~		several bandlimited oscillators
+cheby~		chebyshev polynomial waveshaper
+clog~		complex log
+diag~		diagonal state space system (spectral processor)
+dist~		several distortions & waveshaping functions
+dwt~		discrete wavelet transform
+idwt~		inverse
+dynwav~		dynamic wavetable: use a signal block as wavetable
+ead~		exp. attack decay
+eadsr~		exp. attack decay sustain release
+ear~		exp. attack release
+filterortho~	several biquad filters, orthogonal implementation
+fdn~		a feedback delay network
+junction~	a circulant lossless signal junction
+lattice~	lattice filter
+matrix~		multiply a signal block with an arbitrary matrix
+permut~		random permute a signal block
+qmult~		multiply 2 quaternion signals
+qnorm~		normalize a quaternion signal (or any 4 channel sig)
+ramp~		generates an integer ramp
+resofilt~	a reso filter (4pole, 3pole)
+sbosc~		smallband oscillator (i.e. for formant synthesis)
+statwav~	a tabread4~ clone with 8 point interpolation
+scrollgrid1D~	a stabilized scroll grid chaotic oscillator
+tabreadmix~	a tabread~ clone with overlap add (for smooth time stretch)
+xfm~		coupled frequency modulation
+

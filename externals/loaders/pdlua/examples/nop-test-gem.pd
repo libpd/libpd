@@ -1,0 +1,16 @@
+#N canvas 243 69 450 300 10;
+#X declare -lib Gem;
+#X obj 73 129 nop;
+#X obj 73 76 gemhead;
+#X obj 73 194 cube;
+#X obj 202 194 gemwin;
+#X obj 202 109 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 247 111 create;
+#X msg 249 150 destroy;
+#X obj 188 45 import Gem;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 0;

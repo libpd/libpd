@@ -1,0 +1,39 @@
+#N canvas 59 33 741 466 10;
+#X text 21 207 signal input x(n);
+#X text 127 21 4-point-interpolating table lookup;
+#X obj 11 316 snapshot~;
+#X obj 30 290 metro 200;
+#X obj 11 124 sig~;
+#X floatatom 11 98 0 0 0 0 - - -;
+#X obj 30 264 r readout;
+#X floatatom 11 342 0 0 0 0 - - -;
+#X text 49 94 incoming signal is index. Indices should range from 1
+to (size-2) so that the 4-point interpolation is meaningful. You can
+shift-drag the number box to see the effect of interpolation.;
+#X msg 34 158 set array99;
+#X text 116 158 "set" message permits you to switch between arrays
+;
+#X text 149 228 creation argument initializes array name;
+#X obj 10 228 tab16read4~ array99;
+#X obj 460 301 table16 array99;
+#X text 395 400 updated for iem16 version1.0;
+#X obj 11 395 tab16write~;
+#X obj 11 414 tab16read4~;
+#X obj 95 414 tab16read;
+#X obj 95 395 tab16write;
+#X obj 172 395 tab16send~;
+#X obj 172 414 tab16receive~;
+#X obj 334 400 table16;
+#X obj 47 21 tab16read4~;
+#X text 7 51 tab16read4~ is used to build samplers and other table
+lookup algorithms. The interpolation scheme is 4-point polynomial.
+;
+#X text 185 266 since [table16] can only hold 16bit-values \, the stored
+integer values -32768..+32767 are converted to floats -1.0..+1.0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 12 0;
+#X connect 5 0 4 0;
+#X connect 6 0 3 0;
+#X connect 9 0 12 0;
+#X connect 12 0 2 0;

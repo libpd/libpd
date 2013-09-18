@@ -1,0 +1,10 @@
+#N canvas 699 353 450 300 10;
+#X obj 114 51 route bang;
+#X obj 114 29 inlet;
+#X obj 113 173 outlet;
+#X obj 114 106 apple/smc TC0D;
+#X obj 113 139 route TC0D;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;

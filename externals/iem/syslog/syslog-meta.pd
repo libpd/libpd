@@ -1,0 +1,6 @@
+#N canvas 16 106 200 200 10;
+#N canvas 26 50 420 300 META 0;
+#X text 10 10 VERSION 0.1;
+#X text 10 25 AUTHOR zmoelnig@iem.at;
+#X text 13 41 NAME syslog;
+#X restore 10 10 pd META;

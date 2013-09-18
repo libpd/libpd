@@ -1,0 +1,107 @@
+0.1 First compilation, changed object names to include "~"
+
+0.2 Added basic fof~ object
+
+0.3 added Windows nt support (no sfread yet)
+
+0.4 added the format message to streamout~ (will be autodetected by streamin~).
+    improved fof~ (offset bug, signal frequency)
+    added adsr~ object.
+
+0.5 fixed deadlock bug in streamin~ - streamout~
+    added 8bit format, fixed makefile flags for alpha (-mieee)
+    added host message and default arguments to streamout~
+
+0.6 added sfwrite object
+    compilation support for Windows
+    added state object (savestate)
+    added slider object
+
+0.7 envgen~ prototype
+    bugfixes in sfread (multichannel, added loop switch)
+    initialization bug in state object, added support for saving with symbols
+    toddle object (was here in 0.6 already) 
+
+
+0.8 state - in order to prevent overwriting of states, the save messages stays only valid 
+    for 2 seconds now.
+    state  - initialization bug
+
+    slider - made slider thicker
+
+    envgen - added freeze message to envgen, fixed bug in duration setting
+             delete points when deleting widget, reorganized durations structure,
+             fixed bug during object instantiation.
+
+
+0.9
+  envgen is a message object now, which sends messages to a line~
+  implemented state for envgen.
+
+0.10 
+  added stk object.
+
+
+0.11 - 0.12
+   fixed bug in ticker (moving when on)
+   added several objects
+     serial (speeks the Micosoft Mouse protocol)
+     rtout  (for sending realtime (raw) midi messages)
+     locals, localr  (sending messages locally)
+     1/x~ , 1/x ... simple shortcuts for the inverse
+     fasor~ ( a phasor which changes it's frequency only on phase 0)
+     sfplay ... from Winfried Ritsch
+     unwonk .. an unpack which sends it's rest through the last outlet
+     atan2~ ... the signal arctan to figure out phase values. This is
+                very slow.
+
+0.14 
+   - slider: now has a width argument, thanks to dieter@rhiz.org
+            fixed the "drawing when hidden" bug.
+
+   - readserial: several updates for the MicroTouch ThruGlass controller
+
+   - log~, exp~, .. just what they say, very bad performers ....
+
+   - envgen memory bug fixed.
+
+   - sfread fixed segfault when open fails during play
+
+0.15 
+   - added different filter objects, which create lists suitable for biquad.
+   - again several other minor bugfixes
+   - first implementation of a dynamic mixer object
+   - added wave header for sfwrite, improved performance          
+
+0.16
+   - renamed ggext to ggee, new compilation scheme which produces single externals
+   - speed improvments for sfread~
+
+0.17
+   - fixed build problem for "make ggext"
+
+0.18 
+0.19 
+   - rewrote selections for envgen.
+   - added (endoffile) bang to sfplay if file is not found
+0.20 
+   - fixed shell external
+0.21
+   - added patch from <jdl@xdv.org> to serialize
+   - fixed pipe exhaustion problem in shell
+
+0.22 
+  - removed the GUI Objects Slider, HSlider, toddle, ticker 
+
+0.23
+  - updated the stk external to use stk 3.2
+
+0.24
+  - moved moog~ to filters, improved stability.
+
+0.25 
+  - big GUI revival with face lifting
+
+0.26
+  - fixed for packaging for Debian
+

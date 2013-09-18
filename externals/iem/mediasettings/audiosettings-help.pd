@@ -1,0 +1,35 @@
+#N canvas 172 173 473 417 10;
+#X obj 48 261 audiosettings;
+#X text 28 20 audiosettings - query and manipulate audio-settings;
+#X msg 98 58 listdrivers;
+#X msg 100 87 listdevices;
+#X msg 105 117 listparams;
+#X text 179 56 get available audio drivers;
+#X text 181 86 get available devices for current driver;
+#X text 183 119 get available parameters for current driver/device
+;
+#X obj 48 283 print info;
+#N canvas 6 50 809 300 set 0;
+#X msg 123 54 driver ALSA;
+#X obj 61 259 outlet;
+#X text 207 55 set driver to "ALSA" (if possible);
+#X msg 130 119 params @samplerate 48000;
+#X text 288 118 set samplerate to 48kHz;
+#X text 432 165 choose (input-device #1) AND (output-device #2) AND
+(samplerate=48kHz);
+#X msg 135 168 params @input 0 2 @output 0 2 @samplerate 48000;
+#X connect 0 0 1 0;
+#X connect 3 0 1 0;
+#X connect 6 0 1 0;
+#X restore 114 181 pd set;
+#X msg 140 227 getdriver;
+#X msg 175 266 bang;
+#X msg 239 230 params @samplerate 48000;
+#X connect 0 0 8 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 0;

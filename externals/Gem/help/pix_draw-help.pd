@@ -1,0 +1,88 @@
+#N canvas 106 178 654 400 10;
+#X text 452 8 GEM object;
+#X obj 8 295 cnv 15 430 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 298 Inlets:;
+#X text 34 331 Outlets:;
+#X obj 8 256 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 255 Arguments:;
+#X obj 7 76 cnv 15 430 170 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 200 cnv 15 80 40 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 266 <none>;
+#X text 56 348 Outlet 1: gemlist;
+#X text 63 312 Inlet 1: gemlist;
+#X obj 451 209 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 50 12 Synopsis: [pix_draw];
+#X text 29 76 Description: draw pixels on the screen;
+#X text 29 94 pix_draw simply draws the pixels on the screen without
+doing any texture mapping. Because it is just blasting pixels \, rotations
+and translations in the Z dimension won't do anything (except maybe
+have the raster point be clicked). See the OpenGL reference manual
+under glDrawPixels for more information).;
+#X obj 16 180 cnv 15 410 30 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X text 19 181 WARNING: On most PCs with graphics accelerators \, pix_draw
+is MUCH SLOWER than [pix_texture]!!;
+#X obj 451 171 translateXYZ;
+#X floatatom 472 149 5 -4 4 0 - - -;
+#X floatatom 519 148 5 -4 4 0 - - -;
+#X floatatom 563 149 5 -4 2 0 - - -;
+#X text 16 216 [pix_draw] is used in the example patches a lot \, just
+because it is one object less (compared to [pix_texture];
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 29 0;
+#X connect 29 0 21 0;
+#X connect 30 0 29 1;
+#X connect 31 0 29 2;
+#X connect 32 0 29 3;

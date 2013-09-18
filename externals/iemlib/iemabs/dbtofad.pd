@@ -1,0 +1,19 @@
+#N canvas 204 221 604 310 10;
+#X obj 91 69 inlet;
+#X obj 91 154 transf_fader;
+#X obj 107 98 loadbang;
+#X obj 91 176 outlet;
+#X msg 107 119 pairs 0 0 40 6 70 24 80 36 88 48 94 60 98 72 102 96
+106 108 107.5 111 109 114 112 117 142 147;
+#X text 13 10 dbtofad;
+#X text 86 11 convert midi-db to fader-scale;
+#X text 176 235 IEM KUG;
+#X text 160 223 musil;
+#X text 190 223 @;
+#X text 196 223 iem.at;
+#X text 111 212 (c) Thomas Musil 2000 - 2005;
+#X text 159 245 Graz \, Austria;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 4 0 1 0;

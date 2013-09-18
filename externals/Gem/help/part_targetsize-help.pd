@@ -1,0 +1,14 @@
+#N canvas 853 285 600 500 10;
+#X msg 199 131 gemList;
+#X text 176 62 GEM object;
+#X msg 299 178 scale;
+#X text 185 27 part_targetsize;
+#X obj 199 225 part_targetsize;
+#X msg 249 175 size;
+#X text 91 336 part_targetsize changes the size of the particles by
+a scale factor every frame. The default size is 1 The scale value defaults
+to 0.05;
+#X obj 198 277 part_targetsize 3 0.01;
+#X connect 0 0 4 0;
+#X connect 2 0 4 2;
+#X connect 5 0 4 1;

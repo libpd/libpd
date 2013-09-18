@@ -1,0 +1,255 @@
+#N canvas 517 121 498 357 12;
+#X text 52 14 physical modeling for pure data using a collection of
+physical ojects.;
+#N canvas 0 0 623 384 read 0;
+#X text 123 207 cyrille.henry@la-kitchen.fr;
+#X text 412 312 ch20031213;
+#X text 30 25 The aim of this collection of objects is to create physical
+behavior with pure data. It's not audio synthesis. But it can be used
+for the creation of parameters that can be used for driving an audio
+or video synthesis.;
+#X text 30 101 Most of the examples use GEM \, to allow visualization
+of the "physical" geometry \, but you don't need it to use this collection.
+;
+#X text 30 161 any comments \, criticism \, suggestions \, help would
+be highly apreciated :;
+#X text 28 240 informations can be find :;
+#X text 122 263 http://drpichon.free.fr/pmpd/;
+#X restore 38 87 pd read me first;
+#N canvas 0 0 663 567 basics 0;
+#X text 34 30 Object in this collection can be mass \, link and interactor
+\, in 1D \, 2D or 3D.;
+#X text 47 69 Masses (mass \, mass2D \, mass3D) are ponctual. They've
+got a weight \, and know their position. They can move when they receive
+a force \, acording to physical rules.;
+#X text 47 126 Link (link \, link2D \, link3D) are the basic interaction
+beetween 2 masses. It is a visco-elastic link. The link object receive
+the position of 2 masses \, compute the force beetween the 2 masses
+and output a force for each mass.;
+#X text 47 202 Interactors are a kind of link \, but influence a group
+of masses at once. They can be used for global interaction. We will
+look further into it later.;
+#X text 32 272 This collection of objects can be interconnected for
+the creation of "physical" structures. Such structures can then move
+\, and distord themselves \, according to forces applied to them.;
+#X text 29 350 The resulting movements are very natural \, due to the
+physical equations used to define the objects.;
+#X restore 38 115 pd basics;
+#N canvas 434 60 645 737 global_description 0;
+#X obj 34 169 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 34 268 print;
+#X obj 34 217 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 57 165 1;
+#X text 58 216 2;
+#X text 36 452 Here is the basic connection beetween 2 masses :;
+#X text 36 529 You can also create things like this :;
+#X text 32 23 For patching simplification \, objects in this collection
+only have "cold" inlets. The computation speed depends on an external
+metronome. This metronome should bang alternatively all links in the
+model and then masses of the model.;
+#X text 33 103 mass and link have a name corresponding to their class
+name. They will receive everything sent to this name.;
+#X text 159 236 clicking on bang 1 or 2 is equivalent;
+#X text 32 304 As you sould send a bang alternatively to links and
+masses \, you sould give diferent names to the links group and masses
+group.;
+#X text 36 361 Masses output their position when you bang them. This
+position depends on the forces applied to the mass.;
+#X text 36 401 Links output a force according to the position of the
+masses when you bang them. This force sould be applied to the same
+mass.;
+#X text 40 626 The masse1 will never receive forces \, so it will never
+move. It is useful for creating a structure attached to a fixed point.
+;
+#X obj 40 558 mass masse1;
+#X obj 90 591 mass masse2;
+#X obj 34 188 s foo1;
+#X obj 34 237 mass2D foo1;
+#X obj 110 489 mass;
+#X obj 160 490 link;
+#X obj 214 492 mass;
+#X obj 40 591 link;
+#X connect 0 0 16 0;
+#X connect 2 0 17 0;
+#X connect 14 0 21 0;
+#X connect 15 0 21 1;
+#X connect 17 0 1 0;
+#X connect 18 0 19 0;
+#X connect 19 0 18 0;
+#X connect 19 1 20 0;
+#X connect 20 0 19 1;
+#X connect 21 1 15 0;
+#X restore 38 144 pd global_description;
+#N canvas 0 0 762 661 test 0;
+#X msg 108 98 1;
+#X msg 74 98 0;
+#X msg 41 98 -1;
+#X msg 141 98 2;
+#X obj 15 16 loadbang;
+#X floatatom 41 169 5 0 0 0 - - -;
+#X msg 106 390 1;
+#X msg 72 390 0;
+#X msg 39 390 -1;
+#X msg 139 390 2;
+#X floatatom 39 461 5 0 0 0 - - -;
+#X floatatom 37 325 5 0 0 0 - - -;
+#X msg 106 508 1;
+#X msg 72 508 0;
+#X msg 39 508 -1;
+#X msg 139 508 2;
+#X floatatom 39 579 5 0 0 0 - - -;
+#X text 247 61 A force to a masse make it to move at a constant speed.
+You can accelerate it or decelerate it using message box. a nul force
+as no effect.;
+#X floatatom 172 267 5 0 0 0 - - -;
+#X msg 104 264 1;
+#X msg 70 264 0;
+#X msg 37 264 -1;
+#X msg 137 264 2;
+#X text 247 405 Viscosity link : the force is proportinal to the deformation
+speed of the link;
+#X text 249 265 Rigidity link : the force is proportional to the elongation
+of the link. (the right inlet is not used \, so the like take is defauld
+value : 0.) Lengh of the link is null.;
+#X text 238 529 Visco-elasic link : the effect is the somme of the
+2 previus link.;
+#X obj 15 69 s foo2;
+#X obj 41 142 mass foo2 10 0 0;
+#X obj 37 298 link foo2 0 0.1 0;
+#X obj 39 434 link foo2 0 0 0.1;
+#X obj 39 552 link foo2 0 0.1 0.1;
+#X obj 15 43 metro 300;
+#X connect 0 0 27 0;
+#X connect 1 0 27 0;
+#X connect 2 0 27 0;
+#X connect 3 0 27 0;
+#X connect 4 0 31 0;
+#X connect 6 0 29 0;
+#X connect 7 0 29 0;
+#X connect 8 0 29 0;
+#X connect 9 0 29 0;
+#X connect 12 0 30 0;
+#X connect 13 0 30 0;
+#X connect 14 0 30 0;
+#X connect 15 0 30 0;
+#X connect 18 0 28 0;
+#X connect 19 0 28 0;
+#X connect 20 0 28 0;
+#X connect 21 0 28 0;
+#X connect 22 0 28 0;
+#X connect 27 0 5 0;
+#X connect 28 0 11 0;
+#X connect 29 0 10 0;
+#X connect 30 0 16 0;
+#X connect 31 0 26 0;
+#X restore 40 265 pd test;
+#N canvas 394 231 879 595 simple_exemple 0;
+#X obj 356 237 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X obj 74 98 hradio 15 1 0 5 empty empty empty 0 -6 0 8 -262144 -1
+-1 0;
+#N canvas 477 25 445 299 preset 0;
+#X msg 36 193 setK 0.05 \, setD 0 \, setD2 30;
+#X msg 55 166 setK 1 \, setD 0 \, setD2 30;
+#X msg 75 138 setK 1 \, setD 0 \, setD2 200;
+#X obj 36 16 inlet;
+#X obj 115 254 outlet;
+#X msg 95 108 setK 300 \, setD 300 \, setD2 5;
+#X obj 36 43 sel 2 1 0 3 4;
+#X msg 115 78 setK 3000 \, setD 1000 \, setD2 5000;
+#X connect 0 0 4 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 0 0;
+#X connect 6 1 1 0;
+#X connect 6 2 2 0;
+#X connect 6 3 5 0;
+#X connect 6 4 7 0;
+#X connect 7 0 4 0;
+#X restore 74 119 pd preset;
+#X obj 336 237 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X text 80 415 the masse is link to the cursor with diferents kinf
+of liaison (see the preset);
+#X text 71 18 comportement of a single masse link to a fixed point
+with a visco elastic link.;
+#X text 173 95 <- diferents comportement of the link;
+#N canvas 0 0 268 186 stuff 0;
+#X obj 13 20 loadbang;
+#X obj 48 97 s \$0-lia;
+#X obj 13 72 t b b;
+#X obj 13 123 s \$0-masse;
+#X obj 13 45 metro 5;
+#X obj 89 20 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 124 92 reset;
+#X msg 89 66 resetL \, resetF;
+#X obj 89 40 t b b;
+#X connect 0 0 4 0;
+#X connect 2 0 3 0;
+#X connect 2 1 1 0;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 6 0 3 0;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 8 1 6 0;
+#X restore 75 65 pd stuff;
+#X text 98 346 click or move the slider ->;
+#X text 396 346 look at the mouvement of the masse (the right slider)
+;
+#X text 80 481 surch system can be usefull for replacing the line object
+of pd when more natural evolution is neaded...;
+#X obj 168 167 link \$0-lia 0 1 0 200;
+#X obj 356 167 mass \$0-masse 10000 0;
+#X connect 1 0 2 0;
+#X connect 2 0 11 0;
+#X connect 3 0 11 0;
+#X connect 11 1 12 0;
+#X connect 12 0 0 0;
+#X connect 12 0 11 1;
+#X restore 40 292 pd simple_exemple;
+#X text 64 180 look at mass and link help file :;
+#X obj 65 198 mass;
+#X obj 65 228 link;
+#N canvas 108 97 450 614 list 0;
+#X obj 190 135 iAmbient2D;
+#X obj 305 137 iAmbient3D;
+#X obj 190 166 iCircle2D;
+#X obj 306 257 iCylinder3D;
+#X obj 305 227 iCircle3D;
+#X obj 190 196 iLine2D;
+#X obj 305 197 iPlane3D;
+#X obj 190 225 iSeg2D;
+#X obj 305 168 iSphere3D;
+#X obj 79 76 lia;
+#X obj 79 48 mass;
+#X obj 192 48 mass2D;
+#X obj 306 48 mass3D;
+#X text 78 25 1D;
+#X text 191 27 2D;
+#X text 304 28 3D;
+#X text 21 46 basic;
+#X text 19 136 interactors;
+#X text 24 328 test;
+#X obj 192 389 tCircle2D;
+#X obj 192 419 tLine2D;
+#X obj 192 448 tSeg2D;
+#X obj 305 480 tCylinder3D;
+#X obj 306 420 tPlane3D;
+#X obj 306 450 tCircle3D;
+#X obj 306 390 tSphere3D;
+#X obj 192 358 tSquare2D;
+#X obj 307 359 tCube3D;
+#X obj 192 327 tLink2D;
+#X obj 307 327 tLink3D;
+#X obj 306 75 link3D;
+#X obj 192 75 link2D;
+#X text 19 535 other;
+#X obj 192 540 pmpd;
+#X obj 306 544 pmpd~;
+#X restore 40 322 pd list of pmpd's object;

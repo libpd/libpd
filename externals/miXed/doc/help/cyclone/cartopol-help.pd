@@ -1,0 +1,45 @@
+#N canvas 0 26 434 421 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 21 379 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 20 393 ___________________________________________________
+;
+#X obj 41 21 cartopol;
+#X text 114 15 cartesian to polar conversion;
+#X obj 120 283 cartopol;
+#X floatatom 120 238 6 0 0 0 real-> - -;
+#X floatatom 171 237 6 0 0 1 <-imaginary - -;
+#X floatatom 120 319 6 0 0 0 amplitude-> - -;
+#X floatatom 171 319 7 0 0 1 <-phase - -;
+#X text 121 39 see also;
+#X obj 185 33 poltocar;
+#X obj 122 130 hsl 128 15 -1 1 0 0 empty empty x-axis 133 7 1 10 -225280
+-1 -1 0 0;
+#X obj 178 72 vsl 15 128 -1 1 0 0 empty empty y-axis -6 -9 1 10 -261681
+-1 -1 0 0;
+#X obj 171 255 t b f;
+#X msg 107 70 0;
+#N canvas 339 111 494 377 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control conversion max_compatible;
+#X text 12 45 DESCRIPTION cartesian to polar conversion;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 float;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 384 400 pd META;
+#X connect 5 0 8 0;
+#X connect 5 1 9 0;
+#X connect 6 0 5 0;
+#X connect 7 0 14 0;
+#X connect 12 0 7 0;
+#X connect 13 0 6 0;
+#X connect 14 0 6 0;
+#X connect 14 1 5 1;
+#X connect 15 0 13 0;
+#X connect 15 0 12 0;

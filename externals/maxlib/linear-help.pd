@@ -1,0 +1,18 @@
+#N canvas 0 26 357 302 12;
+#X obj 70 140 linear;
+#X obj 70 95 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 70 192 5 0 0 0 - - -;
+#X text 23 20 linear :: linearly distributed random numbers;
+#N canvas 293 158 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION linearly distributed random numbers;
+#X text 12 5 KEYWORDS control random;
+#X text 12 65 INLET_0 bang;
+#X restore 295 273 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;

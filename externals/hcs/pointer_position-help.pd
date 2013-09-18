@@ -1,0 +1,22 @@
+#N canvas 0 26 462 312 10;
+#X obj 163 146 pointer_position;
+#X text 24 38 Get the current (x \, y) location of the pointer in this
+window.;
+#X text 25 9 [pointer_position];
+#X obj 163 78 tgl 15 1 empty empty empty 0 -6 0 10 -262144 -1 -1 1
+1;
+#X msg 177 103 bang;
+#X text 191 78 enable/disable all motion events;
+#X text 215 103 show only next motion event;
+#N canvas 342 208 494 344 META 0;
+#X text 12 115 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 95 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control canvas_op GUI;
+#X text 12 45 DESCRIPTION get the current (x \, y) location of the
+pointer in this window;
+#X text 12 75 INLET_0 float bang;
+#X restore 412 292 pd META;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;

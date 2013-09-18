@@ -1,0 +1,23 @@
+#N canvas 526 43 567 300 10;
+#X obj 37 200 pdp_scope~;
+#X obj 37 44 metro 40;
+#X obj 37 19 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 94 18 5 0 0;
+#X msg 131 131 type grey;
+#X msg 131 109 type yv12;
+#X obj 37 256 pdp_help_output;
+#X msg 131 157 dim 320 240;
+#X obj 59 121 osc~;
+#X floatatom 59 88 5 0 0;
+#X text 131 66 a very simple oscilloscope;
+#X text 227 132 set output image type and dimensions;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 0;

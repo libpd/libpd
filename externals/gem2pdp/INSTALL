@@ -1,0 +1,18 @@
+first, install pdp and gem sources
+( it has been tested successfully with gem-0.87
+pdp-0.9.0 and pidip-0.9.1 )
+
+Use the configure script and specify the directories:
+e.g.: ./configure --with-pddir=../../pd --with-gemdir=../../gem/Gem --with-pdpdir=../pdp
+
+make clean 
+
+make
+
+gem2pdp requires the loading of gem and pdp libraries, of course.
+
+Enjoy!!
+
+Thanx for getting here.
+Yves/
+comments and bugs @ ydegoyon@free.fr

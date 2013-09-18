@@ -1,0 +1,15 @@
+#N canvas 779 237 365 251 10;
+#X obj 63 170 zexy/symbol2list .;
+#X obj 62 196 outlet;
+#X obj 64 49 bang;
+#X obj 64 23 inlet;
+#X obj 64 100 hcs/sys_gui;
+#X obj 63 126 receive #tcl_version;
+#X msg 64 74 pdsend "#tcl_version [info patchlevel]";
+#X obj 63 147 list;
+#X connect 0 0 1 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 5 0 7 0;
+#X connect 6 0 4 0;
+#X connect 7 0 0 0;

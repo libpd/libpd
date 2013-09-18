@@ -1,0 +1,15 @@
+Source: pd-arraysize
+Section: sound
+Priority: optional
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 7.0.50~), puredata
+Standards-Version: 3.9.1
+Homepage: http://puredata.info
+
+Package: pd-arraysize
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, pd
+Description: a Pd object to report the size of an array
+ This provides a simple object for Pure Data that reports the size of an array
+ by name.  For historical reasons, it is packaged as a standalone object

@@ -1,0 +1,186 @@
+#N canvas 619 310 464 533 10;
+#X obj -97 556 outlet;
+#X obj -97 2 cnv 15 450 220 empty empty Searching_Commands 2 9 1 10
+-233017 -66577 0;
+#X msg 104 83 constrain;
+#X msg 104 104 constrain \$1;
+#X text -77 104 % Constraint;
+#X text -77 82 No Constraint;
+#X msg 104 30 search;
+#X obj 221 52 nbx 5 17 -1e+37 1e+37 0 0 \$0-search_v2 empty empty 0
+-6 1153 10 -262144 -1 -1 0 256;
+#X obj 172 52 nbx 5 17 -1e+37 1e+37 0 0 \$0-search_v1 empty empty 0
+-6 1153 10 -262144 -1 -1 0 256;
+#X text -78 48 Search w/ inits;
+#X text -78 29 Search w/ default inits;
+#X obj 86 143 bng 17 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text -76 142 Set Lyapunov Limits;
+#X obj 287 143 nbx 5 17 -1e+37 1e+37 0 0 \$0-lyapunov_v3 empty failure
+0 -6 1153 10 -262144 -1 -1 0 256;
+#X obj 238 143 nbx 5 17 -1e+37 1e+37 0 0 \$0-lyapunov_v2 empty high
+0 -6 1153 10 -262144 -1 -1 0 256;
+#X obj 189 143 nbx 5 17 -1e+37 1e+37 0 0 \$0-lyapunov_v1 empty low
+0 -6 1153 10 -262144 -1 -1 0 256;
+#N canvas 0 22 509 236 lyapunov 0;
+#X obj 42 26 inlet;
+#X obj 83 26 r \$0-lyapunov_v1;
+#X obj 101 61 pack f f f;
+#X obj 203 27 r \$0-lyapunov_v2;
+#X obj 320 27 r \$0-lyapunov_v3;
+#X msg 101 84 lyapunov \$1 \$2 \$3;
+#X obj 101 108 s \$0-outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 1;
+#X connect 4 0 2 2;
+#X connect 5 0 6 0;
+#X restore 106 143 pd lyapunov;
+#X obj 86 52 bng 17 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 22 374 205 search 0;
+#X obj 104 104 pack f f;
+#X msg 104 127 search \$1 \$2;
+#X obj 83 26 r \$0-search_v1;
+#X obj 186 26 r \$0-search_v2;
+#X obj 94 63 f;
+#X obj 104 151 s \$0-outlet;
+#X obj 18 26 inlet;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 1;
+#X connect 3 0 0 1;
+#X connect 4 0 0 0;
+#X connect 6 0 4 0;
+#X restore 104 52 pd search;
+#X text -76 164 Extended Lyapunov;
+#X msg 104 165 elyapunov;
+#X msg 104 186 show;
+#X text -75 198 Get Attractor Info;
+#X obj 104 226 s \$0-outlet;
+#X obj -97 535 r \$0-outlet;
+#X obj -14 535 inlet;
+#X obj -14 556 s \$0-inlet;
+#X obj -97 226 cnv 15 450 300 empty empty Search_Results 2 9 1 10 -233017
+-66577 0;
+#N canvas 48 644 700 296 get_results 0;
+#X msg 5 39 set \$1;
+#X obj 5 17 symbol;
+#X obj 5 61 outlet;
+#X obj 150 38 s \$0-lyapunov;
+#X obj 190 89 s \$0-failure_rate;
+#X obj 319 32 s \$0-v1;
+#X obj 343 53 s \$0-v2;
+#X obj 367 75 s \$0-v3;
+#X obj 473 31 s \$0-p1;
+#X obj 497 52 s \$0-p2;
+#X obj 521 74 s \$0-p3;
+#X obj 170 62 s \$0-classification;
+#X obj 44 222 r \$0-classification;
+#X msg 44 243 set \$1;
+#X obj 44 264 outlet;
+#X obj 5 -6 r \$0-inlet;
+#X obj 80 117 print debug;
+#X obj 131 11 unpack s 0 s 0;
+#X obj 319 9 unpack 0 0 0 0 0 0;
+#X obj 391 96 s \$0-v4;
+#X obj 415 117 s \$0-v5;
+#X obj 440 138 s \$0-v6;
+#X obj 473 9 unpack 0 0 0 0 0 0;
+#X obj 545 96 s \$0-p4;
+#X obj 569 117 s \$0-p5;
+#X obj 594 137 s \$0-p6;
+#X obj 318 -12 r \$0-inlet_var;
+#X obj 473 -11 r \$0-inlet_param;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 15 0 1 0;
+#X connect 15 0 17 0;
+#X connect 17 1 3 0;
+#X connect 17 2 11 0;
+#X connect 17 3 4 0;
+#X connect 18 0 5 0;
+#X connect 18 1 6 0;
+#X connect 18 2 7 0;
+#X connect 18 3 19 0;
+#X connect 18 4 20 0;
+#X connect 18 5 21 0;
+#X connect 22 0 8 0;
+#X connect 22 1 9 0;
+#X connect 22 2 10 0;
+#X connect 22 3 23 0;
+#X connect 22 4 24 0;
+#X connect 22 5 25 0;
+#X connect 26 0 18 0;
+#X connect 27 0 22 0;
+#X restore -14 267 pd get_results;
+#X msg -14 288 search;
+#X msg 79 288 NOCBNS;
+#X text 184 290 Classification;
+#X obj 79 309 nbx 10 17 -1e+37 1e+37 0 0 empty \$0-lyapunov empty 0
+-6 577 10 -262144 -1 -1 -0.482697 256;
+#X obj 79 330 nbx 10 17 -1e+37 1e+37 0 0 empty \$0-failure_rate empty
+0 -6 577 10 -262144 -1 -1 0.005 256;
+#X obj -14 371 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-v1 empty 0 -6 577
+10 -262144 -1 -1 0 256;
+#X obj -14 391 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-v2 empty 0 -6 577
+10 -262144 -1 -1 0 256;
+#X obj -14 411 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-v3 empty 0 -6 577
+10 -262144 -1 -1 0 256;
+#X obj 111 371 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-p1 empty 0 -6 577
+10 -262144 -1 -1 0.17869 256;
+#X obj 111 391 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-p2 empty 0 -6 577
+10 -262144 -1 -1 0.437724 256;
+#X obj 111 411 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-p3 empty 0 -6 577
+10 -262144 -1 -1 -2.31304 256;
+#X text 183 331 Failure Rate;
+#X text 184 309 Lyapunov Exponent;
+#X text 48 372 Var 1;
+#X text 48 392 Var 2;
+#X text 48 412 Var 3;
+#X text 174 373 Param 1;
+#X text 174 393 Param 2;
+#X text 174 413 Param 3;
+#X obj 188 164 examples/readme-lyapunov;
+#X obj 171 29 examples/readme-searching;
+#X obj -14 431 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-v4 empty 0 -6 577
+10 -262144 -1 -1 0 256;
+#X obj -14 451 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-v5 empty 0 -6 577
+10 -262144 -1 -1 0 256;
+#X obj -14 471 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-v6 empty 0 -6 577
+10 -262144 -1 -1 0 256;
+#X obj 111 431 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-p4 empty 0 -6 577
+10 -262144 -1 -1 -2.74459 256;
+#X obj 111 451 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-p5 empty 0 -6 577
+10 -262144 -1 -1 0.00541449 256;
+#X obj 111 471 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-p6 empty 0 -6 577
+10 -262144 -1 -1 1.3485 256;
+#X text 48 432 Var 4;
+#X text 48 452 Var 5;
+#X text 48 472 Var 6;
+#X text 174 433 Param 4;
+#X text 174 453 Param 5;
+#X text 174 473 Param 6;
+#X obj 62 535 inlet;
+#X obj 166 535 inlet;
+#X obj 62 556 s \$0-inlet_var;
+#X obj 166 556 s \$0-inlet_param;
+#X obj 198 104 nbx 5 17 -1e+37 1e+37 0 0 empty empty % 0 -6 1 10 -262144
+-1 -1 0 256;
+#X connect 2 0 23 0;
+#X connect 3 0 23 0;
+#X connect 6 0 23 0;
+#X connect 11 0 16 0;
+#X connect 17 0 18 0;
+#X connect 20 0 23 0;
+#X connect 21 0 23 0;
+#X connect 24 0 0 0;
+#X connect 25 0 26 0;
+#X connect 28 0 29 0;
+#X connect 28 1 30 0;
+#X connect 62 0 64 0;
+#X connect 63 0 65 0;
+#X connect 66 0 3 0;

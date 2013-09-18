@@ -1,0 +1,20 @@
+#N canvas 0 26 551 236 10;
+#X text 200 79 right inlet is also "active";
+#X text 201 119 main usage is to compute block synchronous frequencies
+;
+#X text 200 134 for spectral domain processing;
+#X text 201 49 out = left + right * (sys samplerate / blocksize);
+#X text 200 35 fblock: compute block relative frequencies;
+#N canvas 198 157 494 345 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 45 DESCRIPTION compute block relative frequencies;
+#X text 12 5 KEYWORDS control abstraction needs_work (example patch)
+;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 502 215 pd META;
+#X obj 40 67 fblock;

@@ -1,0 +1,101 @@
+#N canvas 400 126 715 814 10;
+#X obj 59 391 pdp_qt;
+#X obj 59 462 pdp_glx;
+#X floatatom 77 429 5 0 0;
+#X floatatom 127 430 5 0 0;
+#X obj 56 41 metro 40;
+#X msg 56 13 bang;
+#X msg 97 13 stop;
+#X msg 15 13 bang;
+#X obj 140 41 openpanel;
+#X msg 140 66 open \$1;
+#X msg 140 13 bang;
+#X msg 140 92 close;
+#X text 249 66 open/close for file access;
+#X floatatom 140 120 5 0 0;
+#X floatatom 140 146 5 0 0;
+#X text 248 117 float on left inlet selects a frame for output;
+#X msg 140 197 loop \$1;
+#X obj 203 182 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 250 198 automatic looping can be enabled/disabled;
+#X text 251 9 pdp_qt plays a quicktime movie.;
+#X text 250 221 this enables automatic playback at the frame rate specified
+in the movie file. in pdp_qt~ playback is synchronized to the audio
+stream.;
+#X obj 335 535 table array;
+#X msg 142 341 dump array 0;
+#X text 252 330 if the movie contains audio \, this command dumps the
+audio data into an array specified by the first argument. the second
+argument is the audio channel (default = 0 = left);
+#X msg 142 291 stop;
+#X text 251 289 stops automatic playback (same as autoplay 0);
+#X msg 141 222 autoplay 1;
+#X msg 142 267 play;
+#X text 252 432 the second outlet outputs the current frame number.
+the third outlet outputs the total number of frames in a movie when
+it is opened.;
+#X obj 56 786 pdp_glx;
+#X obj 56 715 pdp_qt~;
+#X obj 84 757 dac~;
+#X msg 33 644 play;
+#X obj 127 635 openpanel;
+#X msg 127 660 open \$1;
+#X msg 127 607 bang;
+#X msg 9 760 close;
+#X text 251 660 pdp_qt~ is the same as pdp_qt exept that it also outputs
+the audio data corresponding to the current frame on its 2 rightmost
+outlets. if there is a lag between audio and video a pdp_del object
+can be inserted to delay the image. note that in order to get acceptable
+audio quality with relatively few dropouts you might need to increase
+the pd audio latency.;
+#X msg 7 429 close;
+#X msg 142 315 cont;
+#X text 251 269 starts automatic playback (same as 0 \, autplay 1 \,
+bang);
+#X text 251 310 resumes automatic playback (same as autplay 1 \, bang)
+;
+#X msg 9 617 loop 1;
+#X floatatom 78 645 5 0 0;
+#X obj 448 535 tabplay~ array;
+#X obj 448 576 dac~;
+#X obj 448 506 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 126 685 dump array 0;
+#X text 249 137 float on right inlet selects the frame to be read on
+the next sync event (bang message / internal sync).;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 0 0;
+#X connect 8 0 9 0;
+#X connect 9 0 0 0;
+#X connect 10 0 8 0;
+#X connect 11 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 1;
+#X connect 16 0 0 0;
+#X connect 17 0 16 0;
+#X connect 22 0 0 0;
+#X connect 24 0 0 0;
+#X connect 26 0 0 0;
+#X connect 27 0 0 0;
+#X connect 30 0 29 0;
+#X connect 30 3 31 0;
+#X connect 30 4 31 1;
+#X connect 32 0 30 0;
+#X connect 33 0 34 0;
+#X connect 34 0 30 0;
+#X connect 35 0 33 0;
+#X connect 36 0 29 0;
+#X connect 38 0 1 0;
+#X connect 39 0 0 0;
+#X connect 42 0 30 0;
+#X connect 43 0 30 1;
+#X connect 44 0 45 0;
+#X connect 44 0 45 1;
+#X connect 46 0 44 0;
+#X connect 47 0 30 0;

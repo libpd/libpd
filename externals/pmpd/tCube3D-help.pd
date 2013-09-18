@@ -1,0 +1,36 @@
+#N canvas 14 12 620 496 10;
+#X text 137 42 This object sould be used for testing the masse position.
+;
+#X text 137 59 It receive masse position \, and output 0/1 according
+to the position of the masse (1 if the mass is in the square);
+#X text 296 15 test cube;
+#X text 214 299 if a mass is outside of this rectangle \, the mass
+will not interact with this object.;
+#X text 216 284 minimum and maximum position of the interactor.;
+#X text 77 112 message to change parametter / default value / creation
+arg number / description;
+#X obj 13 399 tCube3D;
+#X msg 83 156 setXmin -1;
+#X msg 83 178 setXmax 1;
+#X msg 83 200 setYmin -1;
+#X msg 83 223 setYmax 1;
+#X msg 83 246 setZmin -1;
+#X msg 83 268 setZmax 1;
+#X floatatom 13 433 5 0 0 0 - - -;
+#X text 172 431 0/1 according to the position of the masse;
+#X text 192 357 position of the tested mass;
+#X msg 84 357 position3D 0 0 0;
+#X text 186 157 1 : X minimum;
+#X text 186 178 2 : X maximum;
+#X text 185 201 3 : Y minimum;
+#X text 185 222 4 : Y maximum;
+#X text 186 248 5 : Z minimum;
+#X text 185 268 6 : Z maximum;
+#X connect 6 0 13 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 6 0;
+#X connect 12 0 6 0;
+#X connect 16 0 6 0;

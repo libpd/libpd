@@ -1,0 +1,30 @@
+#N canvas 0 0 462 312 12;
+#X obj 59 162 urn 8;
+#X msg 117 92 clear;
+#X floatatom 59 221 5 0 0 0 - - -;
+#X msg 59 65 bang;
+#X obj 149 221 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 104 65 choose next number;
+#X text 169 93 clear / refill urn;
+#X floatatom 109 130 5 0 0 0 - - -;
+#X text 161 130 change number of items in urn;
+#X text 29 10 urn :: urn selection model;
+#X text 181 221 bang if urn is empty;
+#N canvas 293 158 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control random;
+#X text 12 45 DESCRIPTION urn selection model;
+#X text 12 65 INLET_0 bang clear;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 bang;
+#X restore 390 274 pd META;
+#X connect 0 0 2 0;
+#X connect 0 1 4 0;
+#X connect 1 0 0 0;
+#X connect 3 0 0 0;
+#X connect 7 0 0 1;

@@ -1,0 +1,17 @@
+#N canvas 0 31 362 237 10;
+#X msg 139 82 bang;
+#X symbolatom 138 156 0 0 0 0 - - -;
+#X obj 139 114 ISOtime;
+#X text 49 29 output the current time in ISO format;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION output the current time in ISO format;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 symbol;
+#X restore 302 212 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

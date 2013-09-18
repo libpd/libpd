@@ -1,0 +1,154 @@
+=pod
+
+README for pd external 'deque'
+
+Last updated for version 0.03.
+
+=head1 DESCRIPTION
+
+Double-ended message-queue for pd.
+
+
+=head1 PLATFORMS
+
+=over 4
+
+=item * linux/x86
+
+This is what I run, so things really ought to work here.
+
+=item * Other Platforms
+
+See REQUIREMENTS, below.
+
+=back
+
+
+=head1 REQUIREMENTS
+
+In order to build the "deque" library, you will
+need the following:
+
+=over 4
+
+
+=item * A C compiler
+
+Tested with gcc-3.3.3 under linux/x86 (Debian).
+
+
+=item * /bin/sh , sed
+
+In order to run the 'configure' script.
+
+
+=item * A make program
+
+Tested with GNU make v3.79.1 under linux/x86 (Debian).
+
+
+=item * PD
+
+Tested with pd v0.37.1 under linux/x86 (Debian).
+PD is available from:
+
+ http://www.crca.ucsd.edu/~msp/software.html
+
+
+=begin comment text
+
+=item * glib >= v2.0
+
+For various buffer queues.
+Available from http://www.gtk.org.
+
+=end comment text
+
+
+=back
+
+
+=head1 INSTALLATION
+
+Issue the following commands to the shell:
+
+   cd PACKAGENAME-X.YY  (or wherever you extracted the distribution)
+   ./configure
+   make
+   make install
+
+
+=head1 BUILD OPTIONS
+
+The 'configure' script supports the following options, among others:
+
+
+=over 4
+
+=item * --with-pd-dir=DIR
+
+PD base directory.
+
+
+=item * --with-pd-include=DIR
+
+Directory where the PD include files live.
+
+
+=item * --with-pd-extdir=DIR
+
+Where to put the externals on 'make install'.
+
+
+=begin comment text
+
+=item * --with-pkg-config=PATH
+
+Full path to the 'pkg-config' program (optional).
+
+
+=item * --with-glib-include=DIR
+
+Directory where the glib >= 2.0 include files live.
+
+
+=item * --with-glib-libs=DIR
+
+Linker flags for glib >= 2.0.
+
+=end comment text
+
+
+=item * --enable-debug , --disable-debug
+
+Whether to enable verbose debugging messages and code.
+Default=no.
+
+=back
+
+
+=head1 ACKNOWLEDGEMENTS
+
+PD by Miller Puckette and others.
+
+Ideas, black magic, and other nuggets of information drawn
+from code by Guenter Geiger, Larry Troxler, and
+IOhannes m Zmoelnig.
+
+
+=head1 KNOWN BUGS
+
+=over 4
+
+=item * General
+
+Only tested under linux.
+
+=back
+
+
+
+
+=head1 AUTHOR / MAINTAINER
+
+Bryan Jurish E<lt>moocow@ling.uni-potsdam.deE<gt>

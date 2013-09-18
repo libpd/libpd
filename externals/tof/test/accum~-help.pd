@@ -1,0 +1,42 @@
+#N canvas 1084 142 863 682 10;
+#X obj 14 14 cnv 15 400 40 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X msg 68 105 stop;
+#X msg 40 78 bang;
+#X floatatom 38 494 15 0 0 0 - - -;
+#X text 152 492 samples counted;
+#X floatatom 121 353 5 0 0 0 - - -;
+#X floatatom 80 332 5 0 0 0 - - -;
+#X obj 106 217 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 106 242 autoreset \$1;
+#X text 30 22 description: sample accumulator;
+#X text 79 79 start accumulating;
+#X text 131 218 reset accumulation to min if dsp is turned off and
+on again;
+#X obj 92 160 sig~ 1;
+#X obj 38 464 cyclone/Snapshot~ 100;
+#X obj 162 377 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 183 373 wrap to min/max;
+#X floatatom 92 138 5 0 0 0 - - -;
+#X text 107 106 stop \, and reset to min;
+#X text 126 331 set a min value;
+#X text 164 353 set a max value;
+#X text 135 158 Accumulation amount;
+#X text 173 401 arguments: min max wrap autoreset;
+#X obj 435 15 loadbang;
+#X msg 435 40 \; pd dsp 1;
+#X obj 39 402 tof/accum~ 0 441000 1;
+#X connect 1 0 24 0;
+#X connect 2 0 24 0;
+#X connect 5 0 24 2;
+#X connect 6 0 24 1;
+#X connect 7 0 8 0;
+#X connect 8 0 24 0;
+#X connect 12 0 24 0;
+#X connect 13 0 3 0;
+#X connect 14 0 24 3;
+#X connect 16 0 12 0;
+#X connect 22 0 23 0;
+#X connect 24 0 13 0;

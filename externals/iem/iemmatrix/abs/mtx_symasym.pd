@@ -1,0 +1,29 @@
+#N canvas 0 0 493 363 10;
+#X obj 61 66 inlet matrix;
+#X obj 61 255 outlet symmetric;
+#X obj 105 229 outlet assymetric;
+#X obj 105 136 mtx_transpose;
+#X obj 61 93 mtx_* 0.5;
+#X obj 61 229 mtx_+;
+#X obj 105 203 mtx_-;
+#X obj 61 115 t a a a;
+#X obj 105 158 t a a;
+#X text 23 19 mtx_symasym:: decompose a square matrix into a symmetric
+and an assymtric part;
+#X text 240 101 S=0.5*(M+M');
+#X text 240 120 A=0.5*(M-M');
+#X text 240 76 M=S+A;
+#X text 38 289 (c) 2005 by IOhannes m zmoelnig \, IEM KUG \, graz austria
+;
+#X text 38 306 for license-details see LICENSE.txt that must come with
+iemmatrix.;
+#X connect 0 0 4 0;
+#X connect 3 0 8 0;
+#X connect 4 0 7 0;
+#X connect 5 0 1 0;
+#X connect 6 0 2 0;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 7 2 3 0;
+#X connect 8 0 5 1;
+#X connect 8 1 6 1;

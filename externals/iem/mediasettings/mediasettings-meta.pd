@@ -1,0 +1,9 @@
+#N canvas 18 212 200 200 10;
+#N canvas 28 50 420 300 META 1;
+#X text 13 61 NAME mediasettings;
+#X text 13 85 VERSION 0.1;
+#X text 13 129 AUTHOR IOhannes m zmölnig \, IEM \, University of Music
+and Performing Arts \, Graz \, Austria;
+#X text 19 189 NOTE: this library has been developed for the IntegraLive
+project http://integralive.org;
+#X restore 10 10 pd META;

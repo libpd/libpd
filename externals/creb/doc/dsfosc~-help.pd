@@ -1,0 +1,19 @@
+#N canvas 0 26 447 341 10;
+#X text 59 21 complex form of the discrete summation oscillator;
+#X text 62 38 (1-az^n)/(1-az) \, with z = e^(jw);
+#N canvas 331 92 494 393 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 INLET_1 float;
+#X text 12 125 INLET_2 float;
+#X text 12 145 OUTLET_0 signal;
+#X text 12 85 INLET_0 signal;
+#X text 12 165 OUTLET_1 signal;
+#X text 12 5 KEYWORDS signal abstraction oscillator needs_work (example
+patch);
+#X text 12 185 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 35 LICENSE GPL v2;
+#X text 12 55 DESCRIPTION complex form of the discrete summation oscillator
+;
+#X restore 394 317 pd META;
+#X obj 72 104 dsfosc~;

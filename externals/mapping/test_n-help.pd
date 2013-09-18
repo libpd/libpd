@@ -1,0 +1,41 @@
+#N canvas 1 53 467 373 10;
+#X floatatom 222 280 5 0 0 0 - - -;
+#X floatatom 150 329 5 0 0 0 - - -;
+#X msg 150 245 0;
+#X msg 181 245 1;
+#X text 268 277 size: n;
+#X text 19 25 sends a 1 if the last n values are equal to the first
+argument;
+#X floatatom 137 194 5 0 0 0 - - -;
+#X msg 137 110 word;
+#X msg 175 110 not-word;
+#X msg 120 245 2;
+#X text 13 72 click [word( five times in a row and you will get a 1
+(5 is the default for how many \, aka "n");
+#X text 25 220 click [2( three times in a row and you will get a 1
+;
+#X obj 137 168 test_n word;
+#X obj 150 303 test_n 2 3;
+#X obj 5 2 cnv 15 450 20 empty empty test_n 2 11 1 18 -233017 -66577
+0;
+#N canvas 464 140 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 OUTLET_0 float;
+#X text 12 155 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION send a 1 if the last n values are equal to
+the first argument;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 INLET_1 anything;
+#X text 12 115 INLET_2 float;
+#X restore 405 338 pd META;
+#X connect 0 0 13 2;
+#X connect 2 0 13 0;
+#X connect 3 0 13 0;
+#X connect 7 0 12 0;
+#X connect 8 0 12 0;
+#X connect 9 0 13 0;
+#X connect 12 0 6 0;
+#X connect 13 0 1 0;

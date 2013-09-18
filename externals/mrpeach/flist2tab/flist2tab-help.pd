@@ -1,0 +1,40 @@
+#N canvas 1 53 420 332 10;
+#X obj -12 175 table pig;
+#X obj 115 203 flist2tab pig;
+#X obj 92 163 any2string;
+#X msg 92 140 Hello;
+#X floatatom 190 162 5 0 0 0 - - -;
+#X msg 6 77 81 28 0 33 55 1 2 3;
+#X text -45 -12 flist2tab loads floats or lists of floats into a table
+;
+#X text -45 4 at an offset determined by a float in the second inlet.
+;
+#X text -45 20 Negative offsets will be ignored.;
+#X obj -12 152 table twig;
+#X msg 36 107 set twig;
+#X text 93 106 set the working table;
+#X text 203 203 argument is table name;
+#X text -45 36 Offsets greater than the table length cause the table
+to be resized to fit.;
+#X text 224 162 default offset is 0;
+#X floatatom 62 220 7 0 0 0 - - -;
+#X text 108 220 Array size is output after each input.;
+#X text 202 260 2009_01_28 Martin Peach;
+#N canvas 425 246 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 AUTHOR Martin Peach;
+#X text 12 75 INLET_0 float list set;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 45 DESCRIPTION load floats or lists of floats into a table
+at an offset determined by a float in the second inlet;
+#X text 12 5 KEYWORDS control array list_op conversion;
+#X text 12 25 LICENSE GPL v2 or later;
+#X restore 314 297 pd META;
+#X connect 1 0 15 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 1;
+#X connect 5 0 1 0;
+#X connect 10 0 1 0;

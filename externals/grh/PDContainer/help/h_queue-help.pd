@@ -1,0 +1,363 @@
+#N canvas 529 37 794 742 10;
+#X obj 154 536 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 33 24 cnv 15 404 54 empty empty empty 22 25 0 18 -1 -66577 0
+;
+#X obj 35 26 cnv 15 400 50 empty empty PDContainer 22 25 0 18 -228992
+-66577 0;
+#X text 295 36 help file of;
+#X text 40 98 init arg: namespace;
+#X msg 430 438 clear;
+#X msg 430 532 help;
+#X obj 502 587 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 430 335 getnamespace;
+#X msg 430 476 clearall;
+#X obj 430 630 print BBB;
+#X obj 82 579 print AAA;
+#X text 541 360 <- change namespace;
+#X msg 430 359 namespace grix;
+#X text 478 438 <- clear all the data of the;
+#X text 499 453 current namespace;
+#X text 498 478 <- clear all the data in all;
+#X text 519 493 same containers (maybe;
+#X text 521 508 you shouldn't use this);
+#X text 530 337 <- get current namespace;
+#X text 429 283 general operations:;
+#X floatatom 466 606 5 0 0 0 - - -;
+#X floatatom 118 556 5 0 0 0 - - -;
+#X msg 430 391 getsize;
+#X text 493 391 <- puts out the size of the;
+#X text 514 407 stack at the 2nd outlet;
+#X msg 82 358 push \$1;
+#X floatatom 82 332 5 0 0 0 - - -;
+#X symbolatom 130 332 10 0 0 0 - - -;
+#X text 151 436 removing it;
+#X msg 82 462 pop;
+#X text 285 53 ::: h_queue :::;
+#X obj 82 514 h_queue xlt;
+#X obj 430 563 h_queue xlt;
+#X text 39 136 A queue is a "first in first out" (FIFO) data structure.
+That is \, elements are added to the back of the queue (push) and may
+be removed from the front (pop).;
+#X text 510 606 <- nr of elements;
+#X text 180 536 <- bang if queue is empty;
+#X text 148 359 <- push some data in the queue;
+#X msg 82 407 front;
+#X text 130 408 <- get the data from the front;
+#X text 151 423 of the queue without;
+#X text 138 478 of the queue;
+#X text 117 463 <- removes the data fom the front;
+#X obj 500 24 cnv 15 204 120 empty empty empty 20 12 0 14 -66577 -66577
+0;
+#X obj 502 26 cnv 15 200 116 empty empty ReadMe: 65 15 0 14 -262131
+-143491 0;
+#N canvas 674 0 511 843 General_Concept 0;
+#X text 37 165 This library was made for algorithmic composition and
+of course for all other algorithms. I came into troubles with making
+bigger musical structures in PD with send-receive pairs \, arrays \,
+etc. So I tried to make it possible \, to have access to some storage
+in a whole patch.;
+#X text 131 131 ::: GOAL OF THE LIBRARY :::;
+#X text 39 428 For communication I use namespaces. Every Container
+with the same namespace (and the same container type) has access to
+the same data. So you can modify and get this data everywhere in the
+patch. For local namespaces use names with \$0.;
+#X text 140 266 ::: DATASTRUCTURES :::;
+#X text 156 397 ::: NAMESPACES :::;
+#X obj 33 24 cnv 15 404 54 empty empty empty 22 25 0 18 -1 -66577 0
+;
+#X obj 35 26 cnv 15 400 50 empty empty PDContainer 22 25 0 18 -228992
+-66577 0;
+#N canvas 434 247 671 362 namespace_example 0;
+#X obj 43 176 h_stack hallawum;
+#X msg 43 151 push some data;
+#X text 34 25 ::: NAMESPACE EXAMPLE :::;
+#X text 166 150 <- add the list "some data" to the stack;
+#X text 187 167 (namespace "hallawum");
+#X obj 41 254 h_stack hallawum;
+#X msg 41 231 top;
+#X text 76 231 <- get the data (same namespace);
+#X msg 341 235 top;
+#X obj 341 258 h_stack kaletom;
+#X obj 341 281 print BBB;
+#X obj 41 277 print AAA;
+#X text 376 235 <- get the data (different namespace);
+#X text 475 271 not possible !!!;
+#X text 35 65 In different namespaces you have access to different
+data. Here with the datastructure "stack". The two objects with the
+same namespace (here "hallawum") are sharing their data!;
+#X connect 1 0 0 0;
+#X connect 5 0 11 0;
+#X connect 6 0 5 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X restore 39 503 pd namespace_example;
+#X text 161 554 ::: DATATYPES :::;
+#X text 38 296 As storage datastructures I implemented the C++ STL
+(Standard Template Library) Containers in PD. Currently following datastructures
+are available (prefixed with h_): h_map \, h_multimap \, h_set \, h_multiset
+\, h_vector \, h_list \, h_deque \, h_queue \, h_priority_queue and
+h_stack.;
+#N canvas 438 21 583 739 map_example 0;
+#X obj 45 297 h_map \$0-data;
+#X msg 45 256 add data1;
+#X msg 131 273 1 4 3 5 6;
+#X obj 45 220 t b b;
+#X obj 45 194 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 321 303 h_map \$0-data;
+#X obj 321 226 t b b;
+#X obj 321 200 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 321 262 add data2;
+#X msg 407 279 6 4 5 1 2;
+#X obj 118 402 h_map \$0-data;
+#X msg 118 376 print;
+#X text 170 375 <- see whats in the container;
+#X obj 118 556 h_map \$0-data;
+#X msg 118 485 get data1;
+#X msg 142 519 get data2;
+#X obj 118 578 print AAA;
+#X text 202 485 <- get data1;
+#X text 229 520 <- get data2;
+#X text 345 199 <- add to key data2 a list;
+#X text 69 193 <- add to key data1 a list;
+#X text 32 32 ::: MAP_EXAMPLE :::;
+#X text 34 72 With the datastructure "map" it's for example possible
+to make send-receive pairs \, you don't have to update the send-receive
+pairs all the time (like [value]) \, you can use send-receive "namespaces"
+\, ...;
+#X text 111 659 ( If you use lists as key you can also make a multidimensional
+matrix ... );
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 1 0;
+#X connect 3 1 2 0;
+#X connect 4 0 3 0;
+#X connect 6 0 8 0;
+#X connect 6 1 9 0;
+#X connect 7 0 6 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 1;
+#X connect 11 0 10 0;
+#X connect 13 0 16 0;
+#X connect 14 0 13 0;
+#X connect 15 0 13 0;
+#X restore 41 615 pd map_example;
+#X text 273 34 general concept of;
+#X text 274 52 PDContainer;
+#X text 41 579 In the containers you can save all of the PD build-in
+datatypes: lists \, floats \, and symbol.;
+#N canvas 215 140 716 600 save_load_example 0;
+#X text 27 23 ::: SAVE/LOAD EXAMPLE :::;
+#X msg 68 229 pushback one word;
+#X msg 90 260 pushback an other word;
+#X msg 114 290 pushback something else;
+#X obj 68 198 t b b b;
+#X obj 68 168 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 68 324 h_list \$0-local;
+#X text 93 168 <- add these three lists to h_list;
+#X obj 333 321 h_list \$0-local;
+#X msg 358 285 print;
+#X obj 140 477 h_set blablu;
+#X msg 140 413 read example.dat;
+#X text 274 413 <- read the same data now into a h_set;
+#X text 26 67 You can save and load data from and to disk. So you can
+also exchange data through different datastructures with the same data-format
+(here from a h_list to a h_set).;
+#X msg 178 441 print;
+#X msg 333 207 saveXML example.xml;
+#X text 457 238 <- save data as file;
+#X msg 333 238 save example.dat;
+#X text 477 208 <- save data as XML file;
+#X msg 140 378 readXML example.xml;
+#X text 283 379 <- read the same XML data now into a h_set;
+#X text 22 529 Please use the XML fileformat if possible \, because
+it's easier to edit in an external editor and the XML parser is much
+more stable !;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 3 0 6 0;
+#X connect 4 0 1 0;
+#X connect 4 1 2 0;
+#X connect 4 2 3 0;
+#X connect 5 0 4 0;
+#X connect 9 0 8 0;
+#X connect 11 0 10 0;
+#X connect 14 0 10 0;
+#X connect 15 0 8 0;
+#X connect 17 0 8 0;
+#X connect 19 0 10 0;
+#X restore 40 797 pd save_load_example;
+#X text 41 696 All the data of all containers can be saved to disk.
+So you can also manually edit the file with an editor (which is sometimes
+much faster) and then load it in PD into a container. You can also
+load data from other containers. Please use the XML fileformat if possible
+\, because it's easier to edit in an external editor and the XML parser
+is much more stable.;
+#X text 164 671 ::: SAVE/LOAD :::;
+#X restore 536 62 pd General_Concept;
+#N canvas 205 0 993 742 Container_Explanation 0;
+#X obj 14 13 cnv 15 404 54 empty empty empty 22 25 0 18 -1 -66577 0
+;
+#X obj 16 15 cnv 15 400 50 empty empty PDContainer 22 25 0 18 -228992
+-66577 0;
+#X text 254 23 general explation of;
+#X text 254 40 the datastructures;
+#X text 23 655 A vector is a sequence that supports access to all elements
+via index (like an array) and fast insertion and removal of elements
+at the end. The number of elements in a vector may vary dynamically.
+;
+#X obj 189 627 h_vector;
+#X text 500 654 Fast insertion and removal anywhere \, all the other
+elements move up. But a list provides only sequential access (not via
+index !). A list is a doubly linked list.;
+#X obj 680 628 h_list;
+#X obj 189 773 h_deque;
+#X text 498 801 A queue is a "first in first out" (FIFO) data structure.
+That is \, elements are added to the back of the queue (push) and may
+be removed from the front (pop).;
+#X obj 679 774 h_queue;
+#X text 22 951 A priority queue is also a "first in first out" (FIFO)
+data structure \, but you can give the elements a priority. So the
+elements with a higher priority are automatically inserted before all
+other elements with a lower priority.;
+#X obj 154 924 h_priority_queue;
+#X text 20 800 A deque (double ended queue \, pronounced "deck") is
+very much like a vector: like vector \, it is a sequence that supports
+access to all elements via index. The main way in which deque differs
+from vector is that fast insertion and removal of elements is possible
+at the beginning _and_ the end.;
+#X text 22 232 Maps represent a mapping from one type (the key type)
+to another type (the value type). You can associate a value with a
+key \, or find the value associated with a key \, very efficiently.
+Map is a Sorted Associative Container and it is also a Unique Associative
+Container \, meaning that no two elements have the same key. (see Multimap
+for more elements with the same key);
+#X obj 188 203 h_map;
+#X text 492 231 Multimaps are just like maps except that a key can
+be associated with several values. Multimap is a Sorted Associative
+Container and also a Multiple Associative Container \, meaning that
+there is no limit on the number of elements with the same key. (see
+also Map);
+#X obj 643 201 h_multimap;
+#X text 24 419 Sets allow you to add and delete elements. Afterwards
+you can look if an element is set. Set is a Sorted Associative Container
+and a Unique Associative Container \, meaning that no two elements
+are the same. (see Multiset to have several copies of the same element)
+;
+#X obj 187 392 h_set;
+#X text 493 419 Multisets are just like sets \, except that you can
+have several copies of the same element. Multiset is a Sorted Associative
+Container and a Multiple Associative Container \, meaning that two
+or more elements may be identical. (see also Set);
+#X obj 642 391 h_multiset;
+#X text 339 167 :::: ASSOCIATIVE CONTAINERS ::::;
+#X text 393 592 :::: SEQUENCES ::::;
+#X text 289 1099 (look for help at all the objects for more information)
+;
+#X text 35 87 PDContainer contains the following datastructures:;
+#X text 399 86 map \, nultimap \, set \, multiset \, vector \, list
+\, deque \, queue \, stack \, priority queue;
+#X obj 679 916 h_stack;
+#X text 495 950 Stack is a "last in first out" (LIFO) data structure:
+the element at the top of a stack is the one that was most recently
+added (push). Top outputs the elements from the top without removing
+it \, pop outputs and removes it.;
+#X restore 518 90 pd Container_Explanation;
+#N canvas 254 0 927 786 Fileformats 0;
+#X obj 38 27 cnv 15 404 54 empty empty empty 22 25 0 18 -1 -66577 0
+;
+#X obj 40 29 cnv 15 400 50 empty empty PDContainer 22 25 0 18 -228992
+-66577 0;
+#X text 259 56 PDContainer;
+#X text 257 38 different fileformats of;
+#X text 472 116 Please use the XML fileformat if possible \, because
+it's easier to edit in an external editor and the XML parser is much
+more stable!;
+#X text 40 582 s go;
+#X text 40 569 f 2 s wow f 2;
+#X text 40 599 f 23;
+#X text 38 634 (f=float \, s=symbol);
+#X text 37 171 a) single elements: are the containers h_vector \, h_list
+\, h_deque \, h_set \, h_multiset;
+#X text 471 172 b) key-value pairs: are the containers h_map and h_multimap
+;
+#X text 469 276 2.element: symbol go;
+#X text 476 698 f 2 s wow - f 2;
+#X text 476 712 s go - s not f 34;
+#X text 476 729 f 23 - s op;
+#X text 488 244 key: list 2 wow;
+#X text 470 229 1.element:;
+#X text 488 258 value: float 2;
+#X text 490 291 key: symbol go;
+#X text 490 305 value: list symbol not float 34;
+#X text 39 243 1.element: list 2 wow 2;
+#X text 39 257 2.element: symbol go;
+#X text 38 272 3.element: float 23;
+#X text 37 223 a) example1:;
+#X text 470 212 b) example2:;
+#X text 37 312 a) example1 \, XML:;
+#X text 37 339 <?xml version="1.0" encoding="ISO-8859-1" ?>;
+#X text 37 353 <PDContainer type="h_list">;
+#X text 54 366 <element>;
+#X text 70 379 <f> 2 </f>;
+#X text 70 405 <f> 2 </f>;
+#X text 56 418 </element>;
+#X text 70 391 <s> wow </s>;
+#X text 56 431 <element>;
+#X text 57 455 </element>;
+#X text 72 443 <s> go </s>;
+#X text 56 468 <element>;
+#X text 57 492 </element>;
+#X text 72 480 <f> 23 </f>;
+#X text 41 506 </PDContainer>;
+#X text 41 542 a) example1 \, textfile:;
+#X text 39 115 You can save the data of the containers to XML files
+and normal textfiles (see General_Concept).;
+#X text 469 375 <?xml version="1.0" encoding="ISO-8859-1" ?>;
+#X text 469 389 <PDContainer type="h_list">;
+#X text 486 402 <element>;
+#X text 519 430 <f> 2 </f>;
+#X text 520 482 <f> 2 </f>;
+#X text 488 506 </element>;
+#X text 519 442 <s> wow </s>;
+#X text 475 634 </PDContainer>;
+#X text 469 348 b) example2 \, XML:;
+#X text 503 415 <key>;
+#X text 504 456 </key>;
+#X text 503 468 <value>;
+#X text 504 494 </value>;
+#X text 487 519 <element>;
+#X text 489 621 </element>;
+#X text 504 532 <key>;
+#X text 505 559 </key>;
+#X text 504 571 <value>;
+#X text 505 609 </value>;
+#X text 520 545 <s> go </s>;
+#X text 521 584 <s> not </s>;
+#X text 521 597 <f> 34 </f>;
+#X text 476 668 b) example2 \, textfile:;
+#X restore 550 116 pd Fileformats;
+#X text 211 703 htttp://grh.mur.at/software/pdcontainer.html;
+#X text 171 687 =%)!(%= PDContainer \, by Georg Holzmann <grh@mur.at>
+\, 2004;
+#X connect 5 0 33 0;
+#X connect 6 0 33 0;
+#X connect 8 0 33 0;
+#X connect 9 0 33 0;
+#X connect 13 0 33 0;
+#X connect 23 0 33 0;
+#X connect 26 0 32 0;
+#X connect 27 0 26 0;
+#X connect 28 0 26 0;
+#X connect 30 0 32 0;
+#X connect 32 0 11 0;
+#X connect 32 1 22 0;
+#X connect 32 2 0 0;
+#X connect 33 0 10 0;
+#X connect 33 1 21 0;
+#X connect 33 2 7 0;
+#X connect 38 0 32 0;

@@ -1,0 +1,112 @@
+Change log for gfsm
+
+v0.0.10 Mon, Fri, 31 Oct 2008 14:29:52 +0100
+   + added configure flag --disable-programs for static builds
+   + gfsmio_getdelim (local implementation): changed handling of GString data buffers
+     - formerly, GString data was literally returned as (*lineptr)
+     - old behavior breaks perl wrappers (e.g. _compile()) on OpenSuSE 11.0
+     - workaround: GString data is copied to a new (char*) locally allocated with malloc()
+   + automaton I/O: changed header struct; added hacks for v0.0.9 header detection & parsing
+   + fixed an overflow bug in default gfsmio_getdelim() func
+   + added at&t-style escaped-string paring function: gfsm_alphabet_att_string_to_labels()
+     - wrapper:gfsm_alphabet_generic_string_to_labels()
+       ~ choose character-wise or att-style parsing via 'att_mode' flag
+     - added '--att-mode', '--map-mode', '--quiet' options to gfsmlabels
+   + moved gfsmArcList to a native linked-list type, rather than GSList
+     - saves 1 pointer per arc
+     - adapted some code from glib/gslist.c (sort, remove_link, etc)
+   + moved autoheader config file to gfsmAutoConfig.h
+     - added header-safe gfsmConfig.h hack to "safely" read in autoheader config
+     - requires clobbering any existing autoheader type macros with gfsmNoConfig.h
+       ~ there are better ways of doing this (e.g. sed), but this should suffice for most purposes
+   + altered behavior of gfsm_automaton_copy_shallow(), gfsm_automaton_shadow()
+     - root state id is no longer copied: not considered 'shallow' data
+   + moved most simple accessor function code from macros to 'static inline' defined in *.hi
+     - added configure option '--disable-inline' to disable function inlining
+
+v0.0.9 Fri, 23 Nov 2007 22:43:52 +0100
+   + added "source" field to gfsmArc: source gfsmStateId
+     - fixed gfsm_automaton_reverse() and gfsmReverseArcIndex to use new feature
+     - added additional argument to various methods in gfsmArc.h to deal with new datum
+   + added shell tool gfsmindex, source files gfsmIndexed.[ch], gfsmIndexedIO.[ch]
+     - the "right way" to do this would be to go for a truly abstract automaton API,
+       but the price (virtualization, extraneous flag & limit checking, etc.) is daunting
+   + changed static int<->pointer casts to GPOINTER_TO_(U)INT, G(U)INT_TO_POINTER
+   + fixed gfsmWeight-related segfault bugs on 64-bit linux
+     - gfsm_weight2ptr() and gfsm_ptr2weight() are now implemented as true functions
+       using a "hidden" union type gfsmWeightOrPointer to handle memory stuff
+     - this happily also allows gcc to compile without -fno-strict-aliasing
+   + fixed bug reported by Alexis Nasr in gfsm_pointer_alphabet_new() macro 
+   + fixed nasty bug in gfsm_alphabet_load_handle() and gfsmio_getc() causing
+     char decimal 255 to return as EOF
+   + re-implemented gfsm_automaton_compose() using implicit Mohri-Pereira-Riley filter
+   + fixed output-filename parsing bug in gfsmlabels
+   + added check for fsm->states->len==0 in is_cyclic(), fixes bug in gfsminfo
+     for empty automata created with gfsm_automaton_copy_shallow() (aka 'shadow')
+     - the real problem here is probably that copy_shallow() also copies root_id, even
+       though the corresponding state doesn't exist
+   + added gfsmArcIter copy() and clone() methods
+
+v0.0.9-pre? Mon, 29 Oct 2007 12:54:19 +0100
+   + exposed guts of gfsm_automaton_compose()
+     - compose_prepare() into compose_old_prepare_fsm1(), compose_old_prepare_fsm2()
+     - should make it easier to hack a cascade implementation
+
+v0.0.8 Thu, 15 Feb 2007 12:05:41 +0100
+   + updated build system to build more cleanly on non-development systems
+     - e.g. missing optgen.perl, flex, bison, pod2x, perl, etc.
+   + added gfsm.magic snippet for /etc/magic
+     - added 'install-magic' and 'uninstall-magic' targets for
+       manual magic maintainance, since there seems to be no good and safe
+       way to do this automagically (ugh)...
+   + added support for final weights
+   + changed binary format (backwards-compatible with dispatch function)
+   + added final-weight operations final_weight_(plus|times)()
+   + added optional(), replace(), insert_automaton()
+   + added lookup_viterbi(), viterbi_trellis_paths(), viterbi_trellis_bestpath()
+   + fixed a bug in gfsm_automaton_renumber_states()
+   + fixed a really stupid bug in gfsm_arclist_insert_link() for sorted insertion
+   + fixed some bugs in gfsm_automaton_rmepsilon()
+   + fixed an epsilon-related bug in compose() and intersect()
+   + fixed another epsilon-related bug in compose()
+     - implemented algorithm from:
+	  Mohri, Pereira, & Riley (1996), "Weighted Automata in Text and Speech
+	  Processing", Proc. ECAI '96, John Wiley & Sons, Ltd.
+     - calling conventions changed for compose_full()
+   + added gfsmScanner.[ch], gfsmRegexCompiler.[ch]
+   + added gfsmTrie, (quasi-)deterministic input acceptor (i/o pairs)
+     - currently geared towards storing frequencies
+   + added gfsmIO.[ch] : abstract I/O layer
+     - includes basic zlib compression support
+     - currently used only for text & binary automaton I/O, also text alphabet I/O
+     - TODO: use I/O layer for alphabet draw methods?  regex compiler?
+   + added gnulib code for vasprintf(), getdelim()
+     - removed old gfsmCompat.h hack
+
+v0.0.7 Sun, 20 Nov 2005 14:39:33 +0100
+   + added lookup(), paths(), path<->string conversion functions
+   + added semiring type "plog" (positive logs), added stable gfsm_log_add() function
+   + added intersect(), compose(), difference(), product(), rmepsilon() operations
+   + gobble less memory on load_bin_file() -- load states & arcs incrementally
+     - doing this right would require a stored binary file incompatibility, currently hacked.
+   + fixed a number of small bugs
+
+v0.0.6 Mon, 12 Sep 2005 01:45:46 +0200
+   + added mingw32 patch (getline)
+
+v0.0.5 Wed, 22 Sep 2004 00:23:49 +0200
+   + removed references to file "LICENSE" in header comments
+   + fixed small size bug in clear() for gfsmUserAlphabet
+   + added key-stringification to gfsm_automaton_draw() methods
+
+v0.0.4 Tue, 14 Sep 2004 15:57:56 +0200
+   + fixed bug in gfsm_alphabet_size() for user alphabets
+
+v0.0.3 Mon, 13 Sep 2004 10:25:23 +0200
+   + added some algebraic operations, fixed some bugs
+
+v0.0.2 Thu,  2 Sep 2004 17:34:18 +0200
+   + basic accessors and algebra
+
+v0.0.1 Tue, 24 Aug 2004 11:34:59 +0200
+   + created

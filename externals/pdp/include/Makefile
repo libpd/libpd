@@ -1,0 +1,6 @@
+current:
+
+
+clean:
+	rm -f *~
+

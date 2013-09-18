@@ -1,0 +1,66 @@
+#N canvas 0 26 480 482 10;
+#X obj 187 324 ifeel /dev/input/ifeel0;
+#X obj 242 224 hsl 128 20 0 255 0 0 empty empty interval_(0-255) 6
+10 1 10 -225271 -1 -1 0 0;
+#X obj 294 253 hsl 128 20 0 255 0 0 empty empty count_(0-255) 6 10
+1 10 -261681 -1 -1 0 0;
+#X obj 346 282 hsl 128 20 0 1 0 0 empty empty strength_(0-1) 6 10 1
+10 -261689 -1 -1 0 0;
+#X obj 182 46 bng 25 250 50 0 empty empty empty 0 -6 0 8 -24198 -1
+-1;
+#X obj 226 46 bng 25 250 50 0 empty empty empty 0 -6 0 8 -258699 -1
+-1;
+#X msg 226 76 stop;
+#X msg 182 76 start;
+#X obj 343 305 nbx 5 14 -1e+37 1e+37 0 0 pack_bang_env empty empty
+0 -6 0 10 -233017 -1 -1 0 256;
+#X obj 291 276 nbx 3 14 -1e+37 1e+37 0 0 pack_bang_env empty empty
+0 -6 0 10 -233017 -1 -1 0 256;
+#X obj 239 247 nbx 3 14 -1e+37 1e+37 0 0 pack_bang_env empty empty
+0 -6 0 10 -233017 -1 -1 0 256;
+#X obj 3 4 cnv 15 470 30 empty empty [ifeel] 4 12 1 16 -228992 -66577
+0;
+#X text 73 10 control the pulse in an iFeel mouse;
+#X text 37 359 If you feed data to the ifeel mouse too quickly \, it
+has a tendency to crash the whole machine. I suspect a bug in the kernel
+module ifeel.o.;
+#X text 13 449 by Hans-Christoph Steiner <hans@eds.org>;
+#X obj 324 416 pddp/pddplink ../all_about_haptics.pd -text all_about_haptics
+;
+#X text 201 417 For more info:;
+#X msg 251 168 strength 0.56;
+#X msg 234 124 interval 73;
+#X msg 243 147 count 14;
+#X msg 26 271 command 50 10 1;
+#X text 19 223 interval count strength;
+#X text 1 205 Or give a single command:;
+#X msg 26 249 command 25 255 1;
+#X msg 26 293 command 0 0 0;
+#N canvas 280 175 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control user_input;
+#X text 12 45 DESCRIPTION control the pulse in an iFeel mouse;
+#X text 12 65 INLET_0 start stop command interval count strength;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X restore 430 460 pd META;
+#X connect 1 0 10 0;
+#X connect 2 0 9 0;
+#X connect 3 0 8 0;
+#X connect 4 0 7 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 3;
+#X connect 9 0 0 2;
+#X connect 10 0 0 1;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X connect 19 0 0 0;
+#X connect 20 0 0 0;
+#X connect 23 0 0 0;
+#X connect 24 0 0 0;

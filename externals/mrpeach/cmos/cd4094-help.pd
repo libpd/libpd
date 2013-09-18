@@ -1,0 +1,49 @@
+#N canvas 657 97 532 308 12;
+#X obj 130 135 cd4094 shift register;
+#X obj 130 173 tgl 15 0 empty empty Q1 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 148 189 tgl 15 0 empty empty Q2 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 166 173 tgl 15 0 empty empty Q3 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 184 189 tgl 15 0 empty empty Q4 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 202 173 tgl 15 0 empty empty Q5 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 220 189 tgl 15 0 empty empty Q6 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 238 173 tgl 15 0 empty empty Q7 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 256 189 tgl 15 0 empty empty Q8 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 274 173 tgl 15 0 empty empty QS 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 292 189 tgl 15 0 empty empty Q'S 17 7 0 10 -24198 -123526 -1
+0 1;
+#X obj 130 51 tgl 15 0 empty empty CLOCK 17 7 0 10 -258699 -42246 -1
+1 1;
+#X obj 184 73 tgl 15 0 empty empty STROBE 17 7 0 10 -24198 -143491
+-1 1 1;
+#X obj 238 93 tgl 15 0 empty empty DATA 17 7 0 10 -24198 -143491 -1
+0 1;
+#X obj 293 110 tgl 15 0 empty empty OUTPUT_ENABLE 17 7 0 10 -24198
+-143491 -1 1 1;
+#X text 52 10 cd4094 emulates the CMOS shift register;
+#X text 166 239 20030313_MartinPeach;
+#X text 200 48 0 to 1 transition clocks data...;
+#X text 255 70 ...only if strobe is 1;
+#X text 316 121 enables outputs Q1-Q8.;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 0 3 4 0;
+#X connect 0 4 5 0;
+#X connect 0 5 6 0;
+#X connect 0 6 7 0;
+#X connect 0 7 8 0;
+#X connect 0 8 9 0;
+#X connect 0 9 10 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 1;
+#X connect 13 0 0 2;
+#X connect 14 0 0 3;

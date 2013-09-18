@@ -1,0 +1,22 @@
+#N canvas 416 120 513 409 10;
+#X obj 141 168 s \$0.foo;
+#X msg 46 120 bar baz;
+#X obj 60 320 dynreceive \$0.foo;
+#X floatatom 122 123 5 0 0 0 - - -;
+#X symbolatom 177 125 10 0 0 0 - - -;
+#X obj 267 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 43 86 1) send some symbols:;
+#X text 45 240 2) try to change the receive symbol:;
+#X msg 60 287 set xyz;
+#X msg 312 306 \; xyz 1 2 3;
+#X obj 60 350 print out;
+#X text 39 23 Works like [receive] \, but allows to dynamically set
+(or clear) the receive symbol.;
+#X text 139 288 <--;
+#X connect 1 0 0 0;
+#X connect 2 0 10 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 8 0 2 0;

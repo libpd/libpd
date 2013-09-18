@@ -1,0 +1,26 @@
+#N canvas 407 51 741 577 10;
+#X obj 52 241 testtools/unit-test-frame;
+#X obj 52 176 loadbang;
+#X msg 52 207 vcog 0;
+#X obj 373 180 smlib/vcog;
+#X obj 373 150 pack f f f f;
+#X obj 373 76 t f f f f;
+#X obj 396 110 + 1;
+#X obj 425 109 + 2;
+#X obj 454 109 + 3;
+#X text 44 39 'vcog computes the center of gravity of a list of floats'
+;
+#X obj 373 212 / 3.3;
+#X connect 0 2 5 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 10 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 5 1 6 0;
+#X connect 5 2 7 0;
+#X connect 5 3 8 0;
+#X connect 6 0 4 1;
+#X connect 7 0 4 2;
+#X connect 8 0 4 3;
+#X connect 10 0 0 1;

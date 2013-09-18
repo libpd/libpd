@@ -1,0 +1,66 @@
+#N canvas 0 26 725 559 10;
+#X obj 49 359 snapshot~;
+#X obj 49 334 metro 10;
+#X obj 49 136 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 49 386 10 0 0 0 - - -;
+#X text 173 107 integer message as input;
+#X msg 174 135 60;
+#X obj 174 209 linedrive 127 1 1.06 30;
+#X text 298 283 outputs two values which can be sent to line~ as a
+destination and a time in milliseconds;
+#X text 372 135 integer message to change last argument \, which is
+time in milliseconds;
+#X text 348 203 argument1 is the reference input (int) \; argument2
+is the reference output (float) \; argument3 is the base value (float)
+\; argument4 is the time value in milliseconds (int);
+#X text 232 444 The output is a list of two values \, the second one
+being equal to argument4 and can be sent directly to a line~ 0;
+#X obj 113 290 line~ 0;
+#X text 42 121 comment;
+#X floatatom 330 142 5 0 0 0 - - -;
+#X msg 113 135 0;
+#X obj 34 14 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 13 525 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 12 539 ___________________________________________________
+;
+#X text 35 76 I guess that's largely millers linedrive help patch:
+;
+#X text 35 63 I found most of this in an older fts help .pat file \,
+;
+#X obj 174 291 print linedrive;
+#X obj 36 30 linedrive;
+#X text 109 31 scale numnbers exponentially for use with;
+#X obj 402 27 line~;
+#N canvas 362 237 494 368 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 155 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 55 DESCRIPTION scale numbers exponentially for use with
+[line~];
+#X text 12 95 INLET_1 float;
+#X text 12 75 INLET_0 float list;
+#X text 12 115 OUTLET_0 list;
+#X text 12 135 AUTHOR Krzysztof Czaja;
+#X text 12 35 LICENSE SIBSD;
+#X text 12 5 KEYWORDS control max_compatible needs_work (check max/msp
+docs);
+#X restore 675 537 pd META;
+#X text 230 324 The [linedrive] object converts integers for use with
+line~. Linedrive takes integers ranging from -argument1 to +argument1
+and scales them to fall within the range -argument2 to +argument2.
+If the input equals argument1 \, the output is equal to argument value2.
+Output varies exponentially with the input depending on argument3.
+With the arguments shown \, input values between 0 and 127 are converted
+from 2*dB to linear amplitude with 127 becoming 1;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 5 0 6 0;
+#X connect 6 0 11 0;
+#X connect 6 0 20 0;
+#X connect 11 0 0 0;
+#X connect 13 0 6 1;
+#X connect 14 0 11 0;

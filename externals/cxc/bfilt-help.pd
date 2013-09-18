@@ -1,0 +1,37 @@
+#N canvas 0 31 404 226 10;
+#X floatatom 85 119 0 0 0 0 - - -;
+#X obj 57 175 print;
+#X floatatom 45 120 0 0 0 0 - - -;
+#X obj 58 146 bfilt 5;
+#X text 43 16 bfilt (at the moment) is: modulo something + select 0
+;
+#X floatatom 167 120 0 0 0 0 - - -;
+#X obj 139 176 print;
+#X floatatom 127 121 0 0 0 0 - - -;
+#X obj 140 147 bfilt2 5;
+#X obj 145 87 metro 100;
+#X msg 145 68 1;
+#X text 42 29 bfilt2: real bangfilter: bangs on first inlet \, internal
+counter \, only outputs every arg2th bang ...;
+#X msg 169 67 0;
+#N canvas 176 129 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 45 DESCRIPTION bang on first inlet \, internal counter \,
+only outputs ever arg2th bang;
+#X text 12 5 KEYWORDS control filter bang_op;
+#X text 12 85 INLET_0 bang float;
+#X text 12 105 INLET_1 float;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR jdl@xdv.org;
+#X text 12 125 OUTLET_0 bang;
+#X restore 352 205 pd META;
+#X connect 0 0 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 5 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;
+#X connect 12 0 9 0;

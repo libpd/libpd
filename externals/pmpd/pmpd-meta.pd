@@ -1,0 +1,8 @@
+#N canvas 10 10 513 190 10;
+#X text 11 115 LICENSE GNU GPL;
+#X text 10 38 AUTHOR Cyrille Henry;
+#X text 9 135 VERSION 0.9;
+#X text 10 18 NAME pmpd;
+#X text 10 58 DESCRIPTION Pmpd is a library for Pure Data allowing
+the synthesis of control data through the means of particular physics
+modelling.;

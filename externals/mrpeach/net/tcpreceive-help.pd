@@ -1,0 +1,34 @@
+#N canvas 1 53 478 294 12;
+#X floatatom 206 144 3 0 0 0 - - -;
+#X floatatom 233 144 3 0 0 0 - - -;
+#X floatatom 260 144 3 0 0 0 - - -;
+#X floatatom 287 144 3 0 0 0 - - -;
+#X text 163 143 from;
+#X obj 155 185 print message;
+#X obj 155 57 tcpreceive 9997;
+#X floatatom 257 96 5 0 0 0 - - -;
+#X text 303 94 connections;
+#X text 32 16 tcpreceive receives bytes over a tcp connection.;
+#X floatatom 315 144 5 0 0 0 - - -;
+#X obj 206 117 unpack 0 0 0 0 0;
+#X text 265 235 Martin Peach 2008/11/05;
+#N canvas 529 268 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Martin Peach;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 5 KEYWORDS control network;
+#X text 12 45 DESCRIPTION tcpreceive receives bytes over a tcp connection
+;
+#X text 12 65 OUTLET_0 anything;
+#X text 12 85 OUTLET_1 list;
+#X text 12 105 OUTLET_2 float;
+#X restore 421 264 pd META;
+#X connect 6 0 5 0;
+#X connect 6 1 11 0;
+#X connect 6 2 7 0;
+#X connect 11 0 0 0;
+#X connect 11 1 1 0;
+#X connect 11 2 2 0;
+#X connect 11 3 3 0;
+#X connect 11 4 10 0;

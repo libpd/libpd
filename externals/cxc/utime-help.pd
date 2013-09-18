@@ -1,0 +1,21 @@
+#N canvas 0 31 347 149 10;
+#X obj 42 74 utime;
+#X msg 42 35 bang;
+#X floatatom 69 102 8 0 0 0 - - -;
+#X floatatom 42 129 20 0 0 0 - - -;
+#X text 25 8 output seconds since epoch and microsecond fraction;
+#N canvas 176 129 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 5 KEYWORDS control time;
+#X text 12 45 DESCRIPTION output seconds since epoch and microsecond
+fraction;
+#X text 12 75 INLET_0 bang;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 OUTLET_1 float;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR jdl@xdv.org;
+#X restore 297 128 pd META;
+#X connect 0 0 3 0;
+#X connect 0 1 2 0;
+#X connect 1 0 0 0;

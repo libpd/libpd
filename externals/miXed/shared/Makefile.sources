@@ -1,0 +1,2 @@
+OTHER_SOURCES = \
+shared.c

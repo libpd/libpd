@@ -1,0 +1,24 @@
+#N canvas 445 76 626 425 12;
+#X obj 281 179 widget listbox lb -width 32 -height 12 -bg black -fg
+white @bang ::toxy::lbcommand .- .|;
+#X obj 20 295 tow . listbox lb;
+#X obj 20 23 loadbang;
+#X obj 236 179 widget button b -text ok -height 1 -bg black -fg white
+-command .<.>;
+#X obj 84 179 tow . button b;
+#X msg 20 337;
+#X msg 54 257 tot puts [.- size];
+#X msg 44 222 tot .- delete 0 end;
+#X msg 33 179 bang;
+#X msg 20 57 tot proc ::toxy::lbcommand .(path target.) .(if .([$path
+curselection] != "".) .(pd [concat $target _cb set [$path get [$path
+curselection]] .`.:].).) \, @vis if .([.- size] == 0.) .(foreach fn
+[lsort [glob *]] .(.- insert end $fn.) .: bind .- <Double-Button-1>
+.(::toxy::lbcommand .- .|.).) \, @bang ::toxy::lbcommand .- .|;
+#X connect 1 0 5 0;
+#X connect 2 0 9 0;
+#X connect 4 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 1 0;

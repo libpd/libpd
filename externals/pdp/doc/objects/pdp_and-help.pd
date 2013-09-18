@@ -1,0 +1,24 @@
+#N canvas 552 356 511 383 10;
+#X msg 77 38 start;
+#X msg 124 38 stop;
+#X obj 77 70 pdp_help_input;
+#X obj 77 322 pdp_help_output;
+#X obj 121 246 pdp_reg;
+#X obj 196 183 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 229 181 click here;
+#X obj 77 163 pdp_gain;
+#X floatatom 128 135 5 0 0;
+#X msg 128 109 0.5;
+#X obj 77 279 pdp_and;
+#X text 229 283 bitwise and;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 4 0 10 1;
+#X connect 5 0 4 0;
+#X connect 7 0 10 0;
+#X connect 7 0 4 1;
+#X connect 8 0 7 1;
+#X connect 9 0 8 0;
+#X connect 10 0 3 0;

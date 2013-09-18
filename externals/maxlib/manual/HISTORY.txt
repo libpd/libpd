@@ -1,0 +1,100 @@
+version history of maxlib library for pure-data
+
+v 1.5.2 (17. december 2003):
+- modified netclient for not to drop received data: use of syspollfn
+  instead of clock to poll for incoming data, circular recv buffer
+
+v 1.5 (18. october 2003):
+- added some usefull features to arraycopy (i.e. copying just parts of
+  an array and copying to specified position in destination array)
+- new object: nchange
+- IRIX 6.5 port (for GCC 3.3)
+- OS X binary (Jaguar 10.2.6)
+
+v 1.4 (22. may 2003):
+- updated sources to compile with Pd0.37-test4
+- new object: arraycopy
+
+v 1.3 (12. april 2003):
+- new objects: sync listfifo
+- all setup routines renamed to maxlib_<object>_setup() to avoid name
+  clashes, old names still work via class_addcreator()
+- some improvements for the help files
+
+v 1.2 (30. january 2003):
+- new objects: unroute urn split wrap rewrap timebang
+- another fix for the makefile
+- fixed a bug in netserver (sockets remained open when netserver closed) 
+- added a 'prepend' option (with additional creation argument) to remote,
+  patch was supplied by Maurizio Umberto Puxeddu
+
+v 1.1b2 (23. oktober 2002):
+- corrected two small bugs in the makefile (linux only!), thanks to 
+  Hans-Christoph Steiner
+
+v 1.1b (12. september 2002):
+- new object: limit
+- match and speedlim have been replaced with the objects from cyclone library
+- deleted the (unwanted) debugging printout from nroute
+
+v 1.1 (26. august 2002):
+- new objects: nroute, pong, edge
+- arbran 0.1b now allows to (re-)set the arrays dynamically
+- match 0.3 now matches any type of data (floats, lists, symbols, anything)
+- scale 0.2 allows to dynamically change the creation arguments and to choose
+  between linear (default) and exponential scale
+- MSVC++ workspace contains configuration for Intel Compiler with Pentium 4 
+  optimizations ("maxlib - Win32 Intel")
+- makefile and binary release for Mac OS X (10.1.5)
+- BUG FIX: corrected path to helpfiles in rand objects
+- BUG FIX: corrected makefile to work under Linux again
+
+v 1.0 (9th august 2002):
+- new objects: netserver, netclient, arbran, beta, bilex, cauchy, expo, 
+  gauss, linear, poisson, triang, weibull
+- the help patches now live in doc/5.reference/maxlib, thanks to 
+  Frank Barknecht for suggesting that and for modifying the sources
+
+v 0.9 (25th july 2002):
+- new objects: tilt gestalt temperature
+
+v 0.8b (21st july 2002):
+- now compiles on Linux, thanks to Martin Pi
+- new objects: listfunnel
+
+v 0.8 (4th july 2002):
+- new objects: history netrec scale delta velocity
+- some small changes to speedlim
+
+v 0.7 (24th june 2002):
+- fixed a bug in average, thanks to João Miguel Pais
+- new chord algorhythm: supports up to 67 chord types now
+
+v 0.6 (7th june 2002):
+- added objects: beat rhythm
+
+v 0.5 (28th mai 2002):
+- added objects: netdist mlife subst
+- netdist uses the pthreads-win32 library for POSIX multithreading
+  under NT, thus at least pd0.35-test17 is needed under NT
+- made a MSVC++ 6.0 project file
+
+v 0.4 (16th mai 2002):
+- match now also takes lists of floats
+- added objects: dist remote step
+
+v 0.3b (14th mai 2002):
+- fixed a zero-division bug in pulse, thanks to Frank Barknecht
+
+v 0.3 (13th mai 2002):
+- added objects: divmod, fifo, iso, lifo, pulse
+- made divide, minus, multi & plus 'multi-inlet-ready'
+
+v 0.2 (7th mai 2002):
+- added objects: average, chord, score
+
+v 0.1b (24th apr. 2002):
+- added objects: divide, minus, multi, plus
+
+v 0.1a (15th apr. 2002, first public release):
+- included objects: borax, ignore, match, pitch, speedlim

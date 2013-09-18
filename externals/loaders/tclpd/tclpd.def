@@ -1,0 +1,4 @@
+LIBRARY "tclpd.dll"
+
+EXPORTS
+tclpd_setup

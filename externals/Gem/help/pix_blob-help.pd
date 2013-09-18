@@ -1,0 +1,38 @@
+#N canvas 0 0 634 679 10;
+#X msg 142 104 gemList;
+#X msg 142 307 gemList;
+#X text 169 16 part of GEM;
+#X floatatom 186 256 3 0 0;
+#X floatatom 164 281 3 0 0;
+#X obj 142 207 pix_blob;
+#X text 176 43 [pix_blob];
+#X text 93 73 get the "center of gravity" of an image;
+#X msg 175 133 <mode>;
+#X msg 209 173 <color-weights>;
+#X floatatom 209 232 3 0 0;
+#X text 250 231 size;
+#X text 232 261 Y;
+#X text 210 282 X;
+#X text 52 330 [pix_blob] will calculate the "center-of-gravity" of
+a certain (combination of) channel(s).;
+#X text 52 391 You can choose the combination of channels used for
+the calculation by changing the <mode>. Valid modes are: 0(gray)(default)
+\, 1(red) \, 2(green) \, 3(blue) \, 4(alpha);
+#X text 56 450 pE: selecting "red" (1) will weight position of each
+pixel with its red-value. Pixels with "more" red will be weighted stronger
+\, thus moving the "center of gravity" -- the blob position -- nearer
+to themselves. The total amount of "red" in the image defines the size
+of the blob.;
+#X text 58 545 You can specify a custom combination of channels with
+<color-weights>. pE: "1 0 2" will give more weight to the blue-channel
+than to the red-channel \, green- and alpha-values will be ignored.
+;
+#X text 56 617 Specifing only one single color-weight <w> \, is the
+same as "<w> <w> <w> 0";
+#X connect 0 0 5 0;
+#X connect 5 0 1 0;
+#X connect 5 1 4 0;
+#X connect 5 2 3 0;
+#X connect 5 3 10 0;
+#X connect 8 0 5 1;
+#X connect 9 0 5 2;

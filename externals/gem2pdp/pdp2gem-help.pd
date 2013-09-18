@@ -1,0 +1,129 @@
+#N canvas 100 128 824 539 10;
+#X declare -lib Gem -lib pdp;
+#X obj 30 6 cnv 15 740 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 132 67 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 136 100 loop \$1;
+#X obj 117 99 tgl 15 0 empty empty empty 20 8 0 8 -262144 -1 -1 0 1
+;
+#X msg 197 58 open \$1;
+#X obj 197 38 openpanel;
+#X obj 176 38 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X floatatom 268 67 5 0 0 0 - - -;
+#X msg 156 68 stop;
+#X obj 198 79 metro 70;
+#X text 40 9 PDP field;
+#X text 146 16 Play a movie (.mov);
+#X text 75 64 Start;
+#X obj 197 100 pdp_qt;
+#X obj 30 255 cnv 15 740 250 empty empty empty 20 12 0 14 -101120 -66577
+0;
+#X msg 304 293 -1 -2 -1 -2 8 -2 1 -2 1;
+#X obj 197 317 pix_convolve 3 3;
+#X floatatom 232 448 5 0 0 0 - - -;
+#X text 365 449 pdp2gem : pdp to gem bridge;
+#X text 365 467 written by Yves Degoyon (ydegoyon@free.fr);
+#X text 41 267 GEM field;
+#X obj 197 375 rotateXYZ;
+#X obj 325 358 metro 10;
+#X obj 292 379 + 1;
+#X obj 291 359 f;
+#X msg 325 379 bang;
+#X obj 198 446 cube;
+#X obj 197 350 pix_texture;
+#X obj 173 301 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 326 339 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 197 422 translateXYZ;
+#X floatatom 219 399 5 0 0 0 - - -;
+#X floatatom 292 424 5 0 0 0 - - -;
+#X floatatom 265 398 5 0 0 0 - - -;
+#X obj 656 271 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 454 304 gemwin 0;
+#X obj 131 164 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 131 140 create \, 1 \, lighting 1;
+#X obj 298 149 world_light;
+#X obj 298 122 gemhead;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 9 0 8 0;
+#X restore 661 309 pd gemwin;
+#X msg 661 290 create;
+#X text 657 270 Create window:;
+#X obj 30 129 cnv 15 740 120 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X text 67 230 ============================================================
+;
+#X obj 118 177 gemhead;
+#X text 370 150 pdp2gem must be inserted in GEM's rendering chain;
+#X text 68 137 ============================================================
+;
+#X msg 218 197 colorspace YUV;
+#X obj 196 215 pdp2gem;
+#X msg 214 177 colorspace RGB;
+#X msg 209 154 colorspace RGBA;
+#X text 369 176 the colorspace indicates what format to transform pdp's
+native YV12 to...YUV is default (and fastest);
+#X obj 420 98 pdp_v4l;
+#X obj 420 72 metro 70;
+#X obj 471 40 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 420 40 stop;
+#X text 436 16 Live;
+#X text 379 481 and James Tittle (tigital@mac.com);
+#X obj 634 13 declare -lib Gem -lib pdp;
+#X connect 1 0 9 0;
+#X connect 2 0 13 0;
+#X connect 3 0 2 0;
+#X connect 4 0 13 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 9 1;
+#X connect 8 0 9 0;
+#X connect 9 0 13 0;
+#X connect 13 0 44 0;
+#X connect 15 0 16 2;
+#X connect 16 0 27 0;
+#X connect 17 0 26 1;
+#X connect 21 0 30 0;
+#X connect 22 0 24 0;
+#X connect 23 0 24 1;
+#X connect 24 0 23 0;
+#X connect 24 0 21 2;
+#X connect 24 0 21 1;
+#X connect 25 0 22 0;
+#X connect 27 0 21 0;
+#X connect 28 0 16 0;
+#X connect 29 0 22 0;
+#X connect 30 0 26 0;
+#X connect 31 0 30 1;
+#X connect 32 0 30 3;
+#X connect 33 0 30 2;
+#X connect 35 0 36 0;
+#X connect 36 0 35 0;
+#X connect 40 0 44 0;
+#X connect 43 0 44 0;
+#X connect 44 0 16 0;
+#X connect 45 0 44 0;
+#X connect 46 0 44 0;
+#X connect 48 0 44 0;
+#X connect 49 0 48 0;
+#X connect 50 0 49 0;
+#X connect 51 0 49 0;

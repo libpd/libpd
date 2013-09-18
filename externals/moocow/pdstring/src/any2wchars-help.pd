@@ -1,0 +1,49 @@
+#N canvas 0 26 636 478 10;
+#X msg 109 197 0;
+#X msg 77 197 -1;
+#X text 19 47 INLETS:;
+#X text 31 61 1 - pd messages;
+#X text 247 49 OUTLETS:;
+#X floatatom 44 147 8 0 0 0 - - -;
+#X symbolatom 34 125 10 0 0 0 - - -;
+#X text 189 125 ... no special handling for symbols;
+#X text 188 103 anything can be converted to a list...;
+#X text 190 147 ... but "float" selector is silently dropped;
+#X msg 25 104 A B C;
+#X text 182 312 First argument: initial buffer size (length of object-local
+text buffer). This should get re-allocated when necessary. Specify
+0 (zero) to use the default value.;
+#X text 320 458 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 19 439 SEE ALSO:;
+#X msg 139 197 42;
+#X text 31 75 2 - EOS character (float);
+#X obj 100 438 pdstring;
+#X obj 25 314 any2wchars 128 -1;
+#X obj 25 400 print any2wchars-help;
+#X text 21 29 SYNTAX: any2wchars [INITIAL_BUFSIZE [EOS_CHAR]];
+#X text 49 5 any2wchars : convert pd messages to a list of wchar_t
+values;
+#X text 263 63 1 - lists of wchar_t-valued floats;
+#X text 184 194 The second inlet is as for [any2bytes];
+#X text 184 367 Second argument: initial EOS character. See [any2bytes].
+;
+#X obj 168 438 locale;
+#N canvas 260 141 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 5 KEYWORDS control conversion symbol_op;
+#X text 12 45 DESCRIPTION convert pd messages to a list of wchar_t
+values;
+#X restore 583 446 pd META;
+#X connect 0 0 17 1;
+#X connect 1 0 17 1;
+#X connect 5 0 17 0;
+#X connect 6 0 17 0;
+#X connect 10 0 17 0;
+#X connect 14 0 17 1;
+#X connect 17 0 18 0;

@@ -97,4 +97,3 @@ void bag_setup(void)
     class_addmethod(bag_class, (t_method)bag_flush, gensym("flush"), 0);
     class_addmethod(bag_class, (t_method)bag_clear, gensym("clear"), 0);
 }
-

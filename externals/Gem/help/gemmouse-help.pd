@@ -1,0 +1,57 @@
+#N canvas 135 33 925 545 10;
+#X text 135 37 part of GEM;
+#X text 87 100 mouse events in the GEM window;
+#X text 80 493 The button outlets send a 1 when the specified button
+is pressed and a 0 when it is released.;
+#X text 152 70 [gemmouse];
+#X text 74 366 [gemmouse] sends out mouse events which occur in the
+GEM window. The X and Y Position go from 0 to the size of the window
+(which can be set via the gemwin object).;
+#X text 74 418 You can also set some normalization of the output-coordinates
+with arguments.;
+#X obj 406 94 gemmouse 1 2;
+#X floatatom 406 149 9 0 0 1 X-position - -;
+#X floatatom 425 121 8 0 0 1 Y-position - -;
+#X text 562 119 (normalized to 0..2);
+#X text 561 148 (normalized to 0..1);
+#X obj 78 125 cnv 15 100 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 91 143 gemmouse;
+#X floatatom 91 287 9 0 0 1 X-position - -;
+#X floatatom 103 259 8 0 0 1 Y-position - -;
+#X floatatom 116 233 2 0 0 1 left-Button - -;
+#X floatatom 129 213 2 0 0 1 middle-Button - -;
+#X floatatom 142 193 2 0 0 1 right-Button - -;
+#X obj 608 346 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 155 70 set create;
+#X msg 197 134 destroy;
+#X msg 132 112 reset \, create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 613 385 pd gemwin;
+#X msg 613 366 create;
+#X text 609 345 Create window:;
+#X text 515 318 create a GEM-window and move the mouse inside it:;
+#X connect 6 0 7 0;
+#X connect 6 1 8 0;
+#X connect 12 0 13 0;
+#X connect 12 1 14 0;
+#X connect 12 2 15 0;
+#X connect 12 3 16 0;
+#X connect 12 4 17 0;
+#X connect 19 0 20 0;
+#X connect 20 0 19 0;

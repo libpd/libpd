@@ -1,0 +1,15 @@
+
+AUTOMAKE_OPTIONS = foreign
+AM_CPPFLAGS = -I$(top_srcdir)
+
+noinst_LTLIBRARIES = libNongeos.la
+
+libNongeos_la_CXXFLAGS =
+libNongeos_la_LIBADD   =
+
+# RTE flags
+libNongeos_la_CXXFLAGS += @GEM_RTE_CFLAGS@
+libNongeos_la_LIBADD   += @GEM_RTE_LIBS@
+
+libNongeos_la_SOURCES= @SOURCES@
+

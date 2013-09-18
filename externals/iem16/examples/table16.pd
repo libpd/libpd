@@ -1,0 +1,60 @@
+#N canvas 37 0 856 640 10;
+#X obj 30 21 table16;
+#X text 97 22 16bit-table;
+#X text 32 51 [table16] stores 16bit values. The normal pd-tables ([table]
+\, array) store the values as floating-points. While floating points
+are (often) more precise (this is of course not really true... \, esp.
+when comparing integer(4byte) to floating-point.) they use a lot of
+memory (4byte).;
+#X text 32 121 [table16] uses only 16bit (2bytes) to store the values
+\, which is half of the memory.;
+#X text 32 155 However there are 2 major drawbacks;
+#X text 53 172 a) less precision means less SNR - you can only store
+65536 different values \, but this is what CD-quality is (should be
+good enough for most musical applications);
+#X text 55 221 b) the 65536 values (-32678..+32767) are mapped to -1.0..+1.0!
+This means you cannot store signals that exceed this magical limit.
+Please make sure \, that the signal has correct values (use [clip~])
+or the unclipped values will get wrapped!;
+#X text 20 323 There are several objects to access the data of [table16]:
+;
+#X obj 55 344 tab16write~;
+#X obj 55 363 tab16read4~;
+#X obj 279 363 tab16read;
+#X obj 279 344 tab16write;
+#X obj 164 344 tab16send~;
+#X obj 164 363 tab16receive~;
+#X obj 55 382 tab16read~;
+#X text 19 410 The message-objects [tab16read]/[tab16write] store the
+values directly (-32767..+32768) \, while the signal-objects convert
+the floats -1.0..+1.0 to the correct values or vice-versa.;
+#X text 270 21 updated for iem16 version1.0;
+#X msg 496 53 resize 100;
+#X obj 496 308 table16 array16 99;
+#N canvas 0 0 450 300 graph6 0;
+#X array array100 10 float 1;
+#A 0 1 2 3 4 5 6 7 8 9 0;
+#X coords 0 10 9 0 200 140 1;
+#X restore 477 452 graph;
+#X msg 478 409 \; array100 0 1 2 3 4 5 6 7 8 9;
+#X text 481 389 click to init float-array;
+#X msg 502 114 from array100;
+#X text 21 497 There is no beautiful graphical representation as with
+pd's arrays.;
+#X msg 508 139 from array100 resize;
+#X msg 516 190 from array100 20 30;
+#X msg 517 213 from array100 20 30 resize;
+#X msg 527 259 from array100 20 30 95;
+#X msg 527 279 from array100 20 30 95 resize;
+#X text 502 95 copy the data from a float-array;
+#X text 603 117 and resize the 16bit-array;
+#X text 513 173 copy floats (index20..30);
+#X text 653 192 and resize to 30-20;
+#X text 526 241 copy indexed values and insert at index95;
+#X connect 17 0 18 0;
+#X connect 22 0 18 0;
+#X connect 24 0 18 0;
+#X connect 25 0 18 0;
+#X connect 26 0 18 0;
+#X connect 27 0 18 0;
+#X connect 28 0 18 0;

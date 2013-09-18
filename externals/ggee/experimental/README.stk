@@ -1,0 +1,25 @@
+
+
+In order to compile the stk external you have to put the latest
+stk release (4.2.0) in this directory.
+
+* First compile stk
+
+if stk is compiled just do a make stk.pd_linux.
+
+
+Hint:
+You may have to set the rawwaves path in stk in so that the external
+can find them.  See the STK INSTALL file for details.
+You do not have to specify a special audio API, as audio I/O is done
+through pd.
+
+The stk configure command should be something like this:
+
+./configure RAWWAVE_PATH="/home/gary/rawwaves/"
+
+
+Guenter Geiger
+
+
+

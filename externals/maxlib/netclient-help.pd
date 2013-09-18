@@ -1,0 +1,63 @@
+#N canvas 0 26 733 465 12;
+#X floatatom 49 333 5 0 0 0 - - -;
+#X floatatom 87 298 5 0 0 0 - - -;
+#X symbolatom 164 251 10 0 0 0 - - -;
+#X text 102 332 received data;
+#X text 140 298 number of connections;
+#X msg 49 54 print;
+#X floatatom 125 272 5 0 0 0 - - -;
+#X text 183 276 socket number;
+#X msg 103 179 broadcast hallo world!;
+#X text 288 179 send to all clients;
+#X text 143 49 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X obj 49 223 netserver 3000;
+#X text 137 120 send message to client no. 1;
+#X text 256 251 client's IP address;
+#X obj 477 189 netclient;
+#X msg 498 116 connect localhost 3000;
+#X msg 511 143 disconnect;
+#X msg 477 84 send 23;
+#X floatatom 544 218 5 0 0 0 - - -;
+#X msg 83 91 send 380 17.3;
+#X floatatom 477 296 5 0 0 0 - - -;
+#X obj 600 281 print anything;
+#X obj 538 309 print list;
+#X obj 477 245 route float list;
+#X msg 98 142 client 1 23;
+#X text 204 91 "send <socketnumber> <data>";
+#X text 110 70 send message on specified socket;
+#X text 200 143 "client <clientnumber> <data>";
+#X text 48 379 This example demonstrates how to set up a client/server
+connection. Data sent by the client get's received and displayed by
+the server imediately. Or just try it the other way round...;
+#X text 38 15 netclient :: simple client that connects to netserver
+or;
+#X text 142 32 to pd's native netreceive object;
+#N canvas 518 27 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 45 DESCRIPTION simple client that connects to netserver
+or to pd's native netreceive object;
+#X text 12 5 KEYWORDS control network;
+#X text 12 85 INLET_0 send connect disconnect;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 OUTLET_1 float;
+#X restore 671 437 pd META;
+#X connect 5 0 11 0;
+#X connect 8 0 11 0;
+#X connect 11 0 0 0;
+#X connect 11 1 1 0;
+#X connect 11 2 6 0;
+#X connect 11 3 2 0;
+#X connect 14 0 23 0;
+#X connect 14 1 18 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 17 0 14 0;
+#X connect 19 0 11 0;
+#X connect 23 0 20 0;
+#X connect 23 1 22 0;
+#X connect 23 2 21 0;
+#X connect 24 0 11 0;

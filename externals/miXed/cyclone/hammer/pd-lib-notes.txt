@@ -1,0 +1,61 @@
+modifications to Joseph A. Sarlo's code (formerly part of `pd-lib')
+-------------------------------------------------------------------
+
+LATER: more testing, max-checking, resolving reentrancy, gc, etc.
+
+accum: only cosmetics
+
+bangbang:
+- if argument > 2 the array is dynamically allocated
+- if argument > 40 (max in max), a warning is printed
+- accepts any message
+
+Bucket:
+- arrays are dynamically allocated, no upper limit (max has no limit too)
+- outlets output in right-to-left order
+- added: 'set' method, 'l2r' and 'r2l' aliases
+
+buddy: coded from scratch
+- using array of proxy objects (accepting any message)
+- no upper limit for number of slots
+
+capture: coded from scratch
+- text editor, savepanel
+- any size
+- circular buffering
+
+counter (rewritten entirely):
+- using proxies to handle bangs and floats in other inlets than first
+- new `engine', counter_dobang(), coded from scratch
+- various adjustments of things that turned out to work differently in max,
+  too many to list here (and probably more are required -- please let me know!)
+
+cycle:
+- the array of outlets is dynamically allocated
+- fixing cycle_list()'s bugs
+- accepting (and sending) both floats and symbols, accepting anything
+- 'thresh' and 'set' methods
+- event-sensitive mode emulation (a temporary hack)
+
+Decode (rewritten entirely):
+- if argument > 8 the array is dynamically allocated (with a warning)
+- all outlets deliver after any action
+- outlets output in right-to-left order
+- while in all-off mode, input is stored, not ignored
+- out-of-range input is clipped, not ignored
+
+Histo (rewritten entirely):
+- creation argument added (size)
+- the array is dynamically allocated, no upper limit (max has no limit too)
+- check if input is in range, to prevent crashes :)
+- 'bang' method
+
+iter:
+- different method of memory allocation
+- dripping both floats and symbols (max4 feature)
+- 'anything' method
+
+match: coded from scratch
+- matching stream of both floats and symbols (max4 feature)
+- scanning all kinds of messages, not only separate floats
+- recognizing overlapping patterns

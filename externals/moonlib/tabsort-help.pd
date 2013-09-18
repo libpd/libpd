@@ -1,0 +1,43 @@
+#N canvas 0 31 534 403 10;
+#X text 22 332 (c) Antoine Rousseau 2001;
+#X floatatom 39 303 5 0 0 0 - - -;
+#X obj 21 19 tabsort;
+#X text 20 58 args: source_table dest_table;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array source 10 float 1;
+#A 0 -0.0571429 -0.985715 -0.942858 -0.857143 -0.757143 -0.542857 -0.171429
+0.528571 0.842858 0.914287;
+#X coords 0 1 9 -1 200 140 1;
+#X restore 51 92 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array dest 10 float 1;
+#A 0 9 8 7 0 6 5 4 3 2 1;
+#X coords 0 10 9 0 200 140 1;
+#X restore 304 89 graph;
+#X obj 39 282 tabsort source dest;
+#X msg 39 262 10;
+#X text 79 12 write to dest_table the indices of source_table's elements
+sorted by decreasing order (biggest first);
+#X text 38 248 sort the n first elements;
+#X obj 304 264 tabread dest;
+#X obj 304 285 tabread source;
+#X floatatom 304 246 5 0 0 0 - - -;
+#X floatatom 304 305 5 0 0 0 - - -;
+#X text 347 244 try it!;
+#X text 300 321 it should decrease with input;
+#N canvas 572 197 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Antoine Rousseau;
+#X text 12 135 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 95 OUTLET_0 float;
+#X text 12 5 KEYWORDS control array;
+#X text 12 75 INLET_0 float;
+#X text 12 45 DESCRIPTION write to dest_table the indices of source_table's
+elements sorted by decreasing order;
+#X restore 476 370 pd META;
+#X connect 6 0 1 0;
+#X connect 7 0 6 0;
+#X connect 10 0 11 0;
+#X connect 11 0 13 0;
+#X connect 12 0 10 0;

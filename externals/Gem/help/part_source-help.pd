@@ -1,0 +1,28 @@
+#N canvas 203 0 664 575 10;
+#X msg 180 86 gemList;
+#X text 176 62 GEM object;
+#X msg 180 195 gemList;
+#X text 260 196 partList;
+#X text 254 89 partList;
+#X obj 180 152 part_source;
+#X text 184 25 [part_source];
+#X text 51 252 add a particle-source. You will need this if you want
+any particles in your particle-system.;
+#X text 53 290 The initial argument (that can be changed) gives the
+number of particles that are emitted at each rendering-frame;
+#X msg 340 82 number_of_particles_per_frame;
+#X msg 340 107 domain;
+#X msg 340 132 <arguments>;
+#X obj 489 191 part_source 20;
+#X text 48 337 <domain>: one of "point" \, "line" \, "triangle" \,
+"plane" \, "box" \, "sphere" \, "cylinder" \, "cone" \, "blob" \, "disc"
+\, "rectangle";
+#X text 49 401 <arguments>: up to 9 floats \, defining the specified
+domain (like "x y z" for "point" \, "x1 y1 z1 x2 y2 z2" for "line"
+\, "x y z r" for "sphere" \, ...). The meaning of the arguments depends
+-of course- on the domain.;
+#X connect 0 0 5 0;
+#X connect 5 0 2 0;
+#X connect 9 0 5 1;
+#X connect 10 0 5 2;
+#X connect 11 0 5 3;

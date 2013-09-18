@@ -1,0 +1,119 @@
+#N canvas 1 53 665 618 10;
+#X obj 39 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 56 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 73 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 90 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 107 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 124 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 141 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 158 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 175 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 192 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 39 106 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 78 106 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 39 436 route 0 1 2 3 4 5 6 7 8 9 10;
+#X obj 209 467 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X text 207 308 arguments : number of moving masses \, rigidity \,
+damping;
+#X text 210 19 simple Physical model of "string";
+#X text 164 40 usefull to create different correlated output with few
+input.;
+#X text 111 113 inlet : 1 \, 2 : position of 1st mass and last mass
+;
+#X text 180 136 3 : forces apply to masses;
+#X text 180 158 4 : rigidity;
+#X text 180 178 5 : damping;
+#X msg 117 279 3 1;
+#X text 148 281 mass 3 \, force = 1;
+#X obj 306 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 323 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 7900 1;
+#X obj 340 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 357 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5500 1;
+#X obj 374 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 300 1;
+#X obj 391 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 408 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 425 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 2600 1;
+#X obj 442 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 459 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 8100 1;
+#X obj 306 437 route 0 1 2 3 4 5 6 7 8 9 10;
+#X obj 476 468 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 12700 1;
+#X obj 39 245 resample 5;
+#X obj 306 342 unpack f f;
+#X obj 306 412 pack f f;
+#X obj 371 367 * 100;
+#X obj 371 391 + 64;
+#X text 99 361 2 : forces apply to masses;
+#X text 51 344 outlet 1 : position of masses;
+#X obj 39 307 pmstring_1d 9 0.01 0.01;
+#N canvas 529 171 494 344 META 0;
+#X text 12 225 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 205 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 165 OUTLET_0 list;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION simple Physical model of "string";
+#X text 12 65 INLET_0 float;
+#X text 12 105 INLET_2 list;
+#X text 12 125 INLET_3 float;
+#X text 12 145 INLET_4 float;
+#X text 12 185 OUTLET_1 list;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 606 587 pd META;
+#X connect 10 0 35 0;
+#X connect 11 0 42 1;
+#X connect 12 0 0 0;
+#X connect 12 1 1 0;
+#X connect 12 2 2 0;
+#X connect 12 3 3 0;
+#X connect 12 4 4 0;
+#X connect 12 5 5 0;
+#X connect 12 6 6 0;
+#X connect 12 7 7 0;
+#X connect 12 8 8 0;
+#X connect 12 9 9 0;
+#X connect 12 10 13 0;
+#X connect 21 0 42 2;
+#X connect 33 0 23 0;
+#X connect 33 1 24 0;
+#X connect 33 2 25 0;
+#X connect 33 3 26 0;
+#X connect 33 4 27 0;
+#X connect 33 5 28 0;
+#X connect 33 6 29 0;
+#X connect 33 7 30 0;
+#X connect 33 8 31 0;
+#X connect 33 9 32 0;
+#X connect 33 10 34 0;
+#X connect 35 0 42 0;
+#X connect 36 0 37 0;
+#X connect 36 1 38 0;
+#X connect 37 0 33 0;
+#X connect 38 0 39 0;
+#X connect 39 0 37 1;
+#X connect 42 0 12 0;
+#X connect 42 1 36 0;

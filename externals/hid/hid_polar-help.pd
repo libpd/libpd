@@ -1,0 +1,51 @@
+#N canvas 0 31 482 455 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_polar 2 11 1 18 -233017 -66577
+0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 244 411 released under the GNU GPL;
+#X floatatom 98 248 5 0 0 0 - - -;
+#X floatatom 98 335 7 0 0 0 radius-> - -;
+#X text 124 370 For more info:;
+#X obj 98 295 hid/hid_polar;
+#X text 27 397 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X obj 101 161 hsl 128 15 0 1 0 0 empty empty x-axis 133 7 1 10 -225280
+-1 -1 0 0;
+#X obj 157 103 vsl 15 128 0 1 0 0 empty empty y-axis -6 -9 1 10 -261681
+-1 -1 0 0;
+#X floatatom 159 335 7 0 0 1 <-angle - -;
+#X floatatom 157 248 5 0 0 0 - - -;
+#X obj 157 270 t b f;
+#X obj 334 335 polar-joystick;
+#X text 275 273 related objects:;
+#X text 273 334 example:;
+#X msg 97 86 0.5;
+#X text 43 86 center:;
+#X obj 381 293 hid/hid_spiral;
+#X obj 225 293 hid/hid2rad;
+#X obj 303 293 hid/hid2deg;
+#N canvas 504 253 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 155 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION convert cartesian coordinates (x \, y) to
+polar coordinates (radius \, angle);
+#X text 12 75 INLET_0 float bang;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 float;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X restore 419 411 pd META;
+#X text 17 29 Converts cartesian coordinates (x \, y) to polar coordinates
+(radius \, angle). The angle is in radians (-pi to pi). The angle 0
+is at cartesian (1 \, 0.5) or to the right.;
+#X connect 3 0 6 0;
+#X connect 6 0 4 0;
+#X connect 6 1 10 0;
+#X connect 8 0 3 0;
+#X connect 9 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 6 0;
+#X connect 12 1 6 1;

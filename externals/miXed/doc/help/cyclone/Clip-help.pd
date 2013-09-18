@@ -1,0 +1,40 @@
+#N canvas 0 26 475 245 10;
+#X text 15 35 Constrains an int \, float or list within a certain range
+;
+#X floatatom 342 116 0 0 0 0 - - -;
+#X floatatom 190 116 0 0 0 0 - - -;
+#X text 337 138 set max (int or float);
+#X floatatom 26 82 0 0 0 0 - - -;
+#X msg 106 64 0 20 40 60 80 100 120;
+#X msg 118 97 set 100 200;
+#X floatatom 68 81 0 0 0 0 - - -;
+#X obj 68 183 print;
+#X text 126 184 Optional arguments set the range. Default is 0 \, 0
+;
+#X text 187 98 changes the clipping range;
+#X text 201 138 set min (int or float);
+#X obj 68 153 Clip 10 50;
+#N canvas 375 114 494 394 META 0;
+#X text 12 255 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 GENRE help;
+#X text 12 215 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 KEYWORDS control max_compatible;
+#X text 12 135 INLET_1 float;
+#X text 12 115 INLET_0 float list set;
+#X text 12 175 OUTLET_0 float;
+#X text 12 25 NAME Clip;
+#X text 12 155 INLET_2 float;
+#X text 12 85 DESCRIPTION constrain an int \, float or list within
+a certain range;
+#X text 12 195 AUTHOR Krzysztof Czaja;
+#X text 12 65 LICENSE SIBSD;
+#X restore 425 225 pd META;
+#X connect 1 0 12 2;
+#X connect 2 0 12 1;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 6 0 12 0;
+#X connect 7 0 12 0;
+#X connect 12 0 8 0;

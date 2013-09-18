@@ -1,0 +1,3 @@
+usr/lib/pd/extra/unauthorized/README.txt        usr/share/doc/pd-unauthorized/README
+usr/lib/pd/extra/unauthorized/examples          usr/share/doc/pd-unauthorized/examples
+usr/share/common-licenses/GPL-2             usr/lib/pd/extra/unauthorized/LICENSE.txt

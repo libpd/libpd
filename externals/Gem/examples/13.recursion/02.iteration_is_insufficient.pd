@@ -1,0 +1,33 @@
+#N canvas 0 0 602 259 10;
+#X obj 14 66 gemwin;
+#X obj 14 9 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X msg 48 10 create;
+#X msg 55 33 destroy;
+#X obj 14 93 gemhead;
+#X obj 14 153 t a a;
+#X obj 59 153 circle;
+#X obj 14 223 scale 0.7;
+#X obj 14 183 rotate 45 0 0 1;
+#X obj 14 203 translate 2 0 1 0;
+#X text 170 17 A tutorial on recursion in Gem;
+#X text 170 37 (GPL) 2007 Claude Heiland-Allen <claudiusmaximus@goto10.org>
+;
+#X text 170 77 A common idiom in Gem is to use the [repeat] object
+found in the Zexy library \, to generate multiple copies of the same
+object. Let's try using it to make our spiral.;
+#X obj 14 123 repeat 64;
+#X text 170 127 And indeed \, it works well. But a spiral is a linear
+structure \, without branches. Iteration has solved one problem \,
+only to present us with another: what if we want a branching structure?
+;
+#X text 170 187 Recursion is an elegant solution to this problem.;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 13 0;
+#X connect 5 0 8 0;
+#X connect 5 1 6 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 13 0 5 0;

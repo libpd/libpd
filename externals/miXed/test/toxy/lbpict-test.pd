@@ -1,0 +1,3 @@
+#N canvas 0 0 756 516 12;
+#X obj 47 50 widget lbpict p1 #fname /usr/lib/tk8.4/demos/images/earth.gif
+;

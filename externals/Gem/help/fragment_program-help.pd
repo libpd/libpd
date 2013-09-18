@@ -1,0 +1,86 @@
+#N canvas 35 199 694 458 10;
+#X text 452 8 GEM object;
+#X obj 8 335 cnv 15 430 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 11 334 Inlets:;
+#X text 10 386 Outlets:;
+#X obj 8 296 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 295 Arguments:;
+#X obj 7 76 cnv 15 430 210 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 444 77 cnv 15 200 230 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 474 334 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 479 373 pd gemwin;
+#X msg 479 354 create;
+#X text 475 333 Create window:;
+#X obj 450 178 cnv 15 190 70 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 63 306 <none>;
+#X text 28 399 Outlet 1: gemlist;
+#X text 35 346 Inlet 1: gemlist;
+#X obj 10 211 cnv 15 420 70 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X text 71 31 Class: shader object;
+#X obj 516 184 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 open 0;
+#X obj 75 103 openpanel;
+#X obj 75 173 outlet;
+#X obj 75 127 t b s;
+#X msg 105 152 set open \$1;
+#X obj 75 80 inlet;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 2 1 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X restore 459 183 pd open;
+#X text 14 219 IMPORTANT NOTE: your openGL-implementation (gfx-card
+driver \, ...) has to support either (or both) the ARB shader extensions
+or the NV shader extensions in order to make use of this object.;
+#X text 10 176 Of course \, you also have to supply anything else needed
+for the shader to work (like textures \, ...);
+#X obj 451 266 teapot;
+#X msg 459 203 open examples/data/random.fp;
+#X text 50 12 Synopsis: [fragment_program];
+#X text 12 76 Description: load and apply an ARB fragment shader;
+#X text 24 95 [fragment_program] loads and applies an ARB (or NV) fragment
+shader.;
+#X text 11 123 If you want to modify the parameters of the shader-program
+\, you have to set the modification up yourself \, via [GEMglProgramEnvParameter*]
+working on GL_FRAGMENT_PROGRAM_ARB.;
+#X text 35 358 Inlet 1: messsage: open <filename> : fragment shader
+program to load;
+#X text 443 406 see also;
+#X obj 508 406 vertex_program;
+#X obj 451 226 fragment_program random.fp;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 33 0;
+#X connect 20 0 21 0;
+#X connect 21 0 25 0;
+#X connect 25 0 33 0;
+#X connect 33 0 24 0;

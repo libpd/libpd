@@ -1,0 +1,26 @@
+#N canvas 319 94 424 397 12;
+#X text 20 10 first entry;
+#X text 50 50 three ways of linking to a;
+#X text 50 170 three ways of linking to a;
+#X obj 50 195 pddplink http://puredata.info;
+#X obj 50 239 pddplink http://puredata.info -box;
+#X text 50 290 three ways of linking to;
+#X obj 260 290 pddplink dsp-help.pd -text another local patch;
+#X obj 50 315 pddplink dsp-help.pd;
+#X obj 52 359 pddplink dsp-help.pd -box;
+#X obj 270 170 pddplink http://puredata.info -text remote URL;
+#X obj 270 50 pddplink README.txt -text local file;
+#X obj 50 75 pddplink README.txt;
+#X obj 50 120 pddplink README.txt -box;
+#X obj 52 339 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 73 336 <-- bang to open the link;
+#X obj 50 219 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 71 216 <-- bang to open the link;
+#X obj 50 99 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 71 96 <-- bang to open the link;
+#X connect 13 0 8 0;
+#X connect 15 0 4 0;
+#X connect 17 0 12 0;

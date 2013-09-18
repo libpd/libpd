@@ -1,0 +1,40 @@
+HLOUD_OBJECTS = common/loud.o
+HFITTER_OBJECTS = common/loud.o common/fitter.o
+HFORKY_OBJECTS = common/loud.o unstable/forky.o
+HFRAGILE_OBJECTS = common/loud.o unstable/fragile.o
+HGROW_OBJECTS = common/grow.o common/loud.o
+HGROWFITTER_OBJECTS = common/grow.o common/loud.o common/fitter.o
+HFILE_OBJECTS = hammer/file.o common/loud.o common/os.o \
+	common/fitter.o unstable/forky.o
+HRAND_OBJECTS = common/rand.o common/loud.o
+HRANDFILE_OBJECTS = common/rand.o hammer/file.o common/loud.o common/os.o \
+	 common/fitter.o \
+	unstable/forky.o
+HRANDGROW_OBJECTS = common/rand.o common/grow.o common/loud.o common/fitter.o
+HRANDGROWFILE_OBJECTS = common/rand.o common/grow.o hammer/file.o \
+	common/loud.o common/os.o unstable/forky.o
+HTREE_OBJECTS = hammer/tree.o common/loud.o
+HTREEFILEVEFL_OBJECTS = hammer/tree.o hammer/file.o common/vefl.o \
+	common/loud.o common/os.o unstable/forky.o unstable/fragile.o
+HGUI_OBJECTS =  hammer/gui.o common/loud.o
+HSEQ_OBJECTS = common/mifi.o hammer/file.o \
+	common/grow.o common/loud.o common/os.o common/fitter.o unstable/forky.o
+SPLAINNOTILDE_OBJECTS = common/loud.o common/fitter.o
+SSIC_OBJECTS = sickle/sic.o common/loud.o
+SFORKY_OBJECTS = sickle/sic.o common/loud.o unstable/forky.o
+SFRAGILE_OBJECTS = sickle/sic.o common/loud.o unstable/fragile.o
+SFRAGILEFITTER_OBJECTS = sickle/sic.o common/loud.o common/fitter.o \
+	unstable/fragile.o
+SGROW_OBJECTS = common/grow.o sickle/sic.o common/loud.o
+SGROWCLC_OBJECTS = common/grow.o common/clc.o sickle/sic.o common/loud.o
+SGROWFORKY_OBJECTS = common/grow.o sickle/sic.o \
+	common/loud.o common/fitter.o unstable/forky.o
+SVEFL_OBJECTS = common/vefl.o sickle/sic.o common/loud.o unstable/fragile.o
+SARSIC_OBJECTS = sickle/sic.o sickle/arsic.o common/vefl.o \
+	common/loud.o unstable/fragile.o
+SARSICFITTER_OBJECTS = sickle/sic.o sickle/arsic.o common/vefl.o \
+	common/loud.o common/fitter.o unstable/fragile.o
+SFILE_OBJECTS = hammer/file.o sickle/sic.o common/loud.o common/os.o \
+	unstable/forky.o
+RELEASE_LIBS = cyclone hammer sickle dummies maxmode
+RELEASE_APPS = cyclist

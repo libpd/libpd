@@ -1,0 +1,425 @@
+#N canvas 326 0 854 742 10;
+#X obj 556 -8 bng 15 250 50 0 refresh_var empty load-presets 17 7 0
+10 -257985 -1 -1;
+#X obj 161 116 pix_grey;
+#X floatatom 117 -50 5 0 0 1 bottom bottom -;
+#X floatatom 152 -33 5 0 0 1 top top -;
+#X obj 161 156 pix_texture;
+#X obj 152 19 t b f;
+#X floatatom 194 -14 5 0 0 1 right right -;
+#X obj 194 19 t b f;
+#X floatatom 235 1 5 0 0 1 left left -;
+#X obj 235 19 t b f;
+#X obj 35 16 t b f;
+#X obj 15 43 pack f f f;
+#X obj 73 16 t b f;
+#X floatatom 35 -17 5 0 0 1 thresh thresh -;
+#X obj 304 19 t b f;
+#X obj 345 19 t b f;
+#X floatatom 15 -33 5 0 0 1 mode mode -;
+#X floatatom 73 -2 5 0 0 1 tip_scalar tip_scalar -;
+#X floatatom 273 -58 5 0 0 1 pix_avg pix_avg -;
+#X floatatom 304 -42 5 0 0 1 pix_tip pix_tip -;
+#X floatatom 345 -27 5 0 0 1 min_entry_size min_entry_size -;
+#X obj 384 20 t b f;
+#X floatatom 384 -12 5 0 0 1 min_perim min_perim -;
+#X floatatom 424 3 5 0 0 1 pix_samp pix_samp -;
+#X obj 424 20 t b f;
+#X obj 273 47 pack f f f f f;
+#X obj 161 76 gemhead 1;
+#X obj 161 96 pix_video;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 32 204 pd print;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 100 204 pd print;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 167 204 pd print;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 235 204 pd print;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 301 204 pd print;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 131 78 print;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 print?;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 369 204 pd print;
+#N canvas 716 528 225 177 gemwin 0;
+#X obj 61 138 gemwin;
+#X msg 46 83 create \, 1;
+#X msg 142 99 0 \, destroy;
+#X obj 24 12 loadbang;
+#X obj 24 38 t b b b;
+#X msg 126 65 dimen 320 240;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 1 1 0;
+#X connect 4 2 5 0;
+#X connect 5 0 0 0;
+#X restore 556 -49 pd gemwin;
+#N canvas 621 151 306 719 graphs-outlet2 0;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array x 150 float 1;
+#A 0 24 293 290 286 281 274 269 264 261 260 258 253 248 246 250 258
+266 274 282 279 286 295 295 187 195 203 211 219 227 235 243 251 259
+265 267 267 268 271 275 277 278 278 277 277 279 283 287 289 292 296
+300 305 309 311 311 311 311 311 311 311 311 311 311 311 311 311 311
+311 311 311 311 311 311 311 311 309 304 296 288 280 273 268 262 256
+248 240 232 224 216 208 200 192 184 176 168 160 152 144 136 128 120
+112 104 96 88 80 72 64 56 48 40 32 24 16 11 9 9 9 9 9 9 9 9 9 9 9 9
+9 9 9 13 169 169 164 162 167 170 166 162 165 169 13 97 105 113 120
+122 118 110 172;
+#X coords 0 320 149 0 300 140 1;
+#X restore -136 -398 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array y 150 float 1;
+#A 0 253 470 467 460 453 448 446 446 448 452 458 462 467 471 472 472
+472 472 472 472 472 470 470 445 444 443 442 441 440 439 438 437 435
+431 425 417 413 415 420 420 414 406 398 390 387 389 397 405 412 420
+426 432 432 427 419 411 403 395 387 379 371 363 355 347 339 331 323
+315 307 299 291 283 275 267 259 253 250 249 249 249 251 253 252 250
+249 249 249 249 249 249 249 249 249 249 249 249 249 249 249 249 249
+249 249 249 249 249 249 249 249 249 249 249 249 250 252 258 266 274
+282 290 298 306 314 322 330 338 346 354 362 370 361 472 471 470 470
+471 471 470 470 471 472 464 461 464 467 469 471 472 472 471;
+#X coords 0 480 149 0 300 140 1;
+#X restore -137 -245 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array angle 150 float 1;
+#A 0 0 0.588003 -0.785398 -0.266252 0.101103 0.330297 0.239743 0.380506
+0.588003 0.737815 -0.0767719 -0.574305 0.110657 0.321751 1.78947 0.244979
+0 0 0 0 0 0 0 0.124355 0 0 0 0 0 0 0 0 0.120624 0.343024 0.661043 0.321751
+-0.244979 -1.91382 -0.308053 0.896055 1.40565 0.165149 0.124355 -0.124355
+-0.588003 -1.44644 -0.643501 -0.218669 0.159913 0.0587558 0.124355
+0.106736 0.876058 1.19029 0.380506 6.12303e-17 6.12303e-17 6.12303e-17
+6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17
+6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17
+6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17 6.12303e-17 0.321751
+0.708626 0.416065 0.124355 1.22461e-16 0.2783 0.102207 -0.545655 -0.156602
+0.197396 0.124355 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16
+1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16
+1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16
+1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16
+1.22461e-16 1.22461e-16 1.22461e-16 1.22461e-16 0.124355 0.256151 0.868539
+0.321751 -6.12303e-17 -6.12303e-17 -6.12303e-17 -6.12303e-17 -6.12303e-17
+-6.12303e-17 -6.12303e-17 -6.12303e-17 -6.12303e-17 -6.12303e-17 -6.12303e-17
+-6.12303e-17 -6.12303e-17 0 1.40565 1.73594 1.3734 0.197396 2.9442
+0.197396 2.89661 0.244979 2.81984 0.0767719 0 0.432408 0.104877 0 0.080471
+-0.507098 -2.11122 -0.244979 0;
+#X coords 0 3.14 149 -3.14 300 200 1;
+#X restore -137 -90 graph;
+#X obj -131 118 bng 15 250 50 0 cleartables empty empty 17 7 0 10 -257985
+-1 -1;
+#X text -113 117 clear tables;
+#X obj -39 -460 - 480;
+#X obj -39 -441 abs;
+#X obj -137 -460 tabwrite x;
+#X obj -39 -422 tabwrite y;
+#X obj 18 -463 tabwrite angle;
+#X obj -133 -530 unpack f f f f;
+#X obj -133 -506 s o2n;
+#X obj -88 -506 s o2x;
+#X obj -44 -505 s o2y;
+#X obj 1 -505 s o2a;
+#X obj -80 -480 r o2n;
+#X obj -137 -480 r o2x;
+#X obj -39 -480 r o2y;
+#X obj 18 -482 r o2a;
+#X obj 18 -441 r o2n;
+#X obj 99 -482 r o2n;
+#X obj -133 -574 inlet;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 10 2 13 0;
+#X connect 10 3 14 0;
+#X connect 15 0 7 1;
+#X connect 16 0 7 0;
+#X connect 17 0 5 0;
+#X connect 18 0 9 0;
+#X connect 19 0 8 1;
+#X connect 20 0 9 1;
+#X connect 21 0 10 0;
+#X restore 100 265 pd graphs-outlet2;
+#N canvas 0 0 450 300 print 0;
+#X obj 131 36 inlet;
+#X obj 131 57 spigot;
+#X obj 228 27 loadbang;
+#X msg 228 48 0;
+#X obj 142 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 103 105 graph?;
+#X obj 131 78 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 1;
+#X coords 0 -1 1 1 60 23 2 100 100;
+#X restore 100 238 pd print;
+#N canvas 178 290 743 248 presets 0;
+#X text 280 16 head;
+#X text 229 16 bottom;
+#X text 319 16 right;
+#X text 363 16 left;
+#X msg 18 30 1;
+#X msg 283 33 5;
+#X msg 366 33 5;
+#X msg 325 33 315;
+#X msg 240 33 235;
+#X msg 561 22 4;
+#X msg 488 24 20;
+#X msg 524 23 5;
+#X msg 637 21 8;
+#X msg 598 22 10;
+#X msg 129 30 0.4;
+#X msg 71 30 0.74;
+#X obj 18 51 s mode;
+#X obj 71 51 s thresh;
+#X obj 129 51 s tip_scalar;
+#X obj 240 54 s bottom;
+#X obj 325 54 s right;
+#X obj 366 75 s left;
+#X obj 488 45 s pix_avg;
+#X obj 524 66 s pix_tip;
+#X obj 598 43 s min_perim;
+#X obj 637 63 s pix_samp;
+#X obj 283 75 s top;
+#X obj 286 -58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 286 -78 r refresh_var;
+#X obj 64 -15 bang;
+#X obj 286 -20 bang;
+#X obj 550 -20 bang;
+#X obj 561 86 s min_entry_size;
+#X text 20 114 These presets are what I use for the MANO Controller
+at 320x240.;
+#X obj 307 -59 loadbang;
+#X connect 4 0 16 0;
+#X connect 5 0 26 0;
+#X connect 6 0 21 0;
+#X connect 7 0 20 0;
+#X connect 8 0 19 0;
+#X connect 9 0 32 0;
+#X connect 10 0 22 0;
+#X connect 11 0 23 0;
+#X connect 12 0 25 0;
+#X connect 13 0 24 0;
+#X connect 14 0 18 0;
+#X connect 15 0 17 0;
+#X connect 27 0 29 0;
+#X connect 27 0 30 0;
+#X connect 27 0 31 0;
+#X connect 28 0 27 0;
+#X connect 29 0 15 0;
+#X connect 29 0 4 0;
+#X connect 29 0 14 0;
+#X connect 30 0 6 0;
+#X connect 30 0 7 0;
+#X connect 30 0 5 0;
+#X connect 30 0 8 0;
+#X connect 31 0 11 0;
+#X connect 31 0 10 0;
+#X connect 31 0 9 0;
+#X connect 31 0 13 0;
+#X connect 31 0 12 0;
+#X connect 34 0 27 0;
+#X restore 556 -30 pd presets;
+#X text 456 52 inlet 1;
+#X text 458 71 mode 0: regular function (others used for debugging)
+;
+#X text 457 83 thresh: threshold for contrast step;
+#X text 459 200 pix_avg: number of pixels to average the contour;
+#X text 458 234 min_entry_size: minimum entry size to be considered
+as a hand;
+#X text 458 256 min_perim: minimum perimeter to be considered a hand
+;
+#X text 459 308 OUTLETS;
+#X text 459 374 outlet 2: elements in the smoothed contour;
+#X text 460 408 outlet 3: peaks found in the contour;
+#X text 460 449 outlet 4: valleys found in the contour;
+#X text 460 491 outlet 5: contours found;
+#X text 461 542 outlet 6: end of algorithm report;
+#X text 457 148 inlet 2: defines the bounds of the anrea of analysis
+;
+#X text 484 160 bottom \, top \, right \, left;
+#X text 457 181 inlet 3: parameters of contour analysis;
+#X text 458 212 pix_tip: number of contiguous pixels higher than tip_scalar
+to consider something a peak or valley;
+#X text 482 118 mode \, thresh \, tip_scalar;
+#X text 457 94 tip scalar: scalar of maximum angle to consider something
+a peak or valley;
+#X text 458 267 pix_samp: period of sampling of the averaged contour
+;
+#X text 483 281 pix_avg \, pix_tip \, min_entry_size \, min_perim \,
+pix_samp;
+#X text 460 592 order of outlets: 1 2 5 3 4 6;
+#X text 460 340 outlet 1: elements in the raw contour (only in mode
+2);
+#X text 60 301 pix_mano is an object that tracks light reflecting objects
+(eg. hands) over a light absorbing background (eg. black cloth). Light
+reflecting objects need to enter the video frame from one of the sides
+to be recognized. For example \, a white circle in the center will
+not be recognized as there is no entry pount in the borders of the
+frame.;
+#X text 58 426 Roughly \, the object works by setting a threshold to
+discriminate bewteen black and white pixels. shapes formed of white
+pixels are analyzed in the order of largest entry section.;
+#X text 581 628 support information in www.jaimeoliver.pe;
+#X text 59 483 For each object an analysis of its contour is achieved.
+(see graph option in outlet two while entering your hand into the frame).
+The contours formed by a hand are averaged for smoothing and sampled
+\, and then are plotted as x \, y coordinates and variation in angle
+with respect to the previous sampled point. Ana analysis of this contour
+provides tips (positive peaks) and valleys (negative peaks);
+#X text 76 576 This object was programmed as part of the Silent Percussion
+Proect \, for use in the MANO Controller. For more infomation: http://www.jaimeoliver.pe
+;
+#X obj 117 47 pack f f f f;
+#X text 695 642 jaime.oliver@gmail.com;
+#X text 715 657 joliverl-2010 v0.01;
+#X obj 161 136 pix_mano;
+#X text 460 326 outlet 0: the analyzed video image;
+#X obj 161 176 rectangle 5.33 4;
+#X text 60 383 Although this version is fully functional \, there are
+still a few bugs to work on and optimizations to be achieved. It is
+still in an experimental level;
+#X text 476 353 [index \, x coordinate \, y coordinate \, angle];
+#X text 475 387 [index \, x coordinate \, y coordinate \, angle];
+#X text 476 421 [index of contour \, index of tip \, position (x \,
+y) \, magnitude \, angle \, position in contour];
+#X text 476 462 [index of contour \, index of tip \, position (x \,
+y) \, magnitude \, angle \, position in contour];
+#X text 476 504 [index of contour \, entry_point (x \, y) \, area \,
+direction \, center (x \, y) \, perimeter \, entr_size \, bounds: right
+(x \, y) \, left (x \, y) \, top (x \, y) \, bottom (x \, y).];
+#X text 477 555 if there were any contours = 1;
+#X text 477 565 if there were no contours = 0;
+#X connect 1 0 68 0;
+#X connect 2 0 65 0;
+#X connect 3 0 5 0;
+#X connect 4 0 70 0;
+#X connect 5 0 65 0;
+#X connect 5 1 65 1;
+#X connect 6 0 7 0;
+#X connect 7 0 65 0;
+#X connect 7 1 65 2;
+#X connect 8 0 9 0;
+#X connect 9 0 65 0;
+#X connect 9 1 65 3;
+#X connect 10 0 11 0;
+#X connect 10 1 11 1;
+#X connect 11 0 68 1;
+#X connect 12 0 11 0;
+#X connect 12 1 11 2;
+#X connect 13 0 10 0;
+#X connect 14 0 25 0;
+#X connect 14 1 25 1;
+#X connect 15 0 25 0;
+#X connect 15 1 25 2;
+#X connect 16 0 11 0;
+#X connect 17 0 12 0;
+#X connect 18 0 25 0;
+#X connect 19 0 14 0;
+#X connect 20 0 15 0;
+#X connect 21 0 25 0;
+#X connect 21 1 25 3;
+#X connect 22 0 21 0;
+#X connect 23 0 24 0;
+#X connect 24 0 25 0;
+#X connect 24 1 25 4;
+#X connect 25 0 68 3;
+#X connect 26 0 27 0;
+#X connect 27 0 1 0;
+#X connect 36 0 35 0;
+#X connect 65 0 68 2;
+#X connect 68 0 4 0;
+#X connect 68 1 28 0;
+#X connect 68 2 29 0;
+#X connect 68 2 36 0;
+#X connect 68 3 30 0;
+#X connect 68 4 31 0;
+#X connect 68 5 32 0;
+#X connect 68 6 33 0;

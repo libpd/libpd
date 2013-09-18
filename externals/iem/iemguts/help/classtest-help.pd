@@ -1,0 +1,32 @@
+#N canvas 0 0 957 437 10;
+#X obj 90 56 classtest;
+#X text 167 55 check the availability of object-classes;
+#X obj 154 292 classtest;
+#X floatatom 154 318 5 0 0 0 - - -;
+#X text 233 313 1..class exists;
+#X text 233 328 0..class does not exist;
+#X obj 154 226 symbol;
+#X msg 154 106 f;
+#X text 197 107 check for [f] (should always evaluate to 'true');
+#X msg 170 138 niagara;
+#X text 239 164 check for [qwert];
+#X msg 184 167 qwert;
+#X text 70 364 note: "classes" are object that Pd knows about (internals
+\, or externals (with a classloader)). Currently "abstractions" are
+_not_ treated as full-featured classes \, therefore testing for abstractions
+will result in 'false'.;
+#X msg 188 203 classloader-help;
+#X symbolatom 154 259 0 0 0 0 - - -;
+#X text 374 165 (probably this will always evaluate as 'false');
+#X text 226 139 check for [niagara] (evaluates to 'true' if zexy is
+loaded);
+#X text 317 202 check for this abstraction (evaluates as 'false'!)
+;
+#X text 558 292 (c)opyleft 2008 IOhannes m zmölnig @ iem;
+#X connect 2 0 3 0;
+#X connect 6 0 14 0;
+#X connect 7 0 6 0;
+#X connect 9 0 6 0;
+#X connect 11 0 6 0;
+#X connect 13 0 6 0;
+#X connect 14 0 2 0;

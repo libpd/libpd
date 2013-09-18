@@ -1,0 +1,98 @@
+#N canvas 19 20 691 473 10;
+#X text 452 8 GEM object;
+#X obj 9 265 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 267 Inlets:;
+#X text 39 352 Outlets:;
+#X obj 9 227 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 226 Arguments:;
+#X obj 8 56 cnv 15 430 165 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 200 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 536 293 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 541 332 pd gemwin;
+#X msg 541 313 create;
+#X text 537 292 Create window:;
+#X obj 451 179 cnv 15 155 70 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 83 gemhead;
+#X text 17 366 Outlet 1: gemlist;
+#X text 24 281 Inlet 1: gemlist;
+#X obj 451 252 pix_texture;
+#X obj 451 151 pix_film;
+#X obj 515 151 t f;
+#X obj 464 103 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 open 0;
+#X obj 85 49 inlet;
+#X obj 85 237 outlet;
+#X obj 85 145 openpanel;
+#X msg 85 179 open \$1;
+#X msg 259 213 auto 1;
+#X obj 268 179 loadbang;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X restore 464 131 pd open;
+#X text 505 77 open a supported;
+#X text 506 88 movie-clip;
+#X text 523 114 macOS: quicktime;
+#X text 516 104 windos: *.AVI;
+#X text 523 124 linux: depends...;
+#X floatatom 560 196 3 0 9 2 index - -;
+#X text 50 12 Synopsis: [pix_buffer_write];
+#X text 71 31 Class: pix object;
+#X obj 451 222 pix_buffer_write depot;
+#X text 24 320 Inlet 2: int: index in the named pix_buffer.;
+#X msg 464 192 set depot2;
+#X text 11 79 [pix_buffer_write] writes an image into a named buffer
+created by the [pix_buffer] object. When the index of the frame in
+the buffer is passed via the second inlet to [pix_buffer_write] \,
+the NEXT incoming image will be written to the buffer \, and the internal
+state is reset. You have to re-set the index to write again.;
+#X text 64 237 list: <buffer_name>;
+#X text 24 295 Inlet 1: message: set <buffer_name>: write to another
+buffer.;
+#X text 440 363 see also:;
+#X obj 508 382 pix_buffer_read;
+#X obj 507 362 pix_buffer depot2 1;
+#X text 29 57 Description: write images to a [pix_buffer];
+#X obj 451 272 translate 2 0 1 0;
+#X obj 451 292 square 1.9;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 18 0;
+#X connect 17 0 40 0;
+#X connect 18 0 30 0;
+#X connect 18 2 19 0;
+#X connect 19 0 18 1;
+#X connect 20 0 21 0;
+#X connect 21 0 18 0;
+#X connect 27 0 30 1;
+#X connect 30 0 17 0;
+#X connect 32 0 30 0;
+#X connect 40 0 41 0;

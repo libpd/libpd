@@ -1,0 +1,270 @@
+#N canvas 4 2 981 718 10;
+#X text 27 436 1.arg: <float> ambisonic order;
+#X text 794 41 -180 <= phi <= +180;
+#X text 494 172 input: <ambi_weight> one mul-factor for each;
+#X text 42 454 (1 .. 5 in case of 3 dimensional);
+#X text 42 445 (1 .. 12 in case of 2 dimensional);
+#X text 27 464 2.arg: <float> dimension (2 or 3);
+#X text 78 645 IEM KUG;
+#X text 62 633 musil;
+#X text 92 633 @;
+#X text 98 633 iem.at;
+#X text 61 655 Graz \, Austria;
+#X text 13 622 (c) Thomas Musil 2000 - 2006;
+#X obj 109 347 cnv 15 126 15 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X obj 108 368 round_zero 1e-006;
+#X obj 38 33 bng 35 250 50 0 empty empty empty 0 -6 0 8 -24198 -42246
+-1;
+#X msg 246 121 ambi_weight 1 1 1 0.3904;
+#X msg 108 121 ambi_weight 1 1 1 1;
+#X msg 124 99 mirror_weight 0.7;
+#X obj 80 220 pp pht_ls;
+#X obj 38 77 t b b b b b b b;
+#X msg 94 143 1 90 0 \, 2 45 45 \, 3 45 135 \, 4 45 225 \, 5 45 315
+\, 6 0 0 \, 7 0 45 \, 8 0 90 \, 9 0 135 \, 10 0 180 \, 11 0 225 \,
+12 0 270 \, 13 0 315;
+#X obj 94 177 pp real_ls;
+#X msg 66 243 begin_pseudo_inverse;
+#X obj 108 346 ambi_decode3 3 3 13 6;
+#X msg 38 313 end_pseudo_inverse;
+#X msg 80 199 1 -45 0 \, 2 -45 90 \, 3 -45 180 \, 4 -45 270 \, 6 -90
+0;
+#X msg 52 289 ipht_ireal_muladd \$1 \$2 \$3;
+#N canvas 337 146 567 517 mirror_phantom_ls_____ 0;
+#X msg 142 186 1 6 \$1;
+#X obj 102 58 inlet;
+#X obj 101 441 outlet;
+#X obj 162 59 inlet;
+#X obj 71 135 f;
+#X obj 103 135 f;
+#X obj 157 106 * 0.25;
+#X obj 214 106 * 0.5;
+#X msg 163 211 2 8 \$1;
+#X msg 40 187 1 13 \$1 \, 1 7 \$1;
+#X msg 61 212 2 7 \$1 \, 2 9 \$1;
+#X msg 179 241 3 10 \$1;
+#X msg 77 242 3 9 \$1 \, 3 11 \$1;
+#X msg 199 271 4 12 \$1;
+#X msg 87 271 4 11 \$1 \, 4 13 \$1;
+#X obj 162 81 route mirror_weight;
+#X obj 380 60 inlet;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 1 0 5 0;
+#X connect 3 0 15 0;
+#X connect 4 0 9 0;
+#X connect 4 0 10 0;
+#X connect 4 0 12 0;
+#X connect 4 0 14 0;
+#X connect 5 0 0 0;
+#X connect 5 0 8 0;
+#X connect 5 0 11 0;
+#X connect 5 0 13 0;
+#X connect 6 0 4 1;
+#X connect 7 0 5 1;
+#X connect 8 0 2 0;
+#X connect 9 0 2 0;
+#X connect 10 0 2 0;
+#X connect 11 0 2 0;
+#X connect 12 0 2 0;
+#X connect 13 0 2 0;
+#X connect 14 0 2 0;
+#X connect 15 0 7 0;
+#X connect 15 0 6 0;
+#X restore 52 268 pd mirror_phantom_ls_____;
+#X text 18 9 ambi_decode3;
+#X text 160 14 AMBISONIC DECODING;
+#X text 131 40 up to 12.Order 2-dimensional;
+#X text 128 28 up to 5.Order 3-dimensional or;
+#X text 508 5 n_ao = ambisonic-order;
+#X text 520 42 all angles in degree;
+#X text 539 183 ambisonic order group to suppress the side-lobe-phenomena
+;
+#X text 493 274 input: <begin_pseudo_inverse> starts the encoding;
+#X text 536 285 of all (real + phantom) loudspeaker positions \,;
+#X text 537 309 and calculates the pseudo inverse.;
+#X text 540 297 multiplicates the ambi order weight;
+#X msg 276 230 sing_range 1e-010;
+#X text 799 328 mirror_weight;
+#X text 545 354 phantom speaker with the factor "mirror_weight" and
+adds;
+#X text 494 202 input: <sing_range> singularity range;
+#X text 537 213 when calculating the inverse of the matrix by gauss
+;
+#X text 537 223 algorithm \, you have to divide a row by a certain
+number \,;
+#X text 537 243 outside of this range (> sing_range \, or < -sing_range).
+;
+#X text 493 385 input: <end_pseudo_inverse> outputs only the first
+part of;
+#X text 539 398 the inverted matrix (row 1 to row n_pht_ls). The part
+;
+#X text 541 410 with the phantom speakers \, we ignore.;
+#X obj 221 576 cnv 15 192 15 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X obj 221 601 cnv 15 228 15 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X text 537 255 Otherwise we say \, this matrix is singular.;
+#N canvas 149 60 413 549 real_speaker_example 0;
+#X obj 124 33 bng 35 250 50 0 empty empty empty 0 -6 0 8 -24198 -42246
+-1;
+#X obj 143 217 cnv 15 120 15 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X obj 142 261 print;
+#X obj 142 238 round_zero 1e-006;
+#X obj 161 121 pp real_ls;
+#X msg 142 144 begin_pseudo_inverse;
+#X msg 124 167 end_pseudo_inverse;
+#X obj 142 216 ambi_decode3 2 2 5 0;
+#X obj 124 75 t b b b;
+#X msg 161 98 1 5 \, 2 2.5 \, 3 0 \, 4 -2.5 \, 5 -5;
+#X text 110 300 ambisonic system 2.order;
+#X text 137 313 2 dimensional;
+#X text 135 327 5 real speakers;
+#X text 100 347 arranged in a very small arc between;
+#X text 117 360 +5 degrees and -5 degrees;
+#X text 82 490 IEM KUG;
+#X text 66 478 musil;
+#X text 96 478 @;
+#X text 102 478 iem.at;
+#X text 65 500 Graz \, Austria;
+#X text 17 467 (c) Thomas Musil 2000 - 2006;
+#X connect 0 0 8 0;
+#X connect 3 0 2 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 3 0;
+#X connect 8 0 6 0;
+#X connect 8 1 5 0;
+#X connect 8 2 9 0;
+#X connect 9 0 4 0;
+#X restore 220 575 pd real_speaker_example singular;
+#N canvas 250 68 437 609 phantom_speaker_example 0;
+#X obj 79 30 bng 35 250 50 0 empty empty empty 0 -6 0 8 -24198 -42246
+-1;
+#X obj 184 250 cnv 15 132 15 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X obj 183 299 print;
+#X obj 183 274 round_zero 1e-006;
+#X obj 202 164 pp real_ls;
+#X msg 183 187 begin_pseudo_inverse;
+#X msg 165 210 end_pseudo_inverse;
+#X obj 165 118 t b b b;
+#X msg 202 141 1 5 \, 2 2.5 \, 3 0 \, 4 -2.5 \, 5 -5;
+#X text 151 343 ambisonic system 2.order;
+#X text 178 356 2 dimensional;
+#X text 176 370 5 real speakers;
+#X obj 79 190 pp pht_ls;
+#X obj 79 71 for++ 0 138;
+#X obj 79 94 t f f;
+#X obj 79 125 + 1;
+#X obj 104 116 * 2.5;
+#X obj 104 138 + 7.5;
+#X obj 79 168 pack 0 0;
+#X obj 183 249 ambi_decode3 2 2 5 139;
+#X text 157 395 -5 degrees and +5 degrees;
+#X text 166 410 139 phantom speakers;
+#X text 140 382 arranged on a very small arc between;
+#X text 150 422 arranged on an arc between;
+#X text 154 436 +7.5 degrees and -7.5 degrees;
+#X text 86 558 IEM KUG;
+#X text 70 546 musil;
+#X text 100 546 @;
+#X text 106 546 iem.at;
+#X text 69 568 Graz \, Austria;
+#X text 21 535 (c) Thomas Musil 2000 - 2006;
+#X connect 0 0 13 0;
+#X connect 3 0 2 0;
+#X connect 4 0 19 0;
+#X connect 5 0 19 0;
+#X connect 6 0 19 0;
+#X connect 7 0 6 0;
+#X connect 7 1 5 0;
+#X connect 7 2 8 0;
+#X connect 8 0 4 0;
+#X connect 12 0 19 0;
+#X connect 13 0 14 0;
+#X connect 13 1 7 0;
+#X connect 14 0 15 0;
+#X connect 14 1 16 0;
+#X connect 15 0 18 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 1;
+#X connect 18 0 12 0;
+#X connect 19 0 3 0;
+#X restore 220 600 pd phantom_speaker_example nonsingular;
+#X text 537 233 to achieve the identity matrix. This number has to
+be;
+#X obj 108 391 mtx_print;
+#X text 504 463 + <float> n_col = (2*n_ao+1) = number of ambisonic-channels
+;
+#X text 27 476 3.arg: <float> number of real existing loudspeakers
+;
+#X text 27 488 4.arg: <float> number of virtual phantom_loudspeakers
+;
+#X text 493 16 n_re_ls = number of real loudspeakers;
+#X text 493 28 n_vi_ls = number of virtual phantom loudspeakers;
+#X text 494 78 input: <real_ls> re_ls_index + phi .. 2-dimensional
+;
+#X text 494 88 input: <real_ls> re_ls_index + theta + phi .. 3-dimensional
+;
+#X text 494 118 input: <pht_ls> vi_ls_index + phi .. 2-dimensional
+;
+#X text 494 129 input: <pht_ls> vi_ls_index + theta + phi .. 3-dimensional
+;
+#X text 794 29 -90 <= theta <= +90;
+#X text 786 5 1 <= re_ls_index <= n_re_ls;
+#X text 786 16 1 <= vi_ls_index <= n_vi_ls;
+#X text 59 423 initial arguments:;
+#X text 334 18 calculates a ambisonic;
+#X text 358 29 decoder matrix;
+#X text 529 100 encodes the re_ls_index row of a matrix;
+#X text 525 141 encodes the (re_ls_index + vi_ls_index) row of a matrix
+;
+#X text 532 153 we need them to achieve a nonsingular matrix;
+#X text 493 328 input: <ipht_ireal_muladd> vi_ls_index re_ls_index
+;
+#X text 811 443 floats :;
+#X text 851 503 floats :;
+#X text 516 513 <float> n_row = (n_re_ls) = number of real loudspeakers
+;
+#X text 516 453 <float> n_row = (n_re_ls) = number of real loudspeakers
+;
+#X text 784 523 ambisonic-channels;
+#X text 504 523 + <float> n_col = (n_ao+1)*(nao+1) = number of;
+#X text 825 534 decoder matrix;
+#X text 504 474 + (2*n_ao + 1) * n_re_ls <float> elements of the;
+#X text 504 534 + (n_ao+1)*(n_ao+1) * n_re_ls <float> elements of the
+;
+#X text 796 474 decoder matrix;
+#X text 490 443 output in case of 2d: <matrix> (n_re_ls*(2*n_ao+1)+2)
+;
+#X text 490 503 output in case of 3d: <matrix> (n_re_ls*(n_ao+1)*(n_ao+1)+2)
+;
+#X text 544 367 this column to the column "re_ls_index" of real speaker
+;
+#X text 546 341 multiplies the column "vi_ls_index + n_re_ls" of;
+#X connect 13 0 55 0;
+#X connect 14 0 19 0;
+#X connect 15 0 23 0;
+#X connect 16 0 23 0;
+#X connect 17 0 27 1;
+#X connect 18 0 23 0;
+#X connect 19 0 24 0;
+#X connect 19 1 27 0;
+#X connect 19 2 22 0;
+#X connect 19 3 25 0;
+#X connect 19 4 20 0;
+#X connect 19 5 16 0;
+#X connect 19 6 17 0;
+#X connect 20 0 21 0;
+#X connect 21 0 23 0;
+#X connect 22 0 23 0;
+#X connect 23 0 13 0;
+#X connect 24 0 23 0;
+#X connect 25 0 18 0;
+#X connect 26 0 23 0;
+#X connect 27 0 26 0;
+#X connect 39 0 23 0;

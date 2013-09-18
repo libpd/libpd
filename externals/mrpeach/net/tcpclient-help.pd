@@ -1,0 +1,123 @@
+#N canvas 1 53 1096 649 12;
+#X msg -112 56 disconnect;
+#X obj 219 439 unpack 0 0 0 0;
+#X floatatom 219 462 3 0 0 0 - - -;
+#X floatatom 250 462 3 0 0 0 - - -;
+#X floatatom 282 462 3 0 0 0 - - -;
+#X floatatom 314 462 3 0 0 0 - - -;
+#X text 179 461 from;
+#X obj 199 387 tcpclient;
+#X obj 239 413 tgl 15 0 empty empty connected 18 7 0 8 -24198 -13381
+-1 0 1;
+#X msg -88 80 dump \$1;
+#X obj -140 65 tgl 15 0 empty empty empty 0 -6 0 8 -4034 -13381 -1
+0 1;
+#X text -59 -58 connect with an IP address and port number;
+#X msg -200 -32 connect www.concordia.ca 80;
+#X text -17 79 print received messages to main window in hexdump format
+;
+#X text 270 386 tcpclient opens a tcp socket to send and receive bytes
+on;
+#X text -217 305 See also:;
+#X obj -212 329 netclient;
+#X msg -225 -57 connect 127.0.0.1 9997;
+#X obj -212 352 tcpreceive;
+#X text -214 374 can receive messages from tcpclient;
+#X text -136 328 is what tcpclient is based on;
+#X text 250 513 Received messages are output as a list of bytes;
+#X msg 83 251 send 49 127 128 51 59;
+#X obj -84 352 tcpserver;
+#X text -118 351 and;
+#X text 347 -55 tcpclient can connect to a server and send and receive
+messages as lists of bytes. Any integer value between 0 and 255 can
+be transmitted or received.;
+#X msg -63 105 send examples/test.txt;
+#X obj -15 129 openpanel;
+#X msg -15 153 send \$1;
+#X obj -101 114 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -13381
+-1;
+#X text 172 105 send a file;
+#X text 62 128 ...any file;
+#X msg 122 274 71 69 84 32 104 116 116 112 58 47 47 47 105 110 100
+101 120 46 104 116 109 108 13 10;
+#X text 545 281 'send' prefix is optional;
+#X obj 199 514 spigot;
+#X obj 238 491 tgl 15 0 empty empty enable_print 18 7 0 8 -24198 -13381
+-1 0 1;
+#X obj 199 543 print >>>;
+#X text 272 24 GET http:///index.phpCRLF;
+#X floatatom 374 483 9 0 0 0 - - -;
+#X text 196 314 set send-buffer size;
+#X floatatom 424 457 9 0 0 0 - - -;
+#X text 493 456 Size of the send buffer;
+#X msg 170 338 buf;
+#X text 200 337 get send-buffer size;
+#X msg 146 314 buf 10;
+#X msg 194 362 verbosity \$1;
+#X obj 139 347 tgl 15 1 empty empty empty 0 -6 0 8 -4034 -13381 -1
+0 1;
+#X text 289 362 print connection status messages to main window (default)
+;
+#X msg -136 16 send 71 69 84 32 104 116 116 112 58 47 47 47 105 110
+100 101 120 46 112 104 112 13 10 13 10;
+#X text 271 542 Attempting to print long messages can hang Pd!;
+#X msg 11 179 unblock;
+#X obj 374 407 route sent buf blocked;
+#X text -208 540 2010/03/26 Martin Peach;
+#X msg -175 -7 connect 132.205.142.11 9997;
+#X msg -34 207 hello \;;
+#X obj 59 227 str to_list;
+#X text 158 225 semicolon-terminated strings for netserver or netreceive
+;
+#X text 73 175 if the tcpclient sender blocks for any reason \, it
+must be unblocked manually;
+#X text 444 482 Number of bytes sent;
+#X obj 474 433 print sender_blocked!;
+#N canvas 529 268 494 344 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 195 AUTHOR Martin Peach;
+#X text 12 45 DESCRIPTION connect to a server and send and receive
+messages as lists of bytes;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 85 INLET_0 list buf verbosity connect send disconnect dump
+unblock;
+#X text 12 115 OUTLET_0 list;
+#X text 12 5 KEYWORDS control network;
+#X text 12 135 OUTLET_1 list;
+#X text 12 155 OUTLET_2 float;
+#X text 12 175 OUTLET_3 sent buf blocked;
+#X restore 733 551 pd META;
+#X connect 0 0 7 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 1 3 5 0;
+#X connect 7 0 34 0;
+#X connect 7 1 1 0;
+#X connect 7 2 8 0;
+#X connect 7 3 51 0;
+#X connect 9 0 7 0;
+#X connect 10 0 9 0;
+#X connect 12 0 7 0;
+#X connect 17 0 7 0;
+#X connect 22 0 7 0;
+#X connect 26 0 7 0;
+#X connect 27 0 28 0;
+#X connect 28 0 7 0;
+#X connect 29 0 27 0;
+#X connect 32 0 7 0;
+#X connect 34 0 36 0;
+#X connect 35 0 34 1;
+#X connect 42 0 7 0;
+#X connect 44 0 7 0;
+#X connect 45 0 7 0;
+#X connect 46 0 45 0;
+#X connect 48 0 7 0;
+#X connect 50 0 7 0;
+#X connect 51 0 38 0;
+#X connect 51 1 40 0;
+#X connect 51 2 59 0;
+#X connect 53 0 7 0;
+#X connect 54 0 55 0;
+#X connect 55 0 7 0;

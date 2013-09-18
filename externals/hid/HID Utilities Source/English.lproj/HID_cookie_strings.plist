@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>1118</key>
+	<dict>
+		<key>Name</key> <string>Microsoft</string>
+		<key>27</key>
+		<dict>
+			<key>Name</key> <string>SideWinder FFB 2 Joystick</string>
+			<key>27</key> <string>Button 1 [Trigger]</string>
+			<key>28</key> <string>Button 2</string>
+			<key>29</key> <string>Button 3</string>
+			<key>30</key> <string>Button 4</string>
+			<key>31</key> <string>Button 5</string>
+			<key>32</key> <string>Button 6</string>
+			<key>33</key> <string>Button 7</string>
+			<key>34</key> <string>Button 8</string>
+			<key>89</key> <string>X-Axis</string>
+			<key>90</key> <string>Y-Axis</string>
+			<key>91</key> <string>Rz-Axis</string>
+			<key>92</key> <string>Throttle</string>
+			<key>93</key> <string>Hat Switch</string>
+		</dict>
+	</dict>
+	<key>1133</key>
+	<dict>
+		<key>Name</key> <string>Logitech</string>
+		<key>49797</key>
+		<dict>
+			<key>Name</key> <string>WingMan Strike Force 3D</string>
+			<key>5</key> <string>Button 1 [Trigger]</string>
+			<key>6</key> <string>Button 2</string>
+			<key>7</key> <string>Button 3</string>
+			<key>8</key> <string>Button 4</string>
+			<key>9</key> <string>Button 5</string>
+			<key>10</key> <string>Button 6</string>
+			<key>11</key> <string>Button 7</string>
+			<key>16</key> <string>Hat Switch 2</string>
+			<key>24</key> <string>X-Axis</string>
+			<key>25</key> <string>Y-Axis</string>
+			<key>26</key> <string>Hat Switch 1</string>
+			<key>27</key> <string>Rz-Axis</string>
+			<key>28</key> <string>Throttle</string>
+			<key>29</key> <string>Button 9</string>
+			<key>30</key> <string>Button 8</string>
+		</dict>
+	</dict>
+	<key>1635</key>
+	<dict>
+		<key>Name</key> <string>Macsense</string>
+		<key>38916</key>
+		<dict>
+			<key>Name</key> <string>FunPad F-107</string>
+			<key>3</key> <string>Button 1</string>
+			<key>4</key> <string>Button 2</string>
+			<key>5</key> <string>Button 3</string>
+			<key>6</key> <string>Button 4</string>
+			<key>7</key> <string>L1 Trigger</string>
+			<key>8</key> <string>R1 Trigger</string>
+			<key>9</key> <string>L2 Trigger</string>
+			<key>10</key> <string>R2 Trigger</string>
+			<key>11</key> <string>Right Stick X-Axis</string>
+			<key>12</key> <string>Right Stick Y-Axis</string>
+			<key>13</key> <string>Left Stick X-Axis</string>
+			<key>14</key> <string>Left Stick Y-Axis</string>
+			<key>15</key> <string>Hat Switch</string>
+		</dict>
+	</dict>
+	<key>8738</key>
+	<dict>
+		<key>Name</key> <string>Macally</string>
+		<key>16400</key>
+		<dict>
+			<key>Name</key> <string>iShock</string>
+			<key>3</key> <string>D-Pad Up</string>
+			<key>4</key> <string>D-Pad Down</string>
+			<key>5</key> <string>D-Pad Left</string>
+			<key>6</key> <string>D-Pad Right</string>
+			<key>7</key> <string>Up Button</string>
+			<key>8</key> <string>Right Button</string>
+			<key>9</key> <string>Down Button</string>
+			<key>10</key> <string>Left Button</string>
+			<key>11</key> <string>C Button</string>
+			<key>12</key> <string>B Button [Select]</string>
+			<key>13</key> <string>A Button [Start]</string>
+			<key>14</key> <string>F Button</string>
+			<key>15</key> <string>R1 Trigger</string>
+			<key>16</key> <string>R2 Trigger</string>
+			<key>17</key> <string>L1 Trigger</string>
+			<key>18</key> <string>L2 Trigger</string>
+			<key>19</key> <string>Left Stick Button</string>
+			<key>20</key> <string>Right Stick Button</string>
+			<key>21</key> <string>D Button</string>
+			<key>22</key> <string>E Button</string>
+			<key>23</key> <string>Left Stick X-Axis</string>
+			<key>24</key> <string>Left Stick Y-Axis</string>
+			<key>25</key> <string>Right Stick X-Axis</string>
+			<key>26</key> <string>Right Stick Y-Axis</string>
+		</dict>
+		<key>16416</key>
+		<dict>
+			<key>Name</key> <string>iShock II FFB Game Controler</string>
+			<key>3</key> <string>D-Pad Up</string>
+			<key>4</key> <string>D-Pad Down</string>
+			<key>5</key> <string>D-Pad Left</string>
+			<key>6</key> <string>D-Pad Right</string>
+			<key>7</key> <string>A Button</string>
+			<key>8</key> <string>B Button</string>
+			<key>9</key> <string>C Button</string>
+			<key>10</key> <string>D Button</string>
+			<key>11</key> <string>Button 1</string>
+			<key>12</key> <string>Button 2 [Select]</string>
+			<key>13</key> <string>Button 3 [Start]</string>
+			<key>14</key> <string>R1 Button</string>
+			<key>15</key> <string>R2 Trigger</string>
+			<key>16</key> <string>L1 Trigger</string>
+			<key>17</key> <string>L2 Trigger</string>
+			<key>18</key> <string>Left Stick Button</string>
+			<key>19</key> <string>Right Stick Button</string>
+			<key>20</key> <string>Left Stick X-Axis</string>
+			<key>21</key> <string>Left Stick Y-Axis</string>
+			<key>22</key> <string>Right Stick X-Axis</string>
+			<key>23</key> <string>Right Stick Y-Axis</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

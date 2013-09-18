@@ -1,0 +1,33 @@
+#N canvas 0 26 464 316 12;
+#X floatatom 54 239 5 0 0 0 - - -;
+#X floatatom 54 127 5 0 0 0 - - -;
+#X floatatom 129 127 5 0 0 0 - - -;
+#X obj 54 172 divmod 8 6;
+#X text 146 170 use creation arguments to set initial;
+#X text 146 186 values for inlets;
+#X msg 23 83 bang;
+#X text 69 82 calculate and output result now;
+#X floatatom 129 219 5 0 0 0 - - -;
+#X text 182 222 modulo;
+#X text 106 242 result of division;
+#X text 186 127 takes int's only!;
+#X text 12 19 divmod :: calculate division and modulo;
+#X text 92 35 outputs results even when right inlet changes;
+#N canvas 293 158 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control nonlocal;
+#X text 12 75 INLET_0 bang float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 45 DESCRIPTION calculate division and modulo outputs results
+even when right inlet changes;
+#X text 12 135 OUTLET_1 float;
+#X restore 395 283 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 3 1;
+#X connect 3 0 0 0;
+#X connect 3 1 8 0;
+#X connect 6 0 3 0;

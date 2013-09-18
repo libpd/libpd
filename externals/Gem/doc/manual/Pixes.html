@@ -1,0 +1,105 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Mark Danks">
+  <meta name="Author" content="IOhannes m zmölnig">
+  <title>Pixes (image processing)</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Image processing</u></h2></center>
+The pix objects are used to do image processing to pixel data. If
+you load in an image with <i>[pix_image]</i>, then you can change what the
+image looks like before rendering it out
+<p>In general, processing images is <i>extremely</i> expensive, so you
+probably cannot have that many active pix objects. GEM only reprocesses
+images when the source image changes or one of the parameters for a pix
+object changes. This means that GEM will only process an image when
+something is different, instead of every frame. If you want to do
+a lot of processing at start up, but then not change anything once the
+patch is running, GEM will only do the computation once.<br>
+Modern CPUs use SIMD (Single Instruction - Multiple Data) (like MMX, SSE2, altivec)
+to make pixel-processing more effective (by processing data parallely).
+Until now, only the macOS version of Gem has support for SIMD for some pix-objects.
+MMX/SSE2 boosts will hopefully come in future Gem-releases.
+
+<p>The pix objects are divided into two general groups, those which take
+one input, and those which require two input images. For example,
+<i>[pix_invert]</i>
+will "invert" all of the pixels (if a pixel is white, it will change to
+black), while <i>[pix_add]</i> will add two images together.
+<p>Only some of the pix objects are described here. Look in the reference
+patches for explanations for the other pix objects.
+<p><a href="#invert">[pix_invert]</a> - invert the pixel data
+<br><a href="#add">[pix_add]</a> - add two pixes together
+<br><a href="#mask">[pix_mask]</a> - create an alpha mask
+<br><a href="#convolve">[pix_convolve]</a> - convolve a pix with a kernel
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="invert"></a>[pix_invert]</h3>
+<i>[pix_invert]</i> inverts the pixels in an image. To use <i>[pix_invert]</i>,
+simply make sure that you have already loaded an image into the chain. 
+In the following patch, the fractal image will be inverted.
+<center>
+<p><img SRC="invert.jpg" BORDER=1 height=120 width=179></center>
+
+<p>Here is the difference between the fractal image and the inverted version.
+<center>
+<p><img SRC="normalFrac.jpg" height=256 width=256><img SRC="invertFrac.jpg" height=256 width=256></center>
+
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="add"></a>pix_add</h3>
+<i>[pix_add]</i> does what you would expect. It adds two images together.
+<center>
+<p><img SRC="add.jpg" BORDER=1 height=152 width=305></center>
+
+<p>This patch adds the fractal image with a car image. The processed
+image will often contain a lot of white pixels, because the data is just
+added together. This occurs in the resulting image, shown below.
+<center>
+<p><img SRC="addResult.jpg" height=257 width=255></center>
+
+<p><br>
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="mask"></a>pix_mask</h3>
+<i>[pix_mask]</i> is used to create an alpha mask from another image. 
+In the following example (gem_pix/gemMaskDancer.pd), the fractal image's
+alpha channel is replaced by the dancer image. If the <i>[alpha]</i>
+object was removed, then you would just see the solid fractal image (because
+the alpha channel wouldn't be used).
+<p>In other words, images are composed of a red, a green, a blue, and an
+alpha channel. The alpha channel is the transparency of the pixel.
+
+<i>[pix_mask]</i> only modifies the alpha channel and does not touch the
+red, green, or blue data.
+<center>
+<p><img SRC="mask.jpg" BORDER=1 height=262 width=191></center>
+
+<p>The result is this image.
+<center>
+<p><img SRC="maskResult.jpg" height=218 width=187></center>
+
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="convolve"></a>pix_convolve</h3>
+<i>[pix_convolve]</i> convolves pix data with a convolution kernel. 
+Basically, you can get really nice effects if you choose the correct kernel...and
+garbage if you choose the wrong one.
+<p>Edge detection is done with a convolution kernel, as is smoothing. 
+The biggest problem is that convolving an image is about the most expensive
+operation that you can do in GEM.
+<p>Look at gem_pix/gemPixConvolve.pd to get an idea of some of the kernels
+that you can send to <i>[pix_convolve]</i> and the effects that you can get.
+<p>If you want to learn the math behind convolution, then find any standard
+image processing (or audio processing book, this is just 2D convolution).
+<br> 
+<p><img SRC="tribar.gif" height=13 width=561>
+<p><a href="index.html">[return]</a>
+<br>
+</body>
+</html>

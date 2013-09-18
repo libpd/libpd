@@ -1,0 +1,14 @@
+#N canvas 52 28 591 268 10;
+#X text 83 169 IEM KUG;
+#X text 67 157 musil;
+#X text 97 157 @;
+#X text 103 157 iem.at;
+#X text 66 179 Graz \, Austria;
+#X text 18 146 (c) Thomas Musil 2000 - 2006;
+#X text 361 51 like;
+#X text 30 14 spec2*s~;
+#X text 107 26 with (blocksize/2 + 1) bins;
+#X text 106 14 multiply a value with a signal spectrum;
+#X text 134 53 1.arg: <float> value to multiply;
+#X obj 30 52 spec2*s~ 0;
+#X obj 412 52 *~ 0;

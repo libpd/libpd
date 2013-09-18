@@ -1,0 +1,69 @@
+current: all
+
+.SUFFIXES: .pd_linux
+
+INCLUDE = -I. -I/usr/local/src/pd/src
+
+LDFLAGS = --export-dynamic -shared
+LIB = -ldl -lm -lpthread
+
+#select either the DBG and OPT compiler flags below:
+
+CFLAGS = -DPD -DUNIX -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O6 -funroll-loops -fomit-frame-pointer -fno-strict-aliasing \
+        -DDL_OPEN -fPIC
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = spec2_1p1z_freq~.c \
+	spec2_1p1z_time~.c \
+	spec2_abs~.c \
+	spec2_add_scalar~.c \
+	spec2_add~.c \
+	spec2_block_delay~.c \
+	spec2_clip_max~.c \
+	spec2_clip_min~.c \
+	spec2_dbtopow~.c \
+	spec2_dbtorms~.c \
+	spec2_matrix_bundle_stat~.c \
+	spec2_mul_scalar~.c \
+	spec2_mul~.c \
+  	spec2_powtodb~.c \
+	spec2_rmstodb~.c \
+	spec2_shift~.c \
+	spec2_sqrt~.c \
+	spec2_stretch~.c \
+	spec2_sub~.c \
+	spec2_sum~.c \
+	spec2_tab_conv~.c \
+	spec2_tabreceive_enable~.c \
+	spec2_tabreceive~.c \
+	iem_spec2.c
+
+TARGET = iem_spec2.pd_linux
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(LD) $(LDFLAGS) -o $(TARGET) *.o $(LIB)
+	strip --strip-unneeded $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

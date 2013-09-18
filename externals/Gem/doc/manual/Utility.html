@@ -1,0 +1,149 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (WinNT; I) [Netscape]">
+   <title>Utility objects</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Utility objects</u></h2></center>
+There are a number of objects which were written to make it easier to use
+both GEM and pd.&nbsp; For instance, you often pass around 3 floats at
+a time in GEM, either for position or colors.&nbsp; To help with this,
+there are a collection of vector objects.&nbsp; Use the list below to find
+out about the objects.
+<p>These objects used to be in a separate library called MarkEx, but they
+have now been folded into GEM.
+<p><a href="#counter">counter</a> - count the number of bangs
+<br><a href="#average">average</a> - average a series of numbers together
+<br><a href="#change">change</a> - only output when there is a change in
+the number
+<br><a href="#invert">invert</a> - invert a number
+<br><a href="#randF">randomF/randF</a> - floating point random number
+<br><a href="#tripleLine">tripleLine</a> - line object for 3 values
+<br><a href="#tripleRand">tripleRand</a> - three random numbers
+<br><a href="#vector">vector objects</a> - process a series of numbers
+<br><a href="#hsv2rgb">hsv2rgb and rgb2hsv</a> - convert between RGB and
+HSV color space
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="counter"></a>counter</h3>
+
+<center><img SRC="counter.jpg" BORDER=1 height=85 width=87></center>
+
+<p>The inlets are:
+<br>bang (increment or decrement the counter)
+<br>set direction (1 = count up, 2 = count down, 3 = count up and down)
+<br>set low value
+<br>set hight value
+<br>The outlet is the current count.
+<p>So in this case, the top <i>counter</i> will count up from 1 to 10.&nbsp;
+The bottom <i>counter</i> will count up from 2 to 5.
+<p>The <i>counter</i> also accepts the messages reset and clear.&nbsp;
+Reset immediately sets the counter to its low value and outputs the value.&nbsp;
+The clear message means that the next bang will set the <i>counter</i>
+to its low value.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="average"></a>average</h3>
+The <i>average</i> object just averages a series of numbers as they come
+in.&nbsp; The left inlet accepts a single float.&nbsp; It then outputs
+the current average.&nbsp; The default number of floats to average together
+is 10, but that can be changed by sending a new value to the right inlet.
+<p>The <i>average</i> object also accepts the messages clear and reset.&nbsp;
+Clear will immediately set all of the values that the object has been storing
+for averaging to 0.&nbsp; With the reset message, you must pass in a number
+to set all of the values.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="change"></a>change</h3>
+<i>Change</i> only accepts a number into its left inlet.&nbsp; If the number
+is the same as the last number sent to the <i>change</i> object, then it
+does nothing.&nbsp; If the number is different, then the <i>change</i>
+object will output the new number and store it for the next comparision.
+<p>This object is very useful for the == object and others like it, since
+they send a 0 or a 1 every time they do a comparision, and you usually
+only care when the state actually changes.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="invert"></a>invert</h3>
+The <i>invert</i> object is very simple.&nbsp; If the number sent to its
+left inlet is equal to 0., then <i>invert</i> outputs a 1.&nbsp; If the
+number is not equal to 0., the <i>invert</i> outputs a 0.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="randF"></a>randomF/randF</h3>
+One problem with the <i>random</i> object in pd is that it only sends out
+integers.&nbsp; This a real problem in GEM, where you often want a value
+between 0 and 1.&nbsp; <i>randomF</i> is exactly like the <i>random</i>
+object.
+<p>When the left inlet gets a bang, <i>randomF</i> outputs a random number
+between 0 and the given range.&nbsp; The range can be set with a number
+to the right inlet.
+<p><i>randF</i> is just an alternate name for <i>randomF</i>.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="tripleLine"></a>tripleLine</h3>
+
+<center><img SRC="tripleLine.jpg" BORDER=1 height=92 width=111></center>
+
+<p>The <i>line</i> object is really great for dealing with a single number.&nbsp;
+To do a line with 3 values, like an RGB color value, means that you have
+to unpack, do a <i>line</i>, then repack the number.&nbsp; Not only is
+it a pain, but it expensive computationally.
+<p><i>tripleLine</i> behaves just like the <i>line</i> object, only it
+accepts three numbers to interpolate between.&nbsp; In the example, <i>tripleLine</i>
+will interpolate from the current values to 1., .2, .4 over 1000 milliseconds.&nbsp;
+The default output resolution is 50 milliseconds, which is the same default
+rendering time.&nbsp; Going faster with GEM objects will not produce any
+benefit, unless you increase the frames per second.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="tripleRand"></a>tripleRand</h3>
+
+<center><img SRC="tripleRand.jpg" BORDER=1 height=89 width=149></center>
+
+<p>Just as using <i>tripleLine</i> makes it easier to interpolate between
+3 values at once, <i>tripleRand</i> makes it easy to generate three random
+values.&nbsp; In the above example, when the bang is sent, <i>tripleRand</i>
+will create three values and output them, with the first between 0 - 1,
+the second between 0 - .5, and the third from 0 - .8.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="vector"></a>Vector objects</h3>
+The vector math objects are
+<br><i>vector+ </i>or<i> v+</i>
+<br><i>vector- </i>or<i> v-</i>
+<br><i>vector* </i>or<i> v*</i>
+<br><i>vector/ </i>or<i> v/</i>
+<br>All of the above objects perform math on a list of numbers.&nbsp; The
+left inlet accepts a list of numbers of any length.&nbsp; The right inlet
+accepts a single value, which is the operand for the computation.&nbsp;
+In other words, they work just like the normal *, +, -, and / objects,
+except they can handle more than one number in the left inlet.
+<p>There are two other objects which are also useful.
+<p>The first is <i>vectorabs </i>or<i> vabs</i>. It computes the absolute
+value on a list of numbers.
+<p>The second object is <i>vectorpack </i>or<i> vpack</i>. <i>vpack</i>
+accepts a list of numbers in the left inlet and a single number into the
+right inlet.&nbsp; The output is a single list of numbers that is the vector
+with the single number appended to the end.&nbsp; This is very useful when
+you want to change the time for a <i>tripleLine</i> without unpacking and
+repacking all of the data.<i></i>
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="hsv2rgb"></a>hsv2rgb and rgb2hsv</h3>
+These two objects convert three numbers between HSV and RGB color space.&nbsp;
+HSV stands for hue, saturation, and value.&nbsp; The simple way to think
+of HSV space is that hue is the "color", such as red, blue, etc, the saturation
+is how intense the color is, and the value is how bright the color is.
+<p>You can get some really nice effects by varying the hue of a color,
+because the brightness will not change while you do it.
+<p><img SRC="tribar.gif" height=13 width=561>
+<p><a href="index.html">[return]</a>
+</body>
+</html>

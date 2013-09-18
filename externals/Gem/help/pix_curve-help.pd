@@ -1,0 +1,156 @@
+#N canvas 0 321 774 553 10;
+#X text 452 8 GEM object;
+#X obj 8 386 cnv 15 430 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 388 Inlets:;
+#X text 38 495 Outlets:;
+#X obj 8 306 cnv 15 430 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 47 305 Arguments:;
+#X obj 7 76 cnv 15 430 220 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 210 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 138 cnv 15 200 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X text 156 263 [pix_buf] with "auto 1" is important if we want to
+recalculate our pix-effect each frame but don't want to reload the
+image all the time.;
+#X obj 77 281 pix_buf;
+#X obj 102 229 loadbang;
+#X msg 102 250 auto 1;
+#X connect 0 0 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X restore 451 113 pd image;
+#X text 16 511 Outlet 1: gemlist;
+#X text 23 402 Inlet 1: gemlist;
+#X obj 451 253 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 50 12 Synopsis: [pix_curve];
+#X text 29 76 Description: apply color curves to an image;
+#X text 13 96 [pix_curve] applies color-curves (that are stored in
+arrays) to an image.;
+#X text 14 125 You can specify one table for all 4 (RGBA) channels
+or one for each channel. If you do not specify a table for the Alpha-channel
+\, it will not be touched.;
+#X text 17 175 You can specify the tables with creation-arguments and
+(re)set them with the "set"-message.;
+#X text 15 204 The length of the used table does not matter. The table
+will be stretched/squeezed to (virtually) hold 256 items. If it is
+stretched \, no interpolation is done!;
+#X text 17 257 The values of the table-items have range between 0 and
+255 !;
+#X msg 469 142 set tab-rgba;
+#X msg 469 162 set tab-red tab-green tab-blue;
+#N canvas 46 428 568 342 table-init 0;
+#X msg 26 171 \; tab-red cosinesum 128 1 0.6 -0.2 0.2 \; tab-red normalize
+256;
+#X msg 26 222 \; tab-blue cosinesum 8 0.5 -0.4 0.3 \; tab-blue normalize
+256;
+#X obj 352 120 until;
+#X msg 353 49 100;
+#X obj 352 167 i;
+#X obj 383 167 + 1;
+#X msg 367 147 0;
+#X obj 352 196 t f f f;
+#X obj 381 219 * -1;
+#X obj 381 259 pack;
+#X obj 338 304 tabwrite tab-green;
+#X msg 338 281 \$1 \$1;
+#X obj 381 280 tabwrite tab-rgba;
+#X obj 210 11 loadbang;
+#X obj 352 71 t f b;
+#X obj 381 239 + 100;
+#X obj 200 39 t b b b;
+#X msg 148 103 \; tab-green normalize 256 \; tab-rgba normalize 256
+;
+#X obj 37 125 t b b;
+#X connect 2 0 4 0;
+#X connect 3 0 14 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 1;
+#X connect 7 0 11 0;
+#X connect 7 1 8 0;
+#X connect 7 2 9 1;
+#X connect 8 0 15 0;
+#X connect 9 0 12 0;
+#X connect 11 0 10 0;
+#X connect 13 0 16 0;
+#X connect 14 0 2 0;
+#X connect 14 1 6 0;
+#X connect 15 0 9 0;
+#X connect 16 0 18 0;
+#X connect 16 1 17 0;
+#X connect 16 2 3 0;
+#X connect 18 0 0 0;
+#X connect 18 1 1 0;
+#X restore 463 392 pd table-init;
+#X obj 459 344 table tab-rgba;
+#X obj 580 342 table tab-red;
+#X obj 580 362 table tab-green;
+#X obj 580 382 table tab-blue;
+#X obj 451 215 pix_curve tab-rgba;
+#X msg 469 183 set tab-green tab-blue tab-red tab-rgba;
+#X text 13 336 3 args: separate <tablename>s for all channels;
+#X text 13 350 4 args: separate <tablename>s for all channels (incl.
+alpha);
+#X text 13 322 1 arg:: common <tablename> for all channels;
+#X text 23 415 Inlet 1: set <tablename>: common table for all channels
+;
+#X text 23 432 Inlet 1: set <table1><table2><table3>: separate tables
+for all channels;
+#X text 23 461 Inlet 1: set <table1><table2><table3><table4>: separate
+tables for all channels (incl. Alpha);
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 37 0;
+#X connect 30 0 37 0;
+#X connect 31 0 37 0;
+#X connect 37 0 20 0;
+#X connect 38 0 37 0;

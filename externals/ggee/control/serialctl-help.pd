@@ -1,0 +1,61 @@
+#N canvas 0 31 907 514 10;
+#X msg 202 243 getlines;
+#X msg 201 169 setlines RTS 0;
+#X msg 201 187 setlines RTS 1;
+#X msg 24 213 start;
+#X msg 24 195 stop;
+#X msg 515 231 vtime 0 20;
+#X msg 515 212 setlocal 0;
+#X msg 515 193 setcontrol 0 CS8 CLOCAL CREAD;
+#X msg 201 224 setlines DTR 1;
+#X msg 201 206 setlines DTR 0;
+#X text 12 489 (C) 2000 Guenter Geiger;
+#X text 32 22 [serialctl] reads from a Unix serial device. There are
+several ways how serial devices can be setup \, and [serialctl] provides
+access to these serial device settings. This makes it possible to interpret
+the data stream from a serial device either within pd itself \, or
+via a specially written external for the device attached to the serial
+port (see serial_bird and serial_ms).;
+#X msg 516 431 79 \, 75 \, 13;
+#X msg 517 451 OK \, 13;
+#X text 201 138 setlines set the serial port;
+#X text 199 151 lines (only acces to RTS and DTR is provided;
+#X text 23 153 start/stop;
+#X text 23 165 reading characters;
+#X text 23 177 from the device;
+#X text 510 69 setinput \, setcontrol \, setlocal \, vtime provide
+access to the termios status bits of the serial device. This is lowlevel
+configuration and is sometimes necessary.;
+#X text 512 296 set the baudrate;
+#X msg 514 348 makeraw;
+#X text 513 330 configure the device as "raw";
+#X text 511 110 If a 0 is prepended to the flags \, the flags are reset
+before any bits are switched. All other commands set the corresponding
+bits to either 1 (e.g. CLOCAL) or 0 (!CLOCAL).;
+#X msg 516 250 listflags;
+#X msg 716 210 setinput list;
+#X text 511 151 the "list flag" lists all available flags.;
+#X text 514 412 data can be sent as symbols or as ASCII character code
+;
+#X msg 716 230 setcontrol list;
+#X msg 717 191 setlocal list;
+#X msg 514 175 setinput 0 IXOFF;
+#X floatatom 590 314 0 0 0 0 - - -;
+#X msg 513 313 speed \$1;
+#X obj 24 455 print;
+#X floatatom 62 243 0 0 0 0 - - -;
+#X msg 73 277 send c;
+#N canvas 391 259 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 125 AUTHOR Guenter Geiger;
+#X text 12 105 OUTLET_1;
+#X text 12 45 DESCRIPTION read from a Unix serial device;
+#X text 12 5 KEYWORDS control filesystem needs_work (object won't create)
+;
+#X text 12 65 INLET_0;
+#X text 12 85 OUTLET_0;
+#X restore 838 481 pd META;
+#X obj 24 429 serialctl /dev/ttyS0;
+#X connect 31 0 32 0;

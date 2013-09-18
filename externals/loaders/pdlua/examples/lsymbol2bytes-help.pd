@@ -1,0 +1,27 @@
+#N canvas 536 461 616 315 10;
+#X declare -lib pdlua;
+#X obj 23 8 import pdlua;
+#X msg 24 59 what;
+#X symbolatom 121 157 10 0 0 0 - - -;
+#X obj 91 141 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 73 108 symbol qwertyuiop;
+#X msg 45 80 why not;
+#X text 98 79 <- but a message is rejected;
+#X text 58 59 <- a lone selector is taken to be a symbol;
+#X text 216 181 <- unicode should be handled correctly;
+#X msg 146 181 symbol zéyé;
+#X msg 121 130 set Who;
+#X obj 166 218 lsymbol2bytes;
+#X text 258 218 [lsymbol2bytes] spits out the characters of a symbol
+as bytes.;
+#X obj 166 253 print bytes;
+#X text 407 261 by Martin Peach 2012_04_20;
+#X connect 1 0 11 0;
+#X connect 2 0 11 0;
+#X connect 3 0 2 0;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
+#X connect 9 0 11 0;
+#X connect 10 0 2 0;
+#X connect 11 0 13 0;

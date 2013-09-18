@@ -1,0 +1,14 @@
+#N canvas 251 75 572 506 10;
+#X obj 149 202 dac~;
+#X obj 150 128 compressor~;
+#X text 290 253 comments & bugs @ ydegoyon.free.fr;
+#X text 243 19 Compressor~ : an audio compressor;
+#X floatatom 259 86 5 -100 500;
+#X obj 108 41 osc~ 250;
+#X text 305 83 strength [ min : -1 \; max = 5 \; default = 0 ];
+#X obj 215 88 / 100;
+#X connect 1 0 0 0;
+#X connect 1 0 0 1;
+#X connect 4 0 7 0;
+#X connect 5 0 1 0;
+#X connect 7 0 1 1;

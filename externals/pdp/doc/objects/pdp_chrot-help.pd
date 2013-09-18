@@ -1,0 +1,13 @@
+#N canvas 355 66 554 208 10;
+#X obj 74 64 pdp_help_input;
+#X msg 74 31 start;
+#X msg 124 31 stop;
+#X obj 74 121 pdp_chrot;
+#X obj 74 157 pdp_help_output;
+#X floatatom 151 99 5 0 0;
+#X text 204 100 rotate the chroma components by this angle;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 5 0 3 1;

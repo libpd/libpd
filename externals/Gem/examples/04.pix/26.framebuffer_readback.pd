@@ -1,0 +1,88 @@
+#N canvas 0 0 826 651 10;
+#X msg 112 86 create \, 1;
+#X obj 112 131 gemwin;
+#X obj 311 112 pix_buffer \$0-framebuffer 2;
+#X obj 620 108 gemhead 5;
+#X obj 620 129 world_light;
+#X msg 129 108 lighting 1;
+#X text 44 5 you can render a scene into a framebuffer \, then take
+a snapshot of the framebuffer with [pix_snap] and use this as an ordinary
+pix (where you can apply effects and all kind of weird things);
+#X obj 75 439 cnv 15 250 130 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 161 269 cnv 15 150 150 empty empty scene 20 12 0 14 -233017
+-66577 0;
+#X obj 82 196 gemhead 20;
+#X obj 82 220 gemframebuffer;
+#X msg 163 195 dimen 256 256;
+#X obj 167 331 rotateXYZ;
+#X obj 167 376 teapot;
+#X obj 82 266 t a a b;
+#X obj 187 293 i;
+#X obj 220 292 + 1;
+#X obj 250 291 % 360;
+#X obj 82 453 t a b;
+#X msg 114 474 snap;
+#X obj 82 522 t a b;
+#X msg 296 527 1;
+#X obj 82 547 pix_buffer_write \$0-framebuffer;
+#X obj 410 262 gemhead 30;
+#X obj 410 306 t a b;
+#X msg 465 307 1;
+#X obj 410 331 pix_buffer_read \$0-framebuffer;
+#X obj 410 411 pix_texture;
+#X obj 410 476 square 3;
+#X obj 82 243 translateXYZ 0 0 -4;
+#X obj 82 498 pix_snap 0 0 256 256;
+#X obj 167 353 color 1 0 1;
+#X floatatom 226 313 5 0 0 0 - - -;
+#X obj 410 453 rotateXYZ;
+#X floatatom 445 433 5 0 0 0 - - -;
+#X text 318 130 temporary storage;
+#X obj 163 175 loadbang;
+#X text 130 451 later usage;
+#X text 129 436 snapshot and store image for;
+#X text 562 308 fetch framebuffer-pix;
+#X text 535 379 apply some nifty FX;
+#X text 73 597 note \, that there are more efficient ways to apply
+FX to framebuffers (noteably openGL-shaders: see examples/10.glsl/
+for more information);
+#X obj 425 358 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 410 380 pix_kaleidoscope;
+#X connect 0 0 1 0;
+#X connect 3 0 4 0;
+#X connect 5 0 1 0;
+#X connect 9 0 10 0;
+#X connect 10 0 29 0;
+#X connect 11 0 10 0;
+#X connect 12 0 31 0;
+#X connect 14 0 18 0;
+#X connect 14 1 12 0;
+#X connect 14 2 15 0;
+#X connect 15 0 16 0;
+#X connect 15 0 12 1;
+#X connect 15 0 12 2;
+#X connect 16 0 17 0;
+#X connect 17 0 15 1;
+#X connect 18 0 30 0;
+#X connect 18 1 19 0;
+#X connect 19 0 30 0;
+#X connect 20 0 22 0;
+#X connect 20 1 21 0;
+#X connect 21 0 22 1;
+#X connect 23 0 24 0;
+#X connect 24 0 26 0;
+#X connect 24 1 25 0;
+#X connect 25 0 26 1;
+#X connect 26 0 43 0;
+#X connect 27 0 33 0;
+#X connect 29 0 14 0;
+#X connect 30 0 20 0;
+#X connect 31 0 13 0;
+#X connect 32 0 12 3;
+#X connect 33 0 28 0;
+#X connect 34 0 33 2;
+#X connect 36 0 11 0;
+#X connect 42 0 43 0;
+#X connect 43 0 27 0;

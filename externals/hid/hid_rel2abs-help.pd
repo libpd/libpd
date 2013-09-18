@@ -1,0 +1,45 @@
+#N canvas 487 359 469 312 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_rel2abs 2 11 1 18 -233017
+-66577 0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 270 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 284 released under the GNU GPL;
+#X text 30 38 Converts relative axis data into an absolute position.
+;
+#X obj 175 116 mouse;
+#X msg 193 73 open 1;
+#X msg 204 91 open 2;
+#X obj 157 75 tgl 25 0 empty empty empty 0 -6 0 8 -24198 -1 -1 0 1
+;
+#X floatatom 112 207 5 0 0 0 - - -;
+#X floatatom 153 207 5 0 0 0 - - -;
+#X floatatom 252 208 5 0 0 0 - - -;
+#X floatatom 211 208 5 0 0 0 - - -;
+#X obj 252 174 hid/hid_rel2abs 0 100;
+#X obj 73 175 hid/hid_rel2abs -10 10;
+#X text 98 240 For more info:;
+#X msg 73 129 reset;
+#X msg 284 129 reset;
+#N canvas 485 31 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 95 OUTLET_0 float;
+#X text 12 45 DESCRIPTION convert relative axis data into an absolute
+position.;
+#X text 12 75 INLET_0 float reset;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 415 267 pd META;
+#X connect 5 0 10 0;
+#X connect 5 0 14 0;
+#X connect 5 1 12 0;
+#X connect 5 1 13 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 13 0 11 0;
+#X connect 14 0 9 0;
+#X connect 17 0 14 0;

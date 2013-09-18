@@ -1,0 +1,46 @@
+#N canvas 0 22 681 692 10;
+#X obj 339 -75 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 14250 1;
+#X obj 370 -76 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 15950 1;
+#X obj 401 -75 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 17350 1;
+#X obj 431 -75 vsl 15 250 -1 1 0 1 empty empty empty 20 8 0 8 -262144
+-1 -1 18350 1;
+#X msg 370 201 rc 1 \$1;
+#X msg 401 226 rc 2 \$1;
+#X msg 431 202 rc 3 \$1;
+#X floatatom 431 -106 5 -1 1 0 - - -;
+#X text 434 278 lattice~ a lattice filter;
+#X text 434 291 creation argument sets order;
+#X obj 18 315 testtools/unit-test-frame~;
+#X obj 232 163 phasor~ 440;
+#X msg 295 137 0;
+#X obj 232 194 -~ 0.5;
+#X obj 18 250 loadbang;
+#X msg 18 280 lattice~ 200;
+#X obj 339 261 creb/lattice~ 4;
+#X obj 339 285 *~ 0.5;
+#X msg 339 225 rc 0 \$1;
+#X floatatom 439 184 5 0 0 0 - - -;
+#X connect 0 0 18 0;
+#X connect 1 0 4 0;
+#X connect 2 0 5 0;
+#X connect 3 0 6 0;
+#X connect 3 0 19 0;
+#X connect 4 0 16 0;
+#X connect 5 0 16 0;
+#X connect 6 0 16 0;
+#X connect 7 0 0 0;
+#X connect 7 0 1 0;
+#X connect 7 0 2 0;
+#X connect 7 0 3 0;
+#X connect 10 0 12 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 1;
+#X connect 13 0 16 0;
+#X connect 14 0 15 0;
+#X connect 15 0 10 0;
+#X connect 16 0 17 0;
+#X connect 17 0 10 1;
+#X connect 18 0 16 0;

@@ -1,0 +1,106 @@
+#N canvas 68 190 683 381 10;
+#X text 452 8 GEM object;
+#X obj 8 226 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 228 Inlets:;
+#X text 39 294 Outlets:;
+#X obj 8 186 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 185 Arguments:;
+#X obj 8 66 cnv 15 430 110 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 290 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 329 pd gemwin;
+#X msg 519 310 create;
+#X text 515 289 Create window:;
+#X obj 451 168 cnv 15 160 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 119 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 502 102 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 138 pd image;
+#X obj 451 263 pix_texture;
+#X text 63 196 <none>;
+#X text 47 308 Outlet 1: gemlist;
+#X text 53 242 Inlet 1: gemlist;
+#X obj 451 285 square 3;
+#X text 503 88 (JPEG \, TIFF \, ..);
+#X obj 541 122 gemhead;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/ducks.png;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 541 141 pd image;
+#X obj 592 103 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#X msg 491 196 direction \$1;
+#X obj 491 178 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 50 12 Synopsis: [pix_compare];
+#X text 29 67 Description: mix 2 images based on their luminance;
+#X text 53 281 Inlet 2: gemlist;
+#X obj 451 226 pix_compare;
+#X text 53 254 Inlet 1: message: direction [0|1]: take lower or higher(default)
+valued pixel;
+#X text 449 77 open two different images;
+#X text 18 81 [pix_compare] compares two images pixel by pixel and
+outputs a composite image. [pix_compare] can do a greater than comparison
+where a brighter pixel in the right stream will replace the corresponding
+pixel in the left stream or the comparison can be reversed and the
+dimmer pixel can be replaced. this operation works best using YUV but
+can also be effective in RGB.;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 32 0;
+#X connect 18 0 22 0;
+#X connect 24 0 25 0;
+#X connect 25 0 32 1;
+#X connect 26 0 25 1;
+#X connect 27 0 32 0;
+#X connect 28 0 27 0;
+#X connect 32 0 18 0;

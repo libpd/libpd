@@ -1,0 +1,25 @@
+#N canvas 194 110 646 379 10;
+#X obj 39 65 pop 6 17 0 0 play_cmd play_cmd play_cmd 82 9 192 17 -225280
+-1109 -260818 0 5 open rewind start stop quit;
+#X obj 105 196 init_popup help-popup.txt play_cmd;
+#X obj 25 196 r play_cmd;
+#X obj 25 218 route set_pop_name;
+#X text 11 9 popup = pop;
+#X obj 263 236 pp set;
+#X msg 263 258 0 open;
+#X obj 69 276 unpack float symbol;
+#X floatatom 69 299 5 0 0;
+#X symbolatom 197 300 10 0 0;
+#X obj 413 93 pop 7 14 0 0 empty empty empty 50 7 0 10 -262144 -1 -1
+0 1 pop;
+#X floatatom 413 128 5 0 0;
+#X symbolatom 460 129 10 0 0;
+#X connect 1 0 10 0;
+#X connect 2 0 3 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 7 1 9 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;

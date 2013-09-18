@@ -1,0 +1,15 @@
+#N canvas 1 53 165 223 10;
+#X obj 17 46 t b b;
+#X msg 17 94 1;
+#X msg 47 94 0;
+#X obj 17 150 outlet;
+#X obj 17 20 inlet;
+#X obj 47 71 delay 100;
+#X obj 17 123 change -1;
+#X connect 0 0 1 0;
+#X connect 0 1 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 3 0;

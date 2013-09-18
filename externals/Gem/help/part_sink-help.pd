@@ -1,0 +1,29 @@
+#N canvas 142 0 627 488 10;
+#X msg 110 73 gemList;
+#X text 121 50 GEM object;
+#X msg 110 219 gemList;
+#X text 181 74 partList;
+#X text 180 222 partList;
+#X msg 166 132 domain;
+#X text 48 337 <domain>: one of "point" \, "line" \, "triangle" \,
+"plane" \, "box" \, "sphere" \, "cylinder" \, "cone" \, "blob" \, "disc"
+\, "rectangle";
+#X msg 222 164 <arguments>;
+#X text 49 401 <arguments>: up to 9 floats \, defining the specified
+domain (like "x y z" for "point" \, "x1 y1 z1 x2 y2 z2" for "line"
+\, "x y z r" for "sphere" \, ...). The meaning of the arguments depends
+-of course- on the domain.;
+#X obj 110 190 part_sink;
+#X msg 169 101 kill 1/0;
+#X text 132 16 [part_sink];
+#X text 53 245 [part_sink] sets up a sink for the particles within
+the system \, where they will vanish. You can set the sink-domain (shape)
+and the corresponding arguments.;
+#X obj 269 199 part_sink <domain> [<arguments>...];
+#X text 56 297 you can turn on/off the killing of particles (default==off)
+;
+#X connect 0 0 9 0;
+#X connect 5 0 9 1;
+#X connect 7 0 9 2;
+#X connect 9 0 2 0;
+#X connect 10 0 9 0;

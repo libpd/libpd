@@ -1,0 +1,18 @@
+#N canvas 109 83 646 239 12;
+#X text 17 53 creation argument: name of array;
+#X text 16 83 By default a block is 64 samples \; this can be reset
+using the block~ object.;
+#X obj 21 18 tab16receive~;
+#X text 376 199 updated for iem16 version1.0;
+#X obj 5 176 tab16write~;
+#X obj 5 195 tab16read4~;
+#X obj 109 195 tab16read;
+#X obj 109 176 tab16write;
+#X obj 204 176 tab16send~;
+#X obj 204 195 tab16receive~;
+#X obj 328 181 table16;
+#X text 17 155 see also:;
+#X text 129 18 - read a block of a 16bit-signal from an array continuously
+;
+#X text 10 129 16bit-signals are limited to 65536 values between -1.0..+1.0
+;

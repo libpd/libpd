@@ -1,0 +1,13 @@
+#N canvas 0 31 450 300 10;
+#X text 119 127 [embed];
+#X text 55 50 This object is used for hiding the Pd window when making
+an embedded app based on Pd.;
+#N canvas 329 160 494 344 META 0;
+#X text 12 95 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 75 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION hide the Pd window when making an embedded
+app based on Pd.;
+#X text 12 5 KEYWORDS control pd_op;
+#X restore 392 269 pd META;

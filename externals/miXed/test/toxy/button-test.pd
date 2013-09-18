@@ -1,0 +1,44 @@
+#N canvas 106 44 636 366 12;
+#X obj 21 259 widget button b -bg red -activebackground yellow -text
+red -command .<.>;
+#X msg 130 162 -command .<.>;
+#X msg 48 295 debug;
+#X obj 21 324 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 193 268 r t1;
+#X obj 193 324 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 45 74 -bg pink -text pink;
+#X msg 21 21 -bg red -text red;
+#X msg 34 47 -bg green -text green;
+#X msg 56 101 -bg gray -text "";
+#X msg 250 74 query tk_chooseColor;
+#X obj 250 101 tot .;
+#X msg 166 186 -command .<:t1 bang.>;
+#X msg 68 186 -width \$1;
+#X floatatom 68 162 5 0 0 0 - - -;
+#X msg 62 132 set -activebackground \$1;
+#X msg 90 213 -command .(set c [tk_chooseColor] .: eval .<| set "-bg"
+$c "-text" $c.>.);
+#X obj 294 268 loadbang;
+#X msg 294 295 set @vis .- config -textvariable "";
+#X obj 250 21 widget button bb -bg green -activebackground yellow
+-command .<.> ;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 11 0;
+#X connect 11 0 15 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 13 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 18 0;
+#X connect 18 0 0 0;
+#X connect 19 0 10 0;

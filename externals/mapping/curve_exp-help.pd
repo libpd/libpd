@@ -1,0 +1,69 @@
+#N canvas 1 53 476 357 10;
+#X obj 5 2 cnv 15 450 20 empty empty curve_exp 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 27 300 (C) Copyright 2004 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 244 314 released under the GNU GPL;
+#X text 98 271 For more info:;
+#X obj 202 269 pddp/pddplink ../all_about_curve_mapping.pd -text all_about_curve_mapping
+;
+#X floatatom 25 123 8 0 0 0 - - -;
+#X floatatom 25 184 8 0 0 0 - - -;
+#X obj 28 201 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 28 103 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -261681
+-1 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array curve_exp 100 float 0;
+#X coords 0 1 99 0 100 100 1;
+#X restore 321 111 graph;
+#N canvas 266 69 331 321 draw_array 0;
+#X msg 57 52 bang;
+#X obj 57 73 until;
+#X text 88 52 start;
+#X obj 57 95 f;
+#X obj 86 95 + 1;
+#X obj 132 97 sel 0;
+#X obj 86 117 mod 100;
+#X obj 57 150 t f f;
+#X obj 94 177 s array_index;
+#X obj 170 262 r array_index;
+#X obj 57 13 loadbang;
+#X obj 57 207 / 100;
+#X text 99 207 mapping output range: 0 to 1;
+#X obj 56 283 tabwrite curve_exp;
+#X obj 56 233 curve_exp;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 4 0 6 0;
+#X connect 5 0 1 1;
+#X connect 6 0 3 1;
+#X connect 6 0 5 0;
+#X connect 7 0 11 0;
+#X connect 7 1 8 0;
+#X connect 9 0 13 1;
+#X connect 10 0 0 0;
+#X connect 11 0 14 0;
+#X connect 14 0 13 0;
+#X restore 321 78 pd draw_array;
+#X text 17 39 This object maps the input range to a exponential curve
+\, the inverse of a logarithmic curve.;
+#N canvas 479 225 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION map the input range to a exponential curve
+\, the inverse of a logarithmic curve.;
+#X restore 420 327 pd META;
+#X obj 25 153 curve_exp;
+#X connect 6 0 14 0;
+#X connect 7 0 8 0;
+#X connect 9 0 6 0;
+#X connect 14 0 7 0;

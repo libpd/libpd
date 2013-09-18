@@ -1,0 +1,31 @@
+#N canvas 0 31 527 298 10;
+#X text 27 268 (c) Antoine Rousseau 2001;
+#X obj 18 27 makecolor;
+#X text 91 22 A color-symbol builder \, transforming RGB values in
+one hexa symbol.;
+#X obj 161 149 makecolor;
+#X symbolatom 161 186 10 0 0 0 - - -;
+#X floatatom 144 85 5 0 0 0 - - -;
+#X floatatom 190 85 5 0 0 0 - - -;
+#X floatatom 235 86 5 0 0 0 - - -;
+#X obj 161 127 b;
+#N canvas 518 217 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Antoine Rousseau;
+#X text 12 175 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 45 DESCRIPTION a color-symbol builder \, transforming RGB
+values in one hexa symbol;
+#X text 12 75 INLET_0 float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 135 INLET_3 symbol;
+#X restore 467 261 pd META;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 1;
+#X connect 6 0 8 0;
+#X connect 7 0 3 2;
+#X connect 7 0 8 0;
+#X connect 8 0 3 0;

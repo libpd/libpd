@@ -1,0 +1,72 @@
+#N canvas 0 31 546 422 10;
+#X obj 0 0 cnv 8 100 60 empty empty readsfv~ 10 20 1 18 -262144 -1109
+0;
+#X text 4 400 (c) Moonix: Antoine Rousseau 2003;
+#X obj 124 367 dac~;
+#X obj 132 331 readsfv~;
+#X obj 132 188 delay 20;
+#X msg 132 207 start;
+#X msg 193 207 1;
+#X obj 132 158 bng 15 250 50 0 empty empty play -25 4 0 8 -24198 -1
+-1;
+#X obj 183 351 s replay;
+#X obj 132 60 r replay;
+#X obj 159 284 symbol;
+#X msg 159 304 open \$1;
+#X msg 229 283 symbol /usr/local/lib/pd/doc/sound/bell.aiff;
+#X msg 229 262 symbol ../../doc/sound/bell.aiff;
+#X msg 47 298 speed \$1;
+#X obj 266 239 openpanel;
+#X obj 266 220 bng 15 250 50 0 empty empty open 0 -6 1 8 -195568 -1
+-1;
+#X obj 132 126 spigot;
+#X obj 169 109 tgl 15 1 empty empty loop 0 -6 1 8 -241291 -1 -1 1 1
+;
+#X obj 47 58 vsl 15 128 0.08 8 1 0 empty empty speed 0 -8 1 8 -260818
+-1 -1 6965 1;
+#X obj 1 57 init 1;
+#X obj 47 278 f;
+#X text 171 207 (or;
+#X text 220 207 );
+#X obj 57 253 b;
+#X obj 113 106 del 100;
+#X text 129 8 read a big soundfile in direct-to-disk mode;
+#X text 131 20 at variable speed.;
+#X text 230 104 read manual of;
+#X text 390 103 for more details...;
+#X obj 335 102 readsf~;
+#N canvas 524 187 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Antoine Rousseau;
+#X text 12 155 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal soundfile;
+#X text 12 45 DESCRIPTION read a big soundfile in direct-to-disk mode
+at variable speed;
+#X text 12 75 INLET_0 float start speed stop open print;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 115 OUTLET_1 signal;
+#X restore 487 387 pd META;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 3 1 8 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 5 0 24 0;
+#X connect 7 0 4 0;
+#X connect 7 0 10 0;
+#X connect 9 0 25 0;
+#X connect 10 0 11 0;
+#X connect 11 0 3 0;
+#X connect 12 0 10 1;
+#X connect 13 0 10 1;
+#X connect 14 0 3 0;
+#X connect 15 0 10 1;
+#X connect 16 0 15 0;
+#X connect 17 0 7 0;
+#X connect 18 0 17 1;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;
+#X connect 21 0 14 0;
+#X connect 24 0 21 0;
+#X connect 25 0 17 0;

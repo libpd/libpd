@@ -1,0 +1,42 @@
+#N canvas 29 106 471 316 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array array_vlavg 10 float 0;
+#X coords 0 1 9 -1 200 140 1 0 0;
+#X restore 239 72 graph;
+#X msg 8 58 1 1 1 1 1 1 1 1 1 1;
+#X msg 8 80 1 0 1 0 1 0 1 0 1 0;
+#X msg 8 102 0 1 0 1 0 1 0 1 0 1;
+#X msg 8 124 0 0 0 0 0 0 0 0 0 0;
+#X obj 8 224 vlavg 6;
+#X msg 8 146 -1 -1 0 0 -1 -1 0 0 -1 -1;
+#X msg 8 168 0 0 0 0 0 1 1 1 1 1;
+#X text 376 255 j#|@2002;
+#X text 7 3 vlavg: vector leaky average;
+#X text 8 22 the argument is the half-decay expressed in number of
+activations;
+#X obj 8 295 s array_vlavg;
+#X obj 397 234 SMLib-help;
+#X msg 27 201 decay 20;
+#N canvas 183 210 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION vector leaky average;
+#X text 12 65 INLET_0 list float decay;
+#X text 12 85 OUTLET_0 list float;
+#X restore 404 276 pd META;
+#X obj 8 271 list trim;
+#X obj 8 249 list prepend 0;
+#X connect 1 0 5 0;
+#X connect 2 0 5 0;
+#X connect 3 0 5 0;
+#X connect 4 0 5 0;
+#X connect 5 0 16 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 13 0 5 0;
+#X connect 15 0 11 0;
+#X connect 16 0 15 0;

@@ -1,0 +1,13 @@
+#N canvas 212 48 778 592 12;
+#X obj 70 95 widget bpf f1;
+#X obj 240 321 widget bpf f1;
+#X obj 432 92 widget bpf f2;
+#X msg 77 331 redefine;
+#X obj 77 370 tow . bpf f1;
+#X msg 80 432 redefine;
+#X msg 578 336 redefine;
+#X obj 578 375 tow . bpf f2;
+#X obj 80 471 tow . bpf;
+#X connect 3 0 4 0;
+#X connect 5 0 8 0;
+#X connect 6 0 7 0;

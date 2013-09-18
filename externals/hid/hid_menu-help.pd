@@ -1,0 +1,11 @@
+#N canvas 0 31 473 316 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_menu 2 11 1 18 -233017 -66577
+0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 270 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 284 released under the GNU GPL;
+#X text 161 235 For more info:;
+#X obj 266 234 pddp/pddplink ../all_about_hid.pd -text all_about_hid
+;

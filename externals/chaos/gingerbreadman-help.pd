@@ -1,0 +1,31 @@
+#N canvas 615 23 577 480 10;
+#X obj 44 115 tgl 15 0 empty empty empty 0 -6 32 8 -262144 -1 -1 0
+1;
+#X floatatom 95 116 5 0 0 0 - - -;
+#X floatatom 131 348 10 0 0 0 Y - -;
+#X floatatom 44 348 10 0 0 0 X - -;
+#X text 17 48 (This attractor is not continuous);
+#X obj 44 132 metro 50;
+#X obj 19 131 bng 15 250 50 0 empty empty empty 0 -6 32 8 -262144 -1
+-1;
+#X obj 242 104 examples/readme-fractals;
+#X msg 113 272 show;
+#X msg 76 156 reset;
+#X text 120 156 Reset to initial state from creation arguments;
+#X text 19 33 Chaos PD Externals - Copyright Michael McGonagle \, 2003
+;
+#X text 20 18 Gingerbreadman Attractor;
+#X obj 44 316 gingerbreadman;
+#X text 91 193 This fractal equation does not have any parameters \,
+and thus does not allow the messages 'param' or any of the searching
+functions.;
+#X msg 96 235 param;
+#X connect 0 0 5 0;
+#X connect 1 0 5 1;
+#X connect 5 0 13 0;
+#X connect 6 0 13 0;
+#X connect 8 0 13 0;
+#X connect 9 0 13 0;
+#X connect 13 0 3 0;
+#X connect 13 1 2 0;
+#X connect 15 0 13 0;

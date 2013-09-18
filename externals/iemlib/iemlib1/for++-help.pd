@@ -1,0 +1,148 @@
+#N canvas 1 53 940 504 10;
+#X obj 16 56 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X obj 65 186 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X floatatom 65 61 4 0 0 0 - - -;
+#X floatatom 103 78 4 0 0 0 - - -;
+#X floatatom 65 163 4 0 0 0 - - -;
+#X floatatom 143 95 4 0 0 0 - - -;
+#X text 7 8 for++;
+#X obj 111 166 print;
+#X msg 16 75 start;
+#X msg 16 95 stop;
+#X obj 237 213 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X floatatom 237 190 4 0 0 0 - - -;
+#X obj 280 186 print;
+#X obj 237 141 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X obj 237 162 for++ 50 40 100;
+#X obj 165 166 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X obj 337 193 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X text 163 181 finished;
+#X text 336 208 finished;
+#X obj 237 264 print finished;
+#X obj 522 93 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X obj 642 136 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X text 641 151 finished;
+#X obj 522 160 timer;
+#X obj 522 135 sel 0 1000;
+#X floatatom 522 183 5 0 0 0 - - -;
+#X obj 522 112 for++ 0 1000 1.234;
+#X text 78 437 IEM KUG;
+#X text 55 425 musil;
+#X text 92 425 @;
+#X text 100 425 iem.at;
+#X text 61 447 Graz \, Austria;
+#X text 397 22 1.arg: <int> beginning number;
+#X text 397 34 2.arg: <int> ending number;
+#X text 397 58 4.arg: <float> incremental value (optional \, default
+1);
+#X text 13 414 (c) Thomas Musil 2000 - 2011;
+#X obj 65 132 for++ 10 20 200 1;
+#X floatatom 181 111 4 0 0 0 - - -;
+#X text 177 93 <float> increment value;
+#X obj 475 241 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X floatatom 475 282 5 0 0 0 - - -;
+#X obj 476 302 print;
+#X obj 475 260 for++ 0 5;
+#X obj 591 240 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X floatatom 591 281 5 0 0 0 - - -;
+#X obj 592 301 print;
+#X obj 591 259 for++ 16 8;
+#X obj 767 186 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X floatatom 731 280 5 0 0 0 - - -;
+#X obj 732 300 print;
+#X obj 731 258 for++ 3 -3;
+#X obj 821 291 timer;
+#X floatatom 821 314 5 0 0 0 - - -;
+#X obj 766 206 t b b;
+#X obj 429 309 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144
+-1 -1;
+#X floatatom 429 350 5 0 0 0 - - -;
+#X obj 430 370 print;
+#X obj 429 328 for++ 0 5 0 0.5;
+#X floatatom 576 397 5 0 0 0 - - -;
+#X obj 577 417 print;
+#X obj 576 352 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 576 375 for++ 3 -3 0 -0.5;
+#X floatatom 713 393 5 0 0 0 - - -;
+#X obj 714 413 print;
+#X obj 713 348 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 712 372 for++ 3 -3 0 0.5;
+#X text 757 391 incremnt will be corrected;
+#X text 67 9 counter with optional timer interval;
+#X text 116 21 and increment step size;
+#X text 64 47 <float> beginning number;
+#X text 104 62 <float> ending number;
+#X text 137 77 <float> increment delay in ms;
+#X text 397 46 3.arg: <float> increment delay in ms (optional \, default
+0);
+#N canvas 497 296 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 165 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION counter with its own interval timer;
+#X text 12 65 INLET_0 bang float start stop;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 OUTLET_1 bang;
+#X restore 835 464 pd META;
+#X connect 0 0 36 0;
+#X connect 2 0 36 0;
+#X connect 3 0 36 1;
+#X connect 4 0 1 0;
+#X connect 5 0 36 2;
+#X connect 8 0 36 0;
+#X connect 9 0 36 0;
+#X connect 11 0 10 0;
+#X connect 13 0 14 0;
+#X connect 14 0 11 0;
+#X connect 14 0 12 0;
+#X connect 14 1 16 0;
+#X connect 15 0 19 0;
+#X connect 16 0 19 0;
+#X connect 20 0 26 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 0;
+#X connect 24 1 23 1;
+#X connect 26 0 24 0;
+#X connect 26 1 21 0;
+#X connect 36 0 4 0;
+#X connect 36 0 7 0;
+#X connect 36 1 15 0;
+#X connect 39 0 42 0;
+#X connect 40 0 41 0;
+#X connect 42 0 40 0;
+#X connect 43 0 46 0;
+#X connect 44 0 45 0;
+#X connect 46 0 44 0;
+#X connect 47 0 53 0;
+#X connect 48 0 49 0;
+#X connect 50 0 48 0;
+#X connect 50 1 51 1;
+#X connect 51 0 52 0;
+#X connect 53 0 50 0;
+#X connect 53 1 51 0;
+#X connect 54 0 57 0;
+#X connect 55 0 56 0;
+#X connect 57 0 55 0;
+#X connect 58 0 59 0;
+#X connect 60 0 61 0;
+#X connect 61 0 58 0;
+#X connect 62 0 63 0;
+#X connect 64 0 65 0;
+#X connect 65 0 62 0;

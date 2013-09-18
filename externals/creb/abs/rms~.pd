@@ -1,0 +1,8 @@
+#N canvas 190 209 347 206 10;
+#X obj 113 45 inlet~;
+#X obj 114 72 env~;
+#X obj 115 98 dbtorms;
+#X obj 113 134 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;

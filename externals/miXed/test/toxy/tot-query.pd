@@ -1,0 +1,61 @@
+#N canvas 210 60 778 551 12;
+#X msg 21 8 symbol pinecone;
+#X obj 455 142 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 186 8 symbol conehead;
+#X obj 67 174 sel 1;
+#X obj 128 238 sel 0;
+#X obj 128 339 print error;
+#X obj 199 238 metro 150;
+#X msg 128 311 open it first...;
+#X msg 54 124 tot global ch .: set ch [open ~/PureData/miXed/test/toxy/tot-query.pd
+r];
+#X msg 75 435 query concat set [lsort -decreasing [glob *]];
+#X msg 37 90 reset \, addnext set x -1 .: concat set [expr acos($x)]
+\, qpush;
+#X msg 21 44 tot global ans .: regsub cone \$1 apple ans \, query global
+ans .: concat set $ans;
+#X msg 199 266 tot global txt ch .: set txt [gets $ch] \, query global
+txt .: concat set $txt;
+#N canvas 0 0 578 346 more 0;
+#X msg 35 73 query .^.c bbox foo;
+#X obj 19 280 print reply;
+#X msg 84 152 query winfo id .^.c;
+#X msg 84 231 query winfo pathname \$1;
+#X msg 19 26 tot .^.c create text 400 100 -width 80 -font "times 24"
+-anchor nw -text "abcd efgh ijkl mnop" -tags foo;
+#X msg 48 104 tot .^.c delete foo;
+#X obj 19 231 tot .;
+#X obj 84 191 tot .;
+#X connect 0 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 6 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X restore 576 174 pd more;
+#X obj 21 468 tot .;
+#X obj 67 238 tot .;
+#X msg 67 202 tot eval .< [global ch .: info exists ch] .>;
+#X msg 21 502;
+#X msg 54 376 tot set ::ch [open ~/.pdrc] \, query concat set [read
+$::ch] \, tot after 0 .(close $::ch .: unset ::ch.);
+#X connect 0 0 11 0;
+#X connect 1 0 3 0;
+#X connect 2 0 11 0;
+#X connect 3 0 16 0;
+#X connect 3 1 6 0;
+#X connect 4 0 7 0;
+#X connect 4 1 6 0;
+#X connect 6 0 12 0;
+#X connect 7 0 5 0;
+#X connect 8 0 14 0;
+#X connect 9 0 14 0;
+#X connect 10 0 14 0;
+#X connect 11 0 14 0;
+#X connect 12 0 14 0;
+#X connect 14 0 17 0;
+#X connect 15 1 4 0;
+#X connect 16 0 15 0;
+#X connect 18 0 14 0;

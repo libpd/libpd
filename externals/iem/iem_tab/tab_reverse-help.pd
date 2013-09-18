@@ -1,0 +1,61 @@
+#N canvas 96 21 782 474 10;
+#N canvas 0 0 450 300 graph1 0;
+#X array src 100 float 1;
+#A 0 -0.871431 -0.84286 -0.814288 -0.814288 -0.800002 -0.771431 -0.757145
+-0.742859 -0.728574 -0.714288 -0.685716 -0.671431 -0.657145 -0.642859
+-0.628573 -0.614288 -0.600002 -0.585716 -0.57143 -0.542859 -0.542859
+-0.528573 -0.514287 -0.500002 -0.485716 -0.47143 -0.457144 -0.442859
+-0.428573 -0.414287 -0.400002 -0.385716 -0.385716 -0.357144 -0.342859
+-0.342859 -0.328573 -0.314287 -0.300001 -0.285716 -0.27143 -0.257144
+-0.228573 -0.228573 -0.200001 -0.185715 -0.185715 -0.17143 -0.142858
+-0.142858 -0.128572 -0.114287 -0.085715 -0.085715 -0.0571435 -0.028572
+-0.0142863 -5.01052e-007 0.0142853 0.028571 0.0571425 0.0714283 0.0714283
+0.0999998 0.114286 0.142857 0.142857 0.171429 0.185714 0.214286 0.228572
+0.242857 0.257143 0.285715 0.3 0.328572 0.342858 0.357143 0.371429
+0.400001 0.414286 0.428572 0.457143 0.471429 0.485715 0.500001 0.514286
+0.542858 0.571429 0.585715 0.600001 0.628572 0.642858 0.657144 0.685715
+0.700001 0.714287 0.742858 0.757144 0.77143;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 534 10 graph;
+#N canvas 0 0 450 300 graph1 0;
+#X array dst 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 534 176 graph;
+#X obj 61 31 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 106 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 78 tab_reverse src dst;
+#X obj 59 341 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 59 211 50 20 50;
+#X text 195 314 1.arg: <symbol> source-name;
+#X text 195 327 2.arg: <symbol> destination-name;
+#X msg 116 231 src src;
+#X msg 166 249 dst dst;
+#X obj 59 302 tab_reverse src dst;
+#X text 185 69 (the number of samples which are copied are:;
+#X text 198 83 the minimum of both array lengths);
+#X text 12 3 tab_reverse;
+#X text 90 29 <bang> copy value from src to dst in reverse arrangement
+;
+#X text 44 164 list of 3 floats:;
+#X text 78 415 IEM KUG;
+#X text 62 403 musil;
+#X text 92 403 @;
+#X text 98 403 iem.at;
+#X text 61 425 Graz \, Austria;
+#X text 13 392 (c) Thomas Musil 2000 - 2006;
+#X text 56 175 1.) src onset;
+#X text 56 185 2.) dst onset;
+#X text 226 302 initial arguments:;
+#X text 74 319 <bang> output;
+#X text 173 229 <src> xxx : change source name;
+#X text 219 248 <dst> xxx : change destination name;
+#X text 56 195 3.) n samples to copy reversal;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
+#X connect 6 0 11 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 0;
+#X connect 11 0 5 0;

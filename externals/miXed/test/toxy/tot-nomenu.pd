@@ -1,0 +1,12 @@
+#N canvas 128 254 589 218 12;
+#X obj 13 175 tot nomenu;
+#N canvas 329 49 450 300 nomenu 1;
+#X restore 12 16 pd nomenu;
+#X msg 54 142 debug;
+#X msg 13 57 tot destroy .^.m \, tot bind .^.c <Control-Key> "";
+#X msg 41 92 tot global sz .: set sz [wm maxsize .^] .: wm geometry
+.^ [expr [lindex $sz 0] - 20]x[expr [lindex $sz 1] - 20]+20+20;
+#X connect 0 3 3 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;

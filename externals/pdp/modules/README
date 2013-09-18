@@ -1,0 +1,30 @@
+This file describes the protocol used for communicating packets.
+See include/pdp.h and the sources in this directory for more info.
+
+There are 3 kinds of pdp messages:
+
+[pdp register_ro <packet_id>]
+[pdp register_rw <packet_id>]
+[pdp process]
+
+Together they form the pdp protocol. An object can receive a packet 
+by catching the 3 kinds of messages:
+
+When a register_ro message is received, the object can call 
+pdp_packet_copy_ro(packet) to reserve a read only copy for itself.
+
+The same goes for handling the register_rw message. You can
+reserve a read/write copy by using pdp_packet_copy_rw(packet)
+
+When a process message is received, the object is allowed to start
+processing the packet data end send the resulting packet(s) out.
+
+To send out a packet, use the pdp_packet_pass_if_valid(outlet, &packet)
+method. It passes a packet, and sets the reference to -1 (the undefined
+packet id).
+
+
+If you want to write pdp externs, consider using the pdp_base object
+to derive your object from. Have a look at pdp_add, pdp_gain, pdp_noise
+to see how to do this.
+

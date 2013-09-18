@@ -1,0 +1,20 @@
+#N canvas 0 26 333 350 10;
+#N canvas 200 78 494 529 META 0;
+#X text 12 245 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION hihat gop object;
+#X text 12 5 KEYWORDS signal abstraction GUI needs_work (example patch)
+;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X text 12 145 INLET_4 float;
+#X text 12 165 INLET_5 float;
+#X text 12 185 INLET_6 float;
+#X text 12 205 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 225 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 278 327 pd META;
+#X obj 9 52 ti_hihat ----;
+#X coords 0 0 0.00245098 0.00260417 200 50 0;

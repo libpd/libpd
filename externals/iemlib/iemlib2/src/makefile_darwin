@@ -1,0 +1,86 @@
+current: all
+
+.SUFFIXES: .pd_darwin
+
+PD_INSTALL_PATH = "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+LIB = -ldl -lm -lpthread
+
+CFLAGS = -DPD -DUNIX -g -Wall -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O2 -fno-strict-aliasing \
+	$(INCLUDE) $(UCFLAGS) $(AFLAGS) \
+
+MACOSXLINKFLAGS = -bundle -bundle_loader $(PD_INSTALL_PATH)/bin/pd
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = 	add2_comma.c \
+	aspeedlim.c \
+	bpe.c \
+	dollarg.c \
+	exp_inc.c \
+	fade~.c \
+	float24.c \
+	iem_anything.c \
+	iem_append.c \
+	iem_blocksize~.c \
+	iem_i_route.c \
+	iem_pbank_csv.c \
+	iem_prepend.c \
+	iem_receive.c \
+	iem_route.c \
+	iem_samplerate~.c \
+	iem_sel_any.c \
+	iem_send.c \
+	init.c \
+	LFO_noise~.c \
+	list2send.c \
+	m2f~.c \
+	mergefilename.c \
+	modulo_counter.c \
+	parentdollarzero.c \
+	post_netreceive.c \
+	pre_inlet.c \
+	prepend_ascii.c \
+	protect_against_open.c \
+	receive2list.c \
+	round_zero.c \
+	speedlim.c \
+	splitfilename.c \
+	stripfilename.c \
+	toggle_mess.c \
+	transf_fader.c \
+	unsymbol.c \
+	wrap.c \
+	iemlib2.c
+
+TARGET = iemlib2.pd_darwin
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) $(MACOSXLINKFLAGS) -o $(TARGET) *.o $(LIB)
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) $(CFLAGS) -DPD $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

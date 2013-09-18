@@ -1,0 +1,5 @@
+pd-pduino (0.5.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Hans-Christoph Steiner <hans@eds.org>  Thu, 04 Oct 2012 11:45:42 -0400

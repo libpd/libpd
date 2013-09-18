@@ -1,0 +1,22 @@
+#N canvas 0 31 336 215 10;
+#X obj 34 141 print;
+#X floatatom 34 69 0 0 0 0 - - -;
+#X text 30 195 (C) 2000 Guenter Geiger;
+#X text 30 39 serialize ... turn a stream of floats into a list;
+#X obj 33 107 serialize 4;
+#X floatatom 105 82 5 0 0 0 - - -;
+#N canvas 176 129 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 5 KEYWORDS control conversion list_op;
+#X text 12 45 DESCRIPTION serialize... turn a stream of floats into
+a list;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 list;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR jdl@xdv.org;
+#X restore 287 194 pd META;
+#X connect 1 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 1;

@@ -1,0 +1,31 @@
+#N canvas 255 231 748 455 10;
+#X obj 14 4 inlet;
+#X obj 359 305 motex/system;
+#X obj 359 249 spigot 0;
+#X obj 302 47 loadbang;
+#X obj 302 95 select linux windows macos;
+#X obj 302 69 zexy/operating_system;
+#X msg 302 115 1;
+#X msg 353 115 1;
+#X msg 404 115 1;
+#X obj 34 257 motex/system;
+#X obj 34 175 spigot 0;
+#X msg 359 270 /usr/bin/defaults -currentHost write com.apple.screensaver
+idleTime -int \$1;
+#X msg 34 212 what is this?;
+#X obj 38 384 pddp/pddplink http://lists.puredata.info/pipermail/pd-list/2010-07/080680.html
+;
+#X text 25 369 TODO implement the xset stuff here for linux:;
+#X connect 0 0 2 0;
+#X connect 0 0 10 0;
+#X connect 2 0 11 0;
+#X connect 3 0 5 0;
+#X connect 4 0 6 0;
+#X connect 4 1 7 0;
+#X connect 4 2 8 0;
+#X connect 5 0 4 0;
+#X connect 6 0 10 1;
+#X connect 8 0 2 1;
+#X connect 10 0 12 0;
+#X connect 11 0 1 0;
+#X connect 12 0 9 0;

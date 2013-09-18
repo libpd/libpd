@@ -1,0 +1,7 @@
+#N canvas 546 104 450 300 10;
+#N canvas 0 22 450 300 META 1;
+#X text 30 61 VERSION 0.1;
+#X text 30 91 AUTHOR Katja Vetter and Fred Jan Kraan katjavetter@gmail.com
+;
+#X text 30 28 NAME testtools;
+#X restore 56 56 pd META;

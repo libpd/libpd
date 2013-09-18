@@ -1,0 +1,44 @@
+#N canvas 0 26 442 341 10;
+#X obj 21 212 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X obj 58 170 bng 15 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X text 41 253 (c) miller puckette;
+#X text 7 8 split;
+#X obj 21 130 split 5;
+#X text 35 243 the original object moses;
+#X floatatom 21 65 4 0 0 0 - - -;
+#X floatatom 58 109 4 0 0 0 - - -;
+#X floatatom 21 192 4 0 0 0 - - -;
+#X floatatom 58 150 4 0 0 0 - - -;
+#X text 19 45 input_value <float>;
+#X text 52 8 part <float>-messages into less and greater equal than
+limit;
+#X text 60 89 limit <float>;
+#X text 92 150 output: input greater equal than limit;
+#X text 55 193 output: input less than limit;
+#X text 115 308 IEM KUG;
+#X text 99 296 musil;
+#X text 129 296 @;
+#X text 135 296 iem.at;
+#X text 50 285 (c) Thomas Musil 2000 - 2005;
+#X text 98 318 Graz \, Austria;
+#N canvas 328 134 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 155 AUTHOR Thomas Musil;
+#X text 12 75 INLET_0 float;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 float;
+#X text 12 45 DESCRIPTION part float messages into less and greater
+equal than limit;
+#X text 12 5 KEYWORDS control deprecated;
+#X restore 389 317 pd META;
+#X connect 4 0 8 0;
+#X connect 4 1 9 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 1;
+#X connect 8 0 0 0;
+#X connect 9 0 1 0;

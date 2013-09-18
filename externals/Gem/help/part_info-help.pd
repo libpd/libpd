@@ -1,0 +1,25 @@
+#N canvas 162 181 644 454 10;
+#X msg 139 99 gemList;
+#X text 176 62 GEM object;
+#X msg 139 294 gemList;
+#X text 186 26 [part_render];
+#X obj 139 130 part_info;
+#X msg 164 251 x y z;
+#X msg 202 184 sizeX sizeY sizeZ;
+#X msg 177 230 red green blue alpha;
+#X msg 189 208 velX velY velZ;
+#X msg 215 160 age;
+#X text 35 320 [part_info] gives you all available information of all
+the particles in the system draws a particle system set up with [part_head]
+and other [part_]-objects.;
+#X msg 151 272 ID;
+#X text 36 379 If your system contains 15 particles \, then you will
+get the information on the outlets 15 times per rendering circle.;
+#X connect 0 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 1 11 0;
+#X connect 4 2 5 0;
+#X connect 4 3 7 0;
+#X connect 4 4 8 0;
+#X connect 4 5 6 0;
+#X connect 4 6 9 0;

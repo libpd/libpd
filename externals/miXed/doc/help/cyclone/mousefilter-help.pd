@@ -1,0 +1,38 @@
+#N canvas 0 26 461 344 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 22 294 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 21 308 ___________________________________________________
+;
+#X obj 32 61 mousefilter;
+#X text 127 61 passes numbers only when mousebutton is up;
+#X obj 90 119 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 44 119 5 0 0 0 - - -;
+#X obj 75 165 mousefilter;
+#X floatatom 75 205 5 0 0 0 - - -;
+#X text 112 247 For more info:;
+#X obj 216 247 pddp/pddplink ../all_about_hid.pd -text all_about_hid
+;
+#X obj 7 4 cnv 15 450 30 empty empty [mousefilter] 20 12 1 14 -233017
+-66577 0;
+#X obj 319 247 pddp/pddplink all_about_cyclone.pd -text all_about_cyclone
+;
+#N canvas 247 115 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION pass numbers only when mousebutton is up
+;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control filter max_compatible user_input;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 410 323 pd META;
+#X obj 181 200 print;
+#X connect 5 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 7 0 14 0;

@@ -1,0 +1,28 @@
+#N canvas 199 54 444 300 12;
+#X obj 50 198 mousefilter;
+#X floatatom 50 158 5 0 0;
+#X obj 50 239 print;
+#X obj 50 38 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 50 116 random 1000;
+#X obj 214 198 mousefilter;
+#X floatatom 214 158 5 0 0;
+#X obj 214 239 print;
+#X obj 214 38 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 214 116 random 1000;
+#X obj 50 74 metro 500;
+#X obj 214 74 metro 500;
+#X obj 341 26 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6800 0;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 10 0;
+#X connect 4 0 1 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 8 0 11 0;
+#X connect 9 0 6 0;
+#X connect 10 0 4 0;
+#X connect 11 0 9 0;
+#X connect 12 0 5 0;

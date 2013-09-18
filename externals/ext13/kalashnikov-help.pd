@@ -1,0 +1,37 @@
+#N canvas 0 31 450 300 10;
+#X msg 106 44 bang;
+#X floatatom 158 43 5 0 0 0 - - -;
+#X obj 254 180 print kalashnikov_done;
+#X obj 73 154 print uzi_index;
+#X obj 88 182 print uzi_done;
+#X obj 168 128 print kalashnikov_bang;
+#X obj 58 128 print uzi_bang;
+#X obj 211 154 print kalashnikov_index;
+#X obj 168 89 kalashnikov 2;
+#X obj 58 88 uzi 3;
+#X text 41 14 uzi aka kalashnikov is an easy way to serialize bangs
+;
+#N canvas 463 219 494 344 META 1;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR d13@klingt.org;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 25 KEYWORDS control filesystem;
+#X text 12 85 INLET_0 symbol bang;
+#X text 12 105 OUTLET_0 float;
+#X text 12 5 ALIAS uzi;
+#X text 12 65 DESCRIPTION an easy way to serialize bangs;
+#X restore 396 268 pd META;
+#X text 36 224 Note: unlike Max's [uzi] \, [ext13/uzi] doesn't send
+out any bangs if no argument is specified. Also \, the function of
+the middle and right outlets are reversed.;
+#X connect 0 0 8 0;
+#X connect 0 0 9 0;
+#X connect 1 0 8 1;
+#X connect 1 0 9 1;
+#X connect 8 0 5 0;
+#X connect 8 1 7 0;
+#X connect 8 2 2 0;
+#X connect 9 0 6 0;
+#X connect 9 1 3 0;
+#X connect 9 2 4 0;

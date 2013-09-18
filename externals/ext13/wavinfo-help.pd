@@ -1,0 +1,32 @@
+#N canvas 0 31 450 373 12;
+#X obj 112 139 openpanel;
+#X obj 112 165 wavinfo;
+#X floatatom 45 228 20 0 0 3 samples - -;
+#X floatatom 195 228 5 0 0 3 channels - -;
+#X floatatom 262 229 5 0 0 3 sample_size - -;
+#X floatatom 347 229 5 0 0 3 bitrate - -;
+#X obj 112 109 bng 25 250 50 0 empty empty empty 17 7 0 10 -204786
+-1 -1;
+#X text 24 52 open a .wav file to see get the information about it:
+;
+#X text 22 36 [wavinfo] outputs information about a .wav file \,;
+#N canvas 460 159 494 344 META 0;
+#X text 12 185 RELEASE_DATE 2009-06-12;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal nonlocal;
+#X text 12 165 AUTHOR d13@klingt.org;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION outputs information about a .wav file;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 145 OUTLET_3 float;
+#X restore 381 333 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 1 3 5 0;
+#X connect 6 0 0 0;

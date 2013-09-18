@@ -1,0 +1,124 @@
+bugs: WARNING: there are still quite a few fatal bugs lurking around.
+
+* segfault when combining 3dp_windowcontext and pdp_xv. probably a mistake
+in the teture<->image conversion or window event handling.
+* 3dp is not robust against running out of video card resources. if you
+manage to crash it please consider sending a bug report.
+* 3dp_dlist triggered a segfault in pdp_mutex(un?)lock. can't reproduce.
+this also happens on some other occasions where a post() statement is involved:
+crash in pdp_mutex_lock, called by putc() -> happens in pdp too when calling post from
+thread (like in pdp_netsend/receive)
+* pd hangs on save? what happens during save?? -> 0.35 prob? 0.36 seems to work fine.
+* segfaults when deleting 3dp objects. very unpredictable.
+
+
+
+
+todo:
+
+* fix flow control for texture conversion
+* finish mesh object
+
+
+general:
+
+* prevent display list recursion: add some state data to the context packet to solve this.
+
+redesign:
+* unify pbuf & window contexts (postponed pbufs because of subcontexts)
+* cube mapping
+* bubble object (model + wave equation)
+* finish 3dp light
+
+performance:
+* why is texture upload so slow? and is there a way to work around it?
+* (why) is context switching slow? and how to introduce the render context differently. (direct to window?)
+
+
+
+DESIGN NOTES
+
+3dp is basicly my idea of gem on top of pdp. it is a simple layer around opengl.
+3dp_* render and transform objects accept a reference to a rendering context and pass this along.
+
+3dp_* objects DO NOT SUPPORT FANOUT. they do support fanin. multiple contexts can be sent to an object, which 
+will result in drawing in (or other manipulations of) the respective contexts.
+
+texture packets can be used to pass bitmap data around. 3dp_tdraw accepts a texture on its
+second inlet. 3dp_snap dumps the current state of the buffer into a texture packet.
+
+object classes:
+
+-drawing objects
+
+[3dp_draw cube] [3dp_draw sphere] ..
+
+-manipulation objects
+
+[3dp_view rot2d]
+
+-opengl stack objects
+
+[3dp_push color view texture]
+
+3dp vs pdp design:
+
+a context packet is an accumulation packet, and the order of operations on it (serial) is important. it has 
+elements from a readonly packet (only one instance is passed around) and from a rw packet (it is legal to change it's
+state and pass it on).
+
+opengl in dataflow formulation seems to be read bottom to top. i first thought
+this was a big drawback of gem, but now that i finally understand how opengl works i think it is
+ok. it suddenly dawned on me, usually the number of eyes is much smaller than the number of objects
+in a scene, so it is much more straghtforward to start at the eye instead of the objects. since a
+simple serial stack mechanism can be used.
+
+so opengl is really serial, while pd "looks" parallel, but is serial too. i still think this
+is a good thing, since it keeps things simple, but for some reason the "upside down & serial"
+thing about opengl in pd is rather strange..
+
+once you get used to it, and think about rendering a set as a tree rooted at the "context source"
+like is done in gem,it seems to work out..
+
+i think i'm going to stick to the depth first backtracking a tree serial rendering 
+way of looking at it. since i don't see a way of making this more intuitive without complicating
+it too much. so no legal fanout of a context packet.
+
+------------------
+
+accumulation packets (buckets) & backtracking
+
+buckets add support for "context based" single threaded programs. it
+basicly allows you to construct data processors represented as a control
+flow tree. i.e. function calls can be represented by branches in a tree,
+with each branch rooted at an object's outlet, executed from right to
+left. a "context packet" (or accumulation packet or bucket) is passed
+along and acted upon.
+
+* fanout is illegal for bucket processors (at least, if they are non
+cummutative, as is usually the case). this is not explicitly prohibited,
+since it is hard to check in pd and it allows some hacks. the reason for
+this is obvious: if you do not know which branch of a tree is executed
+first, results are undefined.
+
+* a new communication protocol needs to be introduced, incompatible
+with the existing 3 phase protocol:
+
+(1) register_ro
+(2) register_rw
+(3) process
+
+the new dpd (bucket / accumulation packet) protocol is 2 phase:
+(1) inspect
+(2) accumulate
+
+(1) is only present to give priority to bucket inspectors over
+accumulators (processors)
+
+an accumulation packet will be owned by its creator all the time.
+accumulation processors do not increase the reference count. only ro
+inspectors will.
+
+note: it is legal for a packet to have a broken register_rw (missing 
+copy constructor, i.e. if a copy is too expensive or impossible. this
+must be set in the pdp packet header flags by the packet constructor)

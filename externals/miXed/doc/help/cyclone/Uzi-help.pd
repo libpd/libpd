@@ -1,0 +1,48 @@
+#N canvas 0 26 469 429 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 26 376 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 25 390 ___________________________________________________
+;
+#X obj 43 23 Uzi 4;
+#X text 98 24 send a specified nr of bangs as fast as possible;
+#X obj 60 201 Uzi 2;
+#X obj 60 309 print uzi;
+#X obj 60 141 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 90 161 5 0 0 0 - - -;
+#X text 136 161 set number of bangs;
+#X msg 89 86 pause;
+#X text 186 86 pause sending bangs;
+#X msg 132 86 break;
+#X msg 152 110 resume;
+#X msg 88 110 continue;
+#X text 209 111 resume sending;
+#X floatatom 90 226 5 0 0 0 - - -;
+#X obj 75 276 print lastbang;
+#X text 137 228 number of current bang;
+#N canvas 309 151 494 412 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS bang_op max_compatible needs_work;
+#X text 12 45 DESCRIPTION send a specified nr of bangs as fast as possible
+;
+#X text 12 65 INLET_0 bang pause break continue resume;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 bang;
+#X text 12 125 OUTLET_1 bang;
+#X text 12 145 OUTLET_2 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X restore 419 409 pd META;
+#X connect 5 0 6 0;
+#X connect 5 1 17 0;
+#X connect 5 2 16 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 1;
+#X connect 10 0 5 0;
+#X connect 12 0 5 0;
+#X connect 13 0 5 0;
+#X connect 14 0 5 0;

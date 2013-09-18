@@ -1,0 +1,79 @@
+#N canvas 1 88 644 383 10;
+#X obj 0 0 cnv 8 100 60 empty empty popen 10 20 1 18 -262144 -1109
+0;
+#X text 13 362 (c) Moonix: Antoine Rousseau 2003;
+#X msg 31 74 open process;
+#X text 12 57 open: popen for writing;
+#X msg 240 76 ropen process;
+#X text 221 59 ropen: popen for reading;
+#X msg 466 76 close;
+#X text 428 60 close (quit) current process;
+#X text 108 13 processus in/out (linux only);
+#X text 108 26 DANGEROUS: deadlocks are easy!!!!;
+#N canvas 0 0 850 359 example 0;
+#X obj 458 194 popen;
+#X msg 516 167 close;
+#X obj 82 311 popen;
+#X msg 151 261 close;
+#X msg 76 190 list cat to where you want;
+#X msg 24 145 open cat > /tmp/tmp_fifo;
+#X msg 431 138 ropen cat /tmp/tmp_fifo;
+#X obj 38 89 system;
+#X msg 38 67 mkfifo /tmp/tmp_fifo;
+#X obj 76 258 symbol \;;
+#X obj 76 236 t b a;
+#X symbolatom 433 284 0 0 0 0 - - -;
+#X text 10 17 example: fifo read/write. RESPECT THE NUMBERS for commands
+!;
+#X text 430 120 3: open for reading;
+#X msg 92 213 list Caution not to lock your computer...;
+#X text 517 183 6: close reading process;
+#X obj 433 260 l2s;
+#X obj 458 227 print ropen;
+#X text 76 173 4: write to fifo (as many times you want);
+#X text 36 46 1: create the fifo (if not done);
+#X text 147 244 5: close writing process FIRST;
+#X text 23 125 2: open the fifo for writing FIRST;
+#X text 503 248 Caution: popen/ropen waits for a " \; ";
+#X text 565 260 to send its buffer (pd style).;
+#X connect 0 0 17 0;
+#X connect 0 0 16 0;
+#X connect 1 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 5 0 2 0;
+#X connect 6 0 0 0;
+#X connect 8 0 7 0;
+#X connect 9 0 2 0;
+#X connect 10 0 9 0;
+#X connect 10 1 2 0;
+#X connect 14 0 10 0;
+#X connect 16 0 11 0;
+#X restore 19 161 pd example;
+#X obj 31 109 popen;
+#X text 20 191 Remarks:;
+#X text 46 204 The danger here comes from the fact processes lauched
+by;
+#X text 47 215 popen runs concurrently with pd: if they are blocking
+\, pd;
+#X text 46 228 is blocking too. Very dangerous if pd has real-time
+priority: it blocks all the sytem. You have to switch off the computer...
+;
+#X text 47 267 It's much safer to use netsend/netreceive in conjonction
+with pdsend/pdreceive.;
+#X obj 206 333 system;
+#X text 46 297 You can use "at now" to lauch programs totally independantly
+from Pd:;
+#X msg 206 313 echo xclock -display 0:0 | at now;
+#N canvas 370 189 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Antoine Rousseau;
+#X text 12 145 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION processes in/out (linux only);
+#X text 12 65 INLET_0 anything;
+#X text 12 85 OUTLET_0;
+#X text 12 105 OUTLET_1;
+#X text 12 5 KEYWORDS control filesystem;
+#X restore 587 353 pd META;
+#X connect 19 0 17 0;

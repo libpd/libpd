@@ -1,0 +1,126 @@
+#N canvas 269 234 933 697 10;
+#X obj 67 46 metro 40;
+#X obj 67 23 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 67 224 3dp_blend;
+#X obj 176 673 3dp_view transxyz;
+#X msg 260 342 reset;
+#X obj 197 497 *;
+#X obj 304 498 *;
+#X obj 272 218 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 1000 1;
+#X obj 314 218 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 293 218 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 100 1;
+#X obj 335 218 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 200 1;
+#X obj 125 304 3dp_push;
+#X obj 67 119 3dp_mouserotate;
+#X obj 67 176 3dp_view scale 1;
+#X floatatom 241 145 5 0 0 0 - - -;
+#X obj 244 125 hsl 128 15 0.2 5 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 3800 1;
+#X obj 523 456 hsl 128 15 0.01 2 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 7900 1;
+#X obj 67 251 3dp_color;
+#X obj 402 231 route press3;
+#X text 211 304 <- remove 3dp_push object to accumulate the translations
+;
+#X obj 197 392 randomwalk2D 100;
+#X obj 125 275 3dp_for 100;
+#X text 285 185 R G B I;
+#X obj 197 533 smoothupdate 100;
+#X obj 304 567 smoothupdate 100;
+#X obj 524 490 hsl 128 15 0.01 1 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 1300 1;
+#X obj 67 93 3dp_push;
+#X obj 476 111 3dp_view transz 5;
+#X obj 476 171 3dp_light;
+#X obj 219 351 s i;
+#X obj 250 511 r i;
+#X obj 357 543 r i;
+#X obj 419 716 smoothupdate 100;
+#X obj 472 692 r i;
+#X obj 197 325 t f f b;
+#X obj 419 639 random 100;
+#X obj 419 662 - 50;
+#X obj 529 675 hsl 128 15 0.01 1 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 600 1;
+#X obj 419 688 / 10;
+#X msg 418 424 reset;
+#X obj 148 201 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 67 200 pdp_route;
+#X obj 176 765 3dp_draw torus 1 2 5 5;
+#X obj 176 709 pdp_route;
+#X obj 265 711 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 194 741 3dp_draw cube 2;
+#X text 315 344 <- reset random walk;
+#X text 532 554 <- reset smoothed points to origin;
+#X text 227 13 like example14 but with coordinate smoothing and lighting
+;
+#X text 505 246 <- route mouse buttons;
+#X obj 481 265 route press2;
+#X text 666 453 <- walk radius;
+#X text 667 488 <- walk smoothing;
+#X obj 67 70 3dp_fixedsizewindowcontext 320 240;
+#X floatatom 199 250 5 0 0 0 - - -;
+#X connect 0 0 53 0;
+#X connect 1 0 0 0;
+#X connect 2 0 17 0;
+#X connect 3 0 43 0;
+#X connect 4 0 20 0;
+#X connect 5 0 23 0;
+#X connect 6 0 24 0;
+#X connect 7 0 17 1;
+#X connect 8 0 17 3;
+#X connect 9 0 17 2;
+#X connect 10 0 17 4;
+#X connect 11 1 3 0;
+#X connect 12 0 13 0;
+#X connect 13 0 41 0;
+#X connect 14 0 13 1;
+#X connect 15 0 14 0;
+#X connect 16 0 6 1;
+#X connect 16 0 5 1;
+#X connect 17 1 21 0;
+#X connect 18 0 4 0;
+#X connect 18 1 50 0;
+#X connect 20 0 5 0;
+#X connect 20 1 6 0;
+#X connect 21 0 11 0;
+#X connect 21 1 34 0;
+#X connect 23 0 3 1;
+#X connect 24 0 3 2;
+#X connect 25 0 23 2;
+#X connect 25 0 24 2;
+#X connect 26 0 12 0;
+#X connect 26 1 27 0;
+#X connect 27 0 28 0;
+#X connect 30 0 23 1;
+#X connect 31 0 24 1;
+#X connect 32 0 3 3;
+#X connect 33 0 32 1;
+#X connect 34 0 20 0;
+#X connect 34 1 29 0;
+#X connect 34 2 35 0;
+#X connect 35 0 36 0;
+#X connect 36 0 38 0;
+#X connect 37 0 32 2;
+#X connect 38 0 32 0;
+#X connect 39 0 23 0;
+#X connect 39 0 24 0;
+#X connect 39 0 32 0;
+#X connect 40 0 41 1;
+#X connect 41 0 2 0;
+#X connect 41 1 17 0;
+#X connect 43 0 42 0;
+#X connect 43 1 45 0;
+#X connect 44 0 43 1;
+#X connect 50 0 39 0;
+#X connect 53 0 26 0;
+#X connect 53 1 12 1;
+#X connect 53 1 18 0;
+#X connect 54 0 21 1;

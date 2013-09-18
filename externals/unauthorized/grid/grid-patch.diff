@@ -1,0 +1,76 @@
+--- ../grid-pristine/grid.c	Mon Sep 16 15:29:14 2002
++++ grid.c	Mon Sep 16 17:24:21 2002
+@@ -91,19 +91,22 @@
+ static void grid_draw_new(t_grid *x, t_glist *glist)
+ {
+     t_canvas *canvas=glist_getcanvas(glist);
++    char *tagRoot;
+ 
++    rtext_new(glist, (t_text *)x, glist->gl_editor->e_rtext, 0);
++    tagRoot = rtext_gettag(glist_findrtext(glist,(t_text *)x));
+     GRID_SYS_VGUI7(".x%x.c create rectangle %d %d %d %d -fill #124392 -tags %xGRID\n",
+ 	     canvas, x->x_obj.te_xpix, x->x_obj.te_ypix,
+ 	     x->x_obj.te_xpix + x->x_width, x->x_obj.te_ypix + x->x_height,
+ 	     x);
+-    GRID_SYS_VGUI7(".x%x.c create rectangle %d %d %d %d -tags %xOUTL\n",
++    GRID_SYS_VGUI7(".x%x.c create rectangle %d %d %d %d -tags %so0\n",
+ 	     canvas, x->x_obj.te_xpix, x->x_obj.te_ypix + x->x_height+1,
+ 	     x->x_obj.te_xpix+7, x->x_obj.te_ypix + x->x_height+2,
+-	     x);
+-    GRID_SYS_VGUI7(".x%x.c create rectangle %d %d %d %d -tags %xOUTR\n",
++	     tagRoot);
++    GRID_SYS_VGUI7(".x%x.c create rectangle %d %d %d %d -tags %so1\n",
+ 	     canvas, x->x_obj.te_xpix+x->x_width-7, x->x_obj.te_ypix + x->x_height+1,
+ 	     x->x_obj.te_xpix+x->x_width, x->x_obj.te_ypix + x->x_height+2,
+-	     x);
++	     tagRoot);
+ 
+     if ( x->x_grid ) 
+     {
+@@ -136,17 +139,19 @@
+ static void grid_draw_move(t_grid *x, t_glist *glist)
+ {
+     t_canvas *canvas=glist_getcanvas(glist);
++    char *tagRoot;
+ 
++    tagRoot = rtext_gettag(glist_findrtext(glist,(t_text *)x)); 
+     GRID_SYS_VGUI7(".x%x.c coords %xGRID %d %d %d %d\n",
+ 	     canvas, x,
+ 	     x->x_obj.te_xpix, x->x_obj.te_ypix,
+ 	     x->x_obj.te_xpix+x->x_width, x->x_obj.te_ypix+x->x_height);
+-    GRID_SYS_VGUI7(".x%x.c coords %xOUTL %d %d %d %d\n",
+-	     canvas, x,
++    GRID_SYS_VGUI7(".x%x.c coords %so0 %d %d %d %d\n",
++	     canvas, tagRoot,
+ 	     x->x_obj.te_xpix, x->x_obj.te_ypix + x->x_height+1,
+ 	     x->x_obj.te_xpix+7, x->x_obj.te_ypix + x->x_height+2 );
+-    GRID_SYS_VGUI7(".x%x.c coords %xOUTR %d %d %d %d\n",
+-	     canvas, x,
++    GRID_SYS_VGUI7(".x%x.c coords %so1 %d %d %d %d\n",
++	     canvas, tagRoot,
+ 	     x->x_obj.te_xpix+x->x_width-7, x->x_obj.te_ypix + x->x_height+1,
+ 	     x->x_obj.te_xpix+x->x_width, x->x_obj.te_ypix + x->x_height+2 );
+     if ( x->x_point ) 
+@@ -183,10 +188,12 @@
+ {
+     t_canvas *canvas=glist_getcanvas(glist);
+     int i;
++    char *tagRoot;
+ 
++    tagRoot = rtext_gettag(glist_findrtext(glist,(t_text *)x));
+     GRID_SYS_VGUI3(".x%x.c delete %xGRID\n", canvas, x);
+-    GRID_SYS_VGUI3(".x%x.c delete %xOUTL\n", canvas, x);
+-    GRID_SYS_VGUI3(".x%x.c delete %xOUTR\n", canvas, x);
++    GRID_SYS_VGUI3(".x%x.c delete %so0\n", canvas, tagRoot);
++    GRID_SYS_VGUI3(".x%x.c delete %so1\n", canvas, tagRoot);
+     if (x->x_grid)  
+     {
+        for (i=1; i<x->x_xlines; i++ )
+@@ -203,6 +210,7 @@
+           GRID_SYS_VGUI3(".x%x.c delete %xPOINT\n", canvas, x);
+           x->x_point = 0;
+     }
++    rtext_free(glist_findrtext(glist, (t_text *)x));
+ }
+ 
+ static void grid_draw_select(t_grid* x,t_glist* glist)

@@ -1,0 +1,44 @@
+#N canvas 0 31 620 344 10;
+#X text 259 79 this is probably only useful for mathematical calculations
+;
+#X msg 242 136 range 0 2;
+#X obj 167 110 +~ 1;
+#X obj 167 87 *~ 2;
+#X obj 167 65 phasor~ 2;
+#X text 15 35 Arc Hyperbolic cosine function (acosh(x)) for signals
+;
+#X obj 15 93 +~ 2;
+#X obj 15 64 cycle~ 2;
+#X text 18 316 very expensive windowing?;
+#X obj 15 162 Scope~ 130 130 256 3 128 0 2 0 0 0 0 102 255 51 135 135
+135 0;
+#X obj 176 166 Scope~ 130 130 256 3 128 0 2 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 166 134 acosh~;
+#X obj 15 124 acosh~;
+#X obj 246 114 loadbang;
+#X text 50 102 be greater than 1;
+#X text 49 90 input values must;
+#N canvas 430 169 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible trigonometry;
+#X text 12 45 DESCRIPTION arc hyperbolic cosine function (acosh(x))
+for signals;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 571 324 pd META;
+#X connect 1 0 9 0;
+#X connect 1 0 10 0;
+#X connect 2 0 11 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 6 0 12 0;
+#X connect 7 0 6 0;
+#X connect 11 0 10 0;
+#X connect 12 0 9 0;
+#X connect 13 0 1 0;

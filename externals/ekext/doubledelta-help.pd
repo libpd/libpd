@@ -1,0 +1,21 @@
+#N canvas 0 31 450 300 10;
+#X obj 138 148 doubledelta;
+#X obj 139 113 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 138 178 5 0 0 0 - - -;
+#X floatatom 201 178 5 0 0 0 - - -;
+#X text 87 63 delta and delta-of-delta of incoming values;
+#N canvas 55 93 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 5 KEYWORDS control needs_work (example patch);
+#X text 12 45 DESCRIPTION ???;
+#X text 12 65 INLET_0 float bang;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 25 LICENSE GPL v3;
+#X restore 394 270 pd META;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;

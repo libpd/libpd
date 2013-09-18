@@ -1,0 +1,12 @@
+#N canvas 0 31 278 181 10;
+#X obj 74 0 inlet;
+#X obj 1 4 tgl 15 0 empty ATORAT_DEBUG empty 14 8 1 8 -261440 -1 -1
+0 1;
+#X obj 74 53 spigot;
+#X obj 74 113 print \$1;
+#X text 8 150 (C) Copyright 2004 Hans-Christoph Steiner;
+#X text 112 166 released under the GNU GPL;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 3 0;
+#X coords 0 0 1 1 130 18 1;

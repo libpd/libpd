@@ -1,0 +1,71 @@
+#N canvas 0 26 669 571 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 7 524 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 6 538 ___________________________________________________;
+#X obj -2 21 prob;
+#C restore;
+#X text 137 23 weighted series of random numbers;
+#X text 5 53 coll maintains a probability matrix a.k.a 1st order;
+#X text 5 65 markov chain and outputs a number according to it.;
+#X text 168 94 0 has a 80% chance to be followed by 1 \, and;
+#X text 168 106 a 10% chance to be followed by 2 or 3;
+#X obj 215 217 prob;
+#C restore;
+#X floatatom 215 251 5 0 0 0 - - -;
+#X msg 201 128 0 1 80 \, 0 2 10 \, 0 3 10;
+#X obj 215 164 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 237 189 0;
+#X text 235 163 puts out a number and sets prob to this value;
+#X text 267 189 resets prob to 0;
+#X text 181 132 1;
+#X text 136 224 comment;
+#X text -3 164 2 try this a couple of times:;
+#X msg 338 274 0 1 30 \, 0 2 30 \, 0 3 40;
+#X msg 364 301 1 2 30 \, 1 0 70;
+#X floatatom 271 472 5 0 0 0 - - -;
+#X obj 294 451 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 334 253 load probabilities:;
+#X text 315 448 bang when we reach a number for which we have no rule
+;
+#X obj 271 279 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 178 397 reset 0;
+#X obj 271 426 prob;
+#C restore;
+#X msg 197 337 clear;
+#X text 102 339 clear matrix:;
+#X text 14 380 when we get stuck reset to 0:;
+#X msg 378 331 dump;
+#X text 416 332 print out all rules;
+#X msg 386 368 embed;
+#X text 434 367 save matrix with the patch;
+#N canvas 130 105 494 366 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible random;
+#X text 12 45 DESCRIPTION weighted series of random numbers;
+#X text 12 65 INLET_0 bang float list dump embed clear reset;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 616 551 pd META;
+#X connect 9 0 10 0;
+#X connect 11 0 9 0;
+#X connect 12 0 9 0;
+#X connect 12 0 13 0;
+#X connect 13 0 9 0;
+#X connect 19 0 27 0;
+#X connect 20 0 27 0;
+#X connect 25 0 27 0;
+#X connect 26 0 27 0;
+#X connect 27 0 21 0;
+#X connect 27 1 22 0;
+#X connect 28 0 27 0;
+#X connect 31 0 27 0;
+#X connect 33 0 27 0;

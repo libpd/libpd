@@ -1,0 +1,29 @@
+#N canvas 1 53 481 335 10;
+#X obj 5 2 cnv 15 450 20 empty empty reverse 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 276 270 released under the GNU GPL;
+#X floatatom 153 120 5 0 0 0 - - -;
+#X floatatom 153 196 5 0 0 0 - - -;
+#X obj 156 101 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 4200 1;
+#X obj 156 213 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 8500 1;
+#X obj 153 156 reverse;
+#X text 27 43 Reverses the direction of a stream of numbers.;
+#X text 12 270 (C) Copyright 2004 Free Software Foundation;
+#N canvas 440 256 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION reverse the direction of a stream of numbers
+;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 420 305 pd META;
+#X connect 3 0 7 0;
+#X connect 4 0 6 0;
+#X connect 5 0 3 0;
+#X connect 7 0 4 0;

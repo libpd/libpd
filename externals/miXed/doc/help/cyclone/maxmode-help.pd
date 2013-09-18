@@ -1,0 +1,43 @@
+#N canvas 0 26 553 372 10;
+#X text 208 32 simulate mouse click to open panel;
+#X obj 250 281 print mode;
+#X msg 222 151 set max;
+#X msg 229 174 set barry;
+#X msg 232 227 bang;
+#X msg 218 127 set;
+#X obj 164 280 print result;
+#X msg 231 203 get;
+#X obj 158 256 cyclone/maxmode;
+#X obj 241 310 pddp/print;
+#X obj 151 336 pddp/print;
+#X msg 196 53 click 0 0 0 0 0;
+#X msg 153 75 cd path;
+#X msg 166 97 pwd path;
+#X text 205 76 set open panel directory;
+#X text 224 97 set current and open panel directory;
+#X text 16 11 import tool for Max/MSP patches;
+#N canvas 247 115 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible needs_work (how exactly
+does this work?);
+#X text 12 55 DESCRIPTION import tool for Max/MSP patches;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 OUTLET_0 float;
+#X text 12 35 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 497 346 pd META;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 8 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 8 0 10 0;
+#X connect 8 1 1 0;
+#X connect 8 1 9 0;
+#X connect 11 0 8 0;
+#X connect 12 0 8 0;
+#X connect 13 0 8 0;

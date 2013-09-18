@@ -1,0 +1,25 @@
+#N canvas 1 53 450 300 10;
+#X obj 26 148 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 26 185 tof/folderpanel;
+#X obj 26 221 print;
+#X obj -1 29 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 7 78 author: mrtoftrash@gmail.com;
+#X text 5 99 version: 2009-04-14 (initial release);
+#X text 6 56 tags: initialization patch;
+#X text 6 29 description: queries for a folder;
+#X text 140 150 inlet 1 bang: opens the panel;
+#X text 140 169 outlet 2 symbol: the folder selected;
+#N canvas 220 179 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 45 DESCRIPTION query for a folder;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 5 KEYWORDS control filesystem GUI symbol_op;
+#X restore 355 263 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;

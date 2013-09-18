@@ -1,0 +1,46 @@
+#N canvas 382 218 668 300 10;
+#X obj 133 198 mtx_tab \$0-table;
+#X obj 435 97 table \$0-table;
+#X obj 131 120 mtx_rand;
+#X obj 133 141 t a a;
+#X obj 173 141 mtx_print orig;
+#X obj 133 259 mtx_print outlet;
+#X obj 311 125 mtx_zeros;
+#X msg 311 105 3 4;
+#X obj 264 101 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 131 99 2 3;
+#X msg 86 122 row 1;
+#X obj 133 233 relay matrix;
+#X obj 258 257 print outlet;
+#X msg -1 122 row 1 1 2 3;
+#X text 478 4 part of iemmatrix;
+#X text 27 7 [mtx_tab];
+#X text 92 28 is a matrix using a table for local/global storage of
+its data. for the full palette of matrix commands refer to the "mtx"
+help;
+#X text 487 158 see also:;
+#X obj 558 158 mtx;
+#X text 433 81 local table;
+#X obj 383 215 mtx_tab \$0-table;
+#X obj 383 260 mtx_print other;
+#X obj 383 237 mtx_+ 1;
+#X obj 383 193 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 423 191 ones 1 3;
+#X connect 0 0 11 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 1 4 0;
+#X connect 6 0 0 1;
+#X connect 7 0 6 0;
+#X connect 8 0 0 0;
+#X connect 9 0 2 0;
+#X connect 10 0 0 0;
+#X connect 11 0 5 0;
+#X connect 11 1 12 0;
+#X connect 13 0 0 0;
+#X connect 20 0 22 0;
+#X connect 22 0 21 0;
+#X connect 23 0 20 0;
+#X connect 24 0 20 0;

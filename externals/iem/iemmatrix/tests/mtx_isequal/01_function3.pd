@@ -1,0 +1,19 @@
+#N canvas 433 156 508 521 10;
+#X obj 122 68 inlet bang;
+#X obj 122 385 outlet 1==OK;
+#X msg 122 366 1;
+#X msg 122 112 matrix 3 3 1 2 3 4 5 6 7 8 9;
+#X obj 122 231 mtx_isequal;
+#X obj 122 90 t b b;
+#X text 67 37 test whether [mtx_isequal] correctly detects the inequality
+of 2 matrices;
+#X obj 122 347 select 0;
+#X msg 154 138 matrix 2 2 1 2 3 4;
+#X connect 0 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 5 1 8 0;
+#X connect 7 0 2 0;
+#X connect 8 0 4 1;

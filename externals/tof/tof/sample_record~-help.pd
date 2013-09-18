@@ -1,0 +1,42 @@
+#N canvas 1 53 766 482 10;
+#X text 227 253 Argument 1 \, symbol: the name of the sample to record
+to;
+#X text 44 4 Description: Records into samples;
+#X text 41 21 Tags: Sound Sample Record;
+#X obj 65 198 adc~;
+#X obj 206 176 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 239 44 A 10 second mono sample (at a samplerate of 44100);
+#X obj 75 331 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 74 416 dac~;
+#X obj 104 332 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 225 215 sample recording;
+#X text 57 126 Inlet 1 \, signal: left or mono channel audio data;
+#X text 56 141 Inlet 2 \, signal: right channel audio data;
+#X text 332 213 Inlet 3 \, sample symbol: set the sample;
+#X text 231 171 Inlet 3 \, float: turn recording on/off. The maximum
+recording length is limited by the size of the sample;
+#X text 130 329 Play or loop the recording;
+#X obj 242 66 tof/sample recording 441000 1;
+#X obj 65 253 sample_record~ recording;
+#X obj 75 373 tof/sample_play~ recording;
+#N canvas 371 286 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 125 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION record into samples;
+#X text 12 5 KEYWORDS control abstraction array soundfile;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 float sample;
+#X restore 705 427 pd META;
+#X connect 3 0 16 0;
+#X connect 4 0 16 2;
+#X connect 6 0 17 0;
+#X connect 8 0 17 0;
+#X connect 9 0 16 2;
+#X connect 17 0 7 0;
+#X connect 17 1 7 1;

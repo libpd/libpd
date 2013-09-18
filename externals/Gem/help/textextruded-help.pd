@@ -1,0 +1,105 @@
+#N canvas 26 90 733 630 10;
+#X text 54 30 Class: geometric object;
+#X obj 519 47 cnv 15 170 270 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 544 364 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 549 403 pd gemwin;
+#X msg 549 384 create;
+#X text 545 363 Create window:;
+#X obj 7 65 cnv 15 450 220 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 346 cnv 15 450 180 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 351 Inlets:;
+#X obj 8 295 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 294 Arguments:;
+#X text 452 8 GEM object;
+#X text 27 363 Inlet 1: gemlist;
+#X text 9 486 Outlets:;
+#X text 21 499 Outlet 1: gemlist;
+#X text 525 29 Example:;
+#X obj 522 94 cnv 15 150 220 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 533 50 gemhead;
+#X floatatom 578 269 5 0 100 1 size - -;
+#X msg 543 134 font \$1;
+#X obj 543 115 openpanel;
+#X obj 543 98 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 551 160 text hello world!;
+#X msg 555 179 1 2 3 4;
+#X text 7 69 Description: Renders a line of text;
+#X text 63 306 initial text (defaults to "gem");
+#X text 10 123 Any TrueType-font can be rendered. Per default a file
+"vera.ttf" is searched in the paths. If it is not found you will not
+see anything unless you load a valid font via the "font"-message. The
+font-loader uses pd's search-paths \, so you could specify your path
+aon the command-line and load fonts with just "font times.ttf".;
+#X text 7 208 Justification:;
+#X text 32 223 horizontal justification can be one of "left" \, "right"
+\, "center"(default) and "base"(none);
+#X text 32 253 vertical justification can be one of "top" \, "bottom"
+\, "middle"(default) and "base"(none);
+#X msg 550 206 justify left base;
+#X floatatom 637 54 5 0 0 0 - - -;
+#X floatatom 596 49 4 0 0 0 - - -;
+#X text 27 377 Inlet 1: message: font <.TTF-file> : load a TrueType-font
+;
+#X text 27 391 Inlet 1: message: text [<blah>] : render the given text
+;
+#X text 27 404 Inlet 1: message: list [<blah>] : render the given text
+;
+#X text 27 438 Inlet 1: message: justify <hor> [<vert>] : horizontal&vertical
+justification;
+#X obj 533 71 rotateXYZ;
+#X text 27 467 Inlet 2: float: size (in points). default: 20;
+#X obj 20 533 cnv 15 400 40 empty empty empty 20 12 0 14 -261681 -66577
+0;
+#X text 33 537 Note: on some systems it might be necessary to turn
+rendering ON before loading a font.;
+#X obj 533 290 textextruded;
+#X text 33 14 Synopsis: [textextruded];
+#X msg 558 250 depth \$1;
+#X floatatom 558 231 5 0 0 1 depth - -;
+#X text 10 94 [textextruded] renders one line of a extruded text with
+the current color \, and all 3D-transformation;
+#X text 27 418 Inlet 1: message: depth <float> : extrusion depth;
+#X obj 20 578 cnv 15 400 40 empty empty empty 20 12 0 14 -261681 -66577
+0;
+#X text 22 583 Note: GEM needs to be compiled with FTGL-support for
+this to work;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 17 0 37 0;
+#X connect 18 0 41 1;
+#X connect 19 0 41 0;
+#X connect 20 0 19 0;
+#X connect 21 0 20 0;
+#X connect 22 0 41 0;
+#X connect 23 0 41 0;
+#X connect 30 0 41 0;
+#X connect 31 0 37 3;
+#X connect 32 0 37 1;
+#X connect 37 0 41 0;
+#X connect 43 0 41 0;
+#X connect 44 0 43 0;

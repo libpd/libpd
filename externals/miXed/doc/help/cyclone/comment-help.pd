@@ -1,0 +1,46 @@
+#N canvas 0 26 539 581 10;
+#X text 5 5 comment;
+#X text 64 492 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 63 502 ___________________________________________________
+;
+#X obj 9 23 comment 0 12 Courier ? 0 0 0 0 [comment];
+#X text 102 22 a text comment with some formatting options \, meant
+to be Max/MSP compatible;
+#X obj 14 205 comment 0 12 Courier ? 0 0 0 0 [comment 0 12 Courier]
+;
+#X text 11 60 Comment accepts three arguments which define the basic
+formatting: width \, font-size \, font-face;
+#X obj 15 228 comment 0 20 Times ? 0 0 0 0 [comment 0 20 Times];
+#X text 13 181 Here are some examples:;
+#X text 27 114 - font-size: in pixels;
+#X obj 20 263 comment 0 20 Times ? 0 255 128 0 [comment 0 20 Times
+? 0 255 128 0];
+#X text 7 398 The arguments are:;
+#X obj 6 418 comment 550 12 Courier ? 0 0 0 0 [comment pixelWidth fontSize
+font encoding fontProperties red green blue];
+#X text 10 469 Colors are intergers between 0 and 255;
+#X obj 184 299 comment 329 14 Helvetica ? 0 0 128 128 [comment 0 14
+Helvetica ? 0 0 128 128];
+#N canvas 247 115 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 95 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible GUI;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 45 DESCRIPTION a text comment with formatting options \,
+meant to be Max/MSP compatible;
+#X text 12 75 AUTHOR Krzysztof Czaja;
+#X restore 484 560 pd META;
+#X text 27 131 - font-face: one of the Pd standards (Courier \, Times
+\, or Helvetica) as well as any other single-word font available on
+your system.;
+#X text 9 529 * Note: Using the mouse you can click-drag the top right
+edge of the comment to change the width.;
+#X text 27 97 - width: in pixels \, wraps text to this width *;
+#X obj 323 178 comment 88 14 Helvetica ? 0 0 0 0 [comment 100 14 Helvetica]
+;
+#X text 7 333 Click the object in edit mode \, then press <F4> to show
+the object name and arguments.;
+#X text 7 363 You can also press <F5> to duplicate the comment text
+into a new Pd text object.;

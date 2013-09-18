@@ -1,0 +1,46 @@
+#N canvas 696 306 480 535 10;
+#X obj 102 73 3dp_windowcontext;
+#X obj 102 36 metro 20;
+#X obj 102 122 3dp_push;
+#X obj 102 11 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 56 40 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 253 32 cursor \$1;
+#X obj 253 12 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 102 209 3dp_mouserotate;
+#X obj 153 322 3dp_draw cube 1;
+#X obj 265 139 3dp_view transxyz -4 3 4;
+#X obj 102 270 3dp_push;
+#X obj 102 348 3dp_push;
+#X obj 102 425 3dp_push;
+#X obj 153 296 3dp_view transx 2;
+#X obj 153 374 3dp_view transy 2;
+#X obj 153 451 3dp_view transz 2;
+#X obj 153 400 3dp_draw cube 1;
+#X obj 153 477 3dp_draw cube 1;
+#X obj 102 506 3dp_draw dodeca 1;
+#X text 25 231 use the mouse to rotate the model (but not the light
+source since it is rendered before the rotation is applied.);
+#X obj 265 161 3dp_light;
+#X connect 0 0 2 0;
+#X connect 0 1 7 1;
+#X connect 1 0 0 0;
+#X connect 2 0 7 0;
+#X connect 2 1 9 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 5 0;
+#X connect 7 0 10 0;
+#X connect 9 0 20 0;
+#X connect 10 0 11 0;
+#X connect 10 1 13 0;
+#X connect 11 0 12 0;
+#X connect 11 1 14 0;
+#X connect 12 0 18 0;
+#X connect 12 1 15 0;
+#X connect 13 0 8 0;
+#X connect 14 0 16 0;
+#X connect 15 0 17 0;

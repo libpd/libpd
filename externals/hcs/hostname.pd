@@ -1,0 +1,8 @@
+#N canvas 0 22 454 304 10;
+#X obj 91 29 inlet;
+#X obj 92 108 uname;
+#X obj 92 131 unpack symbol symbol symbol symbol symbol;
+#X obj 162 209 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 1 3 0;

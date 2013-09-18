@@ -1,0 +1,46 @@
+current: all
+
+.SUFFIXES: .dll
+
+PDPATH = "c:/pd"
+
+INCLUDE = -I. -I$(PDPATH)/src
+
+LDFLAGS = --export-dynamic -shared
+
+#select either the DBG and OPT compiler flags below:
+
+CFLAGS = -DPD -DNT -W -Wno-unused -mms-bitfields\
+	-Wno-parentheses -Wno-switch -O6 -funroll-loops -fomit-frame-pointer
+
+SYSTEM = $(shell uname -m)
+
+# the sources:
+
+SRC = adaptive.c lms~.c lms2~.c nlms~.c nlms2~.c nlms3~.c
+
+TARGET = adaptive.dll
+
+
+OBJ = $(SRC:.c=.o)
+
+
+#  ------------------ targets ------------------------------------
+
+
+clean:
+	rm -f *.a *.def *.o *.dll
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	g++ $(LDFLAGS) -o $(TARGET) $(OBJ) $(PDPATH)/bin/pd.dll -libc
+	strip --strip-unneeded $(TARGET)
+	chmod 755 $(TARGET)
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	gcc $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+install:
+	cp $(TARGET) $(PDPATH)/externs
+	cp ../doc/help-*.pd $(PDPATH)/doc/5.reference

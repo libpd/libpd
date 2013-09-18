@@ -1,0 +1,661 @@
+#N canvas 1 53 403 396 10;
+#N canvas 429 334 525 231 /id 0;
+#X text 26 42 Abstraction /id:;
+#X text 63 67 If an abstraction's arguments contains the "/id" keyword
+\, the symbol following the "/id" keyword \, instead of the abstraction's
+name \, will be used to build the path.;
+#X restore 327 340 pd /id;
+#N canvas 90 56 933 657 /name 0;
+#X floatatom 459 165 5 0 0 0 - - -;
+#X floatatom 459 215 5 0 0 0 - - -;
+#X obj 503 168 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 454 19 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 450 543 nbx: creates a numberbox;
+#X text 450 561 slider min max: creates a slider with the indicated
+minimum and maximum;
+#X text 450 592 bng: creates a bang;
+#X text 450 610 tgl: creates a toggle;
+#X floatatom 452 510 5 0 0 0 - - -;
+#X text 449 526 /g options:;
+#X text 453 43 A param automatically ouputs its value when it is created.
+You can disable this behavior with the "/nlb" (no loadbang) keyword.
+;
+#X text 457 20 /nlb keyword: No loadbang;
+#X obj 453 118 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 455 119 /wfb keyword: Wait for bang;
+#X obj 454 248 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 456 248 /ns keyword: No save;
+#X obj 453 405 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 455 405 /g keyword: GUI options;
+#X obj 455 328 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 457 329 /nps keyword: No preset save;
+#X text 449 268 The param will never be saved.;
+#X text 451 353 The param will never be saved in a preset file.;
+#X text 456 142 The param will only output its contents on a bang.
+;
+#X obj 452 484 tof/param /number 30 /g nbx;
+#X obj 460 192 tof/param /waiting 50 /wfb;
+#X obj 11 285 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 13 286 arguments;
+#X text 10 345 argument 1 symbol: name (must start with a slash);
+#X text 11 362 argument 2 variable: optionnal default value (can be
+anything and of any length);
+#X text 11 393 other arguments: special keywords and options;
+#X text 10 42 A param object creates a storage area for anything. This
+data can be accessed and modified through a unique path.;
+#X obj 12 18 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X obj 13 321 tof/param /name default;
+#X text 12 417 The path to a param starts at the root patch and includes
+the name of each abstraction that was taversed to reach the object.
+The path of the param above is: /name;
+#X text 95 514 <- open me;
+#X obj 536 86 tof/param /not_lb 50 /nlb;
+#X obj 453 293 tof/param /not_saving 50 /ns;
+#X obj 455 377 tof/param /no_presets 67 /nps;
+#X obj 16 548 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 18 549 keywords;
+#X text 19 572 You can use many keywords to configure your params.
+Each keyword starts with a /. You can use as many keywords as you want
+as long at they are not the first argument (that is reserved for the
+name).;
+#X text 452 434 When you create a param \, you can use the "/g" keyword
+to flag the param with gui options that are used by [param gui] to
+automatically build GUIs.;
+#X text 450 628 symbolatom or sym : creates a symbol box;
+#X obj 15 79 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 17 80 inlets/outlets;
+#X text 14 104 inlet 1 bang: outputs the value of the param.;
+#X text 14 121 inlet 1 anything: stores the value received and outputs
+it.;
+#X text 13 138 inlet 2 anything: stores the value received.;
+#X text 13 157 outlet 2 anything: the stored value.;
+#X text 11 477 The path to the param "/carrier" in the middle of the
+following abstraction is: /test-param/carrier;
+#X text 14 18 param /name;
+#X obj 16 516 ./test-param;
+#X obj 16 185 cnv 15 300 20 empty empty empty 20 12 0 14 -4032 -66577
+0;
+#X text 18 186 default value;
+#X connect 0 0 24 0;
+#X connect 2 0 24 0;
+#X connect 23 0 8 0;
+#X connect 24 0 1 0;
+#X restore -16 187 pd /name;
+#N canvas 141 64 837 442 custom 0;
+#X obj 17 211 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 19 212 arguments;
+#X obj 18 19 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X text 20 43 Saves and restores any type and quantity of data in a
+param file.;
+#X text 16 235 argument 1 symbol: the name. Must start with a '/'.
+;
+#X obj 18 282 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 20 283 keywords;
+#X text 16 307 There is only one keyword: /nps;
+#X obj 17 335 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 19 336 /nps keyword: No preset save;
+#X text 13 360 The param will never be saved in a preset file.;
+#X obj 17 384 tof/param custom /yogourt /nps;
+#X obj 18 83 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 23 83 inlets/outlets;
+#X text 18 109 inlet 1 anything: data to be saved (can be multiple
+messages).;
+#X obj 495 212 list prepend;
+#X text 576 211 Prepend the key to the value;
+#X obj 444 110 t b b;
+#X msg 541 90 clear;
+#X msg 444 139 dump;
+#X text 434 46 In the following example \, [param custom] will save
+and restore the contents of the [cyclone/coll].;
+#X obj 495 185 cyclone/coll;
+#C restore;
+#X text 427 243 When a param save is called \, the [t b b] is banged.
+The message "clear" is stored and "dump" is sent to [cyclone/coll].
+The list builds a "key data" pair out of the dumped data. This pair
+is then also stored.;
+#X text 426 305 When a param load is called \, the stored "clear" message
+is sent to [cyclone/coll] \, clearing its contents. Afterwards. each
+of the stored data pairs is then sent to [cyclone/coll] restoring the
+previous data.;
+#X obj 541 115 param custom /coll;
+#X text 17 160 outlet 2: the data to be restored by a param load.;
+#X text 18 141 outlet 1 bang: bangs when a param save is called.;
+#X text 16 256 other arguments: keywords (see below).;
+#X text 20 19 param custom;
+#X connect 15 0 24 0;
+#X connect 17 0 19 0;
+#X connect 17 1 18 0;
+#X connect 18 0 24 0;
+#X connect 19 0 21 0;
+#X connect 21 0 15 0;
+#X connect 21 1 15 1;
+#X connect 24 0 17 0;
+#X connect 24 1 21 0;
+#X restore -16 208 pd custom;
+#N canvas 222 499 637 424 path 0;
+#X obj 373 67 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 373 115 print;
+#X obj 41 190 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 43 191 arguments;
+#X obj 40 58 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X obj 40 112 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 45 112 inlets/outlets;
+#X text 41 82 Outputs the current param path.;
+#X obj 375 180 ./test-param-2;
+#X obj 373 91 tof/param path;
+#X obj 375 152 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 392 64 1) Click here;
+#X text 396 150 2) Click here;
+#X text 40 138 inlet 1 bang: outputs the param path.;
+#X text 40 160 outlet 1 symbol: the param path.;
+#X text 40 214 none.;
+#X text 42 58 param path;
+#X connect 0 0 9 0;
+#X connect 9 0 1 0;
+#X connect 10 0 8 0;
+#X restore -16 229 pd path;
+#N canvas 70 415 866 433 dump 0;
+#X obj 420 258 print;
+#X obj 421 78 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 464 150 guis;
+#X text 444 79 A bang will output all the params and their values.
+;
+#X msg 445 109 symbol /FM_MOD;
+#X text 541 107 A symbol will dump only the params that start with
+that path.;
+#X text 501 147 Guis will output all the optional /g values.;
+#X obj 421 224 tof/param dump;
+#X msg 501 175 guis /FM_MOD;
+#X obj 33 257 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 35 258 arguments;
+#X obj 33 45 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X obj 33 109 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 38 109 inlets/outlets;
+#X text 32 281 none.;
+#X text 32 68 Outputs the params and their values or the params and
+their GUI options.;
+#X text 33 135 inlet 1 bang: outputs the all the params and their values.
+;
+#X text 33 152 inlet 1 symbol: outputs the params and their values
+if their names start with this symbol.;
+#X text 33 182 inlet 1 guis: outputs the params and their GUI options
+if their names start with this symbol.;
+#X text 32 216 inlet 1 guis symbol: outputs the params and their GUI
+options if their names start with this symbol.;
+#X text 35 45 param dump;
+#X connect 1 0 7 0;
+#X connect 2 0 7 0;
+#X connect 4 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
+#X restore -16 250 pd dump;
+#N canvas 20 346 838 409 file 0;
+#X obj 489 38 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 547 151 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X obj 464 17 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 521 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 489 62 5 0 0 0 - - -;
+#X floatatom 547 173 5 0 0 0 - - -;
+#X obj 464 198 param file;
+#X obj 24 321 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 26 322 arguments;
+#X obj 24 19 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X obj 24 183 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 29 183 inlets/outlets;
+#X text 23 345 none.;
+#X text 26 40 Saves/restores params in a param file.;
+#X text 25 98 All params that do not have the "/ns" keyword are saved
+in the "main" param file.;
+#X text 24 133 All params that do not have the "/ns" or "/nps" keywords
+are saved in the "preset" param files.;
+#X text 25 61 There are two types of param file. A "main" param file
+and up to 1000 "preset" param files.;
+#X text 529 60 Save to "preset" file n.;
+#X text 585 172 Restore for "preset" file n.;
+#X text 543 125 Restore from "main" param file.;
+#X text 486 13 Save to "main" param file.;
+#X text 24 209 inlet 1 bang: save to "main" param file.;
+#X text 24 263 inlet 2 bang: restore from "main" param file.;
+#X obj 442 247 cnv 15 300 20 empty empty empty 20 12 0 14 -4032 -66577
+0;
+#X text 444 248 param file names;
+#X text 441 271 All param files are always stored and searched for
+in the same folder as the root patch's folder.;
+#X text 443 305 The "main" param file is named as follows:;
+#X text 622 323 "name of root patch.param";
+#X text 26 280 inlet 2 float: restore from "preset" file n where n
+is a number between 0 and 999;
+#X text 26 228 inlet 1 float: save to "preset" file n where n is a
+number between 0 and 999;
+#X text 581 374 "name of root patch-nnnn.param";
+#X text 444 341 The "preset" param files are named as follows \, where
+nnnn is always four digits:;
+#X text 26 19 param file;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 2 0 6 0;
+#X connect 3 0 6 1;
+#X connect 4 0 6 0;
+#X connect 5 0 6 1;
+#X restore -16 271 pd file;
+#N canvas 17 441 981 371 route 0;
+#X obj 33 203 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 35 204 arguments;
+#X obj 33 31 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X obj 33 85 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 38 85 inlets/outlets;
+#X text 35 228 none.;
+#X text 38 53 Routes messages to params.;
+#X text 35 31 param route;
+#X text 35 112 inlet 1 anything: the first element of the anything
+determines the target. The rest of the elements of the anything are
+sent the target.;
+#X obj 36 257 cnv 15 300 20 empty empty empty 20 12 0 14 -4032 -66577
+0;
+#X text 38 258 targets;
+#X text 35 160 outlet 1 anything: messages that do not have a valid
+target name or whose target was not found.;
+#X text 34 282 [param route] prepends its own path to the target name.
+This allows the targeting of params with a relative path. Even if the
+paths are relative \, they still need to start with a '/'.;
+#X obj 412 225 ./test-param /id routing;
+#X floatatom 482 292 5 0 0 0 - - -;
+#X floatatom 553 261 5 0 0 0 - - -;
+#X text 566 221 <-There is a [param route] connected to the first inlet
+of this abstraction.;
+#X text 594 259 <-This is connected to a [param /b] inside the abstraction.
+;
+#X text 518 293 <-This is connected to a [param /a] inside the abstraction.
+;
+#X msg 470 187 /b \$1;
+#X msg 418 161 /a \$1;
+#X floatatom 417 137 5 0 0 0 - - -;
+#X floatatom 474 159 5 0 0 0 - - -;
+#X connect 13 1 14 0;
+#X connect 13 2 15 0;
+#X connect 19 0 13 0;
+#X connect 20 0 13 0;
+#X connect 21 0 20 0;
+#X connect 22 0 19 0;
+#X restore -16 292 pd route;
+#N canvas 18 136 986 455 gui 0;
+#X obj 431 21 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 506 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 431 110 tof/param gui;
+#X obj 11 292 cnv 15 300 20 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text 13 293 arguments;
+#X obj 5 7 cnv 15 300 20 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X obj 9 114 cnv 15 300 20 empty empty empty 20 12 0 14 -260097 -66577
+0;
+#X text 14 114 inlets/outlets;
+#X text 13 317 none.;
+#X text 7 7 param gui;
+#X floatatom 383 288 5 0 0 0 - - -;
+#X obj 375 415 dac~;
+#X obj 423 334 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X msg 383 310 /modulation/index \$1;
+#X msg 420 355 /volume \$1;
+#X obj 594 260 cnv 15 200 20 empty empty /FM_MOD/ 2 12 0 8 -258401
+-262144 0;
+#X obj 594 283 nbx 5 14 -1e+37 1e+37 0 0 /FM_MOD/modulation/freq /FM_MOD/modulation/freq_
+modulation/freq 50 8 0 8 -1 -262144 -1 3 256;
+#X obj 594 301 nbx 5 14 -1e+37 1e+37 0 0 /FM_MOD/modulation/index /FM_MOD/modulation/index_
+modulation/index 50 8 0 8 -1 -262144 -1 20 256;
+#X obj 594 319 hsl 100 15 0 1 0 0 /FM_MOD/volume /FM_MOD/volume_ volume
+105 7 0 8 -1 -262144 -1 0 1;
+#X obj 594 337 hsl 100 15 200 2000 0 0 /FM_MOD/carrier /FM_MOD/carrier_
+carrier 105 7 0 8 -1 -262144 -1 3300 1;
+#X obj 383 380 ./test-param /id FM_MOD /carrier 600;
+#X text 8 32 Automatically builds a gui for params. The values of the
+GUI elements are always up to date.;
+#X text 618 378 <-Click this abstraction's properties menu. The [iemguts/propertybang]
+bangs the [param gui] that creates the GUI window.;
+#X obj 430 209 tof/param gui;
+#X text 531 73 Destroy the created GUI (the only way to force its recreation).
+;
+#X text 453 10 Builds the gui for all params that are in the current
+patch or in any children patches of this patch.;
+#X text 9 65 GUIs will only be built for params that have GUI options
+set with the /g keyword.;
+#X msg 531 171 symbol /FM_MOD/modulation;
+#X text 7 228 inlet 2 bang: destroy the previously created window (the
+only way to force its recreation if the path does not change).;
+#X text 9 140 inlet 1 bang: creates the GUIs one (or until the target
+path changes) for all params in the current patch or lower and displays
+the window.;
+#X text 8 184 inlet 1 symbol: creates the GUIs one (or until the target
+path changes) for all params that match the indicated path and displays
+the window.;
+#X msg 430 171 symbol /FM_MOD;
+#X text 525 194 Only display the GUIs for params in the indicated path.
+;
+#X text 526 207 Each time the path changes \, the GUIs are rebuilt
+and this can slow down Pure Data.;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 10 0 13 0;
+#X connect 12 0 14 0;
+#X connect 13 0 20 0;
+#X connect 14 0 20 0;
+#X connect 20 0 11 0;
+#X connect 20 0 11 1;
+#X connect 27 0 23 0;
+#X connect 31 0 23 0;
+#X restore -16 313 pd gui;
+#X text 45 183 Defines a parameter to save/restore/route/display.;
+#X text 48 205 Can save/restore any number of things in a param file.
+;
+#X text 48 226 Outputs the current param path.;
+#X text 48 247 Outputs information about the params.;
+#X text 48 268 Saves/restores params in a param file.;
+#X text 47 289 Routes messages to params.;
+#X text 48 310 Automatically builds a gui for params.;
+#X text -17 151 Open the folowing subpatches for more information on
+each class.;
+#X text -17 112 [param] contains multiple classes. The class is selected
+by the value of the first argument.;
+#N canvas 360 337 548 560 anim 0;
+#X obj 172 493 s \$0c;
+#N canvas 393 451 450 300 rgbToNum 0;
+#X obj 241 358 +;
+#X obj 177 430 +;
+#X obj 90 313 * -65536;
+#X obj 196 319 * -256;
+#X obj 310 327 * -1;
+#X obj 177 461 - 1;
+#X obj 184 496 outlet;
+#X obj 85 281 int 0;
+#X obj 196 270 int 0;
+#X obj 343 272 int 0;
+#X obj 166 126 unpack f f f;
+#X obj 66 233 clip 0 255;
+#X obj 228 230 clip 0 255;
+#X obj 329 230 clip 0 255;
+#X obj 165 87 inlet;
+#X connect 0 0 1 1;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 1;
+#X connect 5 0 6 0;
+#X connect 7 0 2 0;
+#X connect 8 0 3 0;
+#X connect 9 0 4 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 10 2 13 0;
+#X connect 11 0 7 0;
+#X connect 12 0 8 0;
+#X connect 13 0 9 0;
+#X connect 14 0 10 0;
+#X restore 171 434 pd rgbToNum;
+#X msg 171 462 color \$1;
+#X obj 137 65 t b b b;
+#X obj 345 14 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#N canvas 0 22 680 639 hsvToRgb 0;
+#X obj 197 94 route 0;
+#X msg 197 66 \$2 \$3 \$1;
+#X obj 241 121 unpack 0 0 0;
+#X text 260 81 svh;
+#X obj 197 38 inlet hsv;
+#X obj 191 676 outlet rgb;
+#X obj 411 159 * 6;
+#X obj 390 206 % 6;
+#X obj 360 183 t f f;
+#X msg 360 159 0;
+#X text 416 206 i;
+#X obj 360 229 -;
+#X obj 241 227 *;
+#X obj 241 188 - 1;
+#X obj 241 208 * -1;
+#X obj 273 340 *;
+#X obj 273 301 - 1;
+#X obj 273 321 * -1;
+#X obj 273 279 *;
+#X obj 360 250 t f f;
+#X obj 390 272 - 1;
+#X obj 390 293 * -1;
+#X obj 312 366 *;
+#X obj 312 327 - 1;
+#X obj 312 347 * -1;
+#X obj 312 305 *;
+#X obj 241 161 t f f f;
+#X obj 248 421 pack 0 0 0 0;
+#N canvas 388 287 646 315 select 0;
+#X obj 290 37 inlet;
+#X obj 16 247 outlet;
+#X obj 92 104 t b l;
+#X obj 125 128 unpack 0 0 0 0;
+#X obj 89 43 inlet p q t v;
+#X obj 92 128 i;
+#X obj 92 151 select 0 1 2 3 4 5;
+#X obj 16 223 pack 0 0 0;
+#X obj 16 203 f;
+#X obj 96 223 pack 0 0 0;
+#X obj 96 203 f;
+#X obj 176 223 pack 0 0 0;
+#X obj 176 203 f;
+#X obj 256 223 pack 0 0 0;
+#X obj 256 203 f;
+#X obj 336 223 pack 0 0 0;
+#X obj 336 203 f;
+#X obj 416 223 pack 0 0 0;
+#X obj 416 203 f;
+#X connect 0 0 5 1;
+#X connect 2 0 5 0;
+#X connect 2 1 3 0;
+#X connect 3 0 7 2;
+#X connect 3 0 9 2;
+#X connect 3 0 12 1;
+#X connect 3 0 14 1;
+#X connect 3 0 15 1;
+#X connect 3 0 17 1;
+#X connect 3 1 10 1;
+#X connect 3 1 13 1;
+#X connect 3 1 17 2;
+#X connect 3 2 7 1;
+#X connect 3 2 11 2;
+#X connect 3 2 16 1;
+#X connect 3 3 8 1;
+#X connect 3 3 9 1;
+#X connect 3 3 11 1;
+#X connect 3 3 13 2;
+#X connect 3 3 15 2;
+#X connect 3 3 18 1;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 6 1 10 0;
+#X connect 6 2 12 0;
+#X connect 6 3 14 0;
+#X connect 6 4 16 0;
+#X connect 6 5 18 0;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X connect 11 0 1 0;
+#X connect 12 0 11 0;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
+#X connect 15 0 1 0;
+#X connect 16 0 15 0;
+#X connect 17 0 1 0;
+#X connect 18 0 17 0;
+#X restore 253 466 pd select;
+#X msg 197 488 \$1 \$1 \$1;
+#X obj 136 447 clip 0 1;
+#X obj 241 141 clip 0 1;
+#X obj 280 183 clip 0 1;
+#X obj 360 119 clip 0 1;
+#X obj 360 139 select 1;
+#X msg 149 367 \$1;
+#X obj 199 383 abs;
+#X obj 238 362 abs;
+#X obj 281 396 abs;
+#X obj 194 546 unpack f f f;
+#X obj 191 577 * 255;
+#X obj 239 576 * 255;
+#X obj 306 577 * 255;
+#X obj 235 630 pack f f f;
+#X obj 196 604 int;
+#X obj 244 603 int;
+#X obj 296 608 int;
+#X connect 0 0 35 0;
+#X connect 0 1 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 31 0;
+#X connect 2 1 32 0;
+#X connect 2 2 33 0;
+#X connect 4 0 1 0;
+#X connect 6 0 8 0;
+#X connect 7 0 11 1;
+#X connect 7 0 28 1;
+#X connect 8 0 11 0;
+#X connect 8 1 7 0;
+#X connect 9 0 8 0;
+#X connect 11 0 19 0;
+#X connect 12 0 36 0;
+#X connect 13 0 14 0;
+#X connect 14 0 12 0;
+#X connect 15 0 37 0;
+#X connect 16 0 17 0;
+#X connect 17 0 15 0;
+#X connect 18 0 16 0;
+#X connect 19 0 18 1;
+#X connect 19 1 20 0;
+#X connect 20 0 21 0;
+#X connect 21 0 25 1;
+#X connect 22 0 38 0;
+#X connect 23 0 24 0;
+#X connect 24 0 22 0;
+#X connect 25 0 23 0;
+#X connect 26 0 13 0;
+#X connect 26 1 18 0;
+#X connect 26 2 25 0;
+#X connect 27 0 28 0;
+#X connect 28 0 39 0;
+#X connect 29 0 39 0;
+#X connect 30 0 29 0;
+#X connect 31 0 26 0;
+#X connect 32 0 12 1;
+#X connect 32 0 27 3;
+#X connect 32 0 15 1;
+#X connect 32 0 22 1;
+#X connect 33 0 34 0;
+#X connect 34 0 9 0;
+#X connect 34 1 6 0;
+#X connect 35 0 30 0;
+#X connect 36 0 27 0;
+#X connect 37 0 27 1;
+#X connect 38 0 27 2;
+#X connect 39 0 40 0;
+#X connect 39 1 41 0;
+#X connect 39 2 42 0;
+#X connect 40 0 44 0;
+#X connect 41 0 45 0;
+#X connect 42 0 46 0;
+#X connect 43 0 5 0;
+#X connect 44 0 43 0;
+#X connect 45 0 43 1;
+#X connect 46 0 43 2;
+#X restore 172 413 pd hsvToRgb;
+#X obj 35 132 random 1024;
+#X obj 35 170 / 1024;
+#X obj 315 185 / 1024;
+#X obj 314 131 random 512;
+#X obj 313 158 + 512;
+#X obj 147 209 / 1024;
+#X obj 145 182 + 512;
+#X obj 145 154 random 512;
+#X obj 197 46 metro 5000;
+#X obj 177 12 loadbang;
+#X msg 46 226 \$1 5000;
+#X msg 146 235 \$1 5000;
+#X msg 320 254 \$1 5000;
+#X obj 239 361 pack 0.4423 0.87 0.67;
+#X obj 50 258 line 0.44 150;
+#X obj 148 269 line 0.87 150;
+#X obj 320 291 line 0.67 150;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 6 0;
+#X connect 3 1 13 0;
+#X connect 3 2 9 0;
+#X connect 4 0 14 0;
+#X connect 5 0 1 0;
+#X connect 6 0 7 0;
+#X connect 7 0 16 0;
+#X connect 8 0 18 0;
+#X connect 9 0 10 0;
+#X connect 10 0 8 0;
+#X connect 11 0 17 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 3 0;
+#X connect 15 0 14 0;
+#X connect 16 0 20 0;
+#X connect 17 0 21 0;
+#X connect 18 0 22 0;
+#X connect 19 0 5 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 1;
+#X connect 22 0 19 2;
+#X restore 325 80 pd anim;
+#X obj -23 2 cnv 15 400 100 empty \$0c empty 20 12 0 14 -104978 -262144
+0;
+#X text -18 54 author: mrtoftrash@gmail.com;
+#X text -19 33 tags: state routing;
+#X text -17 1 description: [param] is a state saving and message routing
+system.;
+#X text -19 75 version: 2009-10-27 (de localized release);
+#X text -20 341 Keyword for defining the param path inside abstractions:
+;
+#N canvas 276 205 494 344 META 0;
+#X text 12 85 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 65 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION state saving and message routing system;
+#X text 12 5 KEYWORDS control needs_work (xlets);
+#X restore 320 370 pd META;

@@ -1,0 +1,82 @@
+#N canvas 392 89 560 598 10;
+#X obj 4 -17 cnv 15 550 40 empty \$0-pddp.cnv.header iodisplay 3 12
+0 18 -241536 -1 0;
+#X obj 3 179 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 15 12 0 13
+-245500 -191407 0;
+#N canvas 779 22 494 344 META 0;
+#X text 12 25 KEYWORDS control number float store;
+#X text 12 45 LICENSE GPL;
+#X text 12 65 TEMPLATE template-help.pd v0.1;
+#X text 12 85 PLATFORM windows macosx gnulinux;
+#X text 12 105 DATATYPE float list;
+#X text 12 5 GENRE storage;
+#X text 12 125 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 165 RELEASE_DATE 2007-08-24;
+#X text 12 185 RELEASE_VERSION 0.40-test05;
+#X restore 504 549 pd META;
+#X obj 3 271 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlet 15 12 0
+13 -245500 -191407 0;
+#X obj 3 321 cnv 3 550 3 empty \$0-pddp.cnv.argument argument 15 12
+0 13 -245500 -191407 0;
+#X obj 3 371 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 15
+12 0 13 -245500 -191407 0;
+#X obj 72 245 cnv 17 3 20 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X obj 72 199 cnv 17 3 40 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 412 6 pddp/pddplink http://wiki.puredata.info/en/apple/keyboard_light
+-text pdpedia: keyboard_light;
+#X obj 104 390 pddp/pddplink http://www.osxbook.com/book/bonus/chapter10/light/
+;
+#X obj 456 -14 apple/iodisplay;
+#X text 15 6 description: query and control IODisplay parameters on
+Apple;
+#X msg 81 33 bang;
+#X obj 103 58 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 116 82 5 0 0 0 - - -;
+#X obj 81 140 pddp/print;
+#X obj 81 107 iodisplay brightness;
+#X text 102 339 symbol - name of the IODisplay parameter to control
+;
+#X text 103 289 float - value of the current IODisplay parameter;
+#X text 102 245 symbol - name of the IODisplay parameter to control
+;
+#X text 102 198 bang - output the current IODisplay parameter level
+;
+#X text 102 218 float - set the current IODisplay parameter level;
+#X obj 103 411 pddp/pddplink http://darcs.brianweb.net/vendor/powerpc-apple-darwin/include/IOKit/graphics/IOGraphicsTypes.h
+-text IOKit/graphics/IOGraphicsTypes.h;
+#X text 14 430 Possible IODisplay parameters:;
+#X text 64 447 brightness;
+#X text 64 467 contrast;
+#X text 64 487 horizontal-position;
+#X text 64 507 horizontal-size;
+#X text 64 527 vertical-position;
+#X text 222 447 trapezoid;
+#X text 222 467 pincushion;
+#X text 222 487 parallelogram;
+#X text 222 508 rotation;
+#X text 222 528 theatre-mode;
+#X text 384 447 theatre-mode-window;
+#X text 384 467 oscn;
+#X text 384 487 vbst;
+#X text 384 507 commit;
+#X text 384 527 defaults;
+#X msg 291 33 bang;
+#X obj 306 59 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 319 83 5 0 0 0 - - -;
+#X obj 291 140 pddp/print;
+#X msg 366 83 symbol brightness;
+#X obj 291 107 iodisplay;
+#X connect 12 0 16 0;
+#X connect 13 0 14 0;
+#X connect 13 0 16 0;
+#X connect 16 0 15 0;
+#X connect 39 0 44 0;
+#X connect 40 0 41 0;
+#X connect 40 0 44 0;
+#X connect 43 0 44 1;
+#X connect 44 0 42 0;

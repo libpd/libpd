@@ -1,0 +1,19 @@
+#N canvas 0 26 392 273 10;
+#X obj 123 128 float2ascii;
+#X obj 126 71 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X symbolatom 123 188 10 0 0 0 - - -;
+#X floatatom 135 100 5 0 0 0 - - -;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 45 DESCRIPTION convert a float to ASCII;
+#X restore 342 252 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 1 0 3 0;

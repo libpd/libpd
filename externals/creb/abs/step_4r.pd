@@ -1,0 +1,26 @@
+#N canvas 241 612 442 251 10;
+#X obj 59 173 tabread \$1;
+#X obj 59 199 outlet;
+#X obj 135 64 inlet;
+#X obj 135 173 tabread \$1;
+#X obj 135 199 outlet;
+#X obj 210 173 tabread \$1;
+#X obj 210 199 outlet;
+#X obj 288 173 tabread \$1;
+#X obj 288 199 outlet;
+#X obj 135 148 + 1;
+#X obj 210 148 + 2;
+#X obj 288 148 + 3;
+#X text 43 21 4 part building block (read) for a step sequencer array
+input;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 2 0 9 0;
+#X connect 2 0 10 0;
+#X connect 2 0 11 0;
+#X connect 3 0 4 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 9 0 3 0;
+#X connect 10 0 5 0;
+#X connect 11 0 7 0;

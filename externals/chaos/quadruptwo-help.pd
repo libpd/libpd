@@ -1,0 +1,35 @@
+#N canvas 492 119 593 496 10;
+#X obj 43 134 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 94 135 5 0 0 0 - - -;
+#X text 79 201 Reset To Initial Conditions;
+#X text 99 246 Modify Parameters;
+#X msg 76 184 reset 0.1 0.1;
+#X floatatom 78 398 10 0 0 0 Y - -;
+#X floatatom 43 373 10 0 0 0 X - -;
+#X text 19 50 (This attractor is not continuous);
+#X text 20 34 Chaos PD Externals - Copyright Michael McGonagle 2003
+;
+#X obj 43 151 metro 50;
+#X obj 13 150 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 25 83 examples/readme-fractals;
+#X msg 95 226 param 2.35155;
+#X obj 43 347 quadruptwo 0.1 0 2.35155;
+#X text 98 441 This fractal seems to allow is sole parameter to range
+over a large range. As the value of the parameter rises \, so does
+the Lyapunov Exponent \, but it does not appear to be linear.;
+#X text 21 19 Quadruptwo Attractor (from Cliff Pickover);
+#X obj 126 373 search-tools;
+#X connect 0 0 9 0;
+#X connect 1 0 9 1;
+#X connect 4 0 13 0;
+#X connect 9 0 13 0;
+#X connect 10 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 6 0;
+#X connect 13 1 5 0;
+#X connect 13 2 16 0;
+#X connect 13 3 16 1;
+#X connect 13 4 16 2;
+#X connect 16 0 13 0;

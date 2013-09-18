@@ -1,0 +1,171 @@
+#N canvas 0 16 526 374 10;
+#X obj 45 14 canvasdelete;
+#N canvas 0 103 634 353 canvas 0;
+#N canvas 543 15 194 274 \$0.sandbox 0;
+#X obj 20 140 t a a;
+#X msg 20 110 Bitte entferne mich!;
+#X obj 20 80 f 20;
+#X restore 29 199 pd \$0.sandbox;
+#X obj 199 247 s pd-\$0.sandbox;
+#X msg 229 192 delete 1;
+#X text 302 193 <- click;
+#X text 28 287 Note:;
+#X text 55 306 If you happen to 'delete' on object that is involved
+in the deleting process \, Pd will ungracefully crash. Use with care!
+;
+#X text 28 21 When you load(!) the canvasdelete object/library \, it
+will also add a 'delete' method for canvases (aka: windows) to Pd.
+;
+#X text 27 64 This allows to remove single objects by their index.
+Counting starts at 0 and follows the order of creation.;
+#X text 30 96 Nevertheless \, let's hope that one day Pd will have
+a "delete" method itself...;
+#X msg 199 150 vis 1;
+#X text 247 153 <- open a patch;
+#X msg 384 230 reset;
+#X obj 384 252 s \$0.init;
+#X connect 2 0 1 0;
+#X connect 9 0 1 0;
+#X connect 11 0 12 0;
+#X restore 334 249 pd canvas messages;
+#X text 38 69 the canvasdelete will delete itself when it receives
+a "bang";
+#X text 41 112 you can specify the depth of the parent patch via an
+optional argument;
+#X obj 41 145 canvasdelete 1;
+#X text 148 145 will delete the containing canvas (parent-depth:1)
+;
+#N canvas 0 0 450 300 \$0.examples 0;
+#X msg 20 100 bang;
+#X obj 20 130 canvasdelete;
+#X text 60 100 this will only delete the [canvasdelete] object itself
+;
+#X msg 20 200 bang;
+#N canvas 0 0 450 300 1002.parent-deletion 0;
+#X obj 20 20 inlet;
+#X obj 20 50 delay 1000;
+#X obj 20 80 canvasdelete 1;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 20 230 pd 1002.parent-deletion;
+#X text 60 200 the containing [canvasdelete 1] will delete the entire
+subpatch after 1 second;
+#X msg 20 20 click here to regenerate this patch;
+#X obj 20 40 s 1002.init;
+#X connect 0 0 1 0;
+#X connect 3 0 4 0;
+#X connect 6 0 7 0;
+#X restore 275 213 pd \$0.examples;
+#X text 40 212 two examples on how to use this:;
+#X text 43 249 for advanced lovers of dynamic patching:;
+#N canvas 41 71 418 300 \$0.init 0;
+#N canvas 53 36 735 315 dynamic 0;
+#X obj 56 73 r \$0.init;
+#X obj 56 97 t b;
+#X obj 56 119 del;
+#X obj 88 151 loadbang;
+#X obj 56 171 s \$0.realinit;
+#X obj 502 75 receivecanvas 1;
+#X obj 502 97 route map vis;
+#X obj 502 119 route 1;
+#X obj 502 141 t b;
+#X msg 502 185 vis 0;
+#X obj 502 207 sendcanvas 1;
+#X obj 502 163 del 2000;
+#X text 509 54 autoclose;
+#X text 83 122 protect against self-deletion (might crash);
+#N canvas 0 0 450 300 canvas.messages 0;
+#X msg 29 168 clear \, obj 20 140 t a a \, msg 20 110 Bitte entferne
+mich! \, obj 20 80 f 20;
+#X obj 29 208 s pd-\$0.sandbox;
+#X obj 29 143 r \$0.realinit;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X restore 85 251 pd canvas.messages;
+#N canvas 0 0 450 300 examples 0;
+#X obj 89 254 s pd-\$0.examples;
+#X msg 149 214 clear;
+#N canvas 0 0 781 300 withmakesubpatch 0;
+#X obj 91 10 inlet;
+#X obj 88 292 outlet;
+#X obj 91 32 t b;
+#X obj 91 54 f \$0;
+#X obj 91 76 t f f f;
+#X obj 201 213 s;
+#X obj 201 130 t b f;
+#X obj 217 74 pack 0 0;
+#X msg 235 149 symbol pd-\$1.parent-deletion;
+#X msg 56 249 text 60 200 the containing [canvasdelete 1] will delete
+the entire subpatch after 1 second \, connect 3 0 4 0;
+#X msg 201 170 vis 0 \, obj 20 20 inlet \, obj 20 50 delay 1000 \,
+obj 20 80 canvasdelete 1 \, connect 0 0 1 0 \, connect 1 0 2 0;
+#X msg 199 100 msg 20 200 bang \, obj 20 230 pd \$1.parent-deletion
+;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 9 0;
+#X connect 4 1 6 0;
+#X connect 4 2 7 0;
+#X connect 6 0 10 0;
+#X connect 6 1 8 0;
+#X connect 7 0 11 0;
+#X connect 8 0 5 1;
+#X connect 9 0 1 0;
+#X connect 10 0 5 0;
+#X connect 11 0 1 0;
+#X restore 109 157 pd withmakesubpatch;
+#X obj 89 89 t b;
+#N canvas 0 0 450 300 nosubpatch 0;
+#X obj 111 19 inlet;
+#X obj 126 219 outlet;
+#X msg 21 118 msg 20 100 bang \, obj 20 130 canvasdelete \, text 60
+100 this will only delete the [canvasdelete] object itself \, connect
+0 0 1 0;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 129 133 pd nosubpatch;
+#X obj 89 109 t b b b b;
+#N canvas 0 0 671 300 initializer 0;
+#X obj 73 19 inlet;
+#X obj 73 252 outlet;
+#X obj 73 41 t b;
+#X obj 73 63 pack \$0 0;
+#X msg 73 103 msg 20 20 click here to regenerate this patch \, obj
+20 40 s \$1.init \, connect 6 0 7 0;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X restore 89 185 pd initializer;
+#X obj 89 69 r \$0.realinit;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 5 1 2 0;
+#X connect 5 2 4 0;
+#X connect 5 3 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 3 0;
+#X restore 84 275 pd examples;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 6 1 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 11 0;
+#X connect 9 0 10 0;
+#X connect 11 0 9 0;
+#X restore 127 138 pd dynamic patching;
+#X text 80 94 I'm sure you don't want to see this...;
+#X text 164 191 go away...;
+#X restore 308 395 pd \$0.init;
+#X text 163 14 delete ourselves (or a parent);
+#X text 182 397 secret init stuff;
+#X text 42 311 (c) 2010 IOhannes m zmoelnig \, Roman Haefeli;
+#X text 77 334 this is part of iemguts;

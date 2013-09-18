@@ -1,0 +1,3 @@
+PDDPLINK_OBJECTS = $(SRCDIR)\pddplink.obj \
+	$(SHAREDDIR)\common\loud.obj \
+	$(SHAREDDIR)\common\os.obj

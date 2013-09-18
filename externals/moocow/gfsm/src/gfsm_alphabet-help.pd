@@ -1,0 +1,77 @@
+#N canvas 0 31 646 547 10;
+#X text 289 523 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 9 524 SEE ALSO:;
+#X text 9 69 INLETS:;
+#X text 27 83 1 - control messages;
+#X text 244 68 OUTLETS:;
+#X obj 80 525 gfsm;
+#X text 48 48 NAME - symbolic name of the alphabet;
+#X text 260 81 1 - value outlet;
+#X text 260 96 2 - bang on missing value;
+#X text 14 31 SYNTAX: gfsm_alphabet [NAME];
+#X obj 13 493 print CHAR;
+#X obj 197 492 print ATOM;
+#X msg 29 182 insert x 1;
+#X text 163 185 "insert ATOM CHAR" : map ATOM<->CHAR;
+#X msg 33 203 insert y;
+#X text 198 203 "insert ATOM" : map ATOM to a new character label;
+#X msg 48 232 atom2char x;
+#X text 177 233 "atom2char ATOM" : lookup character label for ATOM
+;
+#X text 170 253 "atom2char! ATOM" : lookup or insert label for ATOM
+;
+#X text 184 284 "char2atom INT" : lookup atom for label INT;
+#X text 177 301 "char2atom! INT" : lookup or insert atom for INT;
+#X msg 63 281 char2atom 1;
+#X msg 65 301 char2atom! 42;
+#X msg 52 252 atom2char! foo;
+#X text 184 129 "alphabet NAME" : sets current alphabet;
+#X msg 19 151 alphabet;
+#X text 219 145 "alphabet" : use private alphabet;
+#X text 309 159 NOTE: alphabets of the same name share data;
+#X msg 75 332 clear;
+#X msg 91 405 print;
+#X text 240 404 "print" : dump alphabet contents to the console;
+#X msg 91 445 save tmp.lab;
+#X text 212 425 "load FILE" : load alphabet contents from a file;
+#X text 212 445 "save FILE" : save alphabet contents to a file;
+#X text 67 4 gfsm_alphabet : integer<->atom map for finite state machines
+;
+#X text 240 333 "clear" : clears entire alphabet;
+#X msg 76 353 rmatom x;
+#X msg 77 374 rmchar 1;
+#X text 205 372 "rmchar INT" : remove mapping for label INT;
+#X text 198 353 "rmatom ATOM" : remove mapping for atom ATOM;
+#X obj 117 525 gfsm_automaton;
+#X msg 13 127 alphabet help-alphabet;
+#X msg 92 425 load tmp.lab;
+#N canvas 560 186 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 45 DESCRIPTION integer <-> atom map for finite state machines
+;
+#X text 12 65 INLET_0 alphabet insert atom2char char2atom char2atom!
+clear rmatom rmchar print load save;
+#X text 12 5 KEYWORDS control storage filesystem;
+#X text 12 95 OUTLET_0;
+#X text 12 115 OUTLET_1;
+#X restore 587 518 pd META;
+#X obj 13 471 gfsm_alphabet help-alphabet;
+#X connect 12 0 44 0;
+#X connect 14 0 44 0;
+#X connect 16 0 44 0;
+#X connect 21 0 44 0;
+#X connect 22 0 44 0;
+#X connect 23 0 44 0;
+#X connect 25 0 44 0;
+#X connect 28 0 44 0;
+#X connect 29 0 44 0;
+#X connect 31 0 44 0;
+#X connect 36 0 44 0;
+#X connect 37 0 44 0;
+#X connect 41 0 44 0;
+#X connect 42 0 44 0;
+#X connect 44 0 10 0;
+#X connect 44 1 11 0;

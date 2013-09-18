@@ -1,0 +1,22 @@
+#N canvas 8 31 432 344 10;
+#X obj 88 30 inlet;
+#X obj 89 264 outlet;
+#X text 19 9 [hid2rad];
+#X obj 89 198 * 6.28318;
+#X obj 88 101 moses 0.5;
+#X obj 88 56 min 1;
+#X obj 88 74 max 0;
+#X obj 147 133 - 1;
+#X text 133 63 its a [hid] object \, so limit input range;
+#X text 129 28 input range: 0 to 1;
+#X text 143 264 output range: -pi to pi;
+#X text 232 311 released under the GNU GPL;
+#X text 15 297 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X connect 0 0 5 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 4 1 7 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 7 0 3 0;

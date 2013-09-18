@@ -1,0 +1,22 @@
+#N canvas 1 26 449 391 10;
+#N canvas 200 78 494 332 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal abstraction GUI needs_work (example patch)
+;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 45 DESCRIPTION snare drum gop object;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 float;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 395 359 pd META;
+#X obj 77 59 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 77 92 ti_snare;
+#X obj 76 159 output~;
+#X text 132 16 snare drum gop object;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 0 3 1;
+#X coords 0 0 1 1 270 50 0;

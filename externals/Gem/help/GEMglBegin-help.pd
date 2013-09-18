@@ -1,0 +1,14 @@
+#N canvas 144 70 497 292 10;
+#X text 21 22 GEMglBegin - delimit the vertices of a primitive or a
+group of like primitives;
+#X text 21 61 C Specification: void glBegin( GLenum mode );
+#X text 21 91 Parameters;
+#X text 42 115 mode;
+#X text 77 116 Specifies the primitive or primitives that will be created
+from vertices presented between glBegin and the subsequent glEnd. Ten
+symbolic constants are accepted: GL_POINTS \, GL_LINES \, GL_LINE_STRIP
+\, GL_LINE_LOOP \, GL_TRIANGLES \, GL_TRIANGLE_STRIP \, GL_TRIANGLE_FAN
+\, GL_QUADS \, GL_QUAD_STRIP \, and GL_POLYGON.;
+#X text 71 244 http://www.glprogramming.com/blue/ch05.html#id5450783
+;
+#X text 22 228 OpenGL Reference page:;

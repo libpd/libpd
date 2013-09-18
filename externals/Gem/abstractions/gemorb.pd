@@ -1,0 +1,22 @@
+#N canvas 66 407 682 381 10;
+#X text 53 56 the object has been taken out of Gem \, since Gem is
+a graphics library \, and not a hardware-interfacing library.;
+#X text 49 98 you should be able to build a functional replacement
+using the [hid] external.;
+#X text 54 36 this is a fake replacement of Gem's [gemorb].;
+#X obj 41 341 outlet Position (x y z);
+#X obj 231 341 outlet Rotation (x y z);
+#X obj 421 341 outlet Buttons (a b c d e f g);
+#X obj 172 142 loadbang;
+#X obj 172 278 print error;
+#X msg 172 244 [gemorb] is no longer available! \, use [hid] or similar
+for interfacing a SpaceOrb;
+#X obj 26 143 inlet;
+#X obj 26 163 t b;
+#X msg 26 182 you are interfacing a dummy replacement of [gemorb]!
+\, please build your own [gemorb];
+#X connect 6 0 8 0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 7 0;

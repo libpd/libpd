@@ -1,0 +1,168 @@
+#N canvas 174 0 637 472 10;
+#X text 363 9 GEM object;
+#X obj 9 375 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 374 Arguments:;
+#X obj 8 56 cnv 15 430 310 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 43 cnv 15 170 410 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 26 Example:;
+#X obj 479 389 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 484 428 pd gemwin;
+#X msg 484 409 create;
+#X text 480 388 Create window:;
+#X obj 451 184 cnv 15 167 200 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 49 gemhead;
+#X obj 451 118 pix_film;
+#X obj 515 118 t f;
+#X obj 464 71 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 open 0;
+#X obj 85 49 inlet;
+#X obj 85 237 outlet;
+#X obj 85 145 openpanel;
+#X msg 85 179 open \$1;
+#X msg 259 213 auto 1;
+#X obj 268 179 loadbang;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X restore 464 90 pd open;
+#X text 485 64 open a supported;
+#X text 486 75 movie-clip;
+#X text 64 385 <none>;
+#X text 50 12 Synopsis: [pix_record];
+#X text 71 31 Class: pix object (output);
+#X text 29 57 Description: write a sequence of pixes to a movie file
+;
+#X obj 451 364 pix_record;
+#X obj 451 157 pix_draw;
+#X obj 451 138 pix_invert;
+#X text 18 104 You can choose the codec you want to use either via
+a graphical dialog or by directly sending a "codec" with either the
+name or the enumeration number of the codec. Use "codeclist" to query
+the available codecs \, their names and their number.;
+#X obj 470 333 cnv 15 145 25 empty empty empty 20 12 0 14 -225271 -66577
+0;
+#X msg 480 337 bang;
+#X msg 552 337 auto \$1;
+#X obj 533 338 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 470 189 cnv 15 145 65 empty empty empty 20 12 0 14 -225271 -66577
+0;
+#X msg 476 214 codeclist;
+#X msg 472 193 dialog;
+#X obj 472 234 t a;
+#X obj 460 261 cnv 15 155 65 empty empty empty 20 12 0 14 -225271 -66577
+0;
+#X msg 463 282 file /tmp/mymovie.mov;
+#X obj 464 263 bng 15 250 50 0 empty empty empty 0 -6 0 8 -258699 -1
+-1;
+#N canvas 0 0 450 300 savepanel 0;
+#X obj 114 62 inlet;
+#X obj 114 254 outlet;
+#X obj 114 199 t b a;
+#X obj 114 125 savepanel;
+#X msg 114 162 set file \$1;
+#X connect 0 0 3 0;
+#X connect 2 0 1 0;
+#X connect 2 1 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X restore 484 262 pd savepanel;
+#X msg 520 305 record \$1;
+#X obj 500 307 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 463 305 t a;
+#X text 14 73 [pix_write] writes a series of pixes into a movie file.
+You can set the file to write to via the "file" message.;
+#X text 18 174 When file and codec are specified \, you can open the
+writing connection with the message "record 1".;
+#X text 18 202 To actually do record a frame into the file \, send
+the object a "bang" message. If you want to record a consecutive number
+of frames \, use the "auto" message. This allows you to have full control
+on which frames are to be recorded.;
+#X text 17 269 The recording is finished and the file flushed to disk
+\, after a "record 0" message is received. You might not be able to
+access the file for reading before recording has finished.;
+#X text 526 140 (do something);
+#X text 515 158 (monitoring);
+#X text 22 339 NOTE: currently only quicktime MOVies can be recorded.
+This might change in the future (watch the console!);
+#X obj 8 414 cnv 15 430 30 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 0 450 300 MESSAGES 0;
+#X obj 9 15 cnv 15 430 250 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 34 17 Inlets:;
+#X text 34 229 Outlets:;
+#X text 12 243 Outlet 1: gemlist;
+#X text 18 31 Inlet 1: gemlist;
+#X text 18 54 Inlet 1: file <filename>: specify the file for writing
+;
+#X text 18 66 Inlet 1: record <0|1>: start recording (no actual grabbing
+is done!) or stop recording (flush movie to disk);
+#X text 18 95 Inlet 1: bang: grab the next incoming pix.;
+#X text 18 107 Inlet 1: auto <0|1>: start/stop grabbing all incoming
+pixes;
+#X text 18 134 Inlet 1: dialog: popup a dialog to select the codec.
+;
+#X text 18 150 Inlet 1: codeclist: enumerate a list of available codecs
+to the pd-console;
+#X text 18 180 Inlet 1: codec <int>: select codec #<int> from the codec-list
+;
+#X text 18 205 Inlet 1: codec <symbol>: select codec by short name
+;
+#X text 11 257 Outlet 2: number of frames written;
+#X restore 83 420 pd MESSAGES;
+#X floatatom 539 367 5 0 0 0 - - -;
+#X msg 532 234 codec mjpa;
+#X msg 552 215 codec 3;
+#X connect 7 0 8 0;
+#X connect 8 0 7 0;
+#X connect 11 0 12 0;
+#X connect 12 0 24 0;
+#X connect 12 2 13 0;
+#X connect 13 0 12 1;
+#X connect 14 0 15 0;
+#X connect 15 0 12 0;
+#X connect 22 1 50 0;
+#X connect 23 0 22 0;
+#X connect 24 0 23 0;
+#X connect 27 0 22 0;
+#X connect 28 0 22 0;
+#X connect 29 0 28 0;
+#X connect 31 0 33 0;
+#X connect 32 0 33 0;
+#X connect 33 0 22 0;
+#X connect 35 0 40 0;
+#X connect 36 0 37 0;
+#X connect 37 0 35 0;
+#X connect 38 0 40 0;
+#X connect 39 0 38 0;
+#X connect 40 0 22 0;
+#X connect 51 0 33 0;
+#X connect 52 0 33 0;

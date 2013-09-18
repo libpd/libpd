@@ -1,0 +1,117 @@
+#N canvas 1 53 735 643 10;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array sample 86754 float 0;
+#X coords 0 1 86753 -1 200 64 1;
+#X restore 441 412 graph;
+#X obj 480 341 soundfiler;
+#X msg 480 315 read -resize \$1 sample;
+#X obj 480 289 openpanel;
+#X obj 480 267 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 8 513 dac~;
+#X floatatom 69 489 5 0 0 0 - - -;
+#X obj 69 513 / 100;
+#X obj 8 450 tabread4~ sample;
+#X obj 8 481 *~;
+#X floatatom 127 272 5 0 0 0 - - -;
+#X obj 127 310 mtosr 44100;
+#X msg 17 271 type 0;
+#X msg 17 299 type 1;
+#X msg 176 272 44100;
+#X floatatom 322 380 5 0 0 0 - - -;
+#X floatatom 179 380 6 0 0 0 - - -;
+#X floatatom 245 380 6 0 0 0 - - -;
+#X obj 88 271 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X text 514 265 <- load a sample;
+#X text 421 230 Ben Saylor - bsaylor@macalester.edu;
+#X msg 124 489 70;
+#X obj 156 489 loadbang;
+#X text 54 45 optional creation args:;
+#X text 239 45 [loopstart loopend [looptype [startpos]]];
+#X text 172 336 loopstart;
+#X text 242 337 loopend;
+#X text 319 338 startpos;
+#X text 38 154 <looptype> is 0 for a forward loop (default) and 1 for
+a pingpong loop.;
+#X text 40 193 Playback speed is in samples/sec - send a float or signal
+to the left inlet.;
+#X text 10 7 susloop~ - another phase generator for sample looping
+;
+#X obj 127 414 susloop~ 4000 12000;
+#X text 37 94 When the left inlet gets a bang \, the phase output will
+start at <startpos> (defaults to 0) \, continue until it reaches <loopend>
+\, and then start looping between <loopstart> and <loopend>.;
+#X floatatom 480 366 5 0 0 0 - - -;
+#X obj 442 480 hsl 200 15 0 1 0 0 empty empty loop_start 10 8 0 8 -195568
+-33289 -33289 0 0;
+#X obj 442 499 hsl 200 15 0 1 0 0 empty empty loop_end 10 8 0 8 -233017
+-1 -1 0 0;
+#X obj 250 565 *;
+#X obj 293 565 *;
+#X obj 293 589 int;
+#X obj 250 589 int;
+#X obj 531 366 s filesize;
+#X obj 266 501 r filesize;
+#X obj 229 616 s lstart;
+#X obj 293 615 s lend;
+#X obj 245 356 r lend;
+#X obj 179 358 r lstart;
+#X obj 442 516 hsl 200 15 0 1 0 0 empty empty start 10 8 0 8 -262144
+-1 -1 0 0;
+#X obj 346 567 *;
+#X obj 346 591 int;
+#X obj 346 616 s start;
+#X obj 322 356 r start;
+#N canvas 266 207 494 384 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 165 LIBRARY external bsaylor;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION another phase generator for sample looping
+;
+#X text 12 125 INLET_3 float;
+#X text 12 105 INLET_2 float;
+#X text 12 85 INLET_1 float;
+#X text 12 65 INLET_0 float bang type;
+#X text 12 145 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 185 AUTHOR Benjamin R. Saylor <bensaylor@fastmail.fm>;
+#X restore 673 602 pd META;
+#X connect 1 0 33 0;
+#X connect 1 0 40 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 9 1;
+#X connect 8 0 9 0;
+#X connect 9 0 5 0;
+#X connect 9 0 5 1;
+#X connect 10 0 11 0;
+#X connect 11 0 31 0;
+#X connect 12 0 31 0;
+#X connect 13 0 31 0;
+#X connect 14 0 31 0;
+#X connect 15 0 31 3;
+#X connect 16 0 31 1;
+#X connect 17 0 31 2;
+#X connect 18 0 31 0;
+#X connect 21 0 7 0;
+#X connect 22 0 21 0;
+#X connect 31 0 8 0;
+#X connect 34 0 36 0;
+#X connect 35 0 37 0;
+#X connect 36 0 39 0;
+#X connect 37 0 38 0;
+#X connect 38 0 43 0;
+#X connect 39 0 42 0;
+#X connect 41 0 36 1;
+#X connect 41 0 37 1;
+#X connect 41 0 47 1;
+#X connect 44 0 17 0;
+#X connect 45 0 16 0;
+#X connect 46 0 47 0;
+#X connect 47 0 48 0;
+#X connect 48 0 49 0;
+#X connect 50 0 15 0;

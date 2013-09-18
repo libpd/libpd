@@ -1,0 +1,95 @@
+#N canvas 1 53 633 528 10;
+#X obj 5 2 cnv 15 450 20 empty empty one2four 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X floatatom 153 110 5 0 0 0 - - -;
+#X floatatom 23 186 5 0 0 0 - - -;
+#X obj 156 91 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 26 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 173 186 5 0 0 0 - - -;
+#X obj 176 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 323 186 5 0 0 0 - - -;
+#X obj 326 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 280 473 released under the GNU GPL;
+#X floatatom 121 299 5 0 0 0 - - -;
+#X floatatom 23 416 5 0 0 0 - - -;
+#X obj 124 280 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 26 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 173 416 5 0 0 0 - - -;
+#X obj 176 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 323 416 5 0 0 0 - - -;
+#X obj 326 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 16 473 (C) Copyright 2007 Free Software Foundation;
+#X text 21 243 You can set the breakpoint using the argument or the
+right inlet:;
+#X floatatom 226 346 5 0 0 0 - - -;
+#X obj 229 327 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 173 326 5 0 0 0 - - -;
+#X obj 176 307 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 153 145 one2four;
+#X text 18 28 Simple one-to-four mapping object. The first inlet is
+passed thru \, the range of the output data on the other inlets starts
+at the points in the input range specified as arguments or the cold
+inlets.;
+#X floatatom 473 186 5 0 0 0 - - -;
+#X obj 476 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 132 381 one2four 0.1 0.2 0.3;
+#X floatatom 266 366 5 0 0 0 - - -;
+#X obj 269 347 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 473 416 5 0 0 0 - - -;
+#X obj 476 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#N canvas 464 140 494 344 META 0;
+#X text 12 245 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 145 OUTLET_0 float;
+#X text 12 225 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION simple one-to-four mapping object;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X text 12 165 OUTLET_1 float;
+#X text 12 185 OUTLET_2 float;
+#X text 12 205 OUTLET_3 float;
+#X restore 579 499 pd META;
+#X connect 2 0 25 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 11 0 29 0;
+#X connect 12 0 14 0;
+#X connect 13 0 11 0;
+#X connect 15 0 16 0;
+#X connect 17 0 18 0;
+#X connect 21 0 29 2;
+#X connect 22 0 21 0;
+#X connect 23 0 29 1;
+#X connect 24 0 23 0;
+#X connect 25 0 3 0;
+#X connect 25 1 6 0;
+#X connect 25 2 8 0;
+#X connect 25 3 27 0;
+#X connect 27 0 28 0;
+#X connect 29 0 12 0;
+#X connect 29 1 15 0;
+#X connect 29 2 17 0;
+#X connect 29 3 32 0;
+#X connect 30 0 29 3;
+#X connect 31 0 30 0;
+#X connect 32 0 33 0;

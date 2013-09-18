@@ -1,0 +1,41 @@
+#N canvas 161 60 833 321 10;
+#X text 578 18 updated for;
+#X obj 666 18 iemmatrix 0.2;
+#X obj 715 44 matrix;
+#X text 585 43 see also help for;
+#X obj 86 294 mtx_print;
+#X obj 121 23 mtx_check;
+#X text 223 24 check (and fix) a matrix for validity;
+#X obj 86 242 mtx_check;
+#X text 83 107 check a matrix-message;
+#X msg 133 169 matrix 3 3 2;
+#X obj 488 254 mtx_int;
+#X msg 86 131 matrix 2 2 0 1 2 3;
+#X text 221 132 legal matrix message: [2x2] matrix with elements "0
+1 \, 2 3";
+#X text 233 163 this message is illegal: [3x3] matrix \, the only element
+of which is "2";
+#X obj 638 273 mtx_int;
+#X obj 638 251 mtx_check;
+#X obj 488 279 mtx_print illegal;
+#X obj 638 297 mtx_print legalizeIt;
+#X msg 488 228 matrix 3 3 2;
+#X msg 638 227 matrix 3 3 2;
+#X text 65 44 illegal matrix-message are fixed by zero-padding (if
+too few elements are given) \, or truncation (if too many elements
+are given);
+#X msg 132 201 matrix 2 2 0 1 2 3 4 5 6;
+#X text 308 201 illegal too: too many elements are given;
+#X obj 86 267 t a a;
+#X obj 126 267 print fixed;
+#X connect 7 0 23 0;
+#X connect 9 0 7 0;
+#X connect 10 0 16 0;
+#X connect 11 0 7 0;
+#X connect 14 0 17 0;
+#X connect 15 0 14 0;
+#X connect 18 0 10 0;
+#X connect 19 0 15 0;
+#X connect 21 0 7 0;
+#X connect 23 0 4 0;
+#X connect 23 1 24 0;

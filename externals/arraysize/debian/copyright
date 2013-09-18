@@ -1,0 +1,10 @@
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?rev=135
+Name: arraysize
+Source: http://sourceforge.net/projects/pure-data/files/libraries/arraysize/arraysize-0.1.tar.gz
+Debianized-By: Hans-Christoph Steiner <hans@eds.org> 
+Debianized-Date: Sat, 3 Apr 2010 17:14:25 -0400
+Files: *
+Copyright: 2002, Juha Vehviläinen
+
+License: Public Domain
+ This code is too trivial to have a licence or copyright.

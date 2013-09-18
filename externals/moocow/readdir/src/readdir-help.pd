@@ -1,0 +1,58 @@
+#N canvas 0 26 510 574 10;
+#X msg 87 194 close;
+#X msg 54 75 bang;
+#X msg 77 144 tell;
+#X obj 38 292 print dir-entry;
+#X obj 82 264 print end-of-directory;
+#X text 130 4 readdir : simple directory accessor;
+#X text 240 523 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 155 36 open DIR : opens the directory DIR;
+#X text 184 77 bang : outlet next directory entry;
+#X text 184 94 next : ditto;
+#X msg 61 94 next;
+#X msg 71 125 rewind;
+#X text 173 125 rewind : return to beginning of directory;
+#X text 187 145 tell : output current position;
+#X text 146 163 seek FLOAT : goto position FLOAT;
+#X msg 82 163 seek 0;
+#X text 181 192 close : close directory;
+#X text 258 265 2nd outlet bangs at end of directory;
+#X text 260 295 Directory entries go to 1st outlet;
+#X text 39 321 Directory entries appear as messages of the form TYPE
+NAME \, where NAME is the name of the entry \, and TYPE is one of the
+following:;
+#X text 147 361 file : regular file;
+#X text 154 374 dir : subdirectory;
+#X text 147 387 fifo : named pipe;
+#X text 147 400 sock : local-domain socket;
+#X text 133 413 chrdev : character device;
+#X text 133 427 blkdev : block device;
+#X obj 38 237 readdir;
+#X msg 44 46 open /tmp;
+#X text 126 440 unknown : something else (maybe a symlink);
+#X msg 38 26 open .;
+#X text 39 462 BEWARE: Recognition of directory entry types does NOT
+work on windows or any other system whose `dirent' struct is missing
+the `d_type' field. On such systems \, the TYPE selector on the first
+outlet is always the symbol `unknown'.;
+#N canvas 260 141 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION simple directory accessor;
+#X text 12 65 INLET_0 open bang next rewind tell seek close;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 105 OUTLET_1 bang;
+#X restore 451 552 pd META;
+#X connect 0 0 26 0;
+#X connect 1 0 26 0;
+#X connect 2 0 26 0;
+#X connect 10 0 26 0;
+#X connect 11 0 26 0;
+#X connect 15 0 26 0;
+#X connect 26 0 3 0;
+#X connect 26 1 4 0;
+#X connect 27 0 26 0;
+#X connect 29 0 26 0;

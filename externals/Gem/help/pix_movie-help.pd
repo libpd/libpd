@@ -1,0 +1,153 @@
+#N canvas 468 94 707 633 10;
+#X text 452 -2 GEM object;
+#X obj 8 305 cnv 15 430 320 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 307 Inlets:;
+#X text 9 477 Outlets:;
+#X obj 8 272 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 271 Arguments:;
+#X obj 8 46 cnv 15 430 180 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 47 cnv 15 250 450 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 30 Example:;
+#X obj 594 430 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 599 469 pd gemwin;
+#X msg 599 450 destroy;
+#X text 595 429 Create window:;
+#X obj 451 78 cnv 15 155 200 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 53 gemhead;
+#X text 17 491 Outlet 1: gemlist;
+#X text 23 321 Inlet 1: gemlist;
+#X obj 462 83 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 505 47 open a supported;
+#X text 506 58 movie-clip;
+#X obj 480 367 unpack 0 0 0;
+#X floatatom 466 390 5 0 0 3 length - -;
+#X floatatom 515 390 5 0 0 3 width - -;
+#X floatatom 565 390 5 0 0 3 height - -;
+#X obj 520 348 bng 15 250 50 0 empty empty end_reached 20 7 0 10 -262144
+-1 -1;
+#X text 71 21 Class: pix object (pix source);
+#X text 29 47 Description: load in a movie-file;
+#X obj 462 112 openpanel;
+#X msg 462 132 open \$1;
+#X obj 451 472 rectangle 4 3;
+#X text 15 68 [pix_movie] loads in a preproduced digital-video to be
+used as a texture \, bitblit or something else.;
+#X text 63 282 symbol: file to load initially;
+#X text 17 560 Outlet 3: bang: indicates that the last frame has been
+reached;
+#X msg 490 189 auto \$1;
+#X obj 490 171 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 501 213 colorspace Grey;
+#X text 13 94 You can open a specified film via the "open" message
+\, which takes an optional argument for the colorspace \, to which
+the movie should be decoded (RGBA \, YUV or Grey).;
+#X text 17 507 Outlet 2: list: <length> <width> <height>: gets the
+dimensions (in fps and pixels) of a film when it gets loaded. if length
+is not available (video-streams) -1 is returned.;
+#X text 14 134 Normally \, you will only get one specified (via the
+second inlet) frame of the film \, To play back a complete film \,
+you have to change the frame accordingly \, OR use the "auto" message
+\, to automatically proceed to the next frame each rendering-cycle.
+In auto-mode \, the film is NOT looped. Instead you can reset the current-frame
+to zero when the end of the film is reached.;
+#N canvas 67 224 453 238 :: 0;
+#X text 38 33 [pix_movie] is mainly a wrapper around [pix_film] with
+automatic texturing.;
+#X text 43 65 Hence it is able to play all formats supported by [pix_film].
+;
+#X text 45 107 See the help-patch for [pix_film] for more information
+on available formats.;
+#X restore 601 533 pd :: FORMATS;
+#X obj 8 229 cnv 15 430 40 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X obj 451 331 pix_movie;
+#X text 459 575 see also:;
+#X obj 536 575 pix_film;
+#X text 50 2 Synopsis: [pix_movie];
+#X obj 513 237 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 505 290 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 502 310 5 0 0 1 frame_number - -;
+#N canvas 830 50 450 300 demo 0;
+#X obj 23 26 inlet;
+#X text 126 127 win32:;
+#X text 116 190 linux \, os-X:;
+#X obj 79 257 outlet;
+#X obj 20 50 bng 17 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 38 51 cnv 15 81 15 empty empty demo_movie 4 8 0 10 -262144 -1
+0;
+#X msg 29 102 open examples/data/alea.mpg;
+#X msg 151 147 open examples/data/homer.avi;
+#X msg 144 210 open examples/data/anim-1.mov;
+#X connect 0 0 4 0;
+#X connect 4 0 6 0;
+#X connect 6 0 3 0;
+#X connect 7 0 3 0;
+#X connect 8 0 3 0;
+#X coords 0 -1 1 1 100 17 1 20 50;
+#X restore 474 152 pd demo movie;
+#X text 454 532 for more info \, open:;
+#X text 22 453 Inlet 2: float: <frame number> sets the frame to output
+;
+#X text 23 400 Inlet 1: auto 1|0 : starts/stops automatic playback.
+;
+#X text 23 369 Inlet 1: colorspace "RGBA|YUV|Grey": decodes the current
+film into the specified colorspace.;
+#X text 23 336 Inlet 1: open <filename> [RGBA|YUV|Grey]: opens the
+movie <filename> and decodes it into the specified color-space.;
+#X obj 596 575 pix_texture;
+#X text 14 231 You don't need [pix_texture] to texture the image. [pix_movie]
+is a combination of [pix_film] and [pix_texture];
+#X text 17 590 Outlet 4: list: the texture id \, same as Outlet 2 of
+[pix_texture];
+#X text 23 419 Inlet 1: rectangle 0|1 : use rectangle-texturing when
+available (default=1);
+#X msg 513 256 rectangle \$1;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 41 0;
+#X connect 17 0 27 0;
+#X connect 20 0 21 0;
+#X connect 20 1 22 0;
+#X connect 20 2 23 0;
+#X connect 27 0 28 0;
+#X connect 28 0 41 0;
+#X connect 33 0 41 0;
+#X connect 34 0 33 0;
+#X connect 35 0 41 0;
+#X connect 41 0 29 0;
+#X connect 41 1 20 0;
+#X connect 41 2 24 0;
+#X connect 45 0 58 0;
+#X connect 46 0 47 0;
+#X connect 47 0 41 1;
+#X connect 48 0 41 0;
+#X connect 58 0 41 0;

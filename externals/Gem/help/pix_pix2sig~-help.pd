@@ -1,0 +1,103 @@
+#N canvas 330 40 689 418 10;
+#X text 452 8 GEM object;
+#X obj 8 245 cnv 15 430 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 248 Inlets:;
+#X text 38 284 Outlets:;
+#X obj 8 206 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 205 Arguments:;
+#X obj 7 76 cnv 15 430 125 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 290 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 244 cnv 15 100 100 empty empty empty 20 12 0 14 -195568
+-66577 0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 283 pd gemwin;
+#X msg 519 264 create;
+#X text 515 243 Create window:;
+#X obj 450 135 cnv 15 160 90 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 22 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 216 <none>;
+#X text 56 297 Outlet 1: gemlist;
+#X text 63 262 Inlet 1: gemlist;
+#X obj 451 253 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 23 92 [pix_sig2pix~] will write the data it gets from images
+as signals for each color-channel.;
+#X text 22 118 [pix_sig2pix~] will try to put all the image-data into
+one audio-block. it will not spread the data of one image over more
+than one audio-block. therefore you will have to set the audio-blocksize
+with [block~ <n>].;
+#X text 21 170 Depending on the size of the images you are converting
+\, you will want to put a huge [block~ 65536 32] into your patch.;
+#X text 56 313 Outlet 2: signal~ : red-channel (or Yuv- \, or grey-)
+;
+#X text 56 343 Outlet 3: signal~ : blue-channel (or yuV- \, or 0);
+#X text 56 328 Outlet 2: signal~ : green-channel (or yUv- \, or 0)
+;
+#X text 56 358 Outlet 4: signal~ : alpha-channel (or 0);
+#X text 29 76 Description: convert images to signals;
+#X text 50 12 Synopsis: [pix_pix2sig~];
+#X obj 451 142 pix_pix2sig~;
+#X floatatom 564 194 3 0 0 3 a - -;
+#X floatatom 533 195 3 0 0 3 b - -;
+#X floatatom 502 195 3 0 0 3 g - -;
+#X floatatom 471 194 3 0 0 3 r - -;
+#X msg 527 310 \; pd dsp 1;
+#X obj 466 385 block~ 65536 32;
+#X obj 471 171 env~ 65536;
+#X obj 564 171 env~ 65536;
+#X obj 533 171 env~ 65536;
+#X obj 502 171 env~ 65536;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 33 0;
+#X connect 33 0 21 0;
+#X connect 33 1 40 0;
+#X connect 33 2 43 0;
+#X connect 33 3 42 0;
+#X connect 33 4 41 0;
+#X connect 40 0 37 0;
+#X connect 41 0 34 0;
+#X connect 42 0 35 0;
+#X connect 43 0 36 0;

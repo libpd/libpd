@@ -1,0 +1,41 @@
+#N canvas 574 0 450 300 10;
+#X obj 98 81 comport 0 9600;
+#X msg 98 30 Tell 32 me 32 again 10 13;
+#X obj 94 124 print a;
+#X obj 184 127 print b;
+#X msg 107 8 info;
+#X obj 30 111 float;
+#X obj 32 147 + 1;
+#X floatatom 6 132 5 0 0 0 - - -;
+#X obj 47 84 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 16 73 0;
+#X obj 96 54 str drip what????;
+#X obj 210 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 210 105 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 24 7 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 24 30 metro 10;
+#X obj 56 8 until;
+#X obj 55 -14 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 10 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 1;
+#X connect 8 0 5 0;
+#X connect 9 0 5 1;
+#X connect 10 0 0 0;
+#X connect 10 0 8 0;
+#X connect 10 1 11 0;
+#X connect 10 1 15 1;
+#X connect 11 0 12 0;
+#X connect 13 0 14 0;
+#X connect 14 0 10 0;
+#X connect 15 0 10 0;
+#X connect 16 0 15 0;

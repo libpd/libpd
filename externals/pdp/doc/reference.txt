@@ -1,0 +1,162 @@
+This is a list of all pdp objects and abstractions with a minimal description.
+Take a look at the patches in the doc/ directory for more info. 
+(Messy doc & test patches can be found in the test/ directory.)
+
+general purpose pdp modules:
+
+pdp_del		a packet delay line
+pdp_reg		a packet register
+pdp_snap	takes a snapshot of a packet stream
+pdp_trigger	similar to pd's trigger object
+pdp_route	routes a packet to a specific outlet
+pdp_loop	a packet loop sampler (packet array)
+pdp_description	output a symbol describing the packet type
+pdp_convert	convert between packet types
+pdp_metro~	audio/video sync object
+
+image inputs/outputs:
+
+pdp_xv		displays images using the xvideo extension
+pdp_glx		displays images using opengl
+pdp_v4l		reads images from a video4linux device
+pdp_qt		reads quicktime movies
+pdp_rawin	read packets from pipe or file
+pdp_rawout	write packets to pipe or file
+pdp_rawout~	write audio to pipe or file
+
+image processors:
+
+pdp_abs		absolute value
+pdp_add		adds two images
+pdp_and		bitwize and
+pdp_array2grey	convert pd array to greyscale image
+pdp_grey2array	convert greyscale image to pd array
+pdp_bitdepth	set bit depth
+pdp_bitmask	apply a bit mask
+pdp_bq		spatial biquad filter
+pdp_bqt		temporal biquad filter
+pdp_cog		gaussian blob estimator
+pdp_constant	fills an image with a constant
+pdp_conv	horizontal/vertical seperable convolution filter
+pdp_cheby	chebyshev color shaper
+pdp_chrot	rotates the chroma components
+pdp_flip_lr	flip left <-> right
+pdp_flip_tb	flip top <-> bottom
+pdp_grey	converts an image to greyscale
+pdp_grey2mask	converts a greyscale image to an image mask
+pdp_hthresh	hard thresholding
+pdp_mul		multiplies two images
+pdp_mix		crossfade between 2 images
+pdp_mix2	mixes 2 images after applying a gain to each of them
+pdp_noise	a noise generator
+pdp_not		bitwize not
+pdp_or		bitwize or
+pdp_plasma	plasma generator
+pdp_pointcloud	convert an image to a point cloud
+pdp_positive	sign function that creates a bitmask
+pdp_randmix	crossfades 2 images by taking random pixels
+pdp_rotate	tiled rotate
+pdp_scale	rescale an image
+pdp_sign	sign function
+pdp_sthresh	soft thresholding
+pdp_zoom	tiled zoom
+pdp_zrot	tiled zoom + rotate
+pdp_zthresh	zero threshold (x<0 -> 0)
+pdp_xor		bitwize xor
+
+dsp objects
+
+pdp_scope~	a very simple oscilloscope
+pdp_scan~	phase input scanned synthesis oscillator
+pdp_scanxy~	x,y coordinate input scanned synthesis oscillator
+
+
+utility abstractions
+
+pdp_pps			computes the packet rate in packets/sec
+
+image abstractions
+
+pdp_affine		scale (gain) + offset
+pdp_agc			automatic gain control (intensity maximizer)
+pdp_alledge		an all edge detector
+pdp_blur		blurs an image
+pdp_blur_hor		horizontal blur
+pdp_blur_ver		vertical blur
+pdp_contrast		contrast enhancement
+pdp_conv_alledge	edge detector
+pdp_conv_emboss		emboss effect
+pdp_conv_smooth		smoothing
+pdp_conv_sobel_hor	horizontal sobel edge detector
+pdp_conv_sobel_ver	vertical sobel edge detector
+pdp_conv_sobel_edge	sum of squares of hor and ver edge detector
+pdp_dither		a dither effect
+pdp_gain3		independent channel gains
+pdp_gradient		grayscale to colour gradient conversion
+pdp_grey		convert image to greyscale
+pdp_invert		invert video
+pdp_motion_blur		blurs motion
+pdp_motion_fade		motion triggered fade out
+pdp_motion_phase	phase shifts motion
+pdp_offset		add an offset to an image
+pdp_phase		applies an allpass filter to an image
+pdp_phase_hor		horizontal allpass
+pdp_phase_ver		vertical allpass
+pdp_png_to		convert a png file (on disk) to a certain packet type
+pdp_qt_control		movie file controller (different play modes)
+pdp_qtloop~		varispeed (interpolated) looper
+pdp_qtloop2~		same, but depends on tabreadmix~ from creb
+pdp_saturation		change colour saturation
+pdp_save_png_sequence	save png sequence in /tmp dir
+pdp_sub			subtract 2 images
+pdp_invert		inverse video
+pdp_tag			tag a packet (to use it with route)
+pdp_xv_keycursor	a keyboard/mouse controller using pdp_xv
+
+
+matrix processors
+
+pdp_m_mv		matrix vector multiply
+pdp_m_mm		matrix matrix multiply
+pdp_m_+=mm		matrix matrix multiply add
+pdp_m_LU		compute LU decomposition
+pdp_m_LU_inverse	compute matrix inverse from LU decomp
+pdp_m_LU_solve		solve a linear system using LU decomp
+
+matrix abstractions
+
+pdp_m_inverse		compute matrix inverse
+
+
+
+
+SEPARATE LIBRARIES:
+
+cellular automata
+(pdp_scaf)
+
+pdp_ca			computes a cellular automaton (as a generator or a filter)
+pdp_ca2image		convert a CA packet to a greyscale image (obsolete: use pdp_convert)
+pdp_image2ca		convert an image to a CA packet (black and white) (obsolete: use pdp_convert)
+
+
+3d drawing objects
+(pdp_opengl)
+
+3dp_windowcontext	a drawable window
+3dp_draw		draw objects (cube, sphere, ...)
+3dp_view		viewing transforms (rotate, translate, ...)
+3dp_light		light source
+3dp_push		push a matrix (modelview, texture, ...)
+3dp_dlist		compile a display list
+3dp_snap		copies the drawing buffer to a texture packet
+3dp_mode		set the current matrix mode
+3dp_toggle		set some opengl state variables
+
+
+3d drawing abstractions (pdp_opengl)
+
+3dp_mouserotate		connect to 3dp_windowcontext to rotate the scene
+3dp_blend		turn on accumulative blending mode
+
+

@@ -1,0 +1,24 @@
+#N canvas 142 -38 627 488 10;
+#X msg 110 93 gemList;
+#X text 121 50 GEM object;
+#X msg 110 219 gemList;
+#X text 181 94 partList;
+#X text 180 222 partList;
+#X obj 110 190 part_velocity;
+#X text 132 16 [part_velocity];
+#X msg 166 132 domain;
+#X text 65 253 [part_velocity] sets velocity of newly emitted particles
+within the system. You can set the velocity-domain and the corresponding
+arguments.;
+#X text 48 337 <domain>: one of "point" \, "line" \, "triangle" \,
+"plane" \, "box" \, "sphere" \, "cylinder" \, "cone" \, "blob" \, "disc"
+\, "rectangle";
+#X msg 222 164 <arguments>;
+#X text 49 401 <arguments>: up to 9 floats \, defining the specified
+domain (like "x y z" for "point" \, "x1 y1 z1 x2 y2 z2" for "line"
+\, "x y z r" for "sphere" \, ...). The meaning of the arguments depends
+-of course- on the domain.;
+#X connect 0 0 5 0;
+#X connect 5 0 2 0;
+#X connect 7 0 5 1;
+#X connect 10 0 5 2;

@@ -1,0 +1,7 @@
+#define TOXY_VERSION "0.1"
+#define TOXY_RELEASE "alpha"
+#define TOXY_BUILD 19
+
+#if 0
+TOXY_SNAPSHOT = 0.1-alpha19
+#endif

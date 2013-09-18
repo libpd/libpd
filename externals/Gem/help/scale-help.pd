@@ -1,0 +1,76 @@
+#N canvas 207 28 639 433 10;
+#X text 452 8 GEM object;
+#X obj 8 306 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 318 Inlets:;
+#X text 63 331 Inlet 1: gemlist;
+#X text 39 382 Outlets:;
+#X text 57 395 Outlet 1: gemlist;
+#X obj 8 256 cnv 15 430 40 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 255 Arguments:;
+#X obj 8 76 cnv 15 440 170 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X text 71 31 Class: manipulation object;
+#X obj 450 126 cnv 15 160 90 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 50 12 Synopsis: [scale];
+#X text 29 77 Description: scale;
+#X text 39 97 scale accepts a gemList and changes the current transformation
+matrix by the specified scale;
+#X text 39 129 The xyz vector determine the vector for scaling;
+#X text 24 159 With 1 argument \, the entire object is scaled by this
+amount;
+#X text 22 177 With 3 arguments \, the object is scaled in each dimension
+by the vector;
+#X text 22 206 With 4 arguments \, the object is scaled by the amount
+by the vector.;
+#X floatatom 480 130 5 0 0 1 amount - -;
+#X msg 524 174 1 1 1;
+#X msg 509 150 3 2 1;
+#X obj 451 263 cube;
+#X obj 451 105 rotateXYZ 45 45 45;
+#X obj 459 219 loadbang;
+#X msg 459 236 draw line;
+#X text 63 266 1st argument: initial scale amount;
+#X text 63 279 2nd-4th argument: (X Y Z) scaling vector;
+#X text 63 364 Inlet 3: list: scaling vector (X Y Z);
+#X text 63 347 Inlet 2: float: scaling amount along the vector;
+#X obj 451 196 scale 0.5;
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 17 0 29 0;
+#X connect 25 0 36 1;
+#X connect 26 0 36 2;
+#X connect 27 0 36 2;
+#X connect 29 0 36 0;
+#X connect 30 0 31 0;
+#X connect 31 0 28 0;
+#X connect 36 0 28 0;

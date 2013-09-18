@@ -1,0 +1,44 @@
+#N canvas 85 437 473 316 10;
+#X obj 91 268 pdp_glx;
+#X obj 91 73 pdp_v4l;
+#X obj 91 30 metro 40;
+#X obj 90 5 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1 -1
+;
+#X obj 326 57 pdp_control;
+#X msg 326 29 thread \$1;
+#X obj 326 5 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 146 3 process in greyscale;
+#X obj 135 195 pdp_gain;
+#X obj 135 222 pdp_gain;
+#X msg 168 27 type yv12;
+#X obj 91 129 pdp_mix;
+#X msg 169 51 type grey;
+#X obj 216 194 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 0.62 256;
+#X obj 139 103 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 0.82 256;
+#X obj 215 133 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 8 256;
+#X obj 135 162 pdp_del 25;
+#X obj 216 173 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 1.5 256;
+#X text 289 177 gains clip at -1 \, 1;
+#X msg 159 129 reset;
+#X connect 1 0 11 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 8 0 9 0;
+#X connect 9 0 11 1;
+#X connect 10 0 1 0;
+#X connect 11 0 0 0;
+#X connect 11 0 16 0;
+#X connect 12 0 1 0;
+#X connect 13 0 9 1;
+#X connect 14 0 11 2;
+#X connect 15 0 16 1;
+#X connect 16 0 8 0;
+#X connect 17 0 8 1;
+#X connect 19 0 16 0;

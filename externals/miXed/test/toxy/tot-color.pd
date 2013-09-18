@@ -1,0 +1,27 @@
+#N canvas 307 84 527 317 12;
+#X obj 20 92 tot .;
+#X msg 82 73 query winfo rgb . green;
+#X obj 20 129 unpack 0 0 0;
+#X obj 20 168 / 256;
+#X obj 95 168 / 256;
+#X obj 170 168 / 256;
+#X obj 20 276 print;
+#X obj 20 241 pack 0 0 0;
+#X obj 20 205 int;
+#X obj 95 205 int;
+#X obj 170 205 int;
+#X msg 20 22 query set cl [tk_chooseColor] .: if .($cl != "".) .(winfo
+rgb . $cl.);
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 0;
+#X connect 3 0 8 0;
+#X connect 4 0 9 0;
+#X connect 5 0 10 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 1;
+#X connect 10 0 7 2;
+#X connect 11 0 0 0;

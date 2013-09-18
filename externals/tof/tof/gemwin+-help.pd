@@ -1,0 +1,49 @@
+#N canvas 1 53 812 373 10;
+#X obj 4 -185 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 483 -183 dimen w h;
+#X text 483 -169 lighting 0/1;
+#X text 483 -156 border 0/1;
+#X text 482 -143 offest x y;
+#X text 440 -88 Gem window with a dimension of 640 by 480 pixels \,
+with no border \, and with an offset of 200 by 200 pixels;
+#X text 482 -130 frame f;
+#X text 440 -234 ARGUMENTS;
+#X text -6 -269 Description: A more user friendly Gem window manager
+with mouse pointer information.;
+#X text 439 -216 You can set the following comma separated arguments:
+;
+#X text -5 -234 Tags: Gem;
+#X obj 43 -125 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 23 -188 Float: 1: Create and render window \, 0: Destroy window.
+;
+#X text 67 -128 Float: Mouse mode \; 0: Gem coordinates \, 1: Normalized.
+;
+#X obj 43 -75 print mouse;
+#X obj 4 -100 gemwin+;
+#X text 39 -58 x_pos y_pos left_button middle_button right_button;
+#X obj 4 9 scale 0.5;
+#X obj 4 35 square;
+#X obj 439 -109 gemwin+ dimen 640 480 \, border 0 \, offset 200 200
+;
+#X text 12 -37 The left most outlet is a gemlist normalized to the
+window's size (i.e. a square of size 1 fills the whole window);
+#N canvas 211 137 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 155 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION a more user friendly Gem window manager with
+mouse pointer information;
+#X text 12 75 INLET_0 float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 gemlist;
+#X text 12 135 OUTLET_1 list;
+#X text 12 5 KEYWORDS control abstraction user_input;
+#X text 12 55 LICENSE GPL v2;
+#X restore 743 58 pd META;
+#X connect 0 0 15 0;
+#X connect 11 0 15 1;
+#X connect 15 0 17 0;
+#X connect 15 1 14 0;
+#X connect 17 0 18 0;

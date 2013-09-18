@@ -1,0 +1,63 @@
+#N canvas 0 26 504 390 10;
+#X text 15 35 Limit the change between samples in an incoming signal
+;
+#X text 166 127 delta max;
+#X floatatom 169 145 0 0 0 0 - - -;
+#X floatatom 169 182 0 0 0 0 - - -;
+#X obj 169 163 * 1e-05;
+#X floatatom 104 145 0 0 0 0 - - -;
+#X floatatom 104 182 0 0 0 0 - - -;
+#X obj 104 163 * 1e-05;
+#X text 163 233 slope;
+#X msg 57 135 1;
+#X msg 15 137 0;
+#X text 22 60 Similar to clip~ \, but with respect to slope rather
+than amplitude. Useful for envelope following and lowpass filtering.
+Typically you will want your minimum slope to be negative and your
+maximum slope to be positive.;
+#X obj 39 177 sig~;
+#X floatatom 39 158 0 0 0 0 - - -;
+#X text 201 202 args: <delta min> <delta max>;
+#X text 51 233 amplitude;
+#X text 102 124 delta min;
+#X obj 39 249 Snapshot~ 100;
+#X obj 145 249 delta~;
+#X obj 275 247 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 37 271 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 146 272 Snapshot~ 100;
+#X obj 144 294 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 39 201 deltaclip~ -1e-05 1e-05;
+#N canvas 35 72 494 427 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 175 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION limit the change between samples in an incoming
+signal;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 INLET_2 signal;
+#X text 12 135 OUTLET_0 signal;
+#X text 12 155 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 454 369 pd META;
+#X connect 2 0 4 0;
+#X connect 3 0 23 2;
+#X connect 4 0 3 0;
+#X connect 5 0 7 0;
+#X connect 6 0 23 1;
+#X connect 7 0 6 0;
+#X connect 9 0 13 0;
+#X connect 10 0 13 0;
+#X connect 12 0 23 0;
+#X connect 13 0 12 0;
+#X connect 17 0 20 0;
+#X connect 18 0 21 0;
+#X connect 21 0 22 0;
+#X connect 23 0 17 0;
+#X connect 23 0 18 0;
+#X connect 23 0 19 0;

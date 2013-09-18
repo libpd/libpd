@@ -1,0 +1,72 @@
+#N canvas 1 53 901 442 10;
+#X obj 388 325 print decoded;
+#X msg 319 159 192 192 192 192 192;
+#X floatatom 339 182 5 0 0 0 - - -;
+#X obj 382 238 cnv 15 60 30 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X text -57 298 The motivation behind SLIP is the need to determine
+the boundaries of a packet when it is received one byte at a time \,
+as with a serial channel. Bytes are integers between 0 and 255;
+#X msg 185 25 verbosity \$1;
+#X obj 185 6 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X text -57 355 SLIP (RFC 1055) is a simple encoding that prefixes
+each packet with 192 \, and replaces 192s inside the packet with 219
+followed by 220 Any 219 will be replaced with 219 and 221 The packet
+ends with 192;
+#X text 443 160 Null packets are invisible;
+#X obj 427 274 print valid;
+#X text -57 193 Note that the SLIP specification limits the maximum
+packet size to 1006...;
+#X obj 388 245 slipdec;
+#X text -57 221 ...but a float argument to slipdec or slipenc will
+set another maximum packet size;
+#X msg 229 69 192 \, 1.33 \, 192;
+#X text 335 45 This should give 1 192;
+#X text 321 69 Only bytes are permitted;
+#X msg 275 115 192 219 5 6 7 192;
+#X msg 253 93 1 43 5 6 7 192;
+#X text 348 92 Missing 192 at start is OK;
+#X text -58 139 [slipdec];
+#X text 548 404 Author: Martin Peach \, 2010/10/01;
+#X msg 205 45 192 1 \, 219 \, 220 \, 192;
+#X msg 297 137 1 25 5 6 7;
+#X text -57 257 Input can be any combination of float and list of floats
+as long as they are integers on [0...255];
+#X text 385 115 Bad escapes are invalid;
+#X text 368 136 Unterminated input will be accumulated until end is
+received;
+#X text 636 368 See also:;
+#X obj 695 370 slipenc;
+#X text -58 153 Decodes bytes from SLIP to raw. Useful for receiving
+OSC via [comport].;
+#X text 427 290 Right outlet is one whenever a valid packet is output
+\, zero if packet could not be decoded (bad packets are not output).
+;
+#X text 389 341 Left outlet gives lists of decoded bytes whenever valid
+= 1;
+#X text 267 24 Verbosity might be useful if things don't seem to be
+working;
+#N canvas 500 267 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 135 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 46 DESCRIPTION decode bytes from SLIP to raw. Useful for
+receiving OSC via [comport];
+#X text 12 75 INLET_0 float list verbosity;
+#X text 12 95 OUTLET_0 anything;
+#X text 12 115 OUTLET_1 float;
+#X restore 775 403 pd META;
+#X connect 1 0 11 0;
+#X connect 2 0 11 0;
+#X connect 5 0 11 0;
+#X connect 6 0 5 0;
+#X connect 11 0 0 0;
+#X connect 11 1 9 0;
+#X connect 13 0 11 0;
+#X connect 16 0 11 0;
+#X connect 17 0 11 0;
+#X connect 21 0 11 0;
+#X connect 22 0 11 0;

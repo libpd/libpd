@@ -1,0 +1,16 @@
+#N canvas 0 22 746 542 10;
+#X obj 352 71 creb/ratio;
+#X obj 31 139 testtools/unit-test-frame;
+#X msg 31 112 ratio 0;
+#X obj 31 87 loadbang;
+#X text 104 41 ratio is an octave shifter.;
+#X text 103 55 output is between 1 and 2;
+#X text 104 71 it computes 2^(log2(x)-int(log2(x)));
+#X obj 351 44 + 1;
+#X obj 352 100 - 1;
+#X connect 0 0 8 0;
+#X connect 1 2 7 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 7 0 0 0;
+#X connect 8 0 1 1;

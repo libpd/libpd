@@ -1,0 +1,53 @@
+#N canvas 411 75 676 452 10;
+#X obj 61 190 mtx_distance2;
+#X obj 61 166 t a a;
+#X obj 61 234 t a a;
+#X obj 61 269 mtx_*;
+#X obj 61 315 outlet matched;
+#X obj 171 315 outlet matcher;
+#X obj 147 167 inlet dest;
+#X obj 61 139 inlet source;
+#X text 235 131 both "source" and "dest" must have the same number
+of columns (dimension in feature-space);
+#N canvas 0 0 618 479 mtx_rowpermutate 0;
+#X obj 150 214 t b a;
+#X obj 150 235 mtx;
+#X obj 150 256 mtx_*;
+#X obj 111 192 mtx_pivot -1;
+#X text 17 19 this unfortunately does not guarantee to give as a minimum
+trace of the result!;
+#X obj 150 309 outlet rowpermutator;
+#X obj 111 141 inlet permutans;
+#X connect 0 0 1 0;
+#X connect 0 1 2 1;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 1 0 0;
+#X connect 3 2 1 1;
+#X connect 6 0 3 0;
+#X restore 61 211 pd mtx_rowpermutate;
+#X text 220 224 this algorithm is _far_ from being perfect! the [mtx_rowpermutate]
+does not really guarantee that the trace of the result is a global
+mimimum \; if it is not \, than the match will be sub-optimal! this
+will be even worse \, if there are several _equal_ (sub)minima in the
+distance-matrix.;
+#X text 158 184 greater distances have an extra penalty (^2) \; is
+this ok?;
+#X text 120 346 (c) 2005 by IOhannes m zmoelnig \, IEM KUG \, graz
+austria;
+#X text 120 363 for license-details see LICENSE.txt that must come
+with iemmatrix.;
+#X text 57 12 mtx_matcher:: match 2 sets of vectors;
+#X text 46 42 2 vectors are matching if their euclidean distance is
+a minimum. each "source" vector is assigned to a "dest" vector in order
+to get a maximum matching. the output is a permutation "matched" of
+the "source" vector-field \, and a permutation matrix "matcher".;
+#X connect 0 0 9 0;
+#X connect 1 0 0 0;
+#X connect 1 1 3 1;
+#X connect 2 0 3 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 6 0 0 1;
+#X connect 7 0 1 0;
+#X connect 9 0 2 0;

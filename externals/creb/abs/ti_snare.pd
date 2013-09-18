@@ -1,0 +1,74 @@
+#N canvas 448 117 288 79 10;
+#X obj 143 84 inlet;
+#X obj 243 84 inlet;
+#X obj 112 323 vol~;
+#X obj 222 52 nbx 3 14 -1e+37 1e+37 0 1 empty empty VOL -20 7 0 10
+-262144 -1 -1 99.47 256;
+#X obj 140 30 nbx 5 14 20 20000 1 1 empty empty T1 -20 7 0 10 -24198
+-1 -1 552.632 256;
+#X obj 74 30 nbx 3 14 -1e+37 1e+37 0 1 empty empty A' -14 7 0 10 -225271
+-1 -1 0 256;
+#X obj 43 106 +;
+#X obj 12 29 nbx 3 14 -1e+37 1e+37 0 1 empty empty A -10 7 0 10 -260818
+-1 -1 -1 256;
+#X obj 44 172 +;
+#X obj 13 50 nbx 3 14 -1e+37 1e+37 0 1 empty empty D -10 7 0 10 -260818
+-1 -1 113 256;
+#X obj 43 83 *;
+#X obj 44 134 *;
+#X obj 101 347 outlet~;
+#X obj 80 4 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1;
+#X obj 178 153 spigot;
+#X obj 74 50 nbx 3 14 -1e+37 1e+37 0 1 empty empty D' -14 7 0 10 -225271
+-1 -1 45 256;
+#X obj 140 51 nbx 5 14 20 20000 1 1 empty empty T2 -20 7 0 10 -24198
+-1 -1 151.334 256;
+#X obj 222 30 nbx 5 14 20 20000 1 1 empty empty T3 -20 7 0 10 -24198
+-1 -1 9652.14 256;
+#X text 9 2 ti_snare;
+#X obj 186 209 ead~;
+#X obj 236 247 osc~;
+#X obj 122 172 osc~;
+#X obj 109 286 *~;
+#X obj 242 178 noise~;
+#X obj 240 210 lop~;
+#X obj 151 209 *~;
+#X obj 82 250 *~;
+#X obj 103 207 *~;
+#X obj 154 109 t b b;
+#X obj 116 110 f 0;
+#X connect 0 0 28 0;
+#X connect 1 0 29 0;
+#X connect 2 0 12 0;
+#X connect 3 0 2 1;
+#X connect 4 0 21 0;
+#X connect 5 0 10 1;
+#X connect 6 0 19 1;
+#X connect 7 0 6 1;
+#X connect 8 0 19 2;
+#X connect 9 0 8 1;
+#X connect 10 0 6 0;
+#X connect 11 0 8 0;
+#X connect 13 0 14 1;
+#X connect 14 0 19 0;
+#X connect 15 0 11 1;
+#X connect 16 0 20 0;
+#X connect 17 0 24 1;
+#X connect 19 0 22 1;
+#X connect 19 0 25 1;
+#X connect 19 0 26 1;
+#X connect 20 0 22 0;
+#X connect 21 0 25 0;
+#X connect 21 0 27 0;
+#X connect 22 0 2 0;
+#X connect 23 0 24 0;
+#X connect 24 0 22 0;
+#X connect 24 0 27 1;
+#X connect 25 0 22 0;
+#X connect 26 0 22 1;
+#X connect 27 0 26 0;
+#X connect 28 0 14 0;
+#X connect 28 1 29 0;
+#X connect 29 0 10 0;
+#X connect 29 0 11 0;
+#X coords 0 0 1 1 270 50 1;

@@ -1,0 +1,46 @@
+#N canvas 488 354 600 357 12;
+#X obj 120 193 monorhythm;
+#X obj 157 270 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 155 91 start;
+#X obj 111 274 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 200 228 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 228 91 stop;
+#X msg 220 160 2000;
+#X obj 286 194 monorhythm;
+#X obj 323 271 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 277 275 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 358 226 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 374 161 2000;
+#X text 42 16 An example of a polyrhythm ( 2 against 3) built with
+2 monorhythm's;
+#X obj 321 121 loadbang;
+#X msg 305 160 2 1 1;
+#X msg 170 159 2 1;
+#X text 89 294 beat;
+#X text 148 292 accent;
+#X text 250 293 beat;
+#X text 313 295 accent;
+#X connect 0 0 3 0;
+#X connect 0 1 1 0;
+#X connect 0 2 4 0;
+#X connect 0 2 7 0;
+#X connect 2 0 0 0;
+#X connect 5 0 7 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 2;
+#X connect 7 0 9 0;
+#X connect 7 1 8 0;
+#X connect 7 2 10 0;
+#X connect 11 0 7 2;
+#X connect 13 0 11 0;
+#X connect 13 0 14 0;
+#X connect 13 0 15 0;
+#X connect 13 0 6 0;
+#X connect 14 0 7 1;
+#X connect 15 0 0 1;

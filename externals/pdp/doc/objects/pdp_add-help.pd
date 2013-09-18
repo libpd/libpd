@@ -1,0 +1,34 @@
+#N canvas 180 63 511 383 10;
+#X msg 77 38 start;
+#X msg 124 38 stop;
+#X obj 77 70 pdp_help_input;
+#X obj 77 322 pdp_help_output;
+#X obj 77 279 pdp_add;
+#X obj 121 246 pdp_reg;
+#X obj 196 183 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 229 181 click here;
+#X obj 77 163 pdp_gain;
+#X floatatom 128 135 5 0 0 0 - - -;
+#X msg 128 109 0.5;
+#X text 229 283 adds (and saturates) 2 packets;
+#X msg 230 246 chanmask \$1;
+#X floatatom 230 221 5 0 0 0 - - -;
+#X msg 374 131 thread \$1;
+#X obj 373 107 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 377 164 pdp_control;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 8 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 1;
+#X connect 6 0 5 0;
+#X connect 8 0 4 0;
+#X connect 8 0 5 1;
+#X connect 9 0 8 1;
+#X connect 10 0 9 0;
+#X connect 12 0 4 0;
+#X connect 13 0 12 0;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;

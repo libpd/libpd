@@ -1,0 +1,42 @@
+#N canvas 0 26 492 402 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-pwm~ 100 float 0;
+#X coords 0 1.1 100 -0.1 200 100 1;
+#X restore 58 236 graph;
+#X obj 83 144 r metro;
+#X text 355 21 <-- Click to start;
+#X text 194 193 <-- graph the output;
+#X text 302 287 see also:;
+#X obj 311 20 tgl 25 0 empty empty start 0 -6 1 9 -24198 -1 -1 0 1
+;
+#X msg 311 48 \; pd dsp \$1 \; metro \$1;
+#X obj 376 287 pwm;
+#X obj 70 66 hsl 128 15 0 1 0 1 empty empty pulse_width -2 -6 1 12
+-225280 -1 -1 10700 0;
+#X floatatom 79 88 5 0 0 0 - - -;
+#X text 139 112 argument = pwm rate in Hz;
+#X obj 67 112 pwm~ 2000;
+#X obj 83 169 metro 238.3;
+#X obj 82 372 pddp/pddplink http://en.wikipedia.org/wiki/Pulse-width_modulation
+;
+#X text 22 351 for more info:;
+#X text 16 11 pulse width modulation at audio rate;
+#X obj 67 193 tabwrite~ \$0-pwm~;
+#N canvas 280 175 494 344 META 0;
+#X text 12 5 GENRE help;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 25 KEYWORDS signal;
+#X text 12 45 LICENSE GPL v3;
+#X text 12 65 DESCRIPTION pulse width modulation at audio rate;
+#X text 12 85 INLET_0 float;
+#X text 12 105 OUTLET_0 signal;
+#X restore 442 381 pd META;
+#X connect 1 0 12 0;
+#X connect 1 0 12 0;
+#X connect 5 0 6 0;
+#X connect 8 0 9 0;
+#X connect 8 0 11 0;
+#X connect 11 0 16 0;
+#X connect 12 0 16 0;

@@ -1,0 +1,25 @@
+#N canvas 369 257 656 300 10;
+#X obj 46 40 pdp_help_input;
+#X msg 46 10 start;
+#X msg 95 10 stop;
+#X obj 46 275 pdp_help_output;
+#X obj 90 146 pdp_grey2mask;
+#X obj 46 183 pdp_mul;
+#X obj 46 247 pdp_gain;
+#X floatatom 97 220 5 0 0;
+#X text 194 136 convert a grey scale image or the luma channel of a
+colour image to an image mask. (to be used for multiplication);
+#X obj 90 119 pdp_reg;
+#X obj 172 73 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 197 70 click here to propagate a new mask;
+#X connect 0 0 5 0;
+#X connect 0 0 9 1;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 1;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 7 0 6 1;
+#X connect 9 0 4 0;
+#X connect 10 0 9 0;

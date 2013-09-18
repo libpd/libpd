@@ -1,0 +1,10 @@
+#N canvas 164 313 194 151 10;
+#X obj 30 24 inlet~;
+#X obj 110 23 inlet;
+#X obj 30 98 outlet~;
+#X obj 110 49 phasor~;
+#X obj 30 67 dynwav~;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 1;
+#X connect 4 0 2 0;

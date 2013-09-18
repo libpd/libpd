@@ -1,0 +1,41 @@
+#N canvas 0 26 422 304 10;
+#X obj 180 210 file_type;
+#X obj 181 41 bng 15 250 50 0 empty empty empty 0 -6 0 8 -24198 -1
+-1;
+#X obj 181 59 openpanel;
+#X msg 203 118 symbol /usr/bin/gcc;
+#X obj 239 235 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 258 236 bang if no match;
+#X msg 206 142 symbol /dev/tty;
+#X obj 181 96 symbol;
+#X msg 141 76 bang;
+#X symbolatom 179 262 0 0 0 0 file_type - -;
+#X obj 207 185 folder_list;
+#X msg 207 166 symbol /tmp/ssh-*/agent.*;
+#X msg 83 148 symbol /usr;
+#X msg 25 129 symbol /tmp;
+#X text 16 10 find the file type of a file;
+#N canvas 392 173 494 344 META 0;
+#X text 12 144 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control symbol_op filesystem;
+#X text 12 45 DESCRIPTION find the file type of a file;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 105 OUTLET_1 bang;
+#X restore 372 282 pd META;
+#X connect 0 0 9 0;
+#X connect 0 1 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
+#X connect 10 0 0 0;
+#X connect 11 0 10 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;

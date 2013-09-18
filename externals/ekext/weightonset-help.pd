@@ -1,0 +1,281 @@
+#N canvas 0 31 901 629 10;
+#N canvas 1901 230 450 300 hasc 0;
+#X obj 65 62 inlet~;
+#X obj 196 184 block~ 1024;
+#X obj 55 106 rfft~;
+#X obj 56 150 hasc~;
+#X obj 56 188 outlet;
+#X obj 179 60 inlet;
+#X text 153 42 threshold (0-10+);
+#X text 43 -1 ...get a "highest apparent spectral component" value
+from the FFT;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 3 1;
+#X connect 3 0 4 0;
+#X connect 5 0 3 2;
+#X restore 44 466 pd hasc;
+#X obj 128 394 bonk~;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-input 106595 float 0;
+#X coords 0 1 106594 -1 200 51 1;
+#X restore 287 357 graph;
+#X obj 128 418 t b b;
+#X obj 81 554 f;
+#X floatatom 96 535 5 0 0 0 - - -;
+#X floatatom 168 396 5 0 99 0 - - -;
+#X obj 81 574 print end-value;
+#X obj 43 372 tabplay~ \$0-input;
+#X floatatom 75 402 5 0 100 0 - - -;
+#X floatatom 75 444 5 0 0 0 - - -;
+#X obj 75 422 * 0.1;
+#N canvas 0 0 450 300 tw 0;
+#X obj 274 70 inlet;
+#X msg 274 91 0;
+#X obj 191 158 cup;
+#X obj 110 55 inlet;
+#X obj 110 80 t f b;
+#X obj 115 207 tabwrite \$0-hasc;
+#X obj 301 158 cup;
+#X obj 220 55 inlet;
+#X obj 220 80 t f b;
+#X obj 225 207 tabwrite \$0-weightonset;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 0 6 0;
+#X connect 2 0 5 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 1 2 0;
+#X connect 6 0 9 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 8 1 6 0;
+#X restore 39 567 pd tw;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-hasc 104 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0;
+#X coords 0 511 104 -1 200 51 1;
+#X restore 287 428 graph;
+#N canvas 0 0 450 300 adapt 0;
+#X obj 128 44 inlet;
+#X obj 127 74 / 100;
+#X obj 129 108 t b f;
+#X msg 126 139 1;
+#X obj 132 170 -;
+#X obj 134 205 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X restore 168 415 pd adapt;
+#X floatatom 168 449 5 0 0 1 influence - -;
+#X obj 168 356 loadbang;
+#X obj 88 324 bng 15 250 50 0 empty empty load 17 7 0 10 -262144 -1
+-1;
+#N canvas 211 176 325 300 loadfile 0;
+#X obj 44 28 openpanel;
+#X obj 44 47 t a b;
+#X obj 44 90 pack s s;
+#X msg 44 109 read -resize \$1 \$2;
+#X obj 44 128 soundfiler;
+#X obj 71 66 symbol \$0-input;
+#X floatatom 44 186 0 0 0 0 - - -;
+#X obj 44 166 i;
+#X msg 44 206 resize \$1;
+#X obj 44 226 s \$0-hasc;
+#X obj 44 147 / 1024;
+#X obj 44 5 inlet;
+#X obj 113 227 s \$0-weightonset;
+#X obj 243 27 loadbang;
+#X msg 119 27 examples/stink.wav;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 10 0;
+#X connect 5 0 2 1;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 9 0;
+#X connect 8 0 12 0;
+#X connect 10 0 7 0;
+#X connect 11 0 0 0;
+#X connect 13 0 14 0;
+#X connect 14 0 1 0;
+#X restore 88 343 pd loadfile;
+#X obj 43 324 bng 12 250 50 0 empty empty play 15 6 0 10 -262144 -1
+-1;
+#X obj 43 339 t b b;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-weightonset 104 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0;
+#X coords 0 511 104 -1 200 51 1;
+#X restore 287 498 graph;
+#X obj 116 455 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-257985 -1;
+#X text 56 49 The second value is multipled by the value in the second
+inlet (range 0-1) and added to the first value. Then \, the divider
+value (in order to work out the weighted average) is also multiplied
+by this value \, and added to it.;
+#X text 46 8 This object makes a moving average with successively less
+important values. The calculation initiates when the object is banged
+\, and the first value is the most influential.;
+#X msg 65 492 1;
+#X obj 130 493 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 195 548 print data;
+#X text 78 171 When the object is banged the right outlet sends a list
+of all the values that influenced the result since the last bang \,
+up to a limit of 1024 values.;
+#X obj 477 73 weightonset;
+#X text 476 58 V;
+#X text 476 54 |;
+#X text 476 44 |;
+#X text 476 34 |;
+#X text 452 20 floats in;
+#X text 506 58 V;
+#X text 506 54 |;
+#X text 506 44 |;
+#X text 685 338 ^;
+#X text 684 342 |;
+#X text 684 351 |;
+#X text 738 338 ^;
+#X text 737 342 |;
+#X text 737 351 |;
+#X text 801 338 ^;
+#X text 800 342 |;
+#X text 800 351 |;
+#X text 671 377 of successive inputs;
+#X text 475 89 |;
+#X text 475 99 |;
+#X text 475 109 |;
+#X text 475 119 V;
+#X text 452 141 influenced;
+#X text 464 130 onset-;
+#X text 465 153 value;
+#X text 538 89 |;
+#X text 538 99 |;
+#X text 538 109 |;
+#X text 538 119 V;
+#X text 531 132 data dump;
+#X text 537 143 on bang;
+#X msg 49 402 5;
+#X text 212 459 factor;
+#X text 202 435 successive;
+#X text 64 101 The influence of successive values is lessened by the
+inverse of the factor on the right inlet. So \, a value of 0.2 in the
+second inlet means that the second value after the bang is 20% as influential
+as the first \, and the third value is 20% of 20% (4%) as influential
+as the first.;
+#X floatatom 195 485 5 0 10 1 attack - -;
+#X text 509 200 influence factor = 0 : 1st float output only;
+#X text 510 188 attack length = 0 \,;
+#X text 535 166 EXAMPLES:;
+#X text 520 226 attack length = 0 \,;
+#X text 519 238 influence factor = 1: successive values are;
+#X text 232 495 phase;
+#X text 232 509 0-100;
+#X text 508 252 equally influential to the total \, but the list;
+#X text 492 31 successive influence factor (0-1);
+#X text 538 58 V;
+#X text 538 54 |;
+#X text 514 265 grows longer as the numbers are added. Therefore;
+#X text 506 278 the output responds less and less to input values.
+;
+#X text 513 291 This is an accumulating average between bangs.;
+#X text 511 313 attack length = 0 \,;
+#X text 634 366 (w) = weightings (influence values);
+#X text 509 393 the output is onset-weighted e.g. the most influential
+values are at the start of the series.;
+#X text 699 462 ^;
+#X text 698 466 |;
+#X text 698 475 |;
+#X text 769 462 ^;
+#X text 768 466 |;
+#X text 768 475 |;
+#X text 832 462 ^;
+#X text 831 466 |;
+#X text 831 475 |;
+#X text 680 501 of successive inputs;
+#X text 656 490 (w) = weightings (influence values);
+#X text 517 437 attack length = 3 \,;
+#X text 509 327 influence factor = 0.5: v1 w 1 \, v2 w 0.5 \, v3 w
+0.25 \, v4 w 0.125;
+#X text 86 210 If the attack phase is greater than 0 \, the values
+become successively more influential to the weighted average \, until
+the number of values is equal to the attack+1. The next value after
+the attack phase is the most influential \, then the influence factor
+kicks in and successive values become less influential.;
+#X text 557 71 creation args: influence factor \, attack;
+#X obj 96 515 weightonset 0.8 0;
+#X obj 10 401 dac~;
+#X msg 168 376 80;
+#X text 513 451 influence factor = 0.5: v1 w 0.125 \, v2 w 0.25 \,
+v3 w 0.5 \, v4 w 1 \, v5 w 0.5 \, v6 w 0.25...;
+#X text 525 43 attack phase (0-100+);
+#X obj 664 183 weightonset 0 0;
+#X obj 666 222 weightonset 1 0;
+#X obj 674 312 weightonset 0.5 0;
+#X obj 676 434 weightonset 0.5 3;
+#X text 509 517 the output is onset-weighted e.g. the most influential
+values are at the start of the series \, after the attack phase in
+which the values become successively more influential.;
+#X text 99 289 The weightings of values during the attack phase is
+the reverse of successive weightings after the attack:;
+#X text 226 314 weighting = influence pow(attack - index);
+#N canvas 343 202 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 KEYWORDS control;
+#X text 12 175 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 75 INLET_0 float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 135 OUTLET_0 float;
+#X text 12 155 OUTLET_1 list;
+#X text 12 45 DESCRIPTION makes a moving average with successively
+less important values;
+#X restore 841 597 pd META;
+#X connect 0 0 12 0;
+#X connect 0 0 98 0;
+#X connect 1 0 3 0;
+#X connect 3 0 22 0;
+#X connect 3 0 98 0;
+#X connect 3 1 4 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 1;
+#X connect 5 0 12 1;
+#X connect 6 0 14 0;
+#X connect 8 0 0 0;
+#X connect 8 0 1 0;
+#X connect 8 0 99 0;
+#X connect 8 0 99 1;
+#X connect 9 0 11 0;
+#X connect 10 0 0 1;
+#X connect 11 0 10 0;
+#X connect 14 0 15 0;
+#X connect 14 0 98 1;
+#X connect 16 0 100 0;
+#X connect 16 0 61 0;
+#X connect 17 0 18 0;
+#X connect 19 0 20 0;
+#X connect 20 0 8 0;
+#X connect 20 1 12 2;
+#X connect 25 0 98 0;
+#X connect 26 0 98 0;
+#X connect 61 0 9 0;
+#X connect 65 0 98 2;
+#X connect 98 0 5 0;
+#X connect 98 1 27 0;
+#X connect 100 0 6 0;

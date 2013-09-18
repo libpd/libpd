@@ -1,0 +1,52 @@
+#N canvas 1 53 676 322 10;
+#X obj 66 28 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 199 28 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 332 28 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 465 28 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 62 248 hsl 527 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X msg 331 138 2;
+#X msg 392 137 6;
+#X msg 361 137 4;
+#X floatatom 74 50 5 0 0 0 - - -;
+#X floatatom 210 50 5 0 0 0 - - -;
+#X floatatom 339 49 5 0 0 0 - - -;
+#X floatatom 472 50 5 0 0 0 - - -;
+#X floatatom 46 271 5 0 0 0 - - -;
+#X obj 242 166 desegment 4;
+#X msg 56 76 0 \$1;
+#X msg 190 71 1 \$1;
+#X msg 331 70 2 \$1;
+#X msg 462 69 3 \$1;
+#N canvas 467 227 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 105 OUTLET_0 float;
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 65 INLET_0 list;
+#X text 12 85 INLET_1 float;
+#X restore 622 295 pd META;
+#X connect 0 0 8 0;
+#X connect 0 0 14 0;
+#X connect 1 0 9 0;
+#X connect 1 0 15 0;
+#X connect 2 0 10 0;
+#X connect 2 0 16 0;
+#X connect 3 0 11 0;
+#X connect 3 0 17 0;
+#X connect 4 0 12 0;
+#X connect 5 0 13 1;
+#X connect 6 0 13 1;
+#X connect 7 0 13 1;
+#X connect 13 0 4 0;
+#X connect 14 0 13 0;
+#X connect 15 0 13 0;
+#X connect 16 0 13 0;
+#X connect 17 0 13 0;

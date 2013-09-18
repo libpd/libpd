@@ -1,0 +1,22 @@
+#N canvas 1 53 394 367 10;
+#X floatatom 33 119 5 -1 1 0 - - -;
+#X floatatom 34 280 9 0 0 0 - - -;
+#X obj 34 144 curve_draw test 100;
+#X text 125 15 draw the in / out relation;
+#X text 31 51 arg 1 : name of the file to save the curve;
+#X text 31 64 arg 2 : size of the table;
+#X text 85 125 input (0 to 1);
+#X text 107 277 out (0 to 1);
+#X text 50 320 The mapping curve is symetric. i.e f(-x)=-f(x);
+#N canvas 465 169 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction GUI;
+#X text 12 45 DESCRIPTION draw the in / out relation;
+#X restore 355 338 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

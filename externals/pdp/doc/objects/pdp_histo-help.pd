@@ -1,0 +1,36 @@
+#N canvas 594 324 616 432 10;
+#X msg 87 208 size \$1;
+#X floatatom 87 184 5 0 0;
+#N canvas 0 0 450 300 graph2 0;
+#X array array1 64 float 0;
+#X coords 0 1 63 -1 200 140 1;
+#X restore 390 32 graph;
+#X obj 127 47 pdp_help_input;
+#X obj 127 113 pdp_help_output;
+#X obj 127 77 pdp_gain;
+#X floatatom 251 50 5 0 0;
+#X obj 127 23 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X msg 86 271 array array1;
+#X floatatom 155 183 5 0 0;
+#X msg 155 207 scale \$1;
+#X text 37 355 the size is rounded to the next power of 2;
+#X text 36 373 first argument is size \, second is optional scaling
+factor.;
+#X text 37 338 create a histogram from an image and send to a table
+;
+#X floatatom 229 183 5 0 0;
+#X msg 229 207 samplesize \$1;
+#X obj 19 299 pdp_histo array1 64 10;
+#X connect 0 0 16 0;
+#X connect 1 0 0 0;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
+#X connect 5 0 16 0;
+#X connect 6 0 5 1;
+#X connect 7 0 3 0;
+#X connect 8 0 16 0;
+#X connect 9 0 10 0;
+#X connect 10 0 16 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;

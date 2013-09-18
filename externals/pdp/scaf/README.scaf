@@ -1,0 +1,98 @@
+SCAF - simple cellular automaton forth
+
+scaf is a virtual machine / forth environment for binary arithmic 
+tailored to 2D 1 cell neighbourhood cellular automata.
+
+scaf is a compiled language. programs run inside a "feeder"
+(sort of operating system if you want) 
+
+the feeder is responsable for loading/storing CA cells
+from/to memory. data in memory is organized as a scanline
+encoded toroidial bitplane (lsb = left). to simplify the feeder
+and the stack machine, the top left corner of the rectangular grid 
+of pixels will shift down every processing step. this enables
+to keep a cell neighbourhood in a couple of registers.
+
+the stack machine has the following architecture:
+CA stack:		(%esi), TOS: %mm0 (32x2 cells. lsb = top left)
+CA horizon:		(%edi) (64x4 cells. (%edi) = top row. lsb = left)
+
+scratch register:	%mm1, %mm2
+bitmask register:	%mm3 = 0xffffffffffffffff
+
+4 bit counter:		%mm4-%mm7
+
+the stack size / organization is not known to the stack machine. 
+it can be thought of as operating on a 3x3 cell neightbourhood.
+the only purpose of the forth program is to determine the CA local update rule.
+
+the machine is supposed to be very minimal. no looping control.
+no adressing modes. no conditional code. so recursion is not allowed 
+(no way to stop it) there are 9 words to load the cell neigbourhood 
+on the stack. the rest is just logic and stack manips.
+
+the counter can be used for counting neighbourhood cells, like in the
+game of life. the zero test and sign bit can be used for comparisons.
+there are kernel words for loading constants into the counter register,
+and for communication between stack and register.
+
+the horizon is limited to 3x3, however it can be easily extended to
+32x3. extending it further than that would require a redesign of the
+forth + feeder.
+
+
+HOW TO CREATE NEW CA RULES
+
+edit scaf/modules/carules.scaf or create your own source lib and add
+the name to the scaf/modules/Makefile. type make in scaf/modules
+to compile. if you get error messages from the assembler saying things
+like 
+
+	Error: no such instruction: `xxx' 
+
+ or  
+	Error: invalid character '_' in mnemonic
+
+this means there are undefined words in your source file. since not
+all characters are allowed in an asm file, the offending characters are 
+converted to _SOMETHINGELSE_ 
+
+if you are stuck somewhere, just look at the output of scaf.pl on 
+your .scaf file to determine where the problem is.
+
+words that can be accessed from inside pdp_ca have to start with the
+prefix rule_ and have to leave a single item on the data stack (the return
+value) other rules can have all the stack effect you want, but for safety
+reasons they can't be accessed from within pdp_ca.
+
+
+
+FORTH SYSTEM CODE
+	
+the forth system is made up of the following files:
+
+kernel.scaf:	a collection of forth kernel words
+scafmacro.s:	a set of asm macro definitions used in kernel.scaf
+optim.rules:	some substitution rules to eliminate redundant
+		stack manipulations
+
+scaf.pl:	the compiler
+
+scaf.pl is run like this:
+
+scaf.pl -Isystemdir source.scaf
+
+if the -I switch is left out, the current directory is searched
+for the system files. the compiler produces an assembler source
+that includes scafmacro.s on standard output.
+
+the code it produces is relatively fast. it only uses and/or/xor
+and shift mmx instructions. it's not optimal use of silicon but
+it's pretty fast given what's possible. the feeder routine could
+be improved though.
+
+porting to another platform would require a rewrite of scafmacro.s
+the rest can be reused. if the target machine has 64 bit registers
+(or if you can emulate this one using more registers) porting is 
+relatively easy. for larger registers a small change needs to
+be made to the feeder routine in pdp_ca.c

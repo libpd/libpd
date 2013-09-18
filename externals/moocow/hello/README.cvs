@@ -1,0 +1,13 @@
+To build from cvs, do the following:
+
+ ./autogen.sh
+ ./configure
+ make
+ make install
+
+NOTE:  The README.txt file in the distribution
+is auto-generated from perl ".pod" format by
+the "pod2text" included in most perl distributions.
+
+marmosets,
+	Bryan

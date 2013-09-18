@@ -1,0 +1,18 @@
+#N canvas 0 26 381 197 10;
+#X text 49 5 complex subtraction;
+#N canvas 162 93 494 386 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION complex subtraction;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 INLET_3 signal;
+#X text 12 145 OUTLET_0 signal;
+#X text 12 165 OUTLET_1 signal;
+#X text 12 5 KEYWORDS signal abstraction needs_work (example patch)
+;
+#X text 12 185 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 331 175 pd META;
+#X obj 54 96 csub~;

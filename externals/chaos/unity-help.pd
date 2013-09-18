@@ -1,0 +1,35 @@
+#N canvas 426 137 573 476 10;
+#X obj 44 115 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 95 116 5 0 0 0 - - -;
+#X floatatom 132 393 10 0 0 0 Y - -;
+#X floatatom 44 393 10 0 0 0 X - -;
+#X text 18 49 (This attractor is not continuous);
+#X obj 44 132 metro 50;
+#X obj 19 131 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 242 104 examples/readme-fractals;
+#X msg 87 245 search;
+#X text 138 246 Find a random attractor set;
+#X msg 98 266 show;
+#X obj 44 316 unity 0 0 -0.0239362 -0.67834 2.50703 -0.0138538 -1.44072
+2.47917;
+#X msg 78 195 param -0.0239362 -0.67834 2.50703 -0.0138538 -1.44072
+2.47917;
+#X text 20 18 Unity Attractor;
+#X text 18 33 Chaos PD Externals - Copyright Michael McGonagle \, 2003
+;
+#X obj 278 367 search-tools;
+#X connect 0 0 5 0;
+#X connect 1 0 5 1;
+#X connect 5 0 11 0;
+#X connect 6 0 11 0;
+#X connect 8 0 11 0;
+#X connect 10 0 11 0;
+#X connect 11 0 3 0;
+#X connect 11 1 2 0;
+#X connect 11 2 15 0;
+#X connect 11 3 15 1;
+#X connect 11 4 15 2;
+#X connect 12 0 11 0;
+#X connect 15 0 11 0;

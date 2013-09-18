@@ -1,0 +1,28 @@
+#N canvas 0 26 452 302 12;
+#X obj 100 154 edge;
+#X obj 100 215 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 127 186 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 156 186 falling edge detected;
+#X text 128 216 rising edge detected;
+#X text 31 16 edge :: detect rising or falling edge in floats;
+#X floatatom 126 111 5 0 0 0 - - -;
+#X obj 100 79 tgl 20 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 94 35 written by <olaf.matthes@gmx.de>;
+#N canvas 293 158 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control analysis;
+#X text 12 45 DESCRIPTION detect rising or falling edge in floats;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 bang;
+#X text 12 105 OUTLET_1 bang;
+#X restore 385 273 pd META;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;

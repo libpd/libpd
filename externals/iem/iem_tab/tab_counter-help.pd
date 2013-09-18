@@ -1,0 +1,78 @@
+#N canvas 115 92 872 576 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array src 100 float 1;
+#A 0 0 0 0 0 0 0 0 0 0 0.9 0 0 0 0 0 0 0 0 0 0.9 0 0 0 0 0 0 0 0 0
+0.9 0 0 0 0 0 0 0 0 0 0.9 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0;
+#X coords 0 1 99 0 200 140 1;
+#X restore 544 234 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array dst 100 float 0;
+#X coords 0 10 99 0 200 140 1;
+#X restore 544 413 graph;
+#X obj 53 146 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 55 398 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 219 367 1.arg: <symbol> source-name;
+#X msg 146 317 dst dst;
+#X msg 101 296 src src;
+#X text 219 380 2.arg: <symbol> destination-name;
+#X obj 55 359 tab_gt_scalar src dst;
+#X obj 53 121 tab_counter src dst;
+#X msg 82 93 reset;
+#X obj 53 33 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 55 273 0 0 100;
+#N canvas 0 22 462 312 (subpatch) 0;
+#X msg 175 59 \; src const 0;
+#X msg 88 57 \; src \$1 0.9;
+#X floatatom 89 30 5 0 0 0 - - -;
+#X msg 88 127 \; dst ylabel -5.15 0 1 2 3 4 5 6 7 8 9 10;
+#X msg 87 93 \; dst yticks 0 1 1;
+#X obj 22 64 loadbang;
+#X connect 2 0 1 0;
+#X connect 5 0 4 0;
+#X connect 5 0 3 0;
+#X restore 496 285 pd;
+#X text 37 222 list of 3 floats:;
+#X text 78 455 IEM KUG;
+#X text 57 443 musil;
+#X text 92 443 @;
+#X text 100 443 iem.at;
+#X text 61 465 Graz \, Austria;
+#X text 49 233 1.) src onset;
+#X text 49 243 2.) dst onset;
+#X text 252 354 initial arguments:;
+#X text 64 379 <bang> output;
+#X text 158 296 <src> xxx : change source name;
+#X text 199 318 <dst> xxx : change destination name;
+#X text 135 162 the minimum of both array lengths);
+#X text 12 3 tab_counter;
+#X msg 549 36 \; src 9 0.9 \; src 19 0.9 \; src 29 0.9 \; src 39 0.9
+;
+#X text 77 27 <bang> each element of the source array controls an increment
+counter in the destination array \, a nonzero value lets increment
+the counter value by one \, a zero value resets the counter value to
+zero.;
+#X text 124 93 <reset> resets all counter values to zero;
+#X text 122 148 (the number of samples which control counters are:
+;
+#X text 49 253 3.) n samples to control n counters;
+#X text 13 432 (c) Thomas Musil 2000 - 2009;
+#X msg 684 37 \; src 9 -0.1 \; src 19 0 \; src 29 0 \; src 39 0.9;
+#X msg 686 133 \; src 9 0 \; src 19 0 \; src 29 0 \; src 39 0;
+#X msg 545 132 \; src 9 0 \; src 19 0.9 \; src 29 -0.1 \; src 39 0
+;
+#X text 536 15 4 indices incr.;
+#X text 677 14 2 indices incr.;
+#X text 537 112 2 indices incr.;
+#X text 695 114 reset;
+#X connect 5 0 8 0;
+#X connect 6 0 8 0;
+#X connect 8 0 3 0;
+#X connect 9 0 2 0;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;
+#X connect 12 0 8 0;

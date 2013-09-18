@@ -1,0 +1,13 @@
+#N canvas 166 104 310 436 10;
+#X obj 122 68 inlet bang;
+#X obj 122 385 outlet 1==OK;
+#X obj 122 347 b;
+#X msg 122 366 1;
+#X msg 122 122 matrix 1 1 1;
+#X obj 122 161 mtx_max;
+#X text 67 37 test for existance of [mtx_max];
+#X connect 0 0 4 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;

@@ -1,0 +1,31 @@
+#N canvas 252 599 522 314 10;
+#N canvas 456 153 494 344 META 0;
+#X text 12 125 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42. \, helppatch by IOhannes m zmölnig;
+#X text 12 5 KEYWORDS control vector;
+#X text 12 65 INLET_0 list;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 list;
+#X text 11 45 DESCRIPTION append a single value to a vector;
+#X restore 388 269 pd META;
+#X msg 64 86 1 2 3;
+#X msg 175 86 7;
+#X obj 64 116 vectorpack 10;
+#X text 27 25 MarkEx vector operation: create a new vector by appending
+a float to vector;
+#X obj 64 146 print vectorpack;
+#X text 49 183 a more versatile approach is to use the [list append]
+object:;
+#X msg 64 216 1 2 3;
+#X msg 175 216 7;
+#X obj 64 246 list append 10;
+#X obj 64 276 print listappend;
+#X text 212 139 a "vector" is simply a list of numbers.;
+#X connect 1 0 3 0;
+#X connect 2 0 3 1;
+#X connect 3 0 5 0;
+#X connect 7 0 9 0;
+#X connect 8 0 9 1;
+#X connect 9 0 10 0;

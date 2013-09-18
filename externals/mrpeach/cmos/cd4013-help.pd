@@ -1,0 +1,43 @@
+#N canvas 581 224 651 219 12;
+#X obj 79 38 tgl 15 0 empty empty CLK 17 7 0 10 -24198 -62784 -1 0
+1;
+#X obj 98 53 tgl 15 0 empty empty SET 17 7 0 10 -24198 -62784 -1 0
+1;
+#X obj 118 68 tgl 15 0 empty empty RESET 17 7 0 10 -24198 -62784 -1
+0 1;
+#X obj 138 83 tgl 15 0 empty empty D 17 7 0 10 -24198 -62784 -1 0 1
+;
+#X obj 138 172 tgl 15 0 empty empty /Q 17 7 0 10 -143491 -241291 -1
+0 1;
+#X obj 79 172 tgl 15 0 empty empty Q 17 7 0 10 -143491 -241291 -1 1
+1;
+#X obj 6 67 tgl 15 0 empty empty empty 17 7 0 10 -44926 -90881 -1 0
+1;
+#X text 27 5 cd4013 emulates one half of the CMOS logic D flipflop.
+;
+#X obj 79 146 cd4013 v;
+#X text 172 80 D is clocked to the output on rising edge of a clock.
+;
+#X text 133 35 A 0-1 transition or a bang clocks D to the outlets.
+;
+#X text 147 50 Sets Q=1. Overrides Reset and Clock.;
+#X text 183 65 Sets Q=0. Overrides Clock.;
+#X obj 170 145 spigot;
+#X obj 213 123 tgl 15 0 empty empty feedback 17 7 0 10 -44926 -1109
+-1 1 1;
+#X obj 42 115 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -241291
+-1;
+#X obj 6 89 metro 500;
+#X text 272 172 20070308_Martin_Peach;
+#X connect 0 0 8 0;
+#X connect 1 0 8 1;
+#X connect 2 0 8 2;
+#X connect 3 0 8 3;
+#X connect 4 0 13 0;
+#X connect 6 0 16 0;
+#X connect 8 0 5 0;
+#X connect 8 1 4 0;
+#X connect 13 0 3 0;
+#X connect 14 0 13 1;
+#X connect 15 0 8 0;
+#X connect 16 0 15 0;

@@ -1,0 +1,46 @@
+#N canvas 366 49 604 572 10;
+#X text 347 392 updated for;
+#X obj 435 392 iemmatrix 0.2;
+#X obj 484 418 matrix;
+#X text 354 417 see also help for;
+#X text 243 142 singular;
+#X text 245 107 regular;
+#X text 246 158 regular;
+#X text 247 168 but badly conditioned;
+#X text 45 16 mtx_inverse:: get the inverse of a matrix;
+#X text 44 49 mtx_inverse calculates the inverse of a square-matrix
+;
+#X text 43 67 if the input is a non-square matrix (rows!=cols) \, the
+pseudo-inverse will be calculated.;
+#X text 154 453 A*inv(A)=inv(A)*A=I;
+#X text 248 221 pseudoinverse: P1=inv(A'*A)*A';
+#X text 247 269 pseudoinverse: P2=A'*inv(A*A');
+#X text 245 473 P1*A=I;
+#X text 245 493 A*P2=I;
+#X obj 92 358 mtx_inverse;
+#X obj 92 199 mtx 3;
+#X msg 112 164 1 2 3 2 4 4 3 4 5;
+#X msg 103 140 1 2 3 2 3 4 3 4 5;
+#X msg 92 108 1 2 4 2 3 4 3 4 5;
+#X obj 92 392 mtx_print inverse;
+#X obj 92 300 t a a;
+#X obj 134 300 mtx_print original;
+#X obj 153 219 mtx_rand 4 3;
+#X msg 153 198 bang;
+#X msg 153 248 bang;
+#X obj 153 269 mtx_rand 3 4;
+#X obj 181 358 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 199 359 instability detected!;
+#X connect 16 0 21 0;
+#X connect 16 1 28 0;
+#X connect 17 0 22 0;
+#X connect 18 0 17 0;
+#X connect 19 0 17 0;
+#X connect 20 0 17 0;
+#X connect 22 0 16 0;
+#X connect 22 1 23 0;
+#X connect 24 0 22 0;
+#X connect 25 0 24 0;
+#X connect 26 0 27 0;
+#X connect 27 0 22 0;

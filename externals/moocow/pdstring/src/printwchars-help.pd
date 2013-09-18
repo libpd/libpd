@@ -1,0 +1,31 @@
+#N canvas 0 26 450 333 10;
+#X text 141 266 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 17 231 SEE ALSO:;
+#X obj 86 230 pdstring;
+#X obj 150 230 locale;
+#X text 153 45 "ABC";
+#X text 193 173 First argument is prefixed to output;
+#X msg 44 44 list 65 66 67;
+#X msg 54 64 foo 49 50 51;
+#X text 153 65 "123" \, selector "foo" is printed extra;
+#X msg 67 87 228 246 252;
+#X text 159 115 "&pi &delta" in UTF-8;
+#X text 35 7 printwchars - print wide character strings to pd console
+;
+#X text 157 89 "&auml &ouml &uuml";
+#X msg 71 115 960 948;
+#N canvas 260 141 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION print wide character strings to pd console
+;
+#X restore 391 305 pd META;
+#X obj 44 172 printwchars mywchars;
+#X connect 6 0 15 0;
+#X connect 7 0 15 0;
+#X connect 9 0 15 0;
+#X connect 13 0 15 0;

@@ -1,0 +1,24 @@
+#N canvas 0 31 482 379 10;
+#X text 17 352 (c) Antoine Rousseau 2004;
+#X obj 33 108 absolutepath;
+#X symbolatom 33 131 0 0 0 0 - - -;
+#X obj 33 220 relativepath;
+#X symbolatom 33 245 0 0 0 0 - - -;
+#X text 14 6 absolutepath / relativepath : use filenames relatively
+to the patch's path.;
+#N canvas 380 146 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control patchfile_op;
+#X text 12 45 DESCRIPTION use filenames relatively to the patch's path
+;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 105 AUTHOR Antoine Rousseau;
+#X text 12 125 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X restore 421 350 pd META;
+#X msg 33 51 symbol absolutepath-help.pd;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 7 0 1 0;

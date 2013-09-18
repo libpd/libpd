@@ -1,0 +1,26 @@
+#N canvas 0 26 487 308 12;
+#X obj 70 95 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 70 192 5 0 0 0 - - -;
+#X floatatom 123 91 5 0 0 0 - - -;
+#X obj 70 140 gauss 1 0;
+#X floatatom 177 113 5 0 0 0 - - -;
+#X text 39 21 gauss :: Gauss distributed random numbers;
+#X text 176 92 sigma - standard deviation;
+#X text 230 114 mu - mean;
+#N canvas 288 227 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 125 OUTLET_0 float;
+#X text 12 45 DESCRIPTION Gauss distributed random numbers;
+#X text 12 5 KEYWORDS control random;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X restore 425 278 pd META;
+#X connect 0 0 3 0;
+#X connect 2 0 3 1;
+#X connect 3 0 1 0;
+#X connect 4 0 3 2;

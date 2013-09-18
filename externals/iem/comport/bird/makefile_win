@@ -1,0 +1,37 @@
+
+all: bird.dll
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio\Vc98"
+
+PD_INST_PATH = "C:\Programme\pd"
+
+PD_WIN_INCLUDE_PATH = /I. /I$(PD_INST_PATH)\src /I$(VIS_CPP_PATH)\include
+
+PD_WIN_C_FLAGS = /nologo /W3 /WX /DMSW /DNT /DPD /DWIN32 /DWINDOWS /Ox -DPA_LITTLE_ENDIAN
+
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = /NODEFAULTLIB:libc /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel /NODEFAULTLIB:uuid \
+	$(VIS_CPP_PATH)\lib\libc.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_CPP_PATH)\lib\kernel32.lib \
+	$(VIS_CPP_PATH)\lib\wsock32.lib \
+	$(VIS_CPP_PATH)\lib\winmm.lib \
+	$(PD_INST_PATH)\bin\pthreadVC.lib \
+	$(PD_INST_PATH)\bin\pd.lib
+
+
+SRC =	bird.c
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	cl $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+bird.dll: $(OBJ)
+	link $(PD_WIN_L_FLAGS) /dll /export:bird_setup \
+	/out:bird.dll $(OBJ) $(PD_WIN_LIB)
+
+clean:
+	del *.obj

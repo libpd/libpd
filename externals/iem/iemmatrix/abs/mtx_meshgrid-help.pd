@@ -1,0 +1,23 @@
+#N canvas 439 163 841 379 10;
+#X text 482 28 part of iemmatrix;
+#X obj 65 227 mtx_print x;
+#X obj 150 227 mtx_print y;
+#X obj 28 207 t a a;
+#X msg 28 186 matrix 1 3 -1 -2 -3;
+#X msg 150 207 matrix 1 3 0.1 0.2 0.3;
+#X obj 28 287 mtx_print X;
+#X obj 112 287 mtx_print Y;
+#X obj 28 260 mtx_meshgrid;
+#X text 43 34 [mtx_meshgrid];
+#X text 166 69 creates an [X \, Y] grid on the ticks given by the x
+and y vector;
+#X text 268 138 inlet1 \, 2: row vectors x \, y;
+#X text 268 157 outlet: matrices X \, Y containing all (x \, y) value-pairs
+;
+#X connect 3 0 8 0;
+#X connect 3 1 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X connect 5 0 8 1;
+#X connect 8 0 6 0;
+#X connect 8 1 7 0;

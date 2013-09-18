@@ -1,0 +1,62 @@
+#N canvas 22 55 880 584 10;
+#N canvas 0 0 450 300 graph1 0;
+#X array src 100 float 1;
+#A 0 -0.5 -0.5 -0.5 -0.5 -0.5 -0.5 -0.5 -0.5 -0.5 -0.485714 -0.457143
+-0.4 -0.285713 -0.0571409 0.157146 0.328575 0.442861 0.557148 0.628577
+0.714292 0.800006 0.85715 0.885721 0.885721 0.871435 0.842864 0.757149
+0.557148 0.41429 0.257146 -0.0142835 -0.314285 -0.528572 -0.714287
+-0.757145 -0.757145 -0.757145 -0.742859 -0.742859 -0.728573 -0.714287
+-0.685715 -0.657144 -0.585715 -0.528572 -0.4 -0.242856 -0.0428551 0.157146
+0.342861 0.51429 0.728577 0.800006 0.828578 0.828578 0.828578 0.828578
+0.800006 0.771435 0.714292 0.571433 0.41429 0.242861 0.0857169 -0.0571409
+-0.242856 -0.385714 -0.542858 -0.685716 -0.757145 -0.800002 -0.828574
+-0.828574 -0.814288 -0.800002 -0.785716 -0.757145 -0.728573 -0.67143
+-0.585715 -0.471429 -0.271428 -0.0857125 0.114288 0.228575 0.314289
+0.385718 0.414285 0.428571 0.457143 0.471428 0.485714 0.485714 0.5
+0.5 0.5 0.5 0.5 0.5 0.5;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 527 116 graph;
+#N canvas 0 0 450 300 graph1 0;
+#X array dst 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 527 325 graph;
+#X obj 61 106 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 59 370 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 178 272 dst dst;
+#X msg 129 249 src src;
+#X msg 47 36 0.5;
+#X msg 82 37 -0.5;
+#X text 201 332 1.arg: <symbol> source-name;
+#X text 201 345 2.arg: <symbol> destination-name;
+#X text 31 163 list of 4 floats:;
+#X text 78 475 IEM KUG;
+#X text 62 463 musil;
+#X text 92 463 @;
+#X text 98 463 iem.at;
+#X text 61 485 Graz \, Austria;
+#X text 13 452 (c) Thomas Musil 2000 - 2006;
+#X text 224 318 initial arguments:;
+#X text 75 351 <bang> output;
+#X text 229 272 <dst> xxx : change destination name;
+#X text 218 86 the minimum of both array lengths);
+#X text 182 248 <src> xxx : change source name;
+#X text 42 179 1.) src onset;
+#X text 42 190 2.) dst onset;
+#X text 42 200 3.) n samples to compare;
+#X text 42 210 4.) compared scalar value;
+#X text 12 3 tab_ne_scalar;
+#X text 129 29 <float> compare "not equal to" the src-array with this
+scalar to dst-array;
+#X obj 61 78 tab_ne_scalar src dst;
+#X text 205 72 (the number of samples which were compared are:;
+#X msg 48 228 0 0 100 0.5;
+#X obj 59 331 tab_ne_scalar src dst;
+#X connect 4 0 31 0;
+#X connect 5 0 31 0;
+#X connect 6 0 28 0;
+#X connect 7 0 28 0;
+#X connect 28 0 2 0;
+#X connect 30 0 31 0;
+#X connect 31 0 3 0;

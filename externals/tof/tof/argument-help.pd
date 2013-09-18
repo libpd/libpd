@@ -1,0 +1,67 @@
+#N canvas 1 53 922 529 10;
+#X obj 496 461 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj -11 19 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text -3 68 author: mrtoftrash@gmail.com;
+#X text -5 89 version: 2009-04-14 (initial release);
+#X obj 422 131 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 419 220 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 419 271 print;
+#X obj 422 179 print;
+#X obj 422 303 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 422 351 print;
+#X text 618 484 <- open it;
+#X obj 422 154 tof/argument 1;
+#X obj 419 244 tof/argument 1 32;
+#X obj 422 325 tof/argument;
+#X text 5 176 [argument n default];
+#X text -4 17 description: Outputs the patch's creation arguments individually.
+;
+#X text 516 147 This help patch is a file and therefore has no creation
+arguments. The [argument] to the left has no default value \, so nothing
+will be outputed.;
+#X text 514 323 With no arguments \, [argument] outputs the patch's
+\$0 as symbol.;
+#X text 427 407 Inside the following abstraction \, three [argument]
+objects output the creation arguments. Look inside for an explenation
+of the printed output.;
+#X text 517 460 <- bang to print;
+#X text 534 237 As stated before \, this help patch is a file and has
+no creation arguments. But the [argument] to the left has a default
+value and will output it.;
+#X text 6 199 argument 1: patch's creation argument to output.;
+#X text 5 216 argument 2: default value to output if the patch's creation
+argument is not set or if the wrong type.;
+#X text 4 253 inlet 1 bang: outputs the n-th patch creation argument
+or the default value if there is no n-th creation argument.;
+#X text 5 289 outlet 1 anything: outputs the n-th patch creation argument
+or the default value if there is no n-th creation argument.;
+#X text 1 331 If the patch's n-th creation argument is not of the same
+type as the default value \, the default value will be outputed instead.
+;
+#X text -4 46 tags: initialization patch;
+#X text 1 126 see also:;
+#X obj 73 129 tof/arguments;
+#X obj 496 485 ./test-argument a b;
+#N canvas 450 281 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 75 INLET_0 bang;
+#X text 12 95 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control abstraction abstraction_op;
+#X text 12 45 DESCRIPTION outputs the patch's creation arguments individually.
+;
+#X restore 854 484 pd META;
+#X connect 0 0 29 0;
+#X connect 4 0 11 0;
+#X connect 5 0 12 0;
+#X connect 8 0 13 0;
+#X connect 11 0 7 0;
+#X connect 12 0 6 0;
+#X connect 13 0 9 0;

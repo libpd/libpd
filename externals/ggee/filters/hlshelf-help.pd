@@ -1,0 +1,72 @@
+#N canvas 0 26 789 387 10;
+#X text 7 351 (C) Guenter Geiger 2000;
+#X text 211 298 Attention \, only the left inlet triggers new coefficients
+for biquad~;
+#X text 208 248 The hlshelf object creates filter coefficients for
+the biquad~ filter. The three shelfs of the filter are controlled through
+the gains \, the boundaries of the areas through f-low and f-high;
+#X text 37 12 high-low shelf coefficients for biquad~;
+#X text 31 26 ========================================;
+#X floatatom 488 101 0 0 0 0 - - -;
+#X floatatom 349 101 0 0 0 0 - - -;
+#X obj 349 123 trigger bang float;
+#X obj 45 223 biquad~;
+#X obj 45 163 noise~;
+#X obj 491 81 hsl 128 17 20 20000 1 1 empty empty frequency-low 5 9
+0 10 -203904 -1 -1 4400 0;
+#X obj 352 81 hsl 128 17 0 100 0 1 empty empty gain2 5 9 0 10 -204786
+-1 -1 9100 0;
+#X obj 36 283 dac~;
+#X obj 45 251 *~ 0.1;
+#X obj 129 192 hlshelf 30 50 70 500 5000;
+#X obj 488 123 trigger bang float;
+#X floatatom 628 101 0 0 0 0 - - -;
+#X obj 631 81 hsl 128 17 20 20000 1 1 empty empty frequency-high 5
+9 0 10 -204800 -1 -1 8800 0;
+#X obj 628 123 trigger bang float;
+#X floatatom 209 101 0 0 0 0 - - -;
+#X obj 209 123 trigger bang float;
+#X obj 212 81 hsl 128 17 0 100 0 1 empty empty gain1 5 9 0 10 -204786
+-1 -1 9200 0;
+#X floatatom 69 100 0 0 0 0 - - -;
+#X obj 72 80 hsl 128 17 0 100 0 1 empty empty gain0 5 9 0 10 -204786
+-1 -1 2300 0;
+#X obj 129 140 bang;
+#N canvas 450 258 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 185 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION high-low shelf coefficients for biquad~;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X text 12 145 INLET_4 float;
+#X text 12 165 OUTLET_0 float;
+#X restore 739 366 pd META;
+#X connect 5 0 15 0;
+#X connect 6 0 7 0;
+#X connect 7 0 24 0;
+#X connect 7 1 14 2;
+#X connect 8 0 13 0;
+#X connect 9 0 8 0;
+#X connect 10 0 5 0;
+#X connect 11 0 6 0;
+#X connect 13 0 12 0;
+#X connect 13 0 12 1;
+#X connect 14 0 8 0;
+#X connect 15 0 24 0;
+#X connect 15 1 14 3;
+#X connect 16 0 18 0;
+#X connect 17 0 16 0;
+#X connect 18 0 24 0;
+#X connect 18 1 14 4;
+#X connect 19 0 20 0;
+#X connect 20 0 24 0;
+#X connect 20 1 14 1;
+#X connect 21 0 19 0;
+#X connect 22 0 14 0;
+#X connect 23 0 22 0;
+#X connect 24 0 14 0;

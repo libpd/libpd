@@ -1,0 +1,52 @@
+#N canvas 0 26 585 445 10;
+#X msg 79 243 jkl 555 uuu;
+#X text 13 7 pre_inlet;
+#X obj 66 272 pre_inlet 1 0;
+#X obj 66 348 print first;
+#X obj 195 272 pre_inlet 1 1;
+#X obj 195 348 print second;
+#X obj 320 272 pre_inlet 1 2;
+#X msg 208 243 abc ghj 78;
+#X msg 333 243 zyx 3.17;
+#X obj 320 348 print third;
+#X text 104 48 you can use it for externals with more than one message-inlets
+;
+#X text 117 182 2.arg: <float> number (0 .. 8.0e+06) \, you can interprete
+as;
+#X text 175 195 the inlet-index (inlet-selector-number);
+#X text 112 23 a message of 2 items (symbol + float) will be sent;
+#X msg 485 242 sss 3.17;
+#X obj 472 271 pre_inlet 3 123;
+#X obj 472 347 print xxx;
+#X text 115 125 1.arg: <float> ascii-number (1 .. 255) \, which will
+be;
+#X text 154 140 interpreted as a character \, which will be used as
+a;
+#X text 155 153 selector-symbol for a message (creates a denormal symbol)
+;
+#X text 115 408 IEM KUG;
+#X text 99 396 musil;
+#X text 129 396 @;
+#X text 135 396 iem.at;
+#X text 50 385 (c) Thomas Musil 2000 - 2005;
+#X text 98 418 Graz \, Austria;
+#X text 100 9 before an incoming message will be released to outlet
+\,;
+#N canvas 496 267 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION break point envelope;
+#X text 12 5 KEYWORDS control anything_op;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 OUTLET_0 anything;
+#X restore 531 418 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 6 0 9 0;
+#X connect 7 0 4 0;
+#X connect 8 0 6 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;

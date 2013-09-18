@@ -1,0 +1,108 @@
+#N canvas 0 22 814 758 10;
+#X msg 58 114 <toxine name="fastfood">;
+#X obj 274 400 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 274 417 mode \$1;
+#X msg 72 133 <class name="italian">;
+#X obj 59 363 tosymbol;
+#X msg 120 400 reset;
+#X msg 85 152 <dish name="pizza">;
+#X msg 353 314 <person died = '1954-06-07' born = "1912-06-23">Alan
+Turing</person>;
+#X obj 225 603 prepend set;
+#X msg 225 622 anchovi -56;
+#X obj 225 645 prepend set;
+#X msg 225 663 name margherita;
+#X text 348 414 1: all attribute:value pairs;
+#X text 164 399 reset tag-tree;
+#X floatatom 227 469 8 0 0 0 - - -;
+#X obj 226 545 prepend set;
+#X msg 226 563 toxine class dish pizza item;
+#X text 406 463 0 invalid tag;
+#X text 406 478 1 closed tag;
+#X text 406 493 2 opening tag;
+#X text 406 508 3 closing tag;
+#X text 406 523 4 meta tag;
+#X msg 97 171 <pizza name = "margherita">;
+#X msg 110 223 <item>anchovi \$1</item>;
+#X floatatom 110 208 5 0 0 0 - - -;
+#X msg 115 244 </topping>;
+#X msg 114 263 </pizza>;
+#X msg 114 281 </dish>;
+#X msg 115 299 </class>;
+#X msg 115 318 </toxine>;
+#X text 348 399 0: first attribute:value pair;
+#X text 296 399 mode:;
+#X obj 59 437 detox 1;
+#X text 462 559 -1 when unmatched closing tag;
+#X msg 187 318 </error>;
+#X text 405 545 returns: 0 when tree is empty;
+#X obj 61 598 print tag_type;
+#X obj 61 616 print tag_tree;
+#X obj 61 634 print tag_content;
+#X obj 61 652 print attribute:value;
+#X obj 352 150 openpanel;
+#X obj 351 248 textfile;
+#X obj 364 222 bng 15 250 50 0 empty empty empty 0 -6 0 8 -150892 -1
+-1;
+#X obj 352 133 bng 15 250 50 0 empty empty empty 0 -6 0 8 -166441 -1
+-1;
+#X msg 364 204 rewind;
+#X msg 352 168 read \$1 cr;
+#X text 433 199 go to start of file;
+#X text 433 214 step through file;
+#X obj 351 266 print input_line;
+#X text 375 132 open wellformed xml-file;
+#X msg 110 190 <topping name = "mozarella">;
+#X text 354 298 closed tag w/ multiple attributes;
+#X obj -14 13 cnv 15 780 40 empty empty detox 20 12 0 24 -237236 -66577
+0;
+#X text 85 21 extract values \, contents \, attributes from xml-tag
+structures;
+#X text 85 35 argument (optional): mode 0/1;
+#X text 666 18 jasch 05/2006;
+#X text 624 34 http://www.jasch.ch;
+#X obj 310 465 cnv 15 90 20 empty empty tag_type: 10 10 0 10 -233017
+-66577 0;
+#X obj 312 542 cnv 15 90 20 empty empty tag_tree: 10 10 0 10 -233017
+-66577 0;
+#X obj 312 600 cnv 15 90 20 empty empty tag_content: 10 10 0 10 -233017
+-66577 0;
+#X obj 311 643 cnv 15 200 18 empty empty attribute/value_pairs: 10
+10 0 10 -233017 -66577 0;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 32 0;
+#X connect 3 0 4 0;
+#X connect 4 0 32 0;
+#X connect 5 0 32 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 9 0;
+#X connect 10 0 11 0;
+#X connect 15 0 16 0;
+#X connect 22 0 4 0;
+#X connect 23 0 4 0;
+#X connect 24 0 23 0;
+#X connect 25 0 4 0;
+#X connect 26 0 4 0;
+#X connect 27 0 4 0;
+#X connect 28 0 4 0;
+#X connect 29 0 4 0;
+#X connect 32 0 10 0;
+#X connect 32 0 39 0;
+#X connect 32 1 8 0;
+#X connect 32 1 38 0;
+#X connect 32 2 15 0;
+#X connect 32 2 37 0;
+#X connect 32 3 14 0;
+#X connect 32 3 36 0;
+#X connect 34 0 4 0;
+#X connect 40 0 45 0;
+#X connect 41 0 4 0;
+#X connect 41 0 48 0;
+#X connect 42 0 41 0;
+#X connect 43 0 40 0;
+#X connect 44 0 41 0;
+#X connect 45 0 41 0;
+#X connect 50 0 4 0;

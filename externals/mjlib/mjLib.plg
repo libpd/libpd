@@ -1,0 +1,24 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mjLib - Win32 Debug--------------------
+</h3>
+
+
+Microsoft (R) Program Maintenance Utility   Version 6.00.8168.0
+Copyright (C) Microsoft Corp 1988-1998. All rights reserved.
+
+ cl /c /nologo /W3 /WX /DNT /DPD  /Ox /Zi /DVERSION=\"1\" -I. -I..\src  -I..\Tcl\include -I"C:\Program Files\Microsoft Visual Studio\VC98"\include convolve~.c
+convolve~.c
+ link /nologo /debug /dll /export:mjLib_setup  /out:..\mjLib\mjLib.dll pin~.obj mjLib.obj  metroplus.obj monorythm.obj prob.obj about.obj synapseA~.obj convolve~.obj /NODEFAULTLIB:libc /NODEFAULTLIB:oldnames  /NODEFAULTLIB:kernel  /NODEFAULTLIB:uuid  "C:\Program Files\Microsoft Visual Studio\VC98"\lib\libc.lib "C:\Program Files\Microsoft Visual Studio\VC98"\lib\oldnames.lib "C:\Program Files\Microsoft Visual Studio\VC98"\lib\kernel32.lib  "C:\Program Files\Microsoft Visual Studio\VC98"\lib\wsock32.lib "C:\Program Files\Microsoft Visual Studio\VC98"\lib\winmm.lib  ..\bin\pd.lib
+   Creating library ..\mjLib\mjLib.lib and object ..\mjLib\mjLib.exp
+
+
+
+<h3>Results</h3>
+mjLib.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

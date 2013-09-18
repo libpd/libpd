@@ -1,0 +1,27 @@
+#N canvas 0 22 454 304 10;
+#X obj 27 252 outlet;
+#X msg 149 80 reset;
+#X msg 158 101 show;
+#X msg 167 122 param;
+#X msg 175 143 lyapunov -100 100 1000;
+#X msg 183 164 elyapunov;
+#X msg 192 186 constrain;
+#X msg 198 208 search;
+#X obj 27 23 inlet;
+#N canvas 0 22 454 304 iterator-tools 0;
+#X obj 17 264 outlet;
+#X text 17 19 This abstraction is intended to be used to iterate over
+the parameter space. Repeatedly performs the following:;
+#X text 46 65 1 'param' to set a centerpoint around which to search
+;
+#X text 46 80 2 'constrain <percent>' to limit the search area;
+#X text 46 95 3 'search' to find a fractal within the area;
+#X restore 48 53 pd iterator-tools;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;

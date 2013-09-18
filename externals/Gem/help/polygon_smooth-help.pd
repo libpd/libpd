@@ -1,0 +1,68 @@
+#N canvas 52 21 639 408 10;
+#X text 452 8 GEM object;
+#X obj 8 226 cnv 15 430 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 228 Inlets:;
+#X text 63 241 Inlet 1: gemlist;
+#X text 39 292 Outlets:;
+#X text 57 305 Outlet 1: gemlist;
+#X obj 8 186 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 185 Arguments:;
+#X obj 8 76 cnv 15 430 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 destroy;
+#X text 515 253 Create window:;
+#X text 71 31 Class: manipulation object;
+#X obj 450 107 cnv 15 160 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X floatatom 477 146 2 0 0 0 - - -;
+#X obj 451 167 polygon_smooth;
+#X text 50 12 Synopsis: [polygon_smooth];
+#X text 29 77 Description: turn on/off polygon smoothing;
+#X text 22 91 [polygon_smooth] turns on/off smoothing for polygons
+\, aka antialiasing . You can either turn smoothing on (1) \, off (1)
+or leave it unchanged (-1).;
+#X text 23 138 Note that this might be very CPU-consumptive \, if you
+don't have hw-acceleration.;
+#X text 63 196 <none>;
+#X text 63 255 Inlet 1: float: turn polygon-smoothing on/off/nop.;
+#X obj 477 110 hradio 15 1 1 3 empty empty empty 0 -6 0 8 -262144 -1
+-1 2;
+#X obj 477 127 - 1;
+#X obj 451 233 sphere;
+#X text 20 343 See also:;
+#X text 48 362 FSAA antialiasing message to;
+#X obj 224 362 gemwin;
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 17 0 19 0;
+#X connect 18 0 19 0;
+#X connect 19 0 28 0;
+#X connect 26 0 27 0;
+#X connect 27 0 18 0;

@@ -1,0 +1,15 @@
+#N canvas 0 31 298 274 10;
+#X obj 36 56 inlet;
+#X obj 82 185 outlet;
+#X obj 82 98 bang;
+#X obj 122 56 loadbang;
+#X text 15 17 bang to get the value of pi;
+#X msg 82 120 1;
+#X obj 82 142 atan;
+#X obj 82 164 * 4;
+#X connect 0 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;

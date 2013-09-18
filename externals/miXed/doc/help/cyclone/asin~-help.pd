@@ -1,0 +1,65 @@
+#N canvas 0 26 705 421 10;
+#X text 321 60 select waveform:;
+#X text 336 94 sawtooth;
+#X text 342 113 triangle;
+#X obj 465 222 *~ 0.2;
+#X obj 465 200 /~ 1.5708;
+#X obj 456 96 cycle~ 130;
+#X obj 548 106 -~ 1;
+#X obj 548 84 *~ 2;
+#X obj 548 62 phasor~ 130;
+#X obj 465 269 dac~;
+#X text 499 172 outputs signal from -pi/2 to pi/2;
+#X text 30 366 outputs signal from -pi/2 to pi/2 when input is -1 to
+1;
+#X text 177 397 or create a sawtooth wave using phasor;
+#X obj 18 120 cycle~ 2;
+#X msg 199 147 range -1.5708 1.5708;
+#X obj 150 121 -~ 1;
+#X obj 150 98 *~ 2;
+#X obj 150 76 phasor~ 2;
+#X text 11 50 turn a sine wave into a triangle wave:;
+#X text 15 20 Arc-sine function (asin(x)) for signals;
+#X msg 398 93 0;
+#X msg 398 111 1;
+#X obj 465 131 zexy/multiplex~;
+#X obj 464 164 asin~;
+#X text 28 384 input signal values outside the -1 to 1 range cause
+asin~ to output the value zero;
+#X obj 18 205 Scope~ 130 130 256 3 128 -1.5708 1.5708 0 0 0 0 102 255
+51 135 135 135 0;
+#X obj 169 211 Scope~ 130 130 256 3 128 -1.5708 1.5708 0 0 0 0 102
+255 51 135 135 135 0;
+#X obj 18 145 asin~;
+#X obj 149 145 asin~;
+#N canvas 430 169 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible trigonometry;
+#X text 12 45 DESCRIPTION arcsine function (asin(x)) for signals;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 649 393 pd META;
+#X connect 3 0 9 0;
+#X connect 3 0 9 1;
+#X connect 4 0 3 0;
+#X connect 5 0 22 0;
+#X connect 6 0 22 1;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 13 0 27 0;
+#X connect 14 0 25 0;
+#X connect 14 0 26 0;
+#X connect 15 0 28 0;
+#X connect 16 0 15 0;
+#X connect 17 0 16 0;
+#X connect 20 0 22 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 4 0;
+#X connect 27 0 25 0;
+#X connect 28 0 26 0;

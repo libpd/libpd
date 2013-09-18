@@ -1,0 +1,13 @@
+#N canvas 23 127 436 363 10;
+#X text 38 16 couping 3dp and pdp can be done using 3dp_snap and pdp_convert.
+the correct way to do it is to put 3dp_snap in a rendering chain and
+give it arguments like this: [3dp_snap image/*/* 320 240] if you specify
+the subtype to be image/multi/* \, the packet will not be colour space
+converted: it will stay rgb. if you want to make a snapshot to store
+as a high quality png image \, snap to bitmap/rgb/* and store it in
+pdp_reg to save. to convert an image back to a texture \, use [pdp_convert
+texture/*/*] if you snap to a texture (which is the default) the dimensions
+don't need to be specified. a texture will be allocated that can contain
+the entire screen. this is because texture coordinates are relative
+and data is always interpolated. snapping only works correctly when
+the window is not covered by other windows.;

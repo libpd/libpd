@@ -1,0 +1,81 @@
+#N canvas 561 22 736 727 10;
+#X obj 23 524 pdp_v4l;
+#X text 17 11 this abstraction is used as an input module in most of
+the documentation patches. change it to reflect your preferred input
+object.;
+#X obj 262 234 inlet;
+#X msg 315 324 stop;
+#X obj 258 672 outlet;
+#X obj 262 385 metro;
+#X obj 292 360 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 100 256;
+#X msg 23 287 open /dev/video0;
+#X obj 260 88 loadbang;
+#X obj 199 169 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 315 167 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 171 189 connect here;
+#X text 291 187 connect here;
+#X obj 187 470 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 334 468 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 45 329 v4l device;
+#X text 18 312 change this to your;
+#X obj 260 137 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 262 426 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 520 308 change this to the movie;
+#X text 519 323 you want to use;
+#X msg 520 379 loop 1;
+#X msg 262 325 bang;
+#X text 163 203 for video4linux;
+#X text 294 201 for quicktime;
+#X text 156 497 connect here;
+#X text 148 511 for video4linux;
+#X text 302 497 connect here;
+#X text 305 511 for quicktime;
+#X text 308 377 set framerate here;
+#X obj 262 258 route start stop;
+#X obj 329 292 select 0;
+#X obj 262 292 select 1;
+#X msg 40 357 open /dev/video1;
+#X obj 247 601 pdp_noise;
+#X obj 268 523 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 236 552 connect here;
+#X text 239 566 for noise input;
+#X text 293 137 disconnect for noise input;
+#X obj 492 255 ggee/getdir;
+#X msg 492 288 open \$1/../../doc/media/midr-mjpeg.mov;
+#X obj 492 515 pdp_qt;
+#X connect 0 0 4 0;
+#X connect 2 0 30 0;
+#X connect 3 0 5 0;
+#X connect 5 0 18 0;
+#X connect 6 0 5 1;
+#X connect 7 0 0 0;
+#X connect 8 0 17 0;
+#X connect 9 0 7 0;
+#X connect 10 0 39 0;
+#X connect 13 0 0 0;
+#X connect 14 0 41 0;
+#X connect 17 0 10 0;
+#X connect 18 0 14 0;
+#X connect 21 0 41 0;
+#X connect 22 0 5 0;
+#X connect 30 0 22 0;
+#X connect 30 1 3 0;
+#X connect 30 2 32 0;
+#X connect 31 0 3 0;
+#X connect 32 0 22 0;
+#X connect 32 1 31 0;
+#X connect 33 0 0 0;
+#X connect 34 0 4 0;
+#X connect 35 0 34 0;
+#X connect 39 0 40 0;
+#X connect 40 0 21 0;
+#X connect 40 0 41 0;
+#X connect 41 0 4 0;

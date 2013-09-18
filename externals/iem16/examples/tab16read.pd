@@ -1,0 +1,27 @@
+#N canvas 245 143 703 316 12;
+#X text 62 102 index;
+#X floatatom 25 103 0 0 0 0 - - -;
+#X floatatom 25 199 0 0 0 0 - - -;
+#X text 70 197 output = array99[index];
+#X text 189 157 creation argument;
+#X text 185 175 gives array name;
+#X msg 35 125 set array99;
+#X text 147 125 change array name;
+#X obj 25 165 tab16read array99;
+#X obj 422 131 table16 array99;
+#X obj 17 13 tab16read;
+#X text 412 257 updated for iem16 version1.0;
+#X obj 16 252 tab16write~;
+#X obj 16 271 tab16read4~;
+#X obj 120 271 tab16read;
+#X obj 120 252 tab16write;
+#X obj 217 252 tab16send~;
+#X obj 217 271 tab16receive~;
+#X obj 339 257 table16;
+#X text 108 15 - read numbers from a 16bit-table;
+#X text 21 42 since [table16] can only hold 16bit values \, the output
+of [tab16read] is limited to integer-values between -32768..+32767
+;
+#X connect 1 0 8 0;
+#X connect 6 0 8 0;
+#X connect 8 0 2 0;

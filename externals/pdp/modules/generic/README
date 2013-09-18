@@ -1,0 +1,2 @@
+This directory contains generic packet processors (i.e. containers).
+Should work with any packet type.

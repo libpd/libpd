@@ -1,0 +1,27 @@
+#N canvas 1 53 444 213 10;
+#X text 364 147 j#|@2002;
+#X obj 386 127 SMLib-help;
+#X obj 15 127 print;
+#X floatatom 66 81 5 0 0 0 - - -;
+#X text 78 134 default argument is 1;
+#X text 10 6 vpow computes y(i)=x(i)^a;
+#X text 79 103 a;
+#X text 79 117 a zero becomes one;
+#X obj 15 101 vpow 2;
+#X msg 15 33 0.01 0.5 1 1.5 2 2.5 3 3.5 0;
+#X text 27 56 if (x(i)<=0) then y(i)=-1000;
+#N canvas 187 200 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION compute y(i)=x(i)^a;
+#X text 12 85 INLET_0 float;
+#X text 12 105 OUTLET_0 float list;
+#X restore 386 171 pd META;
+#X connect 3 0 8 1;
+#X connect 8 0 2 0;
+#X connect 9 0 8 0;

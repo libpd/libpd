@@ -1,0 +1,23 @@
+#N canvas 0 26 452 302 12;
+#X obj 38 176 fifo 10;
+#X floatatom 38 231 5 0 0 0 - - -;
+#X floatatom 61 132 5 0 0 0 - - -;
+#X msg 38 98 bang;
+#X text 83 98 hit to get next number;
+#X text 111 176 fifo <size>;
+#X text 92 233 output of fifo;
+#X text 42 14 fifo :: first in first out buffer for floats;
+#X text 105 32 written for Max by St. Rainstick;
+#N canvas 293 158 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION first in first out buffer for floats;
+#X text 12 5 KEYWORDS control storage;
+#X text 12 65 INLET_0 bang float;
+#X restore 385 268 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;

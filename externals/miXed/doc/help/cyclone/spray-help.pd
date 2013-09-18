@@ -1,0 +1,38 @@
+#N canvas 0 26 419 314 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 19 276 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 18 290 ___________________________________________________
+;
+#X obj 19 24 spray 3;
+#X text 87 24 distribute an integer to a numbered outlet;
+#X obj 119 148 spray 3;
+#X floatatom 119 214 5 0 0 0 - - -;
+#X floatatom 141 196 5 0 0 0 - - -;
+#X floatatom 163 175 5 0 0 0 - - -;
+#X msg 76 100 1 2;
+#X msg 119 92 0 1;
+#X msg 139 117 2 3;
+#X text 178 148 arg sets number of outlets;
+#X text 44 71 outletnumber / value pairs:;
+#N canvas 380 180 494 369 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION distribute an integer to a numbered outlet
+;
+#X text 12 65 INLET_0 list;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 368 294 pd META;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 5 2 8 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;

@@ -1,0 +1,21 @@
+#N canvas 0 92 506 250 12;
+#X msg 109 130 disconnect;
+#X obj 145 209 tgl 15 0 empty empty connected 20 7 0 8 -24198 -241291
+-1 0 1;
+#X obj 145 186 tcpsend;
+#X msg 47 68 send 0 1 2 3;
+#X text 14 7 tcpsend sends bytes over a tcp connection.;
+#X text 142 68 send raw data;
+#X text 140 97 'send' prefix is optional;
+#X msg 75 96 99 98 97;
+#X text 181 35 <--first connect;
+#X text 289 173 2007/06/20 Martin Peach;
+#X msg 15 36 connect 127.0.0.1 9997;
+#X obj 364 55 tcpclient;
+#X obj 364 81 tcpreceive;
+#X text 359 32 check also:;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 7 0 2 0;
+#X connect 10 0 2 0;

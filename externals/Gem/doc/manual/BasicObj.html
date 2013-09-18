@@ -1,0 +1,115 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="Author" content="IOhannes m zmölnig">
+   <title>Basic Objects</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Basic Objects</u></h2></center>
+
+<p><br>There are a number of objects which are the foundation for GEM. 
+These objects are used in every patch and control the graphics and rendering.
+<p><a href="#gemwin">[gemwin]</a> - The window manager
+<br><a href="#gemhead">[gemhead]</a> - The start of a rendering chain
+<br><a href="#manips">manips</a> - Move an object in the window
+<br><a href="#geos">geos</a> - Render a shape
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="gemwin"></a>[gemwin]</h3>
+The graphics window is created and destroyed with the <i>[gemwin]</i> object. 
+With the <i>[gemwin]</i> object, you can set the default size of the graphics
+window, create and destroy the graphics window, turn on and off rendering,
+etc.  All basic GEM patches will have the following <i>[gemwin]</i>
+object with these messages:
+<center>
+<p><img SRC="gemwin.jpg" BORDER=1 height=128 width=78></center>
+The create and destroy messages will display and remove the graphics window. 
+The 1 and 0 messages start and stop rendering.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="gemhead"></a>[gemhead]</h3>
+The <i>[gemhead]</i> object is the start of every rendering chain. 
+A simple patch, which is located in examples/gem_basic/gem1.redSquare.pd
+looks like:
+<center>
+<p><img SRC="redSquare.jpg" BORDER=1 height=138 width=91></center>
+
+<p>This patch will render a red square.  The <i>[gemhead]</i> object
+signifies the start of rendering. The <i>[color]</i> object sets the color
+for all objects after it in the chain.  The <i>[square]</i> object renders
+a square into the graphics window based on the current color, texturing,
+and transformations.  In this case, there is no texturing and no transformation.
+<p>Every rendering chain <b>MUST</b> start with a [gemhead].  If you
+do not put a <i>[gemhead]</i> at the beginning of the chain, then nothing
+will be rendered for that part of the patch.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="manips"></a>manips</h3>
+In the patch 01.basic/02.cube.pd, the <i>[translateXYZ]</i> object is
+introduced.
+<center>
+<p><img SRC="basicCube.jpg" BORDER=1 height=133 width=93></center>
+
+<p>The graphics are transformed and moved by the <i>manipulator</i> objects,
+or the manips.  GEM has the following manips:
+<p><i>[color]</i> - set the color with a vector
+<br><i>[colorRGB]</i> - set the color with 3 discrete values
+<br><i>[rotate]</i> - rotate with an angle and vector
+<br><i>[rotateXYZ]</i> - rotate with 3 discrete values
+<br><i>[scale]</i> - scale with a vector
+<br><i>[scaleXYZ]</i> - scale with 3 discrete values
+<br><i>[translate]</i> - translate with a vector
+<br><i>[translateXYZ]</i> - translate with 3 discrete values
+<p>To understand the difference between the vector and discrete values
+version, realize that everything in is defined in 3 dimensions.  These
+dimensions can be XYZ values, or RGB colors.
+<center>
+<p><img SRC="transXYZ.jpg" BORDER=1 height=92 width=201></center>
+
+<p>The two translate objects above will do exactly the same thing in a
+patch, but they provide two different ways to do it. <i>[translate]</i> accepts
+a scalar and vector.  <i>[translateXYZ]</i> accepts three floats which
+specify a point in space.  The manips will transform any object which
+appears after it in the rendering chain.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="geos"></a>geos</h3>
+Up above, we saw the <i>[square]</i> and <i>[cube]</i> objects.  The other
+primary geos are:
+<p><i>[square]</i> - render a square
+<br><i>[circle]</i> - render a circle
+<br><i>[triangle]</i> - render a triangle
+<br><i>[cube]</i> - render a cube
+<br><i>[sphere]</i> - render a sphere
+<br><i>[cone]</i> - render a cone
+<p>The <i>[square]</i>, <i>[circle]</i>, <i>[cube]</i>, and <i>[triangle]</i> objects
+have a right-hand inlet to set the size of the shape.  The default
+size is 1.
+<p>The <i>[cone]</i> and <i>[sphere]</i> objects are not perfectly smooth. 
+They are actually composed of a number of polygons.  In order to control
+the rendering better, the middle inlet is the size of the object, while
+the right-hand inlet is the number of slices to define the shape. 
+Take a look at the patch gem_basic/gem3.sphere.pd to see how the number
+of slices can change the look of a sphere.  Don't worry about the
+<i><a href="Lighting.html#world_light">[world_light]</a></i>
+object, it is just there to make it easier to see the difference in the
+number of slices.  Make sure to click the 'lighting 0' message before
+closing the patch (if you don't, then other patches will probably be completely
+black until you quit and restart pd/GEM).
+<p>Your graphics window should look like this for 5 and 15 slices:
+<center>
+<p><img SRC="sphere5.jpg" BORDER=0 height=150 width=150><img SRC="sphere15.jpg" height=150 width=150></center>
+Obviously, the more slices that you use, the better the sphere looks. 
+However, each slice adds more polygons, which can slow down your frame
+rate.  In computer graphics, there is always a trade off between resolution
+and speed.
+<p><img SRC="tribar.gif" height=13 width=561>
+<p><a href="index.html">[return]</a>
+<br>
+</body>
+</html>

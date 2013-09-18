@@ -1,0 +1,45 @@
+
+-real autoconf enable
+
+-scaler
+
+-event_quantize
+
+-autosequ
+
+-htget/curl
+
+-/dev/random
+-/proc + other system data // done 20020321
+  * handle SMP systems (cpuinfo)
+
+-eth (network device statistics)
+
+-distribution:
+  randomix.c: add double gaussrand() to that file with
+              callback or something .. ?
+              add this one: http://www.counterpane.com/yarrow.html
+
+-libpcap wrapper
+
+-statistics
+ *mean
+ *average + standard deviation (sliced (param) for non-stationary signals?)
+ *histogram
+ *ascii2sig
+
+ *delta~ (difference between last 2 samples)
+
+ *sigrandomix
+ 
+-serialize seems to have bug on resize ..
+
+
+
+
+-----
+-delta~
+-histo (pmf,pdf,mean,ad,sd)
+-random~
+
+-rand swap~: byteshuffle~ or byteshift~ ...

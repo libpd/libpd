@@ -1,0 +1,35 @@
+#N canvas 487 49 585 488 10;
+#X obj 43 134 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 94 135 5 0 0 0 - - -;
+#X text 91 208 Reset To Initial Conditions;
+#X text 114 281 Modify Parameters;
+#X msg 88 191 reset 0.1 0.1;
+#X msg 111 243 param -0.966918 2.87988 0.756145 0.744728;
+#X msg 111 264 param -2.90515 -2.03043 1.44055 0.70307;
+#X floatatom 138 404 10 0 0 0 Y - -;
+#X floatatom 43 367 10 0 0 0 X - -;
+#X text 19 50 (This attractor is not continuous);
+#X text 21 19 Latoocarfian Attractor (from Cliff Pickover);
+#X text 20 34 Chaos PD Externals - Copyright Michael McGonagle 2003
+;
+#X obj 43 151 metro 50;
+#X obj 18 150 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 25 83 examples/readme-fractals;
+#X obj 43 347 latoomutalpha 0.1 0.1 -2.90515 -2.03043 1.44055 0.70307
+;
+#X obj 289 374 search-tools;
+#X connect 0 0 12 0;
+#X connect 1 0 12 1;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 6 0 15 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 15 0 8 0;
+#X connect 15 1 7 0;
+#X connect 15 2 16 0;
+#X connect 15 3 16 1;
+#X connect 15 4 16 2;
+#X connect 16 0 15 0;

@@ -1,0 +1,113 @@
+#N canvas 1 53 1141 651 12;
+#X obj 301 434 cnv 15 100 40 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X obj 330 548 udpsend;
+#X msg 323 521 disconnect;
+#X msg 301 499 connect 127.0.0.1 9997;
+#X obj 330 447 packOSC;
+#X obj 330 583 tgl 15 0 empty empty 1=connected 20 8 0 8 -4034 -257985
+-1 0 1;
+#X msg -130 -33 send /test/one/two/three zz 88 T;
+#X msg -84 13 send /test 1 2 3;
+#X msg -107 -10 send /west 35;
+#X msg -38 59 send /*/left 22;
+#X msg -13 84 send /?est/ 1;
+#X text 293 13 packOSC is like sendOSC except that it outputs a list
+of floats instead of directly connecting to the network;
+#X text 103 -33 send a type-guessed message;
+#X obj 515 541 routeOSC;
+#X text 436 540 see also:;
+#X msg 318 415 typetags \$1;
+#X obj 318 397 tgl 15 0 empty empty empty 17 7 0 10 -257985 -258113
+-1 0 1;
+#X text 401 414 typetags are on by default;
+#X text 529 107 Useable types are:;
+#X text 529 125 i: 32 bit integer;
+#X text 529 143 f: 32-bit float;
+#X text 529 161 s: string;
+#X text 310 107 send a type-forced message;
+#X msg 10 107 sendtyped /test/one/two/three sis zz 88 T;
+#X msg 33 130 sendtyped /left/right TTiTIFNfisf 1.1 2.1 3.1 4.1 5.1
+;
+#X text 529 179 T: true (no argument);
+#X text 529 197 F: false (no argument);
+#X text 529 215 I: infinitum (no argument);
+#X text 529 232 N: Nil (no argument);
+#X msg 277 374 bufsize 100;
+#X text 364 374 set buffer size (default is 64000 bytes);
+#X msg 79 176 prefix /test;
+#X text 174 175 set the OSC path prefix for subsequent messages;
+#X msg -61 36 /left one two;
+#X msg 56 153 /right 88;
+#X text 129 153 'send' prefix is not required;
+#X msg 55 209 [;
+#X msg 9 210 ];
+#X text -81 211 close bundle;
+#X msg 157 254 timetagoffset 0;
+#X msg 180 277 timetagoffset -1;
+#X text 270 254 send current time as timetag;
+#X text 135 229 (timetags are sent in bundle messages only);
+#X obj 9 186 t b a b;
+#X msg -90 166 /test 5 6 7;
+#X text 301 277 immediate time tag (default);
+#X floatatom 376 476 5 0 0 0 - - -;
+#X text 426 476 bundle depth;
+#X obj 469 499 cnv 15 380 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 597 540 and http://opensoundcontrol.org/cnmat;
+#X msg 203 300 timetagoffset 1e+06;
+#X text 473 506 <- First open routeOSC-help \, then connect;
+#X text 85 210 open a bundle (and generate time tag);
+#X obj 418 568 packOSCstream;
+#X text 383 567 see:;
+#X text 518 568 for a way to send OSC over TCP or serial connections.
+;
+#X text 353 299 current time plus 1 second (delay is in microseconds)
+;
+#X text -75 570 2009_06_08 Martin Peach;
+#X text 529 248 b: blob (a list of bytes \, or floats on [0..255])
+;
+#X text 659 341 send a blob;
+#X msg 253 334 sendtyped /left b 0 1 2 3 124 125 126 127 128 129 255
+254 253 252 -14 -15 -16 17 18 19 20 21 22 23 24 25 26 27 28;
+#N canvas 497 62 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 165 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control network;
+#X text 12 45 DESCRIPTION packOSC is like sendOSC except it outputs
+a list of floats instead of directly connecting to the network;
+#X text 12 85 INLET_0 anything send sendtyped prefix timetagoffset
+bufsize typetags;
+#X text 12 125 OUTLET_0 anything;
+#X text 12 145 OUTLET_1 float;
+#X restore 832 595 pd META;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 4 1 46 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 4 0;
+#X connect 10 0 4 0;
+#X connect 15 0 4 0;
+#X connect 16 0 15 0;
+#X connect 23 0 4 0;
+#X connect 24 0 4 0;
+#X connect 29 0 4 0;
+#X connect 31 0 4 0;
+#X connect 33 0 4 0;
+#X connect 34 0 4 0;
+#X connect 36 0 4 0;
+#X connect 37 0 4 0;
+#X connect 39 0 4 0;
+#X connect 40 0 4 0;
+#X connect 43 0 37 0;
+#X connect 43 1 4 0;
+#X connect 43 2 36 0;
+#X connect 44 0 43 0;
+#X connect 50 0 4 0;
+#X connect 60 0 4 0;

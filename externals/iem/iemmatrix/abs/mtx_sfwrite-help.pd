@@ -1,0 +1,17 @@
+#N canvas 439 256 841 379 10;
+#X text 482 28 part of iemmatrix;
+#X text 166 69 writes the rows of a matrix into a multichannel sound
+file;
+#X obj 33 116 mtx_rand;
+#X msg 32 207 bang;
+#X obj 32 249 mtx_print file;
+#X obj 32 228 mtx_sfread 10 ./test_mtx_sfwrite.wav;
+#X obj 33 146 mtx_sfwrite ./test_mtx_sfwrite.wav;
+#X text 43 34 [mtx_sfwrite][mtx_sfread];
+#X msg 33 97 10 4;
+#X obj 95 116 mtx_print original;
+#X connect 2 0 6 0;
+#X connect 2 0 9 0;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
+#X connect 8 0 2 0;

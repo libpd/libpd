@@ -1,0 +1,21 @@
+#N canvas 0 26 418 231 10;
+#X msg 69 127 load matrix.bin;
+#X text 27 39 added for completeness. mainly intended for spectral
+transfos;
+#X text 26 73 the file format is binary floating point \, column encoded.
+;
+#X obj 46 174 bmatrix~;
+#X text 29 23 bmatrix multiplies a signal block with an arbitrary matrix
+;
+#N canvas 200 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION multiply a signal block with an arbitrary
+matrix;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 65 INLET_0 signal load;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 369 209 pd META;
+#X connect 0 0 3 0;

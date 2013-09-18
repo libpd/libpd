@@ -1,0 +1,22 @@
+#N canvas 1 53 456 277 10;
+#X floatatom 48 102 5 0 0 0 - - -;
+#X floatatom 48 151 5 0 0 0 - - -;
+#X obj 48 125 local_min;
+#X obj 30 151 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 54 39 gives the value of every local minimum whenever there
+is a change in direction;
+#N canvas 467 227 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 95 OUTLET_0 float;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X text 12 45 DESCRIPTION gives the value of every local minimum whenever
+there is a change in direction;
+#X restore 391 246 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 2 0 3 0;

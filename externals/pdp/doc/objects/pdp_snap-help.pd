@@ -1,0 +1,21 @@
+#N canvas 623 480 596 300 10;
+#X msg 92 15 start;
+#X msg 142 15 stop;
+#X obj 92 53 pdp_help_input;
+#X obj 41 240 pdp_help_output;
+#X text 140 172 bang: sends stored packet to output;
+#X text 113 143 left intlet (hot):;
+#X text 112 202 right intlet (cold):;
+#X obj 41 171 pdp_snap;
+#X text 115 103 pdp_reg takes a snapshot from a pdp stream.;
+#X text 263 201 pdp inlet;
+#X text 139 157 snap: stores the next packet that arrives on second
+inlet;
+#X msg 8 130 bang;
+#X msg 49 130 snap;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 1;
+#X connect 7 0 3 0;
+#X connect 11 0 7 0;
+#X connect 12 0 7 0;

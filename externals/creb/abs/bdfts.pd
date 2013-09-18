@@ -1,0 +1,18 @@
+#N canvas 520 402 300 195 10;
+#X obj 106 9 inlet;
+#X obj 169 11 inlet;
+#X obj 121 90 pack \$1 0 0;
+#X obj 136 150 outlet;
+#X obj 166 60 t b f;
+#X obj 109 60 t b f;
+#X msg 100 125 timefreq \$1 \$2 \$3;
+#X obj 170 36 * 1000;
+#X connect 0 0 5 0;
+#X connect 1 0 7 0;
+#X connect 2 0 6 0;
+#X connect 4 0 2 0;
+#X connect 4 1 2 1;
+#X connect 5 0 2 0;
+#X connect 5 1 2 2;
+#X connect 6 0 3 0;
+#X connect 7 0 4 0;

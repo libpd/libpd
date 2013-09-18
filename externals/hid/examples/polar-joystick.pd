@@ -1,0 +1,51 @@
+#N canvas 254 77 472 478 10;
+#X declare -path ..;
+#X obj 163 119 tgl 25 0 empty empty start 1 12 1 9 -225271 -1 -1 0
+1;
+#X msg 226 138 open \$1;
+#X obj 226 118 hradio 15 1 1 15 \$0-device-number empty choose_a_device
+0 -6 1 9 -225271 -1 -1 0;
+#X obj 190 119 nbx 2 14 -1e+37 1e+37 0 0 empty \$0-device-number empty
+0 -6 0 14 -166441 -1 -1 0 256;
+#X msg 112 119 print;
+#X obj 177 285 mtof;
+#X obj 177 305 osc~;
+#X obj 118 355 *~;
+#X obj 118 401 dac~;
+#X obj 77 305 line~;
+#X msg 77 283 \$1 5;
+#X text 25 38 This patch uses the angle of the joystick to control
+pitch and the distance from the centerpoint to control amplitude. The
+joystick Z/twist is mapped to pan.;
+#X obj 118 379 pan/equal_power_pan~;
+#X text 254 444 released under the GNU GPL;
+#X text 40 429 (C) Copyright 2005 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 14 9 polar_joystick;
+#X obj 163 164 hid/joystick 3;
+#X obj 177 194 mapping/reverse;
+#X obj 102 216 mapping/polar;
+#X obj 77 264 hid/hid_cube;
+#X obj 391 11 pddp/dsp;
+#X obj 177 265 mapping/notescale 60 72;
+#X obj 177 245 mapping/stepper;
+#X connect 0 0 16 0;
+#X connect 1 0 16 0;
+#X connect 2 0 1 0;
+#X connect 4 0 16 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 1;
+#X connect 7 0 12 0;
+#X connect 9 0 7 0;
+#X connect 10 0 9 0;
+#X connect 12 0 8 0;
+#X connect 12 1 8 1;
+#X connect 16 0 18 0;
+#X connect 16 1 17 0;
+#X connect 16 2 12 1;
+#X connect 17 0 18 1;
+#X connect 18 0 19 0;
+#X connect 18 1 22 0;
+#X connect 19 0 10 0;
+#X connect 21 0 5 0;
+#X connect 22 0 21 0;

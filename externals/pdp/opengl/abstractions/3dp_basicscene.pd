@@ -1,0 +1,27 @@
+#N canvas 500 522 450 300 10;
+#X obj 54 72 metro 40;
+#X obj 54 140 3dp_push;
+#X floatatom 375 162 5 0 0 0 - - -;
+#X text 19 12 a basic 3d scene with a light source and mouse view rotation
+;
+#X obj 54 218 outlet;
+#X obj 54 46 inlet;
+#X floatatom 340 129 5 0 0 0 - - -;
+#X floatatom 115 49 5 0 0 0 - - -;
+#X obj 254 216 3dp_light 0;
+#X obj 254 158 3dp_view roty;
+#X obj 254 192 3dp_view transz 10;
+#X obj 54 169 3dp_mouserotate;
+#X obj 54 111 3dp_windowcontext;
+#X connect 0 0 12 0;
+#X connect 1 0 11 0;
+#X connect 1 1 9 0;
+#X connect 2 0 10 1;
+#X connect 5 0 0 0;
+#X connect 6 0 9 1;
+#X connect 7 0 0 1;
+#X connect 9 0 10 0;
+#X connect 10 0 8 0;
+#X connect 11 0 4 0;
+#X connect 12 0 1 0;
+#X connect 12 1 11 1;

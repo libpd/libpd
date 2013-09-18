@@ -1,0 +1,36 @@
+#N canvas 581 224 647 312 12;
+#X obj 79 38 tgl 15 0 empty empty CLK 17 7 0 10 -24198 -62784 -1 1
+1;
+#X obj 93 53 tgl 15 0 empty empty SET 17 7 0 10 -24198 -62784 -1 0
+1;
+#X obj 108 68 tgl 15 0 empty empty RESET 17 7 0 10 -24198 -62784 -1
+0 1;
+#X obj 123 83 tgl 15 0 empty empty J 17 7 0 10 -24198 -62784 -1 1 1
+;
+#X obj 138 98 tgl 15 0 empty empty K 17 7 0 10 -24198 -62784 -1 1 1
+;
+#X obj 79 146 cd4027 v;
+#X obj 138 172 tgl 15 0 empty empty /Q 17 7 0 10 -143491 -241291 -1
+0 1;
+#X obj 79 172 tgl 15 0 empty empty Q 17 7 0 10 -143491 -241291 -1 1
+1;
+#X text 173 65 Sets Q=0. Overrides Clock;
+#X text 133 35 A 0-1 transition or a bang clocks the flipflop.;
+#X text 142 50 Sets Q=1. Overrides Reset and Clock;
+#X text 237 264 20070307MartinPeach;
+#X text 27 5 cd4027 emulates one half of the CMOS logic J/K flipflop.
+;
+#X text 157 80 When Q=0 and J=1 \, Q will change on next clock.;
+#X text 168 96 When Q=1 and K=1 \, Q will change on next clock.;
+#X obj 6 89 metro 100;
+#X obj 6 67 tgl 15 0 empty empty empty 17 7 0 10 -44926 -90881 -1 0
+1;
+#X connect 0 0 5 0;
+#X connect 1 0 5 1;
+#X connect 2 0 5 2;
+#X connect 3 0 5 3;
+#X connect 4 0 5 4;
+#X connect 5 0 7 0;
+#X connect 5 1 6 0;
+#X connect 15 0 5 0;
+#X connect 16 0 15 0;

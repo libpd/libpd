@@ -1,0 +1,27 @@
+#N canvas 0 26 454 304 12;
+#X obj 45 139 temperature 500;
+#X floatatom 45 193 5 0 0 0 - - -;
+#X floatatom 45 91 5 0 0 0 - - -;
+#X text 132 27 written by <olaf.matthes@gmx.de>;
+#X floatatom 160 104 5 0 0 0 - - -;
+#X text 219 103 set new time interval;
+#X text 104 192 number of changes (i.e. the 'temperature');
+#X text 104 209 of the input during one time interval;
+#X msg 68 112 foo;
+#X text 11 10 temperature :: output number of input changes in N ms
+;
+#N canvas 293 158 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 105 OUTLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION output number of input changes in N ms;
+#X text 12 65 INLET_0 anything;
+#X text 12 5 KEYWORDS control analysis;
+#X restore 393 277 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 4 0 0 1;
+#X connect 8 0 0 0;

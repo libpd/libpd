@@ -1,0 +1,4 @@
+
+This is the manual for the 'template' library example.  The manual can be in
+just about any form from plain text to PDF.  Recommended formats are: plain
+text, HTML, PDF.

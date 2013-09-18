@@ -1,0 +1,68 @@
+current: all
+
+.SUFFIXES: .d_fat
+
+PD_INSTALL_PATH ?= "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+CFLAGS =-DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
+        -Wno-unused -Wno-parentheses -Wno-switch
+
+LFLAGS = -bundle -undefined suppress -flat_namespace
+
+# the sources
+
+SRC = biquad_freq_resp.c \
+	db2v.c \
+	f2note.c \
+	filter~.c \
+	FIR~.c \
+	for++.c \
+	gate.c \
+	hml_shelf~.c \
+	iem_cot4~.c \
+	iem_delay~.c \
+	iem_pow4~.c \
+	iem_sqrt4~.c \
+	lp1_t~.c \
+	mov_avrg_kern~.c \
+	para_bp2~.c \
+	peakenv~.c \
+	peakenv_hold~.c \
+	prvu~.c \
+	pvu~.c \
+	rvu~.c \
+	sin_phase~.c \
+	soundfile_info.c \
+	split.c \
+	v2db.c \
+	vcf_filter~.c \
+	iemlib1.c
+
+TARGET = iemlib1.d_fat
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) -arch i386 -arch ppc $(LFLAGS) -o $(TARGET) *.o
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) -arch i386 -arch ppc $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

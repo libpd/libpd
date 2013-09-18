@@ -1,0 +1,27 @@
+#N canvas 251 447 635 427 10;
+#X obj 81 25 sendcanvas;
+#X text 168 27 send messages to a (parent) canvas;
+#X obj 88 151 sendcanvas;
+#X msg 88 130 obj 300 150 f;
+#X text 57 85 this object will send messages to a canvas \; by default
+it will send a message to the canvas containing it:;
+#X text 53 194 but you can also send to a message to a parent-canvas
+(of any depth);
+#N canvas 0 0 781 310 sendcanvas 0;
+#X obj 147 72 inlet;
+#X obj 147 166 sendcanvas 1;
+#X msg 147 126 obj 300 250 print;
+#X text 252 170 "1" means that the message is sent to the parent-patch
+(depth:1);
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 99 248 pd sendcanvas;
+#X obj 99 229 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 80 306 you can basically achieve this functionality with [namecanvas]
+and an ordinary [send] \; so this object is merely convenient as you
+can dynamify a canvas without prior thought to it;
+#X text 58 295 note:;
+#X text 72 390 (c) 2008 IOhannes m zmoelnig;
+#X connect 3 0 2 0;
+#X connect 7 0 6 0;

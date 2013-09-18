@@ -1,0 +1,118 @@
+#N canvas 176 71 848 625 10;
+#X text 13 15 creation arguments;
+#X obj 41 63 tot window_name scriptlet;
+#X obj 453 500 tot other_window;
+#X msg 500 118 read;
+#X msg 507 139 write;
+#X msg 455 55 tot;
+#X msg 543 176 push;
+#X msg 550 197 qpush;
+#X msg 467 76 query;
+#X msg 588 265 add;
+#X msg 582 246 reset;
+#X msg 595 284 addnext;
+#X msg 596 334 prealloc;
+#X text 589 318 preset scriptlet buffer size;
+#X text 565 228 build a scriptlet dynamically;
+#X msg 597 371 capture;
+#X text 595 354 capture gui messages from a window;
+#X text 491 103 read and write scriplets from files;
+#X msg 591 408 attach;
+#X msg 591 432 detach;
+#X msg 576 472 lastmotion;
+#X text 16 254 scriptlets;
+#X text 28 273 A scriptlet is a sequence of Pd atoms (symbols and floats)
+which is to be transferred to the pd-gui process for execution.;
+#X text 547 16 all [tot] messages;
+#X text 40 87 window_name - which window to receive message from;
+#X text 39 101 scriptlet - a Tcl scriptlet to be read on [tot] load
+;
+#X text 16 320 dot-sequences;
+#X text 30 333 Symbols in a scriptlet may contain special dot-sequences:
+dot-parameters \, dot-names \, callback brackets \, and dot-separators.
+All of these start with a dot followed by a hash \, dash \, hat \,
+tilde \, grave \, colon \, or angle or square bracket.;
+#N canvas 35 135 503 486 capture 0;
+#X obj 74 113 tot;
+#X obj 271 111 tot .;
+#X text 102 47 These reference this window:;
+#X msg 74 95 capture \$1;
+#X obj 74 69 tgl 25 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 271 93 capture \$1;
+#X obj 271 67 tgl 25 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 301 130 bng 18 750 50 0 empty empty banged_on_window_creation
+20 8 1 9 -262144 -1 -1;
+#X msg 180 298 capture \$1;
+#X obj 180 241 tgl 25 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 180 317 tot other_window;
+#X msg 192 267 \; pd-other_window vis \$1;
+#X obj 287 337 bng 18 750 50 0 empty empty banged_on_window_creation
+20 8 1 9 -262144 -1 -1;
+#X obj 90 132 bng 18 750 50 0 empty empty banged_on_window_creation
+20 8 1 9 -262144 -1 -1;
+#X text 72 34 [capture( message;
+#N canvas 470 50 510 360 other_window 0;
+#X restore 326 218 pd other_window;
+#X obj 291 150 prepend set;
+#X msg 291 169 motion 279 76 0;
+#X obj 84 152 prepend set;
+#X msg 84 171 motion 279 76 0;
+#X obj 251 357 prepend set;
+#X msg 251 376 motion 279 76 0;
+#X text 38 217 you can capture from other windows too:;
+#X text 38 401 - To capture from subpatches \, just add "pd-" to the
+front of name of the subpatch: pd-my_subpatch;
+#X text 37 436 - To capture from abstractions \, add "pd-" to the front
+of the file name of the abtraction: pd-my_abstraction.pd;
+#X text 17 9 capturing canvas/glist messages with [tot];
+#X connect 0 2 18 0;
+#X connect 0 3 13 0;
+#X connect 1 2 16 0;
+#X connect 1 3 7 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 8 0 10 0;
+#X connect 9 0 8 0;
+#X connect 9 0 11 0;
+#X connect 10 2 20 0;
+#X connect 10 3 12 0;
+#X connect 16 0 17 0;
+#X connect 18 0 19 0;
+#X connect 20 0 21 0;
+#X restore 700 379 pd capture;
+#X text 27 405 .- a Tk pathname of a destination item;
+#X text 28 431 .^ a Tk pathname of a destination window;
+#X text 28 455 .^.c a Tk pathname of a destination canvas;
+#X text 19 481 dot-separators;
+#X text 37 506 .` is a backslash;
+#X text 37 519 .: is a semicolon;
+#X text 37 533 .( and .) are curly braces;
+#X text 27 38 Both creation arguments are optional.;
+#X text 29 121 If [tot] has no creation arguments \, it will grab its
+parent window.;
+#X text 32 570 help page by Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 29 586 [tot] and example patches by Krzysztof Czaja;
+#X text 19 162 outlets;
+#X text 23 221 4 - outlet #4 is banged when the window;
+#X text 24 205 3 - outlet #4 outputs the msgs set to the specified
+window;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 2 0;
+#X connect 9 0 2 0;
+#X connect 10 0 2 0;
+#X connect 11 0 2 0;
+#X connect 12 0 2 0;
+#X connect 15 0 2 0;
+#X connect 18 0 2 0;
+#X connect 19 0 2 0;
+#X connect 20 0 2 0;

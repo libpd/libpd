@@ -1,0 +1,18 @@
+#N canvas 0 31 462 310 10;
+#X obj 93 84 zexy/date -----------;
+#X obj 93 31 inlet;
+#X obj 93 58 bang;
+#X obj 93 229 outlet;
+#X obj 93 175 pack float symbol symbol;
+#X obj 93 202 zexy/makesymbol %s-%s-%s;
+#X obj 118 129 makefilename %02d;
+#X obj 247 129 makefilename %02d;
+#X connect 0 0 4 0;
+#X connect 0 1 6 0;
+#X connect 0 2 7 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 6 0 4 1;
+#X connect 7 0 4 2;

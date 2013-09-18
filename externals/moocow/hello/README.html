@@ -1,0 +1,283 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>DESCRIPTION</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#installation">INSTALLATION</a></li>
+	<li><a href="#configuration_options">CONFIGURATION OPTIONS</a></li>
+	<li><a href="#howto">HOWTO</a></li>
+	<ul>
+
+		<li><a href="#files">Files</a></li>
+		<li><a href="#running_aclocal">Running aclocal</a></li>
+		<li><a href="#configure_ac">configure.ac</a></li>
+		<li><a href="#makefile_am">Makefile.am</a></li>
+		<li><a href="#ax_pd_external_m4">ax_pd_external.m4</a></li>
+		<li><a href="#pdexternal_am">pdexternal.am</a></li>
+		<li><a href="#multilibs_and_singleobject_externals">Multilibs and Single-Object Externals</a></li>
+	</ul>
+
+	<li><a href="#acknowledgements">ACKNOWLEDGEMENTS</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>README for example pd external package 'hello'</p>
+<p>Last updated for hello v0.01</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The 'hello' package is an example external package intended
+to demonstrate one way of using GNU autotools (automake, autoconf, autoheader)
+to manage a Pd external distribution.</p>
+<p>See <a href="#howto">HOWTO</a> for a developer-oriented introduction.</p>
+<p>
+</p>
+<hr />
+<h1><a name="installation">INSTALLATION</a></h1>
+<p>Issue the following commands to the shell:</p>
+<pre>
+   cd PACKAGE-XX.YY  (or wherever you extracted the distribution)
+   ./configure
+   make
+   make install</pre>
+<p>
+</p>
+<hr />
+<h1><a name="configuration_options">CONFIGURATION OPTIONS</a></h1>
+<p>The 'configure' script supports the following options, among others:</p>
+<ul>
+<li><strong><a name="item__2d_2dhelp">--help</a></strong>
+
+<p>Output a brief usage summary of the 'configure' script,
+including a list of supported options and influential
+environment variables.</p>
+</li>
+<li><strong><a name="item__2d_2denable_2ddebug__2c__2d_2ddisable_2ddebug">--enable-debug , --disable-debug</a></strong>
+
+<p>Whether to enable verbose debugging messages.
+Default=no.</p>
+</li>
+<li><strong><a name="item__2d_2dwith_2dpd_2ddir_3dpd_dir">--with-pd-dir=PD_DIR</a></strong>
+
+<p>Set base Pd directory.  Default PREFIX/pd</p>
+</li>
+<li><strong><a name="item__2d_2dwith_2dpd_2dinclude_3dpd_inc">--with-pd-include=PD_INC</a></strong>
+
+<p>Where to look for m_pd.h</p>
+</li>
+<li><strong><a name="item__2d_2dwith_2dpd_2dextdir_3dpd_externs">--with-pd-extdir=PD_EXTERNS</a></strong>
+
+<p>Where to install compiled externals.  Default: PD_DIR/externs</p>
+</li>
+<li><strong><a name="item__2d_2denable_2dobject_2dexternals__2c__2d_2ddisabl">--enable-object-externals , --disable-object-externals</a></strong>
+
+<p>Whether to build single-object externals or only multilibs (default),
+for packages which support both.</p>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="howto">HOWTO</a></h1>
+<p>This section provides a brief developer-oriented description of
+how to use GNU autotools to manage your own Pd external package.</p>
+<p>
+</p>
+<h2><a name="files">Files</a></h2>
+<dl>
+<dt><strong><a name="item___top_srcdir__common">$(top_srcdir)/common</a></strong></dt>
+
+<dd>
+<p>The directory common/ includes common code for the autotools packages.
+Copy it to your top-level package directory.</p>
+</dd>
+<dt><strong><a name="item___top_srcdir__common_m4">$(top_srcdir)/common/m4</a></strong></dt>
+
+<dd>
+<p>Contains m4 macros for autotools.
+See <a href="#ax_pd_external_m4">ax_pd_external.m4</a> for details.</p>
+</dd>
+<dt><strong><a name="item___top_srcdir__common_pdexternal_am">$(top_srcdir)/common/pdexternal.am</a></strong></dt>
+
+<dd>
+<p>May be included in your package's Makefile.am.
+See <a href="#pdexternal_am">pdexternal.am</a> for details.</p>
+</dd>
+<dt><strong><a name="item_h">$(top_srcdir)/common/mooPdUtils.h (optional)</a></strong></dt>
+
+<dd>
+<p>The file mooPdUtils.h may be included by your C source files.
+Currently, this only provides a PDEXT_UNUSED macro to avoid annoying
+gcc warnings under -W.</p>
+</dd>
+</dl>
+<p>
+</p>
+<h2><a name="running_aclocal">Running aclocal</a></h2>
+<p>You must pass the ``-I common/m4'' flag to aclocal when you call it.
+For maintainer-mode rebuilding and autoreconf, you should add
+the following to your top-level Makefile.am:</p>
+<pre>
+ ACLOCAL_AMFLAGS = -I $(top_srcdir)/common/m4</pre>
+<p>See the example package's autogen.sh for a useful wrapper script.</p>
+<p>
+</p>
+<h2><a name="configure_ac">configure.ac</a></h2>
+<p>You must call the macro AX_PD_EXTERNAL from configure.ac.
+Before doing so (and before calling AC_PROG_CC), make sure
+that you cache the values of important user flags in shell
+variables:</p>
+<pre>
+ ##-- save user's CFLAGS,CPPFLAGS
+ UCPPFLAGS=&quot;$CPPFLAGS&quot;
+ UCFLAGS=&quot;$CFLAGS&quot;
+ ULDFLAGS=&quot;$LDFLAGS&quot;</pre>
+<pre>
+ ##-- Pd external stuff
+ AX_PD_EXTERNAL</pre>
+<p>See the example package's configure.ac for a complete working example.</p>
+<p>
+</p>
+<h2><a name="makefile_am">Makefile.am</a></h2>
+<p>You probably want to include $(top_srcdir)/common/pdexternal.am in
+your Makefile.am(s).  This will allow you to build Pd externals
+as ``_PROGRAMS'' targets.  In particular, pdext_PROGRAMS targets
+will be built as externals and installed in PDEXT_DIR (see above).</p>
+<p>See the example package's Makefile.am for a complete working example.</p>
+<dl>
+<dt><strong><a name="item_externals">Externals</a></strong></dt>
+
+<dd>
+<p>To build &amp; install the external ``hello.$(PDEXT)'', add the
+following to Makefile.am:</p>
+<pre>
+ pdexterns_PROGRAMS = hello
+ hello_SOURCES = hello.c mooPdUtils.h</pre>
+</dd>
+<dt><strong><a name="item_abstractions">Abstractions</a></strong></dt>
+
+<dd>
+<p>To install the abstraction ``heynow.pd'', add the
+following to Makefile.am:</p>
+<pre>
+ pdexterns_DATA = heynow.pd</pre>
+</dd>
+<dt><strong><a name="item_documentation">Documentation</a></strong></dt>
+
+<dd>
+<p>To install the documentation patch ``hello-help.pd'', add the
+following to Makefile.am:</p>
+<pre>
+ pddoc_DATA = hello-help.pd</pre>
+</dd>
+</dl>
+<p>
+</p>
+<h2><a name="ax_pd_external_m4">ax_pd_external.m4</a></h2>
+<p>The AX_PD_EXTERNAL macro defined in common/m4/ax_pd_external.m4
+is intended to perform all common autoconf-level
+checks and substitutions necessary for building Pd external packages on
+various systems.  Among other things, this includes:</p>
+<ul>
+<li>
+<p>Providing --with-FEATURE and --enable-FEATURE arguments such as
+--with-pd-dir (see <a href="#configuration_options">CONFIGURATION OPTIONS</a>, above).</p>
+</li>
+<li>
+<p>Defining automake-style ``Xdir'' variables for easy definition
+of package externals, abstractions, and documentation.</p>
+</li>
+<li>
+<p>Checking for the required header ``m_pd.h''.</p>
+</li>
+<li>
+<p>Defining platform-dependent compiler and linker flags for
+building Pd externals, and adding these to the relevant
+system variables (CPPFLAGS, CFLAGS, LDFLAGS, etc.)</p>
+</li>
+</ul>
+<p>See the comments at the top of m4/ax_pd_external.m4 for
+more details on the AX_PD_EXTERNAL macro.</p>
+<p>
+</p>
+<h2><a name="pdexternal_am">pdexternal.am</a></h2>
+<p>pdexternal.am is intended to be included in your package's Makefile.am.
+It redefines the automake EXEEXT to allow building Pd externals using
+automake's _PROGRAMS targets.  Additionally, it defines the
+automake varibles PDEXT, SUFFIXES, EXTRA_DIST, CLEANFILES, DISTCLEANFILES,
+and MAINTAINERCLEANFILES.</p>
+<p>
+</p>
+<h2><a name="multilibs_and_singleobject_externals">Multilibs and Single-Object Externals</a></h2>
+<p>You can use automake's EXTRA_PROGRAMS variable, together
+with the pdexterns_PROGRAMS automake target, the automake conditional
+WANT_OBJECT_EXTERNALS, and the C preprocessor macro WANT_OBJECT_EXTERNALS
+to allow building single-object-externals or multilibs from a single
+source distribution.</p>
+<p>Makefile.am should contain something like:</p>
+<pre>
+ ##-- always build these externals
+ pdexterns_PROGRAMS = hello</pre>
+<pre>
+ ##-- potential single-object externals (as _PROGRAMS)
+ EXTRA_PROGRAMS = goodbye</pre>
+<pre>
+ ##-- build single-object externals?
+ if WANT_OBJECT_EXTERNALS
+  pdexterns_PROGRAMS += goodbye
+ endif</pre>
+<p>If single-object externals were requested by the user,
+then the C preprocessor macro WANT_OBJECT_EXTERNALS will be defined
+by autoheader, to allow you to
+conditionally #include&lt;&gt; the EXTRA_PROGRAMS sources in your
+top-level multilib source file if desired.  In the above example,
+hello.c might contain:</p>
+<pre>
+ #ifdef HAVE_CONFIG_H
+ # include &quot;config.h&quot;
+ #endif</pre>
+<pre>
+ #ifndef WANT_OBJECT_EXTERNALS
+ /*-- Multilib build: include source for the goodbye external --*/
+ # include &quot;goodbye.c&quot;
+ #endif</pre>
+<pre>
+ /*... local definitions etc. go here ...*/</pre>
+<pre>
+ void hello_setup(void)
+ {
+  #ifndef WANT_OBJECT_EXTERNALS
+   goodbye_setup();
+  #endif</pre>
+<pre>
+  /*... local setup code goes here ...*/
+ }</pre>
+<p>
+</p>
+<hr />
+<h1><a name="acknowledgements">ACKNOWLEDGEMENTS</a></h1>
+<p>PD by Miller Puckette and others.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Bryan Jurish &lt;<a href="mailto:moocow@ling.uni-potsdam.de">moocow@ling.uni-potsdam.de</a>&gt;</p>
+
+</body>
+
+</html>

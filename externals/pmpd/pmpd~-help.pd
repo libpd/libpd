@@ -1,0 +1,65 @@
+#N canvas 247 25 766 656 10;
+#X msg 103 243 inForce \$1 \$2 \$3;
+#X msg 30 74 reset;
+#X text 77 75 Clear everything;
+#X msg 44 100 mass \$1 \$2;
+#X text 135 99 Create a mass with argument : weight of the mass \,
+initial position. A mass with no weight will not move.;
+#X text 153 6 pmpd~ : 1d particular physical modeling for audio synthesis
+;
+#X text 181 138 connect 2 masses (\$1 and \$2) \, with a link rigidity
+\$3 and damping \$4;
+#X msg 70 171 NLlink \$1 \, \$2 \, \$3 \, \$4 \, \$5 \, \$6 \, \$7
+\, \$8;
+#X text 340 173 like the link message \, but with extra arguments :
+;
+#X text 361 188 \$5 is pow for a non-linear link;
+#X text 361 203 \$6 is the lenght of the link;
+#X msg 160 371 outPos \$1 \$2 \$3;
+#X msg 131 305 inPos \$1 \$2 \$3;
+#X msg 179 411 outSpeed \$1 \$2 \$3;
+#X text 228 270 You can send many force to a single mass \, the resulting
+force will be the sum of all forces;
+#X obj 30 593 pmpd~ 1 1;
+#X text 117 592 arg1 : number of audio inlet (min 1);
+#X text 117 606 arg2 : number of audio outlet (min 1);
+#X text 246 304 connect an inlet to the position of a specific mass
+(\$2) \, with an amplitude factor \$3;
+#X text 247 334 many inForce and inPos messages can be send \, so the
+same inlet can be used to move and send force to diferents masses;
+#X obj 31 631 dac~;
+#X text 361 219 \$7 and \$8 are the min and max size of this link;
+#X text 281 372 Connect the Position of the \$2 mass to the \$1 outlet
+\, with amplitude \$3;
+#X text 314 410 Connect the Velocity of the \$2 mass to the \$1 outlet
+\, with amplitude \$3;
+#X msg 150 496 posX \$1 \$2;
+#X msg 162 516 forceX \$1 \$2;
+#X text 147 477 few messages can interact in real time with the simulation
+;
+#X text 117 621 arg3 : oversample factor (usefull to run the simulation
+faster than audio rate);
+#X text 227 495 change the position (\$2) of a fixed mass (\$1);
+#X text 259 517 send a force (\$1) to a mass (\$2);
+#X obj 128 553 osc~ 444;
+#X text 191 552 interaction with the simulation is at audio rate;
+#X msg 54 137 link \$1 \$2 \$3 \$4;
+#X text 228 242 audio inlet \$1 send force to the mass \$2 \, with
+an amplitude factor \$3;
+#X text 176 434 The output of a ontlet is the sum of the contribution
+of all out* messages;
+#X text 19 38 all this messages have to be send only 1 time to create
+a physical model structure;
+#X connect 0 0 15 0;
+#X connect 1 0 15 0;
+#X connect 3 0 15 0;
+#X connect 7 0 15 0;
+#X connect 11 0 15 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 15 0 20 0;
+#X connect 15 0 20 1;
+#X connect 24 0 15 0;
+#X connect 25 0 15 0;
+#X connect 30 0 15 0;
+#X connect 32 0 15 0;

@@ -1,0 +1,56 @@
+#N canvas 0 31 464 467 10;
+#X floatatom 26 85 5 0 0 0 - - -;
+#X floatatom 26 160 0 0 0 0 - - -;
+#X obj 2 2 cnv 15 450 20 empty empty notescale 2 11 1 18 -233017 -66577
+0;
+#X obj 418 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X floatatom 137 266 5 0 0 0 - - -;
+#X obj 140 330 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 17 393 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 234 407 released under the GNU GPL;
+#X floatatom 150 160 0 0 0 0 - - -;
+#X floatatom 297 160 0 0 0 0 - - -;
+#X obj 213 83 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -225271
+-1 -1 0 0;
+#X text 17 426 $Revision: 1.3 $$Date: 2006-03-17 04:58:30 $;
+#X text 18 439 $Author: eighthave $;
+#X obj 140 244 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262131
+-1 -1 0 0;
+#X obj 26 130 notescale 30 60;
+#X floatatom 137 347 5 0 0 0 - - -;
+#X text 13 193 If you use [notescale] with no arguments \, then the
+output range defaults to 0-127.;
+#X floatatom 202 109 5 0 0 0 - - -;
+#X obj 26 105 / 100;
+#X text 18 35 [notescale] scales a stream of numbers to a MIDI note
+number. It takes an input range of 0 to 1 \, and outputs MIDI note
+numbers based on an output range set as arguments.;
+#X obj 137 297 notescale;
+#X obj 150 130 notescale 15 120;
+#X obj 297 130 notescale 24 48;
+#N canvas 474 31 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION scale a stream of numbers to a MIDI note
+number;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 406 435 pd META;
+#X connect 0 0 18 0;
+#X connect 4 0 20 0;
+#X connect 5 0 15 0;
+#X connect 10 0 17 0;
+#X connect 10 0 21 0;
+#X connect 10 0 22 0;
+#X connect 13 0 4 0;
+#X connect 14 0 1 0;
+#X connect 18 0 14 0;
+#X connect 20 0 5 0;
+#X connect 21 0 8 0;
+#X connect 22 0 9 0;

@@ -1,0 +1,23 @@
+#N canvas 334 22 636 372 10;
+#X obj 19 100 noise~;
+#X obj 19 153 *~ 0.01;
+#X obj 61 128 hsl 128 15 0.01 1 1 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 71 149 5 0 0 0 - - -;
+#X obj 19 183 cyclone/reson~ 1 1000 20;
+#X obj 18 269 dac~ 1 2 3 4 5 6 7 8;
+#X text 217 131 B. Measure loudspeaker distances. Delay all loudspeakers
+to mimic the distance between listener and farthest loudspeaker. The
+amount of delay can be calculated as t = ((d - x) / 330) * 1000 \,
+where d is the distance in metres between listener and one particular
+loudspeaker \, and t is the amount of delay in milliseconds. Apply
+the delay to function function ls-delays to corresponding channel.
+;
+#X text 217 80 A. Adjust gain each speaker's channel same level sweet
+spot using this file. You use a sound pressure meter or your ears.
+;
+#X text 265 287 based on an example by Ville Pulkki 1999-2006;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 2 0 1 1;
+#X connect 2 0 3 0;

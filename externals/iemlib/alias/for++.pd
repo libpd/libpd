@@ -1,0 +1,28 @@
+#N canvas 0 0 450 300 10;
+#X obj 105 90 inlet;
+#X text 18 21 for++: alias for for_pp (because of problems with the
+hexloader);
+#X obj 153 90 inlet;
+#X obj 197 90 inlet;
+#X obj 160 186 for_pp;
+#X obj 149 246 outlet;
+#X obj 197 246 outlet;
+#X obj 256 108 f \$1;
+#X obj 290 108 f \$2;
+#X obj 304 70 loadbang;
+#X obj 290 130 sel 0;
+#X obj 331 130 sel 0;
+#X obj 331 108 f \$3;
+#X connect 0 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 4 2;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 7 0 4 0;
+#X connect 8 0 10 0;
+#X connect 9 0 7 0;
+#X connect 9 0 8 0;
+#X connect 9 0 12 0;
+#X connect 10 1 4 1;
+#X connect 11 1 4 2;
+#X connect 12 0 11 0;

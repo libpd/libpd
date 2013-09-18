@@ -1,0 +1,107 @@
+#N canvas 42 278 695 523 10;
+#X text 452 8 GEM object;
+#X obj 8 345 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 348 Inlets:;
+#X text 38 435 Outlets:;
+#X obj 8 306 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 305 Arguments:;
+#X obj 7 56 cnv 15 430 240 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 574 341 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 579 380 pd gemwin;
+#X msg 579 361 create;
+#X text 575 340 Create window:;
+#X obj 450 158 cnv 15 160 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 133 pd image;
+#X text 63 316 <none>;
+#X text 56 448 Outlet 1: gemlist;
+#X text 63 362 Inlet 1: gemlist;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 50 12 Synopsis: [pix_alpha];
+#X text 29 56 Description: set the alpha values of an RGBA-pix;
+#X text 21 229 It defaults to highThresh = 0 0 0 \, lowThresh = 0 0
+0 \, passVal = 0 \, and otherVal = 1 This makes any black pixels totally
+transparent.;
+#X text 22 170 pix_alpha compares at the color component level \, so
+if you wanted pixels with any red and no green or blue in them to be
+set to the passVal \, make highThresh = 1 0 0 and lowThresh = 0 0 0
+;
+#X text 21 74 pix_alpha sets the alpha values of a pix based on a simple
+thresholding. If a pixel value is between the high and low threshold
+RGB values \, then the alpha component of the pixel is set to the pass
+value. If the pixel value is below the low threshold or above the high
+threshold \, then the pixel alpha is set to the other value.;
+#X obj 451 283 pix_texture;
+#X obj 451 304 square 3;
+#X obj 451 110 alpha;
+#X text 10 276 This obviously only works with RGBA-images;
+#X floatatom 465 162 5 0 1 1 pass - -;
+#X floatatom 480 182 5 0 1 1 other - -;
+#X msg 494 207 0.6 0.6 0.6;
+#X msg 509 231 0.2 0.2 0.2;
+#X obj 445 336 gemhead 1;
+#X obj 445 378 rotate 45 1 1 1;
+#X obj 445 401 cube;
+#X obj 445 357 translate -2 0 0 1;
+#X obj 451 256 pix_alpha;
+#X text 63 375 Inlet 2: <float>: ALPHA-value if passed;
+#X text 63 388 Inlet 3: <float>: ALPHA-value if not passed;
+#X text 63 400 Inlet 4: <list>: high-threshold (RGB);
+#X text 63 413 Inlet 4: <list>: low-threshold (RGB);
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 30 0;
+#X connect 16 0 17 1;
+#X connect 17 0 40 0;
+#X connect 28 0 29 0;
+#X connect 30 0 17 0;
+#X connect 32 0 40 1;
+#X connect 33 0 40 2;
+#X connect 34 0 40 3;
+#X connect 35 0 40 4;
+#X connect 36 0 39 0;
+#X connect 37 0 38 0;
+#X connect 39 0 37 0;
+#X connect 40 0 28 0;

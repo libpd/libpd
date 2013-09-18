@@ -1,0 +1,33 @@
+#N canvas 0 26 472 281 10;
+#X text 147 63 Polar to cartesian coordinate conversion.;
+#X text 64 59 poltocar~;
+#X text 15 35 Cartesian to polar coordinate conversion.;
+#X text 92 106 Here's how to connect it to an fft~:;
+#X text 212 169 phase (in 271 radians);
+#X obj 163 252 ifft~ 256 256 0;
+#X obj 163 228 poltocar~;
+#X obj 163 153 cartopol~;
+#X obj 163 130 fft~ 256 256 0;
+#X text 143 169 amp.;
+#X text 214 195 <- do some spectral processing here;
+#N canvas 136 53 494 405 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible;
+#X text 12 45 DESCRIPTION cartesian to polar coordinate conversion
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 125 OUTLET_1 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 422 259 pd META;
+#X connect 6 0 5 0;
+#X connect 6 1 5 1;
+#X connect 7 0 6 0;
+#X connect 7 1 6 1;
+#X connect 8 0 7 0;
+#X connect 8 1 7 1;

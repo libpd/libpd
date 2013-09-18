@@ -1,0 +1,28 @@
+#N canvas 0 31 492 266 10;
+#X obj 0 0 cnv 8 100 60 empty empty s2f 10 20 1 18 -262144 -1109 0
+;
+#X text 1 244 (c) Moonix: Antoine Rousseau 2003;
+#X text 129 8 symbol to float converter;
+#X obj 197 159 s2f;
+#X floatatom 197 184 0 0 0 0 - - -;
+#X symbolatom 197 142 0 0 0 0 - - -;
+#X obj 345 105 makesymbol %s;
+#X msg 48 84 symbol 0.0003125foo;
+#X msg 197 85 symbol 54.123e-3bar;
+#X msg 345 85 13.25;
+#N canvas 380 146 490 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 65 INLET_0 symbol;
+#X text 12 105 AUTHOR Antoine Rousseau;
+#X text 12 125 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS control conversion symbol_op;
+#X text 12 45 DESCRIPTION symbol to float converter;
+#X text 12 85 OUTLET_0 float;
+#X restore 431 238 pd META;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 6 0;

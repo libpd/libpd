@@ -1,0 +1,30 @@
+#N canvas 1 53 324 246 10;
+#X obj 11 141 vclip -1 1;
+#X obj 11 196 print;
+#X msg 11 30 -4 -3 -2 -1 0 1 2 3 4;
+#X floatatom 73 64 5 0 0 0 - - -;
+#X floatatom 118 103 5 0 0 0 - - -;
+#X text 10 6 vclip clips each element in a vector;
+#X text 23 166 arguments: lower bound \, upper bound;
+#X text 20 52 input;
+#X text 79 81 lower bound;
+#X text 121 120 upper bound;
+#X text 243 183 j#|@2002;
+#X obj 265 163 SMLib-help;
+#N canvas 223 236 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION clip each element in a vector;
+#X text 12 65 INLET_0 list float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 list float;
+#X restore 282 207 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 2;

@@ -1,0 +1,107 @@
+<h1>Pure Data Packet</h1>
+
+<h2>Introduction</h2>
+
+<p>PDP is an extension library for 
+<a href="http://www.crca.ucsd.edu/~msp/software.html">Pure</a>
+<a href="http://www.puredata.info/about/">Data</a>, 
+aimed at providing video and other media processing fuctionality. 
+That's still it's main purpose, but as of version 0.13, there is more.
+PDP turned into a tool for writing PDP. See the section on
+<a href="#packetforth">Packet Forth</a>.
+
+<p>PDP runs on Linux and OSX. The OSX version depends on <a 
+href="http://fink.sourceforge.net/">Fink</a>.
+
+<p> PDP's focus is on images and video, but there is no reason it 
+should stay like that. There is support for matrix processing,
+1D and 2D binary cellular automata, opengl rendering (like Gem), 
+scheme scripting (guile), ascii packets, bit grids, ...
+
+<p> For more image processing objects, streaming objects and a collection 
+of very useful additions to the bare bones PDP functionality, have a look 
+at Yves Degoyon's <a href="http://ydegoyon.free.fr/pidip.html">PiDiP</a> library.
+
+<p> Since version 0.13.x, which is a merger between stable (0.12.x) and
+packet forth, PDP has been split up into 3 parts: 
+
+<li> libtile - A lowlevel library for platform specific (integer, mmx, altivec)
+image processing operations and cache optimizations.
+<li> libpdp - The packet managing library + pf scripting language.
+<li> pdp - This is the stable pdp 0.12.x with support for packet forth.
+
+
+<a name="puredata">
+<h2>PDP for Pure Data</h2></a>
+
+This is considered to be the stable part of pdp. It has been stable since 0.12.x
+It has it's bugs & drawbacks & oversimplifications but will mostly stay 
+like it is.
+
+It is optimized for intel/mmx and uses a 16bit signed yuv format ideal for real 
+time video processing, mixing, blending and feedback. The pf layer is accessible 
+from pd/pdp. The result of this is that you can write pdp objects in pf, or directly
+map pf operations to pdp objects.
+
+A 'getting started' documentation for pd/pdp/pidip is being worked on.
+Until then you can have a look at the 'pdp' subdirectory in pd's 'Pure Documentation'.
+Most objects are documented with pd style help patches accessible by right clicking
+on an object. The place to send questions is the pd mailing list. Bugreports can
+be sent to the pd list or me: <code> pdp TA zzz TOD kotnet TOD org </code>.
+
+
+<a name="packetforth">
+<h2>Packet Forth</h2></a>
+
+The libpdp library is a C support library for media processing. It implements
+a mime-like media type system (packets), type conversion and packet operations,
+interface logic to connect pf to other applications, and other things you might
+need to write small 'scratch' media applications.
+
+All operations are implemented as extensions to a forth-like glue language
+called Packet Forth. For more information on this see the documentation
+in the libpdp distribution, or the mailing list <a href="/pipermail/pf-list">archives</a>. 
+
+ 
+
+<a name="cvs">
+<h2>CVS</h2></a>
+
+The latest stable pdp release is <a href="http://zwizwa.fartit.com/pd/pdp/pdp-0.12.4.tar.gz">0.12.4</a>.
+Because 0.13.x is still in a flux, the preferred way of accessing the code is CVS.
+You can access the modules in this way:
+
+<p><code> 
+export CVSROOT=:pserver:anonymous@zwizwa.fartit.com:/usr/local/cvsroot <br>
+cvs login <br>
+cvs co libtile <br>
+cvs co libpdp <br>
+cvs co pdp <br>
+</code>
+
+<p>To update, simply <code>cd</code> to each of the 3 directories, and type <code>cvs update -d</code>.
+
+
+<p>When extracting from cvs, you need to run the <code>./bootstrap</code> script to
+create the configure scripts and build and install the packages in the order above. 
+In order to compile pdp with libpdp (pf) support, you need to add a 
+<code>--enable-pf</code> option when invoking pdp's configure script.
+
+
+<a name="links">
+<h2>Links</h2></a>
+
+<li><a href="http://pure-data.iem.at/about/">Pure Data at IEM</a>
+<li><a href="http://ydegoyon.free.fr/pidip.html">PiDiP Is Definitely In Pieces</a>
+<li><a href="http://www.hackitectura.net/aljwarizmi/">al-Jwarizmi</a>
+<li><a href="http://www.artefacte.org/modules.php?op=modload&name=PD&file=index">PidipVJ</a>
+<li><a href="http://rama.xicnet.com/appz.php">Videoflow / Cruzados BGN</a>
+<li><a href="http://attacksyour.net/pi/pd/index.html">Eth0</a>
+<li><a href="http://footils.org/cms">RRADical</a>
+
+<li><a href="http://veejay.sourceforge.net/">Veejay</a> / <a href="http://zwizwa.fartit.com/pd/sendVIMS/">SendVIMS</a>
+<li><a href="http://freej.dyne.org/">FreeJ</a>
+<li><a href="http://effectv.sourceforge.net/">EffecTV</a>
+
+
+

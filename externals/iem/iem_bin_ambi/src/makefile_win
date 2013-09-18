@@ -1,0 +1,43 @@
+
+all: ..\iem_bin_ambi.dll
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio\Vc98"
+
+PD_INST_PATH = "C:\Programme\pd"
+
+PD_WIN_INCLUDE_PATH = /I. /I$(PD_INST_PATH)\src /I$(VIS_CPP_PATH)\include
+
+PD_WIN_C_FLAGS = /nologo /W3 /WX /DMSW /DNT /DPD /DWIN32 /DWINDOWS /Ox -DPA_LITTLE_ENDIAN
+
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = /NODEFAULTLIB:libc /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel /NODEFAULTLIB:uuid \
+	$(VIS_CPP_PATH)\lib\libc.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_CPP_PATH)\lib\kernel32.lib \
+	$(VIS_CPP_PATH)\lib\wsock32.lib \
+	$(VIS_CPP_PATH)\lib\winmm.lib \
+	$(PD_INST_PATH)\bin\pd.lib
+
+
+SRC =	bin_ambi_calc_HRTF.c \
+	bin_ambi_reduced_decode.c \
+	bin_ambi_reduced_decode2.c \
+	bin_ambi_reduced_decode_fft.c \
+	bin_ambi_reduced_decode_fir.c \
+	bin_ambi_reduced_decode_fft2.c \
+	bin_ambi_reduced_decode_fir2.c \
+	iem_bin_ambi.c
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	cl $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+..\iem_bin_ambi.dll: $(OBJ)
+	link $(PD_WIN_L_FLAGS) /dll /export:iem_bin_ambi_setup \
+	/out:..\iem_bin_ambi.dll $(OBJ) $(PD_WIN_LIB)
+
+clean:
+	del *.obj

@@ -1,0 +1,22 @@
+#N canvas 0 31 487 308 12;
+#X obj 70 95 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 70 192 5 0 0 0 - - -;
+#X floatatom 185 103 5 0 0 0 - - -;
+#X obj 70 140 cauchy 0.5;
+#X text 238 104 alpha - governs spread;
+#X text 39 21 cauchy :: Cauchy distributed random numbers;
+#N canvas 293 158 494 344 META 0;
+#X text 12 150 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 130 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 90 INLET_1 float;
+#X text 12 110 OUTLET_0 float;
+#X text 12 45 DESCRIPTION Cauchy distributed random numbers;
+#X text 12 5 KEYWORDS control random;
+#X text 12 70 INLET_0 bang;
+#X restore 425 278 pd META;
+#X connect 0 0 3 0;
+#X connect 2 0 3 1;
+#X connect 3 0 1 0;

@@ -1,0 +1,19 @@
+#N canvas 105 135 468 434 10;
+#X obj 30 212 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 2 2 cnv 15 450 20 empty empty pddp/dsp 2 11 1 18 -233017 -66577
+0;
+#X msg 30 236 \; pd dsp \$1;
+#X text 18 103 Click in the box to the left in the object to turn on/off
+the DSP:;
+#X text 23 279 Notice that if you use the the above message \, [pddp_dsp]
+still responds to the change in DSP status. [pddp_dsp] also responds
+to the keyboard shortcuts.;
+#X text 138 343 On Mac OS X: Cmd-. and Cmd-/;
+#X text 47 329 On Windows and GNU/Linux: Ctrl-. and Ctrl-/;
+#X obj 34 142 pddp/dsp;
+#X text 16 182 [pddp/dsp] is basically a fancy version of this:;
+#X text 16 39 [pddp/dsp] is a GUI object to turn on and off the audio
+processing \, aka "DSP". It also shows the status of the DSP \, green
+means DSP is on \, grey means DSP is off.;
+#X connect 0 0 2 0;

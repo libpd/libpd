@@ -1,0 +1,25 @@
+#N canvas 254 125 463 361 10;
+#X obj 10 6 cnv 15 400 300 empty empty Gui_Group 20 12 2 14 -216636
+-42246 0;
+#X obj 38 76 bng 25 250 50 0 bang bang bang 0 -6 0 8 -225271 -42246
+-1;
+#X obj 86 72 tgl 35 0 toggle toggle toggle 0 -6 0 8 -225280 -1109 -1
+0 1;
+#X obj 142 78 nbx 5 14 0.01 10 1 1 numbox numbox numbox 0 -6 0 10 -228992
+-355 -1 0.588209 256;
+#X obj 286 40 vsl 15 128 0 127 0 0 vslider vslider vslider 0 -8 0 8
+-195568 -33289 -1 0 1;
+#X obj 26 195 hsl 128 15 0 127 0 0 hslider hslider hslider -2 -6 0
+8 -261689 -143491 -1 0 1;
+#X obj 227 39 vradio 15 1 0 8 vdial vdial vdial 0 -6 0 8 -261681 -90881
+-1 0;
+#X obj 26 150 hradio 15 1 0 8 hdial hdial hdial 0 -6 0 8 -262131 -123526
+-1 0;
+#X obj 352 46 vu 15 120 vu vu -1 -8 0 8 -66577 -1 1 0;
+#X msg 340 263 \; vu -15 -3;
+#X text 176 265 IEM KUG;
+#X text 160 253 musil;
+#X text 190 253 @;
+#X text 196 253 iem.at;
+#X text 111 242 (c) Thomas Musil 2000 - 2005;
+#X text 159 275 Graz \, Austria;

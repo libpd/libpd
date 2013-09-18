@@ -1,0 +1,61 @@
+#N canvas 143 1 590 665 10;
+#X obj 18 111 3dp_windowcontext;
+#X obj 18 139 3dp_push;
+#X obj 18 169 3dp_mouserotate;
+#X obj 76 428 3dp_push;
+#X obj 18 226 3dp_blend;
+#X text 98 228 <-- click for more info;
+#X obj 42 379 3dp_color;
+#X floatatom 132 330 5 0 0 0 - - -;
+#X floatatom 178 330 5 0 0 0 - - -;
+#X floatatom 223 330 5 0 0 0 - - -;
+#X floatatom 267 330 5 0 0 0 - - -;
+#X obj 283 127 3dp_view transz 5;
+#X obj 283 151 3dp_light;
+#X obj 18 78 metro 40;
+#X obj 18 50 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 132 271 vsl 15 50 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 2600 1;
+#X obj 178 270 vsl 15 50 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 3300 1;
+#X obj 223 270 vsl 15 50 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 4300 1;
+#X obj 269 269 vsl 15 50 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 2300 1;
+#X obj 283 102 3dp_view roty 5;
+#X obj 126 475 3dp_draw dodeca 4;
+#X text 129 248 red;
+#X text 170 248 green;
+#X text 219 249 blue;
+#X text 268 246 gain;
+#X obj 17 199 3dp_view scale 1;
+#X text 42 523 3dp_color: changes the rgb and gain values;
+#X text 43 536 right outlet is new color \, left outlet is the previous
+color.;
+#X text 303 303 alpha is interpreted as a color gain;
+#X text 303 280 in this blending mode \,;
+#X text 45 49 <-- start here;
+#X text 45 634 bitch made doc for PDP 0.12.5 - http://delcorp.org/abbadingo
+;
+#X connect 0 0 1 0;
+#X connect 0 1 2 1;
+#X connect 1 0 2 0;
+#X connect 1 1 19 0;
+#X connect 2 0 25 0;
+#X connect 3 1 20 0;
+#X connect 4 0 6 0;
+#X connect 6 1 3 0;
+#X connect 7 0 6 1;
+#X connect 8 0 6 2;
+#X connect 9 0 6 3;
+#X connect 10 0 6 4;
+#X connect 11 0 12 0;
+#X connect 13 0 0 0;
+#X connect 14 0 13 0;
+#X connect 15 0 7 0;
+#X connect 16 0 8 0;
+#X connect 17 0 9 0;
+#X connect 18 0 10 0;
+#X connect 19 0 11 0;
+#X connect 25 0 4 0;

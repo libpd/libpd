@@ -1,0 +1,18 @@
+body {
+  color: brown ;
+  background: gray url(test.bg.jpg) ;
+  margin-top: 10 ;
+  font-family: Helvetica, sans-serif ;
+  font-size: larger ;
+}
+
+pre.programlisting {
+  display: table ;
+  background-color: #EEEEEE ;
+  padding: 2pt ;
+  border-style: solid ;
+  border-width: 1pt ;
+  border-color: #000000 ;
+  border-spacing: 3pt ;
+  margin: 3pt ;
+}

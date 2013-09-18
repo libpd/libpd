@@ -1,0 +1,48 @@
+GEM - Graphics Environment for Multimedia
+Copyright © 1997-2000 Mark Danks
+Copyright © Günter Geiger
+Copyright © 2001-2011 IOhannes m zmölnig, 
+Copyright © 2003-2007 James Tittle II, 
+Copyright © 2003-2008 Chris Clepper
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+In the official GEM distribution, the GNU General Public License is
+in the file GnuGPL.LICENSE
+
+---------------------------------------------------------
+
+             ACKNOWLEDGMENTS
+
+---------------------------------------------------------
+Not all of the source code provided here has entirely been written by me.
+I would like to point at the great openGL-tutorials at http://nehe.gamedev.net
+Since these are tutorials, there is no copyright notice here.
+Some of the pix_fx code is borrowed from effecTV by Kentarou Fukuchi et al.
+at http://effectv.sourceforge.net released under the Gnu GPL, some other pix_fx
+code has been ported from Pete Warden's fine collection of FreeFrame plugins at
+http://petewarden.com released under the Gnu GPL.
+
+---------------------------------------------------------
+
+             OTHER COPYRIGHT NOTICES
+
+---------------------------------------------------------
+
+particle:
+    Author: David McAllister
+            davemc[AT]cs.unc.edu
+            http://www.cs.unc.edu/~davemc/Particle/
+    Copyright (c) 1998 David K. McAllister
+

@@ -1,0 +1,48 @@
+#N canvas 0 0 646 521 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X obj 81 170 t a a;
+#X text 441 320 see also:;
+#X text 89 15 [mtx_index];
+#X msg 81 135 matrix 1 5 -1 -2 -3 -4 -5;
+#X obj 275 168 t a a;
+#X obj 305 191 mtx_print right-indices;
+#X obj 111 193 mtx_print left-values;
+#X obj 81 237 mtx_print addressed-values;
+#X obj 81 214 mtx_index nan;
+#X text 185 215 <- invalid indices;
+#X msg 275 148 matrix 2 2 0 5 2 4;
+#X text 8 60 you can simultaneously address matrix elements you know
+the indices of \; the outlet matrix carries the shape of the indexing
+matrix \; 0 is not allowed as index \, so you can give an alternative
+value as creation argument (here nan).;
+#X obj 441 337 mtx_find;
+#X text 44 282 the indexing matrix can e.g. be the outlet of mtx_find
+based on logical conditions:;
+#X obj 89 325 mtx_rand;
+#X obj 89 347 t a a;
+#X obj 119 369 mtx_> 0.5;
+#X msg 51 323 2 3;
+#X obj 134 347 mtx_print random values;
+#X obj 119 391 mtx_find col;
+#X obj 89 413 mtx_index nan;
+#X obj 89 442 mtx_print result;
+#X text 200 411 finding the first nonzero entry in column;
+#X text 47 34 addressing matrix elements by their indices;
+#X connect 4 0 12 0;
+#X connect 4 1 10 0;
+#X connect 7 0 4 0;
+#X connect 8 0 12 1;
+#X connect 8 1 9 0;
+#X connect 12 0 11 0;
+#X connect 14 0 8 0;
+#X connect 18 0 19 0;
+#X connect 19 0 24 0;
+#X connect 19 1 20 0;
+#X connect 19 1 22 0;
+#X connect 20 0 23 0;
+#X connect 21 0 18 0;
+#X connect 23 0 24 1;
+#X connect 24 0 25 0;

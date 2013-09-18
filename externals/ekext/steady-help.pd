@@ -1,0 +1,124 @@
+#N canvas 0 31 616 303 10;
+#N canvas 0 22 696 311 fiddle-example 0;
+#X obj 139 187 steady;
+#X floatatom 98 223 5 0 0 3 max - -;
+#X floatatom 148 223 5 0 0 3 min - -;
+#X floatatom 199 224 5 0 0 3 through - -;
+#X floatatom 197 159 5 0 0 0 - - -;
+#X msg 197 127 5;
+#X obj 197 103 loadbang;
+#X text 202 172 maximum;
+#X text 209 183 jump;
+#N canvas 0 22 359 329 bad-fm 0;
+#X obj 43 170 osc~ 380;
+#X obj 43 243 osc~ 550;
+#X obj 43 223 +~ 550;
+#X obj 43 198 *~ 440;
+#X obj 43 144 +~ 280;
+#X obj 43 120 line~;
+#X obj 43 97 pack f 1000;
+#X obj 43 31 metro 1000;
+#X obj 43 50 t b b;
+#X msg 72 69 0;
+#X obj 43 264 outlet~;
+#X obj 122 7 inlet;
+#X msg 43 71 850;
+#X connect 0 0 3 0;
+#X connect 1 0 10 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 8 0 12 0;
+#X connect 8 1 9 0;
+#X connect 9 0 5 0;
+#X connect 11 0 7 0;
+#X connect 12 0 6 0;
+#X restore 87 102 pd bad-fm;
+#X obj 87 124 fiddle~;
+#X obj 117 145 unpack;
+#X floatatom 123 168 5 0 0 0 - - -;
+#X obj 109 79 switch~;
+#X obj 87 50 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 271 84 steady can be useful for eliminating errors from the
+raw pitch output of fiddle~;
+#X obj 36 244 dac~;
+#X obj 70 167 bng 15 250 50 0 empty empty reset 0 -6 0 8 -262144 -1
+-1;
+#X text 272 115 or for just keeping the values within range of a specific
+pitch from changing too quickly - so that a sort of 'closest pitch'
+output is given from the rightmost outlet;
+#X obj 32 216 *~ 0.4;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 4 0 0 1;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 9 0 10 0;
+#X connect 9 0 19 0;
+#X connect 10 2 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 0 0;
+#X connect 14 0 9 0;
+#X connect 14 0 13 0;
+#X connect 17 0 0 0;
+#X connect 19 0 16 0;
+#X connect 19 0 16 1;
+#X restore 42 52 pd fiddle-example;
+#X obj 45 187 steady;
+#X obj 44 107 random 100;
+#X obj 44 88 metro 100;
+#X floatatom 45 132 5 0 0 0 - - -;
+#X msg 102 147 8;
+#X obj 102 129 loadbang;
+#X floatatom 102 165 5 0 0 0 - - -;
+#X text 106 178 maximum;
+#X text 114 190 jump;
+#X floatatom 27 217 5 0 0 3 max - -;
+#X floatatom 77 217 5 0 0 3 min - -;
+#X floatatom 128 218 5 0 0 3 through - -;
+#X obj 53 162 bng 15 250 50 0 empty empty set-value 0 -6 0 8 -262144
+-1 -1;
+#X text 40 269 (c) 2005 Edward Kelly <morph_2016@yahoo.co.uk>;
+#X text 194 28 steady takes a stream of numbers as its input.;
+#X text 193 49 its output is the maximum and minimum and a through
+outlet;
+#X text 194 95 the right inlet sets the maximum jump between consecutive
+numbers in the right inlet \, and any value that is different from
+the previous value by +/- more than this number will be filtered out.
+;
+#X text 194 144 banging the left inlet causes steady to re-initialise
+\, so that the first number after the bang is let through \, and filtering
+occurs from then onwards.;
+#X text 194 188 ...sometimes useful to filter out erroneous results
+from fiddle~ and other externs...;
+#X text 194 73 but...;
+#N canvas 379 254 494 279 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 165 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION get maximum and minimum from a stream of
+numbers;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 float;
+#X text 12 145 OUTLET_2 float;
+#X restore 553 273 pd META;
+#X connect 1 0 10 0;
+#X connect 1 1 11 0;
+#X connect 1 2 12 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 6 0 3 0;
+#X connect 7 0 1 1;
+#X connect 13 0 1 0;

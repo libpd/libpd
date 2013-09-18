@@ -1,0 +1,63 @@
+#N canvas 0 31 677 358 10;
+#X obj 0 0 cnv 8 100 60 empty empty mknob 20 20 1 18 -262144 -1109
+0;
+#X floatatom 55 149 5 0 0 0 - - -;
+#X floatatom 55 68 5 0 0 0 - - -;
+#X text 104 208 Just an adaptation of musil's slider.;
+#X obj 138 224 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 103 222 See:;
+#X msg 3 107 set \$1;
+#X floatatom 190 114 5 0 0 0 - - -;
+#X obj 190 95 r foo-snd;
+#X floatatom 190 60 5 0 0 0 - - -;
+#X obj 190 76 s foo-rcv;
+#X text 135 12 gui-round-knob;
+#X text 2 302 (c) moonix: Antoine Rousseau 2003;
+#X obj 149 57 mknob 25 100 0 100 0 0 foo-snd foo-rcv empty -2 -6 192
+8 -225271 -1 -1 0 1;
+#X obj 55 85 mknob 30 100 0 127 0 0 empty empty empty -2 -6 0 8 -241291
+-24198 -1 0 1;
+#X obj 55 126 mknob 15 100 127 0 0 0 empty empty empty -2 -6 0 8 -258699
+-24198 -1 0 1;
+#X text 306 40 "mouse" parameter sets mouse;
+#X text 309 50 excursion for full range.;
+#X text 309 62 Set it with "size" parameter:;
+#X obj 398 201 mknob 25 -1 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 11024 1;
+#X msg 369 96 size 25 300;
+#X msg 398 119 size 25 10;
+#X text 452 96 low sensibility;
+#X text 474 120 high sens;
+#X text 494 142 default;
+#X msg 413 141 size 25 100;
+#X text 497 164 angular control;
+#X msg 427 165 size 25 0;
+#X text 518 187 full angular control;
+#X msg 443 188 size 25 -1;
+#X text 273 253 Note: there is in the sources a patch named mknob.pd.tk.diff
+to add (in pd.tk) mknob in the Pd "Put" menu \, and to give the hotkey
+"Alt-k" to it. It will only work for Pd0.37 \, but it can help to do
+the modif by hand for another version.;
+#N canvas 518 217 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Antoine Rousseau;
+#X text 12 125 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION round gui knob;
+#X text 12 5 KEYWORDS control GUI;
+#X text 12 65 INLET_0 float size;
+#X text 12 85 OUTLET_0 float;
+#X restore 620 330 pd META;
+#X connect 2 0 14 0;
+#X connect 6 0 14 0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 14 0 15 0;
+#X connect 15 0 6 0;
+#X connect 15 0 1 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 0;
+#X connect 25 0 19 0;
+#X connect 27 0 19 0;
+#X connect 29 0 19 0;

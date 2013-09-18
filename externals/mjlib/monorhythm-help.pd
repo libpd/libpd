@@ -1,0 +1,78 @@
+#N canvas 1 53 644 649 12;
+#X obj 291 585 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 115 440 start;
+#X obj 219 585 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 363 585 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 41 429 stop;
+#X obj 210 442 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 353 461 1 2 1 1;
+#X msg 452 473 2000;
+#X msg 261 426 1 2 0 1;
+#X obj 219 546 monorhythm 2000 2 1 1;
+#X text 23 28 by mark williamson;
+#X text 25 3 monorhythm;
+#X text 23 52 (mark@junklight.com);
+#X text 28 129 The monorhythm object is given a time interval and a
+rhythm pattern. It divides the interval into the number of beats in
+the pattern and outputs bangs as defined by the pattern. The performance
+time of the entire pattern is given by the time interval.;
+#X text 30 212 The pattern consists of strings of the symbols 0 \,
+1 and 2 0 is a rest \, 1 is a normal beat and 2 is an accented beat.
+A rest produces no output. A 1 produces a bang on the leftmost outlet.
+A 2 produces a bang on the left most outlet and a bang on the middle
+outlet (the accent outlet).;
+#X text 30 296 In order to synchronise multiple monorhythms there is
+a third outlet - the sync outlet. This does a bang at the start of
+every bar - which can be fed to the left most inlet of a second (or
+Nth) monorhythm.;
+#X text 29 367 for an example of a polyrhythm see:;
+#X obj 380 367 examples/polyexample;
+#X text 199 606 beat;
+#X text 277 603 accent;
+#X text 352 604 sync;
+#X text 449 503 time interval;
+#X text 278 394 pattern;
+#X text 37 401 stop;
+#X text 104 402 start or bang;
+#X text 105 418 sets it going;
+#X msg 25 484 exclusive;
+#X msg 27 579 nonexclusive;
+#X text 22 515 beat and accent;
+#X text 21 532 bangs are mutually;
+#X text 20 547 exclusive;
+#X text 23 602 accent bang;
+#X text 23 617 supplements;
+#X text 22 635 the beat bang;
+#N canvas 278 251 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 185 AUTHOR Mark Williamson <mark@junklight.com>;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control bang_op;
+#X text 12 45 DESCRIPTION designed to allow simple rhythms to be generated
+;
+#X text 12 65 INLET_0 bang start stop exclusive nonexclusive;
+#X text 12 85 INLET_1 list;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 bang;
+#X text 12 145 OUTLET_1 bang;
+#X text 12 165 OUTLET_2 bang;
+#X restore 551 621 pd META;
+#X text 28 77 The monorhythm object is designed to allow simple rhythms
+to be generated. It is also constructed in such away so as to create
+more complex polyrhythms quickly and easily.;
+#X connect 1 0 9 0;
+#X connect 4 0 9 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 1;
+#X connect 7 0 9 2;
+#X connect 8 0 9 1;
+#X connect 9 0 2 0;
+#X connect 9 1 0 0;
+#X connect 9 2 3 0;
+#X connect 26 0 9 0;
+#X connect 27 0 9 0;

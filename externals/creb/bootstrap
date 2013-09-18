@@ -1,0 +1,3 @@
+#!/bin/bash
+autoconf
+chmod +x bin/*

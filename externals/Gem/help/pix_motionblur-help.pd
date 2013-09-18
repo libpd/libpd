@@ -1,0 +1,95 @@
+#N canvas 230 0 683 377 10;
+#X text 452 8 GEM object;
+#X obj 9 225 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 227 Inlets:;
+#X text 40 289 Outlets:;
+#X obj 9 185 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 184 Arguments:;
+#X obj 8 56 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 290 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 519 329 pd gemwin;
+#X msg 519 310 create;
+#X text 515 289 Create window:;
+#X obj 451 199 cnv 15 160 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 83 gemhead;
+#X text 18 303 Outlet 1: gemlist;
+#X text 24 241 Inlet 1: gemlist;
+#X obj 451 292 square 3;
+#X obj 451 270 pix_texture;
+#X text 71 31 Class: pix object (timebased effect);
+#X obj 451 162 pix_film;
+#X obj 515 162 t f;
+#X obj 464 105 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 open 0;
+#X obj 85 49 inlet;
+#X obj 85 237 outlet;
+#X obj 85 145 openpanel;
+#X msg 85 179 open \$1;
+#X msg 259 213 auto 1;
+#X obj 268 179 loadbang;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X restore 464 134 pd open;
+#X floatatom 544 202 5 0 100 0 blur - -;
+#X text 505 77 open a supported;
+#X text 506 88 movie-clip;
+#X text 505 109 macOS: quicktime;
+#X text 498 99 windos: *.AVI;
+#X text 505 119 linux: depends...;
+#X obj 451 238 pix_motionblur;
+#X text 50 12 Synopsis: [pix_motionblur];
+#X text 29 57 Description: apply motionbluring on a series of images
+;
+#X obj 544 219 / 100;
+#X text 64 195 <none>;
+#X text 24 254 Inlet 2: float: blur-factor (0..no blurring \, 1..only
+blurring);
+#X text 14 73 [pix_motionblur] applies a very simple and fast motion
+blur to an image stream. the method used involves blending the current
+image with a 'history' image and saving the result back to the 'history'.
+the blending is the same as pix_mix output = (stream * gain) + (history
+* 1 - gain) applying a higher blur factor will mix in more of the history
+image and thus more of the history will be saved resulting in heavier
+blurring.;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 20 0;
+#X connect 18 0 17 0;
+#X connect 20 0 30 0;
+#X connect 20 2 21 0;
+#X connect 21 0 20 1;
+#X connect 22 0 23 0;
+#X connect 23 0 20 0;
+#X connect 24 0 33 0;
+#X connect 30 0 18 0;
+#X connect 33 0 30 1;

@@ -1,0 +1,32 @@
+#N canvas 0 26 464 306 10;
+#X obj 55 160 round_zero 1e-06;
+#X msg 55 78 -1e-07;
+#X text 10 8 round_zero;
+#X obj 55 183 print rounded;
+#X msg 116 78 1e-07;
+#X msg 67 114 -1e-05;
+#X msg 128 114 1e-05;
+#X text 122 9 round very small numbers between plus and minus first
+argument to zero;
+#X text 115 268 IEM KUG;
+#X text 99 256 musil;
+#X text 129 256 @;
+#X text 135 256 iem.at;
+#X text 50 245 (c) Thomas Musil 2000 - 2005;
+#X text 98 278 Graz \, Austria;
+#N canvas 333 26 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 115 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 5 KEYWORDS control filter;
+#X text 12 45 DESCRIPTION round very small numbers between plus and
+minus first argument to zero;
+#X text 12 75 INLET_0 float;
+#X text 12 95 OUTLET_0 float;
+#X restore 406 277 pd META;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;

@@ -1,0 +1,18 @@
+#N canvas 0 26 405 288 10;
+#X text 28 4 frequor~: frequency domain phasor~ (for traversing spectra)
+;
+#X text 102 25 output: (0 \, N/2-1) -> (0 \, 1);
+#X text 152 41 (N/2 \, N-1) -> (-1 \, 0);
+#N canvas 331 92 494 345 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 45 DESCRIPTION frequency domain phasor~ (for traversing
+spectra);
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS signal abstraction needs_work (example patch)
+;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 352 267 pd META;
+#X obj 128 131 frequor~;

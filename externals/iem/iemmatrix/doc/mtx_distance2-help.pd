@@ -1,0 +1,33 @@
+#N canvas 83 338 696 369 10;
+#X obj 33 242 mtx_distance2;
+#X obj 33 267 mtx_print distances;
+#X obj 119 179 t a a;
+#X obj 149 198 mtx_print B;
+#X obj 33 179 t a a;
+#X obj 63 198 mtx_print A;
+#X obj 33 106 t b b;
+#X msg 33 85 bang;
+#X obj 33 132 mtx_rand 4 3;
+#X obj 119 154 mtx_rand 2 3;
+#X text 44 34 [mtx_distance2];
+#X text 482 28 part of iemmatrix;
+#X text 268 138 inletA: a matrix defining <i> vectors of dimension
+<n>;
+#X text 268 158 inletB: a matrix defining <j> vectors of dimension
+<n>;
+#X text 267 179 outlet: distance matrix (i \, j) \, where each element
+Y(i \, j)=(A(i)-B(i)).(A(i)-B(i))=|A(i)-B(i)|^2;
+#X text 166 69 calculate the (square of the) euclidian distance between
+two sets of vectors.;
+#X text 233 274 note: if you want the real-distance (non-squared) \,
+calculate the square-root with [mtx_.^ 0.5];
+#X connect 0 0 1 0;
+#X connect 2 0 0 1;
+#X connect 2 1 3 0;
+#X connect 4 0 0 0;
+#X connect 4 1 5 0;
+#X connect 6 0 8 0;
+#X connect 6 1 9 0;
+#X connect 7 0 6 0;
+#X connect 8 0 4 0;
+#X connect 9 0 2 0;

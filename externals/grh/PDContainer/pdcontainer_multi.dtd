@@ -1,0 +1,17 @@
+<!ELEMENT PDContainer (element)+>
+<!ATTLIST PDContainer
+   type   (h_map | h_multimap)   #REQUIRED
+>
+
+<!ELEMENT element (key, value)>
+
+<!ELEMENT key (s, symbol, f, float)+>
+<!ELEMENT value (s, symbol, f, float)+>
+
+<!-- s is equivalent to symbol -->
+<!ELEMENT s (#PCDATA)>
+<!ELEMENT symbol (#PCDATA)>
+
+<!-- f is equivalent to float -->
+<!ELEMENT f (#PCDATA)>
+<!ELEMENT float (#PCDATA)>

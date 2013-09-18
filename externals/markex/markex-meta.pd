@@ -1,0 +1,8 @@
+#N canvas 1 53 200 200 10;
+#N canvas 20 22 420 300 META 0;
+#X text 10 10 META this is a prototype of a libdir meta file;
+#X text 10 30 NAME markex;
+#X text 10 50 AUTHOR Mark Danks;
+#X text 10 70 LICENSE GNU GPL;
+#X text 11 90 VERSION 0.86;
+#X restore 10 10 pd META;

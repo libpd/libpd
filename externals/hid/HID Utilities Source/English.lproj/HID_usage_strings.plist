@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>0x0001</key>
+	<dict>
+		<key>Name</key> <string>Generic Desktop</string>
+		<key>0x0001</key> <string>Pointer</string>
+		<key>0x0002</key> <string>Mouse</string>
+		<key>0x0004</key> <string>Joystick</string>
+		<key>0x0005</key> <string>GamePad</string>
+		<key>0x0006</key> <string>Keyboard</string>
+		<key>0x0007</key> <string>Keypad</string>
+		<key>0x0008</key> <string>MultiAxisController</string>
+		<key>0x0030</key> <string>X</string>
+		<key>0x0031</key> <string>Y</string>
+		<key>0x0032</key> <string>Z</string>
+		<key>0x0033</key> <string>Rx</string>
+		<key>0x0034</key> <string>Ry</string>
+		<key>0x0035</key> <string>Rz</string>
+		<key>0x0036</key> <string>Slider</string>
+		<key>0x0037</key> <string>Dial</string>
+		<key>0x0038</key> <string>Wheel</string>
+		<key>0x0039</key> <string>Hatswitch</string>
+		<key>0x003A</key> <string>Counted Buffer</string>
+		<key>0x003B</key> <string>Byte Count</string>
+		<key>0x003C</key> <string>Motion Wakeup</string>
+		<key>0x003D</key> <string>Start</string>
+		<key>0x003E</key> <string>Select</string>
+		<key>0x0040</key> <string>Vx</string>
+		<key>0x0041</key> <string>Vy</string>
+		<key>0x0042</key> <string>Vz</string>
+		<key>0x0043</key> <string>Vbrx</string>
+		<key>0x0044</key> <string>Vbry</string>
+		<key>0x0045</key> <string>Vbrz</string>
+		<key>0x0046</key> <string>Vno</string>
+		<key>0x0080</key> <string>System Control</string>
+		<key>0x0081</key> <string>System Power Down</string>
+		<key>0x0082</key> <string>System Sleep</string>
+		<key>0x0083</key> <string>System Wake Up</string>
+		<key>0x0084</key> <string>SystemContext Menu</string>
+		<key>0x0085</key> <string>System Main Menu</string>
+		<key>0x0086</key> <string>System App Menu</string>
+		<key>0x0087</key> <string>System Menu help</string>
+		<key>0x0088</key> <string>System Menu Exit</string>
+		<key>0x0089</key> <string>System Menu</string>
+		<key>0x008A</key> <string>System Menu Right</string>
+		<key>0x008B</key> <string>System Menu Left</string>
+		<key>0x008C</key> <string>System Menu Up</string>
+		<key>0x008D</key> <string>System Menu Down</string>
+		<key>0x0090</key> <string>DPad Up</string>
+		<key>0x0091</key> <string>DPad Down</string>
+		<key>0x0092</key> <string>DPad Right</string>
+		<key>0x0093</key> <string>DPad Left</string>
+	</dict>
+	<key>0x0002</key>
+	<dict>
+		<key>Name</key> <string>Simulation</string>
+		<key>0x0001</key> <string>Flight Simulation Device</string>
+		<key>0x0002</key> <string>Automobile Simulation Device</string>
+		<key>0x0003</key> <string>Tank Simulation Device</string>
+		<key>0x0004</key> <string>Spaceship Simulation Device</string>
+		<key>0x0005</key> <string>Submarine Simulation Device</string>
+		<key>0x0006</key> <string>Sailing Simulation Device</string>
+		<key>0x0007</key> <string>Motorcycle Simulation Device</string>
+		<key>0x0008</key> <string>Sports Simulation Device</string>
+		<key>0x0009</key> <string>Airplane Simulation Device</string>
+		<key>0x000A</key> <string>Helicopter Simulation Device</string>
+		<key>0x000B</key> <string>Magic Carpet Simulation Device</string>
+		<key>0x000C</key> <string>Bicycle Simulation Device</string>
+		<key>0x0020</key> <string>Flight Control Stick</string>
+		<key>0x0021</key> <string>Flight Stick</string>
+		<key>0x0022</key> <string>Cyclic Control</string>
+		<key>0x0023</key> <string>Cyclic Trim</string>
+		<key>0x0024</key> <string>Flight Yoke</string>
+		<key>0x0025</key> <string>Track Control</string>
+		<key>0x00B0</key> <string>Aileron</string>
+		<key>0x00B1</key> <string>Aileron Trim</string>
+		<key>0x00B2</key> <string>Anti Torque Control</string>
+		<key>0x00B5</key> <string>Collective Control</string>
+		<key>0x00B6</key> <string>Dive Brake</string>
+		<key>0x00B7</key> <string>Electronic Countermeasures</string>
+		<key>0x00B8</key> <string>Elevator</string>
+		<key>0x00B9</key> <string>Elevator Trim</string>
+		<key>0x00BA</key> <string>Rudder</string>
+		<key>0x00BB</key> <string>Throttle</string>
+		<key>0x00BC</key> <string>Flight Communications</string>
+		<key>0x00BD</key> <string>Flare Release</string>
+		<key>0x00BE</key> <string>Landing Gear</string>
+		<key>0x00BF</key> <string>Toe Brake</string>
+		<key>0x00C0</key> <string>Trigger</string>
+		<key>0x00C1</key> <string>Weapons Arm</string>
+		<key>0x00C2</key> <string>Weapons</string>
+		<key>0x00C3</key> <string>Wing Flaps</string>
+		<key>0x00C4</key> <string>Accelerator</string>
+		<key>0x00C5</key> <string>Brake</string>
+		<key>0x00C6</key> <string>Clutch</string>
+		<key>0x00C7</key> <string>Shifter</string>
+		<key>0x00C8</key> <string>Steering</string>
+		<key>0x00C9</key> <string>Turret Direction</string>
+		<key>0x00CA</key> <string>Barrel Elevation</string>
+		<key>0x00CB</key> <string>Dive Plane</string>
+		<key>0x00CC</key> <string>Ballast</string>
+		<key>0x00CD</key> <string>Bicycle Crank</string>
+		<key>0x00CE</key> <string>Handle Bars</string>
+		<key>0x00CF</key> <string>Front Brake</string>
+		<key>0x00D0</key> <string>Rear Brake</string>
+	</dict>
+	<key>0x0003</key>
+	<dict>
+		<key>Name</key> <string>Virtual Reality</string>
+		<key>0x0001</key> <string>Belt</string>
+		<key>0x0002</key> <string>Body Suit</string>
+		<key>0x0003</key> <string>Flexor</string>
+		<key>0x0004</key> <string>Glove</string>
+		<key>0x0005</key> <string>Head Tracker</string>
+		<key>0x0006</key> <string>Head Mounted Display</string>
+		<key>0x0007</key> <string>Hand Tracker</string>
+		<key>0x0008</key> <string>Oculometer</string>
+		<key>0x0009</key> <string>Vest</string>
+		<key>0x000A</key> <string>Animatronic Device</string>
+		<key>0x0020</key> <string>Stereo Enable</string>
+		<key>0x0021</key> <string>Display Enable</string>
+	</dict>
+	<key>0x0004</key>
+	<dict>
+		<key>Name</key> <string>Sport</string>
+		<key>0x0001</key> <string>Baseball Bat</string>
+		<key>0x0002</key> <string>Golf Club</string>
+		<key>0x0003</key> <string>Rowing Machine</string>
+		<key>0x0004</key> <string>Treadmill</string>
+
+		<key>0x0030</key> <string>Oar</string>
+		<key>0x0031</key> <string>Slope</string>
+		<key>0x0032</key> <string>Rate</string>
+		<key>0x0033</key> <string>Stick Speed</string>
+		<key>0x0034</key> <string>Stick Face Angle</string>
+		<key>0x0035</key> <string>Stick Heel Or Toe</string>
+		<key>0x0036</key> <string>Stick Follow Through</string>
+		<key>0x0037</key> <string>Stick Tempo</string>
+		<key>0x0038</key> <string>Stick Type</string>
+		<key>0x0039</key> <string>Stick Height</string>
+
+		<key>0x0050</key> <string>Putter</string>
+		<key>0x0051</key> <string>1 Iron</string>
+		<key>0x0052</key> <string>2 Iron</string>
+		<key>0x0053</key> <string>3 Iron</string>
+		<key>0x0054</key> <string>4 Iron</string>
+		<key>0x0055</key> <string>5 Iron</string>
+		<key>0x0056</key> <string>6 Iron</string>
+		<key>0x0057</key> <string>7 Iron</string>
+		<key>0x0058</key> <string>8 Iron</string>
+		<key>0x0059</key> <string>9 Iron</string>
+		<key>0x005A</key> <string>10 Iron</string>
+		<key>0x005B</key> <string>11 Iron</string>
+		<key>0x005C</key> <string>Sand Wedge</string>
+		<key>0x005D</key> <string>Loft Wedge</string>
+		<key>0x005E</key> <string>Power Wedge</string>
+		<key>0x005F</key> <string>1 Wood</string>
+		<key>0x0060</key> <string>3 Wood</string>
+		<key>0x0061</key> <string>5 Wood</string>
+		<key>0x0062</key> <string>7 Wood</string>
+		<key>0x0063</key> <string>9 Wood</string>
+	</dict>
+	<key>0x0005</key>
+	<dict>
+		<key>Name</key> <string>Game</string>
+		<key>0x0001</key> <string>3D Game Controller</string>
+		<key>0x0002</key> <string>Pinball Device</string>
+		<key>0x0003</key> <string>Gun</string>
+
+		<key>0x0020</key> <string>Point of View</string>
+		<key>0x0021</key> <string>Turn Right Or Left</string>
+		<key>0x0022</key> <string>Pitch Up Or Down</string>
+		<key>0x0023</key> <string>Roll Right Or Left</string>
+		<key>0x0024</key> <string>Move Right Or Left</string>
+		<key>0x0025</key> <string>Move Forward Or Backward</string>
+		<key>0x0026</key> <string>Move Up Or Down</string>
+		<key>0x0027</key> <string>Lean Right Or Left</string>
+		<key>0x0029</key> <string>Lean Forward Or Backward</string>
+		<key>0x0029</key> <string>Height Of POV</string>
+		<key>0x002A</key> <string>Flipper</string>
+		<key>0x002B</key> <string>Secondary Flipper</string>
+		<key>0x002C</key> <string>Bump</string>
+		<key>0x002D</key> <string>New Game</string>
+		<key>0x002E</key> <string>Shoot Ball</string>
+		<key>0x002F</key> <string>Player</string>
+
+		<key>0x0030</key> <string>Gun Bolt</string>
+		<key>0x0031</key> <string>Gun Clip</string>
+		<key>0x0032</key> <string>Gun</string>
+		<key>0x0033</key> <string>Gun Single Shot</string>
+		<key>0x0034</key> <string>Gun Burst</string>
+		<key>0x0035</key> <string>Gun Automatic</string>
+		<key>0x0036</key> <string>Gun Safety</string>
+		<key>0x0037</key> <string>Gamepad Fire Or Jump</string>
+		<key>0x0039</key> <string>Gamepad Trigger</string>
+	</dict>
+</dict>
+</plist>

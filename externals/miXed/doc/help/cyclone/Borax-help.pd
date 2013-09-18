@@ -1,0 +1,71 @@
+#N canvas 0 26 606 459 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 16 416 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 15 430 ___________________________________________________
+;
+#X obj 39 19 Borax;
+#X text 95 20 reports current info on note on/off;
+#X obj 34 95 notein 1;
+#X obj 34 129 Borax ---------------;
+#X floatatom 34 364 5 0 0 0 - - -;
+#X floatatom 49 338 5 0 0 0 - - -;
+#X floatatom 64 312 5 0 0 0 - - -;
+#X floatatom 80 286 5 0 0 0 - - -;
+#X floatatom 95 260 5 0 0 0 - - -;
+#X floatatom 110 234 5 0 0 0 - - -;
+#X floatatom 126 208 5 0 0 0 - - -;
+#X floatatom 141 182 5 0 0 0 - - -;
+#X floatatom 157 156 5 0 0 0 - - -;
+#X text 96 336 <------------------ voice nr of incoming note on / off
+;
+#X text 457 311 offs);
+#X text 106 311 <---------------- nr of notes being held (i.e. ons
+without;
+#X text 119 286 <-------------- pitch of current on/off received;
+#X text 137 260 <----------- velocity of current note;
+#X text 155 234 <-------- nr of all completed notes (i.e. nr of note
+;
+#X text 472 234 offs received);
+#X text 167 208 <------ duration of last note completed;
+#X text 198 155 <- delta time of last two note ons;
+#X text 184 181 <--- total count of delta times (see below);
+#X msg 157 95 bang;
+#X text 215 94 reset all values;
+#N canvas 364 7 494 548 META 0;
+#X text 12 355 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 325 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control MIDI max_compatible;
+#X text 12 45 DESCRIPTION report current info on note on / off;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 bang;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 OUTLET_1 float;
+#X text 12 165 OUTLET_2 float;
+#X text 12 185 OUTLET_3 float;
+#X text 12 205 OUTLET_4 float;
+#X text 12 225 OUTLET_5 float;
+#X text 12 245 OUTLET_6 float;
+#X text 12 265 OUTLET_7 float;
+#X text 12 285 OUTLET_8 float;
+#X text 12 305 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 556 437 pd META;
+#X text 426 363 on or off;
+#X text 78 363 <--------------------- nr of incoming note that is turned
+;
+#X connect 5 0 6 0;
+#X connect 5 1 6 1;
+#X connect 6 0 7 0;
+#X connect 6 1 8 0;
+#X connect 6 2 9 0;
+#X connect 6 3 10 0;
+#X connect 6 4 11 0;
+#X connect 6 5 12 0;
+#X connect 6 6 13 0;
+#X connect 6 7 14 0;
+#X connect 6 8 15 0;
+#X connect 26 0 6 2;

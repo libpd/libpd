@@ -1,0 +1,17 @@
+#N canvas 421 92 475 404 12;
+#X text 20 10 first entry;
+#X text 50 50 three ways of linking to a;
+#X obj 270 50 pddplink pddplink-test-01.html -text local html page
+;
+#X obj 50 75 pddplink pddplink-test-01.html;
+#X obj 50 110 pddplink pddplink-test-01.html -box;
+#X text 50 170 three ways of linking to a;
+#X obj 270 170 pddplink http://puredata.info -text remote html page
+;
+#X obj 50 195 pddplink http://puredata.info;
+#X obj 50 230 pddplink http://puredata.info -box;
+#X text 50 290 three ways of linking to;
+#X obj 260 290 pddplink pddplink-test-02.pd -text another local patch
+;
+#X obj 50 315 pddplink pddplink-test-02.pd;
+#X obj 50 350 pddplink pddplink-test-02.pd -box;

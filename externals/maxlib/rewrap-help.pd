@@ -1,0 +1,37 @@
+#N canvas 0 26 483 404 12;
+#X floatatom 27 304 8 0 0 0 - - -;
+#X floatatom 27 73 5 0 0 0 - - -;
+#X text 202 47 written by <olaf.matthes@gmx.de>;
+#X floatatom 60 133 5 0 0 0 - - -;
+#X floatatom 94 158 5 0 0 0 - - -;
+#X text 84 71 input value;
+#X text 57 102 creation arguments can be changed dynamically:;
+#X text 35 341 creation arguments:;
+#X text 115 132 lower limit;
+#X text 146 157 upper limit;
+#X floatatom 110 276 5 0 0 0 - - -;
+#X text 36 358 wrap <lower limit> <upper limit>;
+#X obj 27 249 rewrap 6 40;
+#X text 200 27 into a range;
+#X text 169 275 wrap period;
+#X text 107 305 output;
+#X text 122 11 rewrap :: wraps floats back and forth;
+#N canvas 293 158 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 45 DESCRIPTION wraps floats back and forth into a range
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 OUTLET_1 float;
+#X restore 413 364 pd META;
+#X connect 1 0 12 0;
+#X connect 3 0 12 1;
+#X connect 4 0 12 2;
+#X connect 12 0 0 0;
+#X connect 12 1 10 0;

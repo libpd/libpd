@@ -1,0 +1,44 @@
+#N canvas 1 53 535 282 10;
+#X obj 152 152 tab2flist zig;
+#X obj 10 -5 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -257985
+-1;
+#X obj 152 173 print;
+#X obj 190 173 table zig;
+#X floatatom 227 124 5 0 0 0 - - -;
+#X floatatom 64 48 5 0 0 0 - - -;
+#X text 33 -8 Banging tab2flist outputs a list of floats from the table.
+;
+#X msg 36 19 set zag;
+#X text 240 152 Argument is table name.;
+#X text 150 190 Points outside the table will be output as zeroes.
+;
+#X text 98 47 A single float sets offset.;
+#X text 89 18 Set the table by name.;
+#X obj 250 173 table zag;
+#X msg 86 69 5 10;
+#X text 150 204 Negative length outputs a list as long as the table.
+;
+#X text 263 123 Float in second inlet sets length of list.;
+#X text 118 68 Two floats set offset and length.;
+#X msg 109 92 delimiter 10 13;
+#X text 207 91 Output stops when a delimiter is encountered.;
+#X text 145 243 2009_1_28 Martin Peach;
+#N canvas 456 322 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 135 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control conversion array list_op;
+#X text 12 46 DESCRIPTION output the values from an array as a list
+of floats;
+#X text 12 75 INLET_0 bang float list set delimiter;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 list;
+#X restore 474 246 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 4 0 0 1;
+#X connect 5 0 0 0;
+#X connect 7 0 0 0;
+#X connect 13 0 0 0;
+#X connect 17 0 0 0;

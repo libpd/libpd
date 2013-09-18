@@ -1,0 +1,12 @@
+#N canvas 33 240 529 222 10;
+#X obj 19 115 xmlrpc 8000;
+#X text 21 68 XMLRPC configuration;
+#X text 18 83 (this object can be destroyed again once it has been
+created);
+#X obj 11 10 cnv 15 500 40 empty empty xmlrpc 10 22 0 24 -260818 -1
+0;
+#X text 148 14 xmlrpc external for PD \, author: Thomas Grill;
+#X text 144 31 (C)2003 IEM \, Graz;
+#X obj 21 180 netreceive;
+#X text 25 144 For Windows user a dummy netreceive object MUST be present
+Otherwise \, Pd uses 99% CPU power when invoked with -nogui;

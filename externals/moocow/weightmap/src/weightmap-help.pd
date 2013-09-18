@@ -1,0 +1,86 @@
+#N canvas 0 26 873 582 10;
+#X text 33 1 weightmap : map probabilities to associated integers;
+#X obj 114 364 print wmap_dump;
+#X obj 8 364 print wmap_out;
+#X obj 8 338 weightmap 3 100;
+#X text 463 79 SIZE : number of elements (integer);
+#X text 429 91 MAXWEIGHT : maximum expected input (float) [default=100]
+;
+#X text 395 65 weightmap SIZE [MAXWEIGHT];
+#X text 375 51 SYNTAX:;
+#X text 373 119 INLETS:;
+#X text 393 133 1 - floats ("weights" or "probabilities");
+#X text 421 147 OR messages;
+#X text 373 175 OUTLETS:;
+#X text 391 201 2 - miscellaneous output;
+#X text 391 187 1 - index (int) of stored weight matching input float
+;
+#X text 377 239 MESSAGES:;
+#X text 441 313 dump : dump the current weight-vector as a list to
+outlet-2;
+#X text 441 293 zero : resets all stored weights to zero;
+#X text 379 271 max MAXWEIGHT : change maximum expected input probability
+;
+#X msg 63 207 dump;
+#X msg 67 289 resize 4;
+#X msg 69 235 max 1;
+#X msg 69 257 max 100;
+#X msg 57 177 zero;
+#X msg 27 75 set 420 24 7;
+#X msg 33 97 set 50 25 25;
+#X text 127 85 set entire weight-vector;
+#X text 107 127 set selected weights;
+#X text 91 175 reset all weights;
+#X text 97 207 dump weights to 2nd outlet;
+#X text 113 239 adjust maximum input-value;
+#X text 131 297 adjust length of weight-vector;
+#X msg 67 311 resize 2;
+#X floatatom 14 44 5 0 0 0 - - -;
+#X text 63 43 output matching weight index;
+#X text 371 367 map IDX WEIGHT :;
+#X text 491 367 associate element IDX (int) of the stored weight-vector
+with weight WEIGHT (float). Multiple (index \, weight) pairs may also
+be specified.;
+#X text 393 335 set WEIGHTS :;
+#X text 600 514 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 393 253 resize SIZE : resizes the weight-vector to SIZE elements
+;
+#X text 491 335 sets the stored weight-vector to WEIGHTS. possibly
+resizes the vector.;
+#X text 11 402 NOTES:;
+#X msg 41 125 map 1 42;
+#X msg 47 147 map 1 10 2 20 3 30;
+#X text 11 521 incoming floats are expected to be in the range 0..MAXWEIGHT
+\; floats which exceed MAXWEIGHT will cause the weightmap to outlet
+"0 "(zero) \, indicating a failed match.;
+#X text 11 418 weightmap stores a vector of "weights" -- arbitrary
+floats representing probability values \, which are matched against
+incoming floats to generate integers at the outlet. Greater input floats
+do not neccesarily correspond to greater stored "weights" \, but greater
+"weights" do cause their associated indices to be output more frequently
+for random input floats.;
+#N canvas 260 141 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION map probabilities to associated integers
+;
+#X text 12 65 INLET_0 float set map zero dump max resize;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 list;
+#X restore 823 556 pd META;
+#X connect 3 0 2 0;
+#X connect 3 1 1 0;
+#X connect 18 0 3 0;
+#X connect 19 0 3 0;
+#X connect 20 0 3 0;
+#X connect 21 0 3 0;
+#X connect 22 0 3 0;
+#X connect 23 0 3 0;
+#X connect 24 0 3 0;
+#X connect 31 0 3 0;
+#X connect 32 0 3 0;
+#X connect 41 0 3 0;
+#X connect 42 0 3 0;

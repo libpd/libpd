@@ -1,0 +1,48 @@
+#N canvas 1 53 577 450 10;
+#X text 15 35 Bandpass filter controllable by center frequency and
+Q;
+#X obj 32 382 dac~;
+#X obj 32 343 *~ 0.2;
+#X floatatom 160 294 0 0 0 0 - - -;
+#X msg 133 227 200 \, 10000 4000;
+#X obj 31 210 noise~;
+#X text 36 226 input signal;
+#X text 133 211 center freq;
+#X text 89 250 gain;
+#X text 172 325 optional arguments set values of gain \, center frequency
+\, and Q (default 0 \, 0 \, 0.01);
+#X text 88 182 list sets gain \, cf \, q (works unless there are any
+signal inputs for filter parameters);
+#X text 42 316 filtered output;
+#X text 15 62 reson~ implements the following filter equation: y[n]
+= gain * (x[n] - r * x[n-2]) + c1 * y[n-1] + c2 * y[n-2] \, where r
+\, c1 \, and c2 are parameters calculated from the input center frequency
+and Q. Q is the filter bandwidth divided by center frequency. Inputs
+can be floats or signals. The specification is similar to the nres
+unit generator in cmusic.;
+#X obj 32 294 reson~ 1 200 23;
+#X obj 133 250 Line~ 200;
+#X floatatom 61 254 0 0 0 0 - - -;
+#X text 158 276 Q: Try range of 1-100;
+#N canvas 498 140 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 175 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 INLET_1 float;
+#X text 12 5 KEYWORDS signal filter;
+#X text 12 45 DESCRIPTION bandpass filter controllable by center frequency
+and Q;
+#X text 12 75 INLET_0 signal;
+#X text 12 115 INLET_2 signal;
+#X text 12 135 INLET_3 float;
+#X text 12 155 OUTLET_0 signal;
+#X restore 515 420 pd META;
+#X connect 2 0 1 0;
+#X connect 2 0 1 1;
+#X connect 3 0 13 3;
+#X connect 4 0 14 0;
+#X connect 5 0 13 0;
+#X connect 13 0 2 0;
+#X connect 14 0 13 2;
+#X connect 15 0 13 1;

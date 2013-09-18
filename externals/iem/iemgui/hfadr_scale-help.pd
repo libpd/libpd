@@ -1,0 +1,28 @@
+#N canvas 4 20 454 304 10;
+#X obj 90 134 fadtodb;
+#X obj 90 156 - 100;
+#X floatatom 90 177 5 0 0 0 - - -;
+#X text 130 179 dB;
+#X text 101 31 for horizontal slider with width of 121 pixels;
+#X obj 93 114 hsl 121 15 0 120 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 10 9 hfadr_scale;
+#X text 121 8 horizontal fader scale with right max;
+#X text 127 48 and a value-range from 0 to 120;
+#X obj 89 93 hfadr_scale -1;
+#X text 96 242 IEM KUG;
+#X text 80 230 musil;
+#X text 110 230 @;
+#X text 116 230 iem.at;
+#X text 79 252 Graz \, Austria;
+#X text 31 219 (c) Thomas Musil 2000 - 2006;
+#X text 253 107 |;
+#X text 253 118 |;
+#X text 325 107 |;
+#X text 325 118 |;
+#X text 256 99 ____________;
+#X text 256 116 ____________;
+#X text 253 113 |hfadr_scale|;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 5 0 0 0;

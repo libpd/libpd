@@ -1,0 +1,11 @@
+#N canvas 504 211 449 178 10;
+#X msg 77 38 start;
+#X msg 124 38 stop;
+#X obj 77 70 pdp_help_input;
+#X obj 77 136 pdp_help_output;
+#X obj 77 101 pdp_flip_lr;
+#X text 222 101 flip left <-> right;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;

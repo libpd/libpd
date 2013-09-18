@@ -1,0 +1,15 @@
+#N canvas 0 0 895 300 12;
+#X obj 91 150 mtx_rfft;
+#X obj 91 60 inlet;
+#X obj 91 202 outlet;
+#X obj 160 203 outlet;
+#X obj 269 88 loadbang;
+#X msg 269 120 mtx_rowrfft: use [mtx_rfft] in the future!;
+#X obj 269 150 print;
+#X text 291 202 changed name mtx_rowrfft to mtx_rfft Jul \, 22nd;
+#X text 291 222 Franz Zotter;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;

@@ -1,0 +1,56 @@
+#N canvas 0 26 548 326 10;
+#X text 15 35 Transform a signal into differences between successive
+samples;
+#X obj 256 268 *~ 0.02;
+#X obj 256 187 *~ 50;
+#X obj 256 135 phasor~ 2.003;
+#X obj 256 160 cos~;
+#X obj 256 214 +~ 440;
+#X obj 256 239 cycle~;
+#X obj 172 181 *~ 200000;
+#X floatatom 34 214 0 0 0 0 - - -;
+#X obj 34 187 snapshot~ 100;
+#X obj 172 300 dac~;
+#X obj 172 267 *~ 0.02;
+#X obj 172 240 cycle~;
+#X obj 172 214 +~ 440;
+#X obj 172 104 phasor~ 2;
+#X obj 172 128 cos~;
+#X msg 34 107 0 \, 5000 5000;
+#X obj 34 129 line~;
+#X text 173 87 Proposal for a new ambulance siren:;
+#X text 257 118 "(ambulance)";
+#X text 34 68 what's the increment between succesive samples of a line?
+;
+#X obj 34 157 delta~;
+#X obj 172 154 delta~;
+#N canvas 40 68 494 403 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION transform a signal into differences between
+successive samples;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 490 300 pd META;
+#X connect 1 0 10 1;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 7 0 13 0;
+#X connect 9 0 8 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 15 0;
+#X connect 15 0 22 0;
+#X connect 16 0 17 0;
+#X connect 17 0 21 0;
+#X connect 21 0 9 0;
+#X connect 22 0 7 0;

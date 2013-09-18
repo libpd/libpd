@@ -1,0 +1,13 @@
+#N canvas 592 156 450 300 10;
+#X obj 144 118 requirer complex;
+#X obj 146 173 requirer sqlite3;
+#X text 57 27 This should find the package next to the .pd_lua?;
+#X text 57 54 Or should it look next to the containing .pd patch?;
+#X text 56 142 This only "works" because of a dirty dirty hack...;
+#X text 52 242 TODO: some kind of "my location" necessary for .pd_lua
+scripts to access?;
+#X text 45 90 If it fails a list of paths searched will appear in the
+Pd console.;
+#X obj 56 220 requirer string;
+#X text 155 220 built-in modules are found OK;
+#X obj 57 200 requirer math;

@@ -1,0 +1,129 @@
+#N canvas 0 31 800 366 10;
+#X obj 407 306 dac~;
+#N canvas 252 136 556 460 svf_part2 0;
+#X text -1 306 onepole~.help contains yet another example.;
+#X text -1 382 svf~ accepts arguments or max messages to change the
+frequency input mode. it is generally recommended to set the mode with
+an argument and leave it constant \, to avoid confusion.;
+#X text -1 244 try sweeping the cutoff frequency in linear mode \,
+then in radians mode \, to appreciate the difference. a similar principle
+operates in the amplitude domain \, where exponential audio faders
+are used to match our logarithmic perception of loudness.;
+#X text -51 134 linear;
+#X text -27 81 Hz;
+#X text -1 177 in this mode \, input values from (0 -> 1) are interpreted
+as radians \, producing a quarter-cycle sinusoidal mapping to cutoff
+frequencies. this conforms the frequency mapping to a response that
+is closer to our logarithmic perception of pitch.;
+#X text -1 125 this mode is essentially the same \, but with a normalized
+input range. linear input values from (0 -> 1) are mapped to cutoff
+frequencies in the effective range \, (0 -> fs/4).;
+#X text -1 72 this is the default mode. input values set the cutoff
+frequency directly. therefore \, the input range is the same as the
+cutoff frequency (0 -> fs/4) \, and response is linear.;
+#X text -1 9 svf~ has three different modes for mapping input values
+onto cutoff frequency. these are mainly for convenience \, but they
+may also improve efficiency slightly.;
+#X text -1 329 since svf~ only samples its control inputs once per
+vector \, it is more efficient to use the radians mode than to do logarithmic
+scaling outside the object at audio rate.;
+#X text -59 191 radians;
+#X restore 617 344 pd svf_part2;
+#X text 16 12 state-variable filter;
+#X text 8 273 special thanks to 2up;
+#X msg 379 81 0.5;
+#X text 545 118 frequency range is 0 - f(s)/4;
+#X obj 409 151 noise~;
+#X text 8 158 Floats or signals can modify these in real-time. The
+value of these parameters is only sampled once per signal vector.;
+#X text 8 138 Arguments are cutoff frequency (Hz) \, and resonance
+(0-1).;
+#X text 8 93 One of its advantages is that the it produces low-pass
+\, high-pass \, band-pass \, and band-reject (notch) output simultaneously
+- so all four are available in parallel.;
+#X text 8 65 svf~ implements Chamberlin's state-variable filter algorithm.
+;
+#X msg 422 86 37;
+#X text 553 164 left: (signal) filter input;
+#X text 527 254 outputs: lowpass \, highpass \, bandpass \, notch;
+#X text 553 192 right: (signal/float) resonance (0 - 1);
+#X text 553 178 middle: (signal/float) cutoff frequency;
+#X obj 346 25 loadbang;
+#X obj 458 106 * 11025;
+#X obj 458 85 / 512;
+#X floatatom 458 127 0 0 0 0 - - -;
+#N canvas 40 55 716 389 svf_algorithm 0;
+#X text 242 290 bandstop = lowpass + hipass \;;
+#X text 59 179 this is the dsp loop. note how the calculations work
+together to produce all four outputs simultaneously.;
+#X text 62 123 first \, convert hz to radians (this step is not necessary
+in radians input mode);
+#X text 44 82 this is the basic algorithm inside svf~:;
+#X text 237 137 cf_radians = sin(2. * PI * cf_hz * x->ifs) \;;
+#X text 242 258 bandpass = bandpass + cf_radians * hipass \;;
+#X text 242 242 hipass = in_samp - lowpass - q * bandpass \;;
+#X text 242 226 lowpass = lowpass + (cf_radians * bandpass) \;;
+#X text 242 274 bandpass = bandpass - (bandpass ^ 3.) * 0.0001 \;;
+#X restore 499 344 pd svf_algorithm;
+#X text 8 240 (float) resonance (0-1);
+#X text 8 226 (float) cutoff frequency (Hz);
+#X text 8 212 arguments (optional):;
+#X obj 526 201 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 493 201 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 460 201 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 427 201 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 508 219 *~ 0;
+#X obj 475 219 *~ 0;
+#X obj 442 219 *~ 0;
+#X obj 409 219 *~ 0;
+#X floatatom 507 151 0 0 0 0 - - -;
+#X obj 409 175 svf~ 797 0.5;
+#X obj 409 269 *~ 0.7;
+#X obj 464 54 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 3700 1;
+#N canvas 511 83 494 469 META 0;
+#X text 12 255 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 225 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal filter max_compatible;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 145 OUTLET_1 signal;
+#X text 12 165 OUTLET_2 signal;
+#X text 12 185 OUTLET_3 signal;
+#X text 12 45 DESCRIPTION state-variable filter;
+#X text 12 205 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 751 344 pd META;
+#X connect 4 0 32 0;
+#X connect 6 0 33 0;
+#X connect 11 0 35 0;
+#X connect 16 0 4 0;
+#X connect 16 0 11 0;
+#X connect 16 0 27 0;
+#X connect 17 0 19 0;
+#X connect 18 0 17 0;
+#X connect 19 0 33 1;
+#X connect 24 0 28 1;
+#X connect 25 0 29 1;
+#X connect 26 0 30 1;
+#X connect 27 0 31 1;
+#X connect 28 0 34 0;
+#X connect 29 0 34 0;
+#X connect 30 0 34 0;
+#X connect 31 0 34 0;
+#X connect 32 0 33 2;
+#X connect 33 0 31 0;
+#X connect 33 1 30 0;
+#X connect 33 2 29 0;
+#X connect 33 3 28 0;
+#X connect 34 0 0 0;
+#X connect 34 0 0 1;
+#X connect 35 0 18 0;

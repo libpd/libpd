@@ -1,0 +1,11 @@
+#N canvas 420 63 200 200 10;
+#N canvas 26 71 420 300 META 0;
+#X text 10 10 META this is a prototype of a libdir meta file;
+#X text 10 30 NAME smlib;
+#X text 10 50 AUTHOR Johannes Taelman <johannes.taelman@rug.ac.be>
+;
+#X text 10 70 LICENSE GNU GPL;
+#X text 10 90 DESCRIPTION vector processing \, vector analysis \, vector
+synthesis \, number stream analysis \, number stream filters;
+#X text 10 130 VERSION 0.12.2;
+#X restore 10 10 pd META;

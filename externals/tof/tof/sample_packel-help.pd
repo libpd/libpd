@@ -1,0 +1,26 @@
+#N canvas 1 53 551 304 10;
+#X text 26 30 Tags: Sample Sound;
+#X text 30 60 Warning: [tof/sample_packel] is only for advanced users!
+;
+#X msg 146 181 sample test;
+#X text 225 177 Inlet 2 \, sample symbol: the sample to be modified
+;
+#X msg 57 100 end 1000;
+#X msg 92 125 start 10;
+#X text 120 99 Change the end of the sample;
+#X text 150 122 Change the start of the sample;
+#X obj 57 210 tof/sample_packel;
+#X text 26 12 Description: Modifies the properties of a sample;
+#N canvas 286 191 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 45 DESCRIPTION modify the properties of a sample;
+#X text 12 5 KEYWORDS control abstraction array;
+#X text 12 65 INLET_0 start end;
+#X text 12 85 INLET_1 sample;
+#X restore 489 254 pd META;
+#X connect 2 0 8 1;
+#X connect 4 0 8 0;
+#X connect 5 0 8 0;

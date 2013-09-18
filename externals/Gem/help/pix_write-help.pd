@@ -1,0 +1,41 @@
+#N canvas 95 74 798 603 10;
+#X msg 163 109 gemList;
+#X msg 163 239 gemList;
+#X msg 237 183 sizeX sizeY;
+#X msg 238 162 posX posY;
+#X text 174 43 [pix_write];
+#X text 96 64 Make a snapshot of the frame-buffer and write it to a
+file;
+#X obj 163 203 pix_write;
+#X msg 115 149 bang;
+#X msg 243 99 auto 0/1;
+#X msg 246 122 file <filename> [<type>];
+#X text 46 256 [pix_write] takes a picture of the frame buffer and
+saves it to a file. When a "bang" message is sent to [pix_write] \,
+that is the moment that something is captured from the current frame
+buffer. If you set "auto" to 1 (enabled) \, an image is written each
+rendering frame.;
+#X text 48 327 Currently only single-images are supported (no animations
+\, videos \, AVIs \, ...);
+#X text 47 534 You can set the size of the snapshot window as well
+as the position. These can be set via creation arguments too: [pix_write
+[<posX> <posY> [<sizeX> <sizeY>]]];
+#X text 48 367 With the "file" message you can specify a base-filename
+and the type of image-files you want to create.;
+#X text 48 410 The actual name of the file will be something like "<basefilename><current#>.<ext>"
+(like "GEM00001.tif");
+#X text 52 445 Supported file-types are TIFF (type=0) and JPEG (type>0
+\; quality=type \; you might want a high-quality (type>80) to like
+your images);
+#X text 52 496 TIFF-writing is very slow ! JPEG is fast (but ugly with
+low quality);
+#X text 475 437 "file <basefilename> <type>";
+#X text 473 403 "file <basefilename>" : assume type=TIFF;
+#X text 474 420 "file <type>": change type;
+#X connect 0 0 6 0;
+#X connect 2 0 6 2;
+#X connect 3 0 6 1;
+#X connect 6 0 1 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;

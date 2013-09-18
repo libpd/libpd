@@ -1,0 +1,8 @@
+#N canvas 0 0 450 300 10;
+#X obj 98 174 dispatchertest;
+#X floatatom 98 42 5 0 0 0 - - -;
+#X symbolatom 144 75 10 0 0 0 - - -;
+#X msg 191 110 a b c 1 2 3;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 2;

@@ -1,0 +1,40 @@
+#N canvas 0 26 419 351 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 15 313 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 14 327 ___________________________________________________
+;
+#X floatatom 98 276 5 0 0 0 - - -;
+#X obj 24 27 mean;
+#X text 60 32 find the running average of a stream of numbers;
+#X obj 98 215 mean;
+#X floatatom 44 130 5 0 0 0 - - -;
+#X obj 157 163 line;
+#X msg 98 85 clear;
+#X msg 157 131 0 \, 1 1000;
+#X msg 158 99 1 2 3 4 5;
+#N canvas 247 115 494 368 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION find the running average of a stream of numbers
+;
+#X text 12 65 INLET_0 float list clear;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 370 331 pd META;
+#X floatatom 119 245 5 0 0 0 - - -;
+#X text 159 243 total no of values included in the;
+#X text 159 258 averaging process;
+#X text 138 277 mean;
+#X connect 6 0 3 0;
+#X connect 6 1 13 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 8 0;
+#X connect 11 0 6 0;

@@ -1,0 +1,26 @@
+
+- implement [classpath] which adds a path to the global path, like what
+  [declare -stdpath] does.  The idea is that the global path serves as a
+  Java-style classpath. and the local path serves as the namespace.
+
+  - inlet accepts bang to output classpath on outlet
+  - inlet accepts messages to add items to the classpath
+  - follows same interface as [textfile], [qlist]
+
+- implement [import] which adds the libdir path to the canvas path, similar
+  [declare -lib] does, except that it only looks in the global path (aka
+  classpath)
+
+  - inlet accepts bang to output canvas path on outlet
+  - inlet accepts messages to add items to the canvas path
+  - follows same interface as [textfile], [qlist]
+
+- make [libdir] load libdirs when they are called with [import] and [declare
+  -lib] and [declare -stdlib].
+
+- [libdir] loader should only add the libdir to the helppath, not the
+  additional doc/5.reference path to the helppath.  The idea is that libdirs
+  are self-contained.
+
+
+- test binary on 0.41 test

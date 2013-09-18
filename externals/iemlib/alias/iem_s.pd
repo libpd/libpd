@@ -1,0 +1,7 @@
+#N canvas 182 530 318 148 10;
+#X text 12 16 iem_s: alias for iem_send;
+#X obj 97 95 iem_send \$1;
+#X obj 97 69 inlet;
+#X obj 169 69 inlet;
+#X connect 2 0 1 0;
+#X connect 3 0 1 1;

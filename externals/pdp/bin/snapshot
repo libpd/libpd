@@ -1,0 +1,10 @@
+[ "$1" == "-d" ] && shift && APPEND="-`date +%Y%m%d_%H%M%S`"
+[ -z "$1" ] && echo "usage $0 [-d] <name>" && exit 1
+
+VER="$1$APPEND"
+
+# for autoconf patch in bin/predist
+export PDP_DIST_VERSION=$VER
+
+# create archive
+exec darcs dist -d "pdp-$VER"

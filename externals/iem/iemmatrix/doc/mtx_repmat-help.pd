@@ -1,0 +1,34 @@
+#N canvas -18 184 715 302 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X obj 42 139 t a a;
+#X obj 84 140 mtx_print org;
+#X msg 42 94 bang;
+#X text 90 15 [mtx_repmat];
+#X text 108 35 repeat a matrix into a meta-matrix;
+#X obj 42 257 mtx_print repeated;
+#X obj 42 229 mtx_repmat 2 2;
+#X obj 42 116 mtx_egg 3 4;
+#X msg 209 127 1 2;
+#X obj 209 199 t b l;
+#X msg 225 151 3 1;
+#X text 246 126 repeat incoming matrix 1*vertically and 2*horizontally
+;
+#X text 259 151 repeat incoming matrix 3*vertically and 1*horizontally
+;
+#X msg 261 172 2 2;
+#X text 294 174 repeat incoming matrix 2*vertically and 2*horizontally
+;
+#X text 39 77 repeat a matrix;
+#X connect 4 0 10 0;
+#X connect 4 1 5 0;
+#X connect 6 0 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 4 0;
+#X connect 12 0 13 0;
+#X connect 13 0 11 0;
+#X connect 13 1 10 1;
+#X connect 14 0 13 0;
+#X connect 17 0 13 0;

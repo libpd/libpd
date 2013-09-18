@@ -1,0 +1,8 @@
+#N canvas 50 50 600 400 12;
+#X text 10 10 Snapshot~ clone \, unlike the snapshot~ built into Pd;
+#X text 10 30 .;
+#X text 30 30 optionally replaces external triggering source with an;
+#X text 30 50 internal clock \;;
+#X text 10 70 .;
+#X text 30 70 reports value of an element at a settable offset in the;
+#X text 30 90 signal vector.;

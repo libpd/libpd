@@ -1,0 +1,11 @@
+#N canvas 204 82 318 300 12;
+#X floatatom 34 39 5 0 0 0 - - -;
+#X floatatom 34 118 0 0 0 0 - - -;
+#X obj 34 76 linedrive 100 100 1.01 0;
+#X obj 32 209 maxmode;
+#X msg 124 171 set max;
+#X msg 32 171 set none;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;

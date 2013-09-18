@@ -1,0 +1,47 @@
+#N canvas 2 82 462 312 10;
+#X obj 156 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 173 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 190 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 207 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 224 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 241 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 258 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 275 94 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 195 171 5 0 0 0 - - -;
+#X text 108 34 generate a bitmask byte from 8 inlets;
+#X text 204 247 set also: [debytemask];
+#X obj 195 135 bytemask;
+#N canvas 464 140 494 344 META 0;
+#X text 12 265 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 225 OUTLET_0 float;
+#X text 12 245 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION generate a bitmask byte from 8 inlets;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X text 12 145 INLET_4 float;
+#X text 12 165 INLET_5 float;
+#X text 12 185 INLET_6 float;
+#X text 12 205 INLET_7 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 407 284 pd META;
+#X connect 0 0 11 0;
+#X connect 1 0 11 1;
+#X connect 2 0 11 2;
+#X connect 3 0 11 3;
+#X connect 4 0 11 4;
+#X connect 5 0 11 5;
+#X connect 6 0 11 6;
+#X connect 7 0 11 7;
+#X connect 11 0 8 0;

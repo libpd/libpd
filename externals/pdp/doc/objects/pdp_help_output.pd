@@ -1,0 +1,24 @@
+#N canvas 116 376 510 304 10;
+#X obj 192 70 inlet;
+#X obj 59 178 pdp_xv;
+#X text 18 9 this abstraction is used as an output module in most of
+the documentation patches. change it to reflect your preferred output
+object.;
+#X obj 232 179 pdp_glx;
+#X text 31 201 X11 XVideo output;
+#X text 198 199 X11 openGL output;
+#X text 60 217 (linux);
+#X text 199 214 (linux \, mesa \, osx);
+#X obj 192 98 pdp_route 3;
+#X msg 34 128 display :0;
+#X obj 264 69 hradio 15 1 1 3 empty empty empty 0 -6 0 8 -262144 -1
+-1 1;
+#X obj 388 180 pdp_sdl;
+#X text 378 199 SDL output;
+#X text 386 216 (linux);
+#X connect 0 0 8 0;
+#X connect 8 0 1 0;
+#X connect 8 1 3 0;
+#X connect 8 2 11 0;
+#X connect 9 0 1 0;
+#X connect 10 0 8 1;

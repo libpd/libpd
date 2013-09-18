@@ -1,0 +1,29 @@
+#N canvas 0 31 527 298 10;
+#X text 27 268 (c) Antoine Rousseau 2001;
+#X floatatom 196 85 5 0 300 0 - - -;
+#X obj 163 136 f2s;
+#X obj 196 106 dbtorms;
+#X symbolatom 163 158 4 0 0 0 - - -;
+#X floatatom 207 158 0 0 0 0 - - -;
+#X text 244 85 Touch this;
+#X text 57 196 The idea: many decades in an always 4 characters long
+symbol...;
+#X obj 44 31 f2s;
+#X text 80 32 A float-to-symbol converter \, with scientific-mode writing.
+;
+#N canvas 380 146 494 344 META 0;
+#X text 12 35 LICENSE GPL v2;
+#X text 12 125 AUTHOR Antoine Rousseau;
+#X text 12 145 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 85 INLET_0 float;
+#X text 12 105 OUTLET_0 symbol;
+#X text 12 55 DESCRIPTION a float-to-symbol converter \, with scientific-mode
+writing;
+#X text 12 5 KEYWORDS control conversion symbol_op needs_work (object
+won't create);
+#X restore 461 260 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;

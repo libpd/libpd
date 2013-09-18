@@ -1,0 +1,17 @@
+#N canvas 0 31 450 300 10;
+#X obj 109 101 hasc~;
+#X text 78 43 Highest Apparent Spectral Component;
+#N canvas 303 130 489 373 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 KEYWORDS signal needs_work (example patch);
+#X text 12 45 DESCRIPTION highest apparent spectral component \, according
+to amplitude threshold;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 INLET_2 float;
+#X text 12 135 OUTLET_0 float;
+#X text 12 155 OUTLET_1 float;
+#X text 12 175 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 25 LICENSE GPL v3;
+#X restore 387 265 pd META;

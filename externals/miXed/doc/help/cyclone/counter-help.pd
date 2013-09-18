@@ -1,0 +1,183 @@
+#N canvas 0 26 751 579 10;
+#X text 382 541 docs based on the MAX/MSP reference (c) cycling'74
+;
+#X text 381 555 ___________________________________________________
+;
+#X obj 5 20 counter;
+#X text 79 21 count the number of bangs received;
+#X obj 54 74 metro 300;
+#X obj 54 51 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 131 197 10 0 0 0 - - -;
+#X text 201 198 number of bangs;
+#X text 163 76 change direction;
+#X obj 142 74 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 4 51 start;
+#X obj 153 104 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 176 106 reset to minimum \, wait for next bang before output
+;
+#X obj 164 130 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 188 131 reset and output imediately;
+#X floatatom 112 53 5 0 0 0 - - -;
+#X obj 175 153 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 131 171 counter;
+#X text 197 155 reset to max \, wait for next bang before output *
+;
+#X text 430 191 unlimited counter \, sensible behaviour IMO;
+#X floatatom 162 240 5 0 0 0 - - -;
+#X floatatom 162 497 10 0 0 0 - - -;
+#X msg 181 264 0;
+#X msg 191 283 1;
+#X msg 200 303 2;
+#X text 225 267 counter direction;
+#X text 248 279 0 = up;
+#X text 248 291 1 = down;
+#X text 248 303 2 = up and down;
+#X floatatom 209 343 5 0 0 0 - - -;
+#X floatatom 217 360 5 0 0 0 - - -;
+#X floatatom 224 378 5 0 0 0 - - -;
+#X text 267 379 set max;
+#X text 262 358 set counter value;
+#X obj 597 433 counter;
+#X msg 543 318 set \$1;
+#X floatatom 543 299 5 0 0 0 - - -;
+#X msg 597 319 jam \$1;
+#X floatatom 597 300 5 0 0 0 - - -;
+#X text 488 281 set counter to nr. and output;
+#X text 637 298 immediately;
+#X text 453 298 at next bang;
+#X msg 458 317 goto \$1;
+#X text 519 319 =;
+#X msg 67 354 up;
+#X msg 80 374 down;
+#X msg 101 393 updown;
+#X text 63 337 direction:;
+#X msg 82 295 inc;
+#X msg 63 275 dec;
+#X text -2 246 inc/decrement doesn't;
+#X text -2 257 care about direction;
+#X msg 319 239 next;
+#X text 208 240 number = bang =;
+#X msg 437 394 min \$1;
+#X msg 485 393 max \$1;
+#X floatatom 437 373 5 0 0 0 - - -;
+#X floatatom 485 372 5 0 0 0 - - -;
+#X text 434 355 set min/max;
+#N canvas 0 22 508 167 arguments 0;
+#X text 58 21 arguments are specified as follows:;
+#X text 195 51 one arg = initial maximum;
+#X text 196 69 two args = initial min/max;
+#X text 208 95 three = direction (0 \, 1 \, 2) min/max;
+#X obj 62 50 counter 100;
+#X obj 62 72 counter 50 100;
+#X obj 61 95 counter 0 50 100;
+#X restore 330 69 pd arguments;
+#N canvas 19 104 733 288 outputs 0;
+#X obj 49 82 metro 100;
+#X obj 49 57 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 49 227 5 0 0 0 - - -;
+#X text 88 228 count;
+#X floatatom 80 198 5 0 0 0 - - -;
+#X floatatom 111 169 5 0 0 0 - - -;
+#X obj 49 108 counter 2 0 10;
+#X text 155 171 we reached max when counting up;
+#X text 129 200 we reached min when counting down;
+#X floatatom 142 137 5 0 0 0 - - -;
+#X text 187 139 count of overflows;
+#X obj 468 156 metro 100;
+#X obj 468 73 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 468 183 counter 2 0 10;
+#X msg 412 104 carrybang;
+#X obj 499 230 print down;
+#X obj 530 207 print up;
+#X msg 436 126 carryint;
+#X text 506 127 default (0/1);
+#X text 485 104 bang when up/down overflow;
+#X text 144 17 ok \, wondering what so many outputs are for ? here
+we go!;
+#X text 145 30 please also test the carrybang vs carryint \, to the
+right;
+#X text 144 43 the subtile difference is 2 state changes (int) vs one
+bang;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 6 0 2 0;
+#X connect 6 1 4 0;
+#X connect 6 2 5 0;
+#X connect 6 3 9 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 0;
+#X connect 13 1 15 0;
+#X connect 13 2 16 0;
+#X connect 14 0 13 0;
+#X connect 17 0 13 0;
+#X restore 428 69 pd outputs;
+#X text 444 255 additional ways to accomplish the same:;
+#X obj 455 516 pddp/pddplink ../all_about_looping.pd -text all_about_looping
+;
+#X text 453 470 click on these for more info:;
+#X text 415 181 * (there seems to be a bug when used with an;
+#X text 431 201 would be to reset to 0 as well ...);
+#X obj 455 493 pddp/pddplink all_about_cyclone.pd -text all_about_cyclone
+;
+#X text 254 341 set min **;
+#X text -6 518 ** (there seems to be a bug in the original documentation
+or implementation: the 3rd inlet is indeed a "set" message instead
+of a "min" message...);
+#N canvas 208 97 494 476 META 0;
+#X text 12 315 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 285 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 55 DESCRIPTION count the number of bangs received;
+#X text 12 185 OUTLET_0 float;
+#X text 12 205 OUTLET_1 float;
+#X text 12 225 OUTLET_2 float;
+#X text 12 245 OUTLET_3 float;
+#X text 12 105 INLET_1 float bang;
+#X text 12 125 INLET_2 float bang;
+#X text 12 145 INLET_3 float bang;
+#X text 12 165 INLET_4 float bang;
+#X text 12 75 INLET_0 float bang next dec inc up down updown goto set
+jam min max carryint carrybang;
+#X text 12 35 LICENSE SIBSD;
+#X text 12 265 AUTHOR Krzysztof Czaja;
+#X text 12 5 KEYWORDS control storage max_compatible;
+#X restore 696 553 pd META;
+#X obj 162 470 counter;
+#X connect 4 0 17 0;
+#X connect 5 0 4 0;
+#X connect 9 0 17 1;
+#X connect 11 0 17 2;
+#X connect 13 0 17 3;
+#X connect 15 0 4 1;
+#X connect 16 0 17 4;
+#X connect 17 0 6 0;
+#X connect 20 0 70 0;
+#X connect 22 0 70 1;
+#X connect 23 0 70 1;
+#X connect 24 0 70 1;
+#X connect 29 0 70 2;
+#X connect 30 0 70 3;
+#X connect 31 0 70 4;
+#X connect 35 0 34 0;
+#X connect 36 0 35 0;
+#X connect 37 0 34 0;
+#X connect 38 0 37 0;
+#X connect 42 0 34 0;
+#X connect 44 0 70 0;
+#X connect 45 0 70 0;
+#X connect 46 0 70 0;
+#X connect 48 0 70 0;
+#X connect 49 0 70 0;
+#X connect 54 0 34 0;
+#X connect 55 0 34 0;
+#X connect 56 0 54 0;
+#X connect 57 0 55 0;
+#X connect 70 0 21 0;

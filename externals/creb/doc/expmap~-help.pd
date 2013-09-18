@@ -1,0 +1,17 @@
+#N canvas 0 26 352 368 10;
+#X text 80 9 exponential map from (-1 \, 1) to (min \, max);
+#N canvas 331 92 494 345 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION exponential map from (-1 \, 1) to (min \,
+max);
+#X text 12 65 INLET_0 signal;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 5 KEYWORDS signal abstraction needs_work (example patch)
+;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 302 347 pd META;
+#X obj 103 141 expmap~;

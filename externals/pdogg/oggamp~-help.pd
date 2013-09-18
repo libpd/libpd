@@ -1,0 +1,66 @@
+#N canvas 1 53 678 484 10;
+#X obj 15 420 dac~;
+#X floatatom 102 419 5 0 0 0 - - -;
+#X text 145 419 connection state;
+#X msg 80 83 connect localhost puredata.ogg 8000;
+#X msg 109 131 disconnect;
+#X msg 35 60 connect ogg.bbc.co.uk radio1_low.ogg 8001;
+#X msg 93 106 connect 141.53.196.149 puredata.ogg 8000;
+#X msg 147 224 recover 0;
+#X msg 163 251 recover 1;
+#X msg 125 153 print;
+#X obj 15 389 *~ 0;
+#X obj 57 391 *~ 0;
+#X floatatom 22 332 5 0 0 0 - - -;
+#X obj 22 354 / 100;
+#X msg 139 191 recover -1;
+#X text 218 191 resume (default): mute audio and refill buffer;
+#X text 230 249 reconnect (disconnect and connect again);
+#X text 138 303 CREATION ARGUMENTS:;
+#X text 260 303 oggamp~ <graphic> <outlets> <buffersize>;
+#X text 167 324 <graphic> - turn graphical buffer status display on
+(1) or off (0 \, default);
+#X text 167 351 <outlets> - number of outlets (default = 2) \, mono
+to stereo and stereo to mono conversion supported;
+#X text 333 50 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 333 63 get source at http://www.akustische-kunst.de/;
+#X msg 530 406 \; pd dsp 1;
+#X msg 596 406 \; pd dsp 0;
+#X obj 530 380 loadbang;
+#X msg 16 34 connect radio.jcraft.com test.ogg 8000;
+#X obj 15 300 oggamp~ 1 2 256;
+#X text 154 171 BEHAVIOUR ON BUFFER UNDERRUNS:;
+#X text 166 378 <buffersize> - size of circular buffer in kbytes (default
+= 256k);
+#X text 219 222 disconnect on buffer underrun;
+#N canvas 458 284 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Olaf Matthes;
+#X text 12 25 LICENSE LGPL;
+#X text 12 45 DESCRIPTION version 0.2 - Ogg Vorbis streaming client
+;
+#X text 12 5 KEYWORDS signal soundfile network;
+#X text 12 65 INLET_0 connect disconnect print recover;
+#X text 12 85 OUTLET_N signal;
+#X text 12 105 OUTLET_R float;
+#X restore 622 453 pd META;
+#X text 57 7 oggamp~ version 0.2 - Ogg Vorbis streaming client;
+#X connect 3 0 27 0;
+#X connect 4 0 27 0;
+#X connect 5 0 27 0;
+#X connect 6 0 27 0;
+#X connect 7 0 27 0;
+#X connect 8 0 27 0;
+#X connect 9 0 27 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 1;
+#X connect 12 0 13 0;
+#X connect 13 0 10 1;
+#X connect 13 0 11 1;
+#X connect 14 0 27 0;
+#X connect 25 0 23 0;
+#X connect 26 0 27 0;
+#X connect 27 0 10 0;
+#X connect 27 1 11 0;
+#X connect 27 2 1 0;

@@ -1,0 +1,8 @@
+#N canvas 577 543 450 300 10;
+#X obj 48 49 inlet;
+#X obj 118 47 inlet;
+#X obj 47 161 outlet;
+#X obj 48 104 pdp_mix2 1 -1;
+#X connect 0 0 3 0;
+#X connect 1 0 3 1;
+#X connect 3 0 2 0;

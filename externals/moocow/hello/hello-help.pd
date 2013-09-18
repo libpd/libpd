@@ -1,0 +1,6 @@
+#N canvas 54 0 420 146 10;
+#X obj 37 80 hello;
+#X msg 37 47 bang;
+#X text 103 47 bang : print a greeting;
+#X text 31 7 hello : example external;
+#X connect 1 0 0 0;

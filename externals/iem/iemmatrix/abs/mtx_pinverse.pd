@@ -1,0 +1,30 @@
+#N canvas 0 0 630 350 10;
+#X obj 44 102 inlet;
+#X obj 44 132 mtx_pivot;
+#X obj 44 154 mtx_inverse;
+#X obj 74 200 mtx_*;
+#X obj 44 221 mtx_*;
+#X obj 44 198 mtx;
+#X obj 44 176 t b a;
+#X obj 44 264 outlet;
+#X obj 116 264 outlet;
+#X text 109 22 matrix inversion with pivoting;
+#X text 107 56 pivoting makes the inversion of badly conditioned matrices
+more stable.;
+#X text 158 105 it also stabilizes the inversion of singular matrices
+(not so good) and is more expensive;
+#X text 188 202 for license-details see LICENSE.txt that must come
+with iemmatrix.;
+#X text 188 181 (c) 2006 by IOhannes m zmoelnig \, IEM KUG \, graz
+austria;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 1;
+#X connect 1 2 5 1;
+#X connect 2 0 6 0;
+#X connect 2 1 8 0;
+#X connect 3 0 4 1;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 6 1 3 0;

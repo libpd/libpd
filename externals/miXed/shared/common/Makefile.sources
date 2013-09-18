@@ -1,0 +1,17 @@
+OTHER_SOURCES = \
+binport.c \
+clc.c \
+dict.c \
+fitter.c \
+grow.c \
+lex.c \
+loud.c \
+messtree.c \
+mifi.c \
+os.c \
+patchvalue.c \
+port.c \
+props.c \
+qtree.c \
+rand.c \
+vefl.c

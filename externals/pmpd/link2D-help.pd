@@ -1,0 +1,66 @@
+#N canvas 0 0 673 682 10;
+#X text 250 618 forces depend of the physicals properies of the liaison
+;
+#X text 226 36 link2D : get position of masses \, output forces;
+#X text 260 13 link between 2 masses;
+#X text 224 593 1 : force to apply to mass 1 (float);
+#X text 224 566 2 : force to apply to mass 2 (float);
+#X text 251 389 if the size of the link is < Lmin then force of the
+link will be null;
+#X text 257 440 if the size of the link is > Lmax then force of the
+link will be null;
+#X text 225 68 1 : name;
+#X msg 105 125 setL 0;
+#X msg 105 154 setK 0;
+#X msg 105 184 setD 0;
+#X msg 104 214 setD2 0;
+#X text 226 122 2 : Lenght;
+#X text 250 139 change Length of the link;
+#X text 226 153 3 : rigidity;
+#X text 249 168 change rigidity;
+#X text 230 238 change position of mass 1;
+#X msg 104 270 bang;
+#X text 229 266 compute and output forces \, according to the last
+masses positions;
+#X msg 106 300 reset;
+#X msg 105 326 resetF;
+#X msg 105 350 resetL;
+#X msg 104 374 setLmin 0;
+#X text 229 185 4 : Damping of the link deformation;
+#X text 231 214 5 : Damping of the masses speed;
+#X text 226 297 reset position of masses and set speed of the link
+to zero;
+#X text 226 324 reset damping and inertial force of the link.;
+#X text 224 351 set the length of the liaison to it's curent lengh
+;
+#X text 228 371 set the minimum size of the link;
+#X text 227 424 set the maximum size of the link;
+#X msg 104 424 setLmax 10000;
+#X text 250 84 you can use it in pd to send messages / bang / etc to
+the lia. this is for simplifying connection.;
+#X obj 33 536 link2D;
+#X msg 103 238 position2D $f1 $f2;
+#X msg 102 508 position2D $f1 $f2;
+#X text 224 508 position of mass 2;
+#X obj 64 563 unpack s f f;
+#X obj 33 591 unpack s f f;
+#X text 130 635 this object is a 3D version of link. more exemple can
+be find in the link help;
+#X msg 104 475 setM 1;
+#X text 227 472 change mucle force : a muscle can change the link size
+(link size = muscle * lenght);
+#X connect 8 0 32 0;
+#X connect 9 0 32 0;
+#X connect 10 0 32 0;
+#X connect 11 0 32 0;
+#X connect 17 0 32 0;
+#X connect 19 0 32 0;
+#X connect 20 0 32 0;
+#X connect 21 0 32 0;
+#X connect 22 0 32 0;
+#X connect 30 0 32 0;
+#X connect 32 0 37 0;
+#X connect 32 1 36 0;
+#X connect 33 0 32 0;
+#X connect 34 0 32 1;
+#X connect 39 0 32 0;

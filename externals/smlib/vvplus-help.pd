@@ -1,0 +1,37 @@
+#N canvas 1 53 313 256 10;
+#X obj 40 115 vvplus;
+#X msg 16 81 1 2 3;
+#X msg 73 85 4 5 6;
+#X msg 159 86 1 2 3;
+#X msg 219 86 4;
+#X obj 180 116 vvplus 0;
+#X msg 16 57 1;
+#X msg 159 62 1;
+#X text 18 10 vvplus adds two lists of floats;
+#X text 17 25 or a float to a list of floats;
+#X msg 73 60 3 2 1;
+#X obj 252 159 SMLib-help;
+#X text 230 184 j#|@2002;
+#X obj 40 139 print vvplus;
+#X obj 180 140 print vvplus;
+#N canvas 119 195 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 85 INLET_1 list float;
+#X text 12 105 OUTLET_0 list float;
+#X text 12 45 DESCRIPTION add two lists of floats;
+#X restore 254 208 pd META;
+#X connect 0 0 13 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 5 0;
+#X connect 4 0 5 1;
+#X connect 5 0 14 0;
+#X connect 6 0 0 0;
+#X connect 7 0 5 0;
+#X connect 10 0 0 1;

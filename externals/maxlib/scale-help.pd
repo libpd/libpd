@@ -1,0 +1,47 @@
+#N canvas 0 26 533 385 12;
+#X floatatom 27 277 8 0 0 0 - - -;
+#X floatatom 27 73 5 0 0 0 - - -;
+#X text 213 48 written by <olaf.matthes@gmx.de>;
+#X text 37 306 creation:;
+#X text 141 11 scale :: scale input from a certain input range;
+#X text 212 29 to lie between output boundaries;
+#X floatatom 56 131 5 0 0 0 - - -;
+#X floatatom 85 152 5 0 0 0 - - -;
+#X floatatom 115 173 5 0 0 0 - - -;
+#X floatatom 144 194 5 0 0 0 - - -;
+#X text 84 71 input value;
+#X text 106 278 scaled output value;
+#X text 111 130 in low;
+#X text 137 151 in high;
+#X text 171 172 out low;
+#X text 200 194 out high;
+#X text 57 104 creation arguments can be changed dynamically:;
+#X text 53 323 scale <in low> <in high> <out low> <out high> <log coeff>
+;
+#X floatatom 174 220 5 0 0 0 - - -;
+#X text 227 219 log coefficient;
+#X text 265 237 0 = linear 1 = log;
+#N canvas 293 158 494 344 META 0;
+#X text 12 245 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 225 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 205 OUTLET_0 float;
+#X text 12 105 INLET_1 float;
+#X text 12 45 DESCRIPTION scale input from a certain input range to
+lie between output boundaries;
+#X text 12 5 KEYWORDS control;
+#X text 12 85 INLET_0 float;
+#X text 12 125 INLET_2 float;
+#X text 12 145 INLET_3 float;
+#X text 12 165 INLET_4 float;
+#X text 12 185 INLET_5 float;
+#X restore 473 357 pd META;
+#X obj 27 249 maxlib/scale 0 9 100 255 0;
+#X connect 1 0 22 0;
+#X connect 6 0 22 1;
+#X connect 7 0 22 2;
+#X connect 8 0 22 3;
+#X connect 9 0 22 4;
+#X connect 18 0 22 5;
+#X connect 22 0 0 0;

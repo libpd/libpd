@@ -1,0 +1,33 @@
+#N canvas 0 26 451 254 10;
+#X obj 40 113 iter;
+#X msg 40 71 1 2 3 4;
+#X obj 40 145 print;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 22 213 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 21 227 ___________________________________________________
+;
+#X obj 163 112 iter;
+#X floatatom 163 68 5 0 0 0 - - -;
+#X floatatom 163 142 5 0 0 0 - - -;
+#X text 184 88 single floats just pass through;
+#N canvas 75 96 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 GENRE help;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 KEYWORDS control conversion max_compatible;
+#X text 12 25 NAME iter;
+#X text 12 85 DESCRIPTION split a list into a series of numbers;
+#X text 12 105 INLET_0 anything;
+#X text 12 125 OUTLET_0 anything;
+#X text 12 65 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 399 233 pd META;
+#X obj 40 23 iter;
+#X text 84 24 split a list into a series of numbers;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;

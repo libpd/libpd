@@ -1,0 +1,59 @@
+#N canvas 0 26 620 311 10;
+#X obj 55 164 sustain;
+#X floatatom 55 221 5 0 0 0 - - -;
+#X floatatom 99 195 5 0 0 0 - - -;
+#X msg 55 78 44 127;
+#X text 110 77 note on =;
+#X msg 184 76 pitch velocity;
+#X text 294 76 is passed through;
+#X text 144 195 velocity;
+#X text 101 221 pitch;
+#X text 110 103 note off (i.e. velocity = 0);
+#X obj 99 140 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 69 103 55 0;
+#X text 121 133 when on sustain holds back all note offs;
+#X text 121 144 and outputs them when turned off again.;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 28 272 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 27 286 ___________________________________________________
+;
+#X obj 466 178 sustain;
+#X obj 510 148 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 466 205 5 0 0 0 - - -;
+#X floatatom 510 204 5 0 0 0 - - -;
+#X floatatom 466 120 5 0 0 0 - - -;
+#X floatatom 488 98 5 0 0 0 - - -;
+#X text 462 74 alternatively:;
+#X text 531 95 set velocity;
+#X text 508 119 then pitch;
+#N canvas 380 180 494 404 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control MIDI storage max_compatible;
+#X text 12 45 DESCRIPTION hold note offs and output them on request
+;
+#X text 12 65 INLET_0 float list;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 OUTLET_1 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X restore 571 291 pd META;
+#X obj 23 19 sustain;
+#X text 92 19 hold note offs and output them on request;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 3 0 0 0;
+#X connect 10 0 0 2;
+#X connect 11 0 0 0;
+#X connect 17 0 19 0;
+#X connect 17 1 20 0;
+#X connect 18 0 17 2;
+#X connect 21 0 17 0;
+#X connect 22 0 17 1;

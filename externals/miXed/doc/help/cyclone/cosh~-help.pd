@@ -1,0 +1,32 @@
+#N canvas 0 26 536 355 10;
+#X text 170 85 this is probably only useful for mathematical calculations
+;
+#X text 37 324 make a wave that looks like a wave!!;
+#X msg 128 133 range 0 3.14159;
+#X obj 39 114 -~ 1.5708;
+#X obj 39 91 *~ 3.14159;
+#X obj 39 69 phasor~ 2;
+#X text 15 35 Hyperbolic cosine function (cosh(x)) for signals;
+#X obj 38 166 Scope~ 130 130 256 3 128 0 3.14159 0 0 0 0 102 255 51
+135 135 135 0;
+#X obj 38 138 cosh~;
+#X obj 122 109 loadbang;
+#N canvas 247 115 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION hyperbolic cosine function ( cosh(x) ) for
+signals;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 486 333 pd META;
+#X connect 2 0 7 0;
+#X connect 3 0 8 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 8 0 7 0;
+#X connect 9 0 2 0;

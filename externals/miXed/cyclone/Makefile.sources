@@ -1,0 +1,227 @@
+TYPES = HPLAIN HLOUD HFITTER HFORKY HFRAGILE HGROW HGROWFITTER \
+	HFILE HRAND HRANDFILE HRANDGROW HRANDGROWFILE \
+	HTREE HTREEFILEVEFL HGUI HSEQ \
+	SPLAINNOTILDE SPLAIN SSIC SFORKY SFRAGILE SFRAGILEFITTER \
+	SGROW SGROWCLC SGROWFORKY SVEFL SARSIC SARSICFITTER SFILE
+
+HPLAIN_SOURCES = \
+hammer/accum.c \
+hammer/acos.c \
+hammer/asin.c \
+hammer/Bucket.c \
+hammer/cartopol.c \
+hammer/cosh.c \
+hammer/flush.c \
+hammer/forward.c \
+hammer/fromsymbol.c \
+hammer/mean.c \
+hammer/midiflush.c \
+hammer/midiformat.c \
+hammer/midiparse.c \
+hammer/next.c \
+hammer/onebang.c \
+hammer/Peak.c \
+hammer/poltocar.c \
+hammer/sinh.c \
+hammer/split.c \
+hammer/sustain.c \
+hammer/tanh.c \
+hammer/Trough.c \
+hammer/Uzi.c \
+hammer/xbendin.c \
+hammer/xbendin2.c \
+hammer/xbendout.c \
+hammer/xbendout2.c \
+hammer/xnotein.c \
+hammer/xnoteout.c
+
+HLOUD_SOURCES = \
+hammer/anal.c \
+hammer/Borax.c \
+hammer/decide.c \
+hammer/Histo.c \
+hammer/spell.c \
+hammer/spray.c \
+hammer/sprintf.c \
+hammer/TogEdge.c
+
+HFITTER_SOURCES = \
+hammer/bangbang.c \
+hammer/counter.c \
+hammer/cycle.c \
+hammer/Decode.c \
+hammer/gate.c \
+hammer/maximum.c \
+hammer/minimum.c \
+hammer/switch.c
+
+HFORKY_SOURCES = \
+hammer/comment.c
+
+HFRAGILE_SOURCES = \
+hammer/grab.c \
+hammer/testmess.c \
+hammer/universal.c
+
+HGROW_SOURCES = \
+hammer/bondo.c \
+hammer/buddy.c \
+hammer/Clip.c \
+hammer/funnel.c \
+hammer/iter.c \
+hammer/match.c \
+hammer/pv.c \
+hammer/speedlim.c \
+hammer/substitute.c \
+hammer/thresh.c \
+hammer/tosymbol.c \
+hammer/zl.c
+
+HGROWFITTER_SOURCES = \
+hammer/Append.c \
+hammer/past.c \
+hammer/prepend.c
+
+HFILE_SOURCES = \
+hammer/capture.c \
+hammer/coll.c \
+hammer/mtr.c
+
+HRAND_SOURCES = \
+hammer/drunk.c
+
+HRANDFILE_SOURCES = \
+hammer/prob.c
+
+HRANDGROW_SOURCES = \
+hammer/urn.c
+
+HRANDGROWFILE_SOURCES = \
+hammer/Table.c
+
+HTREE_SOURCES = \
+hammer/offer.c
+
+HTREEFILEVEFL_SOURCES = \
+hammer/funbuff.c
+
+HGUI_SOURCES = \
+hammer/active.c \
+hammer/mousefilter.c \
+hammer/MouseState.c
+
+HSEQ_SOURCES = \
+hammer/seq.c
+
+SPLAINNOTILDE_SOURCES = \
+sickle/linedrive.c
+
+SSIC_TILDE = $(TILDE)
+SSIC_SOURCES = \
+sickle/abs.c \
+sickle/acos.c \
+sickle/acosh.c \
+sickle/allpass.c \
+sickle/asin.c \
+sickle/asinh.c \
+sickle/atan.c \
+sickle/atan2.c \
+sickle/atanh.c \
+sickle/average.c \
+sickle/avg.c \
+sickle/bitnot.c \
+sickle/bitshift.c \
+sickle/change.c \
+sickle/Clip.c \
+sickle/comb.c \
+sickle/cosh.c \
+sickle/cosx.c \
+sickle/count.c \
+sickle/delay.c \
+sickle/delta.c \
+sickle/deltaclip.c \
+sickle/edge.c \
+sickle/kink.c \
+sickle/log.c \
+sickle/lores.c \
+sickle/maximum.c \
+sickle/minimum.c \
+sickle/minmax.c \
+sickle/mstosamps.c \
+sickle/onepole.c \
+sickle/overdrive.c \
+sickle/peakamp.c \
+sickle/phasewrap.c \
+sickle/pink.c \
+sickle/pow.c \
+sickle/rampsmooth.c \
+sickle/rand.c \
+sickle/reson.c \
+sickle/sah.c \
+sickle/sampstoms.c \
+sickle/sinh.c \
+sickle/sinx.c \
+sickle/slide.c \
+sickle/Snapshot.c \
+sickle/spike.c \
+sickle/svf.c \
+sickle/tanh.c \
+sickle/tanx.c \
+sickle/train.c \
+sickle/trapezoid.c \
+sickle/triangle.c \
+sickle/vectral.c \
+sickle/zerox.c
+
+SFORKY_TILDE = $(TILDE)
+SFORKY_SOURCES = \
+sickle/bitand.c \
+sickle/bitor.c \
+sickle/bitxor.c \
+sickle/pong.c
+
+SFRAGILE_TILDE = $(TILDE)
+SFRAGILE_SOURCES = \
+sickle/cartopol.c \
+sickle/poltocar.c
+
+SFRAGILEFITTER_TILDE = $(TILDE)
+SFRAGILEFITTER_SOURCES = \
+sickle/matrix.c
+
+SGROW_TILDE = $(TILDE)
+SGROW_SOURCES = \
+sickle/click.c \
+sickle/frameaccum.c \
+sickle/framedelta.c \
+sickle/Line.c
+
+SGROWCLC_TILDE = $(TILDE)
+SGROWCLC_SOURCES = \
+sickle/curve.c
+
+SGROWFORKY_TILDE = $(TILDE)
+SGROWFORKY_SOURCES = \
+sickle/Scope.c
+
+SVEFL_TILDE = $(TILDE)
+SVEFL_SOURCES = \
+sickle/cycle.c
+
+SARSIC_TILDE = $(TILDE)
+SARSIC_SOURCES = \
+sickle/index.c \
+sickle/lookup.c \
+sickle/peek.c \
+sickle/play.c \
+sickle/poke.c \
+sickle/record.c \
+sickle/wave.c
+
+SARSICFITTER_TILDE = $(TILDE)
+SARSICFITTER_SOURCES = \
+sickle/buffir.c
+
+SFILE_TILDE = $(TILDE)
+SFILE_SOURCES = \
+sickle/capture.c

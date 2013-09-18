@@ -1,0 +1,66 @@
+#N canvas 128 78 535 398 10;
+#X obj 200 -3 inlet;
+#X msg 112 265 \; pd open \$1.pd \$2;
+#X obj 47 0 bng 17 250 50 0 \$0- \$0- empty 0 -6 0 8 -44926 -1 -1;
+#X obj 40 61 symbol \$1;
+#X obj 98 40 symbol;
+#X text 315 350 released under the GNU GPL;
+#X text 98 338 (C) Copyright 2005 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 111 61 <-- store the last value so that the GOP bang will open
+it;
+#X text 20 307 This patch opens a patch either from the first argument
+or sent in as a message.;
+#X obj 0 0 cnv 16 46 18 empty empty open: 6 9 0 14 -233017 -1 0;
+#X text 20 174 GOP: 168x18;
+#X obj 112 232 pack symbol symbol;
+#X msg 289 162 set \$1;
+#X obj 233 208 makefilename;
+#X obj 112 101 trigger symbol symbol bang;
+#X obj 289 143 makefilename %s/%%s;
+#X obj 112 209 ext13/strippath;
+#N canvas 178 406 466 316 splitfilename 0;
+#X obj 124 58 inlet;
+#X obj 173 263 outlet;
+#X text 21 8 this is a kludge to work around a bug in [splitfilename]
+which makes it output a filename with no slashes as a folder rather
+than a file.;
+#X obj 210 165 select symbol;
+#X obj 297 143 symbol;
+#X obj 210 115 trigger symbol bang;
+#X obj 173 217 spigot;
+#X msg 359 172 1;
+#X msg 190 192 0;
+#X msg 249 217 symbol /;
+#X obj 124 84 iemlib/splitfilename;
+#X connect 0 0 10 0;
+#X connect 3 0 8 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 1;
+#X connect 5 0 3 0;
+#X connect 5 1 4 0;
+#X connect 5 1 7 0;
+#X connect 6 0 1 0;
+#X connect 7 0 6 1;
+#X connect 8 0 6 1;
+#X connect 9 0 1 0;
+#X connect 10 0 6 0;
+#X connect 10 1 5 0;
+#X restore 154 151 pd splitfilename;
+#X obj 289 123 ggee/getdir;
+#X connect 0 0 4 0;
+#X connect 0 0 14 0;
+#X connect 2 0 3 0;
+#X connect 3 0 14 0;
+#X connect 4 0 3 1;
+#X connect 11 0 1 0;
+#X connect 12 0 13 0;
+#X connect 13 0 11 1;
+#X connect 14 0 16 0;
+#X connect 14 1 17 0;
+#X connect 14 2 18 0;
+#X connect 15 0 12 0;
+#X connect 16 0 11 0;
+#X connect 17 0 13 0;
+#X connect 18 0 15 0;
+#X coords 0 0 1 1 124 17 1 0 0;

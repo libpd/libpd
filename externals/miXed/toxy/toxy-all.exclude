@@ -1,0 +1,8 @@
+*~
+*.o
+*.gz
+*.html
+*.out
+ref
+ref/*
+dumpsetups

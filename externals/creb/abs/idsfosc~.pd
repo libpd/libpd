@@ -1,0 +1,27 @@
+#N canvas 414 255 527 400 10;
+#X obj 118 339 outlet~;
+#X obj 175 339 outlet~;
+#X obj 118 122 inlet~;
+#X text 93 100 frequency;
+#X obj 118 162 cosc~;
+#X obj 118 228 *~;
+#X obj 149 228 *~;
+#X obj 118 256 +~ 1;
+#X obj 119 282 cinv~;
+#X text 59 21 complex form of the (infinite) discrete summation oscillator
+;
+#X text 62 38 1/(1-az) \, with z = e^(jw);
+#X text 178 103 modulation (a);
+#X obj 215 123 inlet~;
+#X obj 214 192 *~ -1;
+#X connect 2 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 5 0 7 0;
+#X connect 6 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
+#X connect 8 1 1 0;
+#X connect 12 0 13 0;
+#X connect 13 0 6 1;
+#X connect 13 0 5 1;

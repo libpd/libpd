@@ -1,0 +1,92 @@
+#N canvas 153 122 664 665 10;
+#X obj 22 149 bng 15 250 50 0 empty empty empty 20 8 32 8 -262144 -1
+-1;
+#X floatatom 353 470 5 0 0;
+#X obj 166 579 dac~ 1 2 3 4 5 6 7 8;
+#X obj 109 535 *~ 1;
+#X obj 142 535 *~ 1;
+#X obj 175 535 *~ 1;
+#X obj 207 535 *~ 1;
+#X obj 239 535 *~ 1;
+#X obj 271 535 *~ 1;
+#X obj 304 535 *~ 1;
+#X obj 336 535 *~ 1;
+#X floatatom 382 504 5 0 0;
+#X text 401 470 crossfade;
+#X obj 22 208 send speaker_setup;
+#X obj 22 169 define_loudspeakers 3 -30 0 30 0 -90 0 90 0 180 0 180
+45 -45 45 45 45;
+#X obj 326 443 matrix 4 8;
+#X obj 269 470 matrix~ 4 8;
+#X obj 39 146 loadbang;
+#X msg 471 169 \; pd dsp 1;
+#X text 540 175 turn on audio;
+#X text 430 504 gain;
+#X obj 467 496 vsl 15 128 0 1 0 0 empty empty empty 20 8 32 8 -262144
+-1 -1 0 1;
+#X msg 422 452 50;
+#X obj 438 413 loadbang;
+#X obj 484 494 r master;
+#X obj 21 89 inlet;
+#X text 66 89 no meaning;
+#X obj 326 340 receive matrix;
+#X text 30 22 define loudspeakers \, receive signals and data from
+vbap \, output audio;
+#X obj 99 146 receive define_ls;
+#X obj 52 318 catch~ 1chan;
+#X obj 162 318 catch~ 2chan;
+#X obj 272 318 catch~ 3chan;
+#X obj 382 318 catch~ 4chan;
+#N canvas 229 245 540 236 parameters.readme 0;
+#X text 37 35 define_loudspeakers <dimensions> <azimuth (elevation)>
+<..>;
+#X text 37 70 dimensions is 2 or 3 \, followed by list of azimuths
+(in 2d) or <azimuth elevation> pairs (in 3d) \, defining the number
+and positions of loudspeakers.;
+#X text 38 122 azimuth is -180 to 180 \, where -90 is left \, 0 front
+\, 90 right and 180 back.;
+#X text 38 161 elevation is -90 to 90 \, where -90 is down \, 0 is
+not elevated and 90 is up.;
+#X restore 258 206 pd parameters.readme;
+#X connect 0 0 14 0;
+#X connect 1 0 16 5;
+#X connect 3 0 2 0;
+#X connect 4 0 2 1;
+#X connect 5 0 2 2;
+#X connect 6 0 2 3;
+#X connect 7 0 2 4;
+#X connect 8 0 2 5;
+#X connect 9 0 2 6;
+#X connect 10 0 2 7;
+#X connect 11 0 10 1;
+#X connect 11 0 9 1;
+#X connect 11 0 8 1;
+#X connect 11 0 7 1;
+#X connect 11 0 6 1;
+#X connect 11 0 5 1;
+#X connect 11 0 4 1;
+#X connect 11 0 3 1;
+#X connect 11 0 9 1;
+#X connect 11 0 10 1;
+#X connect 14 0 13 0;
+#X connect 15 0 16 4;
+#X connect 16 0 3 0;
+#X connect 16 1 4 0;
+#X connect 16 2 5 0;
+#X connect 16 3 6 0;
+#X connect 16 4 7 0;
+#X connect 16 5 8 0;
+#X connect 16 6 9 0;
+#X connect 16 7 10 0;
+#X connect 17 0 0 0;
+#X connect 21 0 11 0;
+#X connect 22 0 1 0;
+#X connect 23 0 22 0;
+#X connect 23 0 18 0;
+#X connect 24 0 21 0;
+#X connect 27 0 15 0;
+#X connect 29 0 0 0;
+#X connect 30 0 16 0;
+#X connect 31 0 16 1;
+#X connect 32 0 16 2;
+#X connect 33 0 16 3;

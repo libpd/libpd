@@ -1,0 +1,75 @@
+#N canvas 0 26 799 603 10;
+#X text 13 -77 Exponential ramp generator;
+#X text 69 309 line output;
+#X obj 684 310 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 692 268 parameter;
+#X text 617 269 time;
+#X msg 138 196 1 \, 0 1000 0.5;
+#X floatatom 684 237 0 0 0 0 - - -;
+#X msg 589 236 1 \, 0 500;
+#X msg 532 237 0 \, 1 500;
+#X obj 63 244 line~;
+#X msg 250 196 1 \, 0.5 500 0.5 0 500 -0.5;
+#X msg 43 192 0 \, 1 1000 0.5;
+#X text 9 -65 curve~ is similar to line~. It produces a signal that
+goes from an initial to target value over a specified number of milliseconds.
+However \, it produces non-linear ramps using a piecewise approximation
+of an exponential function. You specify the parameter to this exponential
+function in the curve~ object's right inlet. Values from 0 to 1 produce
+an "exponential" curve when increasing in value and values from -1
+to 0 produce a "logarithmic" curve. The closer to 0 the curve parameter
+is \, the closer the curve is to a straight line \, and the farther
+away the parameter is from 0 \, the steeper the curve. curve~ can also
+accept a list of up two or three arguments (the previous curve parameter
+is used if there are two arguments) \, or a list with two or more value
+\, time \, parameter triples. curve~ is limited to 42 such triples
+in a single list. The object's approximation of the exponential becomes
+better when the vector size is smaller \, but the object also becomes
+more computationally expensive.;
+#X text 194 236 optional arguments set initial value (default 0) and
+parameter (default 0);
+#X text 540 269 value;
+#X text 542 305 curve signal out;
+#X text 700 300 bang when done;
+#X text 210 296 curve output;
+#X text 18 485 Special thanks to Richard Dudas for the suggestion of
+a curve equation to use.;
+#X text 1 175 amp examples: compare curve~ and line~;
+#X text 255 179 example of an "s" curve;
+#X obj 138 246 curve~;
+#X obj 207 320 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 64 332 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X text 500 201 try different curve parameters (-1 to 1);
+#X obj 532 283 curve~;
+#X obj 532 329 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#N canvas 325 206 494 401 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible ramp;
+#X text 12 45 DESCRIPTION exponential ramp generator;
+#X text 12 65 INLET_0 float list;
+#X text 12 105 INLET_2 float;
+#X text 12 85 INLET_1 float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 145 OUTLET_1 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X restore 749 498 pd META;
+#X connect 5 0 9 0;
+#X connect 5 0 21 0;
+#X connect 6 0 25 2;
+#X connect 7 0 25 0;
+#X connect 8 0 25 0;
+#X connect 9 0 23 0;
+#X connect 10 0 21 0;
+#X connect 11 0 9 0;
+#X connect 11 0 21 0;
+#X connect 21 0 22 0;
+#X connect 25 0 26 0;
+#X connect 25 1 2 0;

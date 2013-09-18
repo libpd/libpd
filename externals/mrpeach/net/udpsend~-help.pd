@@ -1,0 +1,225 @@
+#N canvas 1 53 785 621 10;
+#X obj -178 225 osc~ 440;
+#X msg -398 60 disconnect;
+#X msg -353 105 format float;
+#X msg -332 126 format 16bit;
+#X msg -311 147 format 8bit;
+#X msg -440 18 connect localhost 8008;
+#X text -244 103 float is the most expensive with the best resolution
+(32bit) \, default is 16bit;
+#X msg -419 39 connect 255.255.255.255 8008;
+#X obj 52 687 print udpreceive~;
+#X obj 224 369 print udpsend~;
+#X obj -178 320 tgl 15 0 empty empty empty 17 7 0 10 -4034 -1 -1 0
+1;
+#X symbolatom -97 435 10 0 0 0 - - -;
+#X floatatom -44 369 5 0 0 0 - - -;
+#X floatatom 10 391 9 0 0 0 - - -;
+#X floatatom 63 411 9 0 0 0 - - -;
+#X symbolatom 117 390 10 0 0 0 - - -;
+#X obj -97 411 prepend set;
+#X obj 117 367 prepend set;
+#X text -102 368 channels:;
+#X text -144 442 format:;
+#X text 13 411 bitrate:;
+#X text -51 391 framesize:;
+#X text 98 389 to:;
+#X msg -216 242 info;
+#X symbolatom -293 774 10 0 0 0 - - -;
+#X floatatom -259 708 5 0 0 0 - - -;
+#X floatatom -224 687 7 0 0 0 - - -;
+#X floatatom -190 752 9 0 0 0 - - -;
+#X obj -293 733 prepend set;
+#X text -323 707 channels:;
+#X text -339 773 format:;
+#X text -239 751 bitrate:;
+#X text -288 686 framesize:;
+#X floatatom -155 709 9 0 0 0 - - -;
+#X floatatom -121 687 9 0 0 0 - - -;
+#X floatatom -86 730 5 0 0 0 - - -;
+#X floatatom -52 709 5 0 0 0 - - -;
+#X text -212 708 overflow:;
+#X text -181 686 underflow:;
+#X text -147 729 queuesize:;
+#X text -100 708 average:;
+#X msg -435 478 info;
+#X text -237 34 broadcast to everybody on your local subnet listening
+on the specified port;
+#X msg -455 458 reset;
+#X text -402 477 status info to rightmost outlet;
+#X text -415 241 status info to rightmost outlet;
+#X text -417 457 reset underflow & overflow counters;
+#X floatatom -260 589 3 0 0 0 - - -;
+#X floatatom -237 589 3 0 0 0 - - -;
+#X floatatom -214 589 3 0 0 0 - - -;
+#X floatatom -191 589 3 0 0 0 - - -;
+#X floatatom -167 589 5 0 0 0 - - -;
+#X obj -260 563 unpack 0 0 0 0 0;
+#X text -297 588 from:;
+#X obj -179 268 *~;
+#X floatatom -124 150 5 0 0 0 - - -;
+#X text -66 148 Framesize = (blocksize) X (number of channels) X (bytes
+per sample);
+#X obj -97 339 route format channels framesize bitrate ipaddr vecsize
+;
+#X floatatom 170 430 9 0 0 0 - - -;
+#X text 70 430 dsp vector size:;
+#X msg -258 200 channels \$1;
+#X obj -412 185 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -4034 -1
+-1 0;
+#X obj -178 297 udpsend~ 2 512;
+#X text -88 296 sends 2 dsp-channels using 512-sample blocks;
+#X obj -388 572 dac~ 1 2;
+#X text 68 448 (blocksize must be a multiple of this);
+#X text -160 318 1 = transmitting;
+#X obj -97 246 noise~;
+#X obj -98 268 *~;
+#X obj -124 170 / 100;
+#X text -455 343 Based on: [netreceive~] and [netsend~]by Olaf Matthes
+;
+#X floatatom -17 752 9 0 0 0 - - -;
+#X text -69 751 packets:;
+#X text -50 177 Default blocksize is 2048 The number of samples per
+block must be an integer multiple of the number of samples in one signal
+vector.;
+#X text -28 225 Arguments: (1st required \, 2nd optional) 1:number
+of channels to send. 2:blocksize = number of samples per channel per
+frame. (Blocksize of sender and receiver must be the same.);
+#X text -122 562 To communicate \, a [udpreceive~] and [udpsend~] pair
+must have the same number of channels and the same blocksize. Also
+[udpsend~] must [connect( to the port on which [udpreceive~] is listening.
+;
+#X text -329 59 stop transmitting;
+#X text -355 76 format defines the resolution of the sent signal and
+may be changed on-the-fly;
+#X text -450 200 number of channels to transmit;
+#X msg -414 499 buffer 2;
+#X text -352 498 set number of frames to buffer before playback;
+#X text -458 368 [udpsend~] transmits dsp vectors ("audio") via UDP.
+UDP is a connectionless protocol \, so [udpsend~] will transmit even
+if nothing is receiving.;
+#X text -299 18 connect to <hostname> <port> and begin transmitting
+;
+#X text -456 313 [udpreceive~] and [udpsend~];
+#X text -249 540 receives 2 channels on port 8008 Same blocksize as
+udpsend~;
+#X floatatom -412 216 5 0 0 0 - - -;
+#X obj -288 172 tgl 15 0 empty empty toggle_connection 17 7 0 10 -4034
+-1 -1 0 1;
+#X obj -293 650 route format channels framesize bitrate overflow underflow
+queuesize average packets tag_errors;
+#X floatatom 17 730 9 0 0 0 - - -;
+#X text -49 729 tag errors:;
+#X obj -326 601 env~;
+#X floatatom -326 624 9 0 0 0 - - -;
+#X text -266 613 The rightmost signal outlet outputs 1 if the stream
+is valid \, else 0;
+#N canvas 27 271 657 334 multicast 0;
+#X msg 91 87 multicast_interface 192.168.0.88;
+#X msg 66 62 multicast_interface eth1;
+#X text 229 13 send to a multicast address;
+#X text 201 38 specify an interface to use with multicast;
+#X msg 43 39 multicast_interface 1;
+#X text 251 61 by index \, name or address;
+#X floatatom 183 112 5 0 256 0 - - -;
+#X obj 165 135 f 1;
+#X obj 165 115 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -1
+-1;
+#X text 17 136 set multicast ttl:;
+#X msg 165 161 multicast_ttl \$1;
+#X msg 215 211 multicast_loopback \$1;
+#X obj 215 189 tgl 15 0 empty empty empty 20 7 0 8 -24198 -241291 -1
+0 1;
+#X text 26 187 enable multicast loopback:;
+#X obj 244 257 outlet;
+#X msg 18 14 connect 239.200.200.200 8008;
+#X text 262 278 [udpreceive~ 8008 2 512 239.200.200.200];
+#X text -70 278 Will be received by any udpreceive~ declared like this:
+;
+#X text 347 295 (2 and 512 may be changed);
+#X connect 0 0 14 0;
+#X connect 1 0 14 0;
+#X connect 4 0 14 0;
+#X connect 6 0 7 1;
+#X connect 7 0 10 0;
+#X connect 8 0 7 0;
+#X connect 10 0 14 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 0;
+#X connect 15 0 14 0;
+#X restore -347 280 pd multicast;
+#X obj -389 541 udpreceive~ 8008 2 512;
+#X text -50 497 Arguments: port \, channels \, blocksize \, multicast_address.
+Blocksize should match [udpsend~]. multicast_address is optional. Arguments
+must be in that order.;
+#X text -455 328 Author: Martin Peach 2010/10/28;
+#N canvas 529 111 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 155 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control network;
+#X text 12 45 DESCRIPTION transmit dsp vectors ("audio") via UDP;
+#X text 12 65 INLET_0 signal connect disconnect format channels info
+multicast_interface multicast_ttl multicast_loopback;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 format channels framesize bitrate ipaddr vecsize
+;
+#X restore 248 760 pd META;
+#X connect 0 0 54 0;
+#X connect 1 0 62 0;
+#X connect 2 0 62 0;
+#X connect 3 0 62 0;
+#X connect 4 0 62 0;
+#X connect 5 0 62 0;
+#X connect 7 0 62 0;
+#X connect 16 0 11 0;
+#X connect 17 0 15 0;
+#X connect 23 0 62 0;
+#X connect 28 0 24 0;
+#X connect 41 0 94 0;
+#X connect 43 0 94 0;
+#X connect 52 0 47 0;
+#X connect 52 1 48 0;
+#X connect 52 2 49 0;
+#X connect 52 3 50 0;
+#X connect 52 4 51 0;
+#X connect 54 0 62 0;
+#X connect 55 0 69 0;
+#X connect 57 0 16 0;
+#X connect 57 1 12 0;
+#X connect 57 2 13 0;
+#X connect 57 3 14 0;
+#X connect 57 4 17 0;
+#X connect 57 5 58 0;
+#X connect 57 6 9 0;
+#X connect 60 0 62 0;
+#X connect 61 0 60 0;
+#X connect 61 0 85 0;
+#X connect 62 0 10 0;
+#X connect 62 1 57 0;
+#X connect 67 0 68 0;
+#X connect 68 0 62 1;
+#X connect 69 0 54 1;
+#X connect 69 0 68 1;
+#X connect 79 0 94 0;
+#X connect 86 0 62 0;
+#X connect 87 0 28 0;
+#X connect 87 1 25 0;
+#X connect 87 2 26 0;
+#X connect 87 3 27 0;
+#X connect 87 4 33 0;
+#X connect 87 5 34 0;
+#X connect 87 6 35 0;
+#X connect 87 7 36 0;
+#X connect 87 8 71 0;
+#X connect 87 9 88 0;
+#X connect 87 10 8 0;
+#X connect 90 0 91 0;
+#X connect 93 0 62 0;
+#X connect 94 0 64 0;
+#X connect 94 1 64 1;
+#X connect 94 2 90 0;
+#X connect 94 3 87 0;
+#X connect 94 4 52 0;

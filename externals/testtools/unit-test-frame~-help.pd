@@ -1,0 +1,6 @@
+#N canvas 211 94 724 463 10;
+#X text 37 29 [unit-test-frame~] is an abstraction which helps you
+create a unit test patch for a signal object. For an example how to
+use it \, click:;
+#X obj 122 97 pddplink examples/example~-unittest.pd;
+#X obj 40 169 unit-test-frame~;

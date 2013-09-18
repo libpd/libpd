@@ -1,0 +1,34 @@
+#N canvas 0 26 525 309 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 25 266 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 24 280 ___________________________________________________
+;
+#X obj 31 24 onebang;
+#X text 108 25 traffic control for bang messages;
+#X obj 75 144 onebang 1;
+#X text 148 145 nonzero arg allows the first bang to get through;
+#X obj 75 84 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 75 198 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 133 117 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 95 74 only gets through if a bang was previously received;
+#X text 95 87 in the right inlet;
+#N canvas 247 115 494 417 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible bang_op;
+#X text 12 45 DESCRIPTION traffic control for bang messages;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 bang;
+#X text 12 105 OUTLET_0 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 470 283 pd META;
+#X connect 5 0 8 0;
+#X connect 7 0 5 0;
+#X connect 9 0 5 1;

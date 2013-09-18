@@ -1,0 +1,18 @@
+#N canvas 670 174 482 236 12;
+#X obj 86 82 tgl 15 1 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 151 82 tgl 15 1 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 86 137 tgl 15 0 empty empty empty 17 7 0 10 -258699 -241291
+-1 1 1;
+#X obj 217 82 tgl 15 1 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 86 106 cd4000 triple nor;
+#X text 16 29 cd4000 emulates 1/2 of the CMOS three-input NOR gate
+;
+#X text 210 170 20070315_Martin_Peach;
+#X text 170 48 (inverter not included);
+#X connect 0 0 4 0;
+#X connect 1 0 4 1;
+#X connect 3 0 4 2;
+#X connect 4 0 2 0;

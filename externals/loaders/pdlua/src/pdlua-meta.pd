@@ -1,0 +1,10 @@
+#N canvas 10 10 200 200 10;
+#N canvas 360 159 420 300 META 0;
+#X text 10 10 META this is a prototype of a libdir meta file;
+#X text 10 30 NAME pdlua;
+#X text 10 50 LICENSE GNU GPL;
+#X text 10 70 DESCRIPTION lua loader for pd;
+#X text 10 90 AUTHOR Claude Heiland-Allen \, Frank Barknecht \, Martin
+Peach;
+#X text 10 110 VERSION 0.6;
+#X restore 10 20 pd META;

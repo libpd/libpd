@@ -1,0 +1,298 @@
+GEM ONLINE DOCUMENTATION CHAPTER 4: Known bugs
+----------------------------------------------
+
+---------------------------- KNOWN BUGS -----------------------------
+
+[pix_lumaoffset] crashes
+--------------
+POSTED 15/05/04
+--------------
+BUG: pix_lumaoffset crashes when the offset-factor is very high and fill+smooth is turned on
+ANS: yes; but we haven't found where the bug is hidden yet
+
+loading movies leaks memory under Win32
+--------------
+POSTED 4/16/02
+--------------
+BUG: each time an AVI is loaded, the used memory increases for about 400k.
+     after some time (and opening MANY files) this will be too much...
+ANS: i fear, this is really a mikro$oft bug! (probably not;-))
+
+
+loading MPEG-movies crashes under Win32
+--------------
+POSTED 4/05/04
+--------------
+BUG: loading MPEG-movies (*.MPG) crashes pd
+ANS: MPEG is not really supported under the Win32-version of Gem
+     however Gem tries to decode MPEGs via QuickTime which might crash (see below)
+
+loading AVI-movies does not work under Win32
+--------------
+POSTED 4/05/04
+--------------
+BUG: loading some AVI-movies with certain codecs does not work under Win2k and bigger.
+ANS: Gem is (still) using a rather old API for decoding videos. 
+     it might well be, that not all installed codecs are supported (e.g. Indeo-5)
+
+
+have to destroy / create window to change lighting state in buffer == 1
+--------------
+POSTED 11/07/98
+--------------
+BUG: If you want to change the lighting when GEM is running in single
+     buffer mode, you have to destroy and then create the window.
+ANS: hopefully we will drop single-buffer mode soon (enabling double-buffer feedback instead) (2004)
+
+
+WinNT pix_video object
+--------------
+POSTED 6/25/98
+-------------
+BUG: The WinNT pix_video object has a lot of problems.  It is not
+     very stable, tends to lock up the machine, etc.
+ANS: don't have much problems with it.
+     daniel's directshow-support enables support for most newer (ieee1394,usb) cameras under win,
+     although the interface is somewhat different than on other OS's
+     (eg: set dimensions via pop-up menu,...)
+
+
+splines are incorrect
+--------------
+POSTED 6/25/98
+--------------
+BUG: In preventing the crasher in the spline object, I have introduced
+     another bug.  Mainly, the end points don't get computed correctly.
+
+
+Polygon doesn't tesselate (ie, polygons sometimes look strange)
+--------------
+POSTED 5/19/97
+--------------
+BUG: Because the polygon object doesn't tesselate itself,
+     if it is concave, the behavior is undefined under OpenGL.
+
+
+glxContext memory leak
+--------------
+POSTED 5/18/97
+--------------
+BUG: The dummy glxContext doesn't ever get destroyed.  Use a static object
+     to create and destroy it when the DSO is loaded/unloaded.
+
+
+Indycam broken
+--------------
+POSTED 5/1/97
+--------------
+BUG: The Indycam object doesn't seem to work.  While getting the O2cam
+     up, I seem to have broken the Indycam object.  One known
+     bug is that the Indycam doesn't accept the dimen message.
+ANS: i don't have a running SGI with an indycam at hand, so i
+     don't know how to fix it
+
+---------------------------- FIXED BUGS -----------------------------
+
+some geos don't render data from pix_movie correctly
+--------------
+POSTED 19/03/2004
+FIXED  20/03/2004
+--------------
+BUG: Some objects don't render images correctly
+ANS: Gem tries to use rectangle-textures when available
+     GLU-objects cannot handle such textures
+FIX: send a "mode 0" message to the [pix_texture]
+FIX2:put the specific GLU-code into Gem and fixed the problem
+
+
+some geos don't render data from pix_movie correctly
+--------------
+POSTED 4/24/99
+FIXED  20/03/2004
+--------------
+BUG: Sphere and cone don't texture map movie data correctly because
+     they ignore the texture coordinates that pix_movie sets.
+ANS: as long as we use the libGLU for these objects there is not much chance
+     to fix the core of this problem
+FIX: put the specific GLU-code into Gem and fixed the problem
+
+
+Cone and sphere ignore textCoords
+--------------
+POSTED 4/12/99
+FIXED  20/03/2004
+--------------
+BUG: The glu library is used to create the cone and sphere, so gem
+     doesn't control the texture coordinates used.
+FIX: put the specific GLU-code into Gem and fixed the problem
+
+
+text2d is messed up
+--------------
+FIXED 01/01/04
+POSTED 2/22/98
+--------------
+BUG: text2d doesn't really work at all.  There seems to be a bug
+     in the GLTT library which is messing up the rasterpos.
+FIX: use FTGL rather than GLTT
+
+
+curve is broken under Linux
+--------------
+FIXED  01/01/04
+POSTED 0/24/99
+--------------
+BUG: if curve is used under Linux, it core dumps when rendering.
+     It dumps on glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, m_numInputs, &(m_vert[0][0]));
+ANS: seems to work now
+
+
+model crashes when nothing is loaded
+---------------
+FIXED  01/01/04
+POSTED 10/25/02
+---------------
+BUG: if rendering is started without a model being loaded before, pd crashes
+ANS: seems to be fixed sime time ago...
+
+
+pix_imageInPlace crashes when nothing is loaded
+---------------
+FIXED  01/01/04
+POSTED 10/25/02
+---------------
+BUG: when trying to download non-existant images (by specifying the wrong
+     preload-name), pd-crashes
+ANS: seems to be fixed now...
+
+
+Can't process pix_movie data with pix objects
+--------------
+FIXED 4/15/02
+POSTED 4/24/99
+--------------
+BUG: pix_movie sends the data immediately to OpenGL,
+     so there is no chance to process the data.
+ANS: it does what it does; [pix_film] does not send the image-data immediately, so use it instead
+
+
+pix_2grey doesn't process the correct number of pixels
+--------------
+FIXED 2/19/00
+POSTED 2/18/00
+--------------
+BUG: The pixel count is calculated with addition instead of multiplying.
+ANS: Just changed how the calculation occurs.
+
+
+tablet not reset on exit
+--------------
+FIXED 1/24/99
+POSTED 8/29/98
+--------------
+BUG: If the user has a tablet, it is not reset to the default settings
+     on exit, making it unusable as a mouse.
+ANS: Just needed to do some more cleanup on exit.  Should be okay now.
+
+
+text object can't be found
+--------------
+FIXED 2/21/98
+POSTED 5/1/97
+--------------
+BUG: Because the text is a special keyword and object inside of
+     pd, the text object cannot be found as a GEM object.  The solution
+     is to rename it to something else.
+ANS: I am using a cool library called gltt which will render true type
+     fonts in OpenGL.
+
+
+Memory exception on WinNT
+--------------
+FIXED 12/15/97
+POSTED 11/30/97
+--------------
+BUG: If you use pix_image, then there is a memory exception (ie, crash) when
+     you exit Pd.  It doesn't happen while actually running Pd/GEM.
+ANS: Mysterious...it went away.
+
+
+Polygon and curve under NT
+--------------
+FIXED 10/21/97
+POSTED 10/21/97
+--------------
+BUG: The vertex calls are receiving 0, 0, 0 for x, y, z
+ANS: Extra type * parameter in the vert_* calls
+
+
+Single buffering under NT
+--------------
+FIXED 10/21/97
+POSTED 10/19/97
+--------------
+BUG: Single buffering doesn't work under NT.
+ANS: Need an explicit glFlush().  gemHead calls glFlush after a bang message.
+
+
+Geos texture coordinates
+--------------
+FIXED 10/17/97
+POSTED 6/16/97
+--------------
+BUG: The vertex and texture coordinates should start so that the first
+     S,T is 0,0
+ANS: Just did it.
+
+
+pix_composite is backwards
+--------------
+FIXED  7/12/97
+POSTED 6/16/97
+--------------
+BUG: The pix_composite object should have its inlets swapped.  Conceptually
+     it doesn't make sense the way it works currently.
+FIX: Just did it.
+
+
+pix_convolve is broken
+--------------
+FIXED  7/13/97
+POSTED 6/16/97
+--------------
+BUG: Sometimes pix_convolve doesn't work - seems to do with the scale factor
+ANS: I'm not sure why it wasn't working.  I have hammered it with a variey
+     of kernels and scales and never had a problem...
+ANS2: I found a bug where pix_image didn't automatically refresh its image
+      at the start of rendering
+
+
+pix_alpha is backwards
+--------------
+FIXED  7/12/92
+POSTED 6/16/97
+--------------
+BUG: Sometimes it works, sometimes it doesn't
+ANS: Swapped around the inlet creations
+
+
+polygon's first inlet doesn't work
+--------------
+FIXED  5/18/97
+POSTED 5/17/97
+--------------
+BUG: The first vertex of polygon doesn't work.  It is always set to the
+     origin.  Also, polygon defaults to line drawing.  Check Curve for
+     the same problems (it is derived from polygon).
+ANS: The first inlet no longer takes the first vertex.  I added another
+     inlet.
+
+
+fonts do not load
+--------------
+FIXED  4/02/02
+POSTED 4/01/02
+--------------
+BUG: the example fonts for text2d/text3d do not load
+FIX: accidentally i did a dos2unix to the *.ttf files. this damaged them.
+     Get new ones from ftp://iem.at/pd/Externals/GEM/misc

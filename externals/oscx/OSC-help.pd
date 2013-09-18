@@ -1,0 +1,10 @@
+#N canvas 608 335 565 311 12;
+#X obj 21 149 sendOSC-help;
+#X obj 21 174 dumpOSC-help;
+#X obj 21 200 OSCroute-help;
+#X obj 17 43 OSC;
+#X msg 17 19 version;
+#X text 15 79 1 click sendOSC-help 2 click connect button 3 randomly
+click the 3 available messages 4 watch console;
+#X text 102 19 version 0.16;
+#X connect 4 0 3 0;

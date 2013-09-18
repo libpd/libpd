@@ -1,0 +1,161 @@
+#N canvas 0 31 670 468 10;
+#X obj 168 91 tgl 25 0 empty empty empty 0 -6 0 8 -225271 -1 -1 0 1
+;
+#X floatatom 63 234 7 0 0 3 Y-axis - -;
+#X floatatom 9 234 7 0 0 3 X-axis - -;
+#X obj 212 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 252 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 293 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 334 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X floatatom 123 234 7 0 0 3 twist - -;
+#X floatatom 182 234 5 0 0 3 throttle - -;
+#X obj 375 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 416 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 456 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 497 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 538 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X obj 579 324 tgl 25 0 empty empty empty 0 -6 0 8 -195568 -1 -1 0
+1;
+#X symbolatom 335 234 6 0 0 3 code - -;
+#X floatatom 400 234 5 0 0 3 value - -;
+#X text 345 199 buttons;
+#X obj 2 2 cnv 15 650 20 empty empty joystick 2 11 1 18 -233017 -66577
+0;
+#X msg 215 93 open 1;
+#X text 1 412 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 218 426 released under the GNU GPL;
+#X text 414 426 $Author: eighthave $;
+#X text 414 413 $Revision: 1.11 $;
+#X obj 239 375 pddp/pddplink ../all_about_hid.pd -text all_about_hid
+;
+#X text 130 376 For more info:;
+#X floatatom 245 234 5 0 0 3 hat0X - -;
+#X floatatom 288 234 5 0 0 3 hat0Y - -;
+#X obj 212 291 route btn_0 btn_1 btn_2 btn_3 btn_4 btn_5 btn_6 btn_7
+btn_8 btn_9;
+#X obj 168 154 joystick 0;
+#N canvas 674 327 446 497 joystick_noise 0;
+#X obj 73 25 inlet;
+#X obj 219 426 dac~;
+#X obj 168 376 *~;
+#X obj 201 398 linearpan~;
+#X obj 70 168 hid/hid_invert;
+#X obj 70 242 mtof;
+#X obj 168 313 osc~;
+#X msg 57 88 \; pd dsp \$1;
+#X obj 70 193 hid/hid_squareroot;
+#X obj 287 11 inlet;
+#X obj 203 323 hid/hid_log;
+#X obj 180 65 joystick 0;
+#X obj 168 287 +~;
+#X obj 238 212 *~;
+#X obj 238 179 osc~;
+#X obj 304 143 * 300;
+#X obj 238 143 * 200;
+#X obj 304 123 hid/hid_square;
+#X obj 304 179 +;
+#X obj 238 123 hid/hid_exp;
+#X obj 203 360 line~;
+#X msg 203 342 \$1 5;
+#X obj 70 218 notescale 40 80;
+#X connect 0 0 7 0;
+#X connect 0 0 11 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 3 1 1 1;
+#X connect 4 0 8 0;
+#X connect 5 0 12 0;
+#X connect 6 0 2 0;
+#X connect 8 0 22 0;
+#X connect 9 0 11 0;
+#X connect 10 0 21 0;
+#X connect 11 0 19 0;
+#X connect 11 1 4 0;
+#X connect 11 1 17 0;
+#X connect 11 2 3 1;
+#X connect 11 3 10 0;
+#X connect 12 0 6 0;
+#X connect 13 0 12 1;
+#X connect 14 0 13 0;
+#X connect 15 0 18 0;
+#X connect 16 0 14 0;
+#X connect 16 0 18 1;
+#X connect 17 0 15 0;
+#X connect 18 0 13 1;
+#X connect 19 0 16 0;
+#X connect 20 0 2 1;
+#X connect 21 0 20 0;
+#X connect 22 0 5 0;
+#X restore 440 155 pd joystick_noise;
+#X obj 440 92 tgl 25 0 empty empty empty 0 -6 0 8 -225271 -1 -1 0 1
+;
+#X text 333 73 Select your device and turn on to make noise:;
+#X obj 619 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X msg 503 125 open \$1;
+#X obj 503 105 hradio 15 1 1 8 \$0-device-number empty choose_a_device
+0 -6 1 9 -262144 -1 -1 2;
+#X obj 477 105 nbx 1 14 -1e+37 1e+37 0 0 empty \$0-device-number empty
+0 -6 0 14 -166441 -1 -1 0 256;
+#X text 8 35 Use a joystick device with Pd. This object auto-calibrates
+the output of axis data. Move each element of the device thru its full
+range to calibrate it.;
+#X obj 335 215 unpack s f;
+#X text 422 177 (remember to calibrate all parts;
+#X text 430 190 of the joystick first);
+#X msg 394 120 print;
+#X msg 220 112 open 2;
+#X msg 225 131 open 3;
+#N canvas 674 84 494 344 META 0;
+#X text 12 245 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 225 AUTHOR Hans-Christoph Steiner;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION use a joystick device with Pd;
+#X text 12 65 INLET_0 float open print;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 145 OUTLET_3 float;
+#X text 12 165 OUTLET_4 float;
+#X text 12 185 OUTLET_5 float;
+#X text 12 205 OUTLET_6 list;
+#X text 12 5 KEYWORDS control user_input abstraction;
+#X restore 610 436 pd META;
+#X connect 0 0 29 0;
+#X connect 19 0 29 0;
+#X connect 28 0 3 0;
+#X connect 28 1 4 0;
+#X connect 28 2 5 0;
+#X connect 28 3 6 0;
+#X connect 28 4 9 0;
+#X connect 28 5 10 0;
+#X connect 28 6 11 0;
+#X connect 28 7 12 0;
+#X connect 28 8 13 0;
+#X connect 28 9 14 0;
+#X connect 29 0 2 0;
+#X connect 29 1 1 0;
+#X connect 29 2 7 0;
+#X connect 29 3 8 0;
+#X connect 29 4 26 0;
+#X connect 29 5 27 0;
+#X connect 29 6 28 0;
+#X connect 29 6 38 0;
+#X connect 31 0 30 0;
+#X connect 34 0 30 1;
+#X connect 35 0 34 0;
+#X connect 38 0 15 0;
+#X connect 38 1 16 0;
+#X connect 42 0 30 0;
+#X connect 43 0 29 0;

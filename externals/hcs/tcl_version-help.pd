@@ -1,0 +1,23 @@
+#N canvas 0 26 341 234 10;
+#X obj 97 117 tcl_version;
+#X msg 97 70 bang;
+#X obj 97 157 unpack float float float;
+#X floatatom 97 186 5 0 0 3 major - -;
+#X floatatom 167 185 5 0 0 3 minor - -;
+#X floatatom 238 186 5 0 0 3 bugfix - -;
+#X text 23 21 get the current Tcl/Tk version:;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION get the current Tcl/Tk version;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 list;
+#X restore 292 214 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 0;

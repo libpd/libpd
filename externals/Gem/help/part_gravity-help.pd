@@ -1,0 +1,12 @@
+#N canvas 23 236 644 359 10;
+#X msg 139 109 gemList;
+#X text 176 62 GEM object;
+#X msg 242 151 x y z;
+#X obj 139 207 part_gravity;
+#X text 186 26 [part_gravity];
+#X text 327 152 This is gravitation vector;
+#X text 43 257 [part_gravity] sets the gravity-vector of the particle-system.
+No matter in which direction particles are emitted (pE. via [part_velsphere])
+in the end \, they have to follow the gravity.;
+#X connect 0 0 3 0;
+#X connect 2 0 3 1;

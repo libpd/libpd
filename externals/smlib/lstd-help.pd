@@ -1,0 +1,20 @@
+#N canvas 1 53 441 199 10;
+#X text 347 135 j#|@2002;
+#X obj 369 113 SMLib-help;
+#X floatatom 74 115 5 0 0 0 - - -;
+#X obj 74 85 lstd;
+#X obj 77 47 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#N canvas 179 217 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control filter;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 45 DESCRIPTION leaky standard deviation;
+#X text 12 65 INLET_0 float;
+#X restore 385 157 pd META;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;

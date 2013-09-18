@@ -1,0 +1,59 @@
+Base:
+	multiple output ?
+	"external" windows
+
+Controls:
+	selectables
+
+Geos:
+	vertex stuff
+
+Manips:
+
+Nongeos: 
+	add other light-types
+	check for the maximum number of lights during runtime
+
+Particles:
+
+Pixes:
+	MMX, SSE2
+		pix_blur pix_tIIR pix_motionblur: these call explicitely the altivec-functions if compiled with alitvec, rather than relying on the SIMD-dispatcher; remove explicit calls!
+	windows movie loader (have a look at guliverkli?; use gmerlin?)
+
+	upsidedown: pix_rectangle does not respect the upside-down flag and thus sometimes the rectangle appears in the upper-left corner and sometimes in the lower-left corner
+	generally all images on all platforms should have the same (upsidedown!) orientation
+
+	pix_rtx: flickering on OSX/ppc in mode#0; 
+		how to prevent execessive memory usage?
+
+	videopipes:
+		V4L
+		V4L2
+		AVIsynth/frameserver (http://www.debugmode.com/frameserver/)
+		Syphon (http://syphon.v002.info/)
+
+
+
+
+
+dreaming:
+ Pd-callbacks:
+  remove the entire callback-stuff for Pd-messages from the obj_realSetup()
+  instead this should be handled centrally in CPPExtern
+	- each member function called <name>Mess() provides a method for "<name>"
+	- dispatching can be done by Pd or Gem (the latter being easier)
+  info/ideas
+    - http://www.codeproject.com/KB/winsdk/callback_adapter.aspx
+    - Qt slot concept (http://sigslot.sourceforge.net/)
+    - reflection/inspection
+    - function-name demangling: http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=/com.ibm.xlcpp8a.doc/proguide/ref/rkcxxflt.htm
+
+ wrap the entire Pd thing into C++:
+	GemOutlet()->send(int val);
+
+BUGS:
+ look into flext conflict (i guess it's related to "new/delete")
+
+  single-object externals will run the setup-function twice; this gives nasty warnings in Pd-0.42
+

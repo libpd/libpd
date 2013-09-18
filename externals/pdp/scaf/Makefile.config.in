@@ -1,0 +1,30 @@
+# build flags
+
+# define the include paths here if configure can't find them
+# PDP_CFLAGS=-I/somehere/pdp/include
+# PD_CFLAGS=-I/somewhere/pd/src
+
+
+prefix=@prefix@
+PDP_CA_INCLUDE =  @CPPFLAGS@
+PDP_CA_LIBS = @LIBS@
+DEFAULT_RULES_LIB = @DEFAULT_RULES_LIB@
+PDP_CA_AFLAGS  = 
+#--gstabs
+PDP_CA_CFLAGS  = -DPD -O2 -funroll-loops -fomit-frame-pointer  -ffast-math \
+    -Wall -W -Wstrict-prototypes -I../include -I../../include \
+    -Wno-unused -Wno-parentheses -Wno-switch -g $(PDP_CFLAGS) $(PD_CFLAGS) \
+    -DPDP_CA_RULES_LIB=\"$(DEFAULT_RULES_LIB)\"
+# -Wshadow
+
+# compiler and assembler
+#CC = gcc-3.2
+#CC = gcc
+#AS = as
+
+# build rules
+
+.c.o:
+	$(CC) $(PDP_CA_CFLAGS) $(PDP_CA_INCLUDE) $(PDP_CA_DEFS) -o $*.o -c $*.c
+.s.o:
+	$(AS) -o $*.o $*.s $(PDP_CA_AFLAGS)

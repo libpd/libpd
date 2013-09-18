@@ -1,0 +1,32 @@
+#N canvas 293 148 600 556 10;
+#X text 135 37 part of GEM;
+#X obj 157 187 gemorb 1;
+#X text 69 93 respond to events of a SpaceOrb on a specified commport.
+;
+#X msg 157 290 (X Y Z) Position;
+#X msg 182 255 (X Y Z) Rotation;
+#X msg 208 219 (a b c d e f g) Button;
+#X text 152 70 [gemorb];
+#X text 67 326 [gemorb] connects to a SpaceOrb onthe commport specified
+as the creation-argument.;
+#X text 70 358 You have to have a SpaceOrb to make serious use of [gemorb]
+;
+#X text 66 389 Position and Rotation give you float-triplets specifying
+the position/rotation at/for the 3 axis;
+#X text 66 426 Button gives a 9tupel with the state \, each button
+is in;
+#X msg 180 118 reset;
+#X msg 180 140 timer <time>;
+#X msg 180 162 nullregion <region>;
+#X text 65 450 You can reset the SpaceOrb either with the Reset-Button
+on the device or with the "reset"-message.;
+#X text 67 483 You can define the nullregion with the "nullregion"-message.
+;
+#X text 67 503 You can set the pause between the polls of the SpaceOrb
+with the "timer" message.;
+#X connect 1 0 3 0;
+#X connect 1 1 4 0;
+#X connect 1 2 5 0;
+#X connect 11 0 1 0;
+#X connect 12 0 1 0;
+#X connect 13 0 1 0;

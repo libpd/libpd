@@ -1,0 +1,7 @@
+Authors of tclpd.
+
+Federico Ferri <mescalinum@gmail.com>
+
+I'd like to thank also Mathieu Bouchard for sharing its knowledge and giving
+advices, thus contributing to this project.
+

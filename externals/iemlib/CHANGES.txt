@@ -1,0 +1,106 @@
+************************************************************
+iemlib Release 1.17:
+____________________________________________________________
+restructure the library folders
+no iemhelp
+helpfiles only as *-help.pd
+abstraction help files in iemabs
+external helpfiles only in the folder of external library name
+src folder also in this folder
+(4 times for iemlib1, iemlib2, iem_mp3 and iem_t3_lib)
+
+removed the line in source code:
+ class_sethelpsymbol(......class, gensym("iemhelp/help-......."));
+
+
+************************************************************
+iemlib Release 1.16:
+____________________________________________________________
+improvements:
+
+the linux-compile-bugs are fixed.
+
+(any, iem_anything, iem_append, merge_any, 
+pp, iem_prepend, prepend, 
+iem_send, iem_s, receive2list,
+iem_receive, iem_r
+  are abstractions using kernel-externals.
+You cannot open these abstractions now.)...obsolete
+
+any, iem_anything, iem_append, merge_any, pp, iem_prepend, 
+prepend, iem_send, iem_s, receive2list,iem_receive, iem_r 
+are again externals and have proxy inlets.
+
+changed dynamical memory allocation to constantly
+(MAXPDSTRING) of mergefilename, splitfilename, stripfilename.
+
+iem_pbank_csv understand ',' and '.' as decimal point.
+
+makefile linux needs -fno-strict-aliasing option.
+
+changed all help-*.pd to *-help.pd.
+
+
+************************************************************
+iemlib Release 1.15:
+____________________________________________________________
+
+improvements:
+
+all signal-filters are more stable
+speedlim lost its change-characteristic
+iem_pbank_csv lost its 3.arg, but got a buffer and more
+                               recall-options
+
+
+
+new:
+
+more high-order IIR-filters
+  (odd order 3. 5. 7. 9.)
+  (critical damping and bessel-characteristic)
+
+more VCFs with signal-parameters
+  (vcf_hp~, vcf_bp~, vcf_rbp~)
+
+addl~		 signal-addition with line~
+divl~		 signal-divison with line~
+mull~		 signal-multiplication with line~
+subl~		 signal-subtraction with line~
+rvu~		 rms VU-meter interface
+iem_blocksize~	 blocksize of a window in samples
+iem_samplerate~	 samplerate of a window in Hertz
+int_fract~	 split signal-float to integer- and fractal-part
+round~		 round signal-float to nearest integer
+sin_phase~	 output phase-difference of 2 sinewaves in samples
+1p1z		 float-message-filter 1.order
+dbtofad		 midi-db to fader-characteristic
+fadtodb		 fader-characteristic to midi-db
+fadtorms	 fader-characteristic to rms
+rmstofad	 rms to fader-characteristic
+round_zero	 round numbers near zero to zero
+transf_fader	 partial linear characteristic diagram (like table)
+wrap		 wraparound
+default		 replace initial-argument, if it is zero
+float24		 store a 24-bit accurate float-number
+once		 any message pass through only the first time
+add2_comma	 add a comma-separated message to a messagebox 
+iem_receive	 catch "sent" messages (receive-name-input) (abbr. iem_r)
+iem_sel_any	 control a message-box with multiple content
+iem_send	 send messages to named object (send-name-input)(ab. iem_s)
+pre_inlet	 output an identifier-message and then the incoming message
+soundfile_info	 output header-info of a wav-file
+
+
+
+name-changes (but compatible aliases):
+
+merge_any -> iem_append
+prepend   -> iem_prepend
+
+
+
+incompatible changes:
+
+post_netreceive  ->  list2send       array of send-objects
+pre_netsend      ->  receive2list    array of receive-objects

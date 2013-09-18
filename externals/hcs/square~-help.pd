@@ -1,0 +1,21 @@
+#N canvas 0 31 450 300 10;
+#X obj 126 141 square~;
+#X obj 129 205 dac~;
+#X obj 126 103 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 127 172 *~ 0.2;
+#X text 83 38 a simple square wave generator;
+#N canvas 404 246 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS signal abstraction;
+#X text 12 45 DESCRIPTION a simple square wave generator;
+#X text 12 85 OUTLET_0 signal;
+#X restore 385 263 pd META;
+#X connect 0 0 3 0;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;
+#X connect 3 0 1 1;

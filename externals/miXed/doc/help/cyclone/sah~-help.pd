@@ -1,0 +1,51 @@
+#N canvas 0 26 618 491 10;
+#X text 15 35 Sample-and-hold;
+#X obj 109 405 cycle~;
+#X obj 109 377 *~ 1000;
+#X obj 109 433 *~ 0.2;
+#X floatatom 109 208 0 0 0 0 - - -;
+#X obj 109 241 phasor~ 20;
+#X floatatom 323 206 0 0 0 0 - - -;
+#X floatatom 122 270 0 0 0 0 - - -;
+#X obj 109 468 dac~;
+#X obj 323 239 phasor~ 11.33;
+#X text 282 312 Optional argument sets trigger value for control input
+(default 0) \; you need a trigger above 0 to work with phasor~;
+#X text 13 171 You've heard it before: the classic arpeggiator \, made
+with two phasor~ objects;
+#X text 207 290 control signal;
+#X text 29 294 input signal;
+#X text 161 377 sah~ output used as the frequency of an oscillator
+;
+#X text 161 271 set trigger;
+#X obj 109 310 sah~ 0.01;
+#X text 16 60 The sah~ object accepts two signals. The left signal
+is the "input" and the right signal is the "control." When the control
+makes a transition from being at or below the trigger value to being
+above the trigger value \, the input is sampled and its current value
+is output until another control transition occurs and the input is
+sampled again. The default threshold value is 0 \, but can be specified
+via a float in the left inlet or as an argument to sah~.;
+#N canvas 309 151 494 407 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 45 DESCRIPTION sample and hold;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 568 470 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 8 0;
+#X connect 3 0 8 1;
+#X connect 4 0 5 0;
+#X connect 5 0 16 0;
+#X connect 6 0 9 0;
+#X connect 7 0 16 0;
+#X connect 9 0 16 1;
+#X connect 16 0 2 0;

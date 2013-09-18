@@ -1,0 +1,20 @@
+#N canvas 0 0 762 458 10;
+#X text 66 25 [syslog]: write to syslog;
+#X floatatom 169 352 0 0 0 1 level - -;
+#X obj 169 222 vradio 15 1 0 8 empty empty empty 0 -6 0 8 -262144 -1
+-1 5;
+#X text 192 222 EMERG;
+#X text 192 237 ALERT;
+#X text 192 251 CRIT;
+#X text 192 267 ERR;
+#X text 192 282 WARNING;
+#X text 192 312 INFO;
+#X text 192 327 DEBUG;
+#X obj 126 374 syslog;
+#X msg 126 122 Pd is speaking;
+#X msg 140 152 another log message;
+#X text 192 296 NOTICE (default);
+#X connect 1 0 10 1;
+#X connect 2 0 1 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;

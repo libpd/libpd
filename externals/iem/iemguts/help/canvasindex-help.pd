@@ -1,0 +1,58 @@
+#N canvas 180 165 635 592 10;
+#X msg 88 118 bang;
+#X obj 81 25 canvasindex;
+#X text 207 25 get the ID/index of an abstraction/subpatch within it's
+containing patch;
+#X text 95 71 this object allows you to dynamically find out indicies
+to connect with dynamic patching;
+#N canvas 0 0 450 300 object1 0;
+#X obj 75 48 inlet;
+#X obj 75 189 outlet;
+#X obj 75 129 canvasindex;
+#X obj 324 59 inlet;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 88 168 pd object1;
+#X obj 88 138 t b b;
+#N canvas 0 0 450 300 object2 0;
+#X obj 75 48 inlet;
+#X obj 75 189 outlet;
+#X obj 75 129 canvasindex;
+#X obj 281 205 outlet;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 188 168 pd object2;
+#X floatatom 188 191 5 0 0 0 - - -;
+#X floatatom 88 192 5 0 0 0 - - -;
+#X text 47 547 (c) 2008 IOhannes m zmoelnig;
+#X obj 88 288 namecanvas \$0-canvas;
+#X obj 88 269 send \$0-canvas;
+#X msg 88 245 connect \$2 1 \$1 1;
+#X obj 88 222 pack;
+#X msg 101 378 bang;
+#X floatatom 101 422 5 0 0 0 - - -;
+#N canvas 0 0 450 300 objectcount 0;
+#X obj 75 48 inlet;
+#X obj 75 189 outlet;
+#X obj 75 129 canvasindex 1;
+#X connect 0 0 2 0;
+#X connect 2 1 1 0;
+#X restore 101 398 pd objectcount;
+#X text 71 347 the second outlet tells you \, how many objects the
+parent patch contains in total.;
+#X text 55 461 you can specify the depth of the parent-patch via a
+optional argument:;
+#X obj 79 496 canvasindex 2;
+#X text 178 494 will work on the grandparent (parent-depth:2) of this
+patch;
+#X connect 0 0 5 0;
+#X connect 4 0 8 0;
+#X connect 5 0 4 0;
+#X connect 5 1 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 13 1;
+#X connect 8 0 13 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 16 0;
+#X connect 16 0 15 0;

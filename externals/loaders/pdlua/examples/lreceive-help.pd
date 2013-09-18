@@ -1,0 +1,22 @@
+#N canvas 0 0 540 307 10;
+#X obj 27 41 lreceive lreceive- 25 10;
+#X obj 27 76 print lreceive-LEFT;
+#X obj 190 76 print lreceive-RIGHT;
+#X obj 26 252 send lreceive-25;
+#X msg 26 196 foo bar 1 2 3;
+#X msg 146 196 123 bar 1 2 3;
+#X obj 146 252 send lreceive-27;
+#X obj 272 252 send;
+#X floatatom 295 204 5 24 35 2 n - -;
+#X obj 295 226 makefilename lreceive-%d;
+#X symbolatom 272 171 10 0 0 0 - - -;
+#X obj 272 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 1;
+#X connect 10 0 7 0;
+#X connect 11 0 10 0;

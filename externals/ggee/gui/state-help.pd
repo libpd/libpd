@@ -1,0 +1,13 @@
+#N canvas 0 31 450 300 10;
+#X obj 180 119 state;
+#X text 67 43 any idea for state saving;
+#N canvas 186 148 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 115 AUTHOR Guenter Geiger;
+#X text 12 95 OUTLET_0;
+#X text 12 75 INLET_0 save;
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS control needs_work (help_patch);
+#X restore 384 260 pd META;

@@ -1,0 +1,39 @@
+#!/bin/sh
+
+prefix=@prefix@
+version=@PDP_VERSION@
+
+usage="\
+Usage: pdp-config [--version] [--cflags] [--libdir]"
+
+if test $# -eq 0; then
+      echo "${usage}" 1>&2
+      exit 1
+fi
+
+while test $# -gt 0; do
+  case "$1" in
+  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) optarg= ;;
+  esac
+
+  case $1 in
+    -n)
+      NEWLINE="-n"
+      ;;
+    --libdir)
+      echo $NEWLINE $prefix/lib/scaf
+      ;;
+    --version)
+      echo $NEWLINE $version
+      ;;
+    --cflags)
+      echo $NEWLINE -I$prefix/include/pdp
+      ;;
+    *)
+      echo "${usage}" 1>&2
+      exit 1
+      ;;
+  esac
+  shift
+done

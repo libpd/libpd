@@ -1,0 +1,33 @@
+#N canvas 0 26 570 317 10;
+#X obj 64 129 Append foo;
+#X obj 64 169 print;
+#X msg 64 77 foo;
+#X msg 94 77 foo bar;
+#X text 20 262 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 19 276 ___________________________________________________
+;
+#X obj 36 19 Append;
+#X text 250 102 set message changes value to append;
+#X text 143 131 creation arg sets initial value to append;
+#X text 162 76 message + stored value = output;
+#N canvas 430 169 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control storage max_compatible anything_op needs_work
+(the term "list" is used incorrectly);
+#X text 12 95 OUTLET_0 anything;
+#X text 12 75 INLET_0 anything set;
+#X text 12 35 LICENSE SIBSD;
+#X text 12 55 DESCRIPTION append a message to an incoming message;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 519 296 pd META;
+#X msg 24 76 bang;
+#X msg 161 102 set foo bar;
+#X text 92 20 append a message to the incoming message;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 0;

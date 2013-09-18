@@ -1,0 +1,65 @@
+#N canvas 1 53 484 375 10;
+#X obj 5 2 cnv 15 450 20 empty empty curve_log 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X floatatom 25 123 8 0 0 0 - - -;
+#X floatatom 25 184 8 0 0 0 - - -;
+#X obj 28 201 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 28 103 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -261681
+-1 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array curve_log 100 float 0;
+#X coords 0 1 99 0 100 100 1;
+#X restore 321 111 graph;
+#N canvas 266 69 347 337 draw_array 0;
+#X msg 57 52 bang;
+#X obj 57 73 until;
+#X text 88 52 start;
+#X obj 57 95 f;
+#X obj 86 95 + 1;
+#X obj 86 117 mod 100;
+#X obj 57 150 t f f;
+#X obj 94 177 s array_index;
+#X obj 170 262 r array_index;
+#X obj 57 13 loadbang;
+#X obj 56 283 tabwrite curve_log;
+#X obj 132 97 select 0;
+#X obj 57 217 / 100;
+#X text 100 217 mapping output range: 0 to 1;
+#X obj 56 243 curve_log;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 5 0 11 0;
+#X connect 6 0 12 0;
+#X connect 6 1 7 0;
+#X connect 8 0 10 1;
+#X connect 9 0 0 0;
+#X connect 11 0 1 1;
+#X connect 12 0 14 0;
+#X connect 14 0 10 0;
+#X restore 321 78 pd draw_array;
+#X text 17 40 This object maps the input range to a logarithmic curve.
+Humans perceive pitch and amplitude on a logarithmic scale.;
+#X text 11 294 (C) Copyright 2006-2007 Free Software Foundation;
+#X text 234 309 released under the GNU GPLv3 or later;
+#X obj 25 153 curve_log;
+#N canvas 464 140 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION map the input range to a logarithmic curve.
+Humans perceive pitch and amplitude on a logarithmic scale.;
+#X restore 436 344 pd META;
+#X connect 2 0 11 0;
+#X connect 3 0 4 0;
+#X connect 5 0 2 0;
+#X connect 11 0 3 0;

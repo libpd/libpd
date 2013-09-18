@@ -1,0 +1,55 @@
+#N canvas 1 53 492 389 10;
+#X text 13 14 [multiselect] is part of MarkEx \, which was formerly
+in GEM \, and was written by Mark Danks.;
+#X text 16 52 [multiselect] is like [select] \, except that you send
+a list of numbers into the right inlet to change the selection values
+instead of only one number as with [select].;
+#X text 16 94 If you send more values than there are outlets (i.e.
+\, more values that you created the object with) \, the extra numbers
+are ignored.;
+#X text 19 291 One use for [multiselect] is to filter notes so that
+they fit a particular scale and the notes in that scale can be changed
+on the fly.;
+#X obj 92 345 select;
+#X text 21 346 see also:;
+#X floatatom 155 209 0 0 0 0 - - -;
+#X msg 141 167 1;
+#X msg 110 167 54;
+#X msg 80 167 23;
+#X obj 155 239 multiselect 23 54 1;
+#X obj 155 259 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 283 260 5 0 0 0 - - -;
+#X obj 197 259 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 240 259 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 171 167 57;
+#X msg 201 167 23;
+#X msg 232 167 5;
+#X msg 283 215 list 57 23 5;
+#X text 19 139 WARNING: changing the argument crashes Pd! I could not
+figure out how to get this to work.;
+#N canvas 495 53 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 145 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION invert;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 list;
+#X text 12 105 OUTLET_N bang;
+#X text 12 125 OUTLET_R anything;
+#X restore 433 360 pd META;
+#X connect 6 0 10 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 11 0;
+#X connect 10 1 13 0;
+#X connect 10 2 14 0;
+#X connect 10 3 12 0;
+#X connect 15 0 6 0;
+#X connect 16 0 6 0;
+#X connect 17 0 6 0;

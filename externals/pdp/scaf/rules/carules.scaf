@@ -1,0 +1,118 @@
+(	Pure Data Packet - ca rules library.					)
+(	Copyright (c) by Tom Schouten <tom@zwizwa.be>			)
+(										) 
+(	This program is free software; you can redistribute it and/or modify	)
+(	it under the terms of the GNU General Public License as published by	)
+(	the Free Software Foundation; either version 2 of the License, or	)
+(	[at your option] any later version.					)
+(										) 
+(	This program is distributed in the hope that it will be useful,		)
+(	but WITHOUT ANY WARRANTY; without even the implied warranty of		)
+(	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		)
+(	GNU General Public License for more details.				)
+(										)
+(	You should have received a copy of the GNU General Public License	)
+(	along with this program; if not, write to the Free Software		)
+(	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.		)
+
+
+
+( this is the standard ca rules library )
+( a rule that is accessible from the ouside should start with "rule_" )
+( and has to return exactly one item on the stack (this is checked in pdp_ca) )
+
+
+( a word is a sequence of non whitespace characters (\S+) )
+( words are separated by whitespace (\s+)  )
+( so "word ;" is not the same as "word;" )
+
+( all words between the "(" word and the ")" word are ignored )
+
+( ":" starts a definition, the next word is the name of the new word )
+( newline ends a definition )
+
+( no more than one definition per line )
+( no more than one line per definition )
+
+( ";" returns to calling word )
+( if no ";" is encountered the next defined word is executed )
+( this is to have multiple entry points )
+( multiple exit points don't make sense since there are no conditional words )
+
+
+
+: +(4) ++++ ; 						( 4 bit add TOS - carry on TOS )
+: +(3) +++ ;						( 3 bit add TOS - carry on TOS )
+: +(2) ++ ;						( 2 bit add TOS - carry on TOS )
+
+: +top @-+ +(4) drop @0+ +(4) drop @++ +(4) ;		( add top row to reg - carry on TOS ) 
+: +mid @-0 +(4) drop @00 +(4) drop @+0 +(4) ;		( add mid row to reg - carry on TOS )
+: +bot @-- +(4) drop @0- +(4) drop @+- +(4) ;		( add bot row to reg - carry on TOS )
+: +all +top drop +mid drop +bot ;			( add all cells to reg - carry on TOS )
+
+: +mid-1 @-0 +(4) drop @+0 +(4) ;			( add mid row except center element to reg - carry on TOS )
+: +all-1 +top drop +mid-1 drop +bot ;			( add all cells expet middle one to reg - carry on TOS )
+
+
+: countall a-0 +all drop ;				( count all cells - no stack effect )
+: countall-1 a-0 +all-1 drop ;				( count all cells except middle one - no stack effect )
+
+: +topbot  @0+ +(3) drop @0- +(3) ;
+: +leftright  @+0 +(3) drop @-0 +(3) ;
+: +star +topbot drop +leftright ;
+: countstar a-0 +star drop ;
+
+: =2or3? @a2 not @a1 and ;	 			( sum equal to 2 or 3? only checks 3 bits )
+: =3? =2or3? @a0 and ;					( sum equal to 3 ? )
+: =2? =2or3? @a0 not and ;				( sum equal to 2 ? )
+: =4? @a2 @a1 not and @a0 not and ;			( sum equal to 4 ? )
+
+
+
+( some test rules )
+
+( : rule_one 1 ; )
+( : rule_zero 0 ; )
+( : rule_id @00 ; )
+
+
+: rule_shiftleft @+0 ;
+: rule_shifttop  @0- ;
+: rule_shiftbot  @0+ ;
+: rule_shifttopright @-- ;
+: rule_strobe @00 not ;
+
+( game of life )
+
+: rule_gameoflife countall-1 =2? @00 and =3? or ;
+
+( wolfram's rule 110)
+
+: rule_w110 @00 @+0 and not @-0 @00 @+0 or or and ;
+
+
+( some other rules )
+
+: rule_w110mod @0+ @+0 and not @-+ @0+ @++ or or and ;
+
+: rule_w110mod2 @0+ @+0 and not @-+ @0+ @+0 or or and ;
+: rule_w110mod3 @0+ @++ and not @-+ @0+ @++ or or and @-0 @00 @+0 or or and ;
+
+: rule_golmod countall-1 =3? @00 and =2? or ;
+: rule_golmod2 countall-1 =2? @0+ and =3? or ;
+: rule_golmod3 countall-1 =2? @++ and =3? or ;
+: rule_golmod4 countall-1 =2? @++ @-- or and =3? or ;
+: rule_golmod5 countall-1 =2? @++ @-- or and =3? @+- and or ;
+: rule_golmod6 countall-1 =2? @++ @-- or and =3? @+- and or @0+ or ;
+: rule_golmod7 countall-1 =2? @++ @-- or and =3? @+- and or @0+ or @00 and ;
+
+( ca's with a short settling time )
+
+: rule_block countstar =4? not =2? and @00 or ;
+: rule_noiseedges countstar =4? =3? or not =2? and @00 or @++ xor ;
+: rule_noiseplanes countstar =4? =3? or not =2? and @00 or @++ xor @-- xor ;
+
+
+( : rule_noiseplanes countstar =4? =3? or not =2? and @00 or @++ xor @-- xor ; )
+
+: rule_fire countall-1 =2? @0+ and =3? or ;

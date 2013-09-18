@@ -1,0 +1,32 @@
+#N canvas 475 141 635 386 10;
+#X msg 76 207 dim 256 256;
+#X msg 76 235 dim 320 240;
+#X obj 28 275 pdp_scale 320 240;
+#X msg 75 181 dim 32 32;
+#X msg 259 234 quality \$1;
+#X obj 28 65 pdp_help_input;
+#X msg 28 36 start;
+#X msg 80 35 stop;
+#X obj 28 317 pdp_help_output;
+#X text 347 225 0 = nearest neighbour;
+#X text 347 240 1 = bilinear;
+#X text 74 154 set new packet dimensions;
+#X text 161 28 pdp_scale rescales the packet format.;
+#X text 161 56 use this if you want to combine different packet sizes.
+or have movies that don't have a legal size (not a multiple of 8x8)
+;
+#X msg 259 204 0;
+#X msg 294 204 1;
+#X text 159 103 (try to avoid rescaling by using movies with equal
+(legal) dimensions \, it is not a cheap operation and can easily be
+done in advance);
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 8 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 14 0 4 0;
+#X connect 15 0 4 0;

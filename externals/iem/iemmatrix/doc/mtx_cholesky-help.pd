@@ -1,0 +1,27 @@
+#N canvas 16 0 491 405 10;
+#X text 66 325 updated for;
+#X obj 154 325 iemmatrix 0.2;
+#X obj 203 351 matrix;
+#X text 73 350 see also help for;
+#X obj 203 371 mtx_gauss;
+#X text 26 12 mtx_cholesky:: decompose a matrix using cholesky's algorithm
+;
+#X msg 176 54 bang;
+#X obj 176 98 t a a;
+#X obj 176 75 mtx_eye 5;
+#X obj 266 75 mtx_egg 5;
+#X obj 176 235 mtx_print symmetric;
+#X obj 206 143 mtx_print original;
+#X msg 266 52 bang;
+#X obj 176 178 mtx_cholesky;
+#X msg 53 53 bang;
+#X obj 53 74 mtx_diag 1 2 3 5;
+#X connect 6 0 8 0;
+#X connect 7 0 13 0;
+#X connect 7 1 11 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 12 0 9 0;
+#X connect 13 0 10 0;
+#X connect 14 0 15 0;
+#X connect 15 0 7 0;

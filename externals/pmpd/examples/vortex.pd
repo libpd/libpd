@@ -1,0 +1,26 @@
+#N canvas 844 114 502 389 10;
+#X obj 77 177 gemhead;
+#X obj 77 200 translateXYZ;
+#X obj 66 150 unpack s f f;
+#X msg 56 285 setX \$1 \, setY \$2;
+#X obj 23 262 r link;
+#X obj 58 15 r mass2;
+#X msg 54 61 bang;
+#X msg 94 66 reset;
+#X obj 60 36 t b b;
+#X obj 56 126 mass2D mass 0 \$1;
+#X obj 77 224 sphere 0.05;
+#X obj 56 312 iCircle2D mass 0 0 1e-006 10 0 0 0 0 0 0 0 0 0 0.0001
+;
+#X connect 0 0 1 0;
+#X connect 1 0 10 0;
+#X connect 2 1 1 1;
+#X connect 2 2 1 2;
+#X connect 3 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 8 0;
+#X connect 7 0 9 0;
+#X connect 8 0 6 0;
+#X connect 8 1 7 0;
+#X connect 9 0 2 0;
+#X connect 9 0 3 0;

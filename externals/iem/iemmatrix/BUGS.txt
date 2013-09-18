@@ -1,0 +1,8 @@
+mtx_diegg: initial values are used for [mtx_diag]!
+mtx_diegg: getting dieggonally of a matrix does not work
+mtx_min2, mtx_max2: doesn't work with scalar
+
+mtx_r(i)fft: likes crashing
+
+lots of help-patches are missing
+

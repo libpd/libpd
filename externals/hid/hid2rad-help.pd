@@ -1,0 +1,36 @@
+#N canvas 0 36 471 311 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid2rad 2 11 1 18 -233017 -66577
+0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 254 249 released under the GNU GPL;
+#X text 185 208 For more info:;
+#X text 40 234 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 276 148 related objects:;
+#X obj 233 164 hid/rad2hid;
+#X obj 308 164 hid/deg2hid;
+#X obj 383 164 hid/hid2deg;
+#X obj 69 150 hid/hid2rad;
+#X floatatom 69 185 9 0 0 1 radians - -;
+#X obj 72 85 hsl 128 15 0 1 0 0 empty empty hid 6 7 1 10 -262131 -1
+-1 0 0;
+#X floatatom 95 115 5 0 0 0 - - -;
+#X text 26 34 This object converts numbers from the [hid] range (0
+to 1) to radians (-pi to pi) with the 0's lining up in the same place.
+;
+#N canvas 504 253 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 85 INLET_0 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION convert numbers from the [hid] range (0 to
+1) to radians (-pi to pi) with the 0's lining up in the same place.
+;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X restore 417 283 pd META;
+#X connect 9 0 10 0;
+#X connect 11 0 9 0;
+#X connect 12 0 9 0;

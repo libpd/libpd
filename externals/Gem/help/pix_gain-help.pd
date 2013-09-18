@@ -1,0 +1,88 @@
+#N canvas 394 120 654 440 10;
+#X text 452 8 GEM object;
+#X obj 8 275 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 278 Inlets:;
+#X text 38 355 Outlets:;
+#X obj 8 236 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 235 Arguments:;
+#X obj 7 76 cnv 15 430 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 148 cnv 15 160 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 246 <none>;
+#X text 56 368 Outlet 1: gemlist;
+#X text 23 292 Inlet 1: gemlist;
+#X obj 451 233 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X obj 451 206 pix_gain;
+#X text 50 12 Synopsis: [pix_gain];
+#X text 29 76 Description: multiply pixel-values;
+#X floatatom 476 151 5 0 0 1 common - -;
+#X msg 527 179 1 0.5 0;
+#X msg 528 201 0 0.4 0.8 1;
+#X text 10 93 pix_gain applies a gain multipler to each pixel in a
+pix. The float is a constant modifier applied to all color components.
+If you use just R G B \, it asumes an alpha of 1.0.;
+#X text 13 152 NOTE: while you can use this \, remember that you can
+often acchieve the very same thing using the [color]-object for coloring
+the Geo onto which the image data is textured \, which could be done
+on the gfx-card (very efficient!) \, while [pix_gain] is always(!)
+done on the CPU!!!;
+#X text 23 305 Inlet 1: <float>: multiplyer for all channels;
+#X text 23 321 Inlet 2: list: 3 (RGB) or 4 (RGBA) values as multiplyers
+for each channels;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 24 0;
+#X connect 24 0 21 0;
+#X connect 27 0 24 1;
+#X connect 28 0 24 2;
+#X connect 29 0 24 2;

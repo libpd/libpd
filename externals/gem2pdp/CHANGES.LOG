@@ -1,0 +1,17 @@
+0.7
+  adapted to gem 0.91 by iohannes + rendering problems
+0.6
+  added colorspace message, now we can choose what to decode the YV12 into:
+  YUV, RGBA/BGRA, or RGB/BGR
+  uses color conversions from GemPixUtil.cpp
+0.5
+  fixed help patches for pd 0.37
+0.4
+  fixed pdp-0.12 compatibility on my own this time
+0.3
+  fixed pdp-0.11 compatibility with advice from Thomas Wurzer
+0.2
+  added pdp2gem based on a skeleton of pix_film
+  spare a refresh in gem2pdp (faster)
+0.1
+  first implementation : includes gem2pdp

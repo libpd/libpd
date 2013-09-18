@@ -1,0 +1,21 @@
+Change log for PD external 'pdstring'
+
+v0.07
+   + changed default output of [any2string] to "unsigned char"
+     - fixes sourceforge bug #2501709, reported by Roman Haefeli
+
+v0.06
+   + fixed asymmetricity bug (thanks to iohannes for the report)
+
+v0.05
+   + improved NUL parsing, add in- and outlets
+   + use static binbufs to avoid segfaults (a la mrpeach's [str])
+
+v0.03 Thu, 02 Feb 2006 12:57:43 +0100
+   + automake-ified
+
+v0.02 ?
+   + ?
+
+v0.01 Sun, 26 Oct 2003 14:06:29 +0100
+   + initial version

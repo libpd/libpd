@@ -1,0 +1,156 @@
+\documentclass{article}
+
+\title{pdlua}
+\author{Claude Heiland-Allen
+\\
+\tt{claudiusmaximus@goto10.org}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Pd (aka Pure-data) is a real-time visual programming environment
+primarily used for multimedia processing. Lua is a powerful, fast,
+light-weight, embeddable scripting language. pdlua is a Lua embedding
+for Pd.
+\end{abstract}
+
+\section{Classes and objects}
+
+\begin{verbatim}
+-- example1.pd_lua
+local example1 = pd.Class:new():register("example1")
+function example1:initialize(sel, atoms)
+  return true
+end
+\end{verbatim}
+
+{\tt pd} is a package automatically available to scripts loaded by pdlua.
+pdlua uses a prototype-based object system and {\tt pd.Class} is the
+prototype for classes that define patchable objects in Pd.  To create a
+new class, use the {\tt :new()} method.  This creates an anonymous class,
+which needs to be registered with Pd using the {\tt :register()} method.
+
+The new class {\tt example1} cannot be instantiated yet, as the default
+{\tt :initialize()} method returns {\tt false}, indicating to pdlua that
+the Pd object should not be created.
+
+With the code above, {\tt example1} can be created in Pd, but it will
+have neither inlets nor outlets.
+
+\section{Inlets and methods}
+
+\begin{verbatim}
+-- example2.pd_lua
+local example2 = pd.Class:new():register("example2")
+function example2:initialize(sel, atoms)
+  self.inlets = 3
+  return true
+end
+\end{verbatim}
+
+Setting {\tt self.inlets} in the {\tt :initialize()} method will give
+the created objects some inlets, in this case three of them.  Not very
+interesting yet, as sending messages to these inlets will result in
+errors as there are no methods to respond to messages at these inlets.
+
+Messages arriving at the Pd object's inlets are dispatched to the Lua
+object's {\tt :in\_*()} methods.  There are five predefined selectors:
+
+\begin{itemize}
+\item {\tt bang}
+\item {\tt float}
+\item {\tt symbol}
+\item {\tt pointer}
+\item {\tt list}
+\end{itemize}
+
+They can be used like this:
+
+\begin{verbatim}
+function example2:in_1_bang()
+  pd.post("inlet 1 got a bang")
+end
+function example2:in_1_float(f)
+  pd.post("inlet 1 got a float: " .. f)
+end
+function example2:in_1_symbol(s)
+  pd.post("inlet 1 got a symbol: " .. s)
+end
+function example2:in_1_pointer(p)
+  pd.post("inlet 1 got a pointer)
+end
+function example2:in_1_list(atoms)
+  pd.post("inlet 1 got a list: " .. #atoms .. " elements")
+end
+\end{verbatim}
+
+In the above, the methods are defined for the leftmost inlet.  To add
+methods for the other inlets, replace {\tt :in\_1\_*()} with
+{\tt :in\_2\_*()} for the second inlet, or {\tt :in\_3\_*()} for the third,
+and so on.
+
+It is possible to add methods for other selectors:
+
+\begin{verbatim}
+function example2:in_2_baabaa(atoms)
+  pd.post("inlet 2 got a baabaa: " .. #atoms .. " elements")
+end
+function example2:in_2_moomoo(atoms)
+  pd.post("inlet 2 got a moomoo: " .. #atoms .. " elements")
+end
+\end{verbatim}
+
+It is also possible to add methods that catch any selector:
+
+\begin{verbatim}
+function example2:in_3(sel, atoms)
+  pd.post("inlet 3 got a " .. sel .. ": .. #atoms .. " elements")
+end
+\end{verbatim}
+
+Or methods that catch messages at any inlet:
+
+\begin{verbatim}
+function example2:in_n_float(i, f)
+  pd.post("inlet " .. i .. " got a float: " .. f)
+end
+function example2:in_n_quack(i, atoms)
+  pd.post("inlet " .. i .. " got a quack: " .. #atoms .. " elements")
+end
+\end{verbatim}
+
+Or even catch any message at any inlet:
+
+\begin{verbatim}
+function example2:in_n(i, sel, atoms)
+  pd.post("inlet " .. i .. " got a " .. sel .. ": " .. #atoms .. " elements")
+end
+\end{verbatim}
+
+The more specific methods are called before the more general methods:
+
+\begin{itemize}
+\item {\tt :in\_1\_selector()}
+\item {\tt :in\_n\_selector()}
+\item {\tt :in\_1()}
+\item {\tt :in\_n()}
+\item {\tt :error("no method found")}
+\end{itemize}
+
+\section{Outlets}
+
+\section{Sends}
+
+\section{Receives}
+
+\section{Values}
+
+\section{Tables}
+
+\section{Clocks}
+
+\section{Paths}
+
+\end{document}

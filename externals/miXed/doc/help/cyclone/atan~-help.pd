@@ -1,0 +1,37 @@
+#N canvas 0 31 564 308 10;
+#X obj 28 86 cycle~ 2;
+#X obj 28 111 *~ 3.14159;
+#X msg 231 138 range -1.57 1.57;
+#X obj 160 112 -~ 3.14195;
+#X obj 160 89 *~ 6.28319;
+#X obj 160 67 phasor~ 2;
+#X text 16 35 Arc-tangent function (atan(x)) for signals;
+#X text 284 68 see atan2~ for the 2-inlet version: atan(y/x);
+#X obj 28 136 atan~;
+#X obj 158 136 atan~;
+#X obj 27 167 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 169 169 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#N canvas 430 169 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION arc-tangent function (atan(x)) for signals
+;
+#X text 12 5 KEYWORDS signal max_compatible trigonometry;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 515 288 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 8 0;
+#X connect 2 0 10 0;
+#X connect 2 0 11 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 8 0 10 0;
+#X connect 9 0 11 0;

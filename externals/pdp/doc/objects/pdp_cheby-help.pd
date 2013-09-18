@@ -1,0 +1,66 @@
+#N canvas 117 219 672 516 10;
+#X msg 67 108 coef 0 \$1;
+#X floatatom 67 84 5 0 0;
+#X floatatom 137 84 5 0 0;
+#X msg 137 108 coef 1 \$1;
+#X floatatom 206 83 5 0 0;
+#X msg 206 108 coef 2 \$1;
+#X floatatom 275 84 5 0 0;
+#X msg 275 108 coef 3 \$1;
+#X floatatom 243 359 5 0 0;
+#X text 122 394 creation arg: order (nb coefs = order + 1);
+#X text 123 410 (default = minimal order = 2);
+#X msg 243 309 reset;
+#X obj 21 46 pdp_help_input;
+#X msg 21 16 start;
+#X msg 70 16 stop;
+#X obj 21 445 pdp_help_output;
+#X text 296 359 right inlet: number of iterations;
+#X text 295 308 set all coefs to 0;
+#X msg 243 338 1;
+#X msg 243 267 chanmask \$1;
+#X floatatom 243 244 5 0 0;
+#X text 157 63 set individual coefficients;
+#N canvas 0 0 450 300 graph1 0;
+#X array mapping 64 float 1;
+#A 0 -0.908307 -0.86545 -0.794021 -0.76545 -0.694021 -0.622593 -0.451164
+-0.0511646 0.234549 0.377406 0.427406 0.477406 0.520263 0.534549 0.548835
+0.534549 0.505978 0.477406 0.448835 0.420264 0.348835 0.298835 0.148835
+0.0845496 -0.0511645 -0.151164 -0.236879 -0.322593 -0.436878 -0.436878
+-0.436878 -0.436878 -0.422593 -0.394021 -0.36545 -0.308307 -0.26545
+-0.136879 0.120264 0.291692 0.434549 0.534549 0.591692 0.648835 0.677406
+0.677406 0.663121 0.648835 0.648835 0.634549 0.605978 0.605978 0.605978
+0.605978 0.605978 0.605978 0.634549 0.648835 0.677406 0.705978 0.76312
+0.848835 0.934549 0.977406;
+#X coords 0 1 63 -1 200 140 1;
+#X restore 427 20 graph;
+#X msg 242 217 approx mapping;
+#X obj 21 158 pdp_t;
+#X text 418 165 -1 ----------- 0 ----------- 1;
+#X obj 242 190 spigot;
+#X obj 279 167 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 361 216 approximate a mapping function;
+#X obj 21 403 pdp_cheby 10;
+#X connect 0 0 29 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 29 0;
+#X connect 4 0 5 0;
+#X connect 5 0 29 0;
+#X connect 6 0 7 0;
+#X connect 7 0 29 0;
+#X connect 8 0 29 1;
+#X connect 11 0 29 0;
+#X connect 12 0 24 0;
+#X connect 13 0 12 0;
+#X connect 14 0 12 0;
+#X connect 18 0 8 0;
+#X connect 19 0 29 0;
+#X connect 20 0 19 0;
+#X connect 23 0 29 0;
+#X connect 24 0 29 0;
+#X connect 24 1 26 0;
+#X connect 26 0 23 0;
+#X connect 27 0 26 1;
+#X connect 29 0 15 0;

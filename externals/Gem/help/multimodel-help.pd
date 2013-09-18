@@ -1,0 +1,69 @@
+#N canvas 368 22 710 565 10;
+#X text 54 30 Class: geometric object;
+#X obj 464 77 cnv 15 200 180 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 466 294 cnv 15 200 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1 \, lighting 1;
+#X msg 298 112 destroy \, reset;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 471 333 pd gemwin;
+#X msg 471 314 create;
+#X text 468 295 Create window:;
+#X text 475 59 Example:;
+#X obj 7 67 cnv 15 450 200 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 316 cnv 15 450 160 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 321 Inlets:;
+#X obj 8 276 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 275 Arguments:;
+#X text 452 8 GEM object;
+#X text 27 333 Inlet 1: gemlist;
+#X text 9 420 Outlets:;
+#X text 21 433 Outlet 1: gemlist;
+#X obj 469 146 cnv 15 190 35 empty empty empty 20 12 0 14 -106458 -66577
+0;
+#X obj 470 203 cnv 15 50 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 583 314 gemhead;
+#X obj 583 333 world_light;
+#X obj 473 84 gemhead;
+#X obj 492 413 model;
+#X text 472 394 see also:;
+#X text 33 14 Synopsis: [multimodel];
+#X text 19 117 The open message is the name of the of model file \,
+the base model number (ie \, what number to start at) \, the top model
+number (what number to end at) \, and the skip rate (how to count).
+;
+#X text 18 180 When you send the open message \, multimodel looks for
+the * in the file name and replaces it with a number.;
+#X obj 473 209 multimodel;
+#X msg 482 156 open mymodel*.obj 0 10 1;
+#X text 27 350 Inlet 1: message: open <filename*.obj> <basenumber>
+<topnumber> <skip>;
+#X obj 563 412 pix_multiimage;
+#X text 7 69 Description: load multiple an Alias/Wavefront-Model and
+renders one of them;
+#X text 18 386 for other messages to [multimodel] see [model];
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 18 0 19 0;
+#X connect 20 0 26 0;
+#X connect 27 0 26 0;

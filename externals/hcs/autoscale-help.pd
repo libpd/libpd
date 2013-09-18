@@ -1,0 +1,62 @@
+#N canvas 0 26 462 532 10;
+#X floatatom 26 88 5 0 0 0 - - -;
+#X floatatom 26 152 0 0 0 0 - - -;
+#X obj 68 270 autoscale;
+#X obj 2 2 cnv 15 450 20 empty empty autoscale 2 11 1 18 -233017 -66577
+0;
+#X msg 418 3 pddp;
+#X text 18 35 [autoscale] scales a stream of numbers based on an output
+range set as arguments \, and an input range which is set dynamically.
+;
+#X text 13 193 If you use [autoscale] with no arguments \, then the
+output range defaults to 0-127.;
+#X floatatom 68 249 5 0 0 0 - - -;
+#X obj 71 293 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 17 453 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 234 467 released under the GNU GPL;
+#X floatatom 150 152 0 0 0 0 - - -;
+#X floatatom 297 152 0 0 0 0 - - -;
+#X obj 213 83 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 17 486 $Revision: 1.5 $$Date: 2006-03-17 04:50:03 $;
+#X text 18 499 $Author: eighthave $;
+#X text 25 336 The [reset( message resets the stored max and min to
+zero.;
+#X floatatom 46 360 5 0 0 0 - - -;
+#X obj 71 413 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X msg 96 358 reset;
+#X obj 26 122 autoscale 0 1;
+#X obj 150 122 autoscale -0.01 0.01;
+#X obj 297 122 autoscale -4095 4095;
+#X obj 68 390 autoscale;
+#N canvas 356 214 494 344 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 215 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 45 DESCRIPTION scale a stream of numbers based on an output
+range set as arguments;
+#X text 12 95 INLET_1 float;
+#X text 12 75 INLET_0 float reset;
+#X text 12 115 INLET_2 float;
+#X text 12 135 INLET_3 float bang;
+#X text 12 155 OUTLET_0 float;
+#X text 12 175 OUTLET_1 float;
+#X text 12 195 OUTLET_2 float;
+#X restore 403 501 pd META;
+#X floatatom 71 168 5 0 0 0 - - -;
+#X connect 0 0 20 0;
+#X connect 2 0 8 0;
+#X connect 7 0 2 0;
+#X connect 13 0 21 0;
+#X connect 13 0 22 0;
+#X connect 17 0 23 0;
+#X connect 19 0 23 0;
+#X connect 20 0 1 0;
+#X connect 21 0 11 0;
+#X connect 22 0 12 0;
+#X connect 23 0 18 0;

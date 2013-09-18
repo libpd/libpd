@@ -1,0 +1,52 @@
+#N canvas 0 0 558 379 10;
+#X obj 109 166 revalue;
+#X obj 155 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 109 205 5 0 0 0 - - -;
+#X obj 83 121 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 109 121 5 0 0 0 - - -;
+#X floatatom 110 268 5 0 0 0 - - -;
+#X obj 83 267 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 110 297 value \$0-foo;
+#X floatatom 110 331 5 0 0 0 - - -;
+#X floatatom 240 268 5 0 0 0 - - -;
+#X obj 213 267 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 240 331 5 0 0 0 - - -;
+#X obj 240 297 value \$0-bar;
+#X obj 155 142 symbol \$0-foo;
+#X obj 185 122 symbol \$0-bar;
+#X obj 155 120 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 185 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 215 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 215 102 symbol \$0-oof;
+#X obj 294 167 revalue \$0-foo;
+#X obj 294 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 294 199 5 0 0 0 - - -;
+#X text 23 23 Interface to Pd's native [value]. Behaves like [value]
+but with a settable name \, and another outlet to report if there is
+no [value] with the current name.;
+#X connect 0 0 2 0;
+#X connect 0 1 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 9 0 12 0;
+#X connect 10 0 12 0;
+#X connect 12 0 11 0;
+#X connect 13 0 0 1;
+#X connect 14 0 0 1;
+#X connect 15 0 13 0;
+#X connect 16 0 14 0;
+#X connect 17 0 18 0;
+#X connect 18 0 0 1;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;

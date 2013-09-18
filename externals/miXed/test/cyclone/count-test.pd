@@ -1,0 +1,19 @@
+#N canvas 229 256 450 300 12;
+#X obj 121 167 snapshot~;
+#X obj 294 122 metro 30;
+#X obj 294 88 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X floatatom 121 215 0 0 0;
+#X msg 121 60 bang;
+#X msg 59 60 stop;
+#X obj 121 118 count~;
+#X msg 177 60 3;
+#X msg 232 60 100;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 1;

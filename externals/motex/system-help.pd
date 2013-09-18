@@ -1,0 +1,17 @@
+#N canvas 0 31 450 300 10;
+#X obj 151 137 system;
+#X text 47 33 send a system message to the console;
+#X msg 113 72 echo "Hello my name is" $USERNAME;
+#X msg 160 102 ps -ef | grep $USERNAME;
+#X text 242 186 IM 2001;
+#N canvas 355 158 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 85 AUTHOR Iain Mott (iain.mott@bigpond.com);
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION send a system message to the console;
+#X text 12 65 INLET_0 anything;
+#X restore 397 275 pd META;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;

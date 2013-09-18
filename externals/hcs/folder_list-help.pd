@@ -1,0 +1,64 @@
+#N canvas 0 26 546 485 10;
+#X msg 19 73 bang;
+#X msg 27 355 bang;
+#X obj 64 300 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 11 420 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 176 255 symbol /usr/*;
+#X text 54 73 list current directory;
+#X text 160 237 set pattern without no output;
+#X obj 27 386 folder_list;
+#X obj 83 277 folder_list /*;
+#X obj 83 298 print;
+#X text 8 49 left/hot inlet gives immediate output using stored path
+;
+#X text 19 325 For UNIX people \, [folder_list] behaves just like "ls
+-d1A";
+#X obj 28 419 print;
+#X msg 91 146 symbol ~/*.*;
+#X text 187 197 relative paths work;
+#X msg 102 198 symbol ../*;
+#X text 164 124 drive letters work on ReactOS/Windows;
+#X msg 77 123 symbol C:/*;
+#X text 190 148 all files with a dot in your home;
+#X msg 40 98 symbol %USERPROFILE%/*;
+#X text 203 99 ReactOS/Windows environment variables work;
+#X text 262 218 nested wildcards work on UNIX;
+#X msg 119 219 symbol /var/*/*.log;
+#X text 173 173 patterns default to path that Pd launched from;
+#X text 329 464 released under the GNU GPL;
+#X text 15 449 (C) Copyright 2006 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 8 5 Get a listing of files based on a wildcard pattern. On
+UNIX \, it follows glob rules \, on ReactOS/Windows it follows the
+cmd.exe rules.;
+#X text 115 380 With no argument \, it defaults to the contents of
+the folder of the current patch \, i.e. "/path/to/current/patch/*".
+;
+#X msg 97 173 symbol *.pd;
+#N canvas 280 175 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION get listing of files based on wildcard pattern
+;
+#X text 12 65 INLET_0 bang symbol;
+#X text 12 85 INLET_1 symbol;
+#X text 12 105 OUTLET_0 symbol;
+#X text 12 5 KEYWORDS control filesystem patchfile_op;
+#X restore 498 465 pd META;
+#X connect 0 0 8 0;
+#X connect 1 0 7 0;
+#X connect 4 0 8 1;
+#X connect 7 0 3 0;
+#X connect 7 0 12 0;
+#X connect 8 0 2 0;
+#X connect 8 0 9 0;
+#X connect 13 0 8 0;
+#X connect 15 0 8 0;
+#X connect 17 0 8 0;
+#X connect 19 0 8 0;
+#X connect 22 0 8 0;
+#X connect 28 0 8 0;

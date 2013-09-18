@@ -1,0 +1,32 @@
+#N canvas 1 53 477 398 10;
+#X floatatom 29 40 5 0 0 0 - - -;
+#X floatatom 59 79 5 0 0 0 - - -;
+#X floatatom 102 97 5 0 0 0 - - -;
+#X obj 23 118 wave 25 0.4;
+#X obj 26 23 hsl 200 15 -1 5 0 0 empty empty center_position -2 -6
+0 8 -262131 -1 -1 4600 1;
+#X obj 105 79 hsl 128 15 0.01 10 1 0 empty empty empty -2 -6 0 8 -257472
+-1 -1 5500 1;
+#X obj 24 156 multi_slider 50;
+#X obj 61 61 hsl 128 15 0 50 0 0 empty empty number_of_points -2 -6
+0 8 -225280 -1 -1 3600 1;
+#N canvas 464 140 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 INLET_1 float;
+#X text 12 155 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION return the amplitude covered by the last
+n (n>1) values;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 115 INLET_2 float;
+#X text 12 135 OUTLET_0 list;
+#X restore 415 367 pd META;
+#X connect 1 0 3 1;
+#X connect 2 0 3 2;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 7 0 1 0;

@@ -1,0 +1,20 @@
+#N canvas 0 31 413 250 10;
+#X obj 34 106 serialize 4;
+#X obj 34 141 print;
+#X floatatom 34 69 0 0 0 0 - - -;
+#X text 30 195 (C) 2000 Guenter Geiger;
+#X text 30 39 serialize ... turn a stream of floats into a list;
+#N canvas 391 259 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 135 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 45 DESCRIPTION serialize ... turn a stream of floats into
+a list;
+#X text 12 75 INLET_0 float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 list;
+#X restore 350 207 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;

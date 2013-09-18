@@ -1,0 +1,14 @@
+#N canvas 0 0 514 300 10;
+#X obj 47 142 mtx_polyval;
+#X msg 122 100 matrix 1 5 1 -2 3 2 1;
+#X msg 43 73 matrix 1 3 0 1 2;
+#X obj 47 174 mtx_print;
+#X text 185 152 evaluate polynomial;
+#X text 181 178 1*x^4 -2*x^3 +3*x^2 +2*x^1 +1*x^0;
+#X text 45 13 [mtx_polyval] evaluates polynomial with given coefficients
+;
+#X text 94 33 at given values for x;
+#X text 252 241 Franz Zotter \, 2010;
+#X connect 0 0 3 0;
+#X connect 1 0 0 1;
+#X connect 2 0 0 0;

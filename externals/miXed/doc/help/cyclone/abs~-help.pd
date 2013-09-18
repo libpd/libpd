@@ -1,0 +1,44 @@
+#N canvas 0 26 798 416 10;
+#X text 15 35 Absolute value of a signal;
+#X obj 323 215 *~ 0.2;
+#X obj 323 193 *~;
+#X obj 404 165 abs~;
+#X text -65 208 no arguments;
+#X text 0 388 absolute value of sine wave;
+#X obj 20 206 abs~;
+#X text 178 388 original sine wave;
+#X obj 323 257 dac~;
+#X text 14 63 The abs~ object converts negative signal values to their
+corresponding positive values. This can be used for a rough instantaneous
+measure of signal amplitude \, among other things.;
+#X text 367 197 Signal multiplication where the modulator wave is limited
+to a positive range produces amplitude modulation (as opposed to ring
+modulation).;
+#X obj 403 137 cycle~ 220;
+#X obj 324 137 cycle~ 200;
+#X obj 20 250 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 162 250 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 20 160 cycle~ 1;
+#N canvas 430 169 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION absolute value of a signal;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 680 387 pd META;
+#X connect 1 0 8 0;
+#X connect 1 0 8 1;
+#X connect 2 0 1 0;
+#X connect 3 0 2 1;
+#X connect 6 0 13 0;
+#X connect 11 0 3 0;
+#X connect 12 0 2 0;
+#X connect 15 0 6 0;
+#X connect 15 0 14 0;

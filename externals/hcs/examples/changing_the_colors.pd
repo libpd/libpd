@@ -1,0 +1,66 @@
+#N canvas 231 465 735 462 10;
+#X declare -path ..;
+#X obj 133 416 hcs/sys_gui;
+#X msg 39 15 set canvas_fill green;
+#N canvas 0 22 492 479 default 0;
+#X obj 84 23 inlet;
+#X obj 74 366 outlet;
+#X obj 83 80 bang;
+#X msg 74 119 set canvas_fill "white" \, set text_color "#000" \, set
+select_color "#00f" \, set dash_outline "#f00" \, set dash_fill "#f7f7f7"
+\, set box_outline "#ccc" \, set graph_outline "#777" \, set atom_box_fill
+"#eee" \, set msg_box_fill "#f8f8f6" \, set obj_box_fill "#f6f8f8"
+\, set signal_cord_highlight "#58a" \, set signal_cord "#558" \, set
+signal_nlet $signal_cord \, set msg_cord_highlight "#474" \, set msg_cord
+"#565" \, set msg_nlet "white" \, set mixed_nlet "#88aaff";
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X restore 271 387 pd default color scheme;
+#X msg 271 365 bang;
+#X msg 47 35 set text_color grey50;
+#X msg 67 76 set dash_color orange;
+#X msg 57 55 set select_color magenta;
+#X msg 79 95 set dash_fill green;
+#X msg 87 115 set box_outline yellow;
+#X msg 97 135 set graph_outline green;
+#X msg 107 155 set atom_box_fill green;
+#X text 268 47 changes don't always take effect immediately \, open
+a new window to see the changes.;
+#X msg 119 175 set msg_box_fill green;
+#X msg 127 195 set obj_box_fill grey50;
+#X msg 137 215 set signal_cord_highlight magenta;
+#X msg 159 255 set signal_nlet green;
+#X msg 167 275 set msg_cord_highlight yellow;
+#X msg 177 295 set msg_cord green;
+#X msg 187 315 set msg_cord_nlet green;
+#X msg 197 335 set mixed_nlet green;
+#X text 297 115 you can use X11 color names or web colors;
+#X obj 325 144 pddp/pddplink http://en.wikipedia.org/wiki/X11_color_names
+;
+#X obj 326 164 pddp/pddplink http://en.wikipedia.org/wiki/Web_colors
+;
+#X obj 362 225 pddp/pddplink http://wiki.tcl.tk/1424;
+#X text 352 185 more on using color with Tcl/Tk:;
+#X obj 362 207 pddp/pddplink http://wiki.tcl.tk/3538 -text color values
+available for syntactic use in Tcl scripts;
+#X msg 147 236 set signal_cord #ffbb00;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X connect 19 0 0 0;
+#X connect 26 0 0 0;

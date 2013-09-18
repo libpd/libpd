@@ -1,0 +1,9 @@
+#N canvas 232 153 767 466 12;
+#X obj 41 14 comment 550 72 helvetica iso8859-2 0 255 0 0 êó±¶³¿¼æñ
+ÊÓ¡¦£¯¬ÆÑ;
+#X obj 48 321 comment 200 24 courier iso8859-2 0 0 255 0 êó±¶³¿¼æñ
+ÊÓ¡¦£¯¬ÆÑ;
+#X obj 275 316 comment 200 24 times iso8859-2 0 0 255 255 êó±¶³¿¼æñ
+ÊÓ¡¦£¯¬ÆÑ;
+#X obj 500 316 comment 200 24 helvetica iso8859-2 0 255 255 0 êó±¶³¿¼æñ
+ÊÓ¡¦£¯¬ÆÑ;

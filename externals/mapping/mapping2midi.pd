@@ -1,0 +1,10 @@
+#N canvas 1 53 454 304 10;
+#X obj 132 34 inlet;
+#X obj 133 222 outlet;
+#X text 182 222 7 bit integer (0-127);
+#X text 182 35 0 to 1;
+#X obj 132 81 * 127;
+#X obj 133 117 int;
+#X connect 0 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;

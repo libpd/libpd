@@ -1,0 +1,7 @@
+#define CYCLONE_VERSION "0.1"
+#define CYCLONE_RELEASE "alpha"
+#define CYCLONE_BUILD 56
+
+#if 0
+CYCLONE_SNAPSHOT = 0.1.56
+#endif

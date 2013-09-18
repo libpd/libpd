@@ -1,0 +1,44 @@
+#N canvas 0 26 468 384 10;
+#X text 15 35 Smooth-out changes in signal values;
+#X text 174 200 args: <slideup> <slidedown>;
+#X floatatom 155 156 0 0 0 0 - - -;
+#X msg 69 130 1;
+#X msg 31 129 0;
+#X text 154 136 slide down;
+#X floatatom 96 156 0 0 0 0 - - -;
+#X text 16 61 Slide filters an input signal logarithmically between
+changes in signal value. The formula is y(n) = y(n-1) + ((x(n) - y(n-1))/slide).
+It's particularly useful for envelope following and lowpass filtering.
+;
+#X obj 37 174 sig~;
+#X floatatom 37 155 0 0 0 0 - - -;
+#X text 96 136 slide up;
+#X obj 227 239 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 37 237 Snapshot~ 100;
+#X obj 38 262 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 37 198 slide~ 5000 5000;
+#N canvas 309 151 494 428 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal filter max_compatible;
+#X text 12 45 DESCRIPTION smooth-out changes in signal values;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 416 361 pd META;
+#X connect 2 0 14 2;
+#X connect 3 0 9 0;
+#X connect 4 0 9 0;
+#X connect 6 0 14 1;
+#X connect 8 0 14 0;
+#X connect 9 0 8 0;
+#X connect 12 0 13 0;
+#X connect 14 0 11 0;
+#X connect 14 0 12 0;

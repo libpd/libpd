@@ -1,0 +1,3 @@
+PDDPLINK_OBJECTS = \
+common/loud.o \
+common/os.o

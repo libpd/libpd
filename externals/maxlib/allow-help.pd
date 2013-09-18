@@ -1,0 +1,32 @@
+#N canvas 0 26 471 308 12;
+#X text 24 17 allow :: lets only 'allowed' floats or symbols through
+;
+#X text 97 34 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X msg 125 65 cat;
+#X msg 147 97 dog;
+#X msg 157 126 bird;
+#X floatatom 82 269 5 0 0 0 - - -;
+#X symbolatom 151 246 10 0 0 0 - - -;
+#X floatatom 40 81 5 0 0 0 - - -;
+#X obj 82 217 route float symbol;
+#X obj 82 189 allow 17 cat dog 23;
+#N canvas 293 158 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION let only 'allowed' floats or symbols through
+;
+#X text 12 65 INLET_0 float symbol;
+#X text 12 85 OUTLET_0 float symbol;
+#X text 12 105 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control filter;
+#X restore 415 283 pd META;
+#X msg 125 157 symbol \$1;
+#X connect 2 0 11 0;
+#X connect 3 0 11 0;
+#X connect 4 0 11 0;
+#X connect 7 0 9 0;
+#X connect 8 0 5 0;
+#X connect 8 1 6 0;
+#X connect 9 0 8 0;
+#X connect 11 0 9 0;

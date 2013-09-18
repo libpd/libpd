@@ -1,0 +1,29 @@
+#N canvas 0 26 425 241 10;
+#X obj 40 130 classpath;
+#X msg 40 92 bang;
+#X obj 65 180 print;
+#X symbolatom 40 208 0 0 0 0 - - -;
+#X obj 101 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 19 22 This object returns each path in the global classpath
+one at a time with each bang. [reset( refreshs the classpath data and
+starts again at the top of the list \, like [textfile] or [qlist]'s
+[reset(.;
+#X text 124 154 <-- banged when the end of the list is reached;
+#X msg 82 92 rewind;
+#N canvas 435 26 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION report global class paths;
+#X text 12 65 INLET_0 bang rewind;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 105 OUTLET_1 bang;
+#X text 12 5 KEYWORDS control pd-op;
+#X restore 376 221 pd META;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
+#X connect 1 0 0 0;
+#X connect 7 0 0 0;

@@ -1,0 +1,36 @@
+#N canvas 52 28 606 339 10;
+#X text 230 141 no arg;
+#X text 81 272 IEM KUG;
+#X text 65 260 musil;
+#X text 95 260 @;
+#X text 101 260 iem.at;
+#X text 64 282 Graz \, Austria;
+#X text 16 249 (c) Thomas Musil 2000 - 2006;
+#X text 351 143 like;
+#X obj 128 141 spec2_clip_max~;
+#X obj 128 118 sig~;
+#X floatatom 128 98 5 0 0 0 - - -;
+#X obj 212 118 sig~;
+#X floatatom 212 98 5 0 0 0 - - -;
+#X obj 401 144 min~;
+#X text 9 6 spec2_clip_max~;
+#X obj 21 61 dsp;
+#X obj 21 38 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 21 107 5 0 0 0 - - -;
+#X floatatom 34 86 5 0 0 0 - - -;
+#X text 120 28 iem_spec2 calculates only blocksize/2 + 1 samples of
+block;
+#X text 139 9 restrict a signal to lie lower than max limit;
+#X obj 84 179 print~;
+#X obj 85 159 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X connect 8 0 21 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;
+#X connect 11 0 8 1;
+#X connect 12 0 11 0;
+#X connect 15 0 17 0;
+#X connect 15 1 18 0;
+#X connect 16 0 15 0;
+#X connect 22 0 21 0;

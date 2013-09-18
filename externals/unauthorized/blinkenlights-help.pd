@@ -1,0 +1,156 @@
+#N canvas 484 81 885 735 10;
+#X text 334 640 Part of unauthorized PD;
+#X text 480 570 blinkenlights is a blinkenlights movies player;
+#X text 480 584 but it's also a pixel grid than you can use for ASCII
+art...;
+#X text 480 600 Constructor : blinkenlights <width> <height> <x pixel
+size> <y pixel size>;
+#X msg 125 10 create;
+#X msg 182 10 destroy;
+#X text 274 11 Create/destroy the window;
+#X msg 125 129 background 78 34 12;
+#X text 275 131 Set the background color [RGB];
+#X text 275 154 Set the foreground color [RGB];
+#X msg 121 223 pixon \$1 \$2;
+#X msg 284 222 bang;
+#X msg 285 266 bang;
+#X msg 122 267 pixoff \$1 \$2;
+#X obj 87 618 blinkenlights 18 8 32 32;
+#X msg 125 152 foreground 124 78 89;
+#X obj 347 277 hsl 32 8 1 32 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 336 250 vsl 8 32 1 32 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X text 355 257 Set a pixel off;
+#X text 352 213 Set a pixel on;
+#X obj 346 232 hsl 32 8 1 32 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 1600 1;
+#X obj 335 205 vsl 8 32 1 32 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 1400 1;
+#X msg 338 309 bang;
+#X obj 400 320 hsl 32 8 1 32 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 389 293 vsl 8 32 1 32 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X text 410 303 Set a pixel in a particular color;
+#X msg 118 310 pixel \$1 \$2 34 23 109;
+#X obj 120 338 + 1;
+#X obj 217 338 + 1;
+#X obj 316 338 random 255;
+#X obj 395 338 random 255;
+#X obj 470 338 random 255;
+#X msg 118 360 pixel \$1 \$2 \$3 \$4 \$5;
+#X obj 267 359 pack f f f f f;
+#X obj 464 360 t b b b b b;
+#X msg 593 339 stop;
+#X text 634 342 Random drawing;
+#X msg 547 339 bang;
+#X obj 548 360 metro 10;
+#X obj 146 338 random 32;
+#X obj 246 337 random 32;
+#X msg 125 107 clear;
+#X text 274 105 Clear the area;
+#X text 122 187 ============================================ Pixel
+Functions;
+#X text 552 187 ========================================;
+#X text 550 -6 ========================================;
+#X text 539 472 ========================================;
+#X text 112 472 =========================================== Movies
+Functions;
+#X text 122 -6 =========================================== Grid Actions
+;
+#X obj 214 222 pack f f;
+#X obj 215 266 pack f f;
+#X obj 275 310 pack f f;
+#X msg 125 81 xsize 32;
+#X msg 192 81 ysize 32;
+#X text 274 79 Set the pixel x & y size;
+#X msg 127 33 width 24;
+#X msg 125 58 height 24;
+#X text 275 37 Set the width ( number of pixels );
+#X text 275 56 Set the height ( number of pixels );
+#X msg 127 495 open ./blm/ascii_people.blm;
+#X msg 335 495 play;
+#X msg 377 495 stop;
+#X msg 127 522 open \$1;
+#X msg 418 495 next;
+#X obj 458 494 metro 100;
+#X msg 531 495 bang;
+#X msg 571 494 stop;
+#X obj 188 521 openpanel;
+#X obj 261 522 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 615 495 5 0 0 0 - - -;
+#X text 534 401 ========================================;
+#X text 116 400 =============================================== VJ
+function;
+#X msg 132 444 vj \$1;
+#X msg 363 444 goto \$1;
+#X obj 366 423 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 5600 1;
+#X obj 132 424 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 507 420 <- look! you can also scratch the film!;
+#X text 530 434 be sure the window is created first....;
+#X text 154 420 <- switch to the scratch mode;
+#X text 333 654 Comments and bugs @ ydegoyon@free.fr and chun@goto10.org
+;
+#X connect 4 0 14 0;
+#X connect 5 0 14 0;
+#X connect 7 0 14 0;
+#X connect 10 0 14 0;
+#X connect 11 0 49 0;
+#X connect 12 0 50 0;
+#X connect 13 0 14 0;
+#X connect 15 0 14 0;
+#X connect 16 0 50 0;
+#X connect 17 0 12 0;
+#X connect 17 0 50 1;
+#X connect 20 0 49 0;
+#X connect 21 0 11 0;
+#X connect 21 0 49 1;
+#X connect 22 0 51 0;
+#X connect 23 0 51 0;
+#X connect 24 0 22 0;
+#X connect 24 0 51 1;
+#X connect 26 0 14 0;
+#X connect 27 0 33 0;
+#X connect 28 0 33 1;
+#X connect 29 0 33 2;
+#X connect 30 0 33 3;
+#X connect 31 0 33 4;
+#X connect 32 0 14 0;
+#X connect 33 0 32 0;
+#X connect 34 0 39 0;
+#X connect 34 1 40 0;
+#X connect 34 2 29 0;
+#X connect 34 3 30 0;
+#X connect 34 4 31 0;
+#X connect 35 0 38 0;
+#X connect 37 0 38 0;
+#X connect 38 0 34 0;
+#X connect 39 0 27 0;
+#X connect 40 0 28 0;
+#X connect 41 0 14 0;
+#X connect 49 0 10 0;
+#X connect 50 0 13 0;
+#X connect 51 0 26 0;
+#X connect 52 0 14 0;
+#X connect 53 0 14 0;
+#X connect 55 0 14 0;
+#X connect 56 0 14 0;
+#X connect 59 0 14 0;
+#X connect 60 0 14 0;
+#X connect 61 0 14 0;
+#X connect 62 0 14 0;
+#X connect 63 0 14 0;
+#X connect 64 0 63 0;
+#X connect 65 0 64 0;
+#X connect 66 0 64 0;
+#X connect 67 0 62 0;
+#X connect 68 0 67 0;
+#X connect 69 0 64 1;
+#X connect 72 0 14 0;
+#X connect 73 0 14 0;
+#X connect 74 0 73 0;
+#X connect 75 0 72 0;

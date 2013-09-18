@@ -1,0 +1,81 @@
+#N canvas 550 226 695 421 10;
+#X text 452 8 GEM object;
+#X obj 8 225 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 228 Inlets:;
+#X text 38 315 Outlets:;
+#X obj 8 186 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 185 Arguments:;
+#X obj 7 56 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 465 345 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 470 384 pd gemwin;
+#X msg 470 365 create;
+#X text 466 344 Create window:;
+#X obj 450 158 cnv 15 160 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 5 49 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X connect 0 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 1 0;
+#X restore 451 110 pd image;
+#X text 63 196 <none>;
+#X text 56 328 Outlet 1: gemlist;
+#X text 63 242 Inlet 1: gemlist;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X floatatom 465 162 5 0 1 1 pass - -;
+#X text 50 12 Synopsis: [pix_threshold];
+#X text 29 56 Description: apply a threshold to pixes;
+#X text 15 101 pix_threshold is a simply threshold filter. Any pixel
+above the value is passed. Any pixel below the value is zeroed out.
+;
+#X text 15 155 If the float is used \, alpha is assumed to be 1;
+#X obj 451 256 pix_threshold;
+#X text 63 255 Inlet 2: <float>: threshold for all channels;
+#X text 63 280 Inlet 3: <list>: threshold (RGB) or (RGBA);
+#X obj 451 283 pix_draw;
+#X msg 496 205 0.6 0.1 0.8;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 28 0;
+#X connect 23 0 28 1;
+#X connect 28 0 31 0;
+#X connect 32 0 28 2;

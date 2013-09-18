@@ -1,0 +1,29 @@
+#N canvas 0 26 480 309 10;
+#X obj 17 62 osc~ 500;
+#X floatatom 17 -11 5 0 0 0 - - -;
+#X obj 17 23 * 187.5;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-scope 64 float 0;
+#X coords 0 1 63 -1 200 140 1 0 0;
+#X restore 233 16 graph;
+#X obj 18 113 bfft~;
+#X obj 71 112 ibfft~;
+#X text 13 -74 like fft~ but normalized and;
+#N canvas 379 254 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal block_oriented;
+#X text 12 45 DESCRIPTION like fft~ but normalized and spectrum: (DC
+\, NY) \, (R1 \, I1) \, ...(RN-1 \, IN-1);
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 115 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 428 216 pd META;
+#X text 12 -60 spectrum: (DC \, NY) \, (R1 \, I1) \, ...(RN-1 \, IN-1)
+;
+#X obj 17 180 tabsend~ \$0-scope;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 4 0 9 0;

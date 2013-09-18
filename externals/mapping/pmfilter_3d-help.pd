@@ -1,0 +1,42 @@
+#N canvas 3 53 296 578 10;
+#X obj 44 44 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X obj 75 43 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X obj 44 211 pack f f f;
+#X obj 44 299 unpack f f f;
+#X obj 109 42 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X msg 87 243 1 0.5 0.3;
+#X floatatom 199 245 5 0 0 0 - - -;
+#X obj 44 184 resample 50;
+#X obj 44 345 clip 0 1;
+#X obj 44 369 timeroll;
+#X obj 44 269 pmfilter_3d 0.3 0.3;
+#N canvas 385 193 494 344 META 0;
+#X text 12 225 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 205 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION;
+#X text 12 105 INLET_2 float;
+#X text 12 165 OUTLET_0 list;
+#X text 12 65 INLET_0 list;
+#X text 12 85 INLET_1 list;
+#X text 12 125 INLET_3 float;
+#X text 12 145 INLET_4 float;
+#X text 12 185 OUTLET_1;
+#X text 12 5 KEYWORDS control abstraction needs_work (OUTLET_1?);
+#X restore 241 545 pd META;
+#X connect 0 0 7 0;
+#X connect 1 0 2 1;
+#X connect 2 0 10 0;
+#X connect 3 0 8 0;
+#X connect 3 1 8 0;
+#X connect 3 2 8 0;
+#X connect 4 0 2 2;
+#X connect 5 0 10 1;
+#X connect 6 0 10 4;
+#X connect 7 0 2 0;
+#X connect 8 0 9 0;
+#X connect 10 0 3 0;

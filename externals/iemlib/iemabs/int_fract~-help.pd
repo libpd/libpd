@@ -1,0 +1,47 @@
+#N canvas 0 26 362 339 10;
+#X text 28 48 dsp ON/OFF;
+#X floatatom 45 225 7 0 0 0 - - -;
+#X floatatom 46 119 7 0 0 0 - - -;
+#X floatatom 11 88 5 0 0 0 - - -;
+#X text 46 87 % cpu;
+#X obj 11 68 dsp;
+#X obj 11 48 tgl 15 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X text 9 5 round~;
+#X obj 46 141 sig~;
+#X obj 45 203 unsig~;
+#X text 120 168 no arg;
+#X obj 45 170 int_fract~;
+#X floatatom 101 224 7 0 0 0 - - -;
+#X obj 101 202 unsig~;
+#X text 12 239 truncated int;
+#X text 102 239 fractal part;
+#X text 87 28 and the fractal part of the float-number;
+#X text 64 6 signal-float-splitting to the;
+#X text 74 17 truncated signal-integer-number;
+#X text 106 305 IEM KUG;
+#X text 90 293 musil;
+#X text 120 293 @;
+#X text 126 293 iem.at;
+#X text 41 282 (c) Thomas Musil 2000 - 2005;
+#X text 89 315 Graz \, Austria;
+#N canvas 372 154 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 75 INLET_0 signal;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION signal-float-splitting to truncated signal-integer-number
+and fractal part of the float-number;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 OUTLET_1 float;
+#X restore 310 314 pd META;
+#X connect 2 0 8 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 8 0 11 0;
+#X connect 9 0 1 0;
+#X connect 11 0 9 0;
+#X connect 11 1 13 0;
+#X connect 13 0 12 0;

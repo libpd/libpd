@@ -1,0 +1,99 @@
+#N canvas 230 0 683 500 10;
+#X text 452 8 GEM object;
+#X obj 8 351 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 353 Inlets:;
+#X text 39 448 Outlets:;
+#X obj 8 311 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 310 Arguments:;
+#X obj 8 56 cnv 15 430 250 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 290 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create+DSP;
+#X obj 67 41 route create+DSP;
+#X msg 102 163 \; pd dsp 1;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 0 8 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 519 329 pd gemwin;
+#X msg 519 310 create+DSP;
+#X text 515 289 Create window:;
+#X obj 451 118 cnv 15 160 140 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 89 gemhead;
+#X text 17 462 Outlet 1: gemlist;
+#X text 23 367 Inlet 1: gemlist;
+#X obj 451 292 square 3;
+#X text 63 321 list: [<width> <height>];
+#X obj 526 89 block~ 4096;
+#X obj 459 143 osc~ 1;
+#X obj 459 182 *~ 0.5;
+#X obj 459 162 +~ 1;
+#X obj 513 124 noise~;
+#X floatatom 530 172 5 0 0 0 - - -;
+#X obj 561 124 tgl 15 0 empty empty empty 0 -6 0 8 -24198 -1 -1 0 1
+;
+#X obj 513 147 *~ 0;
+#X obj 530 191 phasor~ 700;
+#X floatatom 459 125 5 0 0 0 - - -;
+#X text 50 12 Synopsis: [pix_sig2pix~];
+#X text 71 31 Class: pix object (source);
+#X text 29 57 Description: convert signals to images;
+#X text 23 394 Inlet 1: signal: red channel;
+#X text 23 407 Inlet 1: signal: green channel;
+#X text 23 419 Inlet 1: signal: blue channel;
+#X text 23 432 Inlet 1: signal: alpha channel;
+#X text 23 380 Inlet 1: message: dimen <width> <height>;
+#X text 13 222 If you have large images (pe: 256x256=65536) you will
+also need large audio-blocks. However \, since 65536 samples are more
+than 1 second (at 44.1kHz) you might want to set an overlap or upsampling
+factor with [block~] to get decent framerates.;
+#X msg 536 269 quality 0;
+#X msg 525 214 dimen 512 4;
+#X obj 451 270 pix_texture;
+#X obj 451 236 pix_sig2pix~ 64 64;
+#X text 12 74 [pix_sig2pix~] will interprete the 4 incoming audio-streams
+as values for the red \, green \, blue and alpha channel of an image.
+Each image corresponds to an audio-block (signal-vector). The default
+blocksize in pd is 64 samples. If you want images with more than 64
+pixels \, you will have to change the blocksize with the [block~] object.
+The default image-size is calculated from the blocksize (eg: 64samples
+-> 8x8 & 128samples -> 16x8) \, but you can set it either with arguments
+or the [dimen( message. If your imagesize is bigger than the blocksize
+\, the rest will be undefined.;
+#X text 11 291 Signal values must be between 0 & 1;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 41 0;
+#X connect 20 0 22 0;
+#X connect 21 0 41 0;
+#X connect 22 0 21 0;
+#X connect 23 0 26 0;
+#X connect 24 0 27 0;
+#X connect 25 0 26 1;
+#X connect 26 0 41 1;
+#X connect 27 0 41 2;
+#X connect 28 0 20 0;
+#X connect 38 0 40 0;
+#X connect 39 0 41 0;
+#X connect 40 0 17 0;
+#X connect 41 0 40 0;

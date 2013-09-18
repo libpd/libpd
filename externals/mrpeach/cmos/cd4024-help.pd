@@ -1,0 +1,32 @@
+#N canvas 627 296 564 304 12;
+#X obj 138 127 cd4024 7-stage counter;
+#X obj 138 103 tgl 15 0 empty empty Clk 17 7 0 10 -44926 -258699 -1
+1 1;
+#X obj 309 103 tgl 15 0 empty empty Reset 17 7 0 10 -44926 -258699
+-1 0 1;
+#X obj 138 174 tgl 15 0 empty empty Q1 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 170 174 tgl 15 0 empty empty Q2 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 202 174 tgl 15 0 empty empty Q3 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 234 174 tgl 15 0 empty empty Q4 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 267 174 tgl 15 0 empty empty Q5 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 300 174 tgl 15 0 empty empty Q6 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 334 174 tgl 15 0 empty empty Q7 17 7 0 10 -24198 -258699 -1
+0 1;
+#X text 15 16 cd4024 emulates the CMOS 7-stage ripple carry binary
+counter;
+#X text 242 250 20070319_MartinPeach;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
+#X connect 0 2 5 0;
+#X connect 0 3 6 0;
+#X connect 0 4 7 0;
+#X connect 0 5 8 0;
+#X connect 0 6 9 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;

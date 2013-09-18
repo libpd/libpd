@@ -1,0 +1,18 @@
+#N canvas 570 39 450 393 10;
+#X obj 94 26 inlet;
+#X obj 94 187 outlet;
+#X obj 94 64 mtx_rot;
+#X obj 194 25 loadbang;
+#X obj 194 65 mtx_diag;
+#X obj 94 86 mtx_resize 3 3;
+#X obj 94 108 mtx_+;
+#X msg 194 46 0 0 1;
+#X obj 94 45 * -1;
+#X connect 0 0 8 0;
+#X connect 2 0 5 0;
+#X connect 3 0 7 0;
+#X connect 4 0 6 1;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 7 0 4 0;
+#X connect 8 0 2 0;

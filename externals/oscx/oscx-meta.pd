@@ -1,0 +1,7 @@
+#N canvas 15 49 200 200 10;
+#N canvas 25 49 420 300 META 1;
+#X text 13 41 NAME oscx;
+#X text 10 25 AUTHOR Adrian Freed \, Matt Wright \, raf@interaccess.com\, piotr@majdak.com \, jdl@xdv.org \, Hans-Christoph Steiner <hans@eds.org>;
+#X text 10 10 VERSION 0.3.1;
+#X text 10 60 LICENSE GPLv2+;
+#X restore 10 10 pd META;

@@ -1,0 +1,21 @@
+#N canvas 195 107 506 300 10;
+#X obj 177 112 vectorabs;
+#N canvas 464 274 494 344 META 0;
+#X text 12 105 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control vector;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42. \, helppatch by IOhannes m zmölnig;
+#X text 12 65 INLET_0 list;
+#X text 12 85 OUTLET_0 list;
+#X text 13 45 DESCRIPTION elementwise absolute value of a vector;
+#X restore 394 268 pd META;
+#X text 45 42 MarkEx vector operation: absolute values for each element
+of vector;
+#X obj 177 144 print vectorabs;
+#X msg 177 86 1 -2 3 -4 -0.5;
+#X text 51 186 [vectorabs] returns a new vector \, where all the elements
+of the input vector are replaced by their absolute value.;
+#X text 52 248 a "vector" is simply a list of numbers.;
+#X connect 0 0 3 0;
+#X connect 4 0 0 0;

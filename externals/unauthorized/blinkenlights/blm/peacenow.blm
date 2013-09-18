@@ -1,0 +1,32 @@
+# BlinkenLights Movie 18x8
+# name = Peace Now
+# category = symbol
+# description = Das Peace-Symbol tauchte ursprünglich von einem Unbekannten auf dem XXCCC in einem anderen Blinkenlights Movie das erste Mal erzeugt. Anläßlich des Beginns des Afghanistan-Krieges wurde es in diese kleine Animation übernommen.
+# creator = Blinkenpaint 2.4
+# author = Tim Pritlove
+# email = tim@ccc.de
+# width = 18
+# height = 8
+# loop = yes
+# duration = 1000
+
+@800
+000001111100000011
+000110010011000011
+011000010000110011
+010000010000010011
+010000111000010011
+011001010100110000
+000110010011000011
+000001111100000011
+
+@200
+000001111100000000
+000110010011000000
+011000010000110000
+010000010000010000
+010000111000010000
+011001010100110000
+000110010011000000
+000001111100000000
+

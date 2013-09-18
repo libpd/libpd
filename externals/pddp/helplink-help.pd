@@ -1,0 +1,20 @@
+#N canvas 280 108 468 497 12;
+#X declare -stdpath extra/Gem;
+#X text 20 10 [helplink] makes a clickable link to a help patch based
+on the object name. It is useful for providing links to help patches
+in other patches.;
+#X obj 51 101 helplink select;
+#X obj 54 304 helplink;
+#X obj 50 143 helplink cyclone/counter;
+#X obj 50 181 helplink iemguts/propertybang;
+#X text 29 234 If the help patch or object does not exist \, [helplink]
+will not output an error until someone clicks on the link.;
+#X obj 55 339 helplink Gem/scale;
+#X obj 250 308 helplink gemwin;
+#X obj 239 153 declare -stdpath extra/Gem;
+#X text 33 384 helplink also has a hidden inlet. You can send a bang
+to simulate clicking a helplink:;
+#X obj 54 447 helplink select;
+#X obj 54 425 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 11 0 10 0;

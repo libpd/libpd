@@ -1,0 +1,15 @@
+#N canvas 254 48 671 300 12;
+#X obj 21 179 tot .;
+#X obj 164 77 tosymbol;
+#X msg 50 77 123456;
+#X msg 21 124 query set lst [list] .: foreach el [split " \$1 " ""]
+.(set lst [linsert $lst 0 $el].) .: concat set [join $lst ""];
+#X msg 164 40 One Two Three;
+#X msg 21 40 symbol abcdef;
+#X msg 21 221;
+#X connect 0 0 6 0;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;

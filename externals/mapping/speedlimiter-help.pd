@@ -1,0 +1,34 @@
+#N canvas 1 53 507 542 10;
+#X obj 249 328 timeroll;
+#X obj 46 164 random 1000;
+#X obj 46 138 metro 30;
+#X obj 46 114 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 46 328 timeroll;
+#X obj 72 114 loadbang;
+#X floatatom 356 208 5 0 0 0 - - -;
+#X obj 356 230 / 100;
+#X obj 249 253 speedlimiter 0.1;
+#X obj 46 191 / 1000;
+#X text 203 16 limit the variation to \$1 at every sample;
+#N canvas 464 140 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION limit negative variation to \$1 for every
+samples;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X restore 444 508 pd META;
+#X connect 1 0 9 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 1;
+#X connect 8 0 0 0;
+#X connect 9 0 4 0;
+#X connect 9 0 8 0;

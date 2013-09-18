@@ -1,0 +1,13 @@
+#N canvas 214 154 600 327 10;
+#X msg 110 93 gemList;
+#X text 121 50 GEM object;
+#X obj 110 190 part_orbitpoint;
+#X msg 175 150 x y z;
+#X msg 240 150 gravity;
+#X text 131 16 [part_orbitpoint];
+#X text 65 253 [part_orbitpoint] will make the particles orbit about
+the position x \, y \, z. The gravity is how attracted the particles
+are to the point. The default gravity is 1;
+#X connect 0 0 2 0;
+#X connect 3 0 2 1;
+#X connect 4 0 2 2;

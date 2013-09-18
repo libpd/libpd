@@ -1,0 +1,64 @@
+#N canvas 0 31 497 450 10;
+#X floatatom 33 260 5 0 0 0 - - -;
+#X obj 33 37 metro 500;
+#X obj 33 12 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#N canvas 144 91 494 389 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 95 INLET_1 float;
+#X text 12 45 DESCRIPTION bang on first inlet \, internal counter \,
+only outputs every arg2th bang;
+#X text 12 75 INLET_0 bang;
+#X text 12 115 INLET_2 float;
+#X text 12 135 INLET_3 float;
+#X text 12 155 OUTLET_0 float;
+#X text 12 175 OUTLET_1 bang;
+#X text 12 5 KEYWORDS control filter bang_op storage;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 195 AUTHOR jdl@xdv.org;
+#X restore 444 427 pd META;
+#X msg 245 31 fl1 1;
+#X msg 245 51 fl1 2;
+#X msg 245 71 fl1 3;
+#X text 288 31 count up;
+#X text 288 51 count down;
+#X text 288 71 count up and down;
+#X text 30 308 Args:;
+#X text 22 324 with no arguments: start at 1 \, count to 10 \, repeat
+;
+#X text 22 349 with one argument a: start at 1 \, count up to a \,
+repeat;
+#X text 22 369 with two arguments a \, b: start at a \, count up to
+b \, repeat;
+#X text 22 389 with three args a \, b \, c: start at a \, count to
+b \, in direction c;
+#X msg 245 96 fl2 3;
+#X text 288 96 set low boundary;
+#X text 288 121 set high boundary;
+#X msg 245 121 fl3 6;
+#X msg 47 106 reset;
+#X msg 47 136 clear;
+#X floatatom 54 168 5 0 0 0 - - -;
+#X text 90 168 direction (1=up \, 2=down \, 3=up & down);
+#X floatatom 75 189 5 0 0 0 - - -;
+#X text 114 187 low value;
+#X floatatom 96 210 5 0 0 0 - - -;
+#X text 132 210 high value;
+#X text 124 8 For some reason you can also send the following messages
+to the leftmost inlet:;
+#X text 89 120 not sure how these;
+#X text 101 136 differ...;
+#X obj 96 260 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 115 259 bang each time the counter reaches high/low limit;
+#X obj 33 233 cxc_counter;
+#X connect 1 0 32 0;
+#X connect 2 0 1 0;
+#X connect 19 0 32 0;
+#X connect 20 0 32 0;
+#X connect 21 0 32 1;
+#X connect 23 0 32 2;
+#X connect 25 0 32 3;
+#X connect 32 0 0 0;
+#X connect 32 1 30 0;

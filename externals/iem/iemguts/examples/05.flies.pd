@@ -1,0 +1,24 @@
+#N canvas 0 0 776 456 10;
+#X obj 17 61 s tick;
+#X obj 17 41 metro 50;
+#X obj 17 23 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 557 363 fly;
+#X obj 544 255 fly;
+#X obj 385 407 fly;
+#X obj 293 332 fly;
+#X obj 460 356 fly;
+#X obj 269 244 fly;
+#X obj 291 397 fly;
+#X obj 152 265 fly;
+#X text 54 21 <-- turn me on!;
+#X text 304 31 moving objects!;
+#X text 255 68 when you turn on the toggle \, all the [fly] objects
+will start to move. once they reach the borders of the canvas \, they
+will bounce off.;
+#X text 253 132 if you resize the canvas \, you probably have to "save"
+the patch in order to make the [fly]s aware of the changed borders.
+;
+#X text 255 109 other objects will not be effected by the [fly]s.;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;

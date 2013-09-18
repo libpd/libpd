@@ -1,0 +1,18 @@
+#N canvas 1 53 711 500 12;
+#X floatatom 95 202 5 0 0 0 - - -;
+#X floatatom 95 264 5 0 0 0 - - -;
+#X obj 95 234 median_3;
+#X text 238 31 output the median value of the 3 last samples;
+#N canvas 492 275 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION output the median value of the 3 last samples
+;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 631 463 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

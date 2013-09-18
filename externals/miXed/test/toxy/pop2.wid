@@ -1,0 +1,8 @@
+#> pop2 menubutton
+#. -menu .-.pop
+#. -bg purple -fg white -activebackground magenta -width 6 -text kura
+#. @float if .(.#1 >= 1.) .(.-.pop invoke .#1.)
+
+::toxy::popup .- .| rpop2 \
+    [list {hen kura} {duck kaczka} {cat kot} {cow krowa} {horse koñ}] \
+    -bg purple -fg white -activebackground magenta

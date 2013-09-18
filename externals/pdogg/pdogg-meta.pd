@@ -1,0 +1,8 @@
+#N canvas 10 10 200 200 10;
+#N canvas 20 20 420 300 META 0;
+#X text 10 30 NAME pdogg;
+#X text 10 50 AUTHOR Olaf Matthes;
+#X text 10 70 DESCRIPTION objects for reading \, writing \, and streaming Ogg;
+#X text 10 90 LICENSE LGPL;
+#X text 10 110 VERSION 0.25.2;
+#X restore 10 10 pd META;

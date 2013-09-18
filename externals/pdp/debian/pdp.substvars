@@ -1,0 +1,1 @@
+shlibs:Depends=libc6 (>= 2.3.1-1), libgsl0, libpng12-0 (>= 1.2.5.0-4), libquicktime1 (>= 0.9.2pre1), xlibmesa4-gl | libgl1, xlibmesa4-glu | libglu1, xlibs (>> 4.1.0), xlibs (>> 4.2.99)

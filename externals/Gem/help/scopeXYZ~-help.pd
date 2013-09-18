@@ -1,0 +1,125 @@
+#N canvas 30 348 762 461 10;
+#X text 475 39 Example:;
+#X obj 7 65 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 219 cnv 15 450 210 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 221 Inlets:;
+#X obj 8 172 cnv 15 450 40 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 171 Arguments:;
+#X text 452 8 GEM object;
+#X text 27 233 Inlet 1: gemlist;
+#X text 9 398 Outlets:;
+#X text 21 411 Outlet 1: gemlist;
+#X obj 469 58 cnv 15 200 295 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 470 359 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy \, reset;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 475 398 pd gemwin;
+#X msg 475 379 create;
+#X text 471 358 Create window:;
+#X obj 474 112 cnv 15 190 200 empty empty empty 20 12 0 14 -85973 -66577
+0;
+#X obj 521 319 cnv 15 110 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 27 293 Inlet 1: message: width <int> : line-width(1);
+#X obj 596 233 cnv 15 65 75 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 479 143 draw line;
+#X msg 479 183 draw fill;
+#X msg 479 120 draw point;
+#X obj 527 64 gemhead;
+#X msg 479 163 draw linestrip;
+#X msg 479 203 draw tri;
+#X msg 479 225 draw tristrip;
+#X msg 478 248 draw trifan;
+#X msg 478 269 draw quad;
+#X msg 478 291 draw quadstrip;
+#X obj 527 88 rotateXYZ;
+#X floatatom 585 65 5 0 0 0 - - -;
+#X floatatom 599 167 5 0 10 0 - - -;
+#X msg 599 183 width \$1;
+#X floatatom 600 124 5 0 100 0 - - -;
+#X obj 579 359 cnv 15 90 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 27 247 Inlet 1: message: draw [default|line|linestrip|fill|point|tri|tristrip|trifan|quad|quadstrip]
+;
+#N canvas 0 0 450 300 dsp 0;
+#X obj 74 87 r \$0-dsp;
+#X obj 74 108 route set;
+#X msg 132 131 \; pd dsp \$1;
+#X obj 280 98 r pd;
+#X obj 280 119 route dsp;
+#X obj 280 170 s \$0-dsp;
+#X msg 280 148 set \$1;
+#X connect 0 0 1 0;
+#X connect 1 1 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 6 0 5 0;
+#X restore 587 396 pd dsp;
+#X obj 590 362 tgl 30 0 \$0-dsp \$0-dsp dsp 35 15 2 12 -262144 -1 -1
+0 1;
+#X obj 527 326 scopeXYZ~ 1024;
+#X floatatom 599 216 5 0 0 0 - - -;
+#X obj 599 283 osc~ 882;
+#X obj 599 262 osc~ 221;
+#X obj 599 239 osc~ 40;
+#X msg 600 141 length \$1;
+#X text 33 14 Synopsis: [scopeXYZ~];
+#X text 54 30 Class: geometric object \, DSP-object;
+#X text 7 69 Description: 3D oscilloscope;
+#X text 22 87 [scopeXYZ~] is a 3-dimensional oscilloscope. It reads
+3 input signals and applies the values as excursions along the respective
+axis. The initial argument is the number of signal-points that are
+be stored.;
+#X text 27 306 Inlet 1: message: length <int> : number of signal points
+to be stored;
+#X text 63 183 number of signal points that are stored (defaults to
+blocksize);
+#X text 23 144 You can use it for Lissajou-patterns;
+#X text 28 343 Inlet 2: signal: X-values of the oscillograph;
+#X text 28 356 Inlet 3: signal: Y-values of the oscillograph;
+#X text 28 371 Inlet 4: signal: Z-values of the oscillograph;
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 19 0 38 0;
+#X connect 20 0 38 0;
+#X connect 21 0 38 0;
+#X connect 22 0 29 0;
+#X connect 23 0 38 0;
+#X connect 24 0 38 0;
+#X connect 25 0 38 0;
+#X connect 26 0 38 0;
+#X connect 27 0 38 0;
+#X connect 28 0 38 0;
+#X connect 29 0 38 0;
+#X connect 30 0 29 1;
+#X connect 30 0 29 3;
+#X connect 31 0 32 0;
+#X connect 32 0 38 0;
+#X connect 33 0 43 0;
+#X connect 39 0 42 0;
+#X connect 40 0 38 3;
+#X connect 41 0 38 2;
+#X connect 42 0 38 1;
+#X connect 43 0 38 0;

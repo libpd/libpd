@@ -1,0 +1,125 @@
+#N canvas 18 198 654 599 10;
+#X text 452 8 GEM object;
+#X obj 8 345 cnv 15 430 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 348 Inlets:;
+#X text 38 465 Outlets:;
+#X obj 8 306 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 305 Arguments:;
+#X obj 7 76 cnv 15 430 225 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 138 cnv 15 160 110 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 316 <none>;
+#X text 56 478 Outlet 1: gemlist;
+#X text 63 362 Inlet 1: gemlist;
+#X obj 451 263 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 63 375 Inlet 1: 0|1 : apply/don't apply;
+#X msg 463 146 bang;
+#X text 50 12 Synopsis: [pix_puzzle];
+#X text 63 77 Description: shuffle an image;
+#X text 16 97 [pix_puzzle] is an effect that will cut your image into
+rectangular pieces and shuffle these.;
+#X text 17 128 You can change the number of pieces per row/column with
+the "size" message. "bang" triggers a re-shuffling of the pieces.;
+#X obj 29 505 cnv 15 423 30 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X text 34 505 acknowledgment: this effect is based on effecTV by Kentarou
+Fukuchi (http://effectv.sourceforge.net);
+#X obj 451 223 pix_puzzle;
+#X text 64 390 Inlet 1: bang: reshuffle;
+#X msg 509 145 size 4 3;
+#X msg 551 212 move \$1;
+#X floatatom 551 193 5 0 0 0 - - -;
+#X text 63 433 Inlet 1: movee <int>: move the empty field;
+#X text 192 238 8;
+#X text 175 253 4;
+#X text 209 254 6;
+#X text 192 271 2;
+#X text 44 204 "move 5" will en/disable an empty field;
+#X text 16 171 There is a little game hidden in the [pix_puzzle]. Go
+and find it:;
+#X text 46 221 Moving can be done according to the number-pad;
+#X msg 551 171 5;
+#X text 63 405 Inlet 1: size <int> <int>: number of elements in x/y
+(default: 8 8);
+#N canvas 0 0 243 214 numkeys 0;
+#X obj 63 16 key;
+#X obj 63 181 outlet;
+#X msg 63 115 5;
+#X msg 91 115 8;
+#X msg 119 115 4;
+#X obj 63 90 select 53 56 52 54 50;
+#X msg 148 115 6;
+#X msg 176 115 2;
+#X connect 0 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 2 0;
+#X connect 5 1 3 0;
+#X connect 5 2 4 0;
+#X connect 5 3 6 0;
+#X connect 5 4 7 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X restore 475 176 pd numkeys;
+#X text 12 285 (i admit this is not very intuitive...);
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 32 0;
+#X connect 25 0 32 0;
+#X connect 32 0 21 0;
+#X connect 34 0 32 0;
+#X connect 35 0 32 0;
+#X connect 36 0 35 0;
+#X connect 45 0 36 0;
+#X connect 47 0 36 0;

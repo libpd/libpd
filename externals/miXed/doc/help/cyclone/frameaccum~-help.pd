@@ -1,0 +1,29 @@
+#N canvas 0 26 540 292 10;
+#X text 20 60 computes the "running phase" of successive phase deviation
+frames;
+#X text 28 86 frameaccum~ accumulates each of the values of the previous
+input signal vector from those of the current vector;
+#X text 28 114 so \, when used in the context of a pfft~ patch (where
+the FFT frame is the vector size) it can be used to compute the running
+phase;
+#X obj 118 237 Snapshot~ 100;
+#X obj 118 262 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 117 214 frameaccum~;
+#X obj 116 186 sig~ 1;
+#N canvas 62 76 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION compute the "running phase" of successive
+phase deviation frames;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 490 271 pd META;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;

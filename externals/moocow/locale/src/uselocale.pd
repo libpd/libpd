@@ -1,0 +1,10 @@
+#N canvas 0 31 450 300 10;
+#X obj 59 121 locale;
+#X obj 59 49 loadbang;
+#X msg 59 95 set \, set LC_NUMERIC C \, get;
+#X obj 59 173 print uselocale;
+#X text 27 5 uselocale.pd : set "safe" locale values from environment
+;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;

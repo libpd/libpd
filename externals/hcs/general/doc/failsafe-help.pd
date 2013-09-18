@@ -1,0 +1,32 @@
+#N canvas 0 31 469 358 10;
+#X obj 5 2 cnv 15 450 20 empty empty failsafe 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 244 284 released under the GNU GPL;
+#X text 27 270 (C) Copyright 2006 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X obj 206 182 gemwin;
+#X msg 206 162 0;
+#X text 25 38 When the CPU is pegged \, first [failsafe] turns of DSP
+and bangs the right outlet. Then if the CPU is still pegged \, it bangs
+the left inlet and ultimately quits Pd.;
+#X text 36 222 You can add your own conditions using the bangs from
+the outlets.;
+#X obj 155 127 failsafe;
+#X obj 155 95 loadbang;
+#X msg 119 172 \; pd quit;
+#N canvas 356 214 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS control pd_op;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 bang;
+#X text 12 105 OUTLET_1 bang;
+#X restore 414 328 pd META;
+#X connect 5 0 4 0;
+#X connect 8 0 10 0;
+#X connect 8 1 5 0;
+#X connect 9 0 8 0;

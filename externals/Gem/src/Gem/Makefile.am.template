@@ -1,0 +1,15 @@
+
+AUTOMAKE_OPTIONS = foreign
+AM_CPPFLAGS = -I$(top_srcdir)
+
+noinst_LTLIBRARIES = libGem.la
+
+libGem_la_CXXFLAGS =
+libGem_la_LIBADD   =
+
+# RTE flags
+libGem_la_CXXFLAGS += @GEM_RTE_CFLAGS@
+libGem_la_LIBADD   += @GEM_RTE_LIBS@
+
+libGem_la_SOURCES= @SOURCES@
+

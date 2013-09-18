@@ -1,0 +1,61 @@
+#N canvas 0 0 602 516 10;
+#X obj 14 66 gemwin;
+#X obj 14 9 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X msg 48 10 create;
+#X msg 55 33 destroy;
+#X obj 14 93 gemhead;
+#X obj 14 123 t a a;
+#X obj 59 123 circle;
+#X obj 14 153 separator;
+#X obj 14 213 scale 0.7;
+#X obj 14 173 rotate 45 0 0 1;
+#X obj 14 243 t a a;
+#X obj 59 243 circle;
+#X obj 14 273 separator;
+#X obj 14 333 scale 0.7;
+#X obj 14 293 rotate 45 0 0 1;
+#X obj 14 363 t a a;
+#X obj 59 363 circle;
+#X obj 14 193 translate 2 0 1 0;
+#X obj 14 313 translate 2 0 1 0;
+#X obj 14 393 separator;
+#X obj 14 453 scale 0.7;
+#X obj 14 413 rotate 45 0 0 1;
+#X obj 14 433 translate 2 0 1 0;
+#X obj 14 483 t a a;
+#X obj 59 483 circle;
+#X text 170 17 A tutorial on recursion in Gem;
+#X text 170 37 (GPL) 2007 Claude Heiland-Allen <claudiusmaximus@goto10.org>
+;
+#X text 170 77 The simplest and most obvious way of working with Gem
+is to create all the objects statically. That is \, the Gem chain (or
+tree) is exactly what is visible in the patch.;
+#X text 170 127 Say we way we want to make a spiral of circles. Even
+with just 4 circles the repetition is painfully obvious \, and if we
+wanted more the duplication would be painfully tedious.;
+#X text 170 177 There is a powerful way to avoid this pain \, however
+\, using recursion.;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 5 1 6 0;
+#X connect 7 0 9 0;
+#X connect 8 0 10 0;
+#X connect 9 0 17 0;
+#X connect 10 0 12 0;
+#X connect 10 1 11 0;
+#X connect 12 0 14 0;
+#X connect 13 0 15 0;
+#X connect 14 0 18 0;
+#X connect 15 0 19 0;
+#X connect 15 1 16 0;
+#X connect 17 0 8 0;
+#X connect 18 0 13 0;
+#X connect 19 0 21 0;
+#X connect 20 0 23 0;
+#X connect 21 0 22 0;
+#X connect 22 0 20 0;
+#X connect 23 1 24 0;

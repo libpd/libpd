@@ -1,0 +1,76 @@
+TODO for root and shared
+  * fitter: abstraction-scoped, class-selective compatibility control
+  * fitter: fittterstate map
+  * hammerfile, hammergui: version control
+
+DONE for root and shared
+
+with cyclone alpha55
+  * new module: messtree
+  * qtree:
+    . nodes of a custom tree may be caller-owned: a caller may pass 0 as
+      nodesize to qtree_initcustom() and pass pre-allocated nodes to
+      insert/multiinsert calls
+    . new calls: qtree_override(), qtree_closestunder(), qtree_closestover()
+    . all "closest" calls report a diff between key requested and key found
+  * os: new calls (dummy under MSW, though): osdir_open(), osdir_setmode(),
+    osdir_close(), osdir_rewind(), osdir_next(), osdir_isfile(), osdir_isdir()
+  * loader: new calls, unstable_dirload_lib(), unstable_dirload_all()
+  * fitter:
+    . added "test" hook (as a first step towards a fittterstate map)
+    . new calls: fitter_getfloat(), fitter_getsymbol()
+  * fragile: new call fragile_class_getexterndir()
+  * loud: loud_syserror() accepts a format string
+  * support for building into subdirectory of the main bin directory
+    (so that a library may automatically load all its plugin externals)
+
+with toxy alpha18
+  * plusbob: stubifying t_plusbob, in order to minimize memory leak to 4 words
+
+with rafts prealpha1
+  * new module: patchvalue
+
+with toxy alpha17
+  * scriptlet: new call scriptlet_newalike()
+
+with cyclone alpha54 and toxy alpha16
+  * props:
+    . code cleanup
+    . new calls: props_getfirst(), props_getnext(), props_diff(),
+      props_clearall(), props_clearvalues()
+    . props_add(): additional argument 'filter' (skip exact input-filter copies)
+  * fragile: new call fragile_class_getnames()
+  * hammereditor:
+    . hammereditor_append() accepts unbalanced braces
+    . defaults to dirty, if (older) tk misses edit command
+
+with cyclone alpha53
+  * binport: added half-byte #symbol id
+  * hammereditor:
+    . fixed closing by window manager
+    . dirty flag bound, shown and observed (unless in viewer mode)
+    . title specification simplified and standardized
+    . bug fix: incomplete transfer from editor
+
+with cyclone alpha52
+  * fragile: class name resolution based on voluntary mutation and raising
+  * fitter: mirroring removed
+  * new module, os: opening files, parsing path
+  * hammerpanel: two modes of -initialdir persistence
+  * more mingw fixes
+
+with cyclone alpha51
+  * new module, fitter: encapsulates compatibility support (formerly in maxmode)
+  * fitter: per-class callback and mirroring interface to compatibility mode
+  * mingw fixes
+
+with toxy alpha14
+  * scriptlet: version control (verslet_ routines)
+  * debug printout restricted to krzYszcz, sent to stderr
+
+with cyclone alpha50
+  * bug fixes
+    . hammertree crasher (affecting funbuff and offer)
+    . MouseState/toxy clash
+  * builds with gcc3 by default (no need to edit Makefile.common)
+  * midi file code has been cleaned, now ready for using in qlist

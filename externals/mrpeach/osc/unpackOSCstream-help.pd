@@ -1,0 +1,38 @@
+#N canvas 1 53 638 435 10;
+#X text 8 369 check also:;
+#X obj 240 386 tcpreceive;
+#X obj 183 386 tcpsend;
+#X obj 318 386 tcpserver;
+#X obj 389 386 tcpclient;
+#X text 472 374 Author: Roman Haefeli;
+#X text 472 390 Version: 2008-09-09;
+#X text 158 65 [unpackOSCstream] is meant to be a replacement for [unpackOSC]
+\, when receiving from a stream based protocol \, such as TCP.;
+#X obj 18 197 unpackOSCstream;
+#X obj 18 17 tcpreceive 9995;
+#X obj 18 222 print;
+#X floatatom 105 221 5 0 0 0 - - -;
+#X text 159 283 reference:;
+#X obj 10 386 packOSCstream;
+#X obj 110 386 unpackOSC;
+#X text 160 300 http://archive.cnmat.berkeley.edu/OpenSoundControl/OSC-spec.html
+: Section "OSC Packets";
+#X text 141 221 milliseconds delay;
+#X text 158 119 [unpackOSCstream] will only be able to decode OSC packets
+or bundles created by [packOSCstream]. OSC packets that were generated
+by [packOSC] will cause errors or wrong output.;
+#N canvas 507 340 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 5 KEYWORDS control network abstraction;
+#X text 12 46 DESCRIPTION meant to be a replacement for [unpackOSC]
+\, when receiving from a stream based protocol \, such as TCP.;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 OUTLET_0 anything;
+#X text 12 115 OUTLET_1 float;
+#X text 12 135 AUTHOR Roman Haefeli;
+#X restore 591 413 pd META;
+#X connect 8 0 10 0;
+#X connect 8 1 11 0;
+#X connect 9 0 8 0;

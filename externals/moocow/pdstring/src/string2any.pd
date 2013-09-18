@@ -1,0 +1,15 @@
+#N canvas 0 31 450 300 10;
+#X obj 41 47 inlet;
+#X obj 141 47 inlet;
+#X obj 41 117 outlet;
+#X text 38 12 string2any.pd : wrapper for bytes2any;
+#X obj 41 83 bytes2any \$1 \$2;
+#X obj 141 117 outlet;
+#X text 30 169 WARNING: this abstraction will never be used if [pdstring]
+was built as a multi-object library \, rather than single-object externals.
+;
+#X text 142 263 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X connect 0 0 4 0;
+#X connect 1 0 4 1;
+#X connect 4 0 2 0;
+#X connect 4 1 5 0;

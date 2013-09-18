@@ -1,0 +1,87 @@
+#N canvas 580 256 530 325 12;
+#X obj 8 136 cd4008 4 bit full adder;
+#X obj 8 33 tgl 15 0 empty empty Carry_In 17 7 0 10 -44926 -258699
+-1 0 1;
+#X obj 30 64 tgl 15 0 empty empty A1 17 7 0 10 -44926 -258699 -1 1
+1;
+#X obj 52 80 tgl 15 0 empty empty A2 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 75 96 tgl 15 0 empty empty A3 17 7 0 10 -44926 -258699 -1 1
+1;
+#X obj 97 111 tgl 15 0 empty empty A4 17 7 0 10 -44926 -258699 -1 1
+1;
+#X obj 119 63 tgl 15 0 empty empty B1 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 142 79 tgl 15 0 empty empty B2 17 7 0 10 -44926 -258699 -1 1
+1;
+#X obj 164 95 tgl 15 0 empty empty B3 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 187 110 tgl 15 0 empty empty B4 17 7 0 10 -44926 -258699 -1
+1 1;
+#X obj 8 174 tgl 15 0 empty empty S1 17 7 0 10 -258699 -241291 -1 1
+1;
+#X obj 52 174 tgl 15 0 empty empty S2 17 7 0 10 -258699 -241291 -1
+1 1;
+#X obj 97 174 tgl 15 0 empty empty S3 17 7 0 10 -258699 -241291 -1
+1 1;
+#X obj 142 174 tgl 15 0 empty empty S4 17 7 0 10 -258699 -241291 -1
+0 1;
+#X obj 187 190 tgl 15 0 empty empty Carry_Out 17 7 0 10 -258699 -241291
+-1 1 1;
+#X obj 214 170 cd4008 4 bit full adder;
+#X obj 236 98 tgl 15 0 empty empty A1 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 258 114 tgl 15 0 empty empty A2 17 7 0 10 -44926 -258699 -1
+1 1;
+#X obj 281 130 tgl 15 0 empty empty A3 17 7 0 10 -44926 -258699 -1
+0 1;
+#X obj 303 145 tgl 15 0 empty empty A4 17 7 0 10 -44926 -258699 -1
+0 1;
+#X obj 325 97 tgl 15 0 empty empty B1 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 348 113 tgl 15 0 empty empty B2 17 7 0 10 -44926 -258699 -1
+1 1;
+#X obj 370 129 tgl 15 0 empty empty B3 17 7 0 10 -44926 -258699 -1
+0 1;
+#X obj 393 144 tgl 15 0 empty empty B4 17 7 0 10 -44926 -258699 -1
+1 1;
+#X obj 214 208 tgl 15 0 empty empty S1 17 7 0 10 -258699 -241291 -1
+1 1;
+#X obj 258 208 tgl 15 0 empty empty S2 17 7 0 10 -258699 -241291 -1
+0 1;
+#X obj 303 208 tgl 15 0 empty empty S3 17 7 0 10 -258699 -241291 -1
+1 1;
+#X obj 348 208 tgl 15 0 empty empty S4 17 7 0 10 -258699 -241291 -1
+1 1;
+#X obj 393 208 tgl 15 0 empty empty Carry_Out 17 7 0 10 -258699 -241291
+-1 0 1;
+#X text 87 9 cd4008 emulates the CMOS 4-bit full adder.;
+#X text 194 279 20070315_MartinPeach;
+#X connect 0 0 10 0;
+#X connect 0 1 11 0;
+#X connect 0 2 12 0;
+#X connect 0 3 13 0;
+#X connect 0 4 14 0;
+#X connect 0 4 15 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 2;
+#X connect 4 0 0 3;
+#X connect 5 0 0 4;
+#X connect 6 0 0 5;
+#X connect 7 0 0 6;
+#X connect 8 0 0 7;
+#X connect 9 0 0 8;
+#X connect 15 0 24 0;
+#X connect 15 1 25 0;
+#X connect 15 2 26 0;
+#X connect 15 3 27 0;
+#X connect 15 4 28 0;
+#X connect 16 0 15 1;
+#X connect 17 0 15 2;
+#X connect 18 0 15 3;
+#X connect 19 0 15 4;
+#X connect 20 0 15 5;
+#X connect 21 0 15 6;
+#X connect 22 0 15 7;
+#X connect 23 0 15 8;

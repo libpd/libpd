@@ -1,0 +1,44 @@
+#!/bin/sh
+#scaf->scafo compiler
+
+if test "xx$1" == "xx"
+then
+	echo
+	echo "scaf rules compiler"
+	echo "usage:"
+	echo "    scafc source [dest]"
+	echo
+	exit 0
+fi
+
+if test "xx$2" == "xx"
+then
+	DEST=$1o
+else
+	DEST=$2
+fi
+
+if ! test -f $1
+then
+	echo "source module $1 not found."
+	exit 1
+fi
+
+SCAFDIR=`dirname $0`
+if ! test -f $SCAFDIR/scafc.pl;
+then
+	SCAFDIR=`dirname $SCAFDIR`
+	SCAFDIR="$SCAFDIR/lib/scaf"
+	if ! test -f $SCAFDIR/scafc.pl
+	then
+		echo "scaf library not found in $SCAFDIR"
+		exit 1
+	fi
+fi
+
+TMP_S=`tempfile -s .s`
+$SCAFDIR/scafc.pl -I$SCAFDIR $1 > $TMP_S \
+&& gcc -export_dynamic -shared -o $DEST $TMP_S \
+&& strip --strip-unneeded $DEST \
+&& rm $TMP_S \
+|| exit 1

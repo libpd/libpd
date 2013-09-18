@@ -1,0 +1,4 @@
+return function(self, sel, atoms)
+  pd.post("Hello, world!")
+  return true
+end

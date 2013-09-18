@@ -1,0 +1,14 @@
+
+
+max, min don't work ... I suppose [1 2 ( stores 2 as a symbol not number
+
+I don't understand refer ... is it like read ??? ahem and it segfaults ...
+update: can't reproduce the crash - seems to work fine now ...
+
+renumber does really strange things, loses elements ... hmmmm
+
+
+
+
+
+

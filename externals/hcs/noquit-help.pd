@@ -1,0 +1,36 @@
+#N canvas 0 26 420 305 10;
+#X obj 64 222 noquit;
+#X obj 64 107 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 81 131 bang;
+#X msg 97 155 reset;
+#X msg 108 178 quit;
+#X obj 9 7 cnv 15 400 30 empty empty noquit 20 16 0 14 -261682 -66577
+0;
+#X obj 64 250 bng 35 250 50 0 empty empty bang_on_quit 38 17 0 12 -261234
+-1 -1;
+#X msg 108 198 quitnow;
+#X text 159 177 quit in the normal way;
+#X text 88 106 override/reset quitting;
+#X text 118 132 override quitting;
+#X text 139 153 re-enable normal quit function;
+#X text 159 197 quit now without any confirmation at all;
+#X text 34 58 override quitting Pd for installations \, performances
+\, etc.;
+#N canvas 280 175 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction pd_op;
+#X text 12 45 DESCRIPTION override quitting Pd for installations \,
+performances \, etc.;
+#X text 12 75 INLET_0 float bang reset quit quitnow;
+#X text 12 95 OUTLET_0 bang;
+#X restore 371 284 pd META;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 7 0 0 0;

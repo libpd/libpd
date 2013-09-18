@@ -1,0 +1,103 @@
+#N canvas 1 53 910 629 10;
+#X floatatom 119 297 5 0 0 0 - - -;
+#X obj 46 587 dac~;
+#X obj 245 499 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 145 498 print DUMP;
+#X obj 48 346 tof/breakpoints~;
+#X text 538 155 The following breakpoints was created with this line:
+[breakpoints~ 100 50 3000 \$0r \$0d \$0c];
+#X text 28 -13 Description: A graphical signal~ breakpoint envelope
+generator (based on envgen by ggee).;
+#X obj 47 538 tabread4~ \$0table;
+#X obj 46 516 *~ 0;
+#N canvas 331 260 450 300 load_soundfile 0;
+#X obj 65 34 inlet;
+#X obj 66 68 openpanel;
+#X msg 66 136 read -resize \$1 \$2table;
+#X obj 66 172 soundfiler;
+#X obj 66 203 outlet;
+#X obj 66 99 pack s \$0;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 2 0;
+#X restore 30 47 pd load_soundfile;
+#X obj 30 24 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 163 538 table \$0table;
+#X obj 30 69 s \$0samples;
+#X obj 67 494 r \$0samples;
+#X msg 100 273 dump;
+#X msg 60 179 1 1 0;
+#X text 639 362 -- Outlets --;
+#X text 555 412 Outlet 2: The point data when dumped.;
+#X text 555 432 Outlet 3: Bangs when the contents was modified with
+the mouse.;
+#X text 555 392 Outlet 1 signal: The value at that index;
+#X text 35 101 Inlet 1 list: sets the point data (value0 delay1 value1
+delay2 value2 etc...);
+#X text 142 84 -- Inlets --;
+#X obj 47 561 *~ 0.5;
+#X text 156 295 Inlet 1 signal: output the interpolated value at that
+index.;
+#X text 138 263 Inlet 1 dump: dump the current point data out the second
+outlet.;
+#X text 86 154 Play forward;
+#X text 104 175 Play backward;
+#X text 161 202 Play back and forth;
+#X text 258 350 Click and drag to change points;
+#X text 545 49 Argument 1: display width;
+#X text 545 64 Argument 2: display height;
+#X text 545 79 Argument 3: receive name;
+#X text 545 94 Argument 4: send name;
+#X text 545 109 Argument 5: dump receive name;
+#X text 545 124 Argument 6: contents change by mouse receive name;
+#X text 636 18 -- Arguments --;
+#X obj 544 205 tof/breakpoints~ 100 50 3000 \$0r \$0d \$0c;
+#X text 637 280 -- See also --;
+#X text 552 306 [tof/breakpoints];
+#X obj 119 317 phasor~ 0.5;
+#X text 52 24 Load a short sound loop and turn dsp on;
+#X obj 46 134 loadbang;
+#X msg 46 157 0 1 1;
+#X msg 72 201 0 0.5 1 0.5 0;
+#X msg 84 224 0 0.5 0.5 0 0 0.5 0.5;
+#X text 226 224 Mix things up;
+#X msg 96 247 0 0.25 0.25 0 1 0.25 0.75 0 0.5 0.25 0.75 0 0.25 0.25
+0.5;
+#N canvas 306 181 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 75 INLET_0 signal list dump;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 135 OUTLET_2 bang;
+#X text 12 115 OUTLET_1 list;
+#X text 12 45 DESCRIPTION graphical signal breakpoint envelope generator
+based on envgen by ggee;
+#X text 12 5 KEYWORDS signal GUI user_input ramp;
+#X restore 844 565 pd META;
+#X text 257 384 the backspace key to delete it.;
+#X text 257 369 Select a point with the mouse and press;
+#X connect 0 0 39 0;
+#X connect 4 0 8 0;
+#X connect 4 1 3 0;
+#X connect 4 2 2 0;
+#X connect 7 0 22 0;
+#X connect 8 0 7 0;
+#X connect 9 0 12 0;
+#X connect 10 0 9 0;
+#X connect 13 0 8 1;
+#X connect 14 0 4 0;
+#X connect 15 0 4 0;
+#X connect 22 0 1 0;
+#X connect 22 0 1 1;
+#X connect 39 0 4 0;
+#X connect 41 0 42 0;
+#X connect 42 0 4 0;
+#X connect 43 0 4 0;
+#X connect 44 0 4 0;
+#X connect 46 0 4 0;

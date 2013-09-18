@@ -1,0 +1,21 @@
+#!/bin/bash
+
+usage () {
+  cat << EOF
+usage: toonepage <pddpsource>.xml
+EOF
+}
+
+[ "$#" == 0 ] && { usage; exit 1; }
+
+SOURCE_NAME="$(basename $1)"
+SOURCE_STUB="$(basename $SOURCE_NAME .xml)"
+
+[ $SOURCE_STUB == $SOURCE_NAME ] && { usage; exit 1; }
+
+xmllint >/dev/null --xinclude --postvalid $1
+xsltproc --nonet --xinclude \
+ --stringparam html.stylesheet pddp.css \
+ -o "$SOURCE_STUB.html" \
+ /usr/share/xml/docbook/stylesheet/nwalsh/html/docbook.xsl \
+ $1

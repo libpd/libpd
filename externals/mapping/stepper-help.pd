@@ -1,0 +1,89 @@
+#N canvas 1 53 512 393 10;
+#X obj 5 2 cnv 15 450 20 empty empty stepper 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 27 320 (C) Copyright 2004 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 244 334 released under the GNU GPL;
+#X floatatom 25 133 8 0 0 0 - - -;
+#X floatatom 25 264 8 0 0 0 - - -;
+#X obj 28 281 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 28 113 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -225271
+-1 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0_ 200 float 0;
+#X coords 0 1 199 0 200 200 1;
+#X restore 261 111 graph;
+#N canvas 266 69 439 429 draw_array 0;
+#X msg 54 82 bang;
+#X obj 54 103 until;
+#X text 85 82 start;
+#X obj 54 125 f;
+#X obj 83 125 + 1;
+#X obj 54 43 loadbang;
+#X obj 298 9 receive \$0-type;
+#X obj 54 180 trigger float float;
+#X obj 127 127 select 0;
+#X obj 53 343 tabwrite \$0_;
+#X text 96 257 mapping output range: 0 to 1;
+#X obj 16 5 inlet;
+#X obj 299 32 float;
+#X obj 54 257 / 200;
+#X obj 83 147 mod 200;
+#X obj 53 313 stepper;
+#X obj 149 34 receive \$0-segments;
+#X obj 299 53 trigger bang float;
+#X obj 149 53 trigger bang float;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 4 0 14 0;
+#X connect 5 0 0 0;
+#X connect 6 0 12 0;
+#X connect 7 0 13 0;
+#X connect 7 1 9 1;
+#X connect 8 0 1 1;
+#X connect 11 0 0 0;
+#X connect 12 0 17 0;
+#X connect 13 0 15 0;
+#X connect 14 0 3 1;
+#X connect 14 0 8 0;
+#X connect 15 0 9 0;
+#X connect 16 0 18 0;
+#X connect 17 0 0 0;
+#X connect 17 1 15 2;
+#X connect 18 0 0 0;
+#X connect 18 1 15 1;
+#X restore 321 79 pd draw_array;
+#X msg 321 59 bang;
+#X obj 72 199 hsl 128 15 -1 1 0 0 \$0-type empty curve_factor 5 8 1
+11 -257472 -1 -1 0 1;
+#X floatatom 81 219 5 0 0 0 - - -;
+#X obj 25 243 stepper;
+#X obj 50 159 hsl 128 15 1 64 0 1 \$0-segments empty segments 5 8 1
+11 -262131 -1 -1 2217 1;
+#X floatatom 56 180 5 0 0 0 - - -;
+#N canvas 470 314 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 35 LICENSE GPL v2;
+#X text 12 165 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 55 DESCRIPTION;
+#X text 12 5 KEYWORDS control abstraction needs_work (DESCRIPTION?)
+;
+#X text 12 85 INLET_0 float;
+#X text 12 105 INLET_1 float;
+#X text 12 125 INLET_2 float;
+#X text 12 145 OUTLET_0 float;
+#X restore 455 363 pd META;
+#X connect 4 0 13 0;
+#X connect 5 0 6 0;
+#X connect 7 0 4 0;
+#X connect 10 0 9 0;
+#X connect 11 0 12 0;
+#X connect 11 0 13 2;
+#X connect 13 0 5 0;
+#X connect 14 0 15 0;
+#X connect 14 0 13 1;

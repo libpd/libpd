@@ -1,0 +1,17 @@
+#N canvas 343 338 450 300 10;
+#X obj 114 179 lpipe;
+#X obj 114 214 print;
+#X obj 114 127 unpack 0 0;
+#X msg 135 95 0 0 \, 1000 1000 \, 2000 2000 \, 500 500;
+#X msg 114 65 4000 4000;
+#X msg 56 65 250 250;
+#X msg 50 128 a b c d;
+#X floatatom 179 183 5 0 0 0 - - -;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 2 1 0 1;
+#X connect 2 1 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 0 0;

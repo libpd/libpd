@@ -1,0 +1,17 @@
+#N canvas 0 0 450 300 12;
+#X obj 143 147 pong~;
+#X obj 143 194 Snapshot~ 100;
+#X floatatom 143 229 5 0 0 0 - - -;
+#X floatatom 143 36 5 0 0 0 - - -;
+#X floatatom 163 69 5 0 0 0 - - -;
+#X floatatom 183 99 5 0 0 0 - - -;
+#X msg 46 99 mode \$1;
+#X obj 46 69 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 1;
+#X connect 5 0 0 2;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;

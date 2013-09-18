@@ -1,0 +1,37 @@
+#N canvas 1 52 502 628 10;
+#X obj 119 -287 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X floatatom 165 -105 5 0 0 0 - - -;
+#X floatatom 235 -90 5 0 0 0 - - -;
+#X floatatom 202 15 5 0 0 0 - - -;
+#X floatatom 71 -96 5 0 0 0 - - -;
+#X floatatom 131 -136 5 0 0 0 - - -;
+#X floatatom 291 -134 5 0 0 0 - - -;
+#X obj 119 -40 resample 100;
+#X obj 119 -9 lop 1;
+#X obj 119 43 timeroll;
+#X text 23 -357 this should be a filter independant to data flow frequency.
+;
+#X text 12 -319 need some more work;
+#N canvas 465 169 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 175 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION this should be a filter independant to data
+flow frequency.;
+#X text 12 155 OUTLET_0 float;
+#X text 12 75 INLET_0 float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 135 INLET_3 float;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X restore 445 238 pd META;
+#X connect 0 0 4 0;
+#X connect 0 0 7 0;
+#X connect 1 0 8 2;
+#X connect 2 0 8 3;
+#X connect 5 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 3 0;
+#X connect 8 0 9 0;

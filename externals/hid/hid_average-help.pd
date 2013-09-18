@@ -1,0 +1,45 @@
+#N canvas 0 31 479 396 10;
+#X text 27 340 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 354 released under the GNU GPL;
+#X floatatom 122 189 5 0 0 0 - - -;
+#X floatatom 102 251 5 0 0 0 - - -;
+#X text 98 303 For more info:;
+#X obj 223 194 hsl 85 18 0.1 10 1 1 empty empty average_count 0 9 1
+12 -228992 -1 -1 5800 0;
+#X floatatom 219 223 5 0 0 0 - - -;
+#X obj 102 131 noise4hidhelp;
+#X obj 105 281 hsl 250 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 125 158 hsl 250 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 5 2 cnv 15 450 20 empty empty hid_average 2 11 1 18 -233017
+-66577 0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X obj 102 221 hid/hid_average;
+#X text 18 36 Smooths a stream of numbers using weighted averaging.
+By default \, the average is the last 10 values. You can set this using
+the right inlet.;
+#X obj 102 95 tgl 30 0 empty empty start 1 15 1 12 -90049 -1 -1 0 1
+;
+#N canvas 504 253 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 85 INLET_0 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION smooths a stream of numbers using weighted
+averaging;
+#X text 12 105 INLET_1 float;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X restore 426 369 pd META;
+#X connect 3 0 8 0;
+#X connect 5 0 12 1;
+#X connect 6 0 12 1;
+#X connect 7 0 9 0;
+#X connect 7 0 12 0;
+#X connect 9 0 2 0;
+#X connect 12 0 3 0;
+#X connect 14 0 7 0;

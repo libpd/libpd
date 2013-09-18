@@ -1,0 +1,25 @@
+#N canvas 315 241 645 450 10;
+#X text 39 77 usage:;
+#X text 367 336 (c) IOhannes m zmoelnig @ iem \, 2007;
+#X obj 90 43 canvasargs;
+#X text 174 44 manipulate the abstractions arguments (and name) on
+saving;
+#X obj 71 384 canvasargs;
+#X msg 71 281 list 10 20;
+#X msg 91 303 list quite a lot of arguments;
+#X msg 102 340 abstraction1;
+#X msg 118 357 abstraction2 argument1;
+#X text 83 78 put the [canvasargs] in your abstraction;
+#X text 81 114 send a _list_ of new arguments to the [canvasargs];
+#X text 82 130 save the parent patch;
+#X text 83 94 put the abstraction in your parent patch;
+#X text 74 150 --> the parent patch will save your abstraction with
+the arguments you sent to [canvasargs] instead of the original ones;
+#X text 77 203 you can also change the (saved) name of the abstraction
+\, by using a selector other than "list" (and the like).;
+#X text 77 226 take care \, as this can totally change the behaviour
+of your patch (or break it);
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;

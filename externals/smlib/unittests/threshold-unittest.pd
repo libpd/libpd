@@ -1,0 +1,25 @@
+#N canvas 136 22 740 495 10;
+#X obj 49 186 testtools/unit-test-frame;
+#X obj 49 121 loadbang;
+#X msg 370 152 1;
+#X msg 529 152 0;
+#X obj 370 120 smlib/threshold 0.9 0 0.1 0;
+#X obj 370 58 line 0 1;
+#X obj 370 88 & 1;
+#X msg 370 31 0 \, 512 600;
+#X msg 49 154 threshold 700;
+#X text 3 18 threshold monitors its input float stream and outputs
+bangs when the signal exceeds a specified "trigger" value \, and also
+when the input value recedes below a "rest" value. You can specify
+debounce in number of floats received \, for the threshold~ to wait
+after the two event types before triggering again.;
+#X connect 0 3 7 0;
+#X connect 1 0 8 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 1;
+#X connect 4 0 2 0;
+#X connect 4 1 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 7 0 5 0;
+#X connect 8 0 0 0;

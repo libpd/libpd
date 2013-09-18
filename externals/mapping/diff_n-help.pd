@@ -1,0 +1,23 @@
+#N canvas 1 53 468 358 10;
+#X obj 63 47 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 0;
+#X floatatom 63 301 5 0 0 0 - - -;
+#X obj 63 218 resample 30;
+#X obj 63 265 diff_n 5;
+#X obj 5 2 cnv 15 450 20 empty empty diff_n 2 11 1 18 -233017 -66577
+0;
+#N canvas 468 256 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 105 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION differentiate of the input;
+#X text 12 65 INLET_0 float;
+#X restore 411 327 pd META;
+#X text 145 64 differentiate of the input;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;

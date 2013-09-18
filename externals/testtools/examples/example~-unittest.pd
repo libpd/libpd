@@ -1,0 +1,34 @@
+#N canvas 81 36 714 575 10;
+#X declare -path ../;
+#X declare -stdpath extra/testtools/;
+#X obj 37 297 unit-test-frame~;
+#X obj 333 113 cnv 15 150 150 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#X msg 421 146 0;
+#X obj 358 176 phasor~ 440;
+#X obj 358 203 -~ 0.5;
+#X obj 358 233 bp~ 220 1;
+#X text 354 119 system under test;
+#X obj 25 115 cnv 15 150 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 37 204 loadbang;
+#X text 35 158 1 - reference name;
+#X text 35 177 2 - test delay in ms;
+#X text 34 138 test arguments (list):;
+#X text 480 273 More info behind the question mark;
+#X text 332 79 Use a bang from one of [unit-test-frame~] outlets to
+reset phase at test start.;
+#X text 23 16 When testing objects with a memory \, like an IIR filter
+\, set a non-zero delay time (between test trigger and test snapshot).
+This is needed to get the same test result every time \, independent
+of the signal input history.;
+#X msg 37 233 example~ 200;
+#X obj 486 16 declare -path ../;
+#X obj 486 45 declare -stdpath extra/testtools/;
+#X connect 0 2 2 0;
+#X connect 2 0 3 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 1;
+#X connect 8 0 15 0;
+#X connect 15 0 0 0;

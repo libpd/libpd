@@ -1,0 +1,56 @@
+#N canvas 1 53 833 496 10;
+#X msg 83 275 anything works too;
+#X msg 71 248 symbol test;
+#X obj 42 17 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 47 67 author: mrtoftrash@gmail.com;
+#X obj 473 299 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 47 56 tags: lists;
+#X obj 80 378 print ATOM;
+#X obj 161 379 print INDEX;
+#X obj 444 374 print ATOM;
+#X obj 555 371 print INDEX;
+#X msg 40 219 list a b c d e f g;
+#X msg 444 272 list m n o p q r s t u v;
+#X text 448 253 step 1: add list;
+#X text 493 297 step 2: bang to output each element;
+#X obj 102 303 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 127 302 bang to interrupt output;
+#X text 48 17 description: output the individual elements of a list
+and their indices \, either immediately or on bangs.;
+#X text 47 78 version: 2009-10-06 (added the second mode);
+#X text 36 189 default mode: output everything once it is received.
+;
+#X text 408 186 "wait" or "manually" mode: output one element for every
+bang .;
+#X text 47 135 list_unfold has two modes:;
+#X obj 80 352 tof/list_unfold;
+#X obj 444 348 tof/list_unfold wait;
+#N canvas 162 137 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION output the individual elements of a list
+and their indices \, either immediately or on bangs;
+#X text 12 75 INLET_0 anything bang;
+#X text 12 95 OUTLET_0 float symbol;
+#X text 12 115 OUTLET_1 float;
+#X restore 775 447 pd META;
+#X msg 287 232 traverse pd-list_unfold-help.pd \, bang;
+#X obj 287 254 pointer;
+#X connect 0 0 21 0;
+#X connect 1 0 21 0;
+#X connect 4 0 22 0;
+#X connect 10 0 21 0;
+#X connect 11 0 22 0;
+#X connect 14 0 21 0;
+#X connect 21 0 6 0;
+#X connect 21 1 7 0;
+#X connect 22 0 8 0;
+#X connect 22 1 9 0;
+#X connect 24 0 25 0;
+#X connect 25 0 21 0;

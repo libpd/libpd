@@ -1,0 +1,178 @@
+[The following note originally appeared on the emusic-l mailing list.  It is
+reprinted here with the author's permission]
+
+From xrjdm@FARSIDE.GSFC.NASA.GOV Wed Nov 23 11:26:39 1994
+Date: Tue, 4 Oct 1994 15:09:23 -0500
+From: Joe McMahon <xrjdm@FARSIDE.GSFC.NASA.GOV>
+Reply to: Electronic Music Discussion List <EMUSIC-L@AMERICAN.EDU>
+To: Multiple recipients of list EMUSIC-L <EMUSIC-L@AMERICAN.EDU>
+Subject: Automata: the long-awaited summary
+
+Back in August, I think, I promised to post a quick intro to cellular
+automata and how they can be used as a sound-generation tool. Since I'm
+going to take a couple of different sources and sum them up with little or
+no direct attribution, combined with my own opinions, I'll give everybody
+my references *first* so they can delete the article and draw their own
+conclusions if they so prefer.
+
+The primary reference that got me started on all this is one in the CMJ:
+Vol 14, No. 4, Winter 1990: "Digital Synthesis of Self-modifying Waveforms
+by Means of Cellular Automata" (Jacques Chareyon). Those who are already
+familiar with automata may just skip to that article and forget about the
+rest of this one.
+Note: the article gives a mail address for M. Chareyon, but he did not
+answer an inquiry about any available recordings using this technique in
+1990.
+
+So. Anyone still here? Good.
+
+Cellular automata are a mathematical concept first introduced in the late
+1940's. Generally speaking, a cellular automaton consists of a grid of
+cells. Each cell may take on any of a number of values - binary automata
+(cell on or cell off) are the most commonly studied. Each cell has a
+neighborhood, defined more simply as other cells which influence its state.
+The exact nature of this influence is defined by what are called transition
+rules. The cellular automaton starts off with some cells in any of the
+allowable states. for each "step" in the automaton's history, the
+neighborhood of every cell is checked, and the state of the cell is
+updated. All updates occur simultaneously.
+
+The transition rule must describe the resulting state of a cell for every
+possible configuration of other cells in the neighborhood. For large
+numbers of states, the amount of memory required to hold the transition
+rule becomes increasingly large, Therefore, some automata use what is known
+as a "totalistic" rule. These rules simply sum the values of the cells in
+the neighborhood and then assign a result on this basis. The resulting
+tables are far smaller.
+
+Many readers may already be familiar with John Horton Conway's game of
+"Life". This is a two-dimensional binary automaton with a totalistic rule.
+This makes for a very small rule set:
+
+  i) If fewer than two filled cells (cells with value 1) surround a cell,
+     it becomes empty next generation.
+ ii) If more than three filled cells surround a cell, it becomes empty
+     next generation.
+iii) If exactly three cells filled cells surround a cell, it becomes
+     filled on the next generation.
+
+This corresponds to a totalistic rule set with a total of 8(2-1)+1 or 9
+rules (one each for the sum values of 0 (no cells with a value) through 9
+(all cells with a value) ).If the transition rule were represented as a
+non-totalistic one, the rule set would need 2**8 or 256 entries. There are
+many interesting totalistic automata, so giving up detailed description of
+every nuance of the transitions to save memory space isn't a big sacrifice.
+
+Interesting as two dimensional automata are, they really aren't terribly
+useful for music making. There have been some experiments which have
+attempted to use a two-dimensional automaton to generate MIDI events -
+synthesis at the note level, using :
+
+Battista, T. and M. Giri, 1988. "Composizione Tramite Automi Cellulari."
+Atti del VII Cooloquio di Informatica Musicale. Rome, Italy: Edizione Arti
+Grafiche Ambrosini, pp. 181-182.
+
+Edgar, R. and J. Ryan, 1986. "LINA" Exhibition of the 1986 International
+Computer Music Conference, San Francisco: Computer Music Association.
+
+I have not heard any of the music from these efforts, so I certainly can't
+pass any judgement on them. For the purposes of this summary, we'll just
+look at one-dimensional automata. These use a linear array of cells, with
+the neighborhood generally being one or two cells on either side of each
+cell.
+(This is the type of automaton dealt with in M. Chareyon's article, which I
+will be paraphrasing broadly hereafter).
+
+M. Chareyon's automata are wavetables. A digitized signal is stored as a
+linear array of numbers in memory. A totalistic rule is used to determine a
+lookup value which indexes into an array containing the resulting value;
+this is saved into a second array. After the first array is completely
+processed, the roles of the two are swapped and the process is repeated.
+
+The limiting factor in this process is the number of bits of resolution
+being used to generate the sound. For a totalistic rule using a two-cell
+neighborhood and 12-bit individual samples, we have 3*(2*12) = 12288
+entries in the rule table. At 2 bytes each, this is  24K of storage. If we
+go to 16-bit sample resolution, we have 196608 entries at 2 bytes each for
+a total of 393216 bytes, or 384K.
+
+The key point of M. Charyeon's method is the use of small neighborhoods
+with large numbers of cellular states. Since the computation of the new
+wavetable is all table lookup, very complex transition rules can be
+precomputed and loaded into the tables, allowing the synthesis to
+essentially be a fast sum-and-lookup loop to calculate each new wavesample.
+>From the article, it appears that M. Chareyon was able to produce 2 or 3
+voices in realtime on a Mac II with a Digidesign Sound Accelerator board.
+It seems that it would probably be possible to use an AV Mac to do it
+without the board.
+
+This LASy (Linear Automaton Synthesis) method is closely related to the
+Karplus-Strong plucked-string algorithm, in that a wavesample is run
+through an algorithm which recirculates the samples to "self-modify" the
+wave. In fact, a judicious choice of table entries allows one to very
+simply simulate the K-S algoritm directly.
+
+So what are the sounds like? Some automata produce waveforms which quickly
+"ramp-up" to complex spectra and then drop off quickly. Others move to a
+steady state and then remain there. Yet others produce never-ending and
+unpredictable waveforms, whose harmonic content is constantly changing.
+
+Obviously enough, the original wavesample can be obtained mathematically,
+or by actual sampling and using LASy as a waveshaper. As M. Chareyon notes,
+a quick estimate of the number of possible automata for a 2-neighbor
+totalistic rule using a 256-entry wavetable with 12-bit entries is
+(2**12)**256 * (2**12)**(3*2**12) or about 10**4500 possible automata. Of
+course, many, many of these would not be suitable for music (e.g., the 4096
+automata in which all values go to one vlaue in one step, etc.); however,
+the number of musically useful automata is still likely to be an immense
+number.
+
+M. Chareyon provides a number of examples of ways to fill out the rule
+tables and a number of hints on creating wave tables - generally speaking,
+one can create a function which is used to compute the values to be placed
+into the table and then fill it so it can simply be loaded and used by the
+basic algorithm. His experience in using LASy is that he manages
+approximately 50% of the time to produce sounds with the desired
+characteristics, and that about 10% of the remaining time he gets
+unexpected but useful results which can be used as starting points for
+further exploration.
+
+Again, the important point is that the basic automaton uses wavesamples at
+full resolution, calculating a new wavesample for each step of the
+automaton; the next wavesample can be played while the new one is being
+calculated. Because of the large number of states, mathematical tools for
+the analysis of automata and the construction of automata with specifically
+desired qualities require too much storage and compute time to make them
+useful for LASy purposes.
+
+Again, much of this article is paraphrased from M. Chareyon's article; I
+take no credit for any of the work in this note. I'm just summarizing.
+
+The following other articles were referenced by M. Chareyon's article:
+
+Burks, A., ed. 1970. Essays on Cellular Automata. Champaign/Urbana, IL:
+University of Illinois Press.
+
+Chareyon, J. 1988a. "Sound Synthesis and Processing by Means of Linear
+Cellular Automata." Proceedings of the 1988 Internation Computer Music
+Conference. San Francisco: Computer Music Association.
+
+Chareyon, J. 1988b. "Wavetable come Automa Cellulare: una Nuova Tecnica di
+Sintesi." Atti del VII Colloquio di Informatica Musicale, Rome, Italy:
+Edizioni Arti Grafiche Ambrosini, pp. 174-177.
+
+Farmer, D., T. Toffoli, and S. Wolfram, eds. 1984. Cellular Automata.
+North-Holland Physics Publishing. [One of the definitive works on cellular
+automata - fairly heavy math, not a popular presentation - JM]
+
+Gardner, M. 1970. "The Fantastic Combinations of John Conway's New Solitare
+Game 'Life'". Scientific American 223(4) 120-123. [A good introduction to
+cellular automata, focusing on 'life' in specific. Useful intro if my
+1-paragraph summary of automata was confusing :) - JM]
+
+ --- Joe M.
+
+--
+"At the end of the hour, we'll have information on the sedatives used by
+the artists,,," (MST3K)
+

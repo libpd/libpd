@@ -1,0 +1,17 @@
+#N canvas 0 31 450 300 10;
+#X text 54 47 placeholder help patch;
+#X obj 144 165 print;
+#X floatatom 125 89 5 0 0 0 - - -;
+#X obj 140 126 unserialize 4;
+#N canvas 391 259 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION turn a stream of floats into a list;
+#X text 12 85 OUTLET_0 list;
+#X restore 390 260 pd META;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;

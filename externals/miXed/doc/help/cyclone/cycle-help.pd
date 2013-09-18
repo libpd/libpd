@@ -1,0 +1,93 @@
+#N canvas 0 26 430 366 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 25 332 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 24 346 ___________________________________________________
+;
+#X obj 34 159 cycle 3;
+#X floatatom 62 133 5 0 0 0 - - -;
+#X floatatom 34 185 5 0 0 0 - - -;
+#X floatatom 56 206 5 0 0 0 - - -;
+#X floatatom 78 185 5 0 0 0 - - -;
+#X msg 34 65 1;
+#X msg 34 83 2;
+#X msg 34 101 3;
+#X obj 20 24 cycle 3;
+#X text 84 25 send data to individual outlets;
+#X obj 308 149 cycle 2;
+#X obj 308 102 metro 300;
+#X obj 308 82 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 308 174 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 352 173 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 308 125 symbol foo;
+#X text 116 75 sets next outlet;
+#X msg 70 72 set 2;
+#X msg 69 92 thresh;
+#X text 124 94 change output mode*;
+#X text 27 262 * look here:;
+#N canvas 392 290 450 275 more... 0;
+#X obj 239 99 cycle 2 0;
+#X floatatom 239 149 5 0 0 0 - - -;
+#X floatatom 297 148 5 0 0 0 - - -;
+#X floatatom 239 62 5 0 0 0 - - -;
+#X floatatom 72 155 5 0 0 0 - - -;
+#X floatatom 130 155 5 0 0 0 - - -;
+#X floatatom 72 61 5 0 0 0 - - -;
+#X obj 72 108 cycle 2 1;
+#X msg 155 38 1;
+#X msg 155 56 2;
+#X msg 155 74 3;
+#X text 54 211 ok \, so I don't fully understand this but it looks
+;
+#X text 55 226 like new 'events' alway end up in the left outlet;
+#X msg 102 35 1 2 3;
+#X text 55 240 whereas only lists get parted in the expected way.;
+#X msg 22 37 thresh;
+#X msg 300 38 thresh;
+#X msg 309 62 1 2 3 4;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 3 0 0 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;
+#X connect 7 1 5 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 7 0;
+#X connect 13 0 7 0;
+#X connect 15 0 7 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X restore 119 257 pd more...;
+#X text 89 160 1st arg sets nr of outlets*;
+#N canvas 73 74 494 440 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION send data to individual outlets;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 65 INLET_0 anything set thresh;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 379 345 pd META;
+#X connect 3 0 5 0;
+#X connect 3 1 6 0;
+#X connect 3 2 7 0;
+#X connect 4 0 3 0;
+#X connect 8 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 3 0;
+#X connect 13 0 16 0;
+#X connect 13 1 17 0;
+#X connect 14 0 18 0;
+#X connect 15 0 14 0;
+#X connect 18 0 13 0;
+#X connect 20 0 3 0;
+#X connect 21 0 3 0;

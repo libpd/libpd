@@ -1,0 +1,40 @@
+#N canvas 0 26 456 227 10;
+#X text 15 35 Report intervals of zero to non-zero transitions;
+#X obj 64 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 40 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 40 138 edge~;
+#X obj 86 181 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 215 101 0 0 0 0 - - -;
+#X floatatom 119 62 0 0 0 0 - - -;
+#X floatatom 119 180 0 0 0 0 - - -;
+#X obj 119 90 train~ 85.5;
+#X text 168 58 adjust interval;
+#X text 253 100 set refractory period;
+#X text 130 156 interval output;
+#X text 57 120 signal input;
+#X obj 119 137 spike~;
+#N canvas 380 180 494 383 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION report intervals of zero to non-zero transitions
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 406 206 pd META;
+#X connect 3 0 2 0;
+#X connect 3 1 1 0;
+#X connect 5 0 13 1;
+#X connect 6 0 8 0;
+#X connect 8 0 3 0;
+#X connect 8 0 13 0;
+#X connect 13 0 4 0;
+#X connect 13 0 7 0;

@@ -1,0 +1,44 @@
+#N canvas 1 53 430 286 10;
+#X floatatom 12 141 5 0 0 0 - - -;
+#X obj 12 118 float;
+#X obj 12 95 metro 100;
+#X obj 12 54 loadbang;
+#X obj 12 78 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 124 77 hsl 128 15 -127 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 338 214 j#|@2002;
+#X obj 356 192 SMLib-help;
+#X floatatom 138 133 0 0 0 0 - - -;
+#X msg 106 110 clear;
+#X text 156 109 <-- reinitialize internal state;
+#X obj 21 211 hsl 128 15 -256 256 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 6350 1;
+#X floatatom 17 237 5 0 0 0 - - -;
+#X text 262 76 <-- swing!;
+#X text 13 7 hip: highpass filter on float stream;
+#X text 11 25 the non-audio version of hip~;
+#X obj 19 182 hip 0.05;
+#X text 170 134 <-- cutoff frequency;
+#N canvas 344 185 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 95 INLET_1 float;
+#X text 12 5 KEYWORDS control filter;
+#X text 12 45 DESCRIPTION highpass filter on float stream;
+#X text 12 75 INLET_0 float clear;
+#X text 12 115 OUTLET_0 float;
+#X restore 367 237 pd META;
+#X connect 1 0 0 0;
+#X connect 1 0 16 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 5 0 1 1;
+#X connect 8 0 16 1;
+#X connect 9 0 16 0;
+#X connect 11 0 12 0;
+#X connect 16 0 11 0;

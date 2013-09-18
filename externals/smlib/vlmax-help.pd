@@ -1,0 +1,42 @@
+#N canvas 31 108 466 316 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array array_vlmax 10 float 0;
+#X coords 0 1 9 -1 200 140 1;
+#X restore 239 72 graph;
+#X msg 8 58 1 1 1 1 1 1 1 1 1 1;
+#X msg 8 80 1 0 1 0 1 0 1 0 1 0;
+#X msg 8 102 0 1 0 1 0 1 0 1 0 1;
+#X msg 8 124 0 0 0 0 0 0 0 0 0 0;
+#X msg 8 146 -1 -1 0 0 -1 -1 0 0 -1 -1;
+#X msg 8 168 0 0 0 0 0 1 1 1 1 1;
+#X text 376 255 j#|@2002;
+#X text 8 22 the argument is the half-decay expressed in number of
+activations;
+#X obj 397 234 SMLib-help;
+#X obj 8 224 vlmax 6;
+#X obj 8 295 s array_vlmax;
+#X msg 27 201 decay 20;
+#X text 9 4 vlmax: vector leaky maximum;
+#N canvas 243 181 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 45 DESCRIPTION vector leaky maximum;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 65 INLET_0 float list decay;
+#X text 12 85 OUTLET_0 list float;
+#X restore 406 278 pd META;
+#X obj 8 249 list prepend 0;
+#X obj 8 273 list trim;
+#X connect 1 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 10 0;
+#X connect 6 0 10 0;
+#X connect 10 0 15 0;
+#X connect 12 0 10 0;
+#X connect 15 0 16 0;
+#X connect 16 0 11 0;

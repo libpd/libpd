@@ -1,0 +1,11 @@
+#N canvas 169 49 432 242 10;
+#X text 47 84 iemnet: high performance networking with Pd;
+#X text 41 134 (c) 2010 IOhannes m zmölnig \, Institute of Electronic
+Music and Acoustics (IEM) \, University of Music and Performing Arts
+\, Graz \, Austria;
+#N canvas 25 49 420 300 META 0;
+#X text 10 10 VERSION 0.1;
+#X text 10 30 AUTHOR IOhannes m zmoelnig <zmoelnig@iem.at>;
+#X text 10 50 NAME iemnet;
+#X text 10 70 LICENSE GPL-2;
+#X restore 20 20 pd META;

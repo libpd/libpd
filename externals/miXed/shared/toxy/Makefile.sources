@@ -1,0 +1,3 @@
+OTHER_SOURCES = \
+scriptlet.c \
+plusbob.c

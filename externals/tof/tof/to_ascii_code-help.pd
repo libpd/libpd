@@ -1,0 +1,24 @@
+#N canvas 1 53 571 202 10;
+#X msg 49 60 test;
+#X msg 182 61 1234;
+#X obj 49 112 tof/to_ascii_code 13;
+#X msg 92 60 list abcdef;
+#X obj 49 153 print codes;
+#X text 54 19 Tags: conversion text symbols;
+#X text 55 3 Description: Convert PD messages into ASCII codes;
+#X text 188 111 Optionnal argument: append ASCII code (in this case
+13 \, a carriage return);
+#N canvas 290 133 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION convert PD messages into ASCII codes;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 OUTLET_0 list;
+#X restore 511 161 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;

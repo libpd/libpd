@@ -1,0 +1,27 @@
+#N canvas 0 0 657 300 10;
+#X obj 147 50 inlet;
+#X obj 146 219 outlet;
+#X obj 147 104 unpack f f f;
+#X obj 148 128 log;
+#X obj 183 128 log;
+#X obj 149 151 pack f f f;
+#X obj 148 172 mtx_linspace;
+#X obj 147 194 mtx_exp;
+#X text 125 1 logspace creates a logarithmical scale between start
+and end point with N points;
+#X obj 147 80 pack \$1 \$2 \$3;
+#X text 385 104 arg1: startval;
+#X text 382 120 arg2: stopval;
+#X text 378 135 arg3: N;
+#X text 315 68 inlet is a 3 argument list;
+#X text 347 88 optional creation arguments:;
+#X connect 0 0 9 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 2;
+#X connect 3 0 5 0;
+#X connect 4 0 5 1;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 9 0 2 0;

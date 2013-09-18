@@ -1,0 +1,45 @@
+#N canvas 1 53 592 427 10;
+#X obj 62 27 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 67 77 author: mrtoftrash@gmail.com;
+#X text 67 66 tags: lists;
+#X text 67 88 version: 2009-10-06 (added the second mode);
+#X text 68 27 description: accumulates anything into a big list. Outputs
+the list on a bang.;
+#X obj 91 283 tof/list_accum;
+#X msg 112 218 1 2 3 4 5 6;
+#X obj 90 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 91 348 print;
+#X floatatom 104 191 5 0 0 0 - - -;
+#X msg 194 218 a b c d;
+#X obj 206 254 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 175 316 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 148 195 Inlet 1 \, anything: Accumulate atoms;
+#X text 227 254 Inlet 2 \, bang: Clear accumulated atoms;
+#X text 111 145 Inlet 1 \, bang: Output and clear accumulated atoms
+;
+#X text 195 314 Outlet 2 \, bang: Nothing accumulated (empty);
+#X text 130 348 Outlet 1 \, list: Accumulated atoms;
+#N canvas 306 222 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 75 INLET_0 bang anything;
+#X text 12 95 INLET_1 bang;
+#X text 12 115 OUTLET_0 list;
+#X text 12 135 OUTLET_1 bang;
+#X text 12 45 DESCRIPTION accumulate anything into a list and output
+the list on a bang;
+#X restore 539 358 pd META;
+#X connect 5 0 8 0;
+#X connect 5 1 12 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 1;

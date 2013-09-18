@@ -1,0 +1,42 @@
+#N canvas 0 0 416 287 10;
+#X floatatom 125 148 0 0 0 0 - - -;
+#X floatatom 125 59 0 0 0 0 - - -;
+#X obj 125 82 sig~;
+#X obj 12 76 dsp;
+#X floatatom 12 123 5 0 0 0 - - -;
+#X obj 12 50 tgl 15 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X text 106 249 IEM KUG;
+#X text 90 237 musil;
+#X text 120 237 @;
+#X text 126 237 iem.at;
+#X text 89 259 Graz \, Austria;
+#X floatatom 25 103 5 0 0 0 - - -;
+#X obj 125 125 unsig~;
+#X obj 303 102 mtof~;
+#X text 271 102 like;
+#X text 41 226 (c) Thomas Musil 2000 - 2006;
+#X obj 125 103 m2f~;
+#X text 114 4 convert MIDI pitch to frequency (in signal);
+#X text 17 8 m2f~;
+#X text 154 58 MIDI pitch;
+#X text 187 148 Hz;
+#X text 218 20 (obsolete);
+#N canvas 496 267 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION convert MIDI pitch to frequency (in signal)
+;
+#X text 12 5 KEYWORDS signal conversion MIDI deprecated;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X restore 366 266 pd META;
+#X connect 1 0 2 0;
+#X connect 2 0 16 0;
+#X connect 3 0 4 0;
+#X connect 3 1 11 0;
+#X connect 5 0 3 0;
+#X connect 12 0 0 0;
+#X connect 16 0 12 0;

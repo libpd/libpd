@@ -1,0 +1,7 @@
+bin/Append-help.pd
+bin/Clip-help.pd
+bin/Clip~-help.pd
+bin/Line~-help.pd
+bin/Scope~-help.pd
+bin/Snapshot~-help.pd
+bin/Table-help.pd

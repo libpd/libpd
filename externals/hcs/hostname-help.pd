@@ -1,0 +1,18 @@
+#N canvas 0 26 353 225 10;
+#X obj 124 139 hostname;
+#X msg 124 94 bang;
+#X symbolatom 124 174 0 0 0 0 - - -;
+#X text 14 19 get the hostname of the machine. Currently it probably
+doesn't work on Windows...;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION get the hostname of the machine;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 symbol;
+#X restore 303 204 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;

@@ -1,0 +1,58 @@
+#N canvas 1 53 487 510 10;
+#X obj 5 2 cnv 15 450 20 empty empty spiral 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 245 451 released under the GNU GPL;
+#X floatatom 32 232 5 0 0 0 - - -;
+#X floatatom 70 385 5 0 0 0 radius-> - -;
+#X text 175 408 For more info:;
+#X text 28 437 (C) Copyright 2005 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X floatatom 136 386 8 0 0 1 <-angle - -;
+#X floatatom 125 232 5 0 0 0 - - -;
+#X obj 124 249 t b f;
+#X text 216 341 related objects:;
+#X text 266 378 example:;
+#X obj 325 378 spiral-joystick;
+#X obj 86 346 spiral;
+#X obj 279 406 pddp/pddplink ../mapping-about.pd -text mapping-about
+;
+#X obj 390 341 polar;
+#X text 24 32 Converts cartesian coordinates(x \, y) to spiral in polar
+coordinates (radius \, angle). The angle is from 0 to 1 The angle 0
+is at cartesian (1 \, 0) or far right center.;
+#X text 24 81 The angle will just keep going up/down as long as there
+is rotation rather than reset like [polar].;
+#X msg 159 303 1;
+#X msg 195 303 -1;
+#X text 223 303 manually add/subtract rotations;
+#X obj 32 124 unauthorized/grid grid1 100 0 1 100 0 1 0 0.01 0.01 10
+10 -131 68;
+#X obj 339 341 vector;
+#X msg 152 279 bang;
+#X text 185 278 reset to start position;
+#N canvas 467 227 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 INLET_1 float;
+#X text 12 135 OUTLET_0 float;
+#X text 12 175 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction conversion;
+#X text 12 155 OUTLET_1 float;
+#X text 12 45 DESCRIPTION convert cartesian coordinates(x \, y) to
+spiral in polar coordinates (radius \, angle).;
+#X text 12 115 INLET_2 float bang;
+#X restore 427 479 pd META;
+#X connect 3 0 13 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 0;
+#X connect 9 1 13 1;
+#X connect 13 0 4 0;
+#X connect 13 1 7 0;
+#X connect 18 0 13 2;
+#X connect 19 0 13 2;
+#X connect 21 0 3 0;
+#X connect 21 1 8 0;
+#X connect 23 0 13 2;

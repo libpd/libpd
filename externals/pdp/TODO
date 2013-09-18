@@ -1,0 +1,61 @@
+known bugs:
+
+* running out of memory (using delay lines or loops) will likely crash pd. 
+short story: don't, use pdp_control's memlimit for limiting pdp's memory usage.
+
+
+
+
+todo 0.12.5:
+
+* find nasty 3dp bug
+* fix pdp_glx BadMatch bug (crashes on OSX) : fixed in pf
+* platform independent [pdp_vdac] [pdp_vadc]
+* fix pdp_help_input/output so they are actually usable
+* incorporate jamie's osx changes / guenter's windows port
+
+
+
+todo later:
+
+* field based bttv capture (might be possible without driver hacks using v4l2)
+* pdp_crop/pad
+* where to solve autoconvert? per type, or central in pdp_base? 2 cases:
+- template based autoconvert: in pdp_base
+- compatibility based autoconvert: i.e. pdp_add (solve in base: move_passive)
+* finish high level packet conversion:
+- move 8bit images to packet level (iow: cleanup pdp_qt, pdp_v4l, pdp_xv) (solve with forth)
+- get rid of pdp_type* methods
+* fix mac/linux name differences (use pdp_video, pdp_movie, pdp_window)
+* pdp_xv framerate doc + pwc addons
+* enable audio output on bttv cards in pdp_v4l
+* fix cache slicer objects + thread problems (fixed in sliceforth)
+* derive as much classes as possible from pdp_base class (obsolete: use forth instead)
+* displacement warp, substitution warp, refraction warp, timespace warp, wormhole warp
+* check the use of varargs for image processing dispatching routine (obsolete: forth)
+* more scopes
+* 2D affine transforms parametrized by vectors (center, x-axis, y-axis) (np1 + matrix processing objects)
+* some abstractions around pdp_cheby (colour shape, ...)
+* efficient rescalers: pdp_double pdp_halve (+ efficient arbitrary scaler in sliceforth)
+* move float color conversion and float<->fixed point conv code to system
+* crop, shift (pad+scroll)
+* solve biquad (blur) mmx boundary init prob (bands at edges: solve with proper init?) (sliceforth)
+* optimize blur effect (1 pole ? / dependency stalls) (sliceforth)
+* jpeg/png packet and streaming support (pdp_netsend / pdp_netreceive : binary compat issues!!)
+* find out why resampling code (warping) is so slow (reg->mem->reg->mem stalls?) (solve in sliceforth)
+* mmx profiling (done: sliceforth)
+* add audio resampling in pdp_qt~
+* use pd_error instead of post for errors
+* ascii art packet processors
+* 3D time space interpolation
+* colour keying
+* motion tracking
+* moebius transforms
+* type multiplexing: find a way to use the same name for packet processors. (solved in forth: polymorhpy)
+i.e. pdp_add should add images, but also vectors, ascii packets, textures,...
+* modify 2D rotation to be used as arbitrary rotation (givens)
+* add 3D rotation
+* frame rate limited delay line (burst delay?)
+* optimize resampling code (mipmapped packed 16bit format?)
+
+

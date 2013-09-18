@@ -1,0 +1,13 @@
+return function (self, sel, atoms)
+  self.inlets = 3
+  function self:in_1_float(f)  pd.post("float: "  .. f) end
+  function self:in_2_symbol(s) pd.post("symbol: " .. s) end
+  function self:in_3_foo(atoms)
+    pd.post("foo(")
+    for i,v in ipairs(atoms) do
+      pd.post("  " .. i .. " = " .. v)
+    end
+    pd.post(")")
+  end
+  return true
+end

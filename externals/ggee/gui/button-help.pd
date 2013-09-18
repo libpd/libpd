@@ -1,0 +1,24 @@
+#N canvas 0 26 382 351 10;
+#X obj 41 115 button OK;
+#X obj 77 249 print;
+#X obj 118 128 button Hit_me_with_your_rhythm_stick;
+#X msg 118 181 yes I will;
+#X obj 118 83 button OK;
+#X text 17 21 Button \, a bang with a label (no pics yet);
+#X text 26 314 (C) dosmildos Guenter Geiger;
+#X text 17 41 button <text> \, _ are made into spaces;
+#N canvas 186 148 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 115 AUTHOR Guenter Geiger;
+#X text 12 45 DESCRIPTION button with a label that sends a bang when
+pressed;
+#X text 12 75 INLET_0 bang;
+#X text 12 95 OUTLET_0 bang;
+#X text 12 5 KEYWORDS control GUI;
+#X restore 332 326 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 2 0;

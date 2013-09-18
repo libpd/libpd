@@ -1,0 +1,86 @@
+#N canvas 621 114 691 473 10;
+#X obj 9 265 cnv 15 430 185 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 267 Inlets:;
+#X obj 9 227 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 226 Arguments:;
+#X obj 8 56 cnv 15 430 165 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 200 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 536 293 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 541 332 pd gemwin;
+#X msg 541 313 create;
+#X text 537 292 Create window:;
+#X obj 461 206 cnv 15 180 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 71 31 Class: pix object;
+#X text 64 237 list: <buffer_name>;
+#X text 26 312 Inlet 1: message: set <buffer_name>: write to another
+buffer.;
+#X text 440 363 see also:;
+#X obj 508 382 pix_buffer_read;
+#X obj 461 84 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 461 112 openpanel;
+#X msg 461 156 open \$1 \$2;
+#X obj 461 135 pack s 0;
+#X msg 474 182 set depot;
+#X obj 507 362 pix_buffer depot 10;
+#X text 50 12 Synopsis: [pix_buffer_filmopen];
+#X text 29 57 Description: reads a movie into a [pix_buffer];
+#X text 11 79 [pix_buffer_filmopen] reads a movie into a named buffer
+in the [pix_buffer] object \, starting at an (optional) bufferindex
+(defaults to 0). The film is read as fast as possible and the entire
+film is read \, so you might get clicks.;
+#X text 13 151 This object is meant to be used at initialzation time.
+;
+#X text 26 280 Inlet 1: message: open <filename> <bufferindex>: read
+a filename into buffer starting at index.;
+#X text 15 172 This object needs the gemwindow to be created.;
+#X obj 461 212 pix_buffer_filmopen depot;
+#X obj 461 242 unpack f f f;
+#X floatatom 461 264 5 0 0 0 - - -;
+#X floatatom 495 264 5 0 0 0 - - -;
+#X floatatom 530 264 5 0 0 0 - - -;
+#X obj 632 262 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 49 341 Outlets:;
+#X text 26 356 Outlet 1: list: <length> <width> <height>: gets the
+dimensions (in fps and pixels) of a film when it gets loaded. if length
+is not available (video-streams) -1 is returned.;
+#X text 26 413 Outlet 2: bangs when finished loading;
+#X text 452 8 GEM abstraction;
+#X connect 8 0 9 0;
+#X connect 9 0 8 0;
+#X connect 17 0 18 0;
+#X connect 18 0 20 0;
+#X connect 19 0 29 0;
+#X connect 20 0 19 0;
+#X connect 21 0 29 0;
+#X connect 29 0 30 0;
+#X connect 29 1 34 0;
+#X connect 30 0 31 0;
+#X connect 30 1 32 0;
+#X connect 30 2 33 0;

@@ -1,0 +1,4 @@
+#N canvas 171 298 450 300 10;
+#X obj 178 123 tcpsocket.OSC;
+#X text 79 81 This is a support object for;
+#X obj 252 81 pddp/helplink tcpsocketserver;

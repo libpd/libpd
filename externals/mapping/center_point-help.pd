@@ -1,0 +1,37 @@
+#N canvas 1 53 490 363 10;
+#X obj 232 227 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 133 110 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 0;
+#X obj 82 227 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 130 165 center_point;
+#X obj 9 -4 cnv 15 450 20 empty empty center_point 2 11 1 18 -233017
+-66577 0;
+#X text 285 306 released under the GNU GPL;
+#X text 16 306 (C) Copyright 2007 Free Software Foundation;
+#X text 22 39 Convert normal 0-to-1 data like you'd get from a joystick
+into a center point with two 0-to-1 ranges for either side of that
+center point.;
+#X floatatom 230 247 5 0 0 0 - - -;
+#X floatatom 79 248 5 0 0 0 - - -;
+#X floatatom 140 129 5 0 0 0 - - -;
+#N canvas 463 192 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 INLET_1 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 165 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 145 OUTLET_1 float;
+#X text 12 85 INLET_0 float;
+#X text 12 45 DESCRIPTION convert 0-to-1 data into a center point with
+two 0-to-1 ranges for either side of that center point;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 437 329 pd META;
+#X connect 0 0 8 0;
+#X connect 1 0 3 0;
+#X connect 1 0 10 0;
+#X connect 2 0 9 0;
+#X connect 3 0 2 0;
+#X connect 3 1 0 0;

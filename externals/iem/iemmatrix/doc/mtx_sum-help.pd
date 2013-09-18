@@ -1,0 +1,25 @@
+#N canvas 128 118 680 254 10;
+#X text 459 169 updated for;
+#X obj 547 169 iemmatrix 0.2;
+#X obj 596 195 matrix;
+#X text 466 194 see also help for;
+#X obj 48 100 mtx 3 3;
+#X obj 48 131 t a a;
+#X msg 48 80 0 1 -2 -3 -4 5 -6 7 8;
+#X obj 48 164 mtx_sum;
+#X obj 91 132 mtx_print;
+#X text 136 10 sum columns of matrix;
+#X text 45 42 compute the column-wise sum of a matrix (result is a
+list of sums);
+#X obj 262 151 mtx_sum;
+#X msg 262 129 1 1 2;
+#X floatatom 262 178 5 0 0 0 - - -;
+#X obj 48 186 print sum;
+#X text 262 107 can also be used for summing up lists;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 5 1 8 0;
+#X connect 6 0 4 0;
+#X connect 7 0 14 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 0;

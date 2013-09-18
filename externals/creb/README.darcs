@@ -1,0 +1,11 @@
+to update type
+
+	darcs pull
+
+after getting/pulling, do
+
+	. bootstrap
+
+this will generate the configure scripts, so you can
+
+	./configure && make

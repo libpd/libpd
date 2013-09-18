@@ -1,0 +1,62 @@
+#N canvas 1388 107 635 592 10;
+#X text 47 547 (c) 2008 IOhannes m zmoelnig;
+#X text 55 471 you can specify the depth of the parent-patch via a
+optional argument:;
+#X text 178 504 will work on the grandparent (parent-depth:2) of this
+patch;
+#X text 207 25 get/set the position of the containing patch within
+it's parent;
+#X text 39 88 this object allows you to retrieve the position of an
+abstraction/subpatch within it's containing canvas;
+#X msg 98 124 bang;
+#X obj 98 172 unpack;
+#X floatatom 137 194 5 0 0 0 - - -;
+#X floatatom 98 194 5 0 0 0 - - -;
+#X text 178 145 <--- you can move this object and click "bang" again
+;
+#X msg 88 253 bang;
+#X obj 88 292 unpack;
+#X floatatom 127 314 5 0 0 0 - - -;
+#X floatatom 88 314 5 0 0 0 - - -;
+#X text 168 269 <--- you can move this object and click "bang" again
+;
+#X text 39 218 you can also query the size of the containing canvas
+via the 2nd outlet;
+#N canvas 0 0 450 300 getsize 0;
+#X obj 75 48 inlet;
+#X obj 75 189 outlet;
+#X obj 75 129 canvasposition;
+#X connect 0 0 2 0;
+#X connect 2 1 1 0;
+#X restore 88 272 pd getsize;
+#N canvas 0 0 450 300 getpos 0;
+#X obj 75 48 inlet;
+#X obj 75 189 outlet;
+#X obj 75 129 canvasposition;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 98 148 pd getpos;
+#X text 69 333 note: there is a bug in Pd that might require you to
+save a patch \, before the "size" will actually change;
+#N canvas 0 0 450 300 setpos 0;
+#X obj 75 48 inlet;
+#X obj 75 129 canvasposition;
+#X connect 0 0 1 0;
+#X restore 100 440 pd setpos;
+#X obj 103 398 hsl 128 15 100 400 0 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 0 1;
+#X obj 52 505 canvasposition 2;
+#X text 46 368 finally you can move an object around (without any hackish
+mouse emulation);
+#X msg 100 418 \$1 440;
+#X obj 81 25 canvasposition;
+#X connect 5 0 17 0;
+#X connect 6 0 8 0;
+#X connect 6 1 7 0;
+#X connect 10 0 16 0;
+#X connect 11 0 13 0;
+#X connect 11 1 12 0;
+#X connect 16 0 11 0;
+#X connect 17 0 6 0;
+#X connect 20 0 23 0;
+#X connect 23 0 19 0;

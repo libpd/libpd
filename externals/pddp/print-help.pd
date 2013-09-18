@@ -1,0 +1,17 @@
+#N canvas 716 408 466 316 10;
+#X obj 151 182 pddp/print;
+#X text 17 48 this object is for displaying generic messages in the
+patch rather than in the Pd window.;
+#X msg 24 104 word;
+#X msg 94 104 symbol asdf;
+#X msg 197 104 list 1 2 3;
+#X msg 274 104 selector series of 4;
+#X msg 246 148 bang;
+#X text 280 147 flashes and resets to blank;
+#X text 38 245 because of Pd's type handling \, it strips off data
+selectors "float" \, "symbol" and "list".;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;

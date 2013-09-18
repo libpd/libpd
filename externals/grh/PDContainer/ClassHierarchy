@@ -1,0 +1,143 @@
+Class Hierarchy of PDContainer:
+-------------------------------
+
+
+
+class ContainerBase  (includes GlobalStuff.h)
+{
+  static map data_
+  sting h_namespace_
+  string dataname_
+
+  void setNamespace(string h_namespace)
+  string getNamespace() const
+  virtual void help()
+  virtual void clearNamespace()
+  virtual void clearAll()
+  virtual int getSize() const
+}
+
+
+class SimpleBase : public ContainerBase
+{
+  virtual void printAll()
+  virtual void printAllIndex()
+  virtual bool saveToFile(string filename)
+  virtual bool readFromFile(string filename)
+}
+
+
+class MapBase : public ContainerBase
+{
+  virtual void add(Element key, Element value)
+  virtual Element &get(Element &key) const
+  virtual void remove(const Element &key)
+  virtual void printAll()
+  virtual bool saveToFile(string filename)
+  virtual bool readFromFile(string filename)
+}
+
+
+class HMap : public MapBase
+
+
+class HMultiMap : public MapBase
+{
+  virtual int getNr(Element &key) const
+  virtual Element &get(Element &key, int index) const
+}
+
+
+class HSet : public SimpleBase
+{
+  virtual void add(Element key)
+  virtual int get(const Element &key) const
+  virtual void remove(const Element &key) const
+}
+
+
+class HMultiSet : public SimpleBase
+{
+  virtual void add(Element key)
+  virtual int get(const Element &key) const
+  virtual void remove(const Element &key) const
+}
+
+
+class SequBase : public SimpleBase
+{
+  virtual void set(int index, Element value)
+  virtual Element &get(int index) const
+  virtual void resize(int size)
+  virtual void pushBack(Element value)
+  virtual void popBack()
+  virtual Element &back() const 
+  virtual Element &front() const
+  virtual void insert(int index, Element value)
+  virtual void remove(int index)
+  virtual bool readFromFile2(string filename, int index);
+}
+
+
+class HVector : public SequBase
+
+
+class HDeque : public SequBase
+{
+  virtual void pushFront(Element value)
+  virtual void popFront()
+}
+
+
+class HList : public SimpleBase
+{
+  int i_pos_
+  list<Element>::iterator iter_
+
+  virtual void pushBack(Element value)
+  virtual void popBack()
+  virtual void pushFront(Element value)
+  virtual void popFront()
+  virtual Element &back() const 
+  virtual Element &front() const 
+  virtual void insert(Element value)
+  virtual Element get()
+  virtual void remove(Element value)
+  virtual void del()
+  virtual int getSize() const
+  virtual void begin()
+  virtual void end()
+  virtual void next()
+  virtual void last()
+  virtual void unique()
+  virtual void reverse()
+  virtual void sort()
+  virtual bool readFromFile(string filename)
+}
+
+
+class QueueStack : public ContainerBase
+{
+  virtual void pop()
+}
+
+
+class HQueue : public QueueStack
+{
+  virtual void push(Element value)
+  virtual Element &front() const
+}
+
+
+class HPrioQueue : public QueueStack
+{
+  virtual void push(float prio, Element value)
+  virtual Element top() const
+}
+
+
+class HStack : public QueueStack
+{
+  virtual void push(Element value)
+  virtual Element &top() const
+}

@@ -1,0 +1,157 @@
+#N canvas 118 22 683 405 10;
+#X text 452 8 GEM object;
+#X obj 9 265 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 267 Inlets:;
+#X text 39 372 Outlets:;
+#X obj 9 227 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 226 Arguments:;
+#X obj 8 56 cnv 15 430 165 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 200 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 290 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 519 329 pd gemwin;
+#X msg 519 310 create;
+#X text 515 289 Create window:;
+#X obj 451 179 cnv 15 155 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 83 gemhead;
+#X text 17 386 Outlet 1: gemlist;
+#X text 24 281 Inlet 1: gemlist;
+#X obj 451 292 square 3;
+#X obj 451 270 pix_texture;
+#X text 71 31 Class: pix object (timebased effect);
+#X obj 451 151 pix_film;
+#X obj 515 151 t f;
+#X obj 464 103 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 open 0;
+#X obj 85 49 inlet;
+#X obj 85 237 outlet;
+#X obj 85 145 openpanel;
+#X msg 85 179 open \$1;
+#X msg 259 213 auto 1;
+#X obj 268 179 loadbang;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X restore 464 131 pd open;
+#X text 505 77 open a supported;
+#X text 506 88 movie-clip;
+#X text 523 114 macOS: quicktime;
+#X text 516 104 windos: *.AVI;
+#X text 523 124 linux: depends...;
+#X text 50 12 Synopsis: [pix_tIIR];
+#X text 29 57 Description: timebased IIR-filter;
+#X text 64 237 list: <feedbackTaps-1> <feedforwardTaps-1>;
+#X floatatom 464 218 3 0 1 2 fb0 - -;
+#X floatatom 491 218 3 0 1 2 fb1 - -;
+#X floatatom 517 218 3 0 1 2 fb2 - -;
+#X floatatom 554 218 3 0 1 2 ff0 - -;
+#X obj 451 238 pix_tIIR 2 1;
+#X floatatom 581 218 3 0 1 2 ff1 - -;
+#N canvas 0 0 450 300 init 0;
+#X msg 175 214 0.3;
+#X msg 247 215 0.6;
+#X msg 277 215 0.4;
+#X obj 104 258 outlet;
+#X obj 154 258 outlet;
+#X obj 204 258 outlet;
+#X obj 254 258 outlet;
+#X obj 304 258 outlet;
+#X obj 244 59 inlet;
+#X obj 338 158 t b;
+#X msg 328 201 1;
+#X msg 363 201 0;
+#X obj 238 127 t b;
+#X obj 246 88 route 1;
+#X msg 104 214 0.2;
+#X msg 140 215 0.5;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 8 0 13 0;
+#X connect 9 0 10 0;
+#X connect 9 0 11 0;
+#X connect 10 0 3 0;
+#X connect 10 0 6 0;
+#X connect 11 0 4 0;
+#X connect 11 0 5 0;
+#X connect 11 0 7 0;
+#X connect 12 0 14 0;
+#X connect 12 0 15 0;
+#X connect 12 0 0 0;
+#X connect 12 0 1 0;
+#X connect 12 0 2 0;
+#X connect 13 0 12 0;
+#X connect 13 1 9 0;
+#X connect 14 0 3 0;
+#X connect 15 0 4 0;
+#X restore 610 201 pd init;
+#X obj 610 184 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X msg 477 182 set;
+#X text 24 294 Inlet 1: message: set: overwrites the filter-buffers
+with the next incoming image.;
+#X text 24 323 Inlet 1: message: set 0: blanks the filter-buffers.
+;
+#X text 24 343 Inlet 2..(M+2): float: mth feedback-coefficient;
+#X text 24 355 Inlet (M+2)..(N+M+2): float: nth feedforward-coefficient
+;
+#X text 37 189 w(n) = fb0 * x(n) + fb1 * w(n-1) + ... + fbN(n-M);
+#X text 38 203 y(n) = ff1 * w(n) + ff2 * w(n-1) + ... + ffM(n-N);
+#X text 11 161 The output y() will calculate from the input x() at
+a time n as follows;
+#X msg 517 183 set 0;
+#X text 11 79 [pix_tIIR] is a time-based filter like [pix_motionblur]
+\, [pix_biquad] or pd's [biquad~]. The filter has a feedback- and a
+feedforward-section \, the length of each can be specified as arguments.
+The objects will have an inlet for each feedback-coefficient and an
+inlet for each feedforward-coefficient.;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 20 0;
+#X connect 18 0 17 0;
+#X connect 20 0 36 0;
+#X connect 20 2 21 0;
+#X connect 21 0 20 1;
+#X connect 22 0 23 0;
+#X connect 23 0 20 0;
+#X connect 32 0 36 1;
+#X connect 33 0 36 2;
+#X connect 34 0 36 3;
+#X connect 35 0 36 4;
+#X connect 36 0 18 0;
+#X connect 37 0 36 5;
+#X connect 38 0 32 0;
+#X connect 38 1 33 0;
+#X connect 38 2 34 0;
+#X connect 38 3 35 0;
+#X connect 38 4 37 0;
+#X connect 39 0 38 0;
+#X connect 40 0 36 0;
+#X connect 48 0 36 0;

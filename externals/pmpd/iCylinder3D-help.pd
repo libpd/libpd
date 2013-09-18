@@ -1,0 +1,89 @@
+#N canvas 338 52 610 896 10;
+#X text 276 10 Cylinder interaction;
+#X text 166 610 15 : minimum height of the cylinder interaction;
+#X text 168 641 16 : minimum height of the cylinder interaction;
+#X text 167 670 17 : tengential constant force;
+#X text 167 695 18 : tangential rigidity;
+#X text 168 727 19 : normal constant displacement;
+#X text 167 757 20 : tangential constant displacement;
+#X text 166 786 21 : normal displacement proportional to 1/R;
+#X text 166 812 22 : tangential displacement proportional to 1/R;
+#X text 175 118 1 : name;
+#X text 121 76 message to change parametter / default value / creation
+arg number / description;
+#X text 196 136 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X msg 81 343 setRmin 0;
+#X msg 82 366 setRmax 1;
+#X text 198 385 minimal and maximal radius of the circle. If the mass
+is outside or inside this circles \, it will not interact with this
+link.;
+#X msg 80 424 setFN 0;
+#X text 174 181 2 : X coordonate of the orientation vector of the circle
+;
+#X text 173 206 3 : Y coordonate of the orientation vector of the circle
+;
+#X text 207 248 normal vector of the circle;
+#X msg 85 266 setX 0;
+#X msg 84 291 setY 0;
+#X msg 84 314 setZ 0;
+#X msg 82 182 setVX 0;
+#X msg 83 207 setVY 0;
+#X msg 84 229 setVZ 0;
+#X text 197 329 center of the circle;
+#X text 174 343 8 : Minimum Radius;
+#X text 174 366 9 : Maximum Radius;
+#X text 169 426 10 : constante Normal Force;
+#X text 168 459 11 : normal rigidity;
+#X text 174 230 4 : Z coordonate of the orientation vector of the circle
+;
+#X msg 81 459 setKN 0;
+#X text 166 504 12 : damping;
+#X msg 81 504 setD 0;
+#X msg 78 731 setdN 0;
+#X obj 9 866 iCylinder3D;
+#X text 177 39 This object sould be used for the simulation of interaction
+between a collection of masse and a cylinder;
+#X text 173 266 5 : center X;
+#X text 173 290 6 : center Y;
+#X text 172 315 7 : center Z;
+#X text 197 443 constant force normal to the cylinder.;
+#X text 199 477 Force is proportional to the distance between the masse
+and the cylindre center.;
+#X text 197 520 normal (to the cylinder surface) damping to the masses.
+;
+#X text 166 536 13 : Normal force proportional to 1/distance to the
+center of the cylinder;
+#X msg 78 610 setPmin -10000;
+#X msg 80 639 setPmax 10000;
+#X msg 78 756 setdT 0;
+#X text 166 574 14 : Normal force proportional to 1/square(distance)
+to the center of the cylinder;
+#X msg 80 670 setFN 0;
+#X msg 81 705 setKN 0;
+#X msg 82 575 setG 0;
+#X msg 83 538 setRN 0;
+#X msg 77 782 setdKN 0;
+#X msg 77 807 setdKT 0;
+#X connect 12 0 35 0;
+#X connect 13 0 35 0;
+#X connect 15 0 35 0;
+#X connect 19 0 35 0;
+#X connect 20 0 35 0;
+#X connect 21 0 35 0;
+#X connect 22 0 35 0;
+#X connect 23 0 35 0;
+#X connect 24 0 35 0;
+#X connect 31 0 35 0;
+#X connect 33 0 35 0;
+#X connect 34 0 35 0;
+#X connect 44 0 35 0;
+#X connect 45 0 35 0;
+#X connect 46 0 35 0;
+#X connect 48 0 35 0;
+#X connect 49 0 35 0;
+#X connect 50 0 35 0;
+#X connect 51 0 35 0;
+#X connect 52 0 35 0;
+#X connect 53 0 35 0;

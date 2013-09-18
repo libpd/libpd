@@ -1,0 +1,32 @@
+#N canvas 683 169 505 377 10;
+#X floatatom 146 142 5 0 0;
+#X floatatom 146 166 5 0 0;
+#X floatatom 146 190 5 0 0;
+#X floatatom 146 214 5 0 0;
+#X floatatom 146 239 5 0 0;
+#X text 32 12 pdp_cog: compute intensity \, center of gravity and standard
+deviation. (interpret an image as a gaussian blob).;
+#X text 201 215 standard deviation x;
+#X text 200 239 standard deviation y;
+#X obj 78 50 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 21 236 pdp_help_output;
+#X obj 78 73 pdp_help_input;
+#X text 200 141 average intensity;
+#X text 200 168 center of gravity x;
+#X text 200 190 center of gravity y;
+#X text 203 47 creation argument is threshold;
+#X obj 78 124 pdp_cog;
+#X floatatom 375 291 5 0 0;
+#X obj 226 317 pdp_cog_abs_thresh 0.1;
+#X text 87 342 the same \, but takes the absolute value and performs
+a thresholding operation;
+#X connect 8 0 10 0;
+#X connect 10 0 9 0;
+#X connect 10 0 15 0;
+#X connect 15 0 0 0;
+#X connect 15 1 1 0;
+#X connect 15 2 2 0;
+#X connect 15 3 3 0;
+#X connect 15 4 4 0;
+#X connect 16 0 17 1;

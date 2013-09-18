@@ -1,0 +1,11 @@
+#N canvas 53 212 477 223 12;
+#X obj 17 105 print rcvOSC;
+#X obj 17 53 dumpOSC 9999;
+#X obj 45 78 s rcvOSC;
+#X text 15 7 dumpOSC listens on specified port / UDP \, outputs everything
+received on its only outlet. seems to be pretty stable.;
+#X text 130 52 one argument: portnumber;
+#X text 130 72 two arguments: castgroup portnumber;
+#X text 76 164 [dumpOSC] needs at least one argument to function;
+#X connect 1 0 0 0;
+#X connect 1 0 2 0;

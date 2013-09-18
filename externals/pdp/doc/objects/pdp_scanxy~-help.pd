@@ -1,0 +1,76 @@
+#N canvas 362 152 806 785 10;
+#X floatatom 73 226 5 0 0;
+#X obj 73 602 dac~;
+#X obj 13 48 pdp_help_input;
+#X msg 13 19 start;
+#X obj 13 632 pdp_help_output;
+#X obj 73 546 *~;
+#X floatatom 89 517 5 0 0;
+#X obj 73 486 hip~ 20;
+#X floatatom 117 459 5 0 0;
+#X floatatom 131 406 5 0 0;
+#X obj 73 433 lop~ 1000;
+#X msg 222 342 interpolate \$1;
+#X obj 222 316 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X text 251 313 set interpolation between consecutive packets on/off
+;
+#X text 216 377 (the audio crossfade size is determined by the pd blocksize.
+so you can use a block~ object to set this);
+#X obj 73 375 pdp_scanxy~;
+#X floatatom 145 228 5 0 0;
+#X floatatom 73 146 5 0 0;
+#X msg 224 225 0;
+#X msg 255 225 0.25;
+#X obj 224 197 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 61 20 stop;
+#X obj 13 96 pdp_blur;
+#X floatatom 58 72 5 0 0;
+#X floatatom 161 167 5 0 0;
+#X obj 145 198 * 1;
+#X text 220 46 pdp_scanxy~: scanned synthesis with coordinate input.
+(0 \, 0) = top left \, (1 \, 1) = bottom right;
+#X obj 73 267 osc~;
+#X obj 145 266 osc~;
+#X text 223 164 set frequency ratio for lissajous path;
+#X text 250 196 resync phase;
+#X obj 73 293 *~ 0.5;
+#X obj 145 293 *~ 0.5;
+#X obj 73 318 +~ 0.5;
+#X obj 145 318 +~ 0.5;
+#X text 220 87 the waveform is scanned from the luma plane of an image.
+the path is determined by the left(x) and right(y) coordinate inlets.
+;
+#X connect 0 0 27 0;
+#X connect 2 0 22 0;
+#X connect 3 0 2 0;
+#X connect 5 0 1 0;
+#X connect 5 0 1 1;
+#X connect 6 0 5 1;
+#X connect 7 0 5 0;
+#X connect 8 0 7 1;
+#X connect 9 0 10 1;
+#X connect 10 0 7 0;
+#X connect 11 0 15 0;
+#X connect 12 0 11 0;
+#X connect 15 0 10 0;
+#X connect 16 0 28 0;
+#X connect 17 0 0 0;
+#X connect 17 0 25 0;
+#X connect 18 0 27 1;
+#X connect 19 0 28 1;
+#X connect 20 0 18 0;
+#X connect 20 0 19 0;
+#X connect 21 0 2 0;
+#X connect 22 0 4 0;
+#X connect 22 0 15 0;
+#X connect 23 0 22 1;
+#X connect 24 0 25 1;
+#X connect 25 0 16 0;
+#X connect 27 0 31 0;
+#X connect 28 0 32 0;
+#X connect 31 0 33 0;
+#X connect 32 0 34 0;
+#X connect 33 0 15 0;
+#X connect 34 0 15 1;

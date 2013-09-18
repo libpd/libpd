@@ -1,0 +1,56 @@
+#N canvas 1 53 554 617 12;
+#X obj 210 485 dac~;
+#X obj 159 395 osc~;
+#X msg 159 282 69;
+#X obj 159 327 mtof;
+#X floatatom 159 304 0 0 0 0 - - -;
+#X floatatom 159 349 0 0 0 0 - - -;
+#X obj 159 371 sig~;
+#X floatatom 238 314 5 0 1 0 - - -;
+#X floatatom 312 359 5 0 0 0 - - -;
+#X text 19 13 pin~;
+#X text 20 55 the pin~ object can be considered to be similar to the
+pin in a bagatelle game. The ball upon hitting it has a random probability
+of falling to one side or the other. The pin~ object takes a single
+signal input and outputs it to the left or right output at random based
+on the probability set (right most input). The interval at which the
+outlet is choosen can be set by the right most input. Setting this
+to 0 or less means a different output is choosen for every call of
+the dsp routine. A higher value means that the output is choosen every
+so many milliseconds.;
+#X obj 159 250 loadbang;
+#X text 19 314 test signal;
+#X text 19 327 generator---->;
+#X text 226 289 probability to choose left;
+#X text 304 307 (between 0 and 1);
+#X text 325 338 choice interval;
+#X obj 181 437 pin~ 0.5 100;
+#X text 25 523 note that no panning or envelopes are applied and therefore
+low choice intervals will add "switching" noise to the output.;
+#X text 19 30 by mark williamson (mark@junklight.com);
+#N canvas 464 162 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 175 AUTHOR Mark Williamson <mark@junklight.com>;
+#X text 12 45 DESCRIPTION take a single signal input and output it
+to the left or right output at random based on the probability set
+;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 135 OUTLET_0 signal;
+#X text 12 155 OUTLET_1 signal;
+#X text 12 5 KEYWORDS signal random;
+#X restore 478 583 pd META;
+#X connect 1 0 17 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 7 0 17 1;
+#X connect 8 0 17 2;
+#X connect 11 0 2 0;
+#X connect 17 0 0 0;
+#X connect 17 1 0 1;

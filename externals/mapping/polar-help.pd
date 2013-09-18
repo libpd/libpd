@@ -1,0 +1,56 @@
+#N canvas 1 53 484 431 10;
+#X obj 5 2 cnv 15 450 20 empty empty polar 2 11 1 18 -233017 -66577
+0;
+#X floatatom 100 248 5 0 0 0 x - -;
+#X floatatom 100 335 7 0 0 0 radius-> - -;
+#X text 124 370 For more info:;
+#X obj 228 368 pddp/pddplink ../mapping-about.pd -text mapping-about
+;
+#X obj 100 295 polar;
+#X floatatom 159 335 7 0 0 1 <-angle - -;
+#X floatatom 158 248 5 0 0 1 y - -;
+#X obj 157 265 t b f;
+#X text 275 283 related objects:;
+#X text 273 342 example:;
+#X text 43 86 center:;
+#X text 17 29 Converts cartesian coordinates(x \, y) to polar coordinates
+(radius \, angle). The angle is in radians (-pi to pi). The angle 0
+is at cartesian (1 \, 0.5) or to the right.;
+#X obj 207 303 spiral;
+#X obj 95 123 unauthorized/grid grid1 100 0 1 100 0 1 1 0.1 0.1 10
+10 7 243;
+#N canvas 841 235 450 300 c 0;
+#X obj 100 100 bng 30 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 99 147 goto 49 49;
+#X obj 101 175 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X coords 0 -1 1 1 30 30 1 100 100;
+#X restore 95 85 pd c;
+#X obj 327 342 pddp/pddplink ../hid/polar-joystick.pd -text polar-joystick.pd
+;
+#X obj 267 323 cartesian2spherical;
+#X obj 348 303 mapping2radians;
+#N canvas 508 175 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 float;
+#X text 12 5 KEYWORDS control abstraction conversion;
+#X text 12 45 DESCRIPTION convert cartesian coordinates(x \, y) to
+polar coordinates (radius \, angle);
+#X text 12 75 INLET_0 float bang;
+#X text 12 95 INLET_1 float;
+#X restore 427 402 pd META;
+#X connect 1 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 6 0;
+#X connect 7 0 8 0;
+#X connect 8 0 1 0;
+#X connect 8 1 5 1;
+#X connect 14 0 1 0;
+#X connect 14 1 7 0;
+#X connect 15 0 14 0;

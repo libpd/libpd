@@ -1,0 +1,10 @@
+#N canvas 399 553 450 300 10;
+#X obj 87 196 biquadseries~ \$1;
+#X msg 107 162 butterLP \$1;
+#X obj 81 134 inlet~;
+#X obj 138 134 inlet;
+#X obj 82 236 outlet~;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;

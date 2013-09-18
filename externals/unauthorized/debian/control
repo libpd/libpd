@@ -1,0 +1,55 @@
+Source: pd-unauthorized
+Section: sound
+Priority: optional
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+DM-Upload-Allowed: yes
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 7.0.50~),
+               puredata-dev | puredata (<< 0.43),
+               libmp3lame-dev,
+               libspeex-dev
+Standards-Version: 3.9.2
+Homepage: http://ydegoyon.free.fr/software.html
+Vcs-Git: git://git.debian.org/pkg-multimedia/pd-unauthorized.git
+Vcs-Browser: http://git.debian.org/?p=pkg-multimedia/pd-unauthorized.git;a=summary
+
+Package: pd-unauthorized
+Architecture: any
+Depends: ${shlibs:Depends},
+         pd,
+         pd-libdir,
+         ${misc:Depends}
+Recommends: pd-import,
+            pd-zexy
+Description: library of Pd objects for streaming and GUI control
+ unauthorized is a Pure Data library of GUI objects and a handful of objects
+ for working with streaming and mp3s.
+ .
+ audience~: 2-dimensional audience simulation
+ beatify~: modulate amplitude of a sound
+ blinkenlight: a blinken lights films player ( but also a pixel grid )
+ compressor~: a compressor of audio signals
+ cooled: a micro sound editor
+ disto~: a kind of effect used in pop music, use it elsewhere
+ exciter: a bang-events sequencer
+ filterbank~: outputs frequency response for a range of filters
+ formant~ is a formant synthesis generator external for pd
+ grid: 2-dimensional control object, ala "kaospad"
+ mp3amp~ is a MPEG I Layer III (mp3) icecast/shoutcast client
+ mp3cast~ is a MPEG I Layer III (mp3) streaming external
+ mp3streamout~: peer-to-peer mp3 streaming out
+ mp3fileout~: peer-to-peer mp3 streaming to a file
+ mp3streamin~: peer-to-peer mp3 stream receiving
+ mp3write~ is a MPEG I Layer III (mp3) file writer.
+ pianoroll: a graphical sequencer controller
+ playlist: choose a file in 1 click with space, numeric, characters
+ probalizer: outputs integer values according to a drawn probability curve
+ samplebox~: an opaque box to record and playback a sound
+ scratcher~: records a sound and lets you scratch it with your mouse
+ scrolllist: displays and scrolls a text in  a patch window
+ sonogram~: displays, plays back and lets you modify a recorded sonogram.
+ speexin~: a voice quality stream receiver using Speex library
+ speexout~: a voice quality streamer using Speex library
+ spigot~: a signal router.
+ wahwah~: a kind of effect used in psychedelic music, use it elsewhere
+

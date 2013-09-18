@@ -1,0 +1,26 @@
+#N canvas 342 108 616 430 10;
+#X obj 93 268 dynroute 4;
+#X msg 41 147 apple red \, banana yellow \, pear green \, apple yellow
+\, strawberry red;
+#X obj 41 194 list prepend;
+#X msg 200 224 clear \, add apple 0 \, add banana 1 \, add pear 2;
+#X msg 206 258 remove pear 2 \, add pear 0 \, add strawberry 2;
+#X text 39 32 Dynamically route lists based on first element \, according
+to the mapping specified on right inlet. Creation argument (float)
+specifies how many outlet to have (including last outlet \, which is
+used for sending unmatching items);
+#X text 44 120 Test it with some data:;
+#X obj 93 379 print out1;
+#X obj 115 352 print out2;
+#X obj 137 325 print out3;
+#X obj 160 298 print other;
+#X text 256 293 <-- non-matching stuff is sent here;
+#X text 196 192 Change the mapping:;
+#X connect 0 0 7 0;
+#X connect 0 1 8 0;
+#X connect 0 2 9 0;
+#X connect 0 3 10 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 1;

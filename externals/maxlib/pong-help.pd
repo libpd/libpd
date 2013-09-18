@@ -1,0 +1,23 @@
+#N canvas 0 31 450 300 10;
+#X text 24 14 a bouncing ball model!;
+#X text 53 45 Based on pong (for Max) version 1.5 written by Richard
+Dudas.;
+#N canvas 460 61 494 344 META 0;
+#X text 12 285 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 265 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control needs_work (example and xlets);
+#X text 12 165 INLET_5;
+#X text 12 145 INLET_4;
+#X text 12 125 INLET_3;
+#X text 12 105 INLET_2;
+#X text 12 85 INLET_1;
+#X text 12 65 INLET_0;
+#X text 12 185 OUTLET_0;
+#X text 12 205 OUTLET_1;
+#X text 12 225 OUTLET_2;
+#X text 12 245 OUTLET_3;
+#X text 12 45 DESCRIPTION bouncing ball model;
+#X restore 390 269 pd META;
+#X obj 153 121 pong 1.23321e+07;

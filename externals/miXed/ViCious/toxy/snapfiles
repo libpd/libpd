@@ -1,0 +1,11 @@
+SNAPFILES = \
+	miXed\bin\tot.dll \
+	miXed\bin\tow.dll \
+	miXed\bin\widget.dll \
+	miXed\ViCious\toxy\makefile \
+	miXed\ViCious\toxy\objects \
+	miXed\ViCious\toxy\snapfiles \
+	miXed\LICENSE.txt \
+	miXed\test\toxy\*.* \
+	miXed\test\toxy\editors\*.* \
+	miXed\test\toxy\stress\*.*

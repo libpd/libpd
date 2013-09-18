@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for m in `cat list`
+do
+  mname=${m%.en.html}.blm
+  wget http://www.blinkenlights.de/blm/$mname
+done

@@ -1,0 +1,42 @@
+#N canvas 0 26 435 353 12;
+#X floatatom 38 54 5 0 0 0 - - -;
+#X floatatom 18 264 5 0 0 0 - - -;
+#X obj 38 141 speedlim 500;
+#X text 126 18 speedlim :: lets information through;
+#X text 222 37 only every N milliseconds;
+#X text 152 171 creation argument = time in ms;
+#X floatatom 129 116 5 0 0 0 - - -;
+#X text 184 116 time between outputs in ms;
+#X msg 49 82 bang;
+#X obj 121 207 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 121 236 timer;
+#X floatatom 121 262 5 0 0 0 - - -;
+#X text 175 262 this should never be less than;
+#X text 175 280 the creation argument of speedlim;
+#X obj 18 194 route f;
+#X obj 47 236 print;
+#X msg 95 82 this is speedlim;
+#N canvas 292 198 494 344 META 0;
+#X text 12 160 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 140 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 100 INLET_1 float;
+#X text 12 45 DESCRIPTION lets information through only every N milliseconds
+;
+#X text 12 80 INLET_0 anything;
+#X text 12 120 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control filter anything_op;
+#X restore 373 322 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 9 0;
+#X connect 2 0 14 0;
+#X connect 6 0 2 1;
+#X connect 8 0 2 0;
+#X connect 9 0 10 1;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 14 0 1 0;
+#X connect 14 1 15 0;
+#X connect 16 0 2 0;

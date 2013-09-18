@@ -1,0 +1,81 @@
+#N canvas 3 2 600 605 10;
+#X obj 14 66 gemwin;
+#X obj 14 9 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X msg 48 10 create;
+#X msg 55 33 destroy;
+#X obj 14 93 gemhead;
+#X text 170 17 A tutorial on recursion in Gem;
+#X text 170 37 (GPL) 2007 Claude Heiland-Allen <claudiusmaximus@goto10.org>
+;
+#X obj 30 159 r \$0-recurse;
+#X obj 68 133 v \$0-depth;
+#X obj 14 113 t a b;
+#X floatatom 84 70 5 0 0 2 max-depth - -;
+#X obj 14 187 t a a;
+#X obj 60 188 circle;
+#X obj 14 325 separator;
+#X obj 36 536 s \$0-recurse;
+#X obj 14 416 t b a b;
+#X obj 99 446 v \$0-depth;
+#X obj 99 466 - 1;
+#X obj 99 486 max 0;
+#X obj 99 506 v \$0-depth;
+#X obj 36 516 spigot;
+#X obj 14 446 v \$0-depth;
+#X obj 14 486 v \$0-depth;
+#X obj 14 466 + 1;
+#X obj 68 113 f 4;
+#X obj 14 346 rotate 0 0 0 1;
+#X obj 126 303 * 72;
+#X obj 14 366 translate 2 0 1 0;
+#X obj 14 386 scale 0.35;
+#X obj 14 270 nrepeat 5;
+#X obj 119 236 t f f;
+#X floatatom 118 196 5 0 0 2 count - -;
+#X obj 149 259 swap 360;
+#X obj 149 282 /;
+#X obj 118 215 clip 1 16;
+#X obj 84 89 clip 1 6;
+#X text 170 77 Recursion can be combined with iteration to make complex
+structures. However \, using the [repeat] from Zexy is no longer enough.
+Trying to use it with an external counter leads to re-entrancy bugs
+\, because the [repeat] is retriggered before the counter has finished
+\, which messes up the counter's internal state. [nrepeat] is a "repeat
+with a built in counter" \, which is re-entrancy safe.;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 9 0;
+#X connect 7 0 11 0;
+#X connect 9 0 11 0;
+#X connect 9 1 24 0;
+#X connect 10 0 35 0;
+#X connect 11 0 29 0;
+#X connect 11 1 12 0;
+#X connect 13 0 25 0;
+#X connect 15 0 21 0;
+#X connect 15 1 20 0;
+#X connect 15 2 16 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 18 0 20 1;
+#X connect 20 0 14 0;
+#X connect 21 0 23 0;
+#X connect 23 0 22 0;
+#X connect 24 0 8 0;
+#X connect 25 0 27 0;
+#X connect 26 0 25 1;
+#X connect 27 0 28 0;
+#X connect 28 0 15 0;
+#X connect 29 0 13 0;
+#X connect 29 1 26 0;
+#X connect 30 0 29 1;
+#X connect 30 1 32 0;
+#X connect 31 0 34 0;
+#X connect 32 0 33 0;
+#X connect 32 1 33 1;
+#X connect 33 0 26 1;
+#X connect 34 0 30 0;
+#X connect 35 0 24 1;

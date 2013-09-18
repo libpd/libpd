@@ -1,0 +1,275 @@
+
+______________________________________________________________________________
+- switch to snprintf
+
+in hid_darwin.c, replace all sprintf()s with snprintf()s.
+
+______________________________________________________________________________
+- deal with hatswitches!!
+
+Because of the currnently implementation of the conversion of the MacOS X
+style event to the Linux style event, an event with a value of zero is output
+on the unchanged axis when the hatswitch is moved in along the X or Y axis (as
+opposed to diagonally). but this might be fixed...
+
+- fix up hatswitch logic... hmmm
+  on Mac OS X, just make the next element in the array always be the Y axis of
+  the hatswitch, then when receiving a hatswitch event, output, increment,
+  then output again (yes, its a hack).
+
+- what do standard hatswitches output on the various platforms?  they should
+  probably always output like axes, but then the CUI will be screwed
+
+
+______________________________________________________________________________
+= fix key names on Mac OS X
+
+I think they are unimplemented... :-(
+
+______________________________________________________________________________
+= array lookups for symbols
+
+implementation idea #2:
+
+this array should be built by hid_build_elements_list().  Then each time it
+fetches an event using the element_pointer array, it would also get the stored
+usage_page and usage symbols, and instance t_float.  So I need to make an
+element struct like:
+
+struct _hid_element
+{
+		  void *element;
+		  t_symbol *type; // HID "usage page"
+		  t_symbol *usage; // Linux "code"
+		  t_float instance;
+		  t_float previous_value; //only output on change on abs and buttons
+} t_hid_element;
+
+For Linux input.h, instead void *element, store the type and code numbers to
+compare against
+
+
+______________________________________________________________________________
+= make only the first executed instance fetch the data
+
+ the function is ugen_getsortno() -- returns
+an integer which increases eachtime DSP is restarted.  You can add the
+function call (to the ugen chain for instance) each time you see
+ugen_getsortno() return an integer greater than the previous one you've
+
+______________________________________________________________________________
+= output one value per poll
+
+- for relative axes, sum up all events and output one
+http://lists.apple.com/archives/mac-games-dev/2005/Oct/msg00060.html
+
+- current method only works for instances in the same patch...
+
+______________________________________________________________________________
+= [poll 1( message set to exact delay based on block size
+
+to eliminate the jitter of the messages being processed every block, have
+[poll 1( set the time to the poll size (~1.5ms for 44,100)
+
+______________________________________________________________________________
+= iterate through elements and do a proper queue of the ones we want:
+
+- also, label multiple instances of the same usage
+
+http://mud.5341.com/msg/8455.html
+
+
+______________________________________________________________________________
+= make second inlet for specific status requests [human->pd])
+
+- [vendor(, [product(
+- [range(
+- [poll(
+- [name(
+- [type(
+
+______________________________________________________________________________
+= output device data on open
+
+- Logical Min/Max i.e. [range -127 127(
+- device string  [name Trackpad( 
+
+______________________________________________________________________________
+= get tablets working on Mac OS X
+
+http://www.versiontracker.com/php/feedback/article.php?story=20051221163326829
+
+http://www.wacom-europe.com/forum/topic.asp?TOPIC_ID=2719&ARCHIVE=
+
+______________________________________________________________________________
+= block devices like mice/keyboards etc from outputting
+
+at least document the procedure needed
+
+Mac OS X:
+http://lists.apple.com/archives/usb/2005/Aug/msg00068.html
+
+
+
+______________________________________________________________________________
+= open devices by name
+
+i.e "Trackpad" a la Max's [hi]
+
+
+______________________________________________________________________________
+= 
+= autoscaling based on Logical min/max
+
+- this is probably essential for input, the question is how to find out what
+  the data range is easily.
+
+- output would be handy, rather than autoscale, to save on CPU
+
+- this should probably be done in Pd space
+
+______________________________________________________________________________
+= test verbose names
+
+- matju says symbols are compared by pointer, so they are fast
+
+- try verbose names like:
+  		syn = sync
+		snd = sound
+		msc = misc
+		rep = repeat
+		pwr = power
+
+- maybe these too
+		abs = absolute
+		rel = relative
+		btn = button
+
+- maybe make the type the full name, with the code using the abbreviation
+
+- change generic ev_9 to type_9
+
+- change word "code" to "element"
+
+
+______________________________________________________________________________
+= event name changes
+
+- make key/button Type "button" rather than "key" (undecided on this one)
+
+
+______________________________________________________________________________
+= hid/serial
+
+- open/close status outlet
+
+- [send ( to send data
+
+- [tgl] 1/0 for open/close
+
+
+______________________________________________________________________________
+= linux input synch events (EV_SYN)
+
+- these seem to be generated by the Linux kernel, so they probably don't fit
+  in with the [hid] scheme.  Probably the best thing is to ditch them, or
+  figure out whether they should be used in controlling the flow of event
+  data, as they are intended.
+
+
+______________________________________________________________________________
+= writing support!
+
+- Linux example: http://www.linuxjournal.com/article/6429
+
+
+______________________________________________________________________________
+= profile [hid] object and usage
+
+- find out if [autoscale] takes a lot of CPU power, or where in [hid] is using
+  CPU where it doesn't have to be
+
+
+______________________________________________________________________________
+= Report available FF effects
+
+- check against HID Utilities Source/PID.h
+
+
+______________________________________________________________________________
+= pollfn for mouse-like devices
+
+- determine whether using a pollfn is actually better than using a t_clock
+
+- any device that acts like a system mouse can be used with a pollfn, since
+  the mouse data will go thru Pd's network port, triggering the pollfn.
+
+- this is probably unnecessary since the t_clock seems to run well at 1ms delay
+
+- at standard block size (64 samples), one block = ~1.5ms
+
+
+______________________________________________________________________________
+= check out using USB timestamp 
+
+- use the USB timestamp to correctly space the output data 
+
+(meh, probably not useful)
+
+
+
+ /----------------------------------------------------------------------------\
+------------------------------------------------------------------------------
+   BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS BUGS 
+------------------------------------------------------------------------------
+ \----------------------------------------------------------------------------/
+
+______________________________________________________________________________
+- BUG: crashes when you try yo open "mouse" with no args
+
+
+______________________________________________________________________________
+- BUG: on Mac OS X, polling starts without hid_build_device_list() or hid_open()
+
+- when polling starts, hid_build_device_list() should be called before starting
+
+
+______________________________________________________________________________
+- BUG: figure out how to prevent segfaults on mismapped devices/elements
+
+- it should gracefully ignore things where it currently segfaults
+
+- looks like its in build_device_list
+
+______________________________________________________________________________
+- BUG: multiple instances pointing to the same device don't have seperate close/free
+
+- closing the device on one instance closing that same device on all other
+  instances of [hid]
+
+- deleting that instance also closes the device for all other instances
+  pointing to that same device
+
+
+______________________________________________________________________________
+- BUG: getting events from the queue doesn't output a 0 value event when the
+  motion stops, so when the mouse stops, the sound keeps playing.
+
+This is probably only a problem on relative axes.
+
+  This will probably have to be implemented on a platform-specific level:  
+
+  - On Darwin/MacOSX, I think that the HIDGetEvent() loop will have to be
+    followed by one call to HIDGetElementValue()
+
+
+
+______________________________________________________________________________
+- BUG: on MacOS X, two keyboard key codes are reported as hatswitches
+
+  abs   abs_hat0x       Button Input, Keyboard Usage 0x39
+  abs   abs_hat0y       Button Input, Keyboard Usage 0x39
+
+I am pretty sure this is just a hid_print_element_list() display problem.
+
+

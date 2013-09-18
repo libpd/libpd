@@ -1,0 +1,80 @@
+#N canvas 1 53 629 593 10;
+#X floatatom 18 36 0 40 16000 0 - - -;
+#X msg 468 508 \; pd dsp 1;
+#X floatatom 18 524 0 0 0 0 - - -;
+#X msg 185 250 disconnect;
+#X msg 213 352 print;
+#X msg 534 508 \; pd dsp 0;
+#X obj 468 482 loadbang;
+#X floatatom 99 502 10 0 0 0 - - -;
+#X text 131 154 connect <host> <mountpoint> <port>;
+#X text 272 45 get latest version at;
+#X text 168 502 ogg pages;
+#X text 47 524 connection state;
+#X text 378 337 channels: 1 or 2 (default);
+#X text 210 304 vbr <samplerate> <channels> <quality>;
+#X msg 100 57 passwd letmein;
+#X obj 18 63 osc~ 440;
+#X text 330 326 quality settings: 0 - 1 (low - hi);
+#X text 227 412 possible tags: TITLE \, ARTIST \, PERFORMER \, DESCRIPTION
+\,;
+#X text 316 425 GENRE \, LOCATION \, COPYRIGHT \, CONTACT \, DATE;
+#X msg 163 194 connect 141.53.196.149 puredata.ogg 8000;
+#X msg 133 172 connect localhost puredata.ogg 8000;
+#X msg 170 220 connect 141.53.3.18 musicforfilms.ogg 8100;
+#X text 273 34 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 252 353 print current settings to console window;
+#X text 225 373 comment: <TAG> <content>;
+#X msg 225 390 ARTIST your_name;
+#X text 228 444 '_' (underline) or '=' (equal sign) will get replaced
+with spaces!;
+#X text 240 493 default is 2 channels and 512k;
+#X text 241 505 bytes buffer size;
+#X text 119 475 creation arguments: oggcast~ <channels> <buffer size>
+;
+#X msg 195 285 vorbis 44100 2 144 128 96;
+#X obj 33 110 noise~;
+#X text 19 6 oggcast~ 0.2f - send Ogg Vorbis stream to IceCast2 or
+JRoar;
+#X text 274 59 http://www.akustische-kunst.org/puredata/;
+#X text 195 268 vorbis <samplerate> <channels> <max.br> <nom.br> <min.br>
+;
+#X msg 210 320 vbr 44100 2 0.6;
+#X msg 117 95 server 0;
+#X msg 129 120 server 1;
+#X text 175 94 choose JRoar or old Icecast2 as server type (default)
+;
+#X text 188 121 choose new Icecast2 (final) as server type;
+#N canvas 493 108 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 175 AUTHOR Olaf Matthes;
+#X text 12 25 LICENSE LGPL;
+#X text 12 5 KEYWORDS signal soundfile network;
+#X text 12 45 DESCRIPTION send Ogg Vorbis stream to IceCast2 or JRoar
+;
+#X text 12 65 INLET_0 signal passwd server connect disconnect vorbis
+vbr print TITLE ARTIST PERFORMER DESCRIPTION GENRE LOCATION COPYRIGHT
+CONTACT DATE;
+#X text 12 115 INLET_1 signal;
+#X text 12 135 OUTLET_0 float;
+#X text 12 155 OUTLET_1 float;
+#X restore 568 562 pd META;
+#X obj 18 475 oggcast~ 2 512;
+#X connect 0 0 15 0;
+#X connect 3 0 41 0;
+#X connect 4 0 41 0;
+#X connect 6 0 1 0;
+#X connect 14 0 41 0;
+#X connect 15 0 41 0;
+#X connect 19 0 41 0;
+#X connect 20 0 41 0;
+#X connect 21 0 41 0;
+#X connect 25 0 41 0;
+#X connect 30 0 41 0;
+#X connect 31 0 41 1;
+#X connect 35 0 41 0;
+#X connect 36 0 41 0;
+#X connect 37 0 41 0;
+#X connect 41 0 2 0;
+#X connect 41 1 7 0;

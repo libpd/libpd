@@ -1,0 +1,24 @@
+#N canvas 288 386 450 300 10;
+#X obj 158 159 fader;
+#X obj 158 204 dac~;
+#X floatatom 191 131 5 0 0 0 - - -;
+#X obj 196 102 hsl 128 15 0.1 127 1 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 0 1;
+#X obj 162 74 noise~;
+#X text 84 25 control the output volume of two channels;
+#N canvas 42 244 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR jdl@xdv.org;
+#X text 12 105 INLET_0 audio for left channel;
+#X text 12 125 INLET_1 audio for right channel;
+#X text 12 145 INLET_2 volume level (0-100);
+#X text 12 85 OUTLET_1 audio for right channel;
+#X text 12 65 OUTLET_0 audio for left channel;
+#X text 12 45 DESCRIPTION simple volume control;
+#X restore 386 267 pd META;
+#X connect 0 0 1 0;
+#X connect 0 1 1 1;
+#X connect 2 0 0 2;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 4 0 0 1;

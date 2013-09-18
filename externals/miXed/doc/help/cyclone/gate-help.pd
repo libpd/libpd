@@ -1,0 +1,58 @@
+#N canvas 0 26 504 490 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 21 452 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 20 466 ___________________________________________________
+;
+#X obj 28 20 gate 3;
+#X text 102 21 send data out the specified output;
+#X obj 164 126 gate 4;
+#X text 220 127 arg = nr of outlets;
+#X floatatom 201 49 5 0 0 0 - - -;
+#X text 206 94 send data to which outlet ? 0 = closed;
+#X floatatom 164 92 5 0 0 0 - - -;
+#X floatatom 164 204 5 0 0 0 - - -;
+#X floatatom 176 185 5 0 0 0 - - -;
+#X floatatom 188 165 5 0 0 0 - - -;
+#X floatatom 201 148 5 0 0 0 - - -;
+#X obj 69 329 gate 3;
+#X obj 69 258 hradio 15 1 0 4 empty empty empty 0 -6 0 8 -262144 -1
+-1 0;
+#X symbolatom 69 388 10 0 0 0 - - -;
+#X symbolatom 87 368 10 0 0 0 - - -;
+#X symbolatom 106 349 10 0 0 0 - - -;
+#X msg 106 298 symbol foo;
+#X msg 119 278 symbol bar;
+#X text 70 238 works for other data types:;
+#X msg 110 83 bang;
+#X floatatom 108 152 5 0 0 0 - - -;
+#X text 57 107 reports;
+#X text 57 118 the open;
+#X text 57 129 outlet:;
+#N canvas 368 194 494 375 META 0;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION send data out the specified output;
+#X text 12 65 INLET_0 bang float;
+#X text 12 85 INLET_1 bang float symbol list;
+#X text 12 105 OUTLET_N float symbol list;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X restore 449 466 pd META;
+#X connect 5 0 10 0;
+#X connect 5 0 23 0;
+#X connect 5 1 11 0;
+#X connect 5 2 12 0;
+#X connect 5 3 13 0;
+#X connect 7 0 5 1;
+#X connect 9 0 5 0;
+#X connect 14 0 16 0;
+#X connect 14 1 17 0;
+#X connect 14 2 18 0;
+#X connect 15 0 14 0;
+#X connect 19 0 14 1;
+#X connect 20 0 14 1;
+#X connect 22 0 5 0;

@@ -1,0 +1,24 @@
+#N canvas 0 31 431 256 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 31 210 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 30 224 ___________________________________________________
+;
+#X obj 41 22 active;
+#X text 108 24 report if window is active / inactive;
+#X obj 39 117 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 39 86 active;
+#X text 64 118 focus / unfocus window and watch the toggle;
+#N canvas 365 140 494 344 META 0;
+#X text 12 105 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS float max_compatible canvas_op;
+#X text 12 45 DESCRIPTION report if window is active / inactive;
+#X text 12 135 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 65 OUTLET_0 float;
+#X text 12 85 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 381 235 pd META;
+#X connect 6 0 5 0;

@@ -1,0 +1,96 @@
+#N canvas 67 280 825 465 10;
+#X text 54 30 Class: geometric object;
+#X obj 479 47 cnv 15 170 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 544 264 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 549 303 pd gemwin;
+#X msg 549 284 create;
+#X text 545 263 Create window:;
+#X text 485 29 Example:;
+#X obj 7 61 cnv 15 450 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 226 cnv 15 450 140 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 226 Inlets:;
+#X obj 8 186 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 185 Arguments:;
+#X text 27 252 Inlet 1: message: draw [line|fill|point];
+#X text 27 307 Inlet 2: float: size;
+#X text 452 8 GEM object;
+#X text 27 238 Inlet 1: gemlist;
+#X text 9 334 Outlets:;
+#X text 21 347 Outlet 1: gemlist;
+#X obj 545 133 cnv 15 100 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 483 56 draw line;
+#X msg 483 76 draw fill;
+#X msg 483 95 draw point;
+#X obj 553 54 gemhead;
+#X floatatom 571 194 5 0 0 1 size - -;
+#X floatatom 616 231 3 0 0 2 segments - -;
+#X text 27 318 Inlet 3: int: number of segments;
+#X text 33 14 Synopsis: [sphere3d];
+#X text 7 65 Description: Renders a sphere3d.;
+#X text 14 82 The sphere3d object renders a segemented sphere3d at
+the current position with current color. The look of the sphere3d can
+be changed with the draw message \, its size can be changed via the
+second inlet.;
+#X text 63 197 size of the sphere3d;
+#X floatatom 488 150 5 0 0 0 - - -;
+#X floatatom 486 179 5 0 0 0 - - -;
+#X obj 479 230 r \$0-s3d;
+#X obj 483 117 s \$0-s3d;
+#X text 27 266 Inlet 1: message: setCartesian <i> <j> <x> <y> <z>;
+#X text 27 279 Inlet 1: message: setSpherical <i> <j> <r> <phi> <theta>
+;
+#X msg 535 151 setCartesian 2 3 \$1 1 0;
+#X obj 552 114 rotateXYZ;
+#X floatatom 578 93 5 0 0 0 - - -;
+#X text 145 403 see also;
+#X obj 215 404 sphere;
+#X msg 548 174 setSpherical 2 3 \$1 45 45;
+#X obj 481 287 s \$0-s3d;
+#X msg 481 266 print;
+#X obj 553 229 sphere3d;
+#X text 14 139 Unlike [sphere] \, you can modify (dislocate) each point
+at the sphere via the setCartesian and setSpherical messages (for cartesian
+and spherical (in deg) coordinates resp.);
+#X text 27 292 Inlet 1: message: print;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 19 0 33 0;
+#X connect 20 0 33 0;
+#X connect 21 0 33 0;
+#X connect 22 0 37 0;
+#X connect 23 0 44 1;
+#X connect 24 0 44 2;
+#X connect 30 0 36 0;
+#X connect 31 0 41 0;
+#X connect 32 0 44 0;
+#X connect 36 0 44 0;
+#X connect 37 0 44 0;
+#X connect 38 0 37 1;
+#X connect 38 0 37 2;
+#X connect 38 0 37 3;
+#X connect 41 0 44 0;
+#X connect 43 0 42 0;

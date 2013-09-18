@@ -1,0 +1,18 @@
+#N canvas 128 104 450 300 10;
+#X text 228 47 updated for;
+#X obj 316 47 iemmatrix 0.2;
+#X obj 365 73 matrix;
+#X text 235 72 see also help for;
+#X obj 57 176 mtx_mean;
+#X obj 57 231 print mean_row;
+#X obj 57 106 mtx_rand;
+#X msg 57 82 4 5;
+#X obj 57 127 t a a;
+#X obj 87 148 mtx_print org;
+#X text 56 11 mean values of a matrix;
+#X text 55 259 get the list(!) mean value of each column;
+#X connect 4 0 5 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 4 0;
+#X connect 8 1 9 0;

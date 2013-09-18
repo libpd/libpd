@@ -1,0 +1,10 @@
+#N canvas 853 285 600 500 10;
+#X msg 199 131 gemList;
+#X text 176 62 GEM object;
+#X obj 199 229 part_killslow;
+#X text 186 27 part_killslow;
+#X msg 285 182 speed;
+#X text 90 291 kill all particles which are slower than the kill speed.
+The default speed is 0.01;
+#X connect 0 0 2 0;
+#X connect 4 0 2 1;

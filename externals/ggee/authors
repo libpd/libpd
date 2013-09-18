@@ -1,0 +1,16 @@
+
+
+Guenter Geiger <geiger@xdv.org>
+
+with the help of many people, 
+
+pd                       Miller Puckette <mpuckett@man104-1.ucsd.edu>
+piperead and pipewrite   d13 <d13@sil.at> 
+sfplay                   Winfried Ritsch <ritsch@iem.kug.ac.at>
+mixer and others         opt@test.at
+suggestions and testing  klaus@xdv.org
+vbap                     Ville Pulkki
+filters math             Robert Bristow-Johnson
+
+and several others which I may have forgotten to mention, please notify me
+if you feel you should be included.

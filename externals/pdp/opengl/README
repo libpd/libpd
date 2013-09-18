@@ -1,0 +1,248 @@
+pdp_opengl (3dp): opengl extensions for pdp
+warning: this is still experimental and incomplete
+
+this library extends pdp with texture and render context packets, 
+to use some of the power of current video hardware.
+
+it is very much like gem (sort of a redesign, filled with my own
+idiosyncrasies). gem, like it is now, is not very suited for interaction 
+with pdp image processing because of its hardcoded window centric rendering, 
+so i thought i'd write some gem like stuff on top of pdp myself. (3dp right
+now only supports window centric rendering itself, but adding pbuffer
+or pixmap rendering is easy enough, though it requires a rather new glx
+library)
+
+so, 3dp is an experimental gem clone with tight pdp integration. unless 
+you like experiments, use gem, since it is better supported, has more 
+features and runs on linux, windows and mac osx.
+
+requires glx (opengl on x window).
+
+building:
+
+edit Makefile.config to reflect your system and run make. the library is
+pdp_opengl.pd_linux
+
+some of the examples use the abstractions in opengl/abstractions. best to
+add this to your pd path.
+
+
+there are some fatal X bugs floating around, so be careful with resizing
+windows and closing patches. there are a lot of other, non-fatal bugs
+or badly implemented features. if you have remarks, just let me know.
+
+
+i'll move to autoconf once i no longer consider it experimental. 
+
+
+TIPS & TRICKS
+
+
+* the 3dp_windowcontext creates a window to draw in. the window packet
+will be be output to the left outlet when a bang is received. control
+flow for context is right to left, this means if a 3dp object has 2
+context outlets, the rightmost will be propagated before the leftmost.
+there is no fanout. all operations are accumulative, including the
+geometric transformations. if you need to branch use a 3dp_push object.
+
+
+* geometric transformations can be done using the 3dp_view object.
+the first argument is the kind of transformation: scale, scalex,
+scaley, scalez, rotx, roty, rotz, rota, transx, transy, transz,
+transxyz.
+
+repectively this scales the object, the x, y, z axis, rotates 
+around the x, y, z axis, rotates around an arbitrary axis, translates
+in the x, y, z directions and translates along a vector. the initial
+parameters can be specified as creation arguments, i.e.:
+
+[3dp_view rota 1 1 1 90] rotates by 90 degrees around axis (1,1,1).
+
+
+* some simple objects can be drawn using the pdp_draw object. the
+first argument is the object: square, cube, sphere, torus, cone,
+teapot, dodeca, icosa, octa, tetra. prepending the names with a w
+draws the wireframe version. (i.e. wcube is a wireframe cube). the
+first inlet of the object is a texture inlet. not all objects support
+this, but cube, square and sphere do. other inlets set some parameters
+like size, nb of segments for sphere, etc.. they can be specified
+by creation arguments too.
+
+
+* saving a (matrix) state can be accomplished by the 3dp_push object.
+the default matrix is the modelview matrix. it works as follows: both
+the right and the left outlet propagate the same matrix state as the
+input. so in short you can use 3dp_push to split your rendering tree
+into parallel branches. the matrix types that can be pushed are:
+modelview, texture, color, projection.
+
+* setting a current matrix can be done using the 3dp_mode object.
+i.e. [3dp_mode texture] will map all geometric transforms to the
+texture matrix, for texture coordinate animation. the left outlet
+restores the current matrix back to the modelview matrix.
+
+* it is possible to send a render context trough a drawing/view
+transforming object multiple times. the easy way is to use 3dp_for,
+but other ways are legal too. this can be done to draw different
+versions of the same object. have a look at example01 how this can
+be done.
+
+it is also possible to send multiple render contexts trought the same 
+rendering tree (i.e. multiple windows). if you use different viewing 
+transformations on the top of the rendering chain, you can view a scene 
+trough different angles.
+
+
+* light sources can be introduces using 3dp_light. they can be moved
+with oridinary 3dp_view objects.
+
+
+* 3dp_color changes the current color. right outlet is new color,
+left outlet is the previous color.
+
+* 3dp_toggle toggles a boolean opengl switch. enabled now are:
+depth_test, blend_add, blend_mix. more to come later.
+
+
+
+* couping 3dp and pdp can be done using 3dp_snap and pdp_convert.
+the correct way to do it is to put 3dp_snap in a rendering
+chain and give it arguments like this:
+
+[3dp_snap image/*/* 320 240]
+
+if you specify the subtype to be image/multi/*, the packet
+will not be colour space converted: it will stay rgb.
+if you want to make a snapshot to store as a high quality
+png image, snap to bitmap/rgb/* and store it in pdp_reg to save.
+to convert an image back to a texture, use
+
+[pdp_convert texture/*/*]
+
+if you snap to a texture (which is the default)
+the dimensions don't need to be specified. a texture will be
+allocated that can contain the entire screen. this is because
+texture coordinates are relative and data is always interpolated.
+
+snapping only works correctly when the window is not covered
+by other windows.
+
+
+* textures can have any dimensions, but only those which have
+dimensions that are integral powers of two will be tiled correctly. 
+i.e. by using pdp_mode to change to texture mode and doing some
+coordinate transforms using pdp_view (see example06: this
+uses a tilable animated cellular automata texture)
+
+
+* multipass rendering is supported trough the objects
+3dp_subcontext, "3dp_draw clear" and "3dp_view reset". the idea
+is as follows: before rendering the final scene, you use
+(a part of) the drawing buffer to render some things and store
+them in a texture to be used in your final drawing pass. have
+a look at examples 11, 12 and 13. in theory you could build a
+"texture processing" framework on top of 3dp, by using the window
+buffer as an accumulator and using textures as auxilary registers,
+and drawing your final texture result using i.e. 
+3dp_display_texture. while this can be much faster than ordinary
+pdp image processing, it also requires you to do more bookkeping
+yourself, since you can only use a "serial" approach because
+you can't modify textures directly, only trough the use of the
+render buffer.
+
+
+* 3dp has it's own thread, which is enabled by default. you
+can enable/disable this by sending a "3dthread 0/1" message
+to pdp_control. in most cases there's no reason to disable
+the thread processing, except when you are doing a lot of
+pdp<->3dp conversions. in that case the delay introduced by
+the thread processing might become problematic. (the same
+goes for pdp btw. feedback and threads don't mix too well).
+it's a tradeoff. thread processing gives priority to the audio,
+so you can obtain low latency, and you don't have to care
+about locking up pd by doing too much processing. (instead
+frames will be dropped). the drawback is of course that video 
+timing becomes unpredictable because it is governed by the system
+scheduler. so sometimes it can be useful to disable threads
+and increase the audio latency, so you can have snappy audio
+and video at the same time. getting this to work well usually
+requires some experimenting.
+
+
+* if you have an nvidia card, you can set the environment
+variable __GL_SYNC_TO_VBLANK to 1 to prevent tearing, until
+3dp has default support for it. i.e.:
+
+export __GL_SYNC_TO_VBLANK=1
+
+
+
+enjoy,
+
+tom
+
+
+
+
+---
+some political ranting: gem vs. pdp/3dp
+
+first a disclaimer. i'm not into dissing people. i respect and appreciate
+all the work that has gone into gem, but at the same time i'm not too happy
+with what gem has become. not so much the functionality, but the way it is
+built. the original design as a 3d processing extension is not flexible enough
+to incorporate what's in there now and what could be added in the future..
+
+instead of complaining about it, i decided to be pragmatic and write something 
+from scratch. i think, sometimes this has to be done. for me writing pdp/3dp 
+has been an extremely interesting learning experience. i think i understand 
+the trade-offs better now, and i know now it's not too easy to get it all
+to work. maybe these remarks can be useful...
+
+opengl is not a pure dataflow language. it operates on a global machine
+state next to the obvious drawing buffer that is passed around. 
+representing opengl code with a graphic tree view has some advantages, 
+though it has a different "feel" than normal pd patches. the fact that
+opengl transforms object coordinates to screen coordinates, and not vice
+versa, gives graphicly represented opengl code an "upside down" feel.
+
+one of the things i don't like about gem is that it has both the opengl 
+"upside down drawing and coordinate transformation tree" and the pix 
+"data flow image processing tree" in the same network, which i find 
+counterintuitive. it is too monolytic to be truly flexible. in pdp/3dp
+i try to separate the two explicitly: dataflow where possible (image
+processing), and serial context based processing where needed (opengl).
+
+another disadvantage of gem is its window centric context. by building
+3dp around explicit context passing, with explicit context creation objects,
+i try to avoid this. an advantage of this is the possibility to send
+multiple contexts trough a rendering tree, i.e. to have 2 different views
+of the same scene.
+
+pdp has implicit fanout for all packets. i think that is its great
+strength. it enables you to use any kind of media packet like you would
+use floats. it is very intuitive. however, 3d rendering does not fit
+this shoe. at least not when you just wrap opengl in the most straightforward
+way. 3dp is a test case for pdp's "accumulation packets", which is a formal
+abstraction of a context. pdp processors are nothing more than serial programs
+working on a context, so in fact it's nothing special. in fact, i'm still
+in doubt if it is useful besides being able to support opengl..
+
+so, the idea was to improve upon gem a bit, from different angles. i did
+not succeed in my primary goal: making 3dp more intuitive than gem. it seems
+this is only possible if you limit some of the flexibility. just wrapping
+opengl keeps a lot of flexibility, but get's infected with the opengl
+paradigm. by separating pdp (image processing) and 3dp (drawing and geometry
+processing) as much as possible i think i've solved some intuition problems, 
+but 3dp itself is still basicly gem, with imho a better overall design,
+but due to its more low level approach, maybe harder to understand. it seems
+to me that knowing how opengl works is rather necessary to use 3dp. the same
+is true for gem.
+
+one last philo remark: to me it seems the biggest drawback of gem's design is
+the processor centric aproach: the only objects are processors, the data is 
+implicit and seemingly global. in pdp/3dp processors and objects are 2 separate
+entities. i tried to unify them in one object model, but to me it seems the two
+should really be treated as different complementary entities, to stay close to 
+the dataflow paradigm which makes pd such an intuitive tool. 
+

@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>1452</key>
+	<dict>
+		<key>516</key>
+		<dict>
+			<key>1:6</key>
+			<string>Keyboard</string>
+			<key>Name</key>
+			<string>Apple Extended USB Keyboard</string>
+		</dict>
+		<key>770</key>
+		<dict>
+			<key>1:1</key>
+			<string>Pointer</string>
+			<key>1:2</key>
+			<string>Mouse</string>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>9:1</key>
+			<string>Button</string>
+			<key>Name</key>
+			<string>Apple Optical USB Mouse</string>
+		</dict>
+		<key>Name</key>
+		<string>Mitsumi Electric</string>
+	</dict>
+	<key>1118</key>
+	<dict>
+		<key>7</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>9:1</key>
+			<string>Button A</string>
+			<key>9:2</key>
+			<string>Button B</string>
+			<key>9:3</key>
+			<string>Button C</string>
+			<key>9:4</key>
+			<string>Button X</string>
+			<key>9:5</key>
+			<string>Button Y</string>
+			<key>9:6</key>
+			<string>Button Z</string>
+			<key>9:7</key>
+			<string>Left Trigger</string>
+			<key>9:8</key>
+			<string>Right Trigger</string>
+			<key>9:9</key>
+			<string>Secondary Option 2</string>
+			<key>9:10</key>
+			<string>Secondary Option 1</string>
+			<key>Name</key>
+			<string>SideWinder Game Pad USB</string>
+		</dict>
+		<key>26</key>
+		<dict>
+			<key>1:48</key>
+			<string>Wheel</string>
+			<key>1:49</key>
+			<string>Left Pedal [Brake]</string>
+			<key>1:50</key>
+			<string>Right Pedal [Gas]</string>
+			<key>9:1</key>
+			<string>Button A</string>
+			<key>9:2</key>
+			<string>Button B</string>
+			<key>9:3</key>
+			<string>Button C</string>
+			<key>9:4</key>
+			<string>Button X</string>
+			<key>9:5</key>
+			<string>Button Y</string>
+			<key>9:6</key>
+			<string>Button Z</string>
+			<key>9:7</key>
+			<string>Left Trigger</string>
+			<key>9:8</key>
+			<string>Right Trigger</string>
+			<key>Name</key>
+			<string>SideWinder Precision Racing Wheel USB v1.0</string>
+		</dict>
+		<key>27</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:53</key>
+			<string>Rz-Axis</string>
+			<key>1:54</key>
+			<string>Throttle</string>
+			<key>1:57</key>
+			<string>Hat Switch</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>9:7</key>
+			<string>Button 7</string>
+			<key>9:8</key>
+			<string>Button 8</string>
+			<key>Name</key>
+			<string>SideWinder FFB 2 Joystick</string>
+		</dict>
+		<key>39</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>9:1</key>
+			<string>Button 1</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>Name</key>
+			<string>SideWinder Plug and Play Game Pad</string>
+		</dict>
+		<key>56</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:53</key>
+			<string>Rz-Axis</string>
+			<key>1:54</key>
+			<string>Throttle</string>
+			<key>1:57</key>
+			<string>Hat Switch</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>9:7</key>
+			<string>Button 7</string>
+			<key>9:8</key>
+			<string>Button 8</string>
+			<key>Name</key>
+			<string>SideWinder Precision 2 Joystick</string>
+		</dict>
+		<key>60</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:54</key>
+			<string>Throttle</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>9:7</key>
+			<string>Button 7</string>
+			<key>9:8</key>
+			<string>Button 8</string>
+			<key>Name</key>
+			<string>SideWinder Joystick</string>
+		</dict>
+		<key>Name</key>
+		<string>Microsoft</string>
+	</dict>
+	<key>1133</key>
+	<dict>
+		<key>49200</key>
+		<dict>
+			<key>1:1</key>
+			<string>Pointer</string>
+			<key>1:2</key>
+			<string>Mouse</string>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:56</key>
+			<string>Wheel</string>
+			<key>9:1</key>
+			<string>Left Button</string>
+			<key>9:2</key>
+			<string>Right Button</string>
+			<key>9:3</key>
+			<string>Middle Button</string>
+			<key>Name</key>
+			<string>iFeel Mouse</string>
+		</dict>
+		<key>49671</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:53</key>
+			<string>Rz-Axis</string>
+			<key>1:54</key>
+			<string>Throttle</string>
+			<key>1:57</key>
+			<string>Hat Switch</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>9:7</key>
+			<string>Button 7</string>
+			<key>Name</key>
+			<string>WingMan Extreme Digital 3D</string>
+		</dict>
+		<key>49797</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:53</key>
+			<string>Rz-Axis</string>
+			<key>1:54</key>
+			<string>Throttle</string>
+			<key>1:57</key>
+			<string>Hat Switch 1</string>
+			<key>65280:2</key>
+			<string>Thumb Wheel</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:10</key>
+			<string>Hat Switch 2 - Up</string>
+			<key>9:11</key>
+			<string>Hat Switch 2 - Right</string>
+			<key>9:12</key>
+			<string>Hat Switch 2 - Down</string>
+			<key>9:13</key>
+			<string>Hat Switch 2 - Left</string>
+			<key>9:14</key>
+			<string>Hat Switch 2 - Up Right</string>
+			<key>9:15</key>
+			<string>Hat Switch 2 - Down Right</string>
+			<key>9:16</key>
+			<string>Hat Switch 2 - Down Left</string>
+			<key>9:17</key>
+			<string>Hat Switch 2 - Up Left</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>9:7</key>
+			<string>Button 7</string>
+			<key>9:8</key>
+			<string>Button 8</string>
+			<key>9:9</key>
+			<string>Button 9</string>
+			<key>Name</key>
+			<string>WingMan Strike Force 3D</string>
+		</dict>
+		<key>49811</key>
+		<dict>
+			<key>1:48</key>
+			<string>Wheel</string>
+			<key>1:49</key>
+			<string>Pedals</string>
+			<key>9:1</key>
+			<string>Button 1</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6</string>
+			<key>65280:1</key>
+			<string>Left Pedal [Brake]</string>
+			<key>Name</key>
+			<string>WingMan Formula Force GP</string>
+		</dict>
+		<key>50433</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:56</key>
+			<string>Wheel</string>
+			<key>9:1</key>
+			<string>Left Button</string>
+			<key>9:2</key>
+			<string>Right Button</string>
+			<key>9:3</key>
+			<string>Middle Button</string>
+			<key>Name</key>
+			<string>Cordless Mouse</string>
+		</dict>
+		<key>Name</key>
+		<string>Logitech</string>
+	</dict>
+	<key>1293</key>
+	<dict>
+		<key>2051</key>
+		<dict>
+			<key>1:48</key>
+			<string>Left Stick X-Axis</string>
+			<key>1:49</key>
+			<string>Left Stick Y-Axis</string>
+			<key>1:50</key>
+			<string>Right Stick Y-Axis</string>
+			<key>1:53</key>
+			<string>Right Stick X-Axis</string>
+			<key>1:57</key>
+			<string>Direction Pad</string>
+			<key>9:1</key>
+			<string>Button 1</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Left Top Trigger</string>
+			<key>9:6</key>
+			<string>Left Bottom Trigger</string>
+			<key>9:7</key>
+			<string>Right Top Trigger</string>
+			<key>9:8</key>
+			<string>Right Bottom Trigger</string>
+			<key>9:9</key>
+			<string>ESC</string>
+			<key>9:10</key>
+			<string>Mouse</string>
+			<key>9:11</key>
+			<string>Eater</string>
+			<key>9:12</key>
+			<string>Right Stick Button</string>
+			<key>9:13</key>
+			<string>Left Stick Button</string>
+			<key>Name</key>
+			<string>Nostromo n45</string>
+		</dict>
+		<key>Name</key>
+		<string>Belkin</string>
+	</dict>
+	<key>1635</key>
+	<dict>
+		<key>38916</key>
+		<dict>
+			<key>1:48</key>
+			<string>Left Stick X-Axis</string>
+			<key>1:49</key>
+			<string>Left Stick Y-Axis</string>
+			<key>1:57</key>
+			<string>Hat Switch</string>
+			<key>2:186</key>
+			<string>Right Stick X-Axis</string>
+			<key>2:187</key>
+			<string>Right Stick Y-Axis</string>
+			<key>9:1</key>
+			<string>Button 1</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>L1 Trigger</string>
+			<key>9:6</key>
+			<string>R1 Trigger</string>
+			<key>9:7</key>
+			<string>L2 Trigger</string>
+			<key>9:8</key>
+			<string>R2 Trigger</string>
+			<key>Name</key>
+			<string>FunPad F-107</string>
+		</dict>
+		<key>Name</key>
+		<string>Macsense</string>
+	</dict>
+	<key>8738</key>
+	<dict>
+		<key>16400</key>
+		<dict>
+			<key>9:1</key>
+			<string>D-Pad Up</string>
+			<key>9:2</key>
+			<string>D-Pad Down</string>
+			<key>9:3</key>
+			<string>D-Pad Left</string>
+			<key>9:4</key>
+			<string>D-Pad Right</string>
+			<key>9:5</key>
+			<string>Button 5 (Triangle)</string>
+			<key>9:6</key>
+			<string>Button 6 (Circle)</string>
+			<key>9:7</key>
+			<string>Button 7 (Cross)</string>
+			<key>9:8</key>
+			<string>Button 8 (Square)</string>
+			<key>9:9</key>
+			<string>Button C</string>
+			<key>9:10</key>
+			<string>Button B [Select]</string>
+			<key>9:11</key>
+			<string>Button A [Start]</string>
+			<key>9:12</key>
+			<string>Button F</string>
+			<key>9:13</key>
+			<string>R1 Trigger</string>
+			<key>9:14</key>
+			<string>R2 Trigger</string>
+			<key>9:15</key>
+			<string>L1 Trigger</string>
+			<key>9:16</key>
+			<string>L2 Trigger</string>
+			<key>9:17</key>
+			<string>Left Stick Button</string>
+			<key>9:18</key>
+			<string>Right Stick Button</string>
+			<key>9:19</key>
+			<string>D Button</string>
+			<key>9:20</key>
+			<string>E Button</string>
+			<key>1:48</key>
+			<string>Left Stick X-Axis</string>
+			<key>1:49</key>
+			<string>Left Stick Y-Axis</string>
+			<key>1:53</key>
+			<string>Right Stick X-Axis</string>
+			<key>1:54</key>
+			<string>Right Stick Y-Axis</string>
+			<key>Name</key>
+			<string>iShock</string>
+		</dict>
+		<key>16416</key>
+		<dict>
+			<key>1:1</key>
+			<string>Pointer</string>
+			<key>1:5</key>
+			<string>GamePad</string>
+			<key>1:48</key>
+			<string>Left Stick X-Axis</string>
+			<key>1:49</key>
+			<string>Left Stick Y-Axis</string>
+			<key>1:53</key>
+			<string>Right Stick X-Axis</string>
+			<key>1:54</key>
+			<string>Right Stick Y-Axis</string>
+			<key>9:1</key>
+			<string>D-Pad Up</string>
+			<key>9:10</key>
+			<string>Button 2 [Select]</string>
+			<key>9:11</key>
+			<string>Button 3 [Start]</string>
+			<key>9:12</key>
+			<string>R1 Button</string>
+			<key>9:13</key>
+			<string>R2 Trigger</string>
+			<key>9:14</key>
+			<string>L1 Trigger</string>
+			<key>9:15</key>
+			<string>L2 Trigger</string>
+			<key>9:16</key>
+			<string>Left Stick Button</string>
+			<key>9:17</key>
+			<string>Right Stick Button</string>
+			<key>9:2</key>
+			<string>D-Pad Down</string>
+			<key>9:3</key>
+			<string>D-Pad Left</string>
+			<key>9:4</key>
+			<string>D-Pad Right</string>
+			<key>9:5</key>
+			<string>A Button</string>
+			<key>9:6</key>
+			<string>B Button</string>
+			<key>9:7</key>
+			<string>C Button</string>
+			<key>9:8</key>
+			<string>D Button</string>
+			<key>9:9</key>
+			<string>Button 1</string>
+			<key>Name</key>
+			<string>iShock II FFB Game Controler</string>
+		</dict>
+		<key>Name</key>
+		<string>Macally</string>
+	</dict>
+	<key>1699</key>
+	<dict>
+		<key>65284</key>
+		<dict>
+			<key>1:48</key>
+			<string>Wheel</string>
+			<key>1:49</key>
+			<string>Left Pedal [Brake]</string>
+			<key>1:50</key>
+			<string>Right Pedal [Gas]</string>
+			<key>9:1</key>
+			<string>Top Left Thumb</string>
+			<key>9:2</key>
+			<string>Top Right Thumb</string>
+			<key>9:3</key>
+			<string>Bottom Left Thumb</string>
+			<key>9:4</key>
+			<string>Bottom Right Thumb</string>
+			<key>9:5</key>
+			<string>Right Horn</string>
+			<key>9:6</key>
+			<string>Left Horn</string>
+			<key>Name</key>
+			<string>R440 Force Feedback</string>
+		</dict>
+		<key>Name</key>
+		<string>Saitek</string>
+	</dict>
+	<key>1973</key>
+	<dict>
+		<key>39169</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:54</key>
+			<string>Throttle</string>
+			<key>1:57</key>
+			<string>Hat Switch</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>Name</key>
+			<string>X8-33GU 2 IN 1 Joystick</string>
+		</dict>
+		<key>Name</key>
+		<string>Saitek</string>
+	</dict>
+	<key>1149</key>
+	<dict>
+		<key>12293</key>
+		<dict>
+			<key>1:48</key>
+			<string>X-Axis</string>
+			<key>1:49</key>
+			<string>Y-Axis</string>
+			<key>1:50</key>
+			<string>Throttle</string>
+			<key>1:57</key>
+			<string>Hat Switch</string>
+			<key>9:1</key>
+			<string>Button 1 [Trigger]</string>
+			<key>9:2</key>
+			<string>Button 2</string>
+			<key>9:3</key>
+			<string>Button 3</string>
+			<key>9:4</key>
+			<string>Button 4</string>
+			<key>9:5</key>
+			<string>Button 5</string>
+			<key>9:6</key>
+			<string>Button 6 [Thumb Wheel Button]</string>
+			<key>9:7</key>
+			<string>Button 7</string>
+			<key>9:8</key>
+			<string>Button 8</string>
+			<key>9:9</key>
+			<string>Button 9 [Thumb Wheel Left]</string>
+			<key>9:10</key>
+			<string>Button 10 [Thumb Wheel Right]</string>
+			<key>Name</key>
+			<string>Eliminator Precision Pro Joystick</string>
+		</dict>
+		<key>Name</key>
+		<string>Gravis</string>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,48 @@
+#N canvas 1 53 702 349 10;
+#X obj 31 34 inlet;
+#X obj 80 130 loadbang;
+#X obj 31 290 outlet;
+#X obj 80 156 pack \$1 \$2;
+#X obj 259 34 inlet;
+#X obj 360 34 inlet;
+#X msg 360 81 setK lnk \$1;
+#X obj 453 35 inlet;
+#X msg 31 81 bang \, get massesPos out \, get massesForces out;
+#X obj 31 262 route out;
+#X obj 140 291 outlet;
+#X obj 140 263 route out;
+#X obj 31 238 route massesPosId massesForcesId;
+#X obj 31 216 msd2D;
+#X msg 61 104 posX in \$1 \, posY in \$2;
+#X obj 31 57 t b l;
+#X msg 259 108 forceX out \$1 \, forceY out \$2;
+#X msg 453 81 setD damp \$1;
+#X obj 156 128 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 552 35 inlet;
+#X msg 552 81 setL lnk \$1;
+#X msg 80 182 reset \, mass in 0 1 0 0 \, mass out 1 1 0 0 \, link
+lnk in out \$1 0 \, tLink damp in out 0 \$2 0 1 \, tLink damp in out
+0 \$2 1 0;
+#X connect 0 0 15 0;
+#X connect 1 0 3 0;
+#X connect 3 0 21 0;
+#X connect 4 0 16 0;
+#X connect 5 0 6 0;
+#X connect 6 0 13 0;
+#X connect 7 0 17 0;
+#X connect 8 0 13 0;
+#X connect 9 0 2 0;
+#X connect 11 0 10 0;
+#X connect 12 0 9 0;
+#X connect 12 1 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 15 0 8 0;
+#X connect 15 1 14 0;
+#X connect 16 0 13 0;
+#X connect 17 0 13 0;
+#X connect 18 0 3 0;
+#X connect 19 0 20 0;
+#X connect 20 0 13 0;
+#X connect 21 0 13 0;

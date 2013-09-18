@@ -1,0 +1,32 @@
+#N canvas 0 26 611 344 10;
+#X msg 14 101 bang;
+#X obj 53 164 pddp/print;
+#X obj 33 169 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 14 193 prepend set;
+#X obj 14 268 send pd;
+#X obj 14 132 get-audio-dialog;
+#X text 133 83 Open the Audio Settings and click OK to get the data
+\, then click bang to use them in the patch;
+#X text 9 23 get the Audio settings to save as part of the patch.;
+#N canvas 280 175 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION get the audio settings to save as part of
+the patch;
+#X text 12 75 INLET_0 bang;
+#X text 12 95 OUTLET_0 bang audio-dialog;
+#X text 12 5 KEYWORDS control pd_op;
+#X restore 562 322 pd META;
+#X msg 14 239;
+#X text 226 259 ^-- this message will be saved as part of your patch.
+click it or [loadbang] it to configure the Audio settings. Make sure
+it is attached to a [send pd] so that Pd gets the message.;
+#X connect 0 0 5 0;
+#X connect 3 0 9 0;
+#X connect 5 0 1 0;
+#X connect 5 0 2 0;
+#X connect 5 0 3 0;
+#X connect 9 0 4 0;

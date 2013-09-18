@@ -1,0 +1,38 @@
+#N canvas 11 22 871 352 10;
+#X obj 50 80 playsample~;
+#X obj 50 55 openpanel;
+#X msg 50 31 bang;
+#X text 96 30 click to load and play a sample;
+#X floatatom 133 80 5 0 0 0 - - -;
+#X floatatom 133 101 5 0 0 0 - - -;
+#X text 182 80 pitch;
+#X text 182 102 volume;
+#X floatatom 76 142 5 0 0 0 - - -;
+#X floatatom 122 142 5 0 0 0 - - -;
+#X floatatom 168 142 5 0 0 0 - - -;
+#X text 218 143 set azimuth \, elevation \, spread;
+#N canvas 152 420 615 353 using 0;
+#X obj 59 258 graph-to-aziele;
+#X obj 59 233 pack f f;
+#X floatatom 59 281 5 0 0 0 - - -;
+#X obj 59 78 grid grid1 144 0 1 144 0 1 0 0.001 0.001 10 10 103 91
+;
+#X floatatom 159 281 5 0 0 0 - - -;
+#X text 21 17 To use Yves Degoyon's GRID (http://ydegoyon.free.fr)
+use graph-to-aziele.pd to count the azimuth and elevation.;
+#X text 25 49 (note: GRID must output values between 0 - 1);
+#X connect 0 0 2 0;
+#X connect 0 1 4 0;
+#X connect 1 0 0 0;
+#X connect 3 0 1 0;
+#X connect 3 1 1 1;
+#X restore 506 112 pd using GRID with vbap;
+#X obj 50 174 vbapmodule 1;
+#X connect 0 0 13 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 1;
+#X connect 5 0 0 2;
+#X connect 8 0 13 1;
+#X connect 9 0 13 2;
+#X connect 10 0 13 3;

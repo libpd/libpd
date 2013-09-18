@@ -1,0 +1,7 @@
+#N canvas 0 0 450 300 10;
+#X obj 164 115 inlet;
+#X obj 164 169 mtx_minmax \$1;
+#X obj 164 233 outlet;
+#X text 122 82 get the minim[um \, a] of a matrix;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;

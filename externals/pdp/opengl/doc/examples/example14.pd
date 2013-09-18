@@ -1,0 +1,66 @@
+#N canvas 586 145 669 674 10;
+#X obj 67 71 3dp_windowcontext;
+#X obj 67 46 metro 40;
+#X obj 67 23 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 67 155 3dp_blend;
+#X obj 176 423 3dp_view transxyz;
+#X msg 226 296 reset;
+#X obj 197 374 *;
+#X obj 304 375 *;
+#X floatatom 320 347 5 0 0;
+#X obj 274 154 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 700 1;
+#X obj 316 154 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 1100 1;
+#X obj 295 154 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 1200 1;
+#X obj 337 154 vsl 15 30 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 400 1;
+#X obj 125 253 3dp_push;
+#X obj 67 95 3dp_mouserotate;
+#X obj 67 124 3dp_view scale 1;
+#X floatatom 206 99 5 0 0;
+#X obj 209 79 hsl 128 15 0.2 5 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 7000 1;
+#X obj 323 326 hsl 128 15 0.1 2 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 2100 1;
+#X obj 67 187 3dp_color;
+#X obj 226 223 route press3;
+#X text 329 223 <- right click mouse to reset;
+#X text 211 253 <- remove 3dp_push object to accumulate the translations
+;
+#X obj 197 326 randomwalk2D 100;
+#X obj 125 224 3dp_for 100;
+#X text 287 130 R G B I;
+#X obj 176 460 3dp_draw cube 1;
+#X text 227 13 using 3dp_for and the randomwalk2D abstraction to create
+random walking blended cubes.;
+#X connect 0 0 14 0;
+#X connect 0 1 14 1;
+#X connect 0 1 20 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 19 0;
+#X connect 4 0 26 0;
+#X connect 5 0 23 0;
+#X connect 6 0 4 1;
+#X connect 7 0 4 2;
+#X connect 8 0 7 1;
+#X connect 8 0 6 1;
+#X connect 9 0 19 1;
+#X connect 10 0 19 3;
+#X connect 11 0 19 2;
+#X connect 12 0 19 4;
+#X connect 13 1 4 0;
+#X connect 14 0 15 0;
+#X connect 15 0 3 0;
+#X connect 16 0 15 1;
+#X connect 17 0 16 0;
+#X connect 18 0 8 0;
+#X connect 19 1 24 0;
+#X connect 20 0 5 0;
+#X connect 23 0 6 0;
+#X connect 23 1 7 0;
+#X connect 24 0 13 0;
+#X connect 24 1 23 0;

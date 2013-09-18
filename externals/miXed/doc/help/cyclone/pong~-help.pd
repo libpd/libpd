@@ -1,0 +1,73 @@
+#N canvas 0 26 541 463 10;
+#X text 25 -55 fold or wrap a signal within a given range;
+#X text 305 104 lo val;
+#X text 360 104 hi val;
+#X floatatom 361 121 0 0 0 0 - - -;
+#X floatatom 305 121 0 0 0 0 - - -;
+#X floatatom 236 116 0 0 0 0 - - -;
+#X obj 236 137 phasor~ 4;
+#X text 86 117 lo val;
+#X text 162 112 hi val;
+#X obj 163 150 sig~ 0.25;
+#X floatatom 163 129 0 0 0 0 - - -;
+#X obj 86 155 sig~ -0.25;
+#X floatatom 86 134 0 0 0 0 - - -;
+#X floatatom 14 120 0 0 0 0 - - -;
+#X obj 14 141 phasor~ 4;
+#X text 28 -30 pong either folds or wraps its input within the range
+of a lo val and a hi val. The optional arguments are <mode> <lo val>
+<high val>. mode 0 is fold \, mode 1 is wrap. The default mode is fold.
+The default range is zero to one. If hi val is greater than lo val
+\, their behavior is swapped. All inlets accept both signals and floats.
+The mode <int> message may be used to switch between fold and wrap
+mode. It is useful for performing modulo arithmetic \, as well as foldover
+or wraparound distortion.;
+#X obj 29 252 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 237 272 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 256 222 Snapshot~ 100;
+#X obj 257 245 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 45 207 Snapshot~ 100;
+#X obj 46 230 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 30 179 pong~ 0 -0.25 0.25;
+#X obj 237 197 pong~ 1 -0.25 0.25;
+#X msg 425 147 mode 0;
+#X msg 424 174 mode 1;
+#X text 471 147 fold;
+#X text 472 173 wrap;
+#N canvas 247 115 494 388 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION fold or wrap a signal within a given range
+;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 65 INLET_0 signal mode;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 492 392 pd META;
+#X connect 3 0 23 2;
+#X connect 4 0 23 1;
+#X connect 5 0 6 0;
+#X connect 6 0 23 0;
+#X connect 9 0 22 2;
+#X connect 10 0 9 0;
+#X connect 11 0 22 1;
+#X connect 12 0 11 0;
+#X connect 13 0 14 0;
+#X connect 14 0 22 0;
+#X connect 18 0 19 0;
+#X connect 20 0 21 0;
+#X connect 22 0 16 0;
+#X connect 22 0 20 0;
+#X connect 23 0 17 0;
+#X connect 23 0 18 0;
+#X connect 24 0 23 0;
+#X connect 25 0 23 0;

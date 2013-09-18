@@ -1,0 +1,23 @@
+#N canvas 0 26 443 294 12;
+#X obj 70 95 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 70 192 5 0 0 0 - - -;
+#X obj 70 140 expo 0.5;
+#X floatatom 169 101 5 0 0 0 - - -;
+#X text 222 103 lambda;
+#X text 13 20 expo :: exponetionally distributed random numbers;
+#N canvas 293 158 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control random;
+#X text 12 45 DESCRIPTION exponetionally distributed random numbers
+;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X restore 375 263 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 1;

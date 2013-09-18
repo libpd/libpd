@@ -1,0 +1,22 @@
+#N canvas 382 194 450 300 10;
+#N canvas 247 443 494 344 META 0;
+#X text 12 135 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control vector;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42. \, helppatch by IOhannes m zmölnig;
+#X text 13 76 INLET_0 list;
+#X text 13 116 OUTLET_0 list;
+#X text 13 96 INLET_1 float;
+#X text 12 45 DESCRIPTION multiplies a vector by a number;
+#X restore 390 271 pd META;
+#X msg 64 86 1 2 3;
+#X msg 175 86 10;
+#X text 52 248 a "vector" is simply a list of numbers.;
+#X text 27 25 MarkEx vector operation: multiply a vector by a factor
+;
+#X obj 64 146 print vector*;
+#X obj 64 116 vector* 42;
+#X connect 1 0 6 0;
+#X connect 2 0 6 1;
+#X connect 6 0 5 0;

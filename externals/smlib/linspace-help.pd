@@ -1,0 +1,34 @@
+#N canvas 1 53 396 195 10;
+#X text 302 132 j#|@2002;
+#X obj 324 112 SMLib-help;
+#X obj 29 147 print linspace;
+#X floatatom 136 101 5 0 0 0 - - -;
+#X floatatom 82 80 5 0 0 0 - - -;
+#X floatatom 29 58 5 0 0 0 - - -;
+#X obj 11 38 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 29 36 generate;
+#X text 132 80 set b;
+#X text 187 101 set n;
+#X text 79 56 set a and generate;
+#X obj 29 124 linspace 0 1 4;
+#X text 9 6 generates a vector with linear spaced floats;
+#N canvas 226 226 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 125 OUTLET_0 list;
+#X text 12 45 DESCRIPTION generate a vector with linear spaced floats
+;
+#X text 12 65 INLET_0 bang float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X restore 339 154 pd META;
+#X connect 3 0 11 2;
+#X connect 4 0 11 1;
+#X connect 5 0 11 0;
+#X connect 6 0 11 0;
+#X connect 11 0 2 0;

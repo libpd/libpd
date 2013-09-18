@@ -1,0 +1,12 @@
+ChangeLog for Pd external 'deque'
+
+v0.03 Sat, 16 Oct 2004 13:17:14 +0200
+	+ added 'size' message to get length of stored queue
+	+ fixed a bug in squeue_prev() for empty queues
+	
+v0.02 Sat, 14 Feb 2004 15:55:13 +0100
+	+ fixed shift for single-element messages
+
+v0.01 ???
+	+ Initial revision
+

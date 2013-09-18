@@ -1,0 +1,38 @@
+#N canvas 0 22 749 571 10;
+#X obj 369 228 creb/xfm~ 1;
+#X obj 48 281 testtools/unit-test-frame~;
+#X floatatom 369 196 5 0 0 0 - - -;
+#X floatatom 406 196 5 0 0 0 - - -;
+#X floatatom 456 196 5 0 0 0 - - -;
+#X floatatom 506 196 5 0 0 0 - - -;
+#X text 366 173 freq1;
+#X text 403 173 freq2;
+#X text 461 174 fb1;
+#X text 505 175 fb2;
+#X obj 397 40 hsl 300 15 1 20000 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 15000 1;
+#X obj 397 62 hsl 300 15 1 20000 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 12900 1;
+#X obj 398 87 hsl 300 15 1 20000 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 18138 1;
+#X obj 398 112 hsl 300 15 1 20000 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 19400 1;
+#X msg 321 197 reset;
+#X obj 48 220 loadbang;
+#X text 52 43 xfm~ cross frequency modulation;
+#X text 51 62 freq_osc1 = freq1 + wave_out2*fb1;
+#X text 51 77 freq_osc2 = freq2 + wave_out1*fb2;
+#X msg 48 247 xfm~ 0;
+#X connect 0 0 1 1;
+#X connect 1 0 14 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 2;
+#X connect 5 0 0 3;
+#X connect 10 0 2 0;
+#X connect 11 0 3 0;
+#X connect 12 0 4 0;
+#X connect 13 0 5 0;
+#X connect 14 0 0 0;
+#X connect 15 0 19 0;
+#X connect 19 0 1 0;

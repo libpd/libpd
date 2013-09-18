@@ -1,0 +1,223 @@
+# this Makefile builds a libdir for cyclone
+
+# where to install the library, overridden below depending on platform
+prefix = /usr/local
+libdir = $(prefix)/lib
+bindir = $(prefix)/bin
+pkglibdir = $(libdir)/pd-externals
+objectsdir = $(pkglibdir)
+
+INSTALL = install
+INSTALL_PROGRAM = $(INSTALL) -p -m 755
+INSTALL_DATA = $(INSTALL) -p -m 644
+INSTALL_DIR     = $(INSTALL) -p -m 755 -d
+
+UNAME := $(shell uname -s)
+ifeq ($(UNAME),Darwin)
+  CPU := $(shell uname -p)
+  ifeq ($(CPU),arm) # iPhone/iPod Touch
+    EXTENSION = pd_darwin
+    OS = iphoneos
+    PD_PATH = /Applications/Pd-extended.app/Contents/Resources
+    IPHONE_BASE=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin
+    CC=$(IPHONE_BASE)/gcc
+    CPP=$(IPHONE_BASE)/cpp
+    CXX=$(IPHONE_BASE)/g++
+    ISYSROOT = -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.0.sdk
+    IPHONE_CFLAGS = -miphoneos-version-min=3.0 $(ISYSROOT) -arch armv6
+    OPT_CFLAGS = -fast -funroll-loops -fomit-frame-pointer
+	CFLAGS := $(IPHONE_CFLAGS) $(OPT_CFLAGS) $(CFLAGS)
+    LDFLAGS += -arch armv6 -bundle -undefined dynamic_lookup $(ISYSROOT)
+    LIBS += -lc 
+    STRIP = strip -x
+  else # Mac OS X
+    EXTENSION = pd_darwin
+    OS = macosx
+    PD_PATH = /Applications/Pd-extended.app/Contents/Resources
+    OPT_CFLAGS = -ftree-vectorize -ftree-vectorizer-verbose=2 -fast
+# build universal 32-bit on 10.4 and 32/64 on newer
+    ifeq ($(shell uname -r | sed 's|\([0-9][0-9]*\)\.[0-9][0-9]*\.[0-9][0-9]*|\1|'), 8)
+      FAT_FLAGS = -arch ppc -arch i386 -mmacosx-version-min=10.4
+    else
+      FAT_FLAGS = -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
+    endif
+    CFLAGS += -DUNIX $(FAT_FLAGS) -fPIC -I/sw/include
+    LDFLAGS += $(FAT_FLAGS) -bundle -undefined dynamic_lookup -L/sw/lib
+    # if the 'pd' binary exists, check the linking against it to aid with stripping
+    LDFLAGS += $(shell test -e $(PD_PATH)/bin/pd && echo -bundle_loader $(PD_PATH)/bin/pd)
+    LIBS += -lc 
+    STRIP = strip -x
+# install into ~/Library/Pd on Mac OS X since /usr/local isn't used much
+    pkglibdir=$(HOME)/Library/Pd
+  endif
+endif
+ifeq ($(UNAME),Linux)
+  CPU := $(shell uname -m)
+  EXTENSION = pd_linux
+  OS = linux
+  PD_PATH = /usr
+  OPT_CFLAGS = -O6 -funroll-loops -fomit-frame-pointer
+  CFLAGS += -DUNIX -fPIC
+  LDFLAGS += -rdynamic -shared -fPIC
+  LIBS += -lc
+  STRIP = strip --strip-unneeded -R .note -R .comment
+endif
+ifeq ($(UNAME),GNU)
+  # GNU/Hurd, should work like GNU/Linux for basically all externals
+  CPU := $(shell uname -m)
+  EXTENSION = pd_linux
+  OS = linux
+  PD_PATH = /usr
+  OPT_CFLAGS = -O6 -funroll-loops -fomit-frame-pointer
+  CFLAGS += -DUNIX -fPIC
+  LDFLAGS += -rdynamic -shared -fPIC
+  LIBS += -lc
+  STRIP = strip --strip-unneeded -R .note -R .comment
+endif
+ifeq ($(UNAME),GNU/kFreeBSD)
+  # Debian GNU/kFreeBSD, should work like GNU/Linux for basically all externals
+  CPU := $(shell uname -m)
+  EXTENSION = pd_linux
+  OS = linux
+  PD_PATH = /usr
+  OPT_CFLAGS = -O6 -funroll-loops -fomit-frame-pointer
+  CFLAGS += -DUNIX -fPIC
+  LDFLAGS += -rdynamic -shared -fPIC
+  LIBS += -lc
+  STRIP = strip --strip-unneeded -R .note -R .comment
+endif
+ifeq (CYGWIN,$(findstring CYGWIN,$(UNAME)))
+  CPU := $(shell uname -m)
+  EXE = .exe
+  EXTENSION = dll
+  OS = cygwin
+  PD_PATH = $(cygpath $(PROGRAMFILES))/pd
+  OPT_CFLAGS = -O6 -funroll-loops -fomit-frame-pointer
+  CFLAGS += -DUNIX
+  LDFLAGS += -Wl,--export-dynamic -shared -L"$(PD_PATH)/src" -L"$(PD_PATH)/bin"
+  LIBS += -lc -lpd
+  STRIP = strip --strip-unneeded -R .note -R .comment
+endif
+ifeq (MINGW,$(findstring MINGW,$(UNAME)))
+  CPU := $(shell uname -m)
+  EXE = .exe
+  EXTENSION = dll
+  OS = windows
+  PD_PATH = $(shell cd "$(PROGRAMFILES)"/pd && pwd)
+  OPT_CFLAGS = -O3 -funroll-loops -fomit-frame-pointer
+  CFLAGS += -mms-bitfields
+  LDFLAGS += -s -shared -Wl,--enable-auto-import
+  LIBS += -L"$(PD_PATH)/src" -L"$(PD_PATH)/bin" -L"$(PD_PATH)/obj" -lpd -lwsock32 -lkernel32 -luser32 -lgdi32
+  STRIP = strip --strip-unneeded -R .note -R .comment
+endif
+
+cyclone:
+	$(MAKE) -f Makefile \
+		OPT_CFLAGS="-O6 -funroll-loops -fomit-frame-pointer -fno-strict-aliasing -fPIC"
+
+install: cyclone
+	$(INSTALL_DIR) $(DESTDIR)$(objectsdir)/cyclone
+	$(INSTALL_DATA) cyclone-meta.pd $(DESTDIR)$(objectsdir)/cyclone
+	$(INSTALL_DATA) ../LICENSE.txt $(DESTDIR)$(objectsdir)/cyclone
+	$(INSTALL_DATA) README.txt $(DESTDIR)$(objectsdir)/cyclone
+	$(INSTALL_DIR) $(DESTDIR)$(objectsdir)/cyclone/manual
+	$(INSTALL_DATA) ../doc/help/cyclone/coll.txt hammer/pd-lib-notes.txt \
+		$(DESTDIR)$(objectsdir)/cyclone/manual
+# cyclone is compiled straight into $(OUT_DIR), yes a kludge, but the code of
+# this build system is impenetrable
+	$(MAKE) OUT_DIR=$(DESTDIR)$(objectsdir)/cyclone
+	$(STRIP) $(DESTDIR)$(objectsdir)/cyclone/*.$(EXTENSION)
+	chmod a-x $(DESTDIR)$(objectsdir)/cyclone/*.$(EXTENSION)
+# install "maxmode" libraries into subdir, so they don't override the libdir
+	$(INSTALL_DIR) $(DESTDIR)$(objectsdir)/cyclone/maxmode
+	$(INSTALL_DATA) ../bin/cyclone.$(EXTENSION) \
+		../bin/hammer.$(EXTENSION) \
+		../bin/sickle.$(EXTENSION) \
+		../bin/maxmode.$(EXTENSION) \
+		$(DESTDIR)$(objectsdir)/cyclone/maxmode
+	$(STRIP) $(DESTDIR)$(objectsdir)/cyclone/maxmode/*.$(EXTENSION)
+	$(INSTALL_DATA) ../doc/help/cyclone/*.* \
+		$(DESTDIR)$(objectsdir)/cyclone
+	$(INSTALL_DIR) $(DESTDIR)$(objectsdir)/cyclone/examples
+	$(INSTALL_DATA) ../test/cyclone/*.* \
+		$(DESTDIR)$(objectsdir)/cyclone/examples
+# install "cyclist" command line app with pd
+	$(INSTALL_DIR) $(DESTDIR)$(bindir)
+	$(INSTALL_PROGRAM) ../bin/cyclist $(DESTDIR)$(bindir)
+	$(STRIP) $(DESTDIR)$(bindir)/cyclist$(EXE)
+ifeq ($(UNAME),Linux)
+# add links for the downcase versions, only on GNU/Linux since Windows
+# and Mac OS X almost always use case insensitive file systems, so
+# Borax.pd_darwin is the same file as borax.pd_darwin, etc.
+	ln -s -f Append.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/append.$(EXTENSION)
+	ln -s -f Append-help.pd $(DESTDIR)$(objectsdir)/cyclone/append-help.pd
+	ln -s -f Borax.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/borax.$(EXTENSION)
+	ln -s -f Borax-help.pd $(DESTDIR)$(objectsdir)/cyclone/borax-help.pd
+	ln -s -f Bucket.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/bucket.$(EXTENSION)
+	ln -s -f Bucket-help.pd $(DESTDIR)$(objectsdir)/cyclone/bucket-help.pd
+	ln -s -f Clip.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/clip.$(EXTENSION)
+	ln -s -f Clip-help.pd $(DESTDIR)$(objectsdir)/cyclone/clip-help.pd
+	ln -s -f Decode.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/decode.$(EXTENSION)
+	ln -s -f Decode-help.pd $(DESTDIR)$(objectsdir)/cyclone/decode-help.pd
+	ln -s -f Histo.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/histo.$(EXTENSION)
+	ln -s -f Histo-help.pd $(DESTDIR)$(objectsdir)/cyclone/histo-help.pd
+	ln -s -f MouseState.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/mousestate.$(EXTENSION)
+	ln -s -f MouseState-help.pd $(DESTDIR)$(objectsdir)/cyclone/mousestate-help.pd
+	ln -s -f Peak.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/peak.$(EXTENSION)
+	ln -s -f Peak-help.pd $(DESTDIR)$(objectsdir)/cyclone/peak-help.pd
+	ln -s -f Table.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/table.$(EXTENSION)
+	ln -s -f Table-help.pd $(DESTDIR)$(objectsdir)/cyclone/table-help.pd
+	ln -s -f TogEdge.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/togedge.$(EXTENSION)
+	ln -s -f TogEdge-help.pd $(DESTDIR)$(objectsdir)/cyclone/togedge-help.pd
+	ln -s -f Trough.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/trough.$(EXTENSION)
+	ln -s -f Trough-help.pd $(DESTDIR)$(objectsdir)/cyclone/trough-help.pd
+	ln -s -f Uzi.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/uzi.$(EXTENSION)
+	ln -s -f Uzi-help.pd $(DESTDIR)$(objectsdir)/cyclone/uzi-help.pd
+	ln -s -f Clip~.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/clip~.$(EXTENSION)
+	ln -s -f Clip~-help.pd $(DESTDIR)$(objectsdir)/cyclone/clip~-help.pd
+	ln -s -f Line~.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/line~.$(EXTENSION)
+	ln -s -f Line~-help.pd $(DESTDIR)$(objectsdir)/cyclone/line~-help.pd
+	ln -s -f Scope~.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/scope~.$(EXTENSION)
+	ln -s -f Scope~-help.pd $(DESTDIR)$(objectsdir)/cyclone/scope~-help.pd
+	ln -s -f Snapshot~.$(EXTENSION) $(DESTDIR)$(objectsdir)/cyclone/snapshot~.$(EXTENSION)
+	ln -s -f Snapshot~-help.pd $(DESTDIR)$(objectsdir)/cyclone/snapshot~-help.pd
+endif
+
+clean:
+	-$(MAKE) -f Makefile $(DEST_PATHS) clean
+	-rm -f ../bin/*.$(EXTENSION)
+	-rm -f ../bin/cyclist
+	-rm -f Makefile.deps
+	-rm -f shadow/Makefile.deps
+	-rm -f hammer/Makefile.deps
+	-rm -f sickle/Makefile.deps
+	-rm -f -- ../pddp/Makefile.deps
+	-rm -f -- ../toxy/setup.wiq
+	-rm -f -- ../toxy/Makefile.deps
+	-rm -f -- ../shared/Makefile.deps
+	-rm -f -- ../shared/toxy/Makefile.deps
+	-rm -f -- ../shared/common/Makefile.deps
+	-rm -f -- ../shared/hammer/Makefile.deps
+	-rm -f -- ../shared/sickle/Makefile.deps
+	-rm -f -- ../shared/unstable/Makefile.deps
+	-rm -f ../build-stamp
+	-rm -f -- ../shared/common/vefl.o
+	-rm -f -- ../shared/common/rand.o
+	-rm -f -- ../shared/common/port.o
+	-rm -f -- ../shared/common/os.o
+	-rm -f -- ../shared/common/mifi.o
+	-rm -f -- ../shared/common/loud.o
+	-rm -f -- ../shared/common/lex.o
+	-rm -f -- ../shared/common/grow.o
+	-rm -f -- ../shared/common/fitter.o
+	-rm -f -- ../shared/common/clc.o
+	-rm -f -- ../shared/common/binport.o
+	-rm -f -- ../shared/hammer/tree.o
+	-rm -f -- ../shared/hammer/gui.o
+	-rm -f -- ../shared/hammer/file.o
+	-rm -f -- ../shared/sickle/sic.o
+	-rm -f -- ../shared/sickle/arsic.o
+	-rm -f -- ../shared/unstable/loader.o
+	-rm -f -- ../shared/unstable/fringe.o
+	-rm -f -- ../shared/unstable/fragile.o
+	-rm -f -- ../shared/unstable/forky.o

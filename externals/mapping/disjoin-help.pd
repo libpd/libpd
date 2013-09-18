@@ -1,0 +1,40 @@
+#N canvas 1 53 440 577 10;
+#X obj 61 58 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 62 219 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 148 219 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X floatatom 69 356 5 0 0 0 - - -;
+#X floatatom 154 358 5 0 0 0 - - -;
+#X floatatom 88 169 5 0 0 0 - - -;
+#X obj 62 388 join 0.5;
+#X obj 61 430 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X floatatom 93 434 5 0 0 0 - - -;
+#X obj 62 196 disjoin 0.5;
+#X text 16 16 split a range into two. The input and output ranges are
+always 0-to-1.;
+#N canvas 467 227 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION split a range into two. The input and output
+ranges are always 0-to-1;
+#X text 12 95 INLET_1 float;
+#X text 12 135 OUTLET_1 float;
+#X restore 380 545 pd META;
+#X connect 0 0 5 0;
+#X connect 0 0 9 0;
+#X connect 1 0 3 0;
+#X connect 1 0 6 0;
+#X connect 2 0 4 0;
+#X connect 2 0 6 1;
+#X connect 6 0 7 0;
+#X connect 6 0 8 0;
+#X connect 9 0 1 0;
+#X connect 9 1 2 0;

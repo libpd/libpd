@@ -1,0 +1,23 @@
+#N canvas 0 31 409 235 10;
+#X obj 131 168 print ascseq;
+#X msg 253 112 bang;
+#X obj 223 70 random_fl -10000 10000;
+#X obj 131 118 ascseq 100;
+#X floatatom 268 137 5 0 0 0 - - -;
+#X msg 83 34 "abcde 123 dsfjnsdf ewrte 3k4n5 3n hjb5465hj 6";
+#N canvas 42 244 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 45 DESCRIPTION;
+#X text 12 65 INLET_0 anything;
+#X text 12 105 OUTLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control conversion symbol_op;
+#X text 12 125 AUTHOR jdl@xdv.org;
+#X restore 360 214 pd META;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 1;
+#X connect 5 0 3 0;

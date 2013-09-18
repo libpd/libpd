@@ -1,0 +1,15 @@
+#N canvas 600 556 450 300 10;
+#X obj 47 39 inlet;
+#X obj 111 39 inlet;
+#X obj 170 38 inlet;
+#X obj 98 151 pdp_cheby;
+#X obj 63 205 outlet;
+#X text 26 7 for patch compatibility with older versions of pdp;
+#X msg 119 98 coef 1 \$1;
+#X msg 197 97 coef 0 \$1;
+#X connect 0 0 3 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 4 0;
+#X connect 6 0 3 0;
+#X connect 7 0 3 0;

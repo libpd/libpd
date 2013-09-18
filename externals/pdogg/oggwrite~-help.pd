@@ -1,0 +1,74 @@
+#N canvas 1 53 631 537 10;
+#X obj 40 415 oggwrite~;
+#X obj 40 64 osc~ 440;
+#X floatatom 40 33 5 0 0 0 - - -;
+#X msg 120 52 open myfile.ogg;
+#X msg 175 125 start;
+#X msg 185 148 stop;
+#X msg 155 78 append;
+#X msg 166 99 truncate;
+#X floatatom 91 441 5 0 0 0 - - -;
+#X floatatom 40 470 5 0 0 0 - - -;
+#X msg 204 259 print;
+#X text 189 180 vorbis <samplerate> <channles> <max.br> <nom.br> <min.br>
+;
+#X text 373 251 channels: 1 or 2 (default);
+#X text 204 216 vbr <samplerate> <channels> <quality>;
+#X msg 203 232 vbr 44100 2 0.4;
+#X text 324 238 quality settings: 0 - 1 (low - hi);
+#X text 325 267 resampling currently not supported!;
+#X text 202 290 comment <tag> <content>;
+#X text 204 329 possible tags: TITLE \, ARTIST \, PERFORMER \, DESCRIPTION
+\,;
+#X text 293 342 GENRE \, LOCATION \, COPYRIGHT \, CONTACT \, DATE;
+#X msg 202 307 ARTIST your=name;
+#X msg 189 197 vorbis 44100 2 144 128 96;
+#X text 138 441 ogg pages written to file;
+#X msg 481 455 \; pd dsp 1;
+#X msg 547 455 \; pd dsp 0;
+#X obj 481 429 loadbang;
+#X text 354 9 written by Olaf Matthes (olaf.matthes@gmx.de);
+#X text 353 21 get latest version at;
+#X text 354 34 http://www.akustische-kunst.de/puredata/;
+#X text 209 76 append data at end of file;
+#X text 226 97 overwrite previously recorded data;
+#X text 221 145 stop recording;
+#X text 225 50 open a file first!;
+#X text 240 407 might result in audible dropouts!;
+#X text 202 395 note: changing settings while recording;
+#X text 85 470 file state (1 = open \; 0 = closed);
+#X text 5 9 oggwrite~ version 0.1 - write Ogg Vorbis stream to file
+;
+#X msg 204 361 COPYRIGHT (c)=2002=Olaf=Matthes;
+#X text 220 123 start recording;
+#N canvas 391 212 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 175 AUTHOR Olaf Matthes;
+#X text 12 25 LICENSE LGPL;
+#X text 12 5 KEYWORDS signal filesystem soundfile;
+#X text 12 45 DESCRIPTION version 0.1 - write Ogg Vorbis stream to
+file;
+#X text 12 65 INLET_0 signal open append truncate start stop vorbis
+vbr print TITLE ARTIST PERFORMER DESCRIPTION GENRE LOCATION COPYRIGHT
+CONTACT DATE;
+#X text 12 115 INLET_1 signal;
+#X text 12 135 OUTLET_0 float;
+#X text 12 155 OUTLET_1 float;
+#X restore 572 509 pd META;
+#X connect 0 0 9 0;
+#X connect 0 1 8 0;
+#X connect 1 0 0 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 10 0 0 0;
+#X connect 14 0 0 0;
+#X connect 20 0 0 0;
+#X connect 21 0 0 0;
+#X connect 25 0 23 0;
+#X connect 37 0 0 0;

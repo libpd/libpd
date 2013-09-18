@@ -1,0 +1,11 @@
+#N canvas 159 184 656 313 10;
+#X msg 164 109 gemList;
+#X msg 164 227 gemList;
+#X text 155 10 part of GEM;
+#X obj 164 168 pix_clearblock;
+#X text 175 43 [pix_clearblock];
+#X text 60 78 clear an image without destroying the texture;
+#X text 58 255 all texture information/setup will be stored \, whereas
+the image itself will be deleted;
+#X connect 0 0 3 0;
+#X connect 3 0 1 0;

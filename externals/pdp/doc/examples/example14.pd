@@ -1,0 +1,54 @@
+#N canvas 621 348 611 467 10;
+#X obj 168 329 pdp_glx;
+#X obj 168 78 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 168 142 pdp_v4l;
+#X obj 168 108 metro 40;
+#X msg 265 83 open /dev/video1;
+#X floatatom 311 151 5 0 0;
+#X obj 168 194 pdp_agc 0.5;
+#X floatatom 310 211 5 0 0;
+#X obj 168 245 pdp_contrast 0.5;
+#X msg 4 157 chanmask \$1;
+#X floatatom 4 133 5 0 0;
+#X msg 4 104 1;
+#X msg 35 104 3;
+#X msg 67 104 5;
+#X msg 99 104 7;
+#X obj 314 192 hsl 128 15 0 1 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 12300 1;
+#X obj 314 132 hsl 128 15 0 1 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 7900 1;
+#X msg 265 58 open /dev/video0;
+#X floatatom 310 272 5 0 0;
+#X obj 314 253 hsl 128 15 0 3 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 168 298 pdp_saturation 0.5;
+#X text 7 79 Y;
+#X text 36 78 YCr;
+#X text 68 79 YCb;
+#X text 98 78 YCrCb;
+#X text 25 15 some basic image enhancements;
+#X text 13 60 agc color channels;
+#X obj 183 166 pdp_flip_lr;
+#X connect 1 0 3 0;
+#X connect 2 0 27 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 1;
+#X connect 6 0 8 0;
+#X connect 7 0 8 1;
+#X connect 8 0 20 0;
+#X connect 9 0 6 0;
+#X connect 10 0 9 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;
+#X connect 13 0 10 0;
+#X connect 14 0 10 0;
+#X connect 15 0 7 0;
+#X connect 16 0 5 0;
+#X connect 17 0 2 0;
+#X connect 18 0 20 1;
+#X connect 19 0 18 0;
+#X connect 20 0 0 0;
+#X connect 27 0 6 0;

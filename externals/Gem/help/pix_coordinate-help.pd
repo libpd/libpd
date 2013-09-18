@@ -1,0 +1,98 @@
+#N canvas 395 396 694 458 10;
+#X text 452 8 GEM object;
+#X obj 8 335 cnv 15 430 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 338 Inlets:;
+#X text 38 385 Outlets:;
+#X obj 8 296 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 295 Arguments:;
+#X obj 7 76 cnv 15 430 210 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 474 344 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 479 383 pd gemwin;
+#X msg 479 364 destroy;
+#X text 475 343 Create window:;
+#X obj 450 188 cnv 15 160 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 22 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 306 <none>;
+#X text 56 398 Outlet 1: gemlist;
+#X text 63 352 Inlet 1: gemlist;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X obj 451 296 square 3;
+#X text 50 12 Synopsis: [pix_coordinate];
+#X text 13 76 Description: set the texture-coordinates for a pix;
+#X text 34 94 pix_coordinate remaps the S \, T texture values from
+the default values. For instance \, a texture could repeat by increasing
+the texture S \, T values from 1 \, 1 to 2 \, 2 (See the examples).
+;
+#X text 63 367 Inlet 2: list: 8 values (4 (s \, t)-pairs);
+#X obj 538 144 loadbang;
+#X msg 461 237 \$1 \$1 0 \$1 0 0 \$1 0;
+#X floatatom 461 220 3 0 256 0 - - -;
+#X obj 451 136 pix_texture;
+#X text 14 159 IMPORTANT NOTE-1: [pix_texture] sets the texture-coordinates
+to "appropriate" values \, so you probably want to use [pix_coordinate]
+afterwards;
+#X obj 10 207 cnv 15 420 70 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X text 14 209 IMPORTANT NOTE-2: if your hardware supports it \, Gem
+tries to use "rectangle-texturing". This means that normal texture-coordinates
+range from 0..xsize (resp. 0..ysize). If it is not supported (or forced-off
+with "mode 0" to [pix_texture]) texture-coordinates range from 0..1
+;
+#X obj 451 266 pix_coordinate;
+#X msg 459 193 0 0 1 0 1 1 0 1;
+#X msg 468 167 rectangle 0 \, repeat 1;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 31 0;
+#X connect 28 0 37 0;
+#X connect 29 0 35 1;
+#X connect 30 0 29 0;
+#X connect 31 0 35 0;
+#X connect 35 0 23 0;
+#X connect 36 0 35 1;
+#X connect 37 0 31 0;

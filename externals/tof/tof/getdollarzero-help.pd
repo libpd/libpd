@@ -1,0 +1,30 @@
+#N canvas 1 53 571 373 10;
+#X msg 42 193 bang;
+#X obj 42 269 print;
+#X symbolatom 87 268 10 0 0 0 - - -;
+#X obj -1 29 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 4 73 author: mrtoftrash@gmail.com;
+#X text 3 50 tags: initialization patch;
+#X text 4 94 version: 2009-09-23 (release 2: added "root" keyword)
+;
+#X text 204 162 ARGUMENT:;
+#X text 4 28 description: gets the \$0 of a patch.;
+#X text 203 181 float: How much recursion you want (If set to 1 \,
+it will get the parent patch's \$0. If set to 2 \, it will get the
+parent's parent's \$0 \, etc);
+#X text 200 234 root: Get the \$0 of the root patch;
+#N canvas 244 196 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 45 DESCRIPTION get the \$0 of a patch;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 5 KEYWORDS control abstraction_op symbol_op;
+#X restore 511 326 pd META;
+#X obj 42 231 getdollarzero;
+#X connect 0 0 12 0;
+#X connect 12 0 1 0;
+#X connect 12 0 2 0;

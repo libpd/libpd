@@ -1,0 +1,101 @@
+#N canvas 1 53 875 617 12;
+#X msg 83 78 rewind;
+#X obj 195 465 textfile;
+#X msg 60 55 bang;
+#X msg 129 124 clear;
+#X msg 220 215 set 2 4 6 8;
+#X obj 181 -89 binfile;
+#X text 246 -90 read and write binary files;
+#X text 403 330 You can also use this object simply for storing heterogeneous
+sequences of bytes.;
+#X msg 152 147 add 10 20 255;
+#X msg 106 101 read afile.bin;
+#X obj 338 353 binfile;
+#X text 272 464 to read and write text files;
+#X msg 243 238 write afile.bin;
+#X text 478 367 This outlet gives a bang when you hit the end of the
+sequence.;
+#X text 409 427 This outlet gives the bytes in sequence \, or bangs
+if no more bytes.;
+#X text 308 213 clear the buffer and then add some bytes;
+#X text 174 123 empty the buffer;
+#X text 135 78 set the read pointer to the beginnning of the buffer
+;
+#X text 99 55 output one byte from the buffer as a float;
+#X text 360 236 write the entire buffer to a file;
+#X obj 338 433 print one;
+#X obj 15 40 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -257985
+-1;
+#X text 194 447 See also:;
+#X obj 37 -13 openpanel;
+#X obj 17 -48 bng 15 250 50 0 empty empty read_any_file_into_buffer
+17 7 0 10 -4032 -258113 -1;
+#X msg 37 32 read \$1;
+#X obj 17 292 bng 15 250 50 0 empty empty save_buffer_as_any_file 17
+7 0 10 -4032 -258113 -1;
+#X msg 335 330 write \$1;
+#X obj 338 307 savepanel;
+#X msg 175 170 77 128 129 130;
+#X text 254 -50 The binfile object reads and writes binary files to
+and from a buffer in memory. You can read a file and output its contents
+one byte at a time as floats.;
+#X text 422 26 To add bytes to the buffer \, first send "clear" to
+empty the buffer and then "add" to add bytes. Finally \, "write" will
+save the entire buffer as a binary file.;
+#X floatatom 197 193 5 0 0 0 - - -;
+#X text 237 191 add one byte \, same as "add";
+#X text 287 169 add a list of bytes \, same as "add";
+#X msg 15 10 info;
+#X obj 361 403 print info;
+#X obj 410 373 print end;
+#X msg 266 261 readat 3;
+#X msg 289 284 writeat 3;
+#X text 363 284 set the write position;
+#X text 333 261 set the read position;
+#X text 440 397 This outlet gives a list of current parameters from
+the info message.;
+#X text 255 136 add a list of byte-floats to the buffer at the current
+write offset;
+#X text 108 6 output current buffer length and pointer values through
+the middle outlet.;
+#X text 213 101 read a file into the buffer and make it the new buffer
+;
+#X obj 384 381 tgl 15 0 empty empty empty 17 7 0 10 -258113 -257985
+-1 0 1;
+#X text 688 468 Martin Peach 2009/10/13;
+#N canvas 506 311 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION read and write binary files;
+#X text 12 65 INLET_0 float bang list info read rewind clear add set
+write readat writeat symbol;
+#X text 12 95 OUTLET_0 float bang;
+#X text 12 115 OUTLET_1 list;
+#X text 12 135 OUTLET_2 bang;
+#X text 12 155 AUTHOR Martin Peach;
+#X restore 812 497 pd META;
+#X connect 0 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 10 0;
+#X connect 10 0 20 0;
+#X connect 10 1 36 0;
+#X connect 10 2 37 0;
+#X connect 10 2 46 0;
+#X connect 12 0 10 0;
+#X connect 21 0 2 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 0;
+#X connect 25 0 10 0;
+#X connect 26 0 28 0;
+#X connect 27 0 10 0;
+#X connect 28 0 27 0;
+#X connect 29 0 10 0;
+#X connect 32 0 10 0;
+#X connect 35 0 10 0;
+#X connect 38 0 10 0;
+#X connect 39 0 10 0;

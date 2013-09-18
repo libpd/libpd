@@ -1,0 +1,96 @@
+#N canvas 14 45 708 407 10;
+#X text 451 8 GEM object;
+#X obj 8 270 cnv 15 430 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 271 Inlets:;
+#X text 34 316 Outlets:;
+#X obj 8 231 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 230 Arguments:;
+#X obj 7 56 cnv 15 430 170 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 240 200 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 484 204 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 489 243 pd gemwin;
+#X msg 489 224 create;
+#X text 485 203 Create window:;
+#X obj 450 140 cnv 15 230 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X obj 77 279 pix_rgba;
+#X obj 77 307 pix_resize 256 256;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X restore 451 113 pd image;
+#X text 56 331 Outlet 1: gemlist;
+#X text 63 283 Inlet 1: gemlist;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X obj 8 356 cnv 15 410 40 empty empty empty 20 12 0 14 -260818 -66577
+0;
+#X text 50 12 Synopsis: [pix_share_write];
+#X text 29 56 Description: write pixels to a shared memory region;
+#X text 11 357 WARNING: [pix_share_write] and [pix_share_read] are
+only available on platforms that support shared memory (no w32 for
+now!);
+#X text 63 241 <i:ID> <i:width> <i:height> <colorspace>;
+#X obj 451 176 pix_share_write 321 256 256 RGBA;
+#X text 446 284 see also:;
+#X text 15 181 [pix_share_write] needs to know the image-dimensions
+(and color-space) in advance. The color-space can be given as a symbol
+("RGBA" \, "YUV" \, "Grey") or as pixel-width (4 \, 2 \, 1);
+#X text 18 72 [pix_share_write] will create (if needed) a portion of
+shared memory - identified by a given ID - where it can write pix-data
+into. This data can then be read via one or more [pix_share_read] objects
+(referencing to the same ID).;
+#X text 18 127 [pix_share_write] and [pix_share_read] need not be in
+the same instance of pd. However all objects need to have access to
+the same memory (they probably need to run on the same computer);
+#X text 446 347 in a different pd instance on your;
+#X text 447 361 machine to see the effect.;
+#X text 446 333 Run the [pix_share_read] help-patch;
+#X obj 519 285 pix_share_read 322 1 1 1;
+#X text 117 299 set <ID> <width> <height> <colorspace>;
+#X msg 468 148 set 323 256 256 RGBA;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 27 0;
+#X connect 37 0 27 0;

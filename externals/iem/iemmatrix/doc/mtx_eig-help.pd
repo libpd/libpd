@@ -1,0 +1,35 @@
+#N canvas 0 0 710 531 10;
+#X obj 82 93 mtx_eig;
+#X obj 82 66 mtx_rand;
+#X obj 82 146 print l_re;
+#X obj 128 124 print l_im;
+#X msg 82 38 3;
+#X obj 221 61 mtx_rand;
+#X msg 221 33 3;
+#X obj 230 119 mtx_eig v;
+#X obj 230 192 print l_re;
+#X obj 250 171 print l_im;
+#X obj 314 193 mtx_print Q_re;
+#X obj 335 171 mtx_print Q_im;
+#X obj 230 98 t a a;
+#X obj 375 123 mtx_print A;
+#X msg 350 56 matrix 2 2 1 1 -1 2;
+#X text 61 -33 [mtx_eig] computes (complex valued) eigenvalues \, and
+if desired eigenvectors of a matrix.;
+#X text 425 21 requires GSL;
+#X text 212 276 Franz Zotter \, 2009;
+#X text 98 238 Attention: eigenvectors seem to be wrong. Don't know
+why!;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
+#X connect 4 0 1 0;
+#X connect 5 0 12 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 7 1 9 0;
+#X connect 7 2 10 0;
+#X connect 7 3 11 0;
+#X connect 12 0 7 0;
+#X connect 12 1 13 0;
+#X connect 14 0 12 0;

@@ -1,0 +1,49 @@
+#N canvas 1 53 880 406 10;
+#X obj 506 84 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 506 333 ./test-arguments-all a bear 3 34;
+#X obj 507 307 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 508 181 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 508 206 ./test-arguments-token @a 54 @c 764;
+#X obj 506 104 ./test-arguments-comma ready \, 1 2 3 \, go speedracer
+;
+#X obj -1 29 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 7 78 author: mrtoftrash@gmail.com;
+#X text 6 56 tags: initialization patch;
+#X text 6 27 description: Outputs and parses the patch's creation arguments.
+;
+#X text 5 98 version: 2009-10-27 (initial release);
+#X text 5 139 see also:;
+#X obj 77 142 tof/argument;
+#X text 15 180 [arguments mode];
+#X text 15 209 argument 1 symbol: the parsing mode. If it is "comma"
+or " \, " the mode is set to COMMA. If it is another symbol \, the
+first character of the symbol is used as a TOKEN. If no argument is
+set \, the default mode is ALL.;
+#X text 17 284 inlet 1 bang: outputs parsed patch creation arguments.
+;
+#X text 18 308 outlet 1 variable: the parsed patch arguments.;
+#X text 611 32 COMMA MODE;
+#X obj 546 57 tof/arguments comma;
+#X obj 681 57 tof/arguments \,;
+#X text 613 265 ALL MODE;
+#X text 608 132 TOKEN MODE;
+#X obj 593 158 tof/arguments @;
+#X obj 596 290 tof/arguments;
+#N canvas 450 281 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control abstraction_op;
+#X text 12 45 DESCRIPTION parse and output the patch's creation arguments.
+;
+#X restore 822 377 pd META;
+#X connect 0 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;

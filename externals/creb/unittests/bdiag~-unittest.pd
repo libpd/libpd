@@ -1,0 +1,33 @@
+#N canvas 0 22 856 657 10;
+#X obj 119 374 testtools/unit-test-frame~;
+#X msg 440 144 timefreq 1 23 10 \, timefreq 2 15 0 \, timefreq 3 1
+5 \, timefreq 5 1 8 \, timefreq 7 13 4 \, timefreq 11 11 12 \, timefreq
+17 2 32 \, timefreq 30 6 2;
+#X msg 119 347 bdiag~ 0;
+#X obj 440 111 loadbang;
+#X obj 440 321 creb/bdiag~;
+#X text 43 175 the [eig <index> <real> <imag>] message sets the eigenvalue
+for the corresponding block. there are n/2 blocks \, with n the dsp
+blocksize.;
+#X text 44 230 you can use [timefreq <index> <60dB time> <frequency>]
+for a more appropriate initialization of the eigenvalues using decay
+time in milliseconds and oscillation frequency in Hz.;
+#X text 41 25 bdiag~: parallel block diagonal state space model (parallel
+2d rotations) see bdiag.c for more info. the state equations for one
+block are:;
+#X text 85 77 state1 = real * state1 - imag * state2 + input1;
+#X text 85 92 state2 = real * state2 + imag * state1 + input2;
+#X text 43 128 this module is intended to "filter" spectral data produced
+by bfft or other short time spectral transforms like dwt.;
+#X text 41 286 [bang] or [random] set the state vector to a random
+value. [reset] sets it to 0;
+#X msg 466 272 0.2;
+#X text 438 45 For this object \, the test result is different between
+the first bang and later bangs.;
+#X connect 0 2 12 0;
+#X connect 1 0 4 0;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 1;
+#X connect 12 0 4 0;

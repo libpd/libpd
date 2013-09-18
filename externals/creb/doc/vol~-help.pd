@@ -1,0 +1,20 @@
+#N canvas 0 26 450 300 10;
+#N canvas 379 254 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 45 DESCRIPTION volume for a mono signal;
+#X text 12 5 KEYWORDS signal filter;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 float;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 392 273 pd META;
+#X obj 172 144 vol~;
+#X obj 171 83 osc~ 880;
+#X floatatom 193 118 5 0 100 0 - - -;
+#X obj 172 212 dac~;
+#X connect 1 0 4 0;
+#X connect 1 0 4 1;
+#X connect 2 0 1 0;
+#X connect 3 0 1 1;

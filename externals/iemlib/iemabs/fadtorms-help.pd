@@ -1,0 +1,30 @@
+#N canvas 0 26 429 241 10;
+#X floatatom 53 215 9 0 0 0 - - -;
+#X obj 71 69 vu 15 120 empty empty -1 -8 0 8 -66577 -1 1 0;
+#X obj 53 61 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 157 125 v2db;
+#X obj 53 195 fadtorms;
+#X text 116 215 linear values;
+#X text 7 8 fadtorms;
+#X text 80 9 convert fader-scale to rms-value;
+#X text 234 194 IEM KUG;
+#X text 218 182 musil;
+#X text 248 182 @;
+#X text 254 182 iem.at;
+#X text 169 171 (c) Thomas Musil 2000 - 2005;
+#X text 217 204 Graz \, Austria;
+#N canvas 496 267 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION convert fader scale to rms value;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X restore 379 220 pd META;
+#X connect 0 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;

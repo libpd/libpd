@@ -1,0 +1,39 @@
+#N canvas 168 175 727 437 10;
+#X msg 246 129 1 2 3;
+#X msg 149 129 1;
+#X obj 149 221 list-unpack 3;
+#X obj 149 302 print lu0;
+#X obj 192 282 print lu1;
+#X obj 235 262 print lu2;
+#X msg 389 128 a b c;
+#X msg 461 128 1 2 3 4;
+#X msg 179 129 symbol x;
+#X msg 295 128 list a b c;
+#X text 272 103 lists;
+#X text 153 106 float;
+#X text 192 105 symbol;
+#X text 385 105 anything;
+#X text 461 105 too long;
+#X obj 340 221 list-unpack;
+#X obj 429 221 list-unpack 0;
+#X obj 339 330 list-unpack -1;
+#X text 58 53 Like [unpack] for any kind of type. Argument specifies
+number of outlets. Pointers untested rsp. not supported;
+#X text 42 25 [list-unpack];
+#X text 64 389 2007 Frank Barknecht;
+#X obj 341 267 list-unpack 28 -----------------------------------;
+#X text 337 244 Second arg is ignored and can be used for stretching
+;
+#X text 338 196 Default number of outlets is 1 \, even if you want
+0:;
+#X text 338 302 But these won't create:;
+#X obj 339 353 list-unpack three;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 2 0;
+#X connect 9 0 2 0;

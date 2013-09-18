@@ -1,0 +1,102 @@
+#N canvas 1 53 1002 632 10;
+#X obj 27 587 print RESULT;
+#X obj 27 336 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 27 560 path;
+#X obj 32 11 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 37 56 author: mrtoftrash@gmail.com;
+#X text 37 67 version: 2009-06-07 (initial release);
+#X text 52 332 <- a bang will output the root patch's path;
+#X text 171 355 <- Sending a relative path will append that path to
+the root patch's path;
+#X text 86 429 Linux and OS X;
+#X text 93 469 Windows;
+#X obj 517 34 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 542 32 <- a bang will output the root patch's path;
+#X obj 543 102 openpanel;
+#X obj 543 82 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X symbolatom 543 124 50 0 0 0 - - -;
+#X symbolatom 517 223 50 0 0 0 - - -;
+#X text 548 50 Anything else will be treated as a path;
+#X obj 517 192 path relative;
+#X text 672 148 <- Relative paths are unchanged;
+#X text 84 416 Absolute paths are unchanged;
+#X obj 518 272 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 518 365 print CURRENT;
+#X obj 518 338 path current;
+#X text 548 272 <- a bang will output the current patch's path;
+#X text 38 11 description: outputs or transform paths.;
+#X text 37 45 tags: file tof;
+#X text 176 162 -- keywords --;
+#X text 683 250 -- current --;
+#X text 648 304 <- Sending a relative path will append that path to
+the current patch's path;
+#X text 658 9 -- relative --;
+#X obj 518 415 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 544 483 openpanel;
+#X obj 544 463 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X symbolatom 544 505 50 0 0 0 - - -;
+#X symbolatom 518 594 50 0 0 0 - - -;
+#X text 549 431 Anything else will be treated as a path;
+#X text 671 527 <- Relative paths are unchanged;
+#X text 653 387 -- relative & current --;
+#X obj 518 563 path relative current;
+#X text 543 413 <- a bang will output the current patch's path;
+#X text 564 72 Absolute paths will be made relative to the root patch's
+path;
+#X text 569 454 Absolute paths will be made relative to the current
+patch's path;
+#X msg 566 148 symbol samples/;
+#X msg 546 305 symbol samples/;
+#X msg 567 529 symbol samples/;
+#X msg 68 355 symbol samples/;
+#X msg 87 450 symbol /unchanged/because/of/the/slash/at/the/start;
+#X msg 86 489 symbol C:/unchanged/because/of/the/:/as/second/char;
+#X msg 86 511 symbol C:/Documents and Settings/tom/My Documents/pd/parent.test.pd
+;
+#X text 128 309 -- default behavior (absolute root) --;
+#X text 27 191 current: use the current patch's path.;
+#X text 26 207 root: use the root patch's path.;
+#X text 24 242 relative: transform absolute paths into relative paths
+;
+#X text 24 255 absolute: transform relative paths into absolute paths
+;
+#X text 29 113 [path] can convert relative paths to absolute paths
+or the other way around.;
+#N canvas 400 289 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 25 DESCRIPTION outputs or transform paths;
+#X text 12 65 INLET_0 bang symbol;
+#X text 12 85 OUTLET_0 symbol;
+#X restore 936 594 pd META;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 10 0 17 0;
+#X connect 12 0 14 0;
+#X connect 13 0 12 0;
+#X connect 14 0 17 0;
+#X connect 17 0 15 0;
+#X connect 20 0 22 0;
+#X connect 22 0 21 0;
+#X connect 30 0 38 0;
+#X connect 31 0 33 0;
+#X connect 32 0 31 0;
+#X connect 33 0 38 0;
+#X connect 38 0 34 0;
+#X connect 42 0 17 0;
+#X connect 43 0 22 0;
+#X connect 44 0 38 0;
+#X connect 45 0 2 0;
+#X connect 46 0 2 0;
+#X connect 47 0 2 0;
+#X connect 48 0 2 0;

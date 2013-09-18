@@ -1,0 +1,38 @@
+#N canvas 0 26 417 273 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 24 228 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 23 242 ___________________________________________________
+;
+#X obj 36 28 pv foo;
+#X text 97 28 private variables for patch and it's subpatches;
+#X obj 173 50 value;
+#X text 98 49 see also:;
+#X obj 78 119 pv my_private_bar;
+#X obj 263 119 pv my_private_bar;
+#X msg 263 93 bang;
+#X obj 263 148 print my_private_bar;
+#N canvas 0 0 353 164 works 0;
+#X obj 32 66 pv my_private_bar;
+#X msg 32 40 bang;
+#X obj 32 95 print my_private_underground_bar;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X restore 48 150 pd works here too of course;
+#N canvas 247 115 494 411 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION private variables for patch and it's subpatches
+;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 65 INLET_0 anything bang;
+#X text 12 5 KEYWORDS control nonlocal max_compatible local;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 368 252 pd META;
+#X msg 78 95 foo;
+#X connect 8 0 10 0;
+#X connect 9 0 8 0;
+#X connect 13 0 7 0;

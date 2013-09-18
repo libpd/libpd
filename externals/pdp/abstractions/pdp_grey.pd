@@ -1,0 +1,7 @@
+#N canvas 608 510 395 122 10;
+#X obj 39 23 inlet;
+#X obj 39 51 pdp_convert image/grey/*;
+#X obj 39 79 outlet;
+#X text 101 21 backwards compatibility abstraction;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;

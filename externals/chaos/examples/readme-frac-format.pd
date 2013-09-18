@@ -1,0 +1,22 @@
+#N canvas 171 208 685 432 10;
+#X text 31 36 The format of this file is pretty simple (or tries to
+be).;
+#X text 55 69 Line 1: name - this is used as the 'c' identifier;
+#X text 55 81 Line 2: <var_count> <param_count> - integer for each
+;
+#X text 55 93 Line 3-x: <name> <init> - var name and start state;
+#X text 55 105 Line y-z: <name> <low> <high> <init> - param data;
+#X text 55 131 Line c: '.' - file must end with a single period '.'
+;
+#X text 33 180 This file is used by 'gen_fractal_framework' to produce
+the 'C' source for the external.;
+#X text 62 225 ** - The pseudo-code must not have any spaces. Each
+line in the pseudo-code is considered to be a single "assignment" statement.
+There is no need to worry about creating storage for any intermediate
+(calculated) variables \, as that is done by the translation program.
+The pseudo-code represents variables and parameters with a '$' before
+the variable name. Locals are allowed \, but are preceded with a '#'.
+(Locals are used as 'intermediate' \, computed values that are not
+retained from iteration to iteration.);
+#X text 55 118 Line a-b: <code_fragment> - line(s) of frac 'pseudo-code'
+**;

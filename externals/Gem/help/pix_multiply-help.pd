@@ -1,0 +1,97 @@
+#N canvas 497 199 683 381 10;
+#X text 452 8 GEM object;
+#X obj 8 226 cnv 15 430 135 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 248 Inlets:;
+#X text 39 304 Outlets:;
+#X obj 8 186 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 185 Arguments:;
+#X obj 8 66 cnv 15 430 110 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 280 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 290 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 329 pd gemwin;
+#X msg 519 310 destroy;
+#X text 515 289 Create window:;
+#X obj 451 168 cnv 15 160 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 119 gemhead;
+#X obj 502 102 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 22 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 138 pd image;
+#X obj 451 263 pix_texture;
+#X text 63 196 <none>;
+#X text 47 318 Outlet 1: gemlist;
+#X text 53 262 Inlet 1: gemlist;
+#X obj 451 285 square 3;
+#X text 503 88 (JPEG \, TIFF \, ..);
+#X obj 541 122 gemhead;
+#N canvas 0 22 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/dancer.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 541 141 pd image;
+#X obj 592 103 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#X text 53 291 Inlet 2: gemlist;
+#X text 449 77 open two different images;
+#X text 71 31 Class: pix mix object;
+#X text 33 157 The 2 images have to be of the same size.;
+#X text 50 12 Synopsis: [pix_multiply];
+#X text 29 67 Description: multiply 2 images;
+#X obj 451 198 pix_multiply;
+#X text 29 91 [pix_mutltiply] simply multiplies two pixes together.
+E.g: where either of the pixels is black \, the resulting image will
+be black too. Thus it is simple to get black images.;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 16 0;
+#X connect 15 0 16 1;
+#X connect 16 0 32 0;
+#X connect 17 0 21 0;
+#X connect 23 0 24 0;
+#X connect 24 0 32 1;
+#X connect 25 0 24 1;
+#X connect 32 0 17 0;

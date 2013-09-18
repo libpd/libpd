@@ -1,0 +1,5 @@
+#N canvas 1 44 450 300 10;
+#X text 46 35 This is a PD patch.;
+#X obj 210 36 inlet;
+#X obj 210 89 outlet;
+#X connect 1 0 2 0;

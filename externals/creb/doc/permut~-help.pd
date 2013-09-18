@@ -1,0 +1,30 @@
+#N canvas 0 26 443 234 10;
+#X text 29 10 permut~ performs a random permutation on a signal block
+;
+#X text 30 27 mainly intended for shuffling spectral data (dynwav)
+;
+#X obj 73 127 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 96 126 random;
+#X text 154 124 bang or random create a new random permutation;
+#X obj 30 91 osc~;
+#X obj 30 166 permut~;
+#X obj 29 210 dac~;
+#X floatatom 30 61 5 0 0 0 - - -;
+#N canvas 379 254 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal random;
+#X text 12 45 DESCRIPTION perform a random permutation on a signal
+block;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 65 INLET_0 signal bang random;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 385 210 pd META;
+#X connect 2 0 6 0;
+#X connect 3 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 6 0 7 1;
+#X connect 8 0 5 0;

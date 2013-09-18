@@ -1,0 +1,88 @@
+#N canvas 3 0 565 484 10;
+#X text 62 14 blocknorm~: normalize a dsp block to RMS = 1;
+#X text 144 33 creation argument = nb channels;
+#X obj 96 349 lop~;
+#X obj 95 410 tabsend~ state;
+#X obj 95 384 blocknorm~ 1;
+#X obj 95 320 hip~;
+#X obj 134 298 hsl 128 15 100 10000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 3800 1;
+#X obj 93 131 tabreceive~ state;
+#X obj 138 222 fblock 64;
+#X obj 352 388 pdynwav~;
+#X obj 351 429 vol~;
+#X obj 350 458 dac~;
+#X floatatom 389 408 5 0 0 0 - - -;
+#X floatatom 406 365 5 0 0 0 - - -;
+#X obj 13 144 ead~ 0 20;
+#X obj 30 168 noise~;
+#X obj 14 191 *~;
+#X obj 13 121 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 237 134 1;
+#X floatatom 237 157 5 0 0 0 - - -;
+#X floatatom 138 202 5 0 0 0 - - -;
+#X text 11 64 example: a waveform folding oscillator: power is shifted
+up or down in frequency by contraction/dilatation \, and filtered \,
+but normalized to preserve total state energy.;
+#X obj 466 281 table state 64;
+#X obj 94 270 dynwav~;
+#X obj 138 245 phasor~;
+#X obj 310 181 bang~;
+#X msg 268 133 2;
+#X obj 310 205 f;
+#X floatatom 358 200 5 0 0 0 - - -;
+#X msg 357 179 0;
+#X msg 387 179 0.03;
+#X msg 425 179 0.17;
+#X obj 310 241 spigot;
+#X obj 348 223 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 403 201 phase offset;
+#X text 182 201 mod freq;
+#X text 366 222 phase sync;
+#X obj 134 326 hsl 128 15 100 10000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 8100 1;
+#X text 282 157 relative formant shift;
+#N canvas 379 254 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 LIBRARY external creb;
+#X text 12 5 KEYWORDS signal block_oriented;
+#X text 12 45 DESCRIPTION normalize a dsp block to RMS = 1;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 514 462 pd META;
+#X connect 2 0 4 0;
+#X connect 2 0 9 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 1;
+#X connect 7 0 23 0;
+#X connect 8 0 24 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 10 0 11 1;
+#X connect 12 0 10 1;
+#X connect 13 0 9 1;
+#X connect 14 0 16 0;
+#X connect 15 0 16 1;
+#X connect 16 0 5 0;
+#X connect 17 0 14 0;
+#X connect 18 0 19 0;
+#X connect 19 0 8 1;
+#X connect 20 0 8 0;
+#X connect 23 0 5 0;
+#X connect 24 0 23 1;
+#X connect 25 0 27 0;
+#X connect 26 0 19 0;
+#X connect 27 0 32 0;
+#X connect 28 0 27 1;
+#X connect 29 0 28 0;
+#X connect 30 0 28 0;
+#X connect 31 0 28 0;
+#X connect 32 0 24 1;
+#X connect 33 0 32 1;
+#X connect 37 0 2 1;

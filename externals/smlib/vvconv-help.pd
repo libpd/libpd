@@ -1,0 +1,47 @@
+#N canvas 1 53 441 306 10;
+#X msg 132 78 1 2 1;
+#X msg 132 53 1 0 1;
+#X text 26 18 vvconv: convolution of 2 vectors;
+#X text 357 244 j#|@2002;
+#X msg 30 43 1;
+#X obj 48 130 vvconv;
+#X msg 331 80 1 2 1;
+#X msg 229 68 1 0 0;
+#X msg 331 55 1 0 1;
+#X msg 229 45 1;
+#X obj 247 132 vvconv -1 2 -1;
+#X msg 230 92 1 0 1 0 0 1;
+#X msg 31 90 1 0 1 0 0 1;
+#X text 177 178 arguments: convolution kernel;
+#X obj 377 225 SMLib-help;
+#X obj 48 154 print vvconv;
+#X obj 247 156 print vvconv;
+#X text 2 202 length of output is the sum of input lengths minus one
+;
+#X msg 30 66 2 0 1;
+#X msg 132 103 1 0 2;
+#N canvas 170 224 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION convolution of 2 vectors;
+#X text 12 105 OUTLET_0 list;
+#X text 12 85 INLET_1 float;
+#X restore 377 270 pd META;
+#X connect 0 0 5 1;
+#X connect 1 0 5 1;
+#X connect 4 0 5 0;
+#X connect 5 0 15 0;
+#X connect 6 0 10 1;
+#X connect 7 0 10 0;
+#X connect 8 0 10 1;
+#X connect 9 0 10 0;
+#X connect 10 0 16 0;
+#X connect 11 0 10 0;
+#X connect 12 0 5 0;
+#X connect 18 0 5 0;
+#X connect 19 0 5 1;

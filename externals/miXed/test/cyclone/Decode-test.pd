@@ -1,0 +1,18 @@
+#N canvas 314 293 450 300 12;
+#X obj 151 134 Decode 4;
+#X obj 151 256 print a;
+#X obj 173 230 print b;
+#X obj 195 200 print c;
+#X obj 218 172 print d;
+#X floatatom 68 81 5 0 0;
+#X obj 184 81 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 218 81 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 0 3 4 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 1;
+#X connect 7 0 0 2;

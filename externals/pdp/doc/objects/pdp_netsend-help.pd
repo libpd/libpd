@@ -1,0 +1,62 @@
+#N canvas 236 47 523 395 10;
+#X obj 174 74 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 155 43 metro 40;
+#X obj 155 18 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 167 171 pdp_convert bitmap/yv12/*;
+#X floatatom 238 20 5 0 0 0 - - -;
+#X msg 263 132 sleepgrain \$1;
+#X floatatom 263 112 5 0 0 0 - - -;
+#X floatatom 308 74 5 0 0 0 - - -;
+#X msg 308 94 udpsize \$1;
+#X obj 295 44 hsl 128 15 1024 60000 1 0 empty empty empty -2 -6 0 8
+-262144 -1 -1 4000 1;
+#X msg 339 161 sleep \$1;
+#X obj 379 136 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X floatatom 327 200 5 0 0 0 - - -;
+#X msg 327 220 sleepperiod \$1;
+#X msg 16 13 connect acer 7777;
+#X obj 124 212 pdp_netsend;
+#X msg 324 15 1472;
+#X msg 211 81 dim 160 120;
+#X msg 212 62 dim 320 240;
+#X msg 18 44 connect localhost 7777;
+#X obj 65 247 pdp_netreceive 7777;
+#X obj 78 275 pdp_glx;
+#X obj 123 136 pdp_route;
+#X obj 203 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 281 248 5 0 0 0 - - -;
+#X msg 281 268 timeout \$1;
+#X obj 154 103 pdp_v4l;
+#X obj 132 275 pdp_glx;
+#X text 97 334 this is still experimental (SIGSEGVs ahead);
+#X connect 0 0 26 0;
+#X connect 1 0 26 0;
+#X connect 2 0 1 0;
+#X connect 3 0 15 0;
+#X connect 4 0 1 1;
+#X connect 5 0 15 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 8 0 15 0;
+#X connect 9 0 7 0;
+#X connect 10 0 15 0;
+#X connect 11 0 10 0;
+#X connect 12 0 13 0;
+#X connect 13 0 15 0;
+#X connect 14 0 15 0;
+#X connect 16 0 8 0;
+#X connect 17 0 26 0;
+#X connect 18 0 26 0;
+#X connect 19 0 15 0;
+#X connect 20 0 21 0;
+#X connect 22 0 15 0;
+#X connect 22 1 3 0;
+#X connect 23 0 22 1;
+#X connect 24 0 25 0;
+#X connect 25 0 15 0;
+#X connect 26 0 22 0;
+#X connect 26 0 27 0;

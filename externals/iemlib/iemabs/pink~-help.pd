@@ -1,0 +1,44 @@
+#N canvas 0 26 349 343 10;
+#X text 38 49 dsp ON/OFF;
+#X floatatom 171 169 7 0 0 0 - - -;
+#X text 222 170 dB;
+#X floatatom 21 89 5 0 0 0 - - -;
+#X text 69 90 % cpu;
+#X obj 21 69 dsp;
+#X obj 21 49 tgl 15 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X obj 32 230 dac~;
+#X obj 32 205 gainvu~ 300;
+#X obj 210 47 vu 15 120 empty empty 8 -8 0 10 -66577 -1 1 0;
+#X obj 271 74 vsl 15 128 0 127 0 1 empty empty empty 8 -8 0 10 -262144
+-1 -1 7400 1;
+#X floatatom 243 223 7 0 0 0 - - -;
+#X text 301 225 dB;
+#X text 72 157 no arg;
+#X obj 32 157 pink~;
+#X text 15 7 pink~ : pink noise with -3 dB per octave;
+#X text 115 288 IEM KUG;
+#X text 99 276 musil;
+#X text 129 276 @;
+#X text 135 276 iem.at;
+#X text 50 265 (c) Thomas Musil 2000 - 2005;
+#X text 98 298 Graz \, Austria;
+#N canvas 290 270 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 5 KEYWORDS signal random;
+#X text 12 45 DESCRIPTION pink noise with -3 dB per octave;
+#X text 12 65 INLET_0;
+#X restore 290 314 pd META;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 8 0 7 0;
+#X connect 8 0 7 1;
+#X connect 8 1 11 0;
+#X connect 8 2 9 0;
+#X connect 9 1 1 0;
+#X connect 10 0 8 1;
+#X connect 14 0 8 0;

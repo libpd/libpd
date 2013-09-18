@@ -1,0 +1,21 @@
+#N canvas 69 65 686 503 10;
+#X msg 122 72 gemList;
+#X msg 122 213 gemList;
+#X text 83 44 get a video signal;
+#X text 36 320 There are a group of messages that can be used to control
+the camera (especially to create an image with dimensions a power of
+2!);
+#X text 45 373 dimen x y : set the x y dimensions in pixels;
+#X text 45 393 zoom x y : set the zoom factor (1.0 is nominal);
+#X text 46 417 bright value : set the brightnes factor;
+#X text 47 441 contrast value : set the contrast factor;
+#X text 47 459 hue value : set the hue factor;
+#X text 47 478 sat value : set the saturation;
+#X obj 122 166 pix_indycam;
+#X text 121 26 [pix_indycam];
+#X text 45 240 [pix_indycam] creates pixes from a SGI video camera.
+;
+#X text 41 264 [pix_indycam] obviously only works with SGI video workstations.
+The name inidicates that it likes SGI-indy's the most.;
+#X connect 0 0 10 0;
+#X connect 10 0 1 0;

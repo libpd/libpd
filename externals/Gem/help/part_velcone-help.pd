@@ -1,0 +1,21 @@
+#N canvas 109 126 635 466 10;
+#X msg 110 93 gemList;
+#X text 121 50 GEM object;
+#X msg 170 151 x y z;
+#X msg 110 219 gemList;
+#X text 181 94 partList;
+#X text 180 222 partList;
+#X text 41 361 this is obsolete \, use;
+#X text 131 16 [part_velcone];
+#X obj 110 190 part_velcone;
+#X msg 231 152 height;
+#X text 65 253 [part_velcone] sets a cone with a specified height and
+midpoint to be the velocity-domain of newly emitted particles within
+the system.;
+#X msg 465 326 x y z height;
+#X obj 239 360 part_velocity cone <x> <z> <z> <height>;
+#X connect 0 0 8 0;
+#X connect 2 0 8 1;
+#X connect 8 0 3 0;
+#X connect 9 0 8 2;
+#X connect 11 0 12 2;

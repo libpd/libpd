@@ -1,0 +1,63 @@
+#N canvas 1 53 716 518 10;
+#X obj 447 52 tof/sample smpgranu ../../doc/sound/voice.wav;
+#X obj 46 129 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 62 164 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 116 288 5 0 0 0 - - -;
+#X text 66 128 Inlet 1 \, bang: Play sample once;
+#X text 81 161 Inlet 1 \, float: Start/stop playing looped sample;
+#X text 27 63 Tags: Sound Sample Play;
+#X obj 72 422 dac~;
+#X text 29 32 Description: Pitchshifts or timestretches a sample with
+the granular method;
+#X text 187 191 Inlet 1 \, grain float: Configure grain length (# of
+samples);
+#X msg 84 195 grain 360;
+#X msg 98 219 grain 7056;
+#X msg 114 243 grain 1764;
+#X obj 46 370 sample_granule~ smpgranu;
+#X obj 447 26 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 187 315 5 0 0 0 - - -;
+#X text 225 314 Inlet 3 \, float: Duration in milliseconds;
+#X obj 207 344 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 242 342 Inlet 3 \, bang: Reset to original duration;
+#X text 154 286 Inlet 2 \, float: Pitch (1=original pitch);
+#X obj 281 400 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 218 419 cyclone/Snapshot~ 100;
+#X floatatom 218 441 5 0 0 0 - - -;
+#X text 255 442 Outlet 3 \, signal: progress;
+#X text 307 397 Outlet 4 \, bang: done;
+#N canvas 434 189 494 344 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 215 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 55 LICENSE GPL v2;
+#X text 12 25 DESCRIPTION pitchshift or timestretch a sample with the
+granular method;
+#X text 12 5 KEYWORDS control abstraction soundfile;
+#X text 12 75 INLET_0 bang float grain;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float bang;
+#X text 12 135 OUTLET_0 signal;
+#X text 12 155 OUTLET_1 signal;
+#X text 12 175 OUTLET_2 signal;
+#X text 12 195 OUTLET_3 bang;
+#X restore 656 462 pd META;
+#X connect 1 0 13 0;
+#X connect 2 0 13 0;
+#X connect 3 0 13 1;
+#X connect 10 0 13 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 7 0;
+#X connect 13 1 7 1;
+#X connect 13 2 21 0;
+#X connect 13 3 20 0;
+#X connect 14 0 0 0;
+#X connect 15 0 13 2;
+#X connect 17 0 13 2;
+#X connect 21 0 22 0;

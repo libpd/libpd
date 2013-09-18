@@ -1,0 +1,88 @@
+#N canvas 0 26 647 599 10;
+#X obj 288 320 adc~;
+#X obj 330 53 tgl 15 0 record empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 330 356 record~ table;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array table 44100 float 0;
+#X coords 0 1 44099 -1 200 140 1;
+#X restore 61 86 graph;
+#X obj 329 445 snapshot~;
+#X obj 348 424 metro 10;
+#X floatatom 329 472 5 0 0 0 - - -;
+#X obj 348 383 r record;
+#X text 378 471 end of table = 1;
+#X text 353 51 start/stop recording;
+#X msg 360 112 append \$1;
+#X obj 360 89 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 348 404 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 378 164 loop \$1;
+#X obj 378 141 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 403 142 record continously;
+#X text 382 83 in append mode stop/restart will continue;
+#X text 383 94 were it was stopped \, off by default;
+#X msg 400 199 set table;
+#X text 475 200 change table;
+#X floatatom 373 306 5 0 0 0 - - -;
+#X text 421 306 startpoint in the table in msec;
+#X floatatom 416 333 5 0 0 0 - - -;
+#X text 461 332 endpoint in the table in msec;
+#X obj 57 356 record~ smp 2;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array 0-smp 22050 float 0;
+#X coords 0 1 22049 -1 80 60 1;
+#X restore 64 431 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array 1-smp 22050 float 0;
+#X coords 0 1 22049 -1 80 60 1;
+#X restore 189 427 graph;
+#X obj 73 318 adc~;
+#X obj 57 283 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 43 261 optional int arg is nr of channels:;
+#X text 158 356 can be 1 \, 2 or 4;
+#X text 60 394 table naming convention is;
+#X text 61 407 0...4-tablename:;
+#X text 42 248 enable multichannel by using an;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 29 552 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 28 566 ___________________________________________________
+;
+#X text 90 11 read and write sample values;
+#X obj 28 10 record~;
+#N canvas 309 151 494 444 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal array max_compatible;
+#X text 12 45 DESCRIPTION read and write sample values;
+#X text 12 65 INLET_0 bang signal append loop set;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X text 12 145 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X restore 598 571 pd META;
+#X connect 0 1 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 0;
+#X connect 7 0 12 0;
+#X connect 10 0 2 0;
+#X connect 11 0 10 0;
+#X connect 12 0 5 0;
+#X connect 13 0 2 0;
+#X connect 14 0 13 0;
+#X connect 18 0 2 0;
+#X connect 20 0 2 1;
+#X connect 22 0 2 2;
+#X connect 27 0 24 0;
+#X connect 27 1 24 1;
+#X connect 28 0 24 0;

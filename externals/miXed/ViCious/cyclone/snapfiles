@@ -1,0 +1,19 @@
+SNAPFILES = \
+	miXed\bin\cyclone.dll \
+	miXed\bin\hammer.dll \
+	miXed\bin\sickle.dll \
+	miXed\bin\dummies.dll \
+	miXed\bin\maxmode.dll \
+	miXed\bin\cyclist.exe \
+	miXed\bin\Append-help.pd \
+	miXed\bin\Clip-help.pd \
+	miXed\bin\Clip~-help.pd \
+	miXed\bin\Line~-help.pd \
+	miXed\bin\Scope~-help.pd \
+	miXed\bin\Snapshot~-help.pd \
+	miXed\bin\Table-help.pd \
+	miXed\ViCious\cyclone\makefile \
+	miXed\ViCious\cyclone\objects \
+	miXed\ViCious\cyclone\snapfiles \
+	miXed\LICENSE.txt \
+	miXed\test\cyclone\*.*

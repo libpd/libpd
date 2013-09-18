@@ -1,0 +1,120 @@
+TODO for toxy
+  * widget
+    . push long message handlers if defined, instead of short
+    . widgetcontainer: woc and wiw-list
+    . better megawidgets
+    . editor: handle semicolons (need to revisit resolution rules)
+    . editor: break editorhook into separate properties, add them in single mode
+    . find a way for "package require" to work out-of-the-box on windows
+  * tow: canvas-wide and type-on-canvas-wide broadcasting
+  * plustot:
+    . do not evaluate if fresh, unless explicitly forced to (are side-effects
+      to be modal, requested with a flag, or triggered with a message?)
+    . pull inputs
+
+DONE for toxy
+
+alpha19
+  * plustot
+    . rules for slot creation:
+      - there is always at least one slot, although it may be deaf
+      - if a command contains a pseudo-scalar, there is exactly one,
+        listening slot
+      - if a command contains pseudo-array elements, there are as many slots
+        as the highest index + 1 (but not more than 256, a sanity limit);
+        listening slots are created for explicitly used elements, all other
+        slots are deaf
+      - mixing pseudo-scalar and pseudo-array forms in a single command
+        is prohibited
+      - if a command does not contain pseudo-variables, there is exactly one,
+        deaf slot
+    . firing rules established for push inputs:
+      - firing (evaluation with output) is executed iff all listening slots
+        have data and a) a hot slot receives input, or b) any slot receives
+        an explicit firing request ('bang' message)
+      - $Hin and $Cin forms of pseudo-variables: each slot may be explicitly
+        declared hot (Hin) or cold (Cin), overriding the default rule (leftmost
+        slot, if listening, is hot, others are cold) observed when the plain
+        form, $in, is used
+      - $Tin form of pseudo-variables, which is a ``pure dataflow'' variant
+        of $Hin: a hot slot, which looses data after evaluation (all other
+        kinds of slots keep data after evaluation, unless explicitly 'cleared')
+      - 'set' message accepted in all inlets as the `cold' input
+      - 'bang' message accepted in all inlets as the firing trigger
+    . evaluation without output:
+      - executed iff all listening slots have data and a) an object has
+        just been created (creation time evaluation), or b) an object
+        received an explicit evaluation request ('eval' message)
+      - creation time evaluation suppresses all error messages, explicit
+        evaluation does not
+    . message 'clear' in any inlet clears its slot of data
+    . message 'clearall' in leftmost inlet clears all listening slots
+    . appearance: converting dot-sequences to valid Tcl for presentation
+    . bug fix: made unclickable in gop
+
+alpha18
+  * plustot:
+    . adjusted to the new, stubified +bob handling
+    . +selectors registered as creation selectors, so that, e.g. "+in" is
+      a valid input form for "plustot +in" ("+tot +in" remains valid too)
+    . "save" callback changes every "+tot" selector to "plustot",
+      and every "+selector" to "plustot +selector"
+    . customized appearance:
+      - creation selector omitted if equals "plustot" or "+tot"
+      - text, border and i/o outline is brown, border is thicker,
+	inlets and outlets are lightgrey inside and taller
+    . mouse click interpreted as the message 'bang'
+    . accepting commands without arguments (beware: this is yet to be debugged)
+
+alpha17
+  * widget:
+    . first sketch of an editor widget (bpf), introducing a basic set of rules:
+      - instance data kept in its own namespace
+      - gui sends '_data' (replaces '_value') requests to pd, specifying one
+	of the standard submessages: add, delete, set, get
+      - pd uses the new special handler for replying: @data
+      (for the time being, there is only an idle loop between the two sides)
+    . maintaining a scriptlet collection, which mirrors type and instance
+      handler properties (including specials: @vis, @new, @free and @data)
+    . lookup in the mirror for faster and more robust handling of messages 
+    . '@ini' section and 'ini' message removed, after being unified as the
+      @vis special handler (use 'set @vis' message form for passing options)
+    . all special handlers support short definitions (inside #. comments)
+      and long definitions (tagged with #@ comments), however only short
+      ones may be overriden by instance definitions
+    . long message handlers are stored, but not used yet
+    . .wid file header may include requirements (base widget definitions)
+    . fixed: patch's directory handling in 'redefine'
+
+alpha16
+  * widget:
+    . editor for options, handlers and arguments made more or less functional
+    . better 'redefine' (although still only external types may be redefined)
+  * tow:
+    . fixed handling of gop-ed targets and missing windows
+    . new messages: 'retarget', 'pwd'
+  * tot:
+    . scriptlet editor improved a little bit (still unfinished)
+
+alpha15
+  * fixes for megawidgets
+    . setting sub-item bindings in ::toxy::subwidget
+      (to be called explicitly from type initializer)
+    . handling widget's state through virtual events
+    . getting implicit geometry (needed for Frame widgets)
+    . automatically rebinding focus for Canvas widgets
+
+alpha14
+  * 'redefine' message to widget
+  * version control, using package provide (both in tcl and parsed from pd)
+  * "> master" section removed:  master initializer defined directly
+    by proc ::toxy::master
+  * better kb: chords (shift-click), latch (control-click), dragging
+
+alpha13
+  * @new and @free handlers, defined in #@ new and  #@ free sections,
+    invoked by widget object creation and destruction
+  * optional sections #@ ini (aka #@ vis) appended to initializer (which still
+    defines in default section too -- old .wid files do not need updating)
+  * .#args parameter of message handlers, replaced (during scriptlet
+    evaluation) by all arguments of an invoking message

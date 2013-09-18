@@ -1,0 +1,100 @@
+#N canvas 0 26 524 527 10;
+#X obj 34 472 nbx 5 25 -1e+37 1e+37 0 0 empty empty X: -20 14 1 16
+-241655 -1 -1 0 256;
+#X obj 40 248 gcanvas 200 200;
+#X obj 136 471 nbx 5 25 -1e+37 1e+37 0 0 empty empty Y: -20 14 1 16
+-241655 -1 -1 0 256;
+#X text 18 3 [gcanvas];
+#X text 69 505 mouse values;
+#X text 41 24 click and drag in the grey [gcanvas] to get pixel values
+;
+#X obj 241 486 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 261 487 mouse clicked in box;
+#N canvas 0 22 441 440 resize 0;
+#X obj 132 192 gcanvas 49 49;
+#X msg 132 172 size 49 49;
+#X obj 37 193 vsl 20 200 200 5 0 0 empty empty Y 0 -8 1 11 -241655
+-1 -1 15308 0;
+#X obj 135 72 hsl 200 20 5 200 0 0 empty empty X -2 -6 1 11 -241655
+-1 -1 4592 0;
+#X obj 20 62 loadbang;
+#X msg 37 85 50;
+#N canvas 526 29 466 316 guts 0;
+#X obj 141 36 inlet;
+#X obj 184 271 outlet;
+#X obj 154 160 pack f f;
+#X obj 175 135 t b f;
+#X obj 154 181 t b a;
+#X obj 208 37 inlet;
+#X text 130 36 Y;
+#X text 253 38 X;
+#X obj 208 76 int;
+#X obj 141 78 int;
+#X msg 184 200 set size \$1 \$2;
+#X connect 0 0 9 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 1 2 1;
+#X connect 4 0 1 0;
+#X connect 4 1 10 0;
+#X connect 5 0 8 0;
+#X connect 8 0 2 0;
+#X connect 9 0 3 0;
+#X connect 10 0 1 0;
+#X restore 132 118 pd guts;
+#X obj 246 274 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 266 275 mouse clicked in box;
+#X connect 0 2 7 0;
+#X connect 1 0 0 0;
+#X connect 2 0 6 0;
+#X connect 3 0 6 1;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 5 0 2 0;
+#X connect 6 0 1 0;
+#X restore 331 343 pd resize;
+#X floatatom 241 466 5 0 0 0 - - -;
+#X msg 42 63 color grey 0;
+#X msg 25 44 color red 0;
+#X text 131 52 change color of an element;
+#X msg 142 211 delete 1;
+#X msg 53 84 line green 25 50 50 50;
+#X text 202 84 draw a line with args: color x y width height;
+#X msg 63 104 rect blue 125 150 9 50;
+#X text 205 104 draw a rectangle with args: color x y width height
+;
+#X msg 76 132 move 2 50 50 50 50;
+#X text 195 131 move an element with args: element# x y width height
+;
+#X text 211 211 delete an element from the canvas;
+#X msg 79 210 reset;
+#X msg 83 172 move 2 50 \$1 50 50;
+#X obj 86 153 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#N canvas 314 154 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 145 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control GUI;
+#X text 12 45 DESCRIPTION rectangle to detect mouse position;
+#X text 12 65 INLET_0 color line rect move reset delete;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X restore 472 504 pd META;
+#X connect 1 0 0 0;
+#X connect 1 1 2 0;
+#X connect 1 2 9 0;
+#X connect 9 0 6 0;
+#X connect 10 0 1 0;
+#X connect 11 0 1 0;
+#X connect 13 0 1 0;
+#X connect 14 0 1 0;
+#X connect 16 0 1 0;
+#X connect 18 0 1 0;
+#X connect 21 0 1 0;
+#X connect 22 0 1 0;
+#X connect 23 0 22 0;

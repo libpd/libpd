@@ -1,0 +1,16 @@
+#N canvas 1 53 411 335 10;
+#X obj 65 27 inlet;
+#X obj 65 276 outlet;
+#X obj 212 276 outlet;
+#X obj 217 27 inlet;
+#X obj 217 89 purepd/float_argument \$1 0.5;
+#X obj 232 59 loadbang;
+#X obj 65 205 mapping/reverse;
+#X obj 65 178 mapping/disjoin;
+#X connect 0 0 7 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 1;
+#X connect 5 0 4 0;
+#X connect 6 0 1 0;
+#X connect 7 0 6 0;
+#X connect 7 1 2 0;

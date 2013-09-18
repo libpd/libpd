@@ -1,0 +1,71 @@
+pdluax
+====
+
+The pdluax class allows "volatile" loading of Lua source code files
+that define Pd object behaviour.
+
+The [pdluax foo] object loads "foo.pd_luax" at object creation time.
+
+
+Advantages
+----------
+
++ You can edit "foo.pd_luax" and new [pdluax foo] objects will reflect
+  the changes in the file.
+
++ Good for rapid development/testing cycles.
+
++ Good for live coding.
+
++ No need to restart Pd if you made a little mistake.
+
+
+Disadvantages
+-------------
+
+- Reloading the file each time is slower.
+
+- Syntax is different to the syntax expected by the Lua loader
+  (see below for discussion).
+
+- There is no "reload" functionality, so you can have multiple
+  objects called [pdluax foo] but that have different behaviours.
+
+- Data shared between objects must be accessible globally.
+
+- The above two points mean some mistakes/changes mean you have
+  to restart Pd anyway.
+
+
+How To Write Code For pdluax
+--------------------------
+
+The last expression/statement in the file should be of the form:
+
+    return function (self, sel, atoms)
+      -- code here
+    end
+
+This function is executed in the context of the 'initialize'
+method of the pdluax class, and has the same arguments:
+
+    'self' is the object to be created.
+    'sel' is the name of the class.
+    'atoms' are the creation arguments.
+
+To add methods to the new object you need to add code inside
+the returned function.  There are two syntaxes for this:
+
+    function self:in_1_float(f) ... end
+
+or
+
+    self.in_1_float = function(self, f) ... end
+
+If using the second form, remember the self argument.
+
+If you need a shared state between objects, you need to use a
+global name.  Try to pick something unique to avoid conflicts
+with other scripts.  You also need to ensure that you don't
+clobber this state - remember the script can be executed more
+than once.

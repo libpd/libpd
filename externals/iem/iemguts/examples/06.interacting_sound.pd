@@ -1,0 +1,50 @@
+#N canvas 359 15 640 654 10;
+#X obj 15 88 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+;
+#X obj 426 27 namecanvas \$0-canvas;
+#X obj 15 127 s tick;
+#X obj 15 107 metro 100;
+#X obj 197 324 valX~ \$0;
+#X obj 12 255 s automove;
+#X obj 12 234 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X msg 450 62 \; pd dsp 1;
+#X text 50 87 <-- turn auto-connect on;
+#X text 109 170 select a [FM~] object and move it around to see what
+it does.;
+#X text 49 237 <-- let the agents move around by themselves;
+#X text 81 202 see here for a description of the agents:;
+#N canvas 59 213 619 385 agents 0;
+#X obj 56 288 sink~;
+#X text 115 291 sends the incoming signal to the specified [dac~];
+#X text 36 108 sources:;
+#X obj 479 74 valX~;
+#X text 122 132 generates a signal which holds the horizontal position
+of the object;
+#X obj 410 68 valY~;
+#X text 122 162 generates a signal which holds the vertical position
+of the object;
+#X text 36 270 sinks:;
+#X text 32 208 effects:;
+#X obj 435 44 FM~;
+#X text 121 219 simple FM-modulator \; it's position determines the
+modulation index and the modulation frequency \; the inlet~ is the
+carrier \; if no signal is at the inlet~ \, a sine-wave with the specified
+frequency is generated as carrier.;
+#X text 24 6 available agents;
+#X text 112 59 the other arguments can be used to parameterize the
+agent.;
+#X text 110 23 the first argument of all agents MUST be "\$0" in order
+to communicate with the parent patch;
+#X restore 377 201 pd agents;
+#X obj 595 14 FM~ \$0 600;
+#X obj 271 555 sink~ \$0 1;
+#X text 109 111 when you turn "auto-connect" on \, each agent will
+try to connect itself (that is: its outlet~) with the nearest other
+agent (that is: its inlet~). Agents that are too far away cannot be
+connected too.;
+#X text 54 15 interacting sound agents;
+#X connect 0 0 3 0;
+#X connect 3 0 2 0;
+#X connect 4 0 14 0;
+#X connect 6 0 5 0;

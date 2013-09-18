@@ -1,0 +1,18 @@
+Source: pd-log
+Section: sound
+Priority: optional
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 7.0.50~),
+               puredata
+Standards-Version: 3.9.1
+Homepage: http://puredata.info
+
+Package: pd-log
+Architecture: any
+Depends: ${shlibs:Depends},
+         pd,
+         pd-libdir,
+         ${misc:Depends}
+Recommends: pd-import
+Description: 

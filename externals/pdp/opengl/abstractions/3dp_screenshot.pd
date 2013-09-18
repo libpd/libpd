@@ -1,0 +1,21 @@
+#N canvas 550 41 714 494 10;
+#X obj 193 284 pdp_reg;
+#X obj 193 203 pdp_t b p;
+#X obj 193 233 symbol \$1;
+#X msg 193 257 save_png \$1;
+#X obj 195 110 loadbang;
+#X msg 195 135 autosnap 0;
+#X obj 51 111 inlet;
+#X obj 51 176 3dp_snap bitmap/rgb/*;
+#X obj 51 285 outlet;
+#X text 41 22 make a screenshot of a 3dp context. creation argument
+is filename. send a bang to take a snapshot.;
+#X connect 1 0 2 0;
+#X connect 1 1 0 1;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 7 1 1 0;

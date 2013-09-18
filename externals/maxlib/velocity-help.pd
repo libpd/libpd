@@ -1,0 +1,24 @@
+#N canvas 0 26 454 244 12;
+#X text 30 16 velocity :: get velocity of digits per second;
+#X obj 50 137 velocity;
+#X floatatom 50 72 5 0 0 0 - - -;
+#X floatatom 50 187 8 0 0 0 - - -;
+#X text 150 77 sending a float every second would;
+#X text 151 95 result in a velocity of 1 \, higher;
+#X text 151 114 rates produce higher velocities;
+#X msg 65 102 bang;
+#X text 151 148 originally written for Max by;
+#X text 151 164 Trond Lossius \, BEK;
+#N canvas 293 158 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control random;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION get velocity of digits per second;
+#X text 12 65 INLET_0 bang float;
+#X restore 390 214 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 7 0 1 0;

@@ -1,0 +1,39 @@
+#N canvas 0 26 323 315 10;
+#X text 28 48 dsp ON/OFF;
+#X floatatom 45 225 7 0 0 0 - - -;
+#X floatatom 46 119 7 0 0 0 - - -;
+#X floatatom 11 88 5 0 0 0 - - -;
+#X text 46 87 % cpu;
+#X obj 11 68 dsp;
+#X obj 11 48 tgl 15 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X text 9 5 round~;
+#X obj 46 141 sig~;
+#X obj 46 170 round~;
+#X obj 45 203 unsig~;
+#X text 96 168 no arg;
+#X text 76 16 a signal-integer-number;
+#X text 73 5 signal-float-rounding to;
+#X text 115 278 IEM KUG;
+#X text 99 266 musil;
+#X text 129 266 @;
+#X text 135 266 iem.at;
+#X text 50 255 (c) Thomas Musil 2000 - 2005;
+#X text 98 288 Graz \, Austria;
+#N canvas 333 26 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 5 KEYWORDS signal conversion;
+#X text 12 45 DESCRIPTION signal-float-rounding to a signal-integer-number
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X restore 266 287 pd META;
+#X connect 2 0 8 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 1 0;

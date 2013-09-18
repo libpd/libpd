@@ -1,0 +1,89 @@
+#N canvas 165 58 563 577 10;
+#X obj 4 529 cnv 15 550 20 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 4 -17 cnv 15 550 40 empty \$0-pddp.cnv.header keyboard_light
+3 12 0 18 -241536 -1 0;
+#X obj 3 239 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 15 12 0 13
+-245500 -191407 0;
+#N canvas 779 22 494 344 META 0;
+#X text 12 25 KEYWORDS control number float store;
+#X text 12 45 LICENSE GPL;
+#X text 12 65 TEMPLATE template-help.pd v0.1;
+#X text 12 85 PLATFORM windows macosx gnulinux;
+#X text 12 105 DATATYPE float list;
+#X text 12 5 GENRE storage;
+#X text 12 125 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 165 RELEASE_DATE 2007-08-24;
+#X text 12 185 RELEASE_VERSION 0.40-test05;
+#X restore 504 531 pd META;
+#X obj 3 359 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlet 15 12 0
+13 -245500 -191407 0;
+#X obj 3 409 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 15 12
+0 13 -245500 -191407 0;
+#X obj 3 469 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 15
+12 0 13 -245500 -191407 0;
+#X obj 72 325 cnv 17 3 20 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X obj 72 259 cnv 17 3 60 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#N canvas 309 454 609 478 guts 0;
+#X obj 117 95 textfile;
+#X msg 116 24 symbol template-HCS.pd;
+#X msg 116 54 read \$1 \, rewind \, bang;
+#X obj 117 141 trigger bang anything;
+#X obj 58 117 bang;
+#X obj 240 162 route #X;
+#X obj 240 183 route text;
+#X obj 240 250 route DESCRIPTION;
+#X obj 239 276 print;
+#X obj 140 277 print TEXT;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 3 1 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X restore 453 531 pd guts;
+#X obj 412 6 pddp/pddplink http://wiki.puredata.info/en/apple/keyboard_light
+-text pdpedia: keyboard_light;
+#X text 15 6 description: query and control the keyboard lights on
+Apples;
+#X obj 426 -14 apple/keyboard_light;
+#X msg 125 39 bang;
+#X obj 158 70 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 10 -204786
+-1 -1 0 0;
+#X floatatom 135 214 5 0 0 0 - - -;
+#X obj 135 177 apple/keyboard_light;
+#X text 293 69 light level;
+#X obj 255 91 hsl 128 15 40 4000 1 0 empty empty empty -2 -6 0 10 -204800
+-1 -1 0 0;
+#X text 390 90 fade time;
+#X floatatom 261 110 5 0 0 0 - - -;
+#X floatatom 164 93 5 0 0 0 - - -;
+#X text 209 136 set level and fade as a list;
+#X msg 164 147 0 50;
+#X msg 160 125 1 1000;
+#X text 167 38 get current level;
+#X text 102 298 list - set the keyboard light level and fade time in
+ms;
+#X text 102 325 float - set the fade time in milliseconds (ms);
+#X text 103 377 float - the current keyboard light level (between 0
+and 1);
+#X text 102 278 float - set the keyboard light level (between 0 and
+1);
+#X text 102 258 bang - output current keyboard light level;
+#X text 102 427 Accepts two floats as arguments \, the first sets the
+keyboard light level \, the second sets the fade time.;
+#X obj 104 495 pddp/pddplink http://www.osxbook.com/book/bonus/chapter10/light/
+;
+#X connect 13 0 16 0;
+#X connect 14 0 16 0;
+#X connect 14 0 21 0;
+#X connect 16 0 15 0;
+#X connect 18 0 16 1;
+#X connect 18 0 20 0;
+#X connect 23 0 16 0;
+#X connect 24 0 16 0;

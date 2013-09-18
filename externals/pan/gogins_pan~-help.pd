@@ -1,0 +1,44 @@
+#N canvas 0 31 519 390 10;
+#X obj 5 2 cnv 15 450 20 empty empty gogins_pan~ 2 11 1 18 -233017
+-66577 0;
+#X msg 422 3 pddp;
+#X obj 224 149 hsl 128 20 0 1 0 1 empty empty pan_position 6 10 1 11
+-262131 -1 -1 1100 0;
+#X obj 113 131 osc~ 250;
+#X obj 113 152 *~ 0.5;
+#X obj 362 186 tgl 25 0 empty empty DSP 3 12 1 9 -24198 -1 -1 0 1;
+#X msg 362 218 \; pd dsp \$1;
+#X text 17 82 The left inlet takes the audio signal and the right inlet
+takes the control signal with 0 = left \, 1 = right \, and 0.5 = center.
+;
+#X obj 122 231 dac~ 1 2;
+#X obj 114 187 gogins_pan~;
+#X text 15 36 Pan a mono signal using an algorithm posted by Michael
+Gogins to the Csound list. The aim is to have the pan feel like its
+wrapping around more.;
+#X text 27 350 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 364 released under the GNU GPL;
+#X text 40 277 [gogins_pan~] implements an algorithm conceived by Michael
+Gogins and described here:;
+#X obj 22 324 pddp/pddplink http://www.csounds.com/ezine/autumn1999/beginners/
+;
+#N canvas 504 253 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 155 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS signal abstraction;
+#X text 12 95 INLET_1 float;
+#X text 12 75 INLET_0 signal;
+#X text 12 115 OUTLET_0 signal;
+#X text 12 135 OUTLET_1 signal;
+#X text 12 45 DESCRIPTION pan a mono signal using an algorithm posted
+by Michael Gogins to the Csound list;
+#X restore 463 358 pd META;
+#X connect 2 0 9 1;
+#X connect 3 0 4 0;
+#X connect 4 0 9 0;
+#X connect 5 0 6 0;
+#X connect 9 0 8 0;
+#X connect 9 1 8 1;

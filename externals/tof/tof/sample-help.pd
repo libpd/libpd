@@ -1,0 +1,53 @@
+#N canvas 1 53 683 625 10;
+#X obj 47 141 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 44 17 Description: Loads a sound file (wav) as a sample;
+#X text 45 34 Tags: File Sound Table Sample;
+#X obj 84 559 tof/sample_unpack;
+#X text 51 66 Inlet 1;
+#X text 325 160 symbol: Sample name;
+#X text 285 146 Argument 1;
+#X text 69 79 read symbol: Read sound file into the sample's tables
+;
+#X text 281 189 Argument 2 (optional):;
+#X text 324 206 symbol: Sound file to read into the sample's tables
+when created;
+#X text 323 236 float: Set the default length of the sample's tables
+;
+#X text 278 260 Argument 3 (optional):;
+#X text 319 276 float: Set a default number of channels \, either 1
+or 2;
+#X text 51 307 The following example creates a mono (1 channel) sample
+with a table size of 441000 (10 seconds at 44100hz);
+#X text 62 389 Sample playback:;
+#X text 56 533 Sample development:;
+#X obj 84 579 tof/sample_packel;
+#X text 327 398 Sample record:;
+#X obj 31 200 cnv 15 230 20 empty empty empty 20 12 0 14 -260058 -66577
+0;
+#X msg 73 141 read ../../doc/sound/voice.wav;
+#X obj 47 177 tof/sample test ../../doc/sound/voice.wav;
+#X text 71 95 bang: Display open panel;
+#X obj 79 505 tof/sample_shifft~;
+#X obj 80 481 tof/sample_granule~;
+#X obj 53 341 tof/sample empty 441000 1;
+#X obj 350 419 tof/sample_record~;
+#X obj 80 450 dac~;
+#X obj 80 428 tof/sample_play~ test;
+#X obj 80 410 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 45 201 Click on [tof/sample] to view info;
+#N canvas 339 248 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 45 DESCRIPTION load a sound file (wav) as a sample;
+#X text 12 5 KEYWORDS control abstraction array soundfile;
+#X text 12 65 INLET_0 bang read;
+#X restore 629 571 pd META;
+#X connect 0 0 20 0;
+#X connect 19 0 20 0;
+#X connect 27 0 26 0;
+#X connect 27 1 26 1;
+#X connect 28 0 27 0;

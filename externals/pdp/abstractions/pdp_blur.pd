@@ -1,0 +1,27 @@
+#N canvas 344 526 521 227 10;
+#X obj 26 33 inlet;
+#X obj 26 174 outlet;
+#X obj 26 134 pdp_bq;
+#X obj 70 66 pdp_ut_addscaleclip -1 -0.5 0.05 0.48;
+#X obj 70 33 inlet;
+#X msg 181 34 2;
+#X msg 70 98 lpf \$1 0.25;
+#X msg 136 34 0;
+#X obj 136 10 loadbang;
+#X msg 163 98 hor 1;
+#X msg 209 98 ver 1;
+#X text 100 138 this uses pdp_bq as a 2 pass lowpass filter to produce
+a blur effect in all directions;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 1;
+#X connect 6 0 2 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 0;
+#X connect 8 0 5 0;
+#X connect 8 0 9 0;
+#X connect 8 0 10 0;
+#X connect 9 0 2 0;
+#X connect 10 0 2 0;

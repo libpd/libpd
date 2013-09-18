@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+LIBRARY_NAME = template
+PACKAGE = pd-$(LIBRARY_NAME)
+pkglibdir = /usr/lib/pd/extra
+
+%:
+	dh $@ --buildsystem=makefile
+
+override_dh_auto_install:
+	dh_auto_install -- prefix=/usr pkglibdir=$(pkglibdir)
+# replace license file with link to the Debian license file
+	rm -f -- $(CURDIR)/debian/$(PACKAGE)/$(pkglibdir)/$(LIBRARY_NAME)/LICENSE.txt
+
+override_dh_shlibdeps:
+	dpkg-shlibdeps $(CURDIR)/debian/$(PACKAGE)$(pkglibdir)/$(LIBRARY_NAME)/*.pd_linux \
+		-T$(CURDIR)/debian/$(PACKAGE).substvars

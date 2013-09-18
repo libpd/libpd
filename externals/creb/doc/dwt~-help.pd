@@ -1,0 +1,84 @@
+#N canvas 0 26 952 611 10;
+#X obj 17 62 osc~ 500;
+#X msg 83 -115 predict 0.5 0.5 \, update 0.25 0.25;
+#X msg 83 -76 predict -0.0625 0.5625 0.5625 -0.0625 \, update -0.03125
+0.28125 0.28125 -0.03125;
+#X floatatom 24 10 5 0 0 0 - - -;
+#X msg 201 144 mask -1 9 9 -1;
+#X obj 67 279 r coef;
+#X obj 82 -30 s coef;
+#X obj 195 337 s coef;
+#X msg 201 167 mask 3 -25 150 150 -25 3;
+#X msg 216 189 mask -5 49 -245 1225 1225 -245 49 -5;
+#X obj 196 39 pack;
+#X floatatom 222 8 5 0 0 0 - - -;
+#X floatatom 166 -4 5 0 0 0 - - -;
+#X msg 171 64 coef \$1 \$2;
+#X msg 191 120 mask 1 1;
+#X msg 228 212 mask 35 -405 2268 -8820 39690 39690 -8820 2268 -405
+35;
+#X msg 244 246 mask -63 847 -5445 22869 -76230 320166 320166 -76230
+22869 -5445 847 -63;
+#X msg 245 306 predict 1 0 \, update 0 0.5;
+#X obj 36 31 * 187.5;
+#X obj 26 341 dwt~ 1;
+#X obj 80 343 idwt~ 1;
+#X msg 469 376 mask 0 0 0 35 140 -70 28 -5;
+#X msg 469 352 mask 7 -45 126 -210 315 63 0 0 0 0;
+#X msg 469 328 mask -21 154 -495 924 -1155 1386 231 0 0 0 0 0;
+#X obj 26 443 tabsend~ scope;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array scope 256 float 0;
+#X coords 0 1 255 -1 200 140 1;
+#X restore 718 -98 graph;
+#X text 61 165 print out coefs;
+#X msg 100 184 print;
+#X text 315 -24 dwt~ performs a discrete wavelet transform;
+#X text 315 -10 idwt~ performs the inverse transform;
+#X text 309 105 mask sets the predict mask \, and uses the corresponding
+update mask;
+#X text 266 63 coef sets half of a symmetric predict mask;
+#X text 243 286 predict and update masks can be specified explicitly
+;
+#X text 433 307 haar wavelet;
+#X msg 672 189 even \$1;
+#X floatatom 672 167 5 0 0 0 - - -;
+#X text 570 134 even <n> is the order symmetric interpolating biorthogonal
+wavelet with n vanishing moments.;
+#N canvas 379 254 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 KEYWORDS signal;
+#X text 12 65 DESCRIPTION dwt~ performas a descrete wavelet transform/
+idwt~ performs the inverse transform;
+#X text 12 95 INLET_0 signal print mask predict update even;
+#X text 12 5 NAME dwt~ idwt~;
+#X text 12 115 OUTLET_0 signal;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 135 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 884 465 pd META;
+#X connect 0 0 19 0;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 3 0 18 0;
+#X connect 4 0 7 0;
+#X connect 5 0 20 0;
+#X connect 5 0 19 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 13 0;
+#X connect 11 0 10 1;
+#X connect 12 0 10 0;
+#X connect 13 0 7 0;
+#X connect 14 0 7 0;
+#X connect 15 0 7 0;
+#X connect 16 0 7 0;
+#X connect 17 0 7 0;
+#X connect 18 0 0 0;
+#X connect 19 0 24 0;
+#X connect 21 0 7 0;
+#X connect 22 0 7 0;
+#X connect 23 0 7 0;
+#X connect 27 0 7 0;
+#X connect 34 0 7 0;
+#X connect 35 0 34 0;

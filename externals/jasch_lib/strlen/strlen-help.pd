@@ -1,0 +1,9 @@
+#N canvas 321 143 454 304 10;
+#X obj 321 41 import jasch_lib;
+#X obj 144 139 strlen;
+#X msg 143 43 alpha;
+#X floatatom 145 223 5 0 0 0 - - -;
+#X obj 144 68 tosymbol;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 4 0 1 0;

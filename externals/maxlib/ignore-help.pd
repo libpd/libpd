@@ -1,0 +1,27 @@
+#N canvas 0 26 464 328 12;
+#X floatatom 47 107 5 0 0 0 - - -;
+#X floatatom 47 225 5 0 0 0 - - -;
+#X text 122 197 creation argument = time in ms;
+#X floatatom 122 136 5 0 0 0 - - -;
+#X obj 47 167 ignore 500;
+#X text 177 136 time in ms a value has to;
+#X text 178 152 be present in order to get through;
+#X text 75 24 ignore :: lets information through;
+#X text 155 59 at input longer than N ms;
+#X text 73 258 note: input gets delayed by N milliseconds;
+#N canvas 481 26 494 344 META 0;
+#X text 12 160 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 140 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 100 INLET_1 float;
+#X text 12 120 OUTLET_0 float;
+#X text 12 5 KEYWORDS control filter;
+#X text 12 45 DESCRIPTION lets information through only when it was
+present at input longer than N ms;
+#X text 12 80 INLET_0 float;
+#X restore 392 294 pd META;
+#X text 154 41 only when it was present;
+#X connect 0 0 4 0;
+#X connect 3 0 4 1;
+#X connect 4 0 1 0;

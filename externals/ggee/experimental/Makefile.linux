@@ -1,0 +1,34 @@
+NAME=stk
+current: pd_linux
+
+# TARGETS += stk
+
+PDDIR = /usr/local/lib/pd
+INSTALLPATH = $(PDDIR)/extra
+VERSION = \"0.16\"
+
+# ----------------------- Linux -----------------------
+
+pd_linux: $(NAME).pd_linux
+
+.SUFFIXES: .pd_linux
+
+LINUXCFLAGS = -ggdb -DPD -O3 -fPIC -funroll-loops -fomit-frame-pointer \
+    -W -Wshadow -Wno-unused -Wno-parentheses -Wno-switch
+
+LINUXINCLUDE =  -I/usr/include -I/usr/local/include/stk
+
+.cpp.pd_linux:
+	g++ $(LINUXCFLAGS) $(LINUXINCLUDE) -c $(NAME).cpp
+	g++ -Wl,--export-dynamic  -shared -o $(NAME).pd_linux $(NAME).o -lc -lstk
+	strip --strip-unneeded $(NAME).pd_linux
+	rm -f *.o
+# -------------------------------------------------------
+
+clean:
+	rm *.pd_linux
+
+install:
+	cp $(NAME).pd_* $(INSTALLPATH)
+	install -d  $(PDDIR)/doc/5.reference/$(NAME)-help.pd
+

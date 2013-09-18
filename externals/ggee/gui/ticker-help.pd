@@ -1,0 +1,28 @@
+#N canvas 0 22 489 266 10;
+#X obj 76 108 ticker ;
+#X text 25 21 [ticker] is a OS-native checkbox;
+#X obj 44 70 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 75 69 bang;
+#X floatatom 75 157 5 0 0 0 - - -;
+#X obj 44 158 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#N canvas 188 140 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control GUI;
+#X text 12 45 DESCRIPTION OS-native checkbox;
+#X text 12 65 INLET_0 bang float;
+#X text 12 85 OUTLET_0 float;
+#X restore 431 238 pd META;
+#X text 186 66 A single symbol argument sets the label;
+#X text 208 88 [ticker my_label] will create:;
+#X obj 249 119 ticker my_label;
+#X text 49 195 Note: moving the object is a little awkward-- try creating
+a bounding box around the object first \, then click and drag.;
+#X connect 0 0 4 0;
+#X connect 0 0 5 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;

@@ -1,0 +1,34 @@
+#N canvas 0 26 344 220 10;
+#X obj 10 71 symbol;
+#X msg 10 44 blabla;
+#X obj 10 99 print a;
+#X obj 88 71 symbol;
+#X msg 88 44 foo3;
+#X obj 88 125 print b;
+#X obj 158 100 unsym;
+#X obj 88 100 unsymbol;
+#X text 72 17 to an anything selector;
+#X text 2 4 unsymbol: converts a symbol;
+#X text 225 100 no arg.;
+#X text 105 188 IEM KUG;
+#X text 89 176 musil;
+#X text 119 176 @;
+#X text 125 176 iem.at;
+#X text 40 165 (c) Thomas Musil 2000 - 2005;
+#X text 88 198 Graz \, Austria;
+#N canvas 218 142 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION converts a symbol to an anything selector
+;
+#X text 12 5 KEYWORDS control symbol_op deprecated;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 OUTLET_0 anything;
+#X restore 289 194 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 7 0;
+#X connect 4 0 3 0;
+#X connect 7 0 5 0;

@@ -1,0 +1,7 @@
+#N canvas 1 44 450 300 10;
+#X obj 35 50 inlet;
+#X obj 35 96 outlet;
+#X obj 35 73 * 2;
+#X text 141 50 Another patch on the web.;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

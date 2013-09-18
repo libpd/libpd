@@ -1,0 +1,151 @@
+#N canvas 0 26 753 369 10;
+#X floatatom 25 166 4 0 0 0 - - -;
+#X obj 25 191 iem_i_route 3 7;
+#X obj 25 227 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144 -1
+-1;
+#X obj 45 227 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144 -1
+-1;
+#X obj 65 227 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144 -1
+-1;
+#X obj 85 227 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144 -1
+-1;
+#X obj 105 227 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144
+-1 -1;
+#X floatatom 133 219 4 0 0 0 - - -;
+#X obj 133 244 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144
+-1 -1;
+#X floatatom 201 165 4 0 0 0 - - -;
+#X obj 569 132 print rejected;
+#X floatatom 469 20 4 0 0 0 - - -;
+#X obj 191 234 iiroute 2 5 _______;
+#X obj 191 212 pack 0 0;
+#X obj 201 187 t f f;
+#X floatatom 191 260 2 0 0 0 - - -;
+#X obj 191 285 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144
+-1 -1;
+#X floatatom 223 260 2 0 0 0 - - -;
+#X obj 223 285 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144
+-1 -1;
+#X floatatom 255 260 2 0 0 0 - - -;
+#X obj 255 285 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144
+-1 -1;
+#X floatatom 287 260 2 0 0 0 - - -;
+#X obj 287 285 bng 15 250 50 0 empty empty empty 20 8 0 10 -262144
+-1 -1;
+#X obj 319 260 print rejected;
+#X obj 469 42 t f b f;
+#X obj 469 86 pack 0 s 0;
+#X obj 487 65 symbol gain;
+#X obj 469 108 iiroute 4 6 10;
+#X floatatom 469 300 5 0 0 0 - - -;
+#X floatatom 495 239 5 0 0 0 - - -;
+#X obj 469 318 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 319 282 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 495 257 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 521 178 5 0 0 0 - - -;
+#X obj 521 196 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 550 133 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 521 156 route gain delay;
+#X obj 495 218 route gain delay;
+#X obj 469 278 route gain delay;
+#X floatatom 566 176 5 0 0 0 - - -;
+#X obj 566 194 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 540 239 5 0 0 0 - - -;
+#X obj 540 257 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 514 300 5 0 0 0 - - -;
+#X obj 514 318 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 620 7 4 0 0 0 - - -;
+#X obj 620 29 t f b f;
+#X obj 624 93 pack 0 s 0;
+#X obj 638 52 symbol delay;
+#X obj 718 47 - 8;
+#X text 53 69 1.arg: <int> first route-item;
+#X text 53 82 2.arg: <int> last route-item;
+#X text 11 8 iem_i_route;
+#X text 102 8 route only list with prepending floats (integers);
+#X text 215 106 (opt. \, default 0);
+#X text 53 94 3.arg: <int> offset \, adding to first and last;
+#X obj 562 62 - 5;
+#X text 76 335 IEM KUG;
+#X text 60 323 musil;
+#X text 90 323 @;
+#X text 96 323 iem.at;
+#X text 11 312 (c) Thomas Musil 2000 - 2005;
+#X text 59 345 Graz \, Austria;
+#N canvas 218 142 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 155 AUTHOR Thomas Musil;
+#X text 12 45 LICENSE LGPL v2.1;
+#X text 12 65 DESCRIPTION route only list with prepending floats (
+integers );
+#X text 12 95 INLET_0 list float;
+#X text 12 115 OUTLET_N anything;
+#X text 12 135 OUTLET_R anything;
+#X text 12 5 ALIAS iiroute;
+#X text 12 25 KEYWORDS control anything_op;
+#X restore 696 343 pd META;
+#X obj 11 33 iem_i_route 1 2;
+#X text 120 33 or;
+#X obj 154 35 iiroute 1 2;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 1 3 5 0;
+#X connect 1 4 6 0;
+#X connect 1 5 7 0;
+#X connect 7 0 8 0;
+#X connect 9 0 14 0;
+#X connect 11 0 24 0;
+#X connect 12 0 15 0;
+#X connect 12 1 17 0;
+#X connect 12 2 19 0;
+#X connect 12 3 21 0;
+#X connect 12 4 23 0;
+#X connect 12 4 31 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 14 1 13 1;
+#X connect 15 0 16 0;
+#X connect 17 0 18 0;
+#X connect 19 0 20 0;
+#X connect 21 0 22 0;
+#X connect 24 0 25 0;
+#X connect 24 1 26 0;
+#X connect 24 2 56 0;
+#X connect 25 0 27 0;
+#X connect 26 0 25 1;
+#X connect 27 0 38 0;
+#X connect 27 1 37 0;
+#X connect 27 2 36 0;
+#X connect 27 3 10 0;
+#X connect 27 3 35 0;
+#X connect 28 0 30 0;
+#X connect 29 0 32 0;
+#X connect 33 0 34 0;
+#X connect 36 0 33 0;
+#X connect 36 1 39 0;
+#X connect 37 0 29 0;
+#X connect 37 1 41 0;
+#X connect 38 0 28 0;
+#X connect 38 1 43 0;
+#X connect 39 0 40 0;
+#X connect 41 0 42 0;
+#X connect 43 0 44 0;
+#X connect 45 0 46 0;
+#X connect 46 0 47 0;
+#X connect 46 1 48 0;
+#X connect 46 2 49 0;
+#X connect 47 0 27 0;
+#X connect 48 0 47 1;
+#X connect 49 0 47 2;
+#X connect 56 0 25 2;

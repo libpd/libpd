@@ -1,0 +1,47 @@
+#N canvas 0 26 572 371 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 20 331 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 19 345 ___________________________________________________
+;
+#X obj 30 25 urn;
+#X text 75 26 rng without duplicate numbers;
+#X floatatom 243 249 5 0 0 0 - - -;
+#X obj 243 79 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 243 186 urn 4;
+#X msg 145 154 clear;
+#X floatatom 273 118 5 0 0 0 - - -;
+#X msg 143 113 seed \$1;
+#X floatatom 143 92 5 0 0 0 - - -;
+#X text 291 188 arg is number of different values to produce;
+#X text 318 119 clear rng and set new nr. of values;
+#X text 266 79 send out a random nr.;
+#X text 48 113 (re)seed rng;
+#X text 17 156 clear list of nrs;
+#X text 285 251 random output;
+#X obj 273 218 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 294 219 sent out all different values;
+#N canvas 247 115 494 418 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 175 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control storage max_compatible random;
+#X text 12 45 DESCRIPTION random number generator without duplicate
+numbers;
+#X text 12 75 INLET_0 seed clear bang;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 155 AUTHOR Krzysztof Czaja;
+#X restore 523 351 pd META;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 7 1 18 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 1;
+#X connect 10 0 7 0;
+#X connect 11 0 10 0;
