@@ -1,0 +1,12 @@
+0.5 (by rama)
+   changed "ispublic" option to true as default
+   added messages handling for setting stream info: url, genre, description, isPublic
+   (all was tested using icecast2)
+0.4
+   added icecast 2 compatibility
+0.3
+   renamed it to mp3cast
+0.2
+   fixed multi-encoding problem
+0.1
+   first implementation

@@ -1,0 +1,29 @@
+0.14
+  remove GOP support
+0.13
+  added GOP support
+0.12
+  adapted for pd 0.37
+0.11
+  allow backwards reading
+0.10
+  change allocation algorithm
+0.9
+  use copy buffers for cut and paste
+  one level undo on sonogram part with 'undo' message
+0.8
+  check boundaries before updating
+0.7
+  use static buffers to avoid some crashes 
+0.6
+  fixed simultaneous record/play to use it in a real-time chain
+0.5
+  even safer cut and paste code !!!
+0.4
+  safer cut and paste code
+0.3
+  added phasogram
+0.2
+  added transfroamtions
+0.1
+  first implementation

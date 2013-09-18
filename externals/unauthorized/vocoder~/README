@@ -1,0 +1,22 @@
+*****************************************************************************
+Version 0.1 
+copyleft 2002 by Yves Degoyon
+tarballs and updates available @ http://ydegoyon.free.fr
+
+vocoder~ : vocoder filter for PD inspired by xvox ( http://simon.morlat.free.fr )
+i used xvox version 0.2.1, but you don't need to install it,
+everything needed is bundled here.
+
+To install cooled~, follow the steps from INSTALL
+
+This software is published under GPL terms.
+
+This is software with ABSOLUTELY NO WARRANTY.
+Use it at your OWN RISK. It's possible to damage e.g. hardware or your hearing
+due to a bug or for other reasons. 
+We do not warrant that the program is free of infringement of any third-party
+patents.
+
+*****************************************************************************
+
+

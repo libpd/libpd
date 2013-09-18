@@ -1,0 +1,30 @@
+0.14
+  remove GOP support
+0.13
+  added GOP support
+0.12
+  adapted for pd 0.37
+0.11
+  prevent crashes during reallocation
+0.10
+  recopy previous data when resizing
+0.9
+  selection made more precise
+  loop moving/resizing functions
+0.8
+  add an option to disable drawing in order to save CPU
+0.7
+  changed allocation policy
+0.6
+  output samples number when selecting [ start and stop ]
+  fix bugs in cut & paste & resize
+0.5
+  forbid data access while resizing ( source of crashes )
+0.4
+  safer cut and paste code
+0.3
+  added "stereo" message to map mono to stereo
+0.2
+  pre-allocate all buffers : i think it can avoid some crashes
+0.1
+  first implementation

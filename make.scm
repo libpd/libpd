@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
   (set! packages (cons package packages)))
 
 
-(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c))
+(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c))
 
 
 (add-package    (store #:path "externals/vanilla/"
@@ -133,9 +133,82 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                                 pack.c packel.c pdf~.c prime.c quantize~.c rawprint.c regex.c relay.c repack.c 
                                 repeat.c route~.c sfplay.c sfrecord.c sgn~.c sigzero~.c sleepgrain.c sort.c 
                                 step~.c strcmp.c sum.c swap~.c symbol2list.c tabdump.c tabminmax.c tabread4~~.c 
-                                tabset.c tavg~.c time.c unpack~.c unpack.c urn.c wrap.c z~.c)
+                                tabset.c tavg~.c time.c unpack~.c unpack.c urn.c z~.c)
                     #:links '((multiplex~.c mux~.c))
                     #:cflags "-Dverbose=verbose_zexy -Dmux_tilde_tilde_setup=mux_tilde_setup"))
+
+;; Removed from zexy:
+;; * wrap.c (name clash with iem external, simpler to remove this)
+
+
+(add-package    (store #:path "externals/maxlib/"
+                    #:sources '(
+allow.c
+arbran.c
+arraycopy.c
+average.c
+beat.c
+beta.c
+bilex.c
+borax.c
+cauchy.c
+chord.c
+delta.c
+deny.c
+dist.c
+divide.c
+divmod.c
+edge.c
+expo.c
+fifo.c
+gauss.c
+gestalt.c
+history.c
+ignore.c
+iso.c
+lifo.c
+limit.c
+linear.c
+listfifo.c
+listfunnel.c
+match.c
+minus.c
+mlife.c
+multi.c
+nchange.c
+netclient.c
+netdist.c
+netrec.c
+netserver.c
+nroute.c
+pitch.c
+plus.c
+poisson.c
+pong.c
+pulse.c
+remote.c
+rewrap.c
+rhythm.c
+scale.c
+score.c
+step.c
+subst.c
+sync.c
+temperature.c
+tilt.c
+timebang.c
+triang.c
+unroute.c
+velocity.c
+weibull.c
+)
+                    #:links '((multiplex~.c mux~.c))
+                    #:cflags ""))
+
+;; Removed from maxlib:
+;; * speedlim.c, split.c  (name clash with iem)
+;; * wrap.c, urn.c (name clash with zexy)
+;; * maxlib.c (lot of work to make all links)
 
 (add-package    (store #:path "externals/bsaylor/"
                        #:sources '(aenv~.c partconv~.c pvoc~.c susloop~.c svf~.c zhzxh~.c)))
@@ -149,14 +222,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 
 ;; compile all c-files in directory.
 (for-each (lambda (externals-dir)
-            (let* ((links '((cmath~.c clog~.c)
+            (let* ((links '((cmath~.c clog~.c) ;; ((target link) ...)
                             (cmath~.c cexp~.c)
                             (mean~.c cxmean.c)
                             (mean~.c cxstddev.c)
                             (mean~.c cxavgdev.c)
                             (pvocfreq.c shuffle.c)
+                            (anything.c any.c)
+                            (forpp.c for_pp.c)
+                            (init.c ii.c)
+                            (iem_prepend.c pp.c)
+                            (toggle_mess.c tm.c)
+                            (unsymbol.c unsym.c)
                             ))
-                   (dontcompile (append '(abs~.c)
+                   (dontcompile (append '(abs~.c path.c speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c)
                                         (map cadr links)))
                    (c-files (filter (lambda (filename)
                                       (and (string-endswith filename ".c")
@@ -164,7 +243,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                                     (directory-files externals-dir))))
               (add-package (store #:path externals-dir
                                   #:sources c-files
-                                  #:cflags ""
+                                  #:cflags "-Iexternals/unauthorized/vocoder~"
                                   #:links links))))
           (map (lambda (dir)
                  (<-> "externals/" dir "/"))
@@ -172,6 +251,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                            ggee/control ggee/experimental ggee/filters ggee/signal
                            grh/adaptive/src hcs 
                            iem/comport/bird/ iem/comport/comport iem/iem_adaptfilt/src iem/iem_ambi/src iem/iem_bin_ambi/src iem/iem_delay/src iem/iem_roomsim/src iem/iem_spec2/src iem/iem_tab/src iem/iemguts/src iem/syslog iem/iemgui/src
+                           iem16/src iemlib/iemlib1/src iemlib/iemlib2/src iemlib/iem_mp3/src iemlib/iem_t3_lib/src   
+                           log mjlib moocow moonlib motex
+                           mrpeach/binfile mrpeach/cmos mrpeach/flist2tab mrpeach/life2x mrpeach/midifile mrpeach/osc mrpeach/runningmean mrpeach/slipdec
+                           mrpeach/slipenc mrpeach/str mrpeach/tab2flist mrpeach/tabfind mrpeach/which mrpeach/xbee
+                           pan pddp pdogg pmpd sigpack smlib tof/src unauthorized windowing
                            )))
 
 
@@ -180,6 +264,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 ;;     * boids 
 ;;     * ggee/gui
 ;;     * iem/mediasettings
+;;     * vbap
 ;;   * c++:
 ;;     * creb/modules++
 ;;     * grh/PDContainer
@@ -189,12 +274,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 ;;     * hcs/usbhid
 ;;     * hid
 ;;     * iem/iemnet 
+;;     * loaders/tclpd (also requires c99, which is perfectly fine, but requires some work to enable up just for this one)
+;;     * loaders/pdlua
+;;     * loaders/urloader
+;;     * miXed
+;;     * oscx
+;;     * pdp
+;;     * unauthorized/{speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c}
+;;   * Not sure if necessary:
+;;     * externals/loaders/hexloader
 ;;   * Requires Gem:
 ;;     * gem2pdp
+;;   * Requires iem/iemnet:
+;;     * mrpeach/net 
 ;;   * Name-clash with other package:
 ;;     * ggee/other (messages is also in ext13/)
+;;     * markex
+;;     * unauthorized/path
 ;;   * Doesnt compile right away (probably quite simple to fix):
 ;;     * iem/iemmatrix/src
+;;   * No statics, lots of compilation warnings:
+;;     * jasch_lib/detox jasch_lib/memchr jasch_lib/strchr jasch_lib/strcut jasch_lib/strlen jasch_lib/strtok jasch_lib/underscore
 #!
 (compile)
 !#

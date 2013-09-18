@@ -1,0 +1,8 @@
+0.4
+   fixed coordinates for GOP support
+0.3
+   Added GOP support
+0.2
+   Adapted for pd 0.37
+0.1
+   First filterbank~ implementation

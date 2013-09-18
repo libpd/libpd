@@ -1,0 +1,15 @@
+0.12
+  suppress useless warnings
+0.11
+  read all headers before proceeding -- this fixes incomplete relocation too
+0.10
+  fixed a bug/crash when the relocation is incomplete
+0.9
+  fixed handling of frames ( never ignore any, silly me!!! )
+0.8
+  rename it from shoutamp~ to mp3amp~
+0.7y
+  fixed resampling
+  fixed urls parsing
+0.6y and before
+  sorry N/A
