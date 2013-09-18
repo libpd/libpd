@@ -129,12 +129,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                     #:links '((multiplex~.c mux~.c))
                     #:cflags "-Dverbose=verbose_zexy -Dmux_tilde_tilde_setup=mux_tilde_setup"))
 
-(add-package    (store #:path "/home/kjetil/temp/pd-extended/externals/bsaylor/"
+(add-package    (store #:path "/home/ksvalast/pd-extended/externals/bsaylor/"
                        #:sources '(aenv~.c partconv~.c pvoc~.c susloop~.c svf~.c zhzxh~.c)))
 
 #!
 (for-each (lambda (single-package)
-            (add-package (store #:path (<-> "/home/kjetil/temp/pd-extended/externals/" single-package "/")
+            (add-package (store #:path (<-> "/home/ksvalast/pd-extended/externals/" single-package "/")
                                 #:sources (list (<-> single-package ".c")))))
           (map to-string '(freeverb~ arraysize bassemu~)))
 !#
@@ -158,7 +158,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                                   #:cflags ""
                                   #:links links))))
           (map (lambda (dir)
-                 (<-> "/home/kjetil/temp/pd-extended/externals/" dir "/"))
+                 (<-> "/home/ksvalast/pd-extended/externals/" dir "/"))
                '(freeverb~ arraysize bassemu~ chaos creb/modules cxc)))
 
 
@@ -215,7 +215,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 
 #!
 (my-system 'echo 'gakkgakk)
-(= 0 (my-system "gcc /home/kjetil/temp/pd-extended/externals/bsaylor/sse-conv.inc.c"))
+(= 0 (my-system "gcc /home/ksvalast/pd-extended/externals/bsaylor/sse-conv.inc.c"))
 !#
 
 (define (nth n l . valueifnot)
@@ -239,8 +239,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 (define packages-sources (map to-string (apply append (map (lambda (package) (package #:sources)) packages))))
 (define packages-links (apply append (map (lambda (package) (package #:links '())) packages)))
 
+(define (file-exists path)
+  (access? path R_OK))
+
+#!
+(file-exists "/tmp/radium_T29691.pd")
+(file-exists "/tmp/asdf")
+!#
+
+(define (file-writetime path)
+  (stat:mtime (stat path)))
+
+(define (needs-compilation source dest)
+  (or (not (file-exists dest))
+      (> (file-writetime source)
+         (file-writetime dest))))
+#!
+(file-writetime "/tmp/radium_T29691.pd")
+(file-writetime "/home/ksvalast/pd-extended/externals/zexy/src/atoi.c")
+(file-writetime "/home/ksvalast/libpd/externalobjs/atoi.c.o")
+(needs-compilation "externals/zexy/src/atoi.c" "/home/ksvalast/libpd/externalobjs/atoi.c.o")
+!#
+
 (define (compile-source path flags source)
-  (my-system CC CFLAGS flags (<-> "-Dsetup=setup_libpd_" (get-symname (to-string source)))  "-c" (<-> path source) "-o" (<-> objsdir "/" source ".o")))
+  (let ((fullsourcepath (<-> path source))
+        (fulldestpath (<-> objsdir "/" source ".o")))    
+    (if (needs-compilation fullsourcepath fulldestpath)
+        (my-system CC CFLAGS flags (<-> "-Dsetup=setup_libpd_" (get-symname (to-string source)))  "-c" fullsourcepath "-o" fulldestpath)
+        0)))
+        
 
 (define (compile-all-sources path flags sources)
   (if (null? sources)
