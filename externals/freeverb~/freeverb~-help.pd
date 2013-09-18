@@ -1,0 +1,231 @@
+#N canvas 0 26 596 570 10;
+#X msg -77 536 pddp;
+#X obj -173 4 cnv 15 90 553 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 316 127 613 636 More_Info 0;
+#X obj 451 407 metro 580;
+#X obj 479 429 delay 120;
+#X msg 479 450 0;
+#X obj 405 471 noise~;
+#X obj 435 494 *~;
+#X msg 450 450 1;
+#X msg 361 450 0;
+#X obj 317 494 *~;
+#X msg 332 450 1;
+#X obj 333 407 metro 700;
+#X obj 361 429 delay 200;
+#X obj 273 471 osc~ 400;
+#X obj 26 536 freeverb~;
+#X obj 43 562 dac~;
+#X obj 385 364 tgl 30 0 empty empty start 1 15 1 12 -90049 -1 -1 0
+1;
+#X obj 187 480 readsf~ 2;
+#X msg 177 413 open \$1;
+#X obj 177 394 openpanel;
+#X msg 269 363 \; pd dsp 1;
+#X obj 177 361 bng 30 250 50 0 empty empty open 1 15 1 12 -4080 -1
+-228;
+#X obj 177 432 t b a;
+#X msg 164 456 1;
+#X msg 25 42 roomsize \$1;
+#X msg 25 87 damping \$1;
+#X msg 25 131 width \$1;
+#X msg 25 175 wet \$1;
+#X msg 25 219 dry \$1;
+#X msg 59 242 print;
+#X msg 78 281 freeze \$1;
+#X msg 83 318 bypass \$1;
+#X obj 83 299 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 78 262 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 154 274 - start and stop "freeze" mode (off by default). If
+on \, reverb tail gets freezed (sample and hold).;
+#X obj 37 196 hsl 60 18 0 1 0 1 empty empty dry 2 9 1 12 -225271 -1
+-1 0 0;
+#X obj 37 152 hsl 60 18 0 1 0 1 empty empty wet 2 9 1 12 -225271 -1
+-1 1770 0;
+#X obj 37 108 hsl 60 18 0 1 0 1 empty empty width 2 9 1 12 -262131
+-1 -1 5900 0;
+#X obj 37 64 hsl 60 18 0 2 0 1 empty empty damping 2 9 1 12 -261689
+-1 -1 1475 0;
+#X obj 37 19 hsl 60 18 0.11 1.1 0 1 empty empty roomsize 2 9 1 12 -261689
+-1 -1 4410 0;
+#X text 117 18 - size of the room to be simulated. Larger values result
+in longer reverb. Values above 1 will result in feedback or 'room resonance'
+(i.e. reverb getting louder);
+#X floatatom 7 23 3 0 0 0 - - -;
+#X text 116 110 - stereo width of the reverb \, i.e. how much of the
+reverb part from the left and right channel mix. Turning this to 1
+(nearly gives two separate mono reverbs.;
+#X text 115 152 - level of the wet (reverbed) signal \, between 0 and
+1;
+#X text 113 197 - level of the dry (i.e. unprocessed or original) signal
+\, between 0 and 1 Note that wet and dry signals mix and thus can cause
+clipping if both are set at high levels.;
+#X text 115 242 - print the current values of these parameters.;
+#X text 157 305 - bypass reverb processing when set to 1 Can be used
+to compare reverbed signal with original signal \, and to save CPU
+when reverb is not needed.;
+#X floatatom 7 68 3 0 0 0 - - -;
+#X floatatom 7 113 3 0 0 0 - - -;
+#X floatatom 7 156 3 0 0 0 - - -;
+#X floatatom 7 200 3 0 0 0 - - -;
+#X text 114 65 - amount of damping of the room's surfaces. <=1 means
+nearly no damping \, resulting in a lot of reflection (long reverb)
+\, >1 means high damping of signals (short reverb).;
+#X connect 0 0 1 0;
+#X connect 0 0 5 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 1;
+#X connect 3 0 4 0;
+#X connect 4 0 12 1;
+#X connect 5 0 4 1;
+#X connect 6 0 7 1;
+#X connect 7 0 12 0;
+#X connect 8 0 7 1;
+#X connect 9 0 8 0;
+#X connect 9 0 10 0;
+#X connect 10 0 6 0;
+#X connect 11 0 7 0;
+#X connect 12 0 13 0;
+#X connect 12 1 13 1;
+#X connect 14 0 9 0;
+#X connect 14 0 0 0;
+#X connect 15 0 12 0;
+#X connect 15 1 12 1;
+#X connect 16 0 20 0;
+#X connect 17 0 16 0;
+#X connect 19 0 17 0;
+#X connect 20 0 21 0;
+#X connect 20 1 15 0;
+#X connect 21 0 15 0;
+#X connect 22 0 12 0;
+#X connect 23 0 12 0;
+#X connect 24 0 12 0;
+#X connect 25 0 12 0;
+#X connect 26 0 12 0;
+#X connect 27 0 12 0;
+#X connect 28 0 12 0;
+#X connect 29 0 12 0;
+#X connect 30 0 29 0;
+#X connect 31 0 28 0;
+#X connect 33 0 26 0;
+#X connect 33 0 48 0;
+#X connect 34 0 25 0;
+#X connect 34 0 47 0;
+#X connect 35 0 24 0;
+#X connect 35 0 46 0;
+#X connect 36 0 23 0;
+#X connect 36 0 45 0;
+#X connect 37 0 22 0;
+#X connect 37 0 39 0;
+#X restore -77 510 pd More_Info;
+#N canvas 85 22 403 252 Related_Objects 0;
+#X restore -77 484 pd Related_Objects;
+#X text -165 37 ARGUMENTS:;
+#X text -149 266 OUTLETS:;
+#X text -158 301 EXAMPLES:;
+#X text -161 483 SEE ALSO:;
+#X obj -162 12 freeverb~;
+#X text -142 219 INLETS:;
+#X text -73 12 stereo reverb using the Schroeder/Moorer model;
+#X text -75 245 Right: audio input for the right channel.;
+#X text -75 219 Left: audio input for the left channel and message
+input for settings messages.;
+#X text -75 266 Signal: the two outlets are the left and right channels
+of a stereo output pair.;
+#X obj 301 346 metro 580;
+#X obj 329 368 delay 120;
+#X msg 329 389 0;
+#X obj 255 410 noise~;
+#X obj 285 433 *~;
+#X msg 300 389 1;
+#X msg 211 389 0;
+#X obj 167 433 *~;
+#X msg 182 389 1;
+#X obj 183 346 metro 700;
+#X obj 211 368 delay 200;
+#X obj 123 410 osc~ 400;
+#X obj 167 461 freeverb~;
+#X obj 184 487 dac~;
+#X obj 235 303 tgl 30 0 empty empty start 1 15 1 12 -90049 -1 -1 0
+1;
+#X obj -1 432 readsf~ 2;
+#X msg -11 365 open \$1;
+#X obj -11 346 openpanel;
+#X obj -11 303 bng 30 250 50 0 empty empty open 1 15 1 12 -4080 -1
+-228;
+#X obj -11 384 t b a;
+#X msg -24 408 1;
+#X msg -74 40 roomsize \$1;
+#X msg -74 62 damping \$1;
+#X msg -74 84 width \$1;
+#X msg -74 106 wet \$1;
+#X msg -74 128 dry \$1;
+#X msg -74 150 print;
+#X msg -74 172 freeze \$1;
+#X msg -74 194 bypass \$1;
+#X text -11 149 - print the current values of the above parameters
+;
+#X text 2 172 - start/stop freeze of reverb tail \, using 1 or 0;
+#X text 6 193 - bypass the reverb processing \, using a 1 or 0;
+#N canvas 0 22 454 304 algorithm 0;
+#X text 32 52 freeverb~ is a simple implementation of the standard
+Schroeder/Moorer reverb model. It uses 8 comb filters in parallel on
+both channels. It then feeds the result of the reverb through 4 allpass
+filters in series on both channels. These "smooth" the sound. The filters
+on the right channel are slightly detuned compared to the left channel
+in order to create a stereo effect.;
+#X restore 19 510 pd algorithm notes;
+#X text -13 127 - level of unprocessed signal \, between 0 and 1 (default:
+0);
+#X text -9 106 - level of reverbed signal \, between 0 and 1 (default:
+0.3);
+#X text 13 61 - amount of damping of room's surfaces (default: 0.5)
+;
+#X text -5 85 - stereo width of reverb (default: 1);
+#X text 17 39 - size of the room to be simulated (default=0.85);
+#X text -29 537 Hans-Christoph Steiner 2005 \, based on Olaf Matthes'
+Max help;
+#X obj 98 310 pddp/dsp;
+#N canvas 457 122 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION stereo reverb using the Schroeder/Moorer
+model;
+#X text 12 65 INLET_0 signal roomsize damping width wet dry print freeze
+bypass;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 OUTLET_0 signal;
+#X text 12 135 OUTLET_1 signal;
+#X text 12 155 AUTHOR Olaf Matthes;
+#X restore 374 550 pd META;
+#X connect 14 0 15 0;
+#X connect 14 0 19 0;
+#X connect 15 0 16 0;
+#X connect 16 0 18 1;
+#X connect 17 0 18 0;
+#X connect 18 0 26 1;
+#X connect 19 0 18 1;
+#X connect 20 0 21 1;
+#X connect 21 0 26 0;
+#X connect 22 0 21 1;
+#X connect 23 0 22 0;
+#X connect 23 0 24 0;
+#X connect 24 0 20 0;
+#X connect 25 0 21 0;
+#X connect 26 0 27 0;
+#X connect 26 1 27 1;
+#X connect 28 0 23 0;
+#X connect 28 0 14 0;
+#X connect 29 0 26 0;
+#X connect 29 1 26 1;
+#X connect 30 0 33 0;
+#X connect 31 0 30 0;
+#X connect 32 0 31 0;
+#X connect 33 0 34 0;
+#X connect 33 1 29 0;
+#X connect 34 0 29 0;

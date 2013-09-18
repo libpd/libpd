@@ -1,0 +1,97 @@
+#N canvas 328 77 725 535 10;
+#X obj 61 392 dac~;
+#X text 248 290 CutOff;
+#X text 302 290 Reso;
+#X text 341 290 EnvMod;
+#X text 391 290 Decay;
+#X obj 262 227 loadbang;
+#X obj 493 306 vsl 25 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X msg 493 462 glide \$1;
+#X msg 619 303 tune \$1;
+#X floatatom 619 285 5 0 0 0 - - -;
+#X obj 619 325 s bass_ctl;
+#X msg 619 262 440;
+#X obj 72 291 r bass_ctl;
+#X text 658 285 Tune;
+#X text 487 291 Glide;
+#X obj 262 305 vsl 25 128 -1 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 9525 1;
+#X obj 308 305 vsl 25 128 -1 2 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7620 1;
+#X obj 354 305 vsl 25 128 -1 2 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7197 1;
+#X obj 400 305 vsl 25 128 -1 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6985 1;
+#X obj 446 305 vsl 25 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6350 1;
+#X msg 262 262 0.5;
+#X msg 308 262 0.8;
+#X msg 354 262 0.7;
+#X msg 400 262 0.1;
+#X msg 446 262 0.5;
+#X text 618 247 VCO Tuning:;
+#X msg 262 445 cutoff \$1;
+#X msg 308 465 reso \$1;
+#X obj 354 501 s bass_ctl;
+#X msg 354 441 envmod \$1;
+#X msg 400 461 decay \$1;
+#X msg 446 441 pw \$1;
+#X msg 79 322 reset;
+#X text 123 311 Emergency Reset;
+#X text 123 324 in case the filter;
+#X text 123 336 goes mad;
+#X text 444 280 Rect;
+#X text 441 290 Width;
+#X obj 493 441 / 127;
+#X msg 107 466 pitch \$1;
+#X obj 110 408 hsl 129 15 0 128 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 6400 1;
+#X obj 107 425 - 64;
+#X obj 107 485 s bass_ctl;
+#X obj 107 444 / 16;
+#X msg 107 389 64;
+#X obj 140 426 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X text 148 389 Pitch Bend;
+#X obj 30 25 miniseq;
+#X obj 72 359 bassemu~;
+#X connect 5 0 20 0;
+#X connect 5 0 21 0;
+#X connect 5 0 22 0;
+#X connect 5 0 23 0;
+#X connect 5 0 24 0;
+#X connect 5 0 11 0;
+#X connect 5 0 44 0;
+#X connect 6 0 38 0;
+#X connect 7 0 28 0;
+#X connect 8 0 10 0;
+#X connect 9 0 8 0;
+#X connect 11 0 9 0;
+#X connect 12 0 48 0;
+#X connect 15 0 26 0;
+#X connect 16 0 27 0;
+#X connect 17 0 29 0;
+#X connect 18 0 30 0;
+#X connect 19 0 31 0;
+#X connect 20 0 15 0;
+#X connect 21 0 16 0;
+#X connect 22 0 17 0;
+#X connect 23 0 18 0;
+#X connect 24 0 19 0;
+#X connect 26 0 28 0;
+#X connect 27 0 28 0;
+#X connect 29 0 28 0;
+#X connect 30 0 28 0;
+#X connect 31 0 28 0;
+#X connect 32 0 48 0;
+#X connect 38 0 7 0;
+#X connect 39 0 42 0;
+#X connect 40 0 41 0;
+#X connect 41 0 43 0;
+#X connect 43 0 39 0;
+#X connect 43 0 45 0;
+#X connect 44 0 40 0;
+#X connect 47 0 48 0;
+#X connect 48 0 0 0;
+#X connect 48 0 0 1;
