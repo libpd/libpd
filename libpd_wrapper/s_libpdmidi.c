@@ -76,3 +76,4 @@ void glob_midi_setapi(void *dummy, t_floatarg f) {}
 void glob_midi_properties(t_pd *dummy, t_floatarg flongform) {}
 void glob_midi_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv) {}
 
+void sys_putmidimess(int portno, int a, int b, int c){}

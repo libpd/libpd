@@ -35,6 +35,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
         (else
          something)))
 
+(define (to-symbol something)
+  (cond ((symbol? something) something)
+        (else
+         (string->symbol (to-string something)))))
 #!
 (map to-string '(50 50.2 gakkgakk "gakk"))
 !#
@@ -97,6 +101,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 (define (add-package package)
   (set! packages (cons package packages)))
 
+
+(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c))
+
+
 (add-package    (store #:path "externals/vanilla/"
                        #:sources '(adc~.c bang~.c bng.c cputime.c dac~.c delay.c fft~.c framp~.c ifft~.c key.c keyname.c keyup.c line.c list.c loadbang.c metro.c namecanvas.c netreceive.c netsend.c openpanel.c pipe.c print.c print~.c qlist.c random.c realtime.c rfft~.c rifft~.c savepanel.c textfile.c tgl.c timer.c vradio.c vsl.c vu.c midiin.c sysexin.c notein.c ctlin.c pgmin.c bendin.c touchin.c polytouchin.c midiclkin.c midirealtimein.c midiout.c noteout.c ctlout.c pgmout.c bendout.c touchout.c polytouchout.c makenote.c stripnote.c poly.c bag.c hradio.c hsl.c  cnv.c nbx.c)
   
@@ -146,6 +154,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                             (mean~.c cxmean.c)
                             (mean~.c cxstddev.c)
                             (mean~.c cxavgdev.c)
+                            (pvocfreq.c shuffle.c)
                             ))
                    (dontcompile (append '(abs~.c)
                                         (map cadr links)))
@@ -159,14 +168,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                                   #:links links))))
           (map (lambda (dir)
                  (<-> "externals/" dir "/"))
-               '(freeverb~ arraysize bassemu~ chaos creb/modules cxc)))
+               '(arraysize bassemu~ chaos creb/modules cxc earplug~ ekext ext13 flatgui freeverb~
+                           ggee/control ggee/experimental ggee/filters ggee/signal
+                           grh/adaptive/src hcs iem/iemgui/src
+                           )))
 
 
 ;; * Not compiled:
 ;;   * Does not use static:
 ;;     * boids 
+;;     * ggee/gui
 ;;   * c++:
 ;;     * creb/modules++
+;;     * grh/PDContainer
+;;   * Too complicated:
+;;     * Gem
+;;     * hcs/usbhid
+;;     * hid
+
+;;   * Requires Gem:
+;;     * gem2pdp
+;;   * Name-clash with other package:
+;;     * ggee/other (messages is also in ext13/)
 
 #!
 (compile)
@@ -236,7 +259,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 
 ;;
 
-(define packages-sources (map to-string (apply append (map (lambda (package) (package #:sources)) packages))))
+(define packages-sources (map to-string (filter (lambda (source)
+                                                  (not (memq (to-symbol source) sources-without-setups)))
+                                                (apply append (map (lambda (package) (package #:sources)) packages)))))
 (define packages-links (apply append (map (lambda (package) (package #:links '())) packages)))
 
 (define (file-exists path)
@@ -245,6 +270,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 #!
 (file-exists "/tmp/radium_T29691.pd")
 (file-exists "/tmp/asdf")
+(begin packages-sources)
+(apply append (map (lambda (package) (package #:sources)) packages))
 !#
 
 (define (file-writetime path)
