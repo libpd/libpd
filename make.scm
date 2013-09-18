@@ -129,12 +129,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                     #:links '((multiplex~.c mux~.c))
                     #:cflags "-Dverbose=verbose_zexy -Dmux_tilde_tilde_setup=mux_tilde_setup"))
 
-(add-package    (store #:path "/home/ksvalast/pd-extended/externals/bsaylor/"
+(add-package    (store #:path "externals/bsaylor/"
                        #:sources '(aenv~.c partconv~.c pvoc~.c susloop~.c svf~.c zhzxh~.c)))
 
 #!
 (for-each (lambda (single-package)
-            (add-package (store #:path (<-> "/home/ksvalast/pd-extended/externals/" single-package "/")
+            (add-package (store #:path (<-> "externals/" single-package "/")
                                 #:sources (list (<-> single-package ".c")))))
           (map to-string '(freeverb~ arraysize bassemu~)))
 !#
@@ -158,7 +158,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                                   #:cflags ""
                                   #:links links))))
           (map (lambda (dir)
-                 (<-> "/home/ksvalast/pd-extended/externals/" dir "/"))
+                 (<-> "externals/" dir "/"))
                '(freeverb~ arraysize bassemu~ chaos creb/modules cxc)))
 
 
@@ -215,7 +215,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 
 #!
 (my-system 'echo 'gakkgakk)
-(= 0 (my-system "gcc /home/ksvalast/pd-extended/externals/bsaylor/sse-conv.inc.c"))
+(= 0 (my-system "gcc externals/bsaylor/sse-conv.inc.c"))
 !#
 
 (define (nth n l . valueifnot)
@@ -256,7 +256,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
          (file-writetime dest))))
 #!
 (file-writetime "/tmp/radium_T29691.pd")
-(file-writetime "/home/ksvalast/pd-extended/externals/zexy/src/atoi.c")
+(file-writetime "zexy/src/atoi.c")
 (file-writetime "/home/ksvalast/libpd/externalobjs/atoi.c.o")
 (needs-compilation "externals/zexy/src/atoi.c" "/home/ksvalast/libpd/externalobjs/atoi.c.o")
 !#
