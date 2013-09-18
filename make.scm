@@ -170,27 +170,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
                  (<-> "externals/" dir "/"))
                '(arraysize bassemu~ chaos creb/modules cxc earplug~ ekext ext13 flatgui freeverb~
                            ggee/control ggee/experimental ggee/filters ggee/signal
-                           grh/adaptive/src hcs iem/iemgui/src
+                           grh/adaptive/src hcs 
+                           iem/comport/bird/ iem/comport/comport iem/iem_adaptfilt/src iem/iem_ambi/src iem/iem_bin_ambi/src iem/iem_delay/src iem/iem_roomsim/src iem/iem_spec2/src iem/iem_tab/src iem/iemguts/src iem/syslog iem/iemgui/src
                            )))
 
 
 ;; * Not compiled:
-;;   * Does not use static:
+;;   * Does not use static (or "inline static" if in h-files):
 ;;     * boids 
 ;;     * ggee/gui
+;;     * iem/mediasettings
 ;;   * c++:
 ;;     * creb/modules++
 ;;     * grh/PDContainer
+;;     * iem/iemxmlrpc
 ;;   * Too complicated:
 ;;     * Gem
 ;;     * hcs/usbhid
 ;;     * hid
-
+;;     * iem/iemnet 
 ;;   * Requires Gem:
 ;;     * gem2pdp
 ;;   * Name-clash with other package:
 ;;     * ggee/other (messages is also in ext13/)
-
+;;   * Doesnt compile right away (probably quite simple to fix):
+;;     * iem/iemmatrix/src
 #!
 (compile)
 !#
