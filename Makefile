@@ -74,7 +74,9 @@ pd_SOURCES = \
 #added to pd_Sources:
 pd_SOURCES_added = \
 	pure-data/src/d_fft_mayer.c pure-data/src/d_fftroutine.c \
-	pure-data/src/s_audio_dummy.c
+	pure-data/src/s_audio_dummy.c \
+	pure-data/extra/expr~/vexp_fun.c pure-data/extra/expr~/vexp_if.c pure-data/extra/expr~/vexp.c
+
 
 PD_FILES = $(pd_SOURCES) $(pd_SOURCES_added) \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \

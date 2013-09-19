@@ -299,6 +299,26 @@ weibull.c
 (compile)
 !#
 
+;; extra objects
+(for-each (lambda (externals-dir)
+            (let* ((links '())
+                   (dontcompile (append '()
+                                        (map cadr links)))
+                   (c-files (filter (lambda (filename)
+                                      (and (string-endswith filename ".c")
+                                           (not (memq (string->symbol filename) dontcompile))))
+                                    (directory-files externals-dir))))
+              (add-package (store #:path externals-dir
+                                  #:sources c-files
+                                  #:cflags ""
+                                  #:links links))))
+          (map (lambda (dir)
+                 (<-> "pure-data/extra/" dir "/"))
+               '(bonk~ choice fiddle~ loop~ lrshift~ pique sigmund~ stdout)))
+
+;; Removed from extra:
+;; pd~ (too complicated)
+
 ;; config finished
 
 
@@ -538,8 +558,19 @@ weibull.c
               (c-display "void" setup-funcname "(void);"))
             setup-funcnames)
 
+  ;; exp protos
+  (for-each (lambda (manual_setup_name)
+              (c-display (<-> " void " manual_setup_name "_setup(void);")))
+            '(expr expr_tilde fexpr_tilde))
+
   ;; loader func
   (c-display "int libpd_load_lib(char *classname){printf(\"Trying to load %s\\n\",classname);")
+
+  ;; expr
+  (for-each (lambda (manual_setup_name)
+              (c-display (<-> " if(!strcmp(classname, \"" manual_setup_name "_setup\")){" manual_setup_name "_setup();return 1;}")))
+            '(expr expr_tilde fexpr_tilde))
+
   (for-each (lambda (source setup-funcname base-filename)
               (let* ((matchers (map get-base-filename (map to-string (map cadr (filter (lambda (f)
                                                                                          (string=? (to-string (car f)) source))
