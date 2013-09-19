@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
   (set! packages (cons package packages)))
 
 
-(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c))
+(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c OSC-pattern-match.c OSC-client.c OSC-system-dependent.c OSC-timetag.c htmsocket.c))
 
 
 (add-package    (store #:path "externals/vanilla/"
@@ -235,7 +235,7 @@ weibull.c
                             (toggle_mess.c tm.c)
                             (unsymbol.c unsym.c)
                             ))
-                   (dontcompile (append '(abs~.c path.c speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c)
+                   (dontcompile (append '(abs~.c path.c speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c test_OSC_timeTag.c test_OSC.c)
                                         (map cadr links)))
                    (c-files (filter (lambda (filename)
                                       (and (string-endswith filename ".c")
@@ -256,6 +256,7 @@ weibull.c
                            mrpeach/binfile mrpeach/cmos mrpeach/flist2tab mrpeach/life2x mrpeach/midifile mrpeach/osc mrpeach/runningmean mrpeach/slipdec
                            mrpeach/slipenc mrpeach/str mrpeach/tab2flist mrpeach/tabfind mrpeach/which mrpeach/xbee
                            pan pddp pdogg pmpd sigpack smlib tof/src unauthorized windowing
+                           oscx
                            )))
 
 
@@ -278,7 +279,6 @@ weibull.c
 ;;     * loaders/pdlua
 ;;     * loaders/urloader
 ;;     * miXed
-;;     * oscx
 ;;     * pdp
 ;;     * unauthorized/{speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c}
 ;;   * Not sure if necessary:
