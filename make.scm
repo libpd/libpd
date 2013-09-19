@@ -602,10 +602,12 @@ weibull.c
                   'gakk'
                   (string->symbol (cadr args))))
   (cond ((eq? arg 'compile)
-         (compile))
+         (if (not (compile))
+             (exit -1)))
         ((eq? arg 'print-object-files)
          (print-object-files))
         ((eq? arg 'gen-loader-file)
          (gen-loader-file))
         (else
-         (c-display "Error. Unknown args. Ether compile, print-object-files or gen-loader-file"))))
+         (c-display "Error. Unknown args. Ether compile, print-object-files or gen-loader-file")
+         (exit -1))))
