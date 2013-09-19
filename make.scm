@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
   (set! packages (cons package packages)))
 
 
-(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c OSC-pattern-match.c OSC-client.c OSC-system-dependent.c OSC-timetag.c htmsocket.c))
+(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c OSC-pattern-match.c OSC-client.c OSC-system-dependent.c OSC-timetag.c htmsocket.c iemnet_receiver.c iemnet_sender.c iemnet_data.c))
 
 
 (add-package    (store #:path "externals/vanilla/"
@@ -256,7 +256,7 @@ weibull.c
                            mrpeach/binfile mrpeach/cmos mrpeach/flist2tab mrpeach/life2x mrpeach/midifile mrpeach/osc mrpeach/runningmean mrpeach/slipdec
                            mrpeach/slipenc mrpeach/str mrpeach/tab2flist mrpeach/tabfind mrpeach/which mrpeach/xbee
                            pan pddp pdogg pmpd sigpack smlib tof/src unauthorized windowing
-                           oscx
+                           oscx iem/iemnet
                            )))
 
 
@@ -274,7 +274,6 @@ weibull.c
 ;;     * Gem
 ;;     * hcs/usbhid
 ;;     * hid
-;;     * iem/iemnet 
 ;;     * loaders/tclpd (also requires c99, which is perfectly fine, but requires some work to enable up just for this one)
 ;;     * loaders/pdlua
 ;;     * loaders/urloader
@@ -285,12 +284,11 @@ weibull.c
 ;;     * externals/loaders/hexloader
 ;;   * Requires Gem:
 ;;     * gem2pdp
-;;   * Requires iem/iemnet:
-;;     * mrpeach/net 
 ;;   * Name-clash with other package:
 ;;     * ggee/other (messages is also in ext13/)
 ;;     * markex
 ;;     * unauthorized/path
+;;     *  mrpeach/net
 ;;   * Doesnt compile right away (probably quite simple to fix):
 ;;     * iem/iemmatrix/src
 ;;   * No statics, lots of compilation warnings:
