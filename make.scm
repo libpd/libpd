@@ -91,7 +91,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
 
 ;; config start
 
-(define CC "gcc")
+(define CC "gcc -O3")
 (define CFLAGS "-Wall -g -DPD -DVERSION=\\\"libpd-extended-0.43.3\\\" -Ipure-data/src/ -DLIBPD -fPIC") ;; TODO: Add -O3
 
 (define objsdir "externalobjs")
