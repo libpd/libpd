@@ -206,6 +206,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
             protos)
   (newline)
   (c-display "  void *handle;")
+  (c-display "  char *libfilename;")
   (c-display "};"))
   
 

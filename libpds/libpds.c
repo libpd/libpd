@@ -78,8 +78,6 @@ pd_t *libpds_create(bool use_gui, const char *libdir){
 
   load_symbols(pd);
 
-  unlink(unlibered_filename);
-
   if (pd->libpd_init(use_gui, libdir)==false) {
     dlclose(pd->handle);
     free(pd);
@@ -87,6 +85,7 @@ pd_t *libpds_create(bool use_gui, const char *libdir){
     return NULL;
   }
 
+  pd->libfilename = strdup(unlibered_filename);
   return pd;
 }
 
@@ -98,6 +97,7 @@ char *libpds_strerror(void) {
 void libpds_delete(pd_t *pd) {
   pd->libpd_cleanup();
   dlclose(pd->handle);
+  free(pd->libfilename);
   free(pd);
 }
 
