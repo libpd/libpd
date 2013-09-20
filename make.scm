@@ -586,7 +586,7 @@ weibull.c
 
   ;; expr
   (for-each (lambda (manual_setup_name)
-              (c-display (<-> " if(!strcmp(classname, \"" manual_setup_name "_setup\")){" manual_setup_name "_setup();return 1;}")))
+              (c-display (<-> " if(!strcmp(classname, \"" manual_setup_name "_setup\")){my_class_set_extern_dir(\"pure-data/extra/\");" manual_setup_name "_setup();return 1;}")))
             '(expr expr_tilde fexpr_tilde))
 
   (for-each (lambda (source setup-funcname base-filename path)
