@@ -146,9 +146,9 @@ static int sys_do_load_lib(t_canvas *canvas, char *objectname)
 
     {
       int ret = libpd_load_lib(symname);
-      class_set_extern_dir(&s_); // ???
+      //class_set_extern_dir(gensym("/home/ksvalast/libpd/pure-data/help-patches"));//&s_); // ???
       if (ret!=0)
-        sys_putonloadlist(symname);
+        sys_putonloadlist(objectname);
       return ret;
     }
 

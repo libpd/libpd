@@ -7,7 +7,7 @@ CFLAGS = -I../../pure-data/src -I../../libpd_wrapper -O3
 .PHONY: clean clobber
 
 all:
-	cd ../.. && make
+	cd ../.. && make libs/libpd.so
 	make $(TARGET)
 
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)

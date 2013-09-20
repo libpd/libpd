@@ -386,6 +386,18 @@ weibull.c
                                                 (apply append (map (lambda (package) (package #:sources)) packages)))))
 (define packages-links (apply append (map (lambda (package) (package #:links '())) packages)))
 
+(define (get-package-from-source source)
+  (let loop ((packages packages))
+    (let ((package (car packages)))
+      (if (memq (to-symbol source) (map to-symbol (package #:sources)))
+          package
+          (loop (cdr packages))))))
+
+(define package-paths (map (lambda (package-source)
+                             (let ((package (get-package-from-source package-source)))
+                               (package #:path)))
+                           packages-sources))
+
 (define (file-exists path)
   (access? path R_OK))
 
@@ -545,11 +557,12 @@ weibull.c
 (define (gen-loader-file)
   (define setup-funcnames (map get-setup-funcname packages-sources))
   (define base-filenames (map get-base-filename packages-sources))
+
   (c-display "#include <stdlib.h>")
   (c-display "#include <stdio.h>")
   (c-display "#include <stdbool.h>")
   (c-display "#include <string.h>")
-  (c-display "void post(const char *fmt, ...);")
+  (c-display "#include <m_pd.h>")
   
   ;; protos
   (for-each (lambda (setup-funcname)
@@ -561,15 +574,21 @@ weibull.c
               (c-display (<-> " void " manual_setup_name "_setup(void);")))
             '(expr expr_tilde fexpr_tilde))
 
+  (c-display "static void my_class_set_extern_dir(char *path){")
+  (c-display " char temp[4096];")
+  (c-display " sprintf(temp,\"%s/%s\",\"/home/ksvalast/libpd\",path);")
+  (c-display " class_set_extern_dir(gensym(temp));")
+  (c-display "}")
+
   ;; loader func
-  (c-display "int libpd_load_lib(char *classname){printf(\"Trying to load %s\\n\",classname);")
+  (c-display "int libpd_load_lib(char *classname){printf(\"Trying to load \\\"%s\\\"\\n\",classname);")
 
   ;; expr
   (for-each (lambda (manual_setup_name)
               (c-display (<-> " if(!strcmp(classname, \"" manual_setup_name "_setup\")){" manual_setup_name "_setup();return 1;}")))
             '(expr expr_tilde fexpr_tilde))
 
-  (for-each (lambda (source setup-funcname base-filename)
+  (for-each (lambda (source setup-funcname base-filename path)
               (let* ((matchers (map get-base-filename (map to-string (map cadr (filter (lambda (f)
                                                                                          (string=? (to-string (car f)) source))
                                                                                        packages-links)))))
@@ -580,11 +599,12 @@ weibull.c
                 (for-each (lambda (strcmp)
                             (display (<-> "||" strcmp)))
                           strcmps)
-                (c-display (<-> "){" setup-funcname "();return 1;}"))
+                (c-display (<-> "){my_class_set_extern_dir(\"" path "\");" setup-funcname "();return 1;}"))
                 ))
             packages-sources
             setup-funcnames
-            base-filenames)
+            base-filenames
+            package-paths)
 
   (c-display " post(\"\\\"%s\\\" not found in path when libpds_create was called.\\n\", classname);")
   (c-display " return 0;")

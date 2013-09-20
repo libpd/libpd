@@ -514,13 +514,14 @@ void open_via_helppath(const char *name, const char *dir)
     if ((fd = do_open_via_path(dir, name, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
             goto gotone_deprecated;
-    post("sorry, couldn't find help patch for \"%s\"", name);
+    post("sorry, couldn't find help patch for \"%s\" in -%s-", name,dir);
     return;
 gotone_deprecated:
     post("'%s' is a deprecated name format for a help patch.\n\tPlease rename to '%s'!",
           basename, propername);
 gotone:
     close (fd);
+    post("Found help patch for \"%s\" in -%s-", name,dir);
     glob_evalfile(0, gensym((char*)basename), gensym(dirbuf));
 }
 
