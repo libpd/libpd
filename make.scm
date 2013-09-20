@@ -563,7 +563,8 @@ weibull.c
   (c-display "#include <stdbool.h>")
   (c-display "#include <string.h>")
   (c-display "#include <m_pd.h>")
-  
+  (c-display "#include <s_stuff.h>")
+
   ;; protos
   (for-each (lambda (setup-funcname)
               (c-display "void" setup-funcname "(void);"))
@@ -576,7 +577,7 @@ weibull.c
 
   (c-display "static void my_class_set_extern_dir(char *path){")
   (c-display " char temp[4096];")
-  (c-display " sprintf(temp,\"%s/%s\",\"/home/ksvalast/libpd\",path);")
+  (c-display " sprintf(temp,\"%s/../%s\",sys_libdir->s_name,path);")
   (c-display " class_set_extern_dir(gensym(temp));")
   (c-display "}")
 
