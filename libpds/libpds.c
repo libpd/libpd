@@ -97,6 +97,7 @@ char *libpds_strerror(void) {
 void libpds_delete(pd_t *pd) {
   pd->libpd_cleanup();
   dlclose(pd->handle);
+  unlink(pd->libfilename);
   free(pd->libfilename);
   free(pd);
 }
