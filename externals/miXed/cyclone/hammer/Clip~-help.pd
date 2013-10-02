@@ -1,0 +1,3 @@
+#N canvas 50 50 600 400 12;
+#X text 10 10 Clip~ clone \, unlike the clip~ built into Pd \, accepts;
+#X text 10 30 signal input in range inlets for sample-accurate control.;
