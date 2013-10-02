@@ -1,0 +1,16 @@
+#N canvas 321 226 450 300 10;
+#X floatatom 102 55 5 0 0;
+#X floatatom 112 275 5 0 0;
+#X floatatom 172 276 5 0 0;
+#X floatatom 218 278 5 0 0;
+#X floatatom 273 280 5 0 0;
+#X obj 160 39 k_cext 1 4 \; \; int lokke \; int a=5 \; \; RANGE(lokke
+\, 0 \, 4) DO \; . O(lokke \, I(0)) \; . IF I(0)==0 THEN DO \; . .
+O(1 \, 2) \; . ELIF I(0)==1 THEN DO \; . . O(2 \, 3) \; . ELSE \; .
+. O(3 \, 4) \; . . IF a==2 THEN DO \; . . . O(3 \, 23) \; . . . IF
+a==3 THEN DO \; . . . . O(2 \, 4) \;;
+#X connect 0 0 5 0;
+#X connect 5 0 1 0;
+#X connect 5 1 2 0;
+#X connect 5 2 3 0;
+#X connect 5 3 4 0;

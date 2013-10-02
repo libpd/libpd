@@ -1,0 +1,30 @@
+#N canvas 338 168 450 300 10;
+#X floatatom 8 272 5 0 0;
+#X floatatom 136 274 5 0 0;
+#X msg 129 103 1;
+#X floatatom 224 103 5 0 0;
+#X obj 12 158 k_cext 1 2 \; IF I(0)!=1 THEN DO \; . O0(I(0)) \; . O1(I(0)+1)
+\; ELSE \; . O0(-2) \; . O1(-3) \;;
+#X obj 269 141 k_cext 1 2 \; IF I(0)!=1 THEN BEGIN \; . O0(I(0)) \;
+. O1(I(0)+1) \; ELSE \; . O0(-2) \; . O1(-3) \; ENDIF;
+#X floatatom 274 269 5 0 0;
+#X floatatom 400 270 5 0 0;
+#X text 34 65 With DO:;
+#X text 288 65 Without DO:;
+#X text 10 5 DO is not a macro \, but a special symbol used by the
+k_cext preprocessor to know when to automaticly insert BEGIN and END
+based on indentation.;
+#X msg 293 109 print;
+#X msg 10 114 print;
+#X text 32 76 ---------;
+#X text 287 76 ---------;
+#X connect 2 0 4 0;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 0;
+#X connect 4 1 1 0;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 11 0 5 0;
+#X connect 12 0 4 0;

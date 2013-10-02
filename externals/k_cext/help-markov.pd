@@ -1,0 +1,66 @@
+#N canvas 0 107 907 643 10;
+#X obj 244 40 bng 20 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 283 31 r state;
+#X obj 261 66 f 1;
+#X floatatom 312 55 3 0 0 0 - - -;
+#X text 227 19 STEP;
+#X msg 371 52 \; state 1;
+#X text 371 32 reset;
+#X obj 33 25 bng 20 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 72 16 r state;
+#X obj 50 51 f 1;
+#X floatatom 101 40 3 0 0 0 - - -;
+#X text 16 4 STEP;
+#X obj 26 511 s state;
+#X text 244 391 documentation patches.;
+#X text 245 375 chain example in the PD;
+#X msg 155 65 print;
+#X msg 200 66 print;
+#X obj 26 100 k_cext 1 1 \; int state=I(0) \; int random=RANDOM(100)
+\; \; SWITCH state THEN DO \; . case 1: \; . . IF random<30 THEN DO
+\; . . . state=1 \; . . ELIF random<60 THEN DO \; . . . state=2 \;
+. . ELSE \; . . . state=3 \; . . break \; . case 2: \; . . IF random<10
+THEN DO \; . . . state=1 \; . . ELIF random<60 THEN DO \; . . . state=2
+\; . . ELSE \; . . . state=3 \; . . break \; . case 3: \; . . IF random<70
+THEN DO \; . . . state=1 \; . . ELIF random<80 THEN DO \; . . . state=2
+\; . . ELSE \; . . . state=3 \; O0(state) \;;
+#X obj 561 300 k_cfunc INT_markov int a int b \; int random=RANDOM(100)
+\; IF random<a THEN DO \; . return 1 \; ELIF random<b THEN DO \; .
+return 2 \; ELSE \; . return 3 \;;
+#X obj 574 46 bng 20 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X obj 613 37 r state;
+#X obj 591 72 f 1;
+#X floatatom 642 61 3 0 0 0 - - -;
+#X text 557 25 STEP;
+#X msg 530 72 print;
+#X text 237 29 comment;
+#X text 244 360 Three ways to implement the markov;
+#X msg 561 259 print;
+#X obj 260 103 k_cext 1 0 \; \; int state=I(0) \; int s1[3]=BEGIN 30
+\, 10 \, 70 END \; int s2[3]=BEGIN 60 \, 60 \, 80 END \; int random=RANDOM(100)
+\; \; IF random < s1[state] THEN DO \; . SEND(state \, 1) \; ELIF random
+< s2[state] THEN DO \; . SEND(state \, 2) \; ELSE \; . SEND(state \,
+3) \;;
+#X obj 557 115 k_cext 1 0 \; \; int s1[3]=BEGIN 30 \, 10 \, 70 END
+\; int s2[3]=BEGIN 60 \, 60 \, 80 END \; SEND(state \, INT_markov(s1[I(0)]
+\, s2[I(0)])) \;;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 1 0 3 0;
+#X connect 2 0 28 0;
+#X connect 7 0 9 0;
+#X connect 8 0 9 1;
+#X connect 8 0 10 0;
+#X connect 9 0 17 0;
+#X connect 15 0 17 0;
+#X connect 16 0 28 0;
+#X connect 17 0 12 0;
+#X connect 19 0 21 0;
+#X connect 20 0 21 1;
+#X connect 20 0 22 0;
+#X connect 21 0 29 0;
+#X connect 24 0 29 0;
+#X connect 27 0 18 0;

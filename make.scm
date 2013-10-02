@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA. */
   (set! packages (cons package packages)))
 
 
-(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c OSC-pattern-match.c OSC-client.c OSC-system-dependent.c OSC-timetag.c htmsocket.c iemnet_receiver.c iemnet_sender.c iemnet_data.c))
+(define sources-without-setups '(libchaos.c eblosc~.c pvocfreq.c lpc.c tables.c filters.c OSC-pattern-match.c OSC-client.c OSC-system-dependent.c OSC-timetag.c htmsocket.c iemnet_receiver.c iemnet_sender.c iemnet_data.c k_cext_unix.c))
 
 
 (add-package    (store #:path "externals/vanilla/"
@@ -235,15 +235,23 @@ weibull.c
                             (toggle_mess.c tm.c)
                             (unsymbol.c unsym.c)
                             ))
-                   (dontcompile (append '(abs~.c path.c speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c test_OSC_timeTag.c test_OSC.c)
+                   (dontcompile (append '(abs~.c path.c speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c test_OSC_timeTag.c test_OSC.c k_cext_macosx.c k_cext_win.c k_cext_funchandler.c k_cext_generatecode.c)
                                         (map cadr links)))
+                   (dontcompile2 '((externals/miXed/cyclone/hammer/ (sinh.c maximum.c Clip.c split.c prob.c match.c speedlim.c gate.c Borax.c urn.c))
+                                   (externals/miXed/cyclone/sickle/ (sinh.c maximum.c acos.c minimum.c average.c cycle.c cartopol.c atan2.c poltocar.c asin.c tanh.c capture.c cosh.c pong.c index.c reson.c svf.c delta.c edge.c abs.c avg.c minmax.c delay.c rand.c))
+                                   ))
+
                    (c-files (filter (lambda (filename)
-                                      (and (string-endswith filename ".c")
-                                           (not (memq (string->symbol filename) dontcompile))))
+                                      (let ((symfile (string->symbol filename))
+                                            (symdir  (string->symbol externals-dir)))
+                                        (and (string-endswith filename ".c")
+                                             (not (memq symfile dontcompile))
+                                             (or (not (assq symdir dontcompile2))
+                                                 (not (memq symfile (cadr (assq symdir dontcompile2))))))))
                                     (directory-files externals-dir))))
               (add-package (store #:path externals-dir
                                   #:sources c-files
-                                  #:cflags "-Iexternals/unauthorized/vocoder~ -Iexternals/miXed/shared/"
+                                  #:cflags "-Iexternals/unauthorized/vocoder~ -Iexternals/miXed/shared/ -DINCLUDEPATH=\\\"`pwd`/externals/k_cext/\\\" -DLINUXINCLUDE=\\\"../../pure-data/src\\\""
                                   #:links links))))
           (map (lambda (dir)
                  (<-> "externals/" dir "/"))
@@ -257,7 +265,7 @@ weibull.c
                            mrpeach/slipenc mrpeach/str mrpeach/tab2flist mrpeach/tabfind mrpeach/which mrpeach/xbee
                            pan pddp pdogg pmpd sigpack smlib tof/src unauthorized windowing
                            oscx iem/iemnet
-                           miXed/cyclone/hammer miXed/cyclone/shadow miXed/cyclone/sickle miXed/riddle
+                           k_cext
                            )))
 
 
@@ -280,6 +288,7 @@ weibull.c
 ;;     * loaders/urloader
 ;;     * pdp
 ;;     * unauthorized/{speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c}
+;;     * miXed/cyclone/hammer miXed/cyclone/shadow miXed/cyclone/sickle miXed/riddle miXed/shared/sickle miXed/shared/common
 ;;   * Also included elsewhere:
 ;;     * miXed/pddp
 ;;   * Not sure if necessary:

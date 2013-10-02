@@ -1,0 +1,19 @@
+#N canvas 149 460 622 320 10;
+#X floatatom 20 82 5 0 0 0 - - -;
+#X floatatom 20 267 5 0 0 0 - - -;
+#X text 14 24 Sends out the largest of;
+#X obj 20 111 k_cext 1 1 \; static FLOATARRAY(a \, 5) \; FLOATARRAY(a2
+\, 5) \; static int p=0 \; int i \; a[p%5]=V(0) \; p++ \; RANGE(i \,
+0 \, 5) a2[i]=a[i] \; FLOATSORT(a2 \, 5) \; O(0 \, a2[4]) \;;
+#X text 14 41 the five last float numbers.;
+#X floatatom 318 80 5 0 0 0 - - -;
+#X floatatom 318 265 5 0 0 0 - - -;
+#X text 312 22 Sends out the largest of;
+#X obj 318 109 k_cext 1 1 \; static INTARRAY(a \, 5) \; INTARRAY(a2
+\, 5) \; static int p=0 \; int i \; a[p%5]=I(0) \; p++ \; RANGE(i \,
+0 \, 5) a2[i]=a[i] \; INTSORT(a2 \, 5) \; O(0 \, a2[4]) \;;
+#X text 312 39 the five last integer numbers.;
+#X connect 0 0 3 0;
+#X connect 3 0 1 0;
+#X connect 5 0 8 0;
+#X connect 8 0 6 0;

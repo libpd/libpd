@@ -1,0 +1,24 @@
+#N canvas 469 87 530 363 10;
+#X msg 14 79 print;
+#X floatatom 114 202 5 0 0 0 - - -;
+#X floatatom 73 201 5 0 0 0 - - -;
+#X msg 98 247 bang;
+#X floatatom 70 327 5 0 0 0 - - -;
+#X text 14 42 Find the greatest common divisor between two numbers.
+;
+#X msg 12 208 print;
+#X obj 73 271 k_cext 2 1 \; O(0 \, INT_gcd(I(0) \, I(1))) \;;
+#X obj 114 225 t b f;
+#X obj 285 174 k_cfunc INT_te \; return INT_te() \;;
+#X msg 283 132 print;
+#X obj 14 112 k_cfunc INT_gcd int a int b \; IF b==0 THEN DO \; . return
+a \; ELSE \; . return INT_gcd(b \, a%b) \;;
+#X connect 0 0 11 0;
+#X connect 1 0 8 0;
+#X connect 2 0 7 0;
+#X connect 3 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;
+#X connect 8 0 3 0;
+#X connect 8 1 7 1;
+#X connect 10 0 9 0;

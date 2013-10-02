@@ -1,0 +1,29 @@
+#N canvas 488 163 708 409 10;
+#X floatatom 96 329 5 0 0 0 - - -;
+#X floatatom 39 199 5 0 0 0 - - -;
+#X floatatom 149 207 5 0 0 0 - - -;
+#X text 28 15 The SEND macro is just as efficient;
+#X text 30 29 as the send object \, and is defined like this:;
+#X obj 42 248 send a_sym;
+#X obj 96 297 r a_sym;
+#X floatatom 161 331 5 0 0 0 - - -;
+#X obj 161 299 r a_sym2;
+#X floatatom 384 235 5 0 0 0 - - -;
+#X text 379 202 Warning \, the following code will not do;
+#X msg 321 182 print;
+#X text 379 215 as one might expect:;
+#X text 32 59 #define SEND(symname \, val) do BEGIN static t_symbol
+*k_cext_internal_symbol=NULL SC if(k_cext_internal_symbol==NULL) k_cext_internal_symbol=gensym(symname)
+SC if(k_cext_internal_symbol->s_thing) pd_float(k_cext_internal_symbol->s_thing
+\, val) SC END while(0);
+#X obj 141 235 k_cext 1 0 \; SEND(a_sym \, I(0)) \;;
+#X obj 382 261 k_cext 1 0 \; char *syms[2]=BEGIN s<a_sym>s \, s<a_sym2>s
+END \; static int s=0 \; IF s==0 THEN DO \; . s=1 \; ELSE \; . s=0
+\; SEN(syms[s] \, s+5) \;;
+#X text 381 383 (The SEN macro expect real strings.);
+#X connect 1 0 5 0;
+#X connect 2 0 14 0;
+#X connect 6 0 0 0;
+#X connect 8 0 7 0;
+#X connect 9 0 15 0;
+#X connect 11 0 15 0;
