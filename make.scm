@@ -257,7 +257,7 @@ weibull.c
                            mrpeach/slipenc mrpeach/str mrpeach/tab2flist mrpeach/tabfind mrpeach/which mrpeach/xbee
                            pan pddp pdogg pmpd sigpack smlib tof/src unauthorized windowing
                            oscx iem/iemnet
-                           miXed/cyclone/hammer miXed/cyclone/shadow miXed/cyclone/sickle
+                           miXed/cyclone/hammer miXed/cyclone/shadow miXed/cyclone/sickle miXed/riddle
                            )))
 
 
@@ -278,9 +278,10 @@ weibull.c
 ;;     * loaders/tclpd (also requires c99, which is perfectly fine, but requires some work to enable up just for this one)
 ;;     * loaders/pdlua
 ;;     * loaders/urloader
-;;     * miXed
 ;;     * pdp
 ;;     * unauthorized/{speexin~.c streamin~.c mp3amp~.c mp3cast~.c mp3fileout~.c mp3streamin~.c mp3streamout~.c mp3write~.c}
+;;   * Also included elsewhere:
+;;     * miXed/pddp
 ;;   * Not sure if necessary:
 ;;     * externals/loaders/hexloader
 ;;   * Requires Gem:
@@ -290,8 +291,9 @@ weibull.c
 ;;     * markex
 ;;     * unauthorized/path
 ;;     *  mrpeach/net
-;;   * Doesnt compile right away (probably quite simple to fix):
+;;   * Doesnt compile right away (probably/maybe quite simple to fix):
 ;;     * iem/iemmatrix/src
+;;     * miXed/toxy
 ;;   * No statics, lots of compilation warnings:
 ;;     * jasch_lib/detox jasch_lib/memchr jasch_lib/strchr jasch_lib/strcut jasch_lib/strlen jasch_lib/strtok jasch_lib/underscore
 #!
