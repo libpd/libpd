@@ -243,7 +243,7 @@ weibull.c
                                     (directory-files externals-dir))))
               (add-package (store #:path externals-dir
                                   #:sources c-files
-                                  #:cflags "-Iexternals/unauthorized/vocoder~"
+                                  #:cflags "-Iexternals/unauthorized/vocoder~ -Iexternals/miXed/shared/"
                                   #:links links))))
           (map (lambda (dir)
                  (<-> "externals/" dir "/"))
@@ -257,6 +257,7 @@ weibull.c
                            mrpeach/slipenc mrpeach/str mrpeach/tab2flist mrpeach/tabfind mrpeach/which mrpeach/xbee
                            pan pddp pdogg pmpd sigpack smlib tof/src unauthorized windowing
                            oscx iem/iemnet
+                           miXed/cyclone/hammer miXed/cyclone/shadow miXed/cyclone/sickle
                            )))
 
 
