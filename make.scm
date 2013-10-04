@@ -487,6 +487,18 @@ weibull.c
             packages)
   (newline))
 
+(define (print-external-names)
+  (for-each (lambda (package)
+              (for-each (lambda (source)
+                          (let ((str (<-> (package #:path) source)))
+                            (c-display (substring str 10 (- (string-length str) 2)) " ")))
+                        (let ((sources (map to-symbol (package #:sources))))
+                          (append sources
+                                  (map cadr (filter (lambda (link)
+                                                      (member (to-symbol (car link)) sources))
+                                                    (package #:links '())))))))
+            packages))
+
 (define (name-ends-with-tilde? source)
   (char=? #\~ (car (reverse (string->list source)))))
 
@@ -639,6 +651,8 @@ weibull.c
          (print-object-files))
         ((eq? arg 'gen-loader-file)
          (gen-loader-file))
+        ((eq? arg 'print-external-names)
+         (print-external-names))
         (else
          (c-display "Error. Unknown args. Ether compile, print-object-files or gen-loader-file")
          (exit -1))))
