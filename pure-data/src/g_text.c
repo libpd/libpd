@@ -99,7 +99,11 @@ static void canvas_objtext(t_glist *gl, int xpix, int ypix, int selected,
         if (!newest)
         {
             binbuf_print(b);
-            error("... couldn't create");
+            error("... couldn't create. Note that it doesn't work to load externals");
+            error("dynamically in Radium (via libpds). All externals must be");
+            error("compiled into libpds. If there is a common or useful external");
+            error("you need, either add it into libpd/make.scm and recompile,");
+            error("or send a request for inclusion to k.s.matheussen@notam02.no.");
             x = 0;
         }
         else if (!(x = pd_checkobject(newest)))
