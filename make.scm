@@ -488,18 +488,26 @@ weibull.c
   (newline))
 
 (define (print-external-names)
-  (for-each (lambda (package)
-              (for-each (lambda (source)
-                          (let ((str (<-> (package #:path) source)))
-                            (c-display (substring str 10 (- (string-length str) 2)) " ")))
-                        (let ((sources (filter (lambda (source)
-                                                 (not (memq source sources-without-setups)))
-                                               (map to-symbol (package #:sources)))))
-                          (append sources
-                                  (map cadr (filter (lambda (link)
-                                                      (member (to-symbol (car link)) sources))
-                                                    (package #:links '())))))))
-            packages))
+  (let ((strings (apply append (map (lambda (package)
+                                      (map (lambda (source)
+                                             (let ((str (<-> (package #:path) source)))
+                                               (substring str 10 (- (string-length str) 2))))
+                                           (let ((sources (filter (lambda (source)
+                                                                    (not (memq source sources-without-setups)))
+                                                                  (map to-symbol (package #:sources)))))
+                                             (append sources
+                                                     (map cadr (filter (lambda (link)
+                                                                         (member (to-symbol (car link)) sources))
+                                                                       (package #:links '())))))))
+                                    packages))))
+    (for-each (lambda (name)
+                (c-display name))
+              (sort strings string<?))))
+
+#!
+(print-external-names)
+(sort '("f" "b") string<?)
+!#
 
 (define (name-ends-with-tilde? source)
   (char=? #\~ (car (reverse (string->list source)))))
