@@ -24,7 +24,12 @@ typedef enum PdAudioStatus {
  * The returned PdAudioStatus is used to indicate success, failure, or
  * that parameters had to be adjusted in order to work.
  */
-@interface PdAudioController : NSObject <AVAudioSessionDelegate>
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+@interface PdAudioController : NSObject
+#else
+// AVAudioSessionDelegate is deprecated starting in iOS 6
+@interface PdAudioController : NSObject	<AVAudioSessionDelegate>
+#endif
 
 // Read only properties that are set by the configure methods
 @property (nonatomic, readonly) int sampleRate;
