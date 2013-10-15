@@ -20,7 +20,7 @@
 #include "PdReceiver.hpp"
 #include "PdMidiReceiver.hpp"
 
-#ifndef HAVE_UNISTD_H
+#if !defined(HAVE_UNISTD_H) && !defined(_MSC_VER)
     #define HAVE_UNISTD_H
 #endif
 
@@ -145,10 +145,10 @@ class PdBase {
         ///
         /// note: raw does not interlace the buffers
         ///
-        bool processRaw(float* inBuffer, float* outBuffer);
-        bool processShort(int ticks, short* inBuffer, short* outBuffer);
-        bool processFloat(int ticks, float* inBuffer, float* outBuffer);
-        bool processDouble(int ticks, double* inBuffer, double* outBuffer);
+        bool processRaw(const float* inBuffer, float* outBuffer);
+        bool processShort(int ticks, const short* inBuffer, short* outBuffer);
+        bool processFloat(int ticks, const float* inBuffer, float* outBuffer);
+        bool processDouble(int ticks, const double* inBuffer, double* outBuffer);
 
         /// \section Audio Processing Control
 
@@ -242,9 +242,10 @@ class PdBase {
         /// \section Sending Functions
 
         /// messages
-        virtual void sendBang(const std::string& dest);
-        virtual void sendFloat(const std::string& dest, float num);
-        virtual void sendSymbol(const std::string& dest, const std::string& symbol);
+        /// return values less than zero indicate non-success
+        virtual int sendBang(const std::string& dest);
+        virtual int sendFloat(const std::string& dest, float num);
+        virtual int sendSymbol(const std::string& dest, const std::string& symbol);
 
         /// compound messages
         ///
@@ -263,11 +264,11 @@ class PdBase {
         /// pd.addFloat(1.23);
         /// pd.finishMessage("test", "msg1");
         ///
-        virtual void startMessage();
+        virtual int startMessage();
         virtual void addFloat(const float num);
         virtual void addSymbol(const std::string& symbol);
-        virtual void finishList(const std::string& dest);
-        virtual void finishMessage(const std::string& dest, const std::string& msg);
+        virtual int finishList(const std::string& dest);
+        virtual int finishMessage(const std::string& dest, const std::string& msg);
 
         /// compound messages using the PdBase List type
         ///
@@ -451,7 +452,6 @@ class PdBase {
         class PdContext {
 
             public:
-
                 /// singleton data access
                 /// returns a reference to itself
                 /// note: only creates a new object on the first call
@@ -473,16 +473,17 @@ class PdBase {
                 /// turn dsp on/off
                 void computeAudio(bool state);
 
-                /// is the instance inited?
-                inline bool isInited() {return bInited;}
-
+                /// is the pd context instance inited?
+                inline bool isInited() const {return bInited;}
+            
+                /// is libpd inited?
+                inline bool isLibPdInited() const {return bLibPDInited;}
+                
                 /// add a message to the event queue
                 /// prints error when dropping messages if queue is full
                 void addMessage(pd::Message& msg);
 
                 /// \section Variables
-
-                bool bPdInited;         ///< is pd inited?
 
                 bool bMsgInProgress;    ///< is a compound message being constructed?
                 int maxMsgLen;          ///< maximum allowed message length
