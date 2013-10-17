@@ -16,6 +16,7 @@
 #include "z_print_util.h"
 
 #include <iostream>
+#include <mutex>
 
 // needed for libpd audio passing
 #ifndef USEAPI_DUMMY
@@ -89,19 +90,19 @@ void PdBase::closePatch(Patch& patch) {
 }
 
 //--------------------------------------------------------------------
-bool PdBase::processRaw(float* inBuffer, float* outBuffer) {
+bool PdBase::processRaw(const float* inBuffer, float* outBuffer) {
     return libpd_process_raw(inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processShort(int ticks, short* inBuffer, short* outBuffer) {
+bool PdBase::processShort(int ticks, const short* inBuffer, short* outBuffer) {
     return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processFloat(int ticks, float* inBuffer, float* outBuffer) {
+bool PdBase::processFloat(int ticks, const float* inBuffer, float* outBuffer) {
     return libpd_process_float(ticks, inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processDouble(int ticks, double* inBuffer, double* outBuffer) {
+bool PdBase::processDouble(int ticks, const double* inBuffer, double* outBuffer) {
     return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
 }
 
@@ -192,32 +193,34 @@ void PdBase::setMidiReceiver(PdMidiReceiver* midiReceiver) {
 }
 
 //----------------------------------------------------------
-void PdBase::sendBang(const std::string& dest) {
-    libpd_bang(dest.c_str());
+int PdBase::sendBang(const std::string& dest) {
+    return libpd_bang(dest.c_str());
 }
 
-void PdBase::sendFloat(const std::string& dest, float value) {
-    libpd_float(dest.c_str(), value);
+int PdBase::sendFloat(const std::string& dest, float value) {
+    return libpd_float(dest.c_str(), value);
 }
 
-void PdBase::sendSymbol(const std::string& dest, const std::string& symbol) {
-    libpd_symbol(dest.c_str(), symbol.c_str());
+int PdBase::sendSymbol(const std::string& dest, const std::string& symbol) {
+    return libpd_symbol(dest.c_str(), symbol.c_str());
 }
 
 //----------------------------------------------------------
-void PdBase::startMessage() {
+int PdBase::startMessage() {
 
     PdContext& context = PdContext::instance();
 
     if(context.bMsgInProgress) {
         cerr << "Pd: Can not start message, message in progress" << endl;
-        return;
+        return -1;
     }
 
-    libpd_start_message(context.maxMsgLen);
-
-    context.bMsgInProgress = true;
-    context.msgType = MSG;
+    int ret = libpd_start_message(context.maxMsgLen);
+    if (ret >= 0) {
+        context.bMsgInProgress = true;
+        context.msgType = MSG;
+    }
+    return ret;
 }
 
 void PdBase::addFloat(const float num) {
@@ -266,44 +269,48 @@ void PdBase::addSymbol(const std::string& symbol) {
     context.curMsgLen++;
 }
 
-void PdBase::finishList(const std::string& dest) {
+int PdBase::finishList(const std::string& dest) {
 
     PdContext& context = PdContext::instance();
 
     if(!context.bMsgInProgress) {
         cerr << "Pd: Can not finish list, message not in progress" << endl;
-        return;
+        return -1;
     }
 
     if(context.msgType != MSG) {
         cerr << "Pd: Can not finish list, midi byte stream in progress" << endl;
-        return;
+        return -1;
     }
 
-    libpd_finish_list(dest.c_str());
+    int ret = libpd_finish_list(dest.c_str());
 
     context.bMsgInProgress = false;
     context.curMsgLen = 0;
+    
+    return ret;
 }
 
-void PdBase::finishMessage(const std::string& dest, const std::string& msg) {
+int PdBase::finishMessage(const std::string& dest, const std::string& msg) {
 
     PdContext& context = PdContext::instance();
 
     if(!context.bMsgInProgress) {
         cerr << "Pd: Can not finish message, message not in progress" << endl;
-        return;
+        return -1;
     }
 
     if(context.msgType != MSG) {
         cerr << "Pd: Can not finish message, midi byte stream in progress" << endl;
-        return;
+        return -1;
     }
 
-    libpd_finish_message(dest.c_str(), msg.c_str());
+    int ret = libpd_finish_message(dest.c_str(), msg.c_str());
 
     context.bMsgInProgress = false;
     context.curMsgLen = 0;
+    
+    return ret;
 }
 
 //----------------------------------------------------------
@@ -710,7 +717,7 @@ void PdBase::clearArray(const std::string& arrayName, int value) {
 
 //----------------------------------------------------------
 bool PdBase::isInited() {
-    return PdContext::instance().bPdInited;
+    return PdContext::instance().isInited();
 }
 
 int PdBase::blockSize() {
@@ -734,11 +741,12 @@ unsigned int PdBase::maxQueueLen() {
 }
 
 /* ***** PD CONTEXT ***** */
-
-//----------------------------------------------------------
+    
+std::once_flag createContextOnceflag;
 PdBase::PdContext& PdBase::PdContext::instance()
 {
-    static PdBase::PdContext * pointerToTheSingletonInstance = new PdContext;
+    static PdBase::PdContext * pointerToTheSingletonInstance = 0;
+    std::call_once(createContextOnceflag, [](){ pointerToTheSingletonInstance = new PdContext; });
     return *pointerToTheSingletonInstance;
 }
 
@@ -787,7 +795,6 @@ bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, 
     bInited = true;
 
     messages.clear();
-
     return bInited;
 }
 
@@ -845,17 +852,15 @@ void PdBase::PdContext::addMessage(pd::Message& msg) {
 /* ***** PD CONTEXT PRIVATE ***** */
 
 //----------------------------------------------------------
-PdBase::PdContext::PdContext() {
-    receiver = NULL;
-    midiReceiver = NULL;
+PdBase::PdContext::PdContext()
+: receiver(NULL)
+, midiReceiver(NULL)
+, maxMsgLen(32)
+, bLibPDInited(false)
+, bInited(false)
+, numBases(0)
+, maxQueueLen(1000) {
     clear();
-    maxMsgLen = 32;
-
-	bLibPDInited = false;
-    bInited = false;
-    numBases = false;
-
-    maxQueueLen = 1000;
 }
 
 PdBase::PdContext::~PdContext() {
