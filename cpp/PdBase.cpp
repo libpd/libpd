@@ -214,10 +214,11 @@ void PdBase::startMessage() {
         return;
     }
 
-    libpd_start_message(context.maxMsgLen);
-
-    context.bMsgInProgress = true;
-    context.msgType = MSG;
+    int success = libpd_start_message(context.maxMsgLen);
+    if (success) {
+        context.bMsgInProgress = true;
+        context.msgType = MSG;
+    }
 }
 
 void PdBase::addFloat(const float num) {
