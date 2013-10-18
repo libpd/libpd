@@ -482,8 +482,6 @@ class PdBase {
 
                 /// \section Variables
 
-                bool bPdInited;         ///< is pd inited?
-
                 bool bMsgInProgress;    ///< is a compound message being constructed?
                 int maxMsgLen;          ///< maximum allowed message length
                 int curMsgLen;          ///< the length of the current message

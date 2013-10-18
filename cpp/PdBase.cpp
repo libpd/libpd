@@ -710,7 +710,7 @@ void PdBase::clearArray(const std::string& arrayName, int value) {
 
 //----------------------------------------------------------
 bool PdBase::isInited() {
-    return PdContext::instance().bPdInited;
+    return PdContext::instance().isInited();
 }
 
 int PdBase::blockSize() {
