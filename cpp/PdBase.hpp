@@ -145,10 +145,10 @@ class PdBase {
         ///
         /// note: raw does not interlace the buffers
         ///
-        bool processRaw(float* inBuffer, float* outBuffer);
-        bool processShort(int ticks, short* inBuffer, short* outBuffer);
-        bool processFloat(int ticks, float* inBuffer, float* outBuffer);
-        bool processDouble(int ticks, double* inBuffer, double* outBuffer);
+        bool processRaw(const float* inBuffer, float* outBuffer);
+        bool processShort(int ticks, const short* inBuffer, short* outBuffer);
+        bool processFloat(int ticks, const float* inBuffer, float* outBuffer);
+        bool processDouble(int ticks, const double* inBuffer, double* outBuffer);
 
         /// \section Audio Processing Control
 
