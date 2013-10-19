@@ -214,9 +214,8 @@ void PdBase::startMessage() {
         return;
     }
 
-    int success = libpd_start_message(context.maxMsgLen);
-    if (success) {
-        context.bMsgInProgress = true;
+    if(libpd_start_message(context.maxMsgLen) == 0) {
+		context.bMsgInProgress = true;
         context.msgType = MSG;
     }
 }
