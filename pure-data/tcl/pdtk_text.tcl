@@ -39,6 +39,20 @@ proc pdtk_pastetext {args} {
     }
 }
 
+proc pdtk_paste {args} {
+    if { [catch {set pdtk_pastebuffer [clipboard get]}] } {
+        # no selection... do nothing
+    } else {
+        pdsend "pd key 2 0 0"
+        for {set i 0} {$i < [string length $pdtk_pastebuffer]} {incr i 1} {
+            set cha [string index $pdtk_pastebuffer $i]
+            scan $cha %c keynum
+            pdsend "pd key 3 $keynum 0"
+        }
+        pdsend "pd key 4 0 0"
+    }
+}
+
 # select all of the text in an existing text box
 proc pdtk_text_selectall {tkcanvas mytag} {
     if {$::editmode([winfo toplevel $tkcanvas])} {

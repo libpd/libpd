@@ -34,6 +34,10 @@ static int canvas_textcopybufsize;
 static t_glist *glist_finddirty(t_glist *x);
 static int paste_xyoffset = 0; /* a counter of pastes to make x,y offsets */
 
+static void start_pasting(void);
+static void currently_pasting(int key);
+static void end_pasting(void);
+
 /* ------------------ for magicglass --------------- */
 /* from m_obj.c */
 struct _outlet
@@ -1906,9 +1910,10 @@ static void canvas_displaceselection(t_canvas *x, int dx, int dy)
 }
 
     /* this routine is called whenever a key is pressed or released.  "x"
-    may be zero if there's no current canvas.  The first argument is true or
-    false for down/up; the second one is either a symbolic key name (e.g.,
-    "Right" or an Ascii key number.  The third is the shift key. */
+    may be zero if there's no current canvas.  The first argument is 0 for
+    up, 1 for down, 2 for start paste, 3 for currently pasting, 4 for end paste;
+    the second one is either a symbolic key name (e.g., "Right" or an
+    Ascii key number. The third is the shift key. */
 void canvas_key(t_canvas *x, t_symbol *s, int ac, t_atom *av)
 {
     static t_symbol *keynumsym, *keyupsym, *keynamesym;
@@ -1916,11 +1921,24 @@ void canvas_key(t_canvas *x, t_symbol *s, int ac, t_atom *av)
     t_symbol *gotkeysym;
         
     int down, shift;
-    
+
     if (ac < 3)
         return;
+
+    if (atom_getfloat(av) == 2) {
+      start_pasting();
+      return;
+    } else if(atom_getfloat(av) == 3) {
+      currently_pasting(atom_getfloat(av+1));
+      return;
+    } else if(atom_getfloat(av) == 4) {
+      end_pasting();
+      return;
+    }
+    
     if (!x || !x->gl_editor)
         return;
+
     canvas_undo_already_set_move = 0;
     down = (atom_getfloat(av) != 0);  /* nonzero if it's a key down */
     shift = (atom_getfloat(av+2) != 0);  /* nonzero if shift-ed */
@@ -2532,17 +2550,21 @@ static void canvas_copy(t_canvas *x)
 {
     if (!x->gl_editor || !x->gl_editor->e_selection)
         return;
+
     binbuf_free(copy_binbuf);
     copy_binbuf = canvas_docopy(x);
     paste_xyoffset = 1;
+
+    char *buf;
+    int bufsize;
+
     if (x->gl_editor->e_textedfor)
-    {
-        char *buf;
-        int bufsize;
-        rtext_getseltext(x->gl_editor->e_textedfor, &buf, &bufsize);
-        sys_gui("clipboard clear\n");
-        sys_vgui("clipboard append {%.*s}\n", bufsize, buf);
-    }
+      rtext_getseltext(x->gl_editor->e_textedfor, &buf, &bufsize);
+    else
+      binbuf_gettext(copy_binbuf, &buf, &bufsize);
+
+    sys_gui("clipboard clear\n");
+    sys_vgui("clipboard append {%.*s}\n", bufsize, buf);
 }
 
 static void canvas_clearline(t_canvas *x)
@@ -2696,6 +2718,11 @@ static void canvas_dopaste(t_canvas *x, t_binbuf *b)
     glist_donewloadbangs(x);
 }
 
+static t_canvas *paste_canvas2;
+static int paste_buffer_pos = 0;
+static int paste_buffer_size = 0;
+static char *paste_buffer = NULL;
+
 static void canvas_paste(t_canvas *x)
 {
     if (!x->gl_editor)
@@ -2707,11 +2734,38 @@ static void canvas_paste(t_canvas *x)
     }
     else
     {
-        canvas_setundo(x, canvas_undo_paste, canvas_undo_set_paste(x),
-            "paste");
-        canvas_dopaste(x, copy_binbuf);
-        canvas_paste_xyoffset(x);
+      paste_canvas2 = x;
+      sys_gui("pdtk_paste\n");
     }
+}
+
+static void start_pasting(void)
+{
+  free(paste_buffer);
+  paste_buffer_pos = 0;
+  paste_buffer_size = 1024;
+  paste_buffer = malloc(paste_buffer_size);
+}
+
+static void currently_pasting(int key)
+{
+  if (paste_buffer_pos == paste_buffer_size) {
+    paste_buffer_size *= 2;
+    paste_buffer = realloc(paste_buffer, paste_buffer_size);
+  }
+  paste_buffer[paste_buffer_pos++] = key;
+}
+
+static void end_pasting(void)
+{
+  currently_pasting(0);
+  binbuf_text(copy_binbuf, paste_buffer, paste_buffer_pos);
+  canvas_setundo(paste_canvas2, canvas_undo_paste, canvas_undo_set_paste(paste_canvas2),
+                 "paste");
+  canvas_dopaste(paste_canvas2, copy_binbuf);
+  canvas_paste_xyoffset(paste_canvas2);
+  free(paste_buffer);
+  paste_buffer = NULL;
 }
 
 static void canvas_duplicate(t_canvas *x)
