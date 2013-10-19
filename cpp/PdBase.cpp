@@ -89,19 +89,19 @@ void PdBase::closePatch(Patch& patch) {
 }
 
 //--------------------------------------------------------------------
-bool PdBase::processRaw(float* inBuffer, float* outBuffer) {
+bool PdBase::processRaw(const float* inBuffer, float* outBuffer) {
     return libpd_process_raw(inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processShort(int ticks, short* inBuffer, short* outBuffer) {
+bool PdBase::processShort(int ticks, const short* inBuffer, short* outBuffer) {
     return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processFloat(int ticks, float* inBuffer, float* outBuffer) {
+bool PdBase::processFloat(int ticks, const float* inBuffer, float* outBuffer) {
     return libpd_process_float(ticks, inBuffer, outBuffer) == 0;
 }
 
-bool PdBase::processDouble(int ticks, double* inBuffer, double* outBuffer) {
+bool PdBase::processDouble(int ticks, const double* inBuffer, double* outBuffer) {
     return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
 }
 
@@ -214,10 +214,11 @@ void PdBase::startMessage() {
         return;
     }
 
-    libpd_start_message(context.maxMsgLen);
-
-    context.bMsgInProgress = true;
-    context.msgType = MSG;
+    int success = libpd_start_message(context.maxMsgLen);
+    if (success) {
+        context.bMsgInProgress = true;
+        context.msgType = MSG;
+    }
 }
 
 void PdBase::addFloat(const float num) {
@@ -710,7 +711,7 @@ void PdBase::clearArray(const std::string& arrayName, int value) {
 
 //----------------------------------------------------------
 bool PdBase::isInited() {
-    return PdContext::instance().bPdInited;
+    return PdContext::instance().isInited();
 }
 
 int PdBase::blockSize() {

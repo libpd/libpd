@@ -357,19 +357,19 @@ static NSTimer *midiPollTimer;
   }
 }
 
-+ (int)processFloatWithInputBuffer:(float *)inputBuffer outputBuffer:(float *)outputBuffer ticks:(int)ticks {
++ (int)processFloatWithInputBuffer:(const float *)inputBuffer outputBuffer:(float *)outputBuffer ticks:(int)ticks {
   @synchronized(self) {
     return libpd_process_float(ticks, inputBuffer, outputBuffer);
   }
 }
 
-+ (int)processDoubleWithInputBuffer:(double *)inputBuffer outputBuffer:(double *)outputBuffer ticks:(int)ticks {
++ (int)processDoubleWithInputBuffer:(const double *)inputBuffer outputBuffer:(double *)outputBuffer ticks:(int)ticks {
   @synchronized(self) {
     return libpd_process_double(ticks, inputBuffer, outputBuffer);
   }
 }
 
-+ (int)processShortWithInputBuffer:(short *)inputBuffer outputBuffer:(short *)outputBuffer ticks:(int)ticks {
++ (int)processShortWithInputBuffer:(const short *)inputBuffer outputBuffer:(short *)outputBuffer ticks:(int)ticks {
   @synchronized(self) {
     return libpd_process_short(ticks, inputBuffer, outputBuffer);
   }

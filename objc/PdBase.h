@@ -111,11 +111,11 @@
 + (int)openAudioWithSampleRate:(int)samplerate
     inputChannels:(int)inputChannels
     outputChannels:(int)outputchannels;
-+ (int)processFloatWithInputBuffer:(float *)inputBuffer
++ (int)processFloatWithInputBuffer:(const float *)inputBuffer
     outputBuffer:(float *)outputBuffer ticks:(int)ticks;
-+ (int)processDoubleWithInputBuffer:(double *)inputBuffer
++ (int)processDoubleWithInputBuffer:(const double *)inputBuffer
     outputBuffer:(double *)outputBuffer ticks:(int)ticks;
-+ (int)processShortWithInputBuffer:(short *)inputBuffer
++ (int)processShortWithInputBuffer:(const short *)inputBuffer
     outputBuffer:(short *)outputBuffer ticks:(int)ticks;
 + (void)computeAudio:(BOOL)enable;
 + (void *)subscribe:(NSString *)symbol;
