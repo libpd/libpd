@@ -2545,7 +2545,7 @@ static t_binbuf *canvas_docopy(t_canvas *x)
     }
     return (b);
 }
-
+#define PD_CLIPBOARD_IDENTIFIER "__pd__clipboard__"
 static void canvas_copy(t_canvas *x)
 {
     if (!x->gl_editor || !x->gl_editor->e_selection)
@@ -2564,6 +2564,7 @@ static void canvas_copy(t_canvas *x)
       binbuf_gettext(copy_binbuf, &buf, &bufsize);
 
     sys_gui("clipboard clear\n");
+    sys_vgui("clipboard append {" PD_CLIPBOARD_IDENTIFIER "};");
     sys_vgui("clipboard append {%.*s}\n", bufsize, buf);
 }
 
@@ -2758,8 +2759,14 @@ static void currently_pasting(int key)
 
 static void end_pasting(void)
 {
-  currently_pasting(0);
-  binbuf_text(copy_binbuf, paste_buffer, paste_buffer_pos);
+  int id_len = strlen(PD_CLIPBOARD_IDENTIFIER);
+
+  if (strncmp(PD_CLIPBOARD_IDENTIFIER, paste_buffer, id_len)) {
+    post("clipboard data not created in pd");
+    return;
+  }
+
+  binbuf_text(copy_binbuf, paste_buffer+id_len, paste_buffer_pos-id_len);
   canvas_setundo(paste_canvas2, canvas_undo_paste, canvas_undo_set_paste(paste_canvas2),
                  "paste");
   canvas_dopaste(paste_canvas2, copy_binbuf);
