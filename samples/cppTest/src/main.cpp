@@ -20,6 +20,13 @@ using namespace pd;
 
 void testEventPolling(PdBase& pd);
 
+// Howdy gentle libpd user,
+// This is just a simple test to make sure message passing in the libpd c++ layer
+// is working. Like the C test, this simulates 10 seconds of logical audio time
+// by calling processFloat in a for loop. Running this app will not produce any
+// sound as it is not using an audio api. You need to add that yourself using
+// something like PortAudio, Jack, etc as C++ does not have a default audio library.
+
 int main(int argc, char **argv) {
 
 	// our pd engine
