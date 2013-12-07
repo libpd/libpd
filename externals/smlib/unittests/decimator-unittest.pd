@@ -1,0 +1,15 @@
+#N canvas 429 42 759 521 10;
+#X obj 49 128 testtools/unit-test-frame;
+#X obj 49 58 loadbang;
+#X obj 370 -14 & 127;
+#X msg 49 91 decimator 0;
+#X obj 370 45 - 1;
+#X obj 370 14 / 64;
+#X obj 370 73 smlib/decimator 2;
+#X connect 0 2 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 5 0;
+#X connect 3 0 0 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 0 1;

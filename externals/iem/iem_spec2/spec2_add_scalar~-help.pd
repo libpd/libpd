@@ -1,0 +1,14 @@
+#N canvas 52 28 575 275 10;
+#X text 83 169 IEM KUG;
+#X text 67 157 musil;
+#X text 97 157 @;
+#X text 103 157 iem.at;
+#X text 66 179 Graz \, Austria;
+#X text 18 146 (c) Thomas Musil 2000 - 2006;
+#X text 361 51 like;
+#X obj 412 52 +~ 0;
+#X text 134 53 1.arg: <float> value to add;
+#X text 106 14 add a value to a signal spectrum with (blocksize/2 +
+1) bins;
+#X obj 30 52 spec2+s~ 0;
+#X text 30 14 spec2+s~;

@@ -1,0 +1,4 @@
+#N canvas 840 624 450 300 10;
+#X obj 178 120 wac;
+#X text 122 188 placeholder help patch;
+#X text 113 52 wacom graphire on serial port only;

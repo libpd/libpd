@@ -1,0 +1,32 @@
+#N canvas 0 59 600 373 10;
+#X declare -lib Gem;
+#X obj 297 266 gemmover sphere;
+#X obj 153 273 gemmover light;
+#N canvas 180 249 555 286 gemwin 0;
+#X obj 103 210 gemwin;
+#X obj 102 119 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 101 141 select 1 0;
+#X msg 45 182 reset \, create \, 1 \, lighting 1;
+#X msg 169 209 destroy;
+#X obj 304 121 gemhead 1;
+#X obj 304 198 world_light;
+#X msg 382 151 0.5 0.5 0.5;
+#X obj 382 117 loadbang;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 7 0 6 1;
+#X connect 8 0 7 0;
+#X coords 0 -1 1 1 85 35 1 100 100;
+#X restore 461 33 pd gemwin;
+#X obj 155 199 gemmover teapot;
+#X text 60 14 moving Gem's Geos in an interactive way;
+#X obj 456 73 declare -lib Gem;
+#X text 80 102 change into edit-mode \, select the [gemmover] objects
+below and drag them around \; watch the Gem-window.;
+#X text 78 137 you can also add new [gemmover] objects;
+#X text 301 53 turn rendering on --->;

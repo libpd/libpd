@@ -1,0 +1,77 @@
+#N canvas 0 26 783 434 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 23 375 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 23 390 ___________________________________________________
+;
+#X obj 27 18 peek~;
+#X text 79 19 read and write sample values;
+#X obj 531 278 peek~ table;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array table 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 44 119 graph;
+#X floatatom 531 75 5 0 0 0 - - -;
+#X floatatom 531 302 5 0 0 0 - - -;
+#X text 43 78 draw something here:;
+#X floatatom 567 126 5 0 0 0 - - -;
+#X msg 464 98 4 1;
+#X msg 497 98 10 1;
+#X text 270 99 store values using a lists:;
+#X text 609 115 or by setting the y val;
+#X text 279 75 read the y value by setting x here:;
+#X text 611 126 here and then setting x;
+#X text 610 137 in the first inlet;
+#X obj 402 127 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 402 149 t b b;
+#X msg 402 174 12;
+#X msg 432 173 1;
+#X text 304 125 or like this:;
+#X msg 597 233 clip \$1;
+#X obj 597 209 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 592 168 set table;
+#X text 621 205 en/disable -1/+1 clipping;
+#X text 668 169 change array;
+#N canvas 292 265 485 231 multichannel 0;
+#X text 77 54 could not get it to work properly as of yet...;
+#X text 76 65 sorry;
+#X text 77 32 in case you were wondering \, that's what the;
+#X text 77 43 third inlet is good for \, unfortunately I;
+#X text 72 96 quoting krzyszzof czaja again:;
+#X text 73 120 > MSP's peek~ is single channel unlike other buffer~
+;
+#X text 73 131 > clients. One may choose a channel with an argument
+;
+#X text 73 142 > or change it via an inlet but I am not sure how to
+;
+#X text 74 154 > emulate this in pd.;
+#X restore 661 279 pd multichannel;
+#N canvas 247 115 494 397 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control array max_compatible;
+#X text 12 45 DESCRIPTION read and write sample values;
+#X text 12 65 INLET_0 list float set clip;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 734 413 pd META;
+#X connect 5 0 8 0;
+#X connect 7 0 5 0;
+#X connect 10 0 5 1;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;
+#X connect 19 1 21 0;
+#X connect 20 0 5 0;
+#X connect 21 0 5 1;
+#X connect 23 0 5 0;
+#X connect 24 0 23 0;
+#X connect 25 0 5 0;

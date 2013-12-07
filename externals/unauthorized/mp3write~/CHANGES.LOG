@@ -1,0 +1,8 @@
+0.4
+   fixed title memory leak
+0.3
+   fixed includes to compile with lame > 0.90
+0.2
+   fixed multi-encoding problem
+0.1
+   first implementation

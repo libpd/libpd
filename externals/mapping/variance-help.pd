@@ -1,0 +1,31 @@
+#N canvas 1 53 494 406 10;
+#X obj 57 178 resample 20;
+#X obj 57 90 metro 500;
+#X obj 57 119 random 100;
+#X floatatom 57 294 5 0 0 0 - - -;
+#X obj 57 65 tgl 15 0 empty empty empty 0 -6 0 8 -204786 -1 -1 0 1
+;
+#X obj 57 259 variance 20;
+#X obj 57 143 / 100;
+#X obj 5 2 cnv 15 450 20 empty empty variance 2 11 1 18 -233017 -66577
+0;
+#X msg 95 231 mode 1;
+#X text 152 232 used a slower but more accurate algorythm;
+#N canvas 464 140 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float mode;
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS control abstraction needs_work (DESCRIPTION?)
+;
+#X restore 432 377 pd META;
+#X connect 0 0 5 0;
+#X connect 1 0 2 0;
+#X connect 2 0 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;
+#X connect 6 0 0 0;
+#X connect 8 0 5 0;

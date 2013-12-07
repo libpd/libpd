@@ -1,0 +1,76 @@
+#N canvas 350 148 784 564 10;
+#X text 452 8 GEM object;
+#X obj 9 263 cnv 15 430 170 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 265 Inlets:;
+#X obj 9 227 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 226 Arguments:;
+#X obj 8 56 cnv 15 430 165 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 452 75 cnv 15 200 170 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 461 54 Example:;
+#X obj 457 120 cnv 15 190 150 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 71 31 Class: pix object;
+#X text 29 57 Description: a storage place for a number of images;
+#X text 11 79 [pix_buffer] is a named storage place for images. It
+is quite similar to pd's [table] object (but you cannot open it and
+have a look at it's contents).;
+#X text 50 11 Synopsis: [pix_buffer];
+#X text 23 281 Inlet 1: bang: get the size of the buffer in frames
+;
+#X text 12 123 The images stored in the [pix_buffer] can have different
+dimensions and coulorspaces. Memory is reserved on demand \, but you
+can preallocate memory with the [allocate( message.;
+#X text 23 481 Outlet 1: int: size of the buffer;
+#X msg 464 128 bang;
+#X floatatom 464 253 5 0 0 0 - - -;
+#X msg 505 154 allocate 256 256 4;
+#X text 462 296 see also:;
+#X obj 475 348 pix_buffer_read;
+#X obj 474 323 pix_buffer_write;
+#X text 64 237 list: <buffer_name> <size>;
+#X obj 464 230 pix_buffer depot 10;
+#X text 10 170 To write data to the [pix_buffer] or get images from
+it \, you can use separate objects [pix_buffer_write] and [pix_buffer_read]
+or the [open( message.;
+#X obj 505 80 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 22 450 300 openpanel 0;
+#X obj 114 62 inlet;
+#X obj 121 254 outlet;
+#X obj 114 125 openpanel;
+#X obj 114 199 t b a;
+#X msg 114 162 set open \$1 0;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 0;
+#X connect 3 1 1 0;
+#X connect 4 0 3 0;
+#X restore 505 97 pd openpanel;
+#X text 23 300 Inlet 1: message: open <filename> <index>: put an image
+into the pix_buffer at the given index;
+#X msg 505 132 open somefile.jpg 0;
+#X msg 506 174 resize 15;
+#X text 23 384 Inlet 1: message: resize <size>: re-allocate slots in
+the buffer (slots will survive this);
+#X text 23 333 Inlet 1: message: allocate <xsize> <ysize> <bytes_per_pixel>:
+assume that all images in the pix_buffer will have the given dimension
+and preallocate memory for them (pixes will be set to black);
+#X msg 506 193 copy 0 2;
+#X msg 506 212 save /tmp/out.jpg 2;
+#X text 23 414 Inlet 1: message: copy <src> <target>: copy a pix from
+slot <src> to slot <target>;
+#X text 23 444 Inlet 1: message: save <filename> <index>: save image
+in given slot to harddisk.;
+#X connect 16 0 23 0;
+#X connect 18 0 23 0;
+#X connect 23 0 17 0;
+#X connect 25 0 26 0;
+#X connect 26 0 28 0;
+#X connect 28 0 23 0;
+#X connect 29 0 23 0;
+#X connect 32 0 23 0;
+#X connect 33 0 23 0;

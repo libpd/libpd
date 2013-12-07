@@ -1,0 +1,16 @@
+#N canvas 0 26 450 300 10;
+#X obj 29 19 ramp~;
+#X obj 153 21 blockramp~;
+#N canvas 107 51 494 364 META 0;
+#X text 12 5 ALIAS blockramp~;
+#X text 12 95 INLET_0 bang;
+#X text 12 75 DESCRIPTION retriggerable counter for dsp signals;
+#X text 12 135 LIBRARY external creb;
+#X text 12 115 OUTLET_0 signal;
+#X text 12 175 HELP_PATCH_AUTHORS Jonathan Wilkes for PDDP.;
+#X text 12 25 KEYWORDS signal conversion ramp block_oriented needs_work
+(example patch);
+#X text 12 55 LICENSE GPL v2;
+#X text 12 155 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 395 276 pd META;
+#X text 95 121 needs an example;

@@ -1,0 +1,28 @@
+#N canvas 1 53 508 284 10;
+#X floatatom 102 52 5 0 0 0 - - -;
+#X floatatom 102 135 5 0 0 0 - - -;
+#X obj 154 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 58 133 print;
+#X floatatom 225 76 5 0 0 0 - - -;
+#X text 144 51 signal input;
+#X obj 102 99 threshold_max 0.99;
+#X text 268 74 treshold;
+#X text 50 238 based on an object by Loic Kessous;
+#X text 51 194 the threshold is relative to the input value;
+#N canvas 466 198 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION;
+#X restore 445 252 pd META;
+#X connect 0 0 6 0;
+#X connect 4 0 6 1;
+#X connect 6 0 1 0;
+#X connect 6 0 2 0;
+#X connect 6 0 3 0;

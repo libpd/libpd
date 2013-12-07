@@ -1,0 +1,18 @@
+#N canvas 0 0 435 284 10;
+#X text 83 15 sends a bang \, whenever the containing patch is saved
+;
+#X obj 18 153 bng 30 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 18 15 savebangs;
+#X obj 18 124 savebangs;
+#X text 17 55 This works also inside abstractions when saving the parent
+patch by providing the parent depth as an argument.;
+#X obj 15 212 savebangs 1;
+#X obj 15 236 bng 30 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 13 192 This would send a bang when the parent patch is be saved:
+;
+#X text 14 91 This sends a bang when the current patch containing [savebangs]
+is saved:;
+#X connect 3 0 1 0;
+#X connect 5 0 6 0;

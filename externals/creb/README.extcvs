@@ -1,0 +1,16 @@
+
+NOTE FOR THE PURE DATA EXTERNALS CVS
+
+if you need to change anything to the source files here, let me know at <tom@zwizwa.be>
+to prevent i overwrite your changes when i update the CVS from my darcs archive at:
+
+	http://zwizwa.be/darcs/creb
+
+i update like this:
+
+ * update from darcs tree
+ * update from sourceforge cvs
+ * briefly look over changes, take mine as master
+ * commit darcs + sourceforge
+
+

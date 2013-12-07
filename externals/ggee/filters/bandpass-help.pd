@@ -1,0 +1,41 @@
+#N canvas 0 26 423 419 10;
+#X text 63 298 These filters are all controlled by a bandwidth which
+is expressed in octaves. A bandwidth of 100 is equivalent to one octave.
+;
+#X text 76 12 Bandpass coefficients for biquad~;
+#X text 70 26 ===================================;
+#X text 63 340 Attention \, only the left inlet triggers new coefficients
+for biquad~;
+#X text 8 388 (C) Guenter Geiger 2000;
+#X floatatom 176 119 0 0 0 0 - - -;
+#X floatatom 267 119 0 0 0 0 - - -;
+#X obj 267 142 trigger bang float;
+#X obj 113 216 biquad~;
+#X obj 113 156 noise~;
+#X obj 102 258 dac~;
+#X obj 179 74 hsl 128 17 20 20000 1 0 empty empty frequency 5 9 0 10
+-203904 -1 -1 0 0;
+#X obj 270 97 hsl 128 17 0 100 0 0 empty empty bandwidth 5 9 0 10 -261682
+-1 -1 0 1;
+#X obj 176 185 bandpass;
+#N canvas 433 26 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 125 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION bandpass forefficients for biquad~;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 list;
+#X restore 372 396 pd META;
+#X connect 5 0 13 0;
+#X connect 6 0 7 0;
+#X connect 7 0 13 0;
+#X connect 7 1 13 1;
+#X connect 8 0 10 1;
+#X connect 8 0 10 0;
+#X connect 9 0 8 0;
+#X connect 11 0 5 0;
+#X connect 12 0 6 0;
+#X connect 13 0 8 0;

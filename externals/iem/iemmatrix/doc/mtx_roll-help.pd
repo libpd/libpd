@@ -1,0 +1,23 @@
+#N canvas 79 113 670 283 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X text 194 36 tranpose matrices;
+#X text 198 15 [mtx_roll];
+#X obj 194 162 t a a;
+#X obj 236 163 mtx_print org;
+#X obj 194 220 mtx_print rolled;
+#X msg 194 120 1 2 3 4 5;
+#X obj 194 142 mtx_diag;
+#X text 190 103 shift columns of a matrix;
+#X floatatom 289 196 4 0 5 1 shift - -;
+#X text 374 182 (0=no-shift \; 1=1-column-right \; -2=2-columns-left
+\; ...);
+#X obj 194 192 mtx_roll 1;
+#X connect 6 0 14 0;
+#X connect 6 1 7 0;
+#X connect 9 0 10 0;
+#X connect 10 0 6 0;
+#X connect 12 0 14 1;
+#X connect 14 0 8 0;

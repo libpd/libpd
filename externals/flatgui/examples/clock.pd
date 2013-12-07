@@ -1,0 +1,38 @@
+#N canvas 499 272 303 143 10;
+#X obj 27 42 knob 20 20 0 660 0 0 *nil* *hour* empty 0 -8 192 8 -1109
+-1109 -42246 891 1;
+#X obj 17 32 knob 40 40 0 55 0 0 *nil* *minute* empty 0 -8 192 8 -258699
+-258699 -42246 168 1;
+#N canvas 0 0 337 294 gettime 0;
+#X msg 63 92 bang;
+#X obj 63 118 time;
+#X obj 50 40 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X floatatom 13 157 5 0 0;
+#X floatatom 77 157 5 0 0;
+#X floatatom 122 157 5 0 0;
+#X obj 35 258 s *hour*;
+#X obj 77 211 s *minute*;
+#X obj 77 181 expr ($f1 + 28) % 60 + 0.37;
+#X obj 51 63 metro 60000;
+#X obj 50 17 loadbang;
+#X obj 33 212 f;
+#X obj 33 181 t b f;
+#X obj 35 235 expr (($f1 * 60) + $f2 + 335) % 720 + 0.37;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 1 4 0;
+#X connect 1 2 5 0;
+#X connect 2 0 9 0;
+#X connect 3 0 11 0;
+#X connect 4 0 8 0;
+#X connect 4 0 12 0;
+#X connect 8 0 7 0;
+#X connect 9 0 0 0;
+#X connect 10 0 2 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 0;
+#X connect 12 1 13 1;
+#X connect 13 0 6 0;
+#X restore 5 6 pd gettime;
+#X text 122 51 written by Orm Finnendahl;

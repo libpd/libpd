@@ -1,0 +1,91 @@
+#N canvas 406 127 739 406 12;
+#X obj 75 5 cd40193 up down counter;
+#X obj 75 -53 tgl 15 1 empty empty up_clock 17 7 0 10 -44926 -258699
+-1 1 1;
+#X obj 100 -37 tgl 15 1 empty empty down_clock 17 7 0 10 -44926 -258699
+-1 1 1;
+#X obj 126 -88 tgl 15 1 empty empty clear 17 7 0 10 -44926 -258699
+-1 0 1;
+#X obj 151 -111 tgl 15 1 empty empty load 17 7 0 10 -44926 -258699
+-1 1 1;
+#X obj 177 -24 tgl 15 0 empty empty A 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 202 -24 tgl 15 0 empty empty B 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 228 -24 tgl 15 0 empty empty C 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 254 -24 tgl 15 0 empty empty D 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 75 47 tgl 15 0 empty empty QA 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 110 47 tgl 15 0 empty empty QB 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 146 47 tgl 15 0 empty empty QC 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 182 47 tgl 15 0 empty empty QD 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 218 29 tgl 15 0 empty empty Carry 17 7 0 10 -62784 -258699 -1
+1 1;
+#X obj 254 47 tgl 15 0 empty empty Borrow 17 7 0 10 -62784 -258699
+-1 1 1;
+#X obj 349 106 cd40193 up down counter;
+#X obj 451 77 tgl 15 0 empty empty A 17 7 0 10 -260818 -258699 -1 0
+1;
+#X obj 476 77 tgl 15 0 empty empty B 17 7 0 10 -260818 -258699 -1 0
+1;
+#X obj 502 77 tgl 15 0 empty empty C 17 7 0 10 -260818 -258699 -1 0
+1;
+#X obj 528 77 tgl 15 0 empty empty D 17 7 0 10 -260818 -258699 -1 0
+1;
+#X obj 349 148 tgl 15 0 empty empty QA 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 384 148 tgl 15 0 empty empty QB 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 420 148 tgl 15 0 empty empty QC 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 456 148 tgl 15 0 empty empty QD 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 492 130 tgl 15 0 empty empty Carry 17 7 0 10 -62784 -258699
+-1 1 1;
+#X obj 528 148 tgl 15 0 empty empty Borrow 17 7 0 10 -62784 -258699
+-1 1 1;
+#X text 32 -155 cd40193 emulates the CMOS synchronous up/down counter
+;
+#X text 212 -113 0 loads data into counter;
+#X text 197 -90 1 clears counter;
+#X text 202 -65 0 to 1 transition on a clock counts only if the other
+clock = 1 and clear = 0 and load = 1;
+#X text 285 204 20070314_MartinPeach;
+#X obj 9 -121 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 9 -89 metro 100;
+#X connect 0 0 9 0;
+#X connect 0 1 10 0;
+#X connect 0 2 11 0;
+#X connect 0 3 12 0;
+#X connect 0 4 13 0;
+#X connect 0 4 15 0;
+#X connect 0 5 14 0;
+#X connect 0 5 15 1;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 2;
+#X connect 3 0 15 2;
+#X connect 4 0 0 3;
+#X connect 4 0 15 3;
+#X connect 5 0 0 4;
+#X connect 6 0 0 5;
+#X connect 7 0 0 6;
+#X connect 8 0 0 7;
+#X connect 15 0 20 0;
+#X connect 15 1 21 0;
+#X connect 15 2 22 0;
+#X connect 15 3 23 0;
+#X connect 15 4 24 0;
+#X connect 15 5 25 0;
+#X connect 16 0 15 4;
+#X connect 17 0 15 5;
+#X connect 18 0 15 6;
+#X connect 19 0 15 7;
+#X connect 31 0 32 0;
+#X connect 32 0 1 0;

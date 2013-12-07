@@ -1,0 +1,15 @@
+#N canvas 774 102 578 400 10;
+#X obj 100 212 mtx_roots;
+#X text 29 22 [mtx_roots] uses [mtx_eig] to solve polynomials (see
+MATLAB-help for 'roots');
+#X text 73 60 [mtx_eig] requires iemmatrix to be compiled with gsl
+;
+#X text 339 350 Franz Zotter \, 2010;
+#X text 60 127 (x-3i)(x+3i)(x-1)(x+2)(x-3)=;
+#X text 77 144 x^5-2x^4+4x^3-12x^2-45x+54;
+#X msg 100 185 1 -2 4 -12 -45 54;
+#X obj 82 268 print re;
+#X obj 160 267 print im;
+#X connect 0 0 7 0;
+#X connect 0 1 8 0;
+#X connect 6 0 0 0;

@@ -1,0 +1,5 @@
+pd-arraysize (0.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #596458)
+
+ -- Hans-Christoph Steiner <hans@eds.org>  Sat, 11 Sep 2010 14:05:17 -0400

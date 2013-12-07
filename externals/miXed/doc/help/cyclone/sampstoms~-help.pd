@@ -1,0 +1,40 @@
+#N canvas 0 26 501 294 10;
+#X text 16 15 Convert number of samples (at the current sampling rate)
+to milliseconds;
+#X msg 263 127 0 \, 44100 3000;
+#X floatatom 263 248 0 0 0 0 - - -;
+#X obj 263 187 sampstoms~;
+#X floatatom 79 171 0 0 0 0 - - -;
+#X obj 25 139 sampstoms~;
+#X floatatom 25 116 0 0 0 0 - - -;
+#X text 74 118 number of samples in;
+#X text 90 155 number of milliseconds out;
+#X text 17 44 Many signal objects accepts arguments or inputs in milliseconds
+but sometimes you want to make calculations in samples. sampstoms~
+can perform the conversion.;
+#X text 272 208 milliseconds out (as a signal);
+#X text 273 171 number of samples in (as a signal);
+#X obj 263 226 Snapshot~ 100;
+#X obj 263 146 Line~;
+#X text 18 93 Use as a calculator or for float parameters;
+#X text 247 110 or convert signal values;
+#N canvas 309 151 494 394 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 155 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible;
+#X text 12 45 DESCRIPTION convert number of samples (at the current
+sampling rate) to milliseconds;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 115 OUTLET_1 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 135 AUTHOR Krzysztof Czaja;
+#X restore 451 273 pd META;
+#X connect 1 0 13 0;
+#X connect 3 0 12 0;
+#X connect 5 1 4 0;
+#X connect 6 0 5 0;
+#X connect 12 0 2 0;
+#X connect 13 0 3 0;

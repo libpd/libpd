@@ -1,0 +1,29 @@
+#N canvas 283 13 427 386 10;
+#X obj 209 272 canvaserror;
+#X obj 18 13 canvaserror;
+#X text 103 12 print an error to the Pd console;
+#X obj 62 205 route apple orange banana;
+#X obj 209 229 list;
+#X msg 209 251 '\$1' is not a fruit!;
+#X msg 38 148 banana;
+#X msg 122 145 apple;
+#X msg 137 173 orange;
+#X msg 97 116 carot;
+#X text 18 57 This object lets you print real error messages to the
+Pd console.;
+#X obj 62 236 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -1
+-1;
+#X obj 111 237 bng 15 250 50 0 empty empty empty 17 7 0 10 -260097
+-1 -1;
+#X obj 160 238 bng 15 250 50 0 empty empty empty 17 7 0 10 -257985
+-1 -1;
+#X connect 3 0 11 0;
+#X connect 3 1 12 0;
+#X connect 3 2 13 0;
+#X connect 3 3 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 0;
+#X connect 6 0 3 0;
+#X connect 7 0 3 0;
+#X connect 8 0 3 0;
+#X connect 9 0 3 0;

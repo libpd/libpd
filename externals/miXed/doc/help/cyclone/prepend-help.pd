@@ -1,0 +1,60 @@
+#N canvas 0 26 469 609 10;
+#X obj 26 16 prepend;
+#X text 94 17 prepend a message with another message:;
+#X msg 128 91 set a quick brown fox;
+#X msg 164 119 jumps;
+#X text 68 63 1;
+#X text 114 90 2;
+#X text 145 120 3;
+#X obj 139 175 prepend typewriters;
+#X msg 85 61 are boring;
+#X obj 139 205 prepend set;
+#X text 25 280 This object also has a non-Max/MSP behavior (although
+it is still compatible with the Max/MSP prepend). If [prepend] is created
+without an argument \, then it has a right inlet. This right inlet
+allows you to set what to prepend:;
+#X msg 90 382 set a quick brown fox;
+#X msg 134 408 jumps;
+#X text 32 359 1;
+#X text 74 382 2;
+#X text 115 409 3;
+#X msg 49 357 are boring;
+#X obj 140 536 prepend set;
+#X msg 140 563 typewriters asdf;
+#X msg 209 445 typewriters;
+#X obj 140 511 prepend;
+#X msg 179 445 234;
+#X msg 290 445 symbol people;
+#X msg 290 467 list this is a list;
+#X msg 290 491 this is not;
+#X text 235 381 now the "set" is passed thru;
+#X text 269 91 "set" changes what to prepend;
+#N canvas 247 115 494 404 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION prepend a message with another message:;
+#X text 12 5 KEYWORDS control max_compatible anything_op;
+#X text 12 65 INLET_0 anything set;
+#X text 12 105 OUTLET_0 anything;
+#X text 12 85 INLET_1 anything;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 420 589 pd META;
+#X msg 139 232 a quick brown fox;
+#X connect 2 0 7 0;
+#X connect 3 0 7 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 28 0;
+#X connect 11 0 20 0;
+#X connect 12 0 20 0;
+#X connect 16 0 20 0;
+#X connect 17 0 18 0;
+#X connect 19 0 20 1;
+#X connect 20 0 17 0;
+#X connect 21 0 20 1;
+#X connect 22 0 20 1;
+#X connect 23 0 20 1;
+#X connect 24 0 20 1;

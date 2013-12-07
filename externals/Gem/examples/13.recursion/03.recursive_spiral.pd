@@ -1,0 +1,71 @@
+#N canvas 3 2 602 516 10;
+#X obj 14 66 gemwin;
+#X obj 14 9 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X msg 48 10 create;
+#X msg 55 33 destroy;
+#X obj 14 93 gemhead;
+#X obj 14 213 t a a;
+#X obj 59 213 circle;
+#X obj 14 283 scale 0.7;
+#X obj 14 243 rotate 45 0 0 1;
+#X obj 14 263 translate 2 0 1 0;
+#X text 170 17 A tutorial on recursion in Gem;
+#X text 170 37 (GPL) 2007 Claude Heiland-Allen <claudiusmaximus@goto10.org>
+;
+#X text 170 77 A common idiom in Gem is to use the [repeat] object
+found in the Zexy library \, to generate multiple copies of the same
+object. Let's try using it to make our spiral.;
+#X obj 14 183 separator;
+#X obj 24 163 r \$0-recurse;
+#X obj 68 133 v \$0-depth;
+#X obj 14 113 t a b;
+#X obj 68 113 f 16;
+#X floatatom 91 96 5 0 0 2 max-depth - -;
+#X obj 36 433 s \$0-recurse;
+#X obj 14 313 t b a b;
+#X obj 99 343 v \$0-depth;
+#X obj 99 363 - 1;
+#X obj 99 383 max 0;
+#X obj 99 403 v \$0-depth;
+#X obj 36 413 spigot;
+#X obj 14 343 v \$0-depth;
+#X obj 14 383 v \$0-depth;
+#X obj 14 363 + 1;
+#X text 170 127 First \, we need to limit the depth of the recursion
+\, to avoid the dreaded "stack overflow" errors from both Pd and OpenGL.
+We set the maximum depth before doing anything else in the Gem chain.
+;
+#X text 170 187 Next \, we draw the circle and set up the transformations
+for the recursive call.;
+#X text 170 227 Finally \, we check that we are within the allowed
+depth \, and recurse (after decrementing the maximum depth).;
+#X text 170 267 At first glance \, this recursive solution is much
+less elegant than the iterative solution with [repeat] \, and it is
+-- for non-branching structures. The power of recursion comes from
+the ease with which branching structures can be created.;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 16 0;
+#X connect 5 0 8 0;
+#X connect 5 1 6 0;
+#X connect 7 0 20 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 13 0 5 0;
+#X connect 14 0 13 0;
+#X connect 16 0 13 0;
+#X connect 16 1 17 0;
+#X connect 17 0 15 0;
+#X connect 18 0 17 1;
+#X connect 20 0 26 0;
+#X connect 20 1 25 0;
+#X connect 20 2 21 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 24 0;
+#X connect 23 0 25 1;
+#X connect 25 0 19 0;
+#X connect 26 0 28 0;
+#X connect 28 0 27 0;

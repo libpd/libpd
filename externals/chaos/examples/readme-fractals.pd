@@ -1,0 +1,56 @@
+#N canvas 495 74 487 362 10;
+#X declare -lib chaos;
+#X obj 56 202 readme-frac-format;
+#X obj 56 221 readme-gen-fractal;
+#X text 37 183 if you want to add new fractals:;
+#X obj 56 144 readme-operation;
+#X obj 56 164 readme-searching;
+#X text 22 107 Additional Reading \,;
+#X text 41 126 if you want to us existing fractals:;
+#X obj 56 240 readme-parameter-ranges;
+#X text 270 269 Developed using PD 0.36;
+#X text 93 295 Copyright 2003 \, Ben Bogart and Michael McGonagle;
+#X text 276 282 Released under GNU GPL;
+#N canvas 302 96 575 579 available_fractals 0;
+#X obj 157 264 henon;
+#X obj 157 302 ikeda;
+#X obj 157 321 latoocarfian;
+#X obj 157 340 latoomutalpha;
+#X obj 157 359 latoomutbeta;
+#X obj 157 378 latoomutgamma;
+#X obj 69 208 logistic;
+#X obj 277 208 lorenz;
+#X obj 69 227 mlogistic;
+#X obj 277 246 rossler;
+#X obj 157 473 standardmap;
+#X obj 69 246 tent;
+#X obj 277 265 three_d;
+#X text 57 187 1 variable;
+#X text 157 187 2 variables;
+#X text 273 187 3 variables;
+#X text 24 136 The remaining outputs represent the variables \, corresponding
+from left to right as the variables from the '*.frac' data file.;
+#X text 24 16 Below \, there is an object for each of the fractals
+currently available in the ChaosII collection.;
+#X text 23 55 All fractals share the same common structure \, in that
+the right-most outlet is used as the "results" outlet. This is used
+during the "Searching" operations to return the results of the search
+to the user. see 'readme-searching' file for more info on the results
+of a search.;
+#X obj 157 207 attract1;
+#X obj 157 226 dejong;
+#X obj 157 245 gingerbreadman;
+#X obj 157 283 hopalong;
+#X obj 157 416 martin;
+#X obj 277 227 pickover;
+#X obj 157 435 popcorn;
+#X obj 157 454 quadruptwo;
+#X obj 157 492 strange1;
+#X obj 157 511 tinkerbell;
+#X obj 157 530 unity;
+#X obj 157 397 lotkavolterra;
+#X restore 43 78 pd available_fractals;
+#X text 27 28 The Chaos Library provides a means to generate multiple
+chaotic datastreams \, as well as the ability to search for new attractor
+sets that produce other chaotic datastreams.;
+#X obj 360 6 import chaos;

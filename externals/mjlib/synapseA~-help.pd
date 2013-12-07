@@ -1,0 +1,18 @@
+#N canvas 3 53 450 300 10;
+#X text 120 178 placeholder help patch;
+#X text 147 62 from mjlib;
+#X obj 162 123 synapseA~;
+#N canvas 466 220 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 35 LICENSE GPL v2;
+#X text 12 185 AUTHOR Mark Williamson <mark@junklight.com>;
+#X text 12 145 OUTLET_1;
+#X text 12 5 KEYWORDS signal needs_work (EXAMPLE/INLETS/OUTLETS/DESCRIPTION?)
+;
+#X text 12 55 DESCRIPTION;
+#X text 12 85 INLET_0 signal;
+#X text 12 105 INLET_1;
+#X text 12 125 OUTLET_0;
+#X text 12 165 OUTLET_2;
+#X restore 398 269 pd META;

@@ -1,0 +1,39 @@
+
+current: all
+
+TARGET = adaptive.dll
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio\Vc98"
+
+PD_INST_PATH = "C:\pd"
+
+SRC = adaptive.c lms~.c lms2~.c nlms~.c nlms2~.c nlms3~.c
+
+PD_WIN_INCLUDE_PATH = /I. /I$(PD_INST_PATH)\src /I$(VIS_CPP_PATH)\include
+
+PD_WIN_C_FLAGS = /W3 /WX /DNT /DPD /nologo
+
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = $(VIS_CPP_PATH)\lib\libc.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_CPP_PATH)\lib\kernel32.lib \
+	$(PD_INST_PATH)\bin\pd.lib
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	cl $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+all: $(OBJ)
+	link $(PD_WIN_L_FLAGS) /dll /export:adaptive_setup \
+	/out:$(TARGET) $(OBJ) $(PD_WIN_LIB)
+	del *.obj *.lib *.exp
+
+clean:
+	del *.obj *.dll *.lib *.exp
+
+install:
+	copy *.dll $(PD_INST_PATH)\externs
+	copy ..\doc\*.pd $(PD_INST_PATH)\doc\5.reference

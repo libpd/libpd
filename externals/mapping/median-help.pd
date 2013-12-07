@@ -1,0 +1,35 @@
+#N canvas 1 53 556 332 10;
+#X declare -lib zexy;
+#X declare -lib zexy;
+#X obj 16 105 cnv 15 60 60 empty empty empty 20 12 0 14 -258699 -66577
+0;
+#X floatatom 22 220 5 0 0 0 - - -;
+#X text 326 235 )c( Alexandre Quessy 2006;
+#X msg 89 55 123 234 345 123 345 67;
+#X obj 390 203 zexy;
+#X text 324 203 Requires;
+#X obj 474 203 expr;
+#X text 436 203 and;
+#X text 328 249 Release under the GPL v2;
+#X text 125 139 Calculates the median of a list of floats.;
+#X text 127 103 [median];
+#X msg 89 29 999 999 7 6 5 0 -99999;
+#X msg 88 4 0 67 68 67 69 67 1023;
+#X obj 22 115 median;
+#X text 131 250 See also;
+#X obj 199 247 median_n;
+#N canvas 463 53 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION calculate the median of a list of floats
+;
+#X text 12 65 INLET_0 list;
+#X restore 488 301 pd META;
+#X connect 3 0 13 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 0;

@@ -1,0 +1,441 @@
+# next line has to be edited manually
+PD_DIR ?= $(ROOT_DIR)/../../pd/src
+
+OS_NAME = $(shell uname -s)
+
+# Debian has options for the GNU HURD and kFreeBSD kernels
+ifeq ($(OS_NAME),GNU)
+  OS_NAME=Linux
+endif
+ifeq ($(OS_NAME),GNU/kFreeBSD)
+  OS_NAME=Linux
+endif
+
+ifneq ($(OS_NAME),Linux)
+ifneq ($(OS_NAME),Darwin)
+ifeq (,$(findstring MinGW,$(OS_NAME)))
+ifeq (,$(findstring MINGW,$(OS_NAME)))
+$(error Fatal error: unknown environment "$(OS_NAME)".  Aborting...)
+else
+OS_NAME = MinGW
+endif
+else
+OS_NAME = MinGW
+endif
+endif
+endif
+
+MY_NAME = $(shell id -un)
+
+# remove this restriction LATER, when TCL_LIB is ./configured
+ifeq ($(MY_NAME),krzYszcz)
+# TCL_LIB should be set (or not) before "include Makefile.sources"
+TCL_LIB = -l$(shell grep -osm1 'tcl8\.[345]' $(PD_DIR)/makefile)
+endif
+
+TILDE = ~
+
+-include Makefile.dirs
+include Makefile.sources
+include Makefile.objects
+
+default: define_build all
+
+ifeq ($(OS_NAME),Linux)
+X_SUFFIX = pd_linux
+CC = gcc
+LFLAGS = -Wl,--export-dynamic -shared
+# FIXME strict-aliasing
+OPT_CFLAGS = -O6 -funroll-loops -fomit-frame-pointer -fno-strict-aliasing -fPIC
+ifeq ($(MY_NAME),krzYszcz)
+DEFINES = -DUNIX -DKRZYSZCZ
+else
+DEFINES = -DUNIX
+endif
+endif
+
+# FIXME test if it actually works
+ifeq ($(OS_NAME),MinGW)
+CC = gcc
+X_SUFFIX = dll
+# OPT_CFLAGS gets overridden in Pd-extended builds for optimization
+# flags, so stick -mms-bitfieds here so that it doesn't get overridden
+DEFINES = -mms-bitfields -DNT -DMSW
+OPT_CFLAGS = -funroll-loops
+LFLAGS = -shared -L$(PD_DIR) -L$(PD_DIR)/../bin/ -lpd
+endif
+
+ifeq ($(OS_NAME),Darwin)
+CC = gcc
+X_SUFFIX = pd_darwin
+DEFINES = -DUNIX -DMACOSX
+OPT_CFLAGS = -O2 -funroll-loops -fomit-frame-pointer
+# perhaps "-undefined suppress" would be a better choice, when we go dynamic
+# with our own common code? (not likely to happen soon...)
+LFLAGS = -bundle -bundle_loader $(PD_DIR)/pd -undefined dynamic_lookup
+endif
+
+SHARED_DIR = $(ROOT_DIR)/shared
+OBJ_DIR = .
+BIN_DIR = $(ROOT_DIR)/bin
+OUT_DIR = $(if $($1_SUBDIR),$(BIN_DIR)/$($1_SUBDIR),$(BIN_DIR))
+
+# for current versions, $(BASE_DIR) equals $(BASE_NAME), for prior versions,
+# $(BASE_DIR) equals $(BASE_NAME)-$(VERSION)
+BASE_DIR = $(shell basename `pwd`)
+BASE_NAME = $(shell basename `pwd` | awk -F - '{print $$1}')
+
+INCLUDES = -I . -I $(PD_DIR) -I $(SHARED_DIR)
+
+ifdef CAML_TYPES
+include $(ROOT_DIR)/Makefile.caml
+endif
+
+# CX: control external's main file
+# AX: audio (tilde) external's main file
+# LX: alias external's main file
+#     (if alias external is tilde-only, use OTHER_SOURCES and AX_CLASSES)
+
+CX_NAMES = $(notdir $(CX_SOURCES))
+AX_NAMES = $(notdir $(AX_SOURCES))
+TYPES_NAMES = $(notdir $($1_SOURCES))
+
+ifdef LX_SOURCES
+LX_NAMES = $(subst _,.,$(notdir $(LX_SOURCES)))
+LX_CLASSES = $(LX_NAMES:.c=)
+endif
+
+CX_DIR = $(dir $(firstword $(CX_SOURCES)))
+AX_DIR = $(dir $(firstword $(AX_SOURCES)))
+TYPES_DIR = $(dir $(firstword $($1_SOURCES)))
+
+TYPES_EXTERNS = \
+	$(patsubst %.c,%$($1_TILDE).$(X_SUFFIX),$(call TYPES_NAMES,$1))
+
+SOURCES = $(CX_SOURCES) $(AX_SOURCES) $(LX_SOURCES) $(OTHER_SOURCES) \
+	$(foreach type,$(TYPES),$($(type)_SOURCES)) \
+	$(foreach type,$(TYPES),$($(type)_PRIVATEOBJECTS:.o=.c))
+
+ifeq ($(MY_NAME),krzYszcz)
+WARN_CFLAGS = -Wall -W -Wstrict-prototypes -Werror \
+	-Wno-unused -Wno-parentheses -Wno-switch
+else
+WARN_CFLAGS = -Wall -W -Wstrict-prototypes \
+	-Wno-unused -Wno-parentheses -Wno-switch
+endif
+
+DBG_CFLAGS = 
+CFLAGS = $(WARN_CFLAGS) $(OPT_CFLAGS) $(DEFINES) $(INCLUDES)
+
+EXTERNS = $(foreach fn,$(CX_NAMES:.c=.$(X_SUFFIX)),$(BIN_DIR)/$(fn)) \
+	$(foreach fn,$(AX_NAMES:.c=~.$(X_SUFFIX)),$(BIN_DIR)/$(fn)) \
+	$(foreach fn,$(CX_CLASSES:=.$(X_SUFFIX)),$(BIN_DIR)/$(fn)) \
+	$(foreach fn,$(AX_CLASSES:=~.$(X_SUFFIX)),$(BIN_DIR)/$(fn)) \
+	$(foreach fn,$(LX_CLASSES:=.$(X_SUFFIX)),$(BIN_DIR)/$(fn)) \
+	$(if $(LX_STUBCLASS),$(BIN_DIR)/$(LX_STUBCLASS:=.$(X_SUFFIX))) \
+	$(foreach type,$(TYPES),\
+		$(foreach fn,$(call TYPES_EXTERNS,$(type)), \
+			$(call OUT_DIR,$(type))/$(fn)))
+
+TYPES_RULE = $(foreach fn,$(call TYPES_EXTERNS,$1),$(call OUT_DIR,$1)/$(fn)): \
+		$(call OUT_DIR,$1)/%$($1_TILDE).$(X_SUFFIX) \
+		: $(call TYPES_DIR,$1)%.o \
+			$($1_PRIVATEOBJECTS) $($1_FOREIGNOBJECTS) \
+			$(foreach obj,$($1_OBJECTS),$(SHARED_DIR)/$(obj)) \
+	; $(CC) -o $$@ $(CFLAGS) $(LFLAGS) $$+ $($1_LIBS)
+
+# LATER find a better way...
+$(if $(word 1,$(TYPES)),$(call TYPES_RULE,$(word 1,$(TYPES))))
+$(if $(word 2,$(TYPES)),$(call TYPES_RULE,$(word 2,$(TYPES))))
+$(if $(word 3,$(TYPES)),$(call TYPES_RULE,$(word 3,$(TYPES))))
+$(if $(word 4,$(TYPES)),$(call TYPES_RULE,$(word 4,$(TYPES))))
+$(if $(word 5,$(TYPES)),$(call TYPES_RULE,$(word 5,$(TYPES))))
+$(if $(word 6,$(TYPES)),$(call TYPES_RULE,$(word 6,$(TYPES))))
+$(if $(word 7,$(TYPES)),$(call TYPES_RULE,$(word 7,$(TYPES))))
+$(if $(word 8,$(TYPES)),$(call TYPES_RULE,$(word 8,$(TYPES))))
+$(if $(word 9,$(TYPES)),$(call TYPES_RULE,$(word 9,$(TYPES))))
+$(if $(word 10,$(TYPES)),$(call TYPES_RULE,$(word 10,$(TYPES))))
+$(if $(word 11,$(TYPES)),$(call TYPES_RULE,$(word 11,$(TYPES))))
+$(if $(word 12,$(TYPES)),$(call TYPES_RULE,$(word 12,$(TYPES))))
+$(if $(word 13,$(TYPES)),$(call TYPES_RULE,$(word 13,$(TYPES))))
+$(if $(word 14,$(TYPES)),$(call TYPES_RULE,$(word 14,$(TYPES))))
+$(if $(word 15,$(TYPES)),$(call TYPES_RULE,$(word 15,$(TYPES))))
+$(if $(word 16,$(TYPES)),$(call TYPES_RULE,$(word 16,$(TYPES))))
+$(if $(word 17,$(TYPES)),$(call TYPES_RULE,$(word 17,$(TYPES))))
+$(if $(word 18,$(TYPES)),$(call TYPES_RULE,$(word 18,$(TYPES))))
+$(if $(word 19,$(TYPES)),$(call TYPES_RULE,$(word 19,$(TYPES))))
+$(if $(word 20,$(TYPES)),$(call TYPES_RULE,$(word 20,$(TYPES))))
+$(if $(word 21,$(TYPES)),$(call TYPES_RULE,$(word 21,$(TYPES))))
+$(if $(word 22,$(TYPES)),$(call TYPES_RULE,$(word 22,$(TYPES))))
+$(if $(word 23,$(TYPES)),$(call TYPES_RULE,$(word 23,$(TYPES))))
+$(if $(word 24,$(TYPES)),$(call TYPES_RULE,$(word 24,$(TYPES))))
+$(if $(word 25,$(TYPES)),$(call TYPES_RULE,$(word 25,$(TYPES))))
+$(if $(word 26,$(TYPES)),$(call TYPES_RULE,$(word 26,$(TYPES))))
+$(if $(word 27,$(TYPES)),$(call TYPES_RULE,$(word 27,$(TYPES))))
+$(if $(word 28,$(TYPES)),$(call TYPES_RULE,$(word 28,$(TYPES))))
+$(if $(word 29,$(TYPES)),$(call TYPES_RULE,$(word 29,$(TYPES))))
+$(if $(word 30,$(TYPES)),$(call TYPES_RULE,$(word 30,$(TYPES))))
+$(if $(word 31,$(TYPES)),$(call TYPES_RULE,$(word 31,$(TYPES))))
+$(if $(word 32,$(TYPES)),$(call TYPES_RULE,$(word 32,$(TYPES))))
+
+SHOBJECTS = $(foreach fn,$(SHARED_OBJECTS),$(SHARED_DIR)/$(fn))
+LXSHOBJECTS = $(foreach fn,$(LXSHARED_OBJECTS),$(SHARED_DIR)/$(fn))
+
+OBJECTS = $(foreach fn,$(OTHER_SOURCES:.c=.o),$(OBJ_DIR)/$(fn)) \
+	$(foreach fn,$(LX_SOURCES:.c=.o),$(OBJ_DIR)/$(fn)) \
+	$(SHOBJECTS)
+
+# lame...
+.PRECIOUS: %.o
+
+# library stub equals $(BASE_NAME) by default, otherwise
+# it has to be declared explicitly in $(BASE_DIR)/Makefile.sources
+ifdef LX_STUBCLASS
+$(BIN_DIR)/$(LX_STUBCLASS).$(X_SUFFIX): $(BASE_NAME)_loader.c $(LXSHOBJECTS)
+	$(CC) -o $@ -Xlinker -defsym \
+		-Xlinker $(LX_STUBCLASS)_setup=$(BASE_NAME)_loader_setup \
+		$(CFLAGS) $(LFLAGS) $(LXSHOBJECTS) $<
+ifndef LX_STUB
+LX_STUB = $(LX_STUBCLASS)
+endif
+else
+ifndef LX_STUB
+LX_STUB = $(BASE_NAME)
+endif
+endif
+
+# rules for aliases must precede generic extern rules
+
+$(BIN_DIR)/$(LX_STUB).%~.$(X_SUFFIX): $(BASE_NAME)_loader.c $(LXSHOBJECTS)
+	$(CC) -o $@ -Xlinker -defsym \
+		-Xlinker $(LX_STUB).$(*F)_tilde_setup=$(BASE_NAME)_loader_setup \
+		$(CFLAGS) $(LFLAGS) $(LXSHOBJECTS) $<
+
+$(BIN_DIR)/$(LX_STUB).%.$(X_SUFFIX): $(BASE_NAME)_loader.c $(LXSHOBJECTS)
+	$(CC) -o $@ -Xlinker -defsym \
+		-Xlinker $(LX_STUB).$(*F)_setup=$(BASE_NAME)_loader_setup \
+		$(CFLAGS) $(LFLAGS) $(LXSHOBJECTS) $<
+
+# generic rule for audio externals
+$(BIN_DIR)/%~.$(X_SUFFIX): $(AX_DIR)%.c $(OBJECTS)
+	$(CC) -o $@ $(CFLAGS) $(LFLAGS) $(OBJECTS) $<
+
+# generic rule for control externals
+$(BIN_DIR)/%.$(X_SUFFIX): $(CX_DIR)%.c $(OBJECTS)
+	$(CC) -o $@ $(CFLAGS) $(LFLAGS) $(OBJECTS) $<
+
+SUBDIRS = @for i in $(MIXED_DIRS) and_in_case_it_is_null ; \
+		do ( if [ -d $$i ] ; then \
+			cd $$i; $(MAKE) $@ ; fi ) ; done
+
+SUBDIRS_DEFAULT = @for i in $(MIXED_DIRS) and_in_case_it_is_null ; \
+		do ( if [ -d $$i ] ; then \
+			cd $$i; $(MAKE) ; fi ) ; done
+
+define_build:
+	@if [ -f build_counter ] && [ `id -un` = krzYszcz ] && \
+		[ `date -r build_counter +%j` != `date +%j` ] ; then \
+		mv build_counter build_counter~ ; \
+		echo -n 'increment build counter (y/n)? [n]' ; read doit ; \
+		if [ $$doit ] && [ $$doit == 'y' ] ; then \
+			head -3 build_counter~ | \
+	awk '{if (index($$2,"BUILD")) print $$1, $$2, $$3+1; else print}' \
+			> build_temporary ; \
+			cat build_temporary | \
+	awk 'BEGIN {printf "\n#if 0\n"; \
+		printf toupper("$(BASE_NAME)_SNAPSHOT = ")} \
+	    {gsub("\"","",$$3); printf $$3; if (NR==1) printf "-"} \
+	    END {printf "\n#endif\n" }' | \
+			cat build_temporary - > build_counter ; \
+			rm -f build_temporary ; \
+		else cat build_counter~ > build_counter ; fi \
+	fi
+
+all$(BASE_NAME)s.c: Makefile.sources
+	$(ROOT_DIR)/dumpsetups > $@
+
+all: $(EXTERNS)
+	$(SUBDIRS_DEFAULT)
+
+clean:: emptydeps
+# remove all objects and externs that are contained in current directory
+	-rm -f *.o *.$(X_SUFFIX)
+	$(SUBDIRS)
+
+cleanall: clean
+# remove default target externs
+	-rm -f $(EXTERNS)
+	$(SUBDIRS)
+# added by Hans-Christoph Steiner <hans@eds.org> to remove
+# files created when making MacOS X packages
+	-rm -Rf ../installroot
+
+OLDROOT_DIR = $(shell ls -d -1 ../../Mixed-* | tail -1)
+
+diff:
+	@echo -n > diff.out ; \
+	for f in {*.h,*.c} ; do \
+		if [ -f $$f ] ; then \
+			diff -u $(OLDROOT_DIR)/$(BASE_DIR)/$$f $$f >> diff.out ; \
+		fi \
+	done
+
+VERSION = $(shell awk \
+	'{if (index($$2,"VERSION")) print substr($$3,2,length($$3)-2)}' \
+	build_counter)
+RELEASE = $(shell awk \
+	'{if (index($$2,"RELEASE")) print substr($$3,2,length($$3)-2)}' \
+	build_counter)
+BUILD = $(shell awk '{if (index($$2,"BUILD")) print $$3}' build_counter)
+
+RELEASE_STUB = release/$(BASE_NAME)-$(VERSION)-$(RELEASE)$(BUILD)
+SRC_TAR = $(RELEASE_STUB)-src.tar
+BIN_TAR = $(RELEASE_STUB)-bin.tar
+LIB_TAR = $(RELEASE_STUB)-lib.tar
+DOC_TAR = $(RELEASE_STUB)-doc.tar
+ALL_TAR = $(RELEASE_STUB)-all.tar
+REL_BINDIR = bin
+
+REL_LIBNAMES = $(foreach fn,$(RELEASE_LIBS:=.$(X_SUFFIX)),$(REL_BINDIR)/$(fn))
+
+REL_EXTERNS = $(foreach fn,$(CX_NAMES:.c=.$(X_SUFFIX)),$(REL_BINDIR)/$(fn)) \
+	$(foreach fn,$(AX_NAMES:.c=~.$(X_SUFFIX)),$(REL_BINDIR)/$(fn)) \
+	$(foreach fn,$(CX_CLASSES:=.$(X_SUFFIX)),$(REL_BINDIR)/$(fn)) \
+	$(foreach fn,$(AX_CLASSES:=~.$(X_SUFFIX)),$(REL_BINDIR)/$(fn)) \
+	$(foreach fn,$(LX_CLASSES:=.$(X_SUFFIX)),$(REL_BINDIR)/$(fn)) \
+	$(if $(LX_STUBCLASS),$(REL_BINDIR)/$(LX_STUBCLASS:=.$(X_SUFFIX))) \
+	$(REL_LIBNAMES) $(foreach fn,$(RELEASE_APPS),$(REL_BINDIR)/$(fn)) \
+	$(foreach type,$(TYPES),\
+		$(foreach fn,$(call TYPES_EXTERNS,$(type)),$(REL_BINDIR)/$(fn)))
+
+REL_ROOTSRC = LICENSE.txt Makefile.common dumpsetups
+
+srelease: emptydeps define_build
+	cd $(ROOT_DIR)/shared; $(MAKE) emptydeps
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-all.exclude -cf \
+		$(SRC_TAR) $(BASE_DIR)/* $(REL_ROOTSRC)
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-shared.include -rf \
+		$(SRC_TAR)
+	cd $(ROOT_DIR); gzip -f $(SRC_TAR)
+
+stestrelease: emptydeps define_build
+	cd $(ROOT_DIR)/shared; $(MAKE) emptydeps
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-all.exclude -cf \
+		$(SRC_TAR) $(BASE_DIR)/* $(REL_ROOTSRC)
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-shared.include -rf \
+		$(SRC_TAR)
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-test.exclude -rf \
+		$(SRC_TAR) test/$(BASE_NAME)/*
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-help.include -rf \
+		$(SRC_TAR)
+	cd $(ROOT_DIR); tar -rf $(SRC_TAR) bin/notes.txt
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-vicious.exclude -rf \
+		$(SRC_TAR) ViCious/$(BASE_DIR)/*
+	cd $(ROOT_DIR); gzip -f $(SRC_TAR)
+
+brelease: define_build
+	cd $(ROOT_DIR); tar zcf \
+		$(BIN_TAR).gz $(REL_EXTERNS)
+
+btestrelease: define_build
+	cd $(ROOT_DIR); tar -cf $(BIN_TAR) $(REL_EXTERNS)
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-test.exclude -rf \
+		$(BIN_TAR) test/$(BASE_NAME)/*
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-help.include -rf \
+		$(BIN_TAR)
+	cd $(ROOT_DIR); gzip -f $(BIN_TAR)
+
+rellibs:
+	cd $(ROOT_DIR); tar zcf \
+		$(LIB_TAR).gz $(REL_LIBNAMES)
+
+drelease: define_build
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-doc.exclude -zcf \
+		$(DOC_TAR).gz doc/examples/$(BASE_NAME)/*
+
+release: srelease brelease drelease
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-all.exclude -cf \
+		$(ALL_TAR) $(BASE_DIR)/* $(REL_ROOTSRC) $(REL_EXTERNS)
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-shared.include -rf \
+		$(ALL_TAR)
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-doc.exclude -rf \
+		$(ALL_TAR) doc/examples/$(BASE_NAME)/*
+	cd $(ROOT_DIR); gzip -f $(ALL_TAR)
+
+testrelease: stestrelease btestrelease
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-all.exclude -cf \
+		$(ALL_TAR) $(BASE_DIR)/* $(REL_ROOTSRC) $(REL_EXTERNS)
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-shared.include -rf \
+		$(ALL_TAR)
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-test.exclude -rf \
+		$(ALL_TAR) test/$(BASE_NAME)/*
+	cd $(ROOT_DIR); tar -T $(BASE_DIR)/$(BASE_NAME)-help.include -rf \
+		$(ALL_TAR)
+	cd $(ROOT_DIR); tar -X $(BASE_DIR)/$(BASE_NAME)-vicious.exclude -rf \
+		$(ALL_TAR) ViCious/$(BASE_DIR)/*
+	cd $(ROOT_DIR); gzip -f $(ALL_TAR)
+
+snap: emptyalldeps stestrelease btestrelease
+
+depend:
+	$(CC) $(CFLAGS) -M $(SOURCES) > Makefile.deps
+	$(SUBDIRS)
+
+emptydeps:
+	-rm -f Makefile.deps
+	touch Makefile.deps
+	chmod 666 Makefile.deps
+
+emptyalldeps: emptydeps
+	$(SUBDIRS)
+
+Makefile.deps:
+	touch Makefile.deps
+	chmod 666 Makefile.deps
+
+-include Makefile.deps
+
+# added by Hans-Christoph Steiner <hans@eds.org>
+# to generate MacOS X packages
+
+# krzYszcz:
+# LATER try making cyclone-specifics abstracted out ala linux release
+# keep cyclone libs, because they offer the max->pd import facility
+
+PACKAGE_PREFIX = pd-mixed
+PACKAGE_NAME = $(PACKAGE_PREFIX)-$(VERSION)-$(RELEASE)$(BUILD)
+
+darwin_pkg_license:
+  # generate HTML version of License
+	echo "<HTML><BODY><FONT SIZE="-1">" > License.html
+	cat $(ROOT_DIR)/LICENSE.txt | sed -e 's/^$$/\<P\>/g' >> License.html	
+	echo "</FONT></BODY></HTML>" >> License.html
+
+darwin_pkg_clean:
+	-sudo rm -Rf installroot/ pd-*.pkg/
+	-rm -f $(PACKAGE_PREFIX)-*.info *~ 1 License.html
+
+# install into MSP's default: /usr/local/lib
+
+darwin_pkg: darwin_pkg_clean darwin_pkg_license
+# compile externals
+#	cd $(ROOT_DIR)/toxy && make
+	cd $(ROOT_DIR)/cyclone && make
+# set up installroot dir
+	test -d installroot/lib/pd/doc/5.reference || mkdir -p installroot/lib/pd/doc/5.reference
+	cp $(ROOT_DIR)/test/cyclone/*.* $(ROOT_DIR)/test/toxy/*.* \
+		installroot/lib/pd/doc/5.reference
+	test -d installroot/lib/pd/extra || mkdir -p installroot/lib/pd/extra
+	install -m444 $(ROOT_DIR)/bin/*.pd_darwin installroot/lib/pd/extra
+	test -d installroot/bin || mkdir -p installroot/bin
+	install -m555 $(ROOT_DIR)/bin/cyclist installroot/bin
+	cp -f pd-cyclone.info $(PACKAGE_NAME).info
+# delete cruft
+	-find installroot -name .DS_Store -delete
+	-rm -f 1
+# set proper permissions
+	sudo chown -R root:staff installroot
+	package installroot $(PACKAGE_NAME).info -d . -ignoreDSStore
+# install pkg docs
+	install -m 644 License.html Welcome.html $(PACKAGE_NAME).pkg/Contents/Resources
+	sudo chown -R root:staff $(PACKAGE_NAME).pkg/Contents/Resources

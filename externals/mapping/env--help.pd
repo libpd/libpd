@@ -1,0 +1,29 @@
+#N canvas 1 53 537 542 10;
+#X obj 266 362 timeroll;
+#X obj 42 162 random 1000;
+#X obj 42 136 metro 30;
+#X obj 42 112 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 43 365 timeroll;
+#X obj 68 112 loadbang;
+#X obj 265 264 env- 80;
+#X obj 42 187 / 1000;
+#N canvas 465 169 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION negative envelope follower;
+#X text 12 85 INLET_1 bang;
+#X restore 503 495 pd META;
+#X text 130 26 negative envelope follower;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 0 0;
+#X connect 7 0 4 0;
+#X connect 7 0 6 0;

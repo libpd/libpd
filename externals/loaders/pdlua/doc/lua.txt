@@ -1,0 +1,148 @@
+pdlua
+===
+
+The Lua loader included in -lib pdlua allows externals for Pd to be
+written in the Lua programming language.
+
+If you try to create an object [foo] in Pd, Pd checks if the class
+"foo" exists.  If it doesn't, it tries to load an external file that
+"probably" will contain code for "foo".  The Lua loader adds support
+for loading "foo.pd_lua" when you try to create [foo].
+
+
+Class Creation
+--------------
+
+The first expression/statement in the file should be of the form:
+
+    local foo = pd.Class:new():register("foo")
+
+This creates a new Pd class called "foo".  The 'local' declaration
+is optional, but recommended -- without it, 'foo' is global, which
+means any Lua code can modify it (possibly by accident).
+
+
+Object Initialization
+---------------------
+
+Then you can add methods to the Pd class.  The most important one
+is 'initialize', which is executed when a new object is created.
+
+    function foo:initialize(sel, atoms)
+      -- code
+    end
+
+or equivalently:
+
+   foo.initialize = function (self, sel, atoms)
+     -- code
+   end
+
+'sel' is usually (always?) the class name, 'atoms' are the creation
+arguments in a Lua table.  An example:
+
+    Pd     ::  [foo a b 1 2 3 c]
+    sel    ==  "foo"
+    atoms  ==  { "a", "b", 1, 2, 3, "c" }
+
+Being a method, 'initialize' has a 'self' variable (which is the
+object to be created), and if you want your objects to have inlets
+or outlets you need need to set those fields in this method (Pd
+doesn't support changing the number of inlets or outlets after an
+object is created):
+
+    self.inlets = 1
+    self.outlets = atoms[1]
+
+The default inlet/outlet counts are 0.
+
+The return value of 'initialize' is used to allow objects to fail
+to create (for example, if the creation arguments are bad).  Most
+of the time you will 'return true', but if you really can't create
+then you can 'return false'.
+
+If you need to do things after the Pd object is created, but before
+control is returned to Pd, you can use the 'postinitialize' method:
+
+  function foo:postinitialize()
+    -- code
+  end
+
+
+Object Finalization
+-------------------
+
+The 'finalize' method is called when the object is deleted by Pd.
+You can clean up stuff here if needed.  The default implementation
+does nothing.
+
+
+Inlet Methods
+-------------
+
+FIXME: write about inlet methods/dispatching
+FIXME: for now, see examples/*.pd_lua and src/pd.lua
+
+
+Sending To Outlets
+------------------
+
+FIXME: write about self:outlet(outletNumber, selector, atoms)
+FIXME: for now, see examples/*.pd_lua and src/pd.lua
+
+
+Sending To Receivers
+--------------------
+
+You can send messages to receivers like this:
+
+    pd.send("receiver", "selector", { "a", "message", 1, 2, 3 }
+
+See examples/lsend.pd_lua for details.
+
+
+Receivers
+---------
+
+You can bind methods to receivers, to get messages from
+[send receiver] and "; receiver message".
+
+See examples/lreceive.pd_lua for details.
+
+Remember to clean up your receivers in object:finalize(), or weird
+things will happen.
+
+
+Clocks
+------
+
+You can bind methods to clocks, for timing based on Pd's logical clock.
+
+See examples/ldelay.pd_lua for details.
+
+Remember to clean up your clocks in object:finalize(), or weird things
+will happen.
+
+
+Miscellaneous Object Methods
+----------------------------
+
+Execute a Lua file using Pd's path to find it:
+
+    self:dofile("filename")
+
+Report an error to Pd's console:
+
+    self:error("message")
+
+
+Miscellaneous Functions
+-----------------------
+
+Print a string to Pd's console:
+
+    pd.post("a string")
+
+Note that pd.post() should not really be used for errors.
+
+FIXME: add pd.error() for error messages

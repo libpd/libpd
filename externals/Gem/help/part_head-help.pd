@@ -1,0 +1,22 @@
+#N canvas 174 110 664 498 10;
+#X msg 180 101 gemList;
+#X text 176 62 GEM object;
+#X msg 180 195 gemList;
+#X obj 180 152 part_head;
+#X text 260 196 partList;
+#X text 184 25 [part_head];
+#X msg 289 106 speed <speed>;
+#X text 45 242 starts a particle-system. The particle-list normally
+holds a number of [part_source]s (particle-generators) [part_]-modifiers
+and ends with a particle-renderer such as [part_draw];
+#X text 45 325 you can set the speed of the particle-emission with
+the speed-message.;
+#X obj 493 168 part_head 10;
+#X text 44 380 [part_head] takes the number of particles that can exist
+in one instance of time as a creation-argument. (default=1000);
+#X text 53 424 if your particles do not die (e.g.: because the are
+killed wiht [part_killold]) \, your particle source will stop emitting
+particles after some time.;
+#X connect 0 0 3 0;
+#X connect 3 0 2 0;
+#X connect 6 0 3 0;

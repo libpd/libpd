@@ -1,0 +1,25 @@
+#N canvas 0 31 444 356 10;
+#X obj 88 30 inlet;
+#X obj 89 264 outlet;
+#X text 232 311 released under the GNU GPL;
+#X text 15 297 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 143 264 output range: 0 to 360 \, 0 = north/top;
+#X text 19 9 [deg2hid];
+#X text 129 28 input range: 0 to 360 \, 0 = east/right;
+#X obj 88 170 / 360;
+#X text 162 108 % is an int operation;
+#X text 169 126 this saves accuracy;
+#X obj 89 121 % 3.6e+07;
+#X obj 89 142 / 100000;
+#X obj 89 100 * 100000;
+#X obj 45 210 moses 0;
+#X obj 45 230 + 1;
+#X connect 0 0 12 0;
+#X connect 7 0 13 0;
+#X connect 10 0 11 0;
+#X connect 11 0 7 0;
+#X connect 12 0 10 0;
+#X connect 13 0 14 0;
+#X connect 13 1 1 0;
+#X connect 14 0 1 0;

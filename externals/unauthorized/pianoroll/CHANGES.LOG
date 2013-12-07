@@ -1,0 +1,22 @@
+0.10
+  fixed coordinates for GOP support
+0.9
+  added GOP support
+0.8
+  adapted for pd 0.37
+0.7
+  added "pitch x y" and "volume x y" messages
+0.6
+  added capability of saving and restoring patterns with "save" and "load" messages
+0.5
+  added init message
+0.4
+  fixed : last volume was not restored properly
+0.3
+  added the ability to be scanned backwards     
+0.2
+  added interpolation : getting values for non-integer input
+  this enables glissando                                         
+  fixed double-view pitches
+0.1
+  basic implementation of a sequencer's like pianoroll

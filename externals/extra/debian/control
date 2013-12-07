@@ -1,0 +1,35 @@
+Source: pd-extra
+Section: sound
+Priority: optional
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 7.0.50~),
+               puredata
+Standards-Version: 3.9.1
+Homepage: http://puredata.info
+
+Package: pd-extra
+Architecture: any
+Depends: ${shlibs:Depends},
+         pd,
+         pd-libdir,
+         ${misc:Depends}
+Recommends: pd-import
+Description: Pd library of core extras distributed as part of Pure Data
+ Pure Data ships with a separate collection of objects known as
+ 'extra'. Included in this collection is a set of audio functions like audio
+ analysis and reverb.
+ .
+  bonk~: attack detection and spectral envelope measurement
+  choice: search for a best match to an incoming list
+  complex-mod~: complex multiplication
+  expr, expr~, fexpr~: objects for evalutaing mathematical expressions
+  fiddle~: pitch estimator and sinusoidal peak finder
+  hilbert~: a phase quadrature for signal sideband modulation
+  loop~: phase generator for looping samplers
+  lrshift~: shift signal vector elements left or right
+  pd~: run pd as a subprocess of pd itself
+  pique: find peaks in an FFT spectrum
+  rev1~, rev2~, rev3~: different reverberation algorithms
+  sigmund~: sinusoidal analysis and pitch tracking
+  stdout: write messages to stdout

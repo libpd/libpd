@@ -1,0 +1,95 @@
+#N canvas 100 39 710 412 10;
+#X text 54 30 Class: geometric object;
+#X obj 469 47 cnv 15 235 290 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 474 274 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 479 313 pd gemwin;
+#X msg 479 294 create;
+#X text 475 273 Create window:;
+#X text 475 29 Example:;
+#X obj 7 65 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 213 cnv 15 450 180 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 11 217 Inlets:;
+#X obj 8 176 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X text 452 8 GEM object;
+#X text 29 229 Inlet 1: gemlist;
+#X text 11 356 Outlets:;
+#X text 23 369 Outlet 1: gemlist;
+#X obj 472 75 cnv 15 230 195 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 475 88 draw line;
+#X msg 475 111 draw fill;
+#X obj 543 54 gemhead;
+#X floatatom 553 89 5 -5 5 2 size - -;
+#X text 29 243 Inlet 1: message: draw [line|fill|points];
+#X msg 476 132 draw point;
+#X text 7 69 Description: Renders a 3d knot;
+#X text 34 14 Synopsis: [pqtorusknots];
+#X msg 592 88 scale \$1;
+#X floatatom 553 110 5 10 256 2 - - -;
+#X msg 593 109 steps \$1;
+#X floatatom 553 130 5 0 20 2 - - -;
+#X floatatom 553 150 5 0.2 1 2 - - -;
+#X msg 593 129 facets \$1;
+#X msg 593 149 thick \$1;
+#X msg 593 171 clump \$1 0.5 1;
+#X floatatom 553 173 2 9 20 0 - - -;
+#X msg 593 225 uvScale 1 1;
+#X floatatom 548 199 5 0 0 0 - - -;
+#X msg 593 197 pq \$1 3;
+#X text 15 88 The [pqtorusknot] object renders a 3dimensional knot
+at the current position with current color.;
+#X obj 544 249 pqtorusknots;
+#X text 63 186 <none>;
+#X text 15 119 You can set various parameters \, like number of facets
+\, number of clumps \, winding \, ...;
+#X text 29 257 Inlet 1: message: steps <f>;
+#X text 29 272 Inlet 1: message: facets <f>;
+#X text 29 287 Inlet 1: message: thick <f>;
+#X text 29 302 Inlet 1: message: clump <#clumps> <clumpOffset> <clumpScale>
+;
+#X text 29 317 Inlet 1: message: pq <xWinding> <yWinding>;
+#X text 29 332 Inlet 1: message: ivScale <uScale> <vScale>: for texturing
+;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 17 0 38 0;
+#X connect 18 0 38 0;
+#X connect 19 0 38 0;
+#X connect 20 0 25 0;
+#X connect 22 0 38 0;
+#X connect 25 0 38 0;
+#X connect 26 0 27 0;
+#X connect 27 0 38 0;
+#X connect 28 0 30 0;
+#X connect 29 0 31 0;
+#X connect 30 0 38 0;
+#X connect 31 0 38 0;
+#X connect 32 0 38 0;
+#X connect 33 0 32 0;
+#X connect 34 0 38 0;
+#X connect 35 0 36 0;
+#X connect 36 0 38 0;

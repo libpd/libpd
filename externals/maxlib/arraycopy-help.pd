@@ -1,0 +1,72 @@
+#N canvas 0 26 810 584 12;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array a1 20 float 1;
+#A 0 0 0 0.342857 0.542857 0.6 -0.442857 -0.485714 0.0142858 -0.428571
+-0.114286 0.0857143 -0.2 -0.214285 0.314285 -0.157143 -0.314285 -0.142857
+-0.0428571 0.114286 -0.685713;
+#X coords 0 1 19 -1 200 140 1;
+#X restore 580 27 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array a2 20 float 1;
+#A 0 -0.214286 -0.171429 0.1 0.614286 0.757143 0.757143 0.542857 0.2
+-0.0285714 -0.271429 -0.414286 -0.514286 -0.528571 -0.485714 -0.371429
+-0.157143 0.214286 0.557143 0.714286 0.757143;
+#X coords 0 1 19 -1 200 140 1;
+#X restore 581 196 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array a3 20 float 1;
+#A 0 1.86265e-09 1.86265e-09 1.86265e-09 1.86265e-09 1.86265e-09 -0.0142857
+-0.0142857 -0.0142857 -0.0142857 -0.0142857 -0.0142857 -0.0142857 -0.0142857
+-0.0285714 -0.0285714 -0.0285714 -0.0285714 -0.0142857 -0.0142857 -0.0142857
+;
+#X coords 0 1 19 -1 200 140 1;
+#X restore 580 371 graph;
+#X text 339 402 set the destination array;
+#X text 41 1 arraycopy :: copy data from one array to another;
+#X text 146 22 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 87 107 copy the whole array;
+#X text 156 138 copy from value 10 to 15;
+#X text 173 168 copy from value 10 the next 5 values;
+#X msg 85 359 print \$1;
+#X obj 85 333 tgl 20 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 116 334 switch console printout on/off;
+#X text 217 200 copy from value 10 to 15;
+#X text 248 249 copy from value 10 to 15;
+#X msg 86 414 bang;
+#X text 137 412 perform last copy;
+#X text 137 429 operation again;
+#X text 20 537 creation argument: initial destination array to copy
+data to;
+#X obj 200 502 symbol;
+#N canvas 293 158 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control array;
+#X text 12 45 DESCRIPTION copy data from one array to another;
+#X text 12 65 INLET_0 bang copy print;
+#X text 12 85 INLET_1 symbol;
+#X restore 745 553 pd META;
+#X msg 22 109 copy a1;
+#X msg 43 139 copy a1 10 15;
+#X msg 60 169 copy a1 10 +5;
+#X msg 73 201 copy a1 10 15 a2;
+#X msg 92 250 copy a1 10 15 a2 4;
+#X text 216 220 into a2 (starting at 0);
+#X text 247 269 into a2 starting at 4;
+#X msg 339 428 a2;
+#X msg 368 454 a3;
+#X obj 22 500 arraycopy a3;
+#X connect 9 0 29 0;
+#X connect 10 0 9 0;
+#X connect 14 0 29 0;
+#X connect 18 0 29 1;
+#X connect 20 0 29 0;
+#X connect 21 0 29 0;
+#X connect 22 0 29 0;
+#X connect 23 0 29 0;
+#X connect 24 0 29 0;
+#X connect 27 0 18 0;
+#X connect 28 0 18 0;

@@ -1,0 +1,56 @@
+#N canvas 0 26 624 513 10;
+#X obj 147 272 overdrive~;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array overdrive 200 float 0;
+#X coords 0 1 199 -1 200 140 1;
+#X restore 358 239 graph;
+#X obj 53 303 tgl 15 1 empty empty empty 0 -6 0 8 -24198 -1 -1 1 1
+;
+#X obj 147 359 tabwrite~ overdrive;
+#X floatatom 176 242 5 0 0 0 - - -;
+#X obj 179 213 hsl 128 15 1 12 0 1 empty empty drive 45 9 1 12 -262131
+-1 -1 1300 1;
+#N canvas 0 22 454 304 (subpatch) 0;
+#X array osc 200 float 0;
+#X coords 0 1 199 -1 200 140 1;
+#X restore 357 82 graph;
+#X obj 7 2 cnv 15 600 20 empty empty overdrive~ 20 12 1 14 -233017
+-66577 0;
+#X obj 532 3 pddp/dsp;
+#X obj 26 82 comment 300 11 helvetica ? 0 0 0 0 If the "drive" is 1
+\, the signal is unchanged. Increasing the "drive" increases the amount
+of distortion. If the "drive" is less than 1 \, then it causes a different
+kind of distortion. If the "drive" is less than 0 \, VERY LOUD distortion
+can result \, so be careful!;
+#X obj 21 384 comment 300 11 helvetica ? 0 0 0 0 overdrive~ simulates
+the distortion caused when an analog amplifier is fed a signal that
+is too high for the inputs. This is generally known as "overdriving"
+the amplifier \, and it causes a characteristic distortion that is
+often used to generate a "fat" sound.;
+#X obj 28 359 tabwrite~ osc;
+#X obj 28 210 osc~ 400;
+#X obj 53 321 metro 442;
+#N canvas 266 199 494 383 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal filter max_compatible;
+#X text 12 85 INLET_0 signal float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 105 INLET_1 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X text 12 45 DESCRIPTION Simulate an analog amplifier being overdriven
+by applying a non-linear transfer function to the incoming signal;
+#X restore 571 487 pd META;
+#X text 10 26 Simulate an analog amplifier being overdriven by applying
+a non-linear transfer function to the incoming signal.;
+#X connect 0 0 3 0;
+#X connect 2 0 13 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 12 0 0 0;
+#X connect 12 0 11 0;
+#X connect 13 0 3 0;
+#X connect 13 0 11 0;

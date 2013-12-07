@@ -1,0 +1,17 @@
+#N canvas 1 53 426 336 10;
+#X obj 21 15 inlet;
+#X obj 127 279 outlet;
+#X obj 198 81 purepd/float_argument \$1 1;
+#X obj 198 15 inlet;
+#X obj 231 44 loadbang;
+#X obj 21 113 unpack float float;
+#X obj 126 184 +;
+#X obj 127 224 /;
+#X connect 0 0 5 0;
+#X connect 2 0 7 1;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 1 6 1;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;

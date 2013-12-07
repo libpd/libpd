@@ -1,0 +1,23 @@
+
+---------
+hexloader
+---------
+
+
+This package provides support for the loading objectclasses with special characters
+It should work with any version of Pd 0.40 or newer.
+
+To install, copy the files for your platform into your "extra" folder and the
+help patches to the "doc/5.reference" folder.  You will need to load the
+hexloader.dll/hexloader.pd_linux/hexloader.pd_darwin as a library before trying to load
+any objects with special characters
+
+You can add a library in several ways:
+ - add this text to one of the fields in the "Startup" prefs:  hexloader
+ - load it on the command line with this:  -lib hexloader
+ - create an object [declare -lib hexloader] in your main patch
+ - create an object [hexloader]
+
+If you want to compile these yourself, changedir into ./hexloader and run "make"
+
+for more information see the README.txt in the hexloader/ folder

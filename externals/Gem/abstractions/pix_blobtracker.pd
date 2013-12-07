@@ -1,0 +1,132 @@
+#N canvas 77 45 654 552 10;
+#X declare -lib Gem -lib iemmatrix;
+#N canvas 0 0 571 399 matrix->indexlist 0;
+#X obj 133 90 inlet;
+#X obj 133 298 outlet;
+#X obj 133 163 mtx;
+#X msg 133 137 row;
+#X obj 133 109 t b a b;
+#X obj 212 227 i;
+#X obj 239 228 + 1;
+#X obj 133 248 pack 0 0 0 0;
+#X obj 133 210 t l b;
+#X msg 133 273 \$4 \$1 \$2 \$3;
+#X msg 228 206 0;
+#X msg 133 189 \$1 \$2 \$3;
+#X connect 0 0 4 0;
+#X connect 2 0 11 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 4 1 2 1;
+#X connect 4 2 10 0;
+#X connect 5 0 6 0;
+#X connect 5 0 7 3;
+#X connect 6 0 5 1;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 8 1 5 0;
+#X connect 9 0 1 0;
+#X connect 10 0 5 1;
+#X connect 11 0 8 0;
+#X restore 324 518 pd matrix->indexlist;
+#X obj 97 197 inlet gemlist;
+#X obj 97 402 outlet gemlist;
+#X obj 231 429 t a;
+#X obj 231 343 t a a;
+#X obj 324 428 mtx_mul;
+#X obj 354 490 outlet numblobs;
+#X obj 324 449 t a a;
+#X obj 354 471 mtx_size;
+#X obj 231 363 mtx_resize \$1 2;
+#N canvas 0 0 518 479 mtx_matcher 0;
+#X obj 61 200 mtx_distance2;
+#X obj 61 176 t a a;
+#X obj 61 244 t a a;
+#X obj 61 279 mtx_mul;
+#X obj 61 325 outlet matched;
+#X obj 171 325 outlet matcher;
+#X obj 147 177 inlet dest;
+#X obj 61 149 inlet source;
+#X text 25 105 both "source" and "dest" must have the same number of
+columns (dimension in feature-space);
+#N canvas 0 0 618 479 mtx_rowpermutate 0;
+#X obj 150 214 t b a;
+#X obj 150 235 mtx;
+#X obj 150 256 mtx_mul;
+#X obj 111 192 mtx_pivot -1;
+#X text 17 19 this unfortunately does not guarantee to give as a minimum
+trace of the result!;
+#X obj 150 309 outlet rowpermutator;
+#X obj 111 141 inlet permutans;
+#X connect 0 0 1 0;
+#X connect 0 1 2 1;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 1 0 0;
+#X connect 3 2 1 1;
+#X connect 6 0 3 0;
+#X restore 61 221 pd mtx_rowpermutate;
+#X text 34 383 this algorithm is _far_ from being perfect! the [mtx_rowpermutate]
+does not really guarantee that the trace of the result is a global
+mimimum \; if it is not \, than the match will be sub-optimal! this
+will be even worse \, if there are several _equal_ (sub)minima in the
+distance-matrix.;
+#X text 158 194 greater distances have an extra penalty (^2) \; is
+this ok?;
+#X text 32 52 we calculate the euclidean distance between the vectors
+of the 2 sets and try to find a trace with minimum penalty;
+#X text 32 22 this tries to get the best (weighted) match between 2
+sets of feature-vectors.;
+#X connect 0 0 9 0;
+#X connect 1 0 0 0;
+#X connect 1 1 3 1;
+#X connect 2 0 3 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 6 0 0 1;
+#X connect 7 0 1 0;
+#X connect 9 0 2 0;
+#X restore 231 397 pd mtx_matcher;
+#X text 91 114 this blobtracker is far from being perfect. for an explanation
+read the comments in [pd mtx_matcher];
+#X text 93 536 we don't want to output "matrix" \, but pure pd-lists
+instead;
+#X obj 324 566 outlet bloblists;
+#X text 344 402 this is the work-horse for the tracking;
+#X text 95 10 part of Gem;
+#X text 51 253 the work-horse for detection;
+#X obj 301 224 loadbang;
+#X obj 301 243 f \$1;
+#X obj 301 262 moses 1;
+#X msg 331 343 6 2;
+#X obj 301 281 t b b;
+#X text 56 155 TODO: output only those blobs that are really detected
+;
+#X obj 231 322 mtx_resize \$1 0;
+#X msg 331 302 6 0;
+#X obj 97 269 pix_multiblob \$1;
+#X obj 97 30 declare -lib Gem -lib iemmatrix;
+#X text 92 66 copyright (c) IOhannes m zmoelnig \, 2005 \; you may
+use this under the terms of the GnuGPL v2.0 or later;
+#X connect 0 0 13 0;
+#X connect 1 0 25 0;
+#X connect 3 0 10 1;
+#X connect 4 0 9 0;
+#X connect 4 1 5 1;
+#X connect 5 0 7 0;
+#X connect 7 0 0 0;
+#X connect 7 1 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 3 0;
+#X connect 10 1 5 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 19 0 21 0;
+#X connect 20 0 9 1;
+#X connect 21 0 20 0;
+#X connect 21 1 24 0;
+#X connect 23 0 4 0;
+#X connect 24 0 23 1;
+#X connect 25 0 2 0;
+#X connect 25 1 23 0;

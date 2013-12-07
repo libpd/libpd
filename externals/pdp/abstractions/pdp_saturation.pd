@@ -1,0 +1,18 @@
+#N canvas 322 388 509 326 10;
+#X obj 39 105 inlet;
+#X obj 270 103 inlet;
+#X obj 39 255 outlet;
+#X obj 85 105 loadbang;
+#X text 32 14 adjust colour saturation by applying a gain to the chroma
+channels.;
+#X text 31 47 this only works for image/YCrCb/* packets and 3 channel
+image/multi/* packets containing luma and chroma channels.;
+#X obj 39 192 pdp_gain;
+#X msg 85 155 chanmask 6 \, gain \$1;
+#X obj 85 131 f \$1;
+#X connect 0 0 6 0;
+#X connect 1 0 6 1;
+#X connect 3 0 8 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;

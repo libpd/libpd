@@ -1,0 +1,20 @@
+#N canvas 0 0 411 333 10;
+#X obj 43 199 stack;
+#X obj 43 269 print popped;
+#X obj 73 249 print empty;
+#X msg 130 163 list foo 2 bar;
+#X floatatom 73 108 5 0 0 1 float - -;
+#X obj 43 79 bng 15 250 50 0 empty empty pop 17 7 0 10 -262144 -1 -1
+;
+#X symbolatom 101 135 10 0 0 1 symbol - -;
+#X text 241 164 mixture of stuff;
+#X text 13 9 A stack is a "first in \, last out" structure.;
+#X text 13 48 Right inlet stores atom(s).;
+#X text 13 29 Left inlet unstores the most recently stored atom.;
+#X text 11 301 stack-help.pd (GPL) <claudiusmaximus@goto10.org>;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 1;
+#X connect 5 0 0 0;
+#X connect 6 0 0 1;

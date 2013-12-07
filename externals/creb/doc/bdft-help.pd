@@ -1,0 +1,13 @@
+#N canvas 0 0 450 300 10;
+#N canvas 145 112 494 314 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS Added by Jonathan Wilkes.;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION set decay time for [bdiag~];
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 anything;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 398 279 pd META;
+#X text 114 58 set decay time (ms/sec) for [bdiag~];
+#X obj 71 58 bdft;

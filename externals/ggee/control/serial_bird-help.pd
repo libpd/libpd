@@ -1,0 +1,51 @@
+#N canvas 0 31 803 464 10;
+#N canvas 391 259 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 125 AUTHOR Guenter Geiger;
+#X text 12 105 OUTLET_1;
+#X text 12 45 DESCRIPTION interpret the acsension Flock of Birds device.
+;
+#X text 12 65 INLET_0 init poll start mode stop reset;
+#X text 12 85 OUTLET_0 list;
+#X text 12 5 KEYWORDS control filesystem needs_work (OUTLET_1?);
+#X restore 740 435 pd META;
+#X obj 69 256 serial_bird;
+#X msg 90 91 start;
+#X msg 82 57 poll;
+#X msg 406 99 mode position;
+#X msg 69 28 init;
+#X msg 406 82 mode positionangle;
+#X obj 69 279 unpack 1 2 3 4 5 6;
+#X floatatom 172 312 0 0 0 0 - - -;
+#X floatatom 151 333 0 0 0 0 - - -;
+#X floatatom 130 357 0 0 0 0 - - -;
+#X floatatom 89 325 0 0 0 0 - - -;
+#X floatatom 68 346 0 0 0 0 - - -;
+#X floatatom 47 370 0 0 0 0 - - -;
+#X text 407 25 The serial_bird object interprets the acsension Flock
+of Birds device.;
+#X text 406 53 The mode command sets the output mode (see FOB description
+for further information;
+#X text 106 26 Init initializes the serial device;
+#X text 117 52 poll stops streaming mode and outputs;
+#X text 117 62 one data set;
+#X text 128 91 start streaming mode with start;
+#X obj 172 256 serialctl /dev/ttyS0;
+#X msg 113 135 stop;
+#X msg 128 168 reset;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 13 0;
+#X connect 7 1 12 0;
+#X connect 7 2 11 0;
+#X connect 7 3 10 0;
+#X connect 7 4 9 0;
+#X connect 7 5 8 0;
+#X connect 21 0 1 0;
+#X connect 22 0 1 0;

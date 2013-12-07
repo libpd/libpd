@@ -1,0 +1,62 @@
+#N canvas 162 65 562 428 10;
+#X obj 4 -17 cnv 15 550 40 empty \$0-pddp.cnv.header sudden_motion_sensor
+3 12 0 18 -241536 -1 0;
+#X obj 3 189 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlet 15 12 0 13
+-245500 -191407 0;
+#N canvas 779 22 494 344 META 0;
+#X text 12 25 KEYWORDS control number float store;
+#X text 12 45 LICENSE GPL;
+#X text 12 65 TEMPLATE template-help.pd v0.1;
+#X text 12 85 PLATFORM windows macosx gnulinux;
+#X text 12 105 DATATYPE float list;
+#X text 12 5 GENRE storage;
+#X text 12 125 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 165 RELEASE_DATE 2007-08-24;
+#X text 12 185 RELEASE_VERSION 0.40-test05;
+#X restore 499 377 pd META;
+#X obj 3 258 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 15 12 0
+13 -245500 -191407 0;
+#X obj 3 338 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 15
+12 0 13 -245500 -191407 0;
+#X obj 374 6 pddp/pddplink http://wiki.puredata.info/en/apple/sudden_motion_sensor
+-text pdpedia: sudden_motion_sensor;
+#X text 102 208 bang - output current screen brightness;
+#X msg 146 48 bang;
+#X msg 179 73 info;
+#X floatatom 146 155 5 0 0 3 z - -;
+#X floatatom 182 155 5 0 0 3 y - -;
+#X text 216 73 output info on right outlet;
+#X obj 73 73 metro 250;
+#X obj 73 54 tgl 15 0 empty empty empty 0 -6 0 10 -204786 -1 -1 0 1
+;
+#X text 183 46 output sensor values;
+#X text 102 227 "info" - outputs info about the sensor on the right
+outlet;
+#X obj 72 305 cnv 17 3 20 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X obj 72 279 cnv 17 3 20 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 103 276 list - a list with the values of the left and right
+sensors;
+#X text 103 306 selector series with info about the sensor;
+#X text 15 6 description: query the sudden motion sensor in Apples
+;
+#X obj 389 -14 apple/sudden_motion_sensor;
+#X obj 146 101 apple/sudden_motion_sensor;
+#X obj 299 153 pddp/print;
+#X obj 299 129 route sensor;
+#X obj 104 364 pddp/pddplink http://www.osxbook.com/book/bonus/chapter10/sms/
+;
+#X obj 146 129 unpack 0 0 0;
+#X floatatom 219 155 5 0 0 3 z - -;
+#X connect 7 0 22 0;
+#X connect 8 0 22 0;
+#X connect 12 0 22 0;
+#X connect 13 0 12 0;
+#X connect 22 0 26 0;
+#X connect 22 1 24 0;
+#X connect 24 0 23 0;
+#X connect 26 0 9 0;
+#X connect 26 1 10 0;
+#X connect 26 2 27 0;

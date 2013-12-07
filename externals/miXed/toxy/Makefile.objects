@@ -1,0 +1,49 @@
+TOT_OBJECTS = \
+unstable/forky.o \
+common/loud.o \
+common/grow.o \
+common/os.o \
+hammer/file.o \
+hammer/gui.o \
+common/props.o \
+toxy/scriptlet.o
+
+PLUSTOT_OBJECTS = \
+unstable/fragile.o \
+unstable/forky.o \
+common/loud.o \
+common/grow.o \
+common/os.o \
+hammer/file.o \
+common/props.o \
+toxy/scriptlet.o \
+toxy/plusbob.o
+
+PLUSTOT_PRIVATEOBJECTS = \
+plustot.ar.o \
+plustot.env.o \
+plustot.in.o \
+plustot.var.o \
+plustot.out.o \
+plustot.qlist.o \
+plustot.print.o \
+pluswidget.o
+
+PLUSTOT_LIBS = $(TCL_LIB)
+
+TOW_OBJECTS = \
+common/loud.o \
+common/os.o \
+unstable/loader.o
+
+WIDGET_OBJECTS = \
+unstable/forky.o \
+common/loud.o \
+common/grow.o \
+common/dict.o \
+common/os.o \
+hammer/file.o \
+common/props.o \
+toxy/scriptlet.o
+
+WIDGET_PRIVATEOBJECTS = widgettype.o widgethandlers.o

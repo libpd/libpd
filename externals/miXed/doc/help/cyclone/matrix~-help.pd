@@ -1,0 +1,97 @@
+#N canvas 0 26 840 550 10;
+#X obj 8 6 cnv 15 500 30 empty empty matrix~ 20 12 0 14 -262130 -66577
+0;
+#X obj 61 237 dac~;
+#X obj 36 209 *~ 0.15;
+#X obj 91 209 *~ 0.15;
+#X obj 47 156 matrix~ 6 2 1;
+#X obj 66 121 osc~ 111;
+#X obj 126 121 osc~ 222;
+#X obj 186 121 osc~ 333;
+#X obj 246 121 osc~ 444;
+#X obj 306 121 osc~ 555;
+#X obj 366 121 osc~ 666;
+#X text 23 46 a switching or mixing matrix for signals;
+#X obj 122 177 print dump;
+#X msg 47 76 dump;
+#X text 462 86 the first argument is the number of inlets;
+#X text 462 106 the second argument is the number of signal outlets
+;
+#X text 440 66 object argments (floats): #inlets #outlets mixmode;
+#X text 462 126 the third argument is optional \, a 1 turns on "mix
+mode" \, otherwise the default is "switch mode";
+#X text 17 351 mix mode:;
+#X text 17 271 switch mode:;
+#X text 30 291 By default \, [matrix~] is in "switch mode". In switch
+mode \, the connections are either on or off. This can cause audible
+clicks when switching (Max/MSP calls this "binary mode").;
+#X text 30 371 "mix mode" mixes the incoming signals using the values
+from the incoming list to specify the gain \, so they can change the
+amplitude based on that number. mix mode requires more CPU time. (Max/MSP
+calls this "non-binary mode").;
+#X text 19 441 If you want to specify the gain of each connection \,
+you must use three- or four-element list messages rather than the 'connect'
+message. Connections formed with the 'connect' message always have
+a gain specified by the third argument initially given to the object.
+However \, subsequent list messages can alter the gain of connections
+formed with the 'connect' message.;
+#X text 83 75 <-- outputs the current gains of all connections out
+the rightmost outlet \, in lists like this: inlet# outlet# gain;
+#X text 431 288 [connect inlet# outlet#(;
+#X text 431 328 [disconnect inlet# outlet#(;
+#X msg 651 288 connect 0 2;
+#X text 621 289 i.e.;
+#X text 621 329 i.e.;
+#X msg 651 328 disconnect 0 2;
+#X text 447 342 disconnect inlet# from outlet#;
+#X text 432 252 Inlets and outlets are numbered from left to right
+\, starting at zero (i.e. hot inlets are 0).;
+#X text 450 305 connect inlet# to outlet#;
+#X text 621 369 i.e.;
+#X text 431 368 [inlet# outlet# gain(;
+#X msg 651 368 0 2 0.5;
+#X text 447 383 if gain is non-zero \, connect inlet# to outlet#. If
+gain is zero \, disconnect inlet# from outlet#;
+#X msg 721 368 0 2 0;
+#X text 621 419 i.e.;
+#X text 431 418 [inlet# outlet# gain ramptime(;
+#X msg 651 418 0 2 0.5 500;
+#X msg 741 418 0 2 0 1000;
+#X text 447 435 connect inlet# to outlet# with "gain" using "ramptime"
+in milliseconds;
+#X text 431 518 [clear( - remove all connections.;
+#X msg 642 518 clear;
+#X text 621 469 i.e.;
+#X text 431 468 [ramp ramptime(;
+#X text 447 488 sets the default time in milliseconds used to change
+"gain" when in mix mode;
+#X msg 651 468 ramp 500;
+#X msg 731 468 ramp 1000;
+#N canvas 309 151 494 405 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION a switching or mixing matrix for signals
+;
+#X text 12 85 INLET_N signal;
+#X text 12 105 OUTLET_N signal;
+#X text 12 125 OUTLET_R list;
+#X text 12 65 INLET_0 signal dump list ramp clear connect disconnect
+;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 786 521 pd META;
+#X connect 2 0 1 0;
+#X connect 3 0 1 1;
+#X connect 4 0 2 0;
+#X connect 4 1 3 0;
+#X connect 4 2 12 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 1;
+#X connect 7 0 4 2;
+#X connect 8 0 4 3;
+#X connect 9 0 4 4;
+#X connect 10 0 4 5;
+#X connect 13 0 4 0;

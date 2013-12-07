@@ -328,6 +328,7 @@ void sys_set_audio_settings(int naudioindev, int *audioindev, int nchindev,
     sys_log_error(ERR_NOTHING);
     audio_nextinchans = inchans;
     audio_nextoutchans = outchans;
+    sys_setchsr(audio_nextinchans, audio_nextoutchans, rate);
     sys_save_audio_params(nrealindev, realindev, realinchans,
         nrealoutdev, realoutdev, realoutchans, rate, advance, callback,
             blocksize);
@@ -589,6 +590,13 @@ void sys_getmeters(t_sample *inmax, t_sample *outmax)
 
 void sys_reportidle(void)
 {
+}
+
+/* this could later be set by a preference but for now it seems OK to just
+keep jack audio open but close unused audio devices for any other API */
+int audio_shouldkeepopen( void)
+{
+    return (sys_audioapi == API_JACK);
 }
 
 static void audio_getdevs(char *indevlist, int *nindevs,
@@ -955,6 +963,11 @@ void sys_set_audio_state(int onoff)
         if (audio_isopen())
             sys_close_audio();
     }
+}
+
+int sys_get_audio_state(void)
+{
+  return audio_isopen();
 }
 
 void sys_get_audio_apis(char *buf)

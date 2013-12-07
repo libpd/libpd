@@ -1,0 +1,40 @@
+#N canvas 229 223 555 414 10;
+#X msg 96 243 60 64;
+#X msg 147 243 60 0;
+#X msg 191 243 62 64;
+#X msg 238 243 62 0;
+#X obj 96 370 print;
+#X text 141 371 Output is in the printout window.;
+#X msg 238 289 clear;
+#X text 148 26 - COLLECTION OF NUMBERS;
+#X text 32 94 The bag object takes (value \, flag) pairs. If the flag
+is true (nonzero) \, the value is added to the collection \; if false
+\, it's removed. The collection may have many copies of the same value.
+You can output the collection (and empty it) with a "flush" message
+\, or just empty it with "clear." You can use this to mimic a sustain
+pedal \, for example.;
+#X msg 237 266 flush;
+#X text 287 243 <-- add or delete elements;
+#X text 291 266 <-- output them;
+#X text 293 290 <-- start over;
+#X obj 96 340 peekbag;
+#X obj 65 309 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 86 27 peekbag;
+#X text 81 64 like;
+#X obj 124 64 bag;
+#X text 159 64 but with a bang for taking a peek.;
+#X msg 237 309 aslist;
+#X text 295 311 <-- get elements in a single list.;
+#X text 33 177 Use a "bang" to take a peek at the bag's content without
+clearing it \, use "aslist" to get the bag's elements in a single list.
+;
+#X connect 0 0 13 0;
+#X connect 1 0 13 0;
+#X connect 2 0 13 0;
+#X connect 3 0 13 0;
+#X connect 6 0 13 0;
+#X connect 9 0 13 0;
+#X connect 13 0 4 0;
+#X connect 14 0 13 0;
+#X connect 19 0 13 0;

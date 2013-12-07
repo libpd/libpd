@@ -1,0 +1,44 @@
+#N canvas 1 53 470 540 10;
+#X obj 2 2 cnv 15 450 20 empty empty debounce 2 11 1 18 -233017 -66577
+0;
+#X msg 418 3 pddp;
+#X text 234 467 released under the GNU GPL;
+#X text 18 499 $Author: nusmuk $;
+#X text 17 453 (C) Copyright 2005 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X obj 122 78 bng 15 250 50 0 empty empty empty 0 -6 0 8 -24198 -1
+-1;
+#X obj 123 102 t b b;
+#X obj 123 142 delay;
+#X obj 63 121 bang;
+#X msg 85 78 stop;
+#X obj 123 171 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 123 228 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 123 198 debounce 2000;
+#X obj 152 122 random 1000;
+#X text 17 486 $Revision: 1.2 $$Date: 2006-11-10 15:43:46 $;
+#X text 26 388 Every input is converted to a "bang".;
+#N canvas 465 169 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION remove bangs if they arrive too fast;
+#X text 12 65 INLET_0 anything;
+#X text 12 105 OUTLET_0 bang;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X restore 413 507 pd META;
+#X text 26 366 Debounce removes bangs if they arrive too fast.;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 6 1 13 0;
+#X connect 7 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 6 0;
+#X connect 9 0 7 0;
+#X connect 10 0 12 0;
+#X connect 12 0 11 0;
+#X connect 13 0 7 1;

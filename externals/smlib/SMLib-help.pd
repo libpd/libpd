@@ -1,0 +1,99 @@
+#N canvas 1 53 525 422 10;
+#X obj 31 188 lmax;
+#X obj 31 211 lmin;
+#X obj 31 234 lrange;
+#X obj 31 165 lavg;
+#X obj 9 317 threshold;
+#X text 89 188 leaky maximum;
+#X text 89 213 leaky minimum;
+#X text 90 237 leaky range;
+#X text 89 164 leaky average;
+#X text 92 316 hysteresis;
+#X obj 31 257 lstd;
+#X text 90 260 leaky standard deviation;
+#X obj 26 421 hist;
+#X text 88 421 histogram;
+#X obj 26 444 lhist;
+#X text 88 445 leaky histogram;
+#X obj 9 293 decimator;
+#X text 94 291 decimator;
+#X obj 32 352 hip;
+#X obj 32 375 bp;
+#X text 83 751 vector addition;
+#X text 83 774 vector substraction;
+#X obj 25 797 vvconv;
+#X text 83 797 vector convolution;
+#X obj 24 590 vsum;
+#X text 85 592 sum of elements;
+#X obj 24 613 vcog;
+#X text 85 613 center of gravity;
+#X obj 24 636 vmax;
+#X text 86 637 maximum and its location;
+#X text 86 659 minimum and its location;
+#X obj 24 659 vmin;
+#X obj 27 1129 vlavg;
+#X text 87 1131 leaky averages;
+#X text 3 4 SMLib means Signal processing for Mapping;
+#X text 435 1264 j#|@2002;
+#X text 249 121 johannes.taelman@rug.ac.be;
+#X text 283 102 enjoy!;
+#X obj 27 1152 vlmax;
+#X text 87 1154 leaky maxima;
+#X obj 27 1175 vlmin;
+#X text 87 1177 leaky minima;
+#X obj 27 1198 vlrange;
+#X text 87 1200 leaky ranges;
+#X obj 27 1221 vdelta;
+#X text 88 1223 differences between succesive vectors;
+#X obj 25 820 vclip;
+#X text 84 821 clip elements;
+#X text 96 352 high pass filter;
+#X text 97 375 band pass filter;
+#X text 3 29 Its a collection of objects for the analysis of float
+streams (for taking temporal context into account) \, vectors (lists
+of floats) and vector streams (temporal context...). It is complementary
+to the zexy and gem/markex library \, so have a look at those too.
+;
+#X obj 24 683 vrms;
+#X text 84 686 root mean square;
+#X obj 24 706 vstd;
+#X text 83 708 standard deviation;
+#X text 22 1044 there is also a [Clip] in cyclone (identical to vclip)
+;
+#X text 0 398 analyzing stream of floats (context) (vector output)
+;
+#X text 1 142 processing stream of floats (context) (float output)
+;
+#X text -3 567 immediate vector analysis (float output);
+#X text -6 730 immediate vector processing (vector output);
+#X text 22 1010 cfr. [.] in zexy;
+#X text 22 1027 cfr. [v+] \, [v-] \, [v*] \, [v/] \, [vabs] in GEM/MarkEx
+;
+#X text -2 1108 vector stream processing (context) (vector output)
+;
+#X obj 25 843 vfmod;
+#X text 83 845 floating point modulo;
+#X obj 23 918 vmtof;
+#X text 81 918 midi to frequency;
+#X text 21 897 unit conversions;
+#X obj 23 941 vftom;
+#X text 81 941 frequency to midi;
+#X obj 23 964 vdbtorms;
+#X text 99 964 db to rms;
+#X obj 23 987 vrmstodb;
+#X text 99 987 rms to db;
+#X obj 25 866 vpow;
+#X obj 25 546 deltas;
+#X text 83 867 power;
+#X obj 26 466 lhisti;
+#X text 88 467 leaky histogram without clipping input;
+#X text 88 546 difference between current input and past inputs;
+#X obj 26 520 prevl;
+#X text 89 520 previous input values in a list;
+#X text -3 1064 vector synthesis;
+#X obj 23 1085 linspace;
+#X text 98 1085 generates a vector with linear spaced floats;
+#X obj 44 492 itov;
+#X text 90 491 index to value (for histogram bins);
+#X obj 25 751 vvplus;
+#X obj 25 774 vvminus;

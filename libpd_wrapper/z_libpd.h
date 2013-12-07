@@ -16,19 +16,28 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
+
 #include "m_pd.h"
 
-EXTERN void libpd_init(void);
+EXTERN bool libpd_init(bool use_gui, const char *libdir);
+EXTERN void libpd_cleanup(void);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
 
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
+EXTERN void *libpd_request_savefile(void *x);
+EXTERN bool libpd_wait_until_file_is_saved(void *request, float max_seconds_to_wait); // returns true if file was saved. Can be called simultaneously with other libpd functions, except for libpd_request_savefile and libpd_wait_until_file_is_saved. It's optional whether to call this function after calling libpd_request_savefile.
 EXTERN int libpd_getdollarzero(void *p);
+
+EXTERN void libpd_show_gui(void);
+EXTERN void libpd_hide_gui(void);
 
 EXTERN int libpd_blocksize(void);
 EXTERN int libpd_init_audio(int inChans, int outChans, int sampleRate);
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
+EXTERN int libpd_process_float_noninterleaved(int ticks, const float **inBuffer, float **outBuffer);
 EXTERN int libpd_process_short(const int ticks,
     const short *inBuffer, short *outBuffer);
 EXTERN int libpd_process_float(int ticks,
@@ -57,7 +66,7 @@ EXTERN int libpd_finish_list(const char *recv);
 EXTERN int libpd_finish_message(const char *recv, const char *msg);
 
 EXTERN int libpd_exists(const char *sym);
-EXTERN void *libpd_bind(const char *sym);
+EXTERN void *libpd_bind(const char *sym, void *data);
 EXTERN void libpd_unbind(void *p);
 
 #define libpd_is_float(a) ((a).a_type == A_FLOAT)
@@ -66,11 +75,11 @@ EXTERN void libpd_unbind(void *p);
 #define libpd_get_symbol(a) ((a).a_w.w_symbol->s_name)
 
 typedef void (*t_libpd_printhook)(const char *recv);
-typedef void (*t_libpd_banghook)(const char *recv);
-typedef void (*t_libpd_floathook)(const char *recv, float x);
-typedef void (*t_libpd_symbolhook)(const char *recv, const char *sym);
-typedef void (*t_libpd_listhook)(const char *recv, int argc, t_atom *argv);
-typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
+typedef void (*t_libpd_banghook)(void *data, const char *recv);
+typedef void (*t_libpd_floathook)(void *data, const char *recv, float x);
+typedef void (*t_libpd_symbolhook)(void *data, const char *recv, const char *sym);
+typedef void (*t_libpd_listhook)(void *data, const char *recv, int argc, t_atom *argv);
+typedef void (*t_libpd_messagehook)(void *data, const char *recv, const char *msg,
     int argc, t_atom *argv);
 
 EXTERN t_libpd_printhook libpd_printhook;
@@ -79,6 +88,13 @@ EXTERN t_libpd_floathook libpd_floathook;
 EXTERN t_libpd_symbolhook libpd_symbolhook;
 EXTERN t_libpd_listhook libpd_listhook;
 EXTERN t_libpd_messagehook libpd_messagehook;
+
+EXTERN void libpd_set_printhook(t_libpd_printhook hook);
+EXTERN void libpd_set_banghook(t_libpd_banghook hook);
+EXTERN void libpd_set_floathook(t_libpd_floathook hook);
+EXTERN void libpd_set_symbolhook(t_libpd_symbolhook hook);
+EXTERN void libpd_set_listhook(t_libpd_listhook hook);
+EXTERN void libpd_set_messagehook(t_libpd_messagehook hook);
 
 EXTERN int libpd_noteon(int channel, int pitch, int velocity);
 EXTERN int libpd_controlchange(int channel, int controller, int value);
@@ -90,14 +106,13 @@ EXTERN int libpd_midibyte(int port, int byte);
 EXTERN int libpd_sysex(int port, int byte);
 EXTERN int libpd_sysrealtime(int port, int byte);
 
-typedef void (*t_libpd_noteonhook)(int channel, int pitch, int velocity);
-typedef void (*t_libpd_controlchangehook)(int channel,
-    int controller, int value);
-typedef void (*t_libpd_programchangehook)(int channel, int value);
-typedef void (*t_libpd_pitchbendhook)(int channel, int value);
-typedef void (*t_libpd_aftertouchhook)(int channel, int value);
-typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
-typedef void (*t_libpd_midibytehook)(int port, int byte);
+typedef void (*t_libpd_noteonhook)(void *data, int channel, int pitch, int velocity);
+typedef void (*t_libpd_controlchangehook)(void *data, int channel, int controller, int value);
+typedef void (*t_libpd_programchangehook)(void *data, int channel, int value);
+typedef void (*t_libpd_pitchbendhook)(void *data, int channel, int value);
+typedef void (*t_libpd_aftertouchhook)(void *data, int channel, int value);
+typedef void (*t_libpd_polyaftertouchhook)(void *data, int channel, int pitch, int value);
+typedef void (*t_libpd_midibytehook)(void *data, int port, int byte);
 
 EXTERN t_libpd_noteonhook libpd_noteonhook;
 EXTERN t_libpd_controlchangehook libpd_controlchangehook;
@@ -106,6 +121,14 @@ EXTERN t_libpd_pitchbendhook libpd_pitchbendhook;
 EXTERN t_libpd_aftertouchhook libpd_aftertouchhook;
 EXTERN t_libpd_polyaftertouchhook libpd_polyaftertouchhook;
 EXTERN t_libpd_midibytehook libpd_midibytehook;
+
+EXTERN void libpd_set_noteonhook(t_libpd_noteonhook hook);
+EXTERN void libpd_set_controlchangehook(t_libpd_controlchangehook hook);
+EXTERN void libpd_set_programchangehook(t_libpd_programchangehook hook);
+EXTERN void libpd_set_pitchbendhook(t_libpd_pitchbendhook hook);
+EXTERN void libpd_set_aftertouchhook(t_libpd_aftertouchhook hook);
+EXTERN void libpd_set_polyaftertouchhook(t_libpd_polyaftertouchhook hook);
+EXTERN void libpd_set_midibytehook(t_libpd_midibytehook hook);
 
 #ifdef __cplusplus
 }

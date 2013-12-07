@@ -1,0 +1,29 @@
+#N canvas 145 -43 722 431 10;
+#X text 564 24 part of zexy;
+#X text 97 30 remove duplicate symbols from a list or a stream;
+#X obj 45 268 uniqsym;
+#X obj 35 29 uniqsym;
+#X obj 45 302 print uniq;
+#X msg 73 165 bang;
+#X msg 45 87 reset;
+#X text 39 69 clear the current list of values;
+#X text 57 110 add symbols to the list of values;
+#X text 76 149 remove duplicate values \, sort the entire list and
+output it;
+#X msg 56 126 symbol trigger \, symbol pang \, symbol pang;
+#X msg 100 188 list chitty chitty pang pang;
+#X msg 117 243 mode \$1;
+#X obj 117 223 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 187 244 output as list (0=default) \, or as stream of single
+symbols (1);
+#X text 529 411 updated for zexy-2.2;
+#X obj 44 369 uniqsym 1;
+#X text 131 368 you can specify the mode with a creation argument;
+#X connect 2 0 4 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 10 0 2 0;
+#X connect 11 0 2 0;
+#X connect 12 0 2 0;
+#X connect 13 0 12 0;

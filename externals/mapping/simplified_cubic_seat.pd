@@ -1,0 +1,36 @@
+#N canvas 1 53 585 467 12;
+#X obj 42 10 inlet;
+#X obj 349 13 inlet;
+#X obj 106 405 outlet;
+#X obj 220 10 loadbang;
+#X obj 147 9 inlet;
+#X obj 147 50 purepd/float_argument \$1;
+#X obj 349 54 purepd/float_argument \$2;
+#X obj 42 113 moses;
+#X obj 349 110 -;
+#X msg 349 87 1 \$1;
+#X obj 7 199 expr $f3*$f1 + (1-$f3)*$f2*(1 - pow(1 - $f1/$f2 \, 3))
+;
+#X obj 147 97 moses 1;
+#X obj 147 121 + 1e-06;
+#X text 202 106 prevent divide by 0;
+#X obj 152 275 expr $f3*$f1 + (1-$f3)*($f2 + (1-$f2)*pow(($f1-$f2)
+/ (1-$f2) \, 3));
+#X connect 0 0 7 0;
+#X connect 1 0 6 0;
+#X connect 3 0 5 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 7 1;
+#X connect 5 0 11 0;
+#X connect 6 0 9 0;
+#X connect 7 0 10 0;
+#X connect 7 1 14 0;
+#X connect 8 0 10 2;
+#X connect 8 0 14 2;
+#X connect 9 0 8 0;
+#X connect 10 0 2 0;
+#X connect 11 0 12 0;
+#X connect 12 0 10 1;
+#X connect 12 0 14 1;
+#X connect 14 0 2 0;

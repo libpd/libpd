@@ -1,0 +1,20 @@
+#N canvas 0 26 467 246 10;
+#X text 95 58 right inlet is also "active";
+#X text 95 113 for spectral domain processing;
+#X text 95 14 tblock: compute block relative time delays;
+#X text 96 28 out = left + right * (blocksize / sys_samplerate);
+#X text 96 98 main usage is to compute block synchronous time delays
+;
+#X obj 22 20 tblock;
+#N canvas 200 78 494 325 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 45 DESCRIPTION block relative time conversion;
+#X text 12 5 KEYWORDS control abstraction needs_work (example patch)
+;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 416 225 pd META;

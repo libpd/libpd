@@ -1,0 +1,36 @@
+#N canvas 0 31 477 320 10;
+#X obj 5 2 cnv 15 450 20 empty empty linear_pan~ 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 17 270 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 234 284 released under the GNU GPL;
+#X obj 134 225 dac~;
+#X obj 181 145 hsl 128 20 0 1 0 1 empty empty pan_position 6 10 1 11
+-262131 -1 -1 6350 0;
+#X text 16 37 Pan a mono signal using linear panning. The left inlet
+takes the audio signal and the right inlet takes the control signal
+with 0 = left \, 1 = right \, and 0.5 = center.;
+#X obj 84 131 osc~ 250;
+#X obj 84 152 *~ 0.5;
+#X obj 362 186 tgl 25 0 empty empty DSP 3 12 1 9 -24198 -1 -1 0 1;
+#X msg 362 218 \; pd dsp \$1;
+#X obj 113 187 linear_pan~;
+#N canvas 459 31 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 65 INLET_0 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 125 OUTLET_1 signal;
+#X text 12 45 DESCRIPTION pan a mono signal using linear panning;
+#X text 12 5 KEYWORDS signal abstraction;
+#X text 12 85 INLET_1 float;
+#X restore 423 289 pd META;
+#X connect 5 0 11 1;
+#X connect 7 0 8 0;
+#X connect 8 0 11 0;
+#X connect 9 0 10 0;
+#X connect 11 0 4 0;
+#X connect 11 1 4 1;

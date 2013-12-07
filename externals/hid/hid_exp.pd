@@ -1,0 +1,11 @@
+#N canvas 4 31 499 325 10;
+#X obj 72 38 inlet;
+#X obj 72 258 outlet;
+#X text 120 38 input range: 0 to 1;
+#X text 128 258 output range: 0 to 1;
+#X text 7 9 [hid_exp];
+#X obj 73 142 dbtorms;
+#X obj 73 120 * 100;
+#X connect 0 0 6 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;

@@ -1,0 +1,68 @@
+#N canvas 61 18 639 342 10;
+#X text 452 8 GEM object;
+#X obj 8 196 cnv 15 430 130 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 198 Inlets:;
+#X text 63 211 Inlet 1: gemlist;
+#X text 39 292 Outlets:;
+#X text 57 305 Outlet 1: gemlist;
+#X obj 8 146 cnv 15 430 40 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 145 Arguments:;
+#X obj 8 76 cnv 15 430 60 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 197 134 destroy;
+#X msg 132 112 reset \, lighting 1 \, create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X text 71 31 Class: manipulation object;
+#X obj 450 118 cnv 15 160 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X obj 451 193 cube;
+#X text 62 156 a list of 3 (RGB) or 4 (RGBA) float-values.;
+#X text 63 229 Inlet 2: float: red value;
+#X text 63 244 Inlet 3: float: green value;
+#X text 63 259 Inlet 4: float: blue value;
+#X text 63 274 Inlet 5: float: alpha value;
+#X floatatom 479 122 3 0 1 0 - - -;
+#X floatatom 508 122 3 0 1 0 - - -;
+#X floatatom 536 122 3 0 1 0 - - -;
+#X floatatom 565 122 3 0 1 0 - - -;
+#X obj 451 156 emissionRGB 0 1 0;
+#X text 60 171 defaults: 0 0 0 1;
+#X text 29 77 Description: emission colouring;
+#X text 50 12 Synopsis: [emissionRGB];
+#X text 22 91 [emissionRGB] accepts a gemList and sets the emission-color
+for all subsequent vertex-operations. You have to enable lighting to
+see any effects.;
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 17 0 28 0;
+#X connect 24 0 28 1;
+#X connect 25 0 28 2;
+#X connect 26 0 28 3;
+#X connect 27 0 28 4;
+#X connect 28 0 18 0;

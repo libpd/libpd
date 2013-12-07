@@ -1,0 +1,33 @@
+#N canvas 79 190 867 561 12;
+#X obj 490 63 match;
+#X obj 27 182 match one two nn one;
+#X obj 29 451 match 0 one two nn one 0;
+#X msg 27 26 one two 99 one;
+#X msg 47 63 list one two 99 one;
+#X msg 66 101 one \, two \, and \, one \, two \, or \, one;
+#X msg 82 141 one \, two \, and \, one \, one \, two \, or \, one;
+#X msg 29 308 0 \, one \, two \, and \, one \, 0 \, one \, two \, or
+\, one \, 0;
+#X msg 46 350 0 \, one \, two \, set two three \, three \, set 0 one
+two nn one 0;
+#X msg 61 392 0 \, one \, two \, set two three \, two \, three \, set
+0 one two nn one 0;
+#X msg 490 26 test;
+#X obj 593 63 match test;
+#X msg 593 26 test \, set \, test \, set test;
+#X obj 490 101 print;
+#X obj 27 226 print;
+#X obj 29 494 print;
+#X connect 0 0 13 0;
+#X connect 1 0 14 0;
+#X connect 2 0 15 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 2 0;
+#X connect 8 0 2 0;
+#X connect 9 0 2 0;
+#X connect 10 0 0 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 0;

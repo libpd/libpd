@@ -1,0 +1,53 @@
+#N canvas 0 26 456 417 10;
+#X text 63 298 These filters are all controlled by a bandwidth which
+is expressed in octaves. A bandwidth of 100 is equivalent to one octave.
+;
+#X text 63 340 Attention \, only the left inlet triggers new coefficients
+for biquad~;
+#X text 8 388 (C) Guenter Geiger 2000;
+#X floatatom 96 109 0 0 0 0 - - -;
+#X floatatom 157 109 0 0 0 0 - - -;
+#X obj 157 132 trigger bang float;
+#X obj 43 206 biquad~;
+#X obj 43 146 noise~;
+#X obj 99 64 hsl 128 17 20 20000 1 1 empty empty frequency 5 9 0 10
+-203904 -1 -1 5400 0;
+#X obj 160 87 hsl 128 17 0 100 0 1 empty empty gain 5 9 0 10 -204786
+-1 -1 6300 0;
+#X obj 34 266 dac~;
+#X obj 43 234 *~ 0.1;
+#X floatatom 297 109 0 0 0 0 - - -;
+#X obj 297 132 trigger bang float;
+#X obj 300 87 hsl 128 17 0 100 0 1 empty empty bandwidth 5 9 0 10 -261682
+-1 -1 9100 0;
+#X text 71 26 ==============================================;
+#X text 76 12 Parametric Equalizer coefficients for biquad~;
+#X obj 96 175 equalizer 5000 70 8;
+#N canvas 466 26 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 145 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION parametric equalizer coefficients for biquad~
+;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 list;
+#X restore 406 396 pd META;
+#X connect 3 0 17 0;
+#X connect 4 0 5 0;
+#X connect 5 0 17 0;
+#X connect 5 1 17 1;
+#X connect 6 0 11 0;
+#X connect 7 0 6 0;
+#X connect 8 0 3 0;
+#X connect 9 0 4 0;
+#X connect 11 0 10 0;
+#X connect 11 0 10 1;
+#X connect 12 0 13 0;
+#X connect 13 0 17 0;
+#X connect 13 1 17 2;
+#X connect 14 0 12 0;
+#X connect 17 0 6 0;

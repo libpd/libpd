@@ -1,0 +1,14 @@
+0.3
+   Dead connections remain drawn after you change the number of listeners
+   Can't change dynamically the number of inputs, code's there but it makes PD crash
+   Clicks when moving listeners around
+0.1
+   Dead connections remain drawn after you change the number of listeners
+   Can't change dynamically the number of inputs, code's there but it makes PD crash
+   A little bit buggy audio computation
+   Clicks when moving listeners around
+0.1
+   Dead connections remain drawn after you change the number of listeners
+   Can't change dynamically the number of inputs, code's there but it makes PD crash
+   Buggy audio computation
+   Clicks when moving listeners around

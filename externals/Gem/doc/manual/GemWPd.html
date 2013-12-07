@@ -1,0 +1,140 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (WinNT; I) [Netscape]">
+   <title>Using GEM with Pd</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Using GEM with Pd</u></h2></center>
+&nbsp;&nbsp;&nbsp; An important fact is that GEM is NOT an application.
+It is a library that the application Pd loads in at run-time.&nbsp; Most
+of this information is taken directly from the GEM FAQ.
+<p><a href="#GEMIrix">How do I install GEM on IRIX?</a>
+<br><a href="#GEMWinNT">How do I install GEM on Win95/NT/2k?</a>
+<br><a href="#GEMlinux">How do I install GEM on linux?</a>
+<br><a href="#GEMmacos">How do I install GEM on macOS-X?</a>
+<br><a href="#runIRIX">How do I run GEM on IRIX?</a>
+<br><a href="#runWinNT">How do I run GEM on Win95/NT/2k?</a>
+<br><a href="#runlinux">How do I run GEM on linux?</a>
+<br><a href="#runmacos">How do I run GEM on linux?</a>
+<br><a href="#noRun">Why doesn't GEM run?</a>
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="GEMIrix"></a><u>How do I install GEM and Pd on IRIX?</u></h4>
+See the readme for installing Pd.
+<p>Uncompress and untar the GEM file that you downloaded.&nbsp; GEM should
+be located at
+<p>pd/gem
+<p>depending on where you have installed Pd.
+<p>If you run the shell script, GEM.INSTALL.sh, then all of the example
+files and documention
+<br>should be put in the correct locations.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="GEMWinNT"></a><u>How do I install GEM and Pd on WinNT?</u></h4>
+See the readme for installing Pd.
+<p>TODO: there should be a install package somewhere
+<p>Unzip the GEM file that you downloaded so that it is at
+<p>pd\gem
+<p>depending on where you have installed Pd.
+<p>If you run GEM.INSTALL.bat, then all of the example files and documentation
+should be put in the correct locations.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="GEMlinux"></a><u>How do I install GEM and Pd on linux?</u></h4>
+See the readme for installing Pd.
+<p>Uncompress and untar the GEM file that you downloaded so that it is at
+<p>pd/gem
+<p>depending on where you have installed Pd.
+<p>chdir into &lt;pd/gem&gt;/src/Gnu
+<p>read the README.build
+<p>run <tt>./configure</tt> and afterwards <tt>make</tt>
+<p>If you run <tt>make install</tt>, then all of the example files and documentation
+should be put in the correct locations.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="GEMmacos"></a><u>How do I install GEM and Pd on macOS-X?</u></h4>
+See the readme for installing Pd.
+<p>TODO: there should be a install package somewhere
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="runIRIX"></a><u>How do I run GEM on IRIX?</u></h4>
+&nbsp;&nbsp; To use GEM type something like:
+<p>/usr/people/mdanks/pd/bin/pd -lib /usr/people/mdanks/pd/gem/Gem
+<p>(where /usr/people/mdanks is the path to the pd directory). Check out
+the README for Pd to see examples of the -lib flag. If you just try to
+"run" GEM, you will get an error! Notice that last word is a capital Gem.
+If you get a "can't find gem_setup" error, then that is the problem. Look
+in the GEM FAQ
+<br>for trouble shooting suggestions.
+<p>If you don't see startup messages from GEM, then something went wrong.
+<br>Also, you might need to add pd/bin to your PATH environment variable.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="runWinNT"></a><u>How do I run GEM on Win95/NT?</u></h4>
+&nbsp;&nbsp;&nbsp; It is best to start Pd from a DOS command line.&nbsp;
+If you go to the Start menu, you should find an application called "Command
+Prompt" under the Program menu.&nbsp; You need to change to the drive where
+you installed Pd.&nbsp; For instance, if it is on your D: drive, just type
+d: at the prompt.
+<p>&nbsp;&nbsp; To use GEM type something like:
+<p>\pd\bin\pd -lib /pd/gem/Gem
+<p>depending on where you installed Pd.
+<p>&nbsp;&nbsp;&nbsp; Check out the README for Pd to see examples of the
+-lib flag. If you just try to double click GEM, you will get an error!
+Notice that last word is a capital Gem. If you get a "can't find gem_setup"
+error, then that is the problem. Look in the GEM FAQ for trouble shooting
+suggestions.
+<p>If you don't see a startup message from GEM, then something went wrong.
+<p>&nbsp;&nbsp;&nbsp; Most people use the command shell to start Pd.&nbsp;
+It is difficult to configure Pd to run from double-clicking on the icon.
+<p>&nbsp;&nbsp;&nbsp; Also, you might need to add pd/bin to your PATH environment
+variable.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="runIRIX"></a><u>How do I run GEM on linux?</u></h4>
+&nbsp;&nbsp; To use GEM type something like:
+<p>/usr/people/mdanks/pd/bin/pd -lib /usr/people/mdanks/pd/gem/Gem
+<p>(where /usr/people/mdanks is the path to the pd directory). Check out
+the README for Pd to see examples of the -lib flag. If you just try to
+"run" GEM, you will get an error! Notice that last word is a capital Gem.
+If you get a "can't find gem_setup" error, then that is the problem. Look
+in the GEM FAQ
+<br>for trouble shooting suggestions.
+<p>If you don't see startup messages from GEM, then something went wrong.
+<br>Also, you might need to add pd/bin to your PATH environment variable.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="runIRIX"></a><u>How do I run GEM on macOS-X?</u></h4>
+&nbsp;&nbsp; To use GEM type something like:
+<code>/usr/local/bin/pd -lib /Users/zmoelnig/pd/Gem</code>
+<p>(where /usr/local/bin/pd is the path to the pd directory and 
+/Users/zmoelnig/pd is the path where the <i>Gem.pd_darwin</i> resides). 
+Check out the README for Pd to see examples of the -lib flag. If you just try to
+"run" GEM, you will get an error! Notice that last word is a capital Gem.
+If you get a "can't find gem_setup" error, then that is the problem. Look
+in the GEM FAQ
+<br>for trouble shooting suggestions.
+<p>If you don't see startup messages from GEM, then something went wrong.
+<br>Also, you might need to add pd/bin to your PATH environment variable.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h4>
+<a NAME="noRun"></a><u>Why doesn't GEM run?</u></h4>
+&nbsp;&nbsp;&nbsp; Notice that the -lib flag always requires Unix styles
+slashes, even if you are on Windows.&nbsp; This means that you need to
+do <i>-lib /gem/Gem</i>, not <i>-lib \gem\Gem</i>
+<p>&nbsp;&nbsp;&nbsp; You may also want to use the -nosound flag.&nbsp;
+For instance, my PC has problems using audio (it leaks memory), so I just
+turn off the audio part of Pd.&nbsp; However, other people can't get GEM
+to work if the -nosound is used (on Win95).&nbsp; You can also try the
+-dac or -adc flags (for digital-analog-conversion only and analog-digital-conversion
+only).
+<p><a href="index.html">[return]</a>
+<br>&nbsp;
+</body>
+</html>

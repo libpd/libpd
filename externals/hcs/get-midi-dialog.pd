@@ -1,0 +1,26 @@
+#N canvas 0 31 450 300 10;
+#X obj 143 88 receive pd;
+#X obj 122 161 list;
+#X obj 122 16 inlet;
+#X obj 122 43 route bang;
+#X obj 179 63 print ERROR: no method for;
+#X obj 179 272 outlet;
+#X obj 122 185 route bang;
+#X obj 143 132 trigger bang anything;
+#X text 211 180 in a singleton;
+#X text 159 160 <-- TODO this list should be globally available;
+#X obj 143 111 route midi-dialog;
+#X obj 179 209 cyclone/prepend midi-dialog;
+#X obj 85 235 print WARNING: no midi-dialog data! Open the MIDI Settings
+and click OK to get the data.;
+#X connect 0 0 10 0;
+#X connect 1 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 3 1 4 0;
+#X connect 6 0 12 0;
+#X connect 6 1 11 0;
+#X connect 7 0 1 0;
+#X connect 7 1 1 1;
+#X connect 10 0 7 0;
+#X connect 11 0 5 0;

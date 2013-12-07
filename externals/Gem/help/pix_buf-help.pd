@@ -1,0 +1,94 @@
+#N canvas 404 68 654 486 10;
+#X text 452 8 GEM object;
+#X obj 8 325 cnv 15 430 140 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 332 Inlets:;
+#X text 38 425 Outlets:;
+#X obj 8 286 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 285 Arguments:;
+#X obj 7 76 cnv 15 430 200 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 136 cnv 15 160 110 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 296 <none>;
+#X text 16 438 Outlet 1: gemlist;
+#X text 23 346 Inlet 1: gemlist;
+#X obj 451 273 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 50 12 Synopsis: [pix_buf] \, [pix_separator];
+#X text 29 76 Description: buffer a pix;
+#X text 11 94 [pix_buf] buffers pixes. This allows you to do some processing
+which might require a lot of time (for example \, convolution) and
+store it. All images use a pull system \, so as long as nothing is
+modified in the pix "upstream" \, the pix_buf is still valid.;
+#X text 10 167 [pix_buf] is only effective if it is storing a static
+image. If you are continually modifying the buffered pix \, then pix_buf
+is going to be spending a lot of time copying pixels.;
+#X obj 451 220 pix_buf;
+#X obj 487 145 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 487 190 auto \$1;
+#X obj 487 168 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 451 251 pix_rds;
+#X text 11 238 [pix_buf] can be used to separate two gemlists processing
+the same image-data. Thus is is also called [pix_separator];
+#X text 22 362 Inlet 1: bang: copy of input-data to the output and
+force all subsequent [pix_]-objects to process.;
+#X text 22 391 Inlet 1: auto 1|0: force image-processing in subsequent
+objects each render-cycle;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 28 0;
+#X connect 28 0 32 0;
+#X connect 29 0 28 0;
+#X connect 30 0 28 0;
+#X connect 31 0 30 0;
+#X connect 32 0 21 0;

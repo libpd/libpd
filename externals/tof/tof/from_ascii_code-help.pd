@@ -1,0 +1,39 @@
+#N canvas 1 53 589 396 10;
+#X obj 64 332 print;
+#X msg 103 156 43;
+#X obj 41 69 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 78 116 32;
+#X obj 64 285 tof/from_ascii_code 13;
+#X msg 69 94 54;
+#X msg 125 197 13;
+#X text 34 29 Tags: conversion text symbols;
+#X text 34 13 Description: Convert ASCII codes into PD messages;
+#X text 104 95 Floats and lists: enter ASCII codes;
+#X text 63 68 Bang: output data;
+#X msg 91 137 65;
+#X text 155 192 Because of [form_ascii_code]'s creation argument \,
+the number 13 acts like a bang;
+#X msg 131 229 49 50 51 32 52 53 13;
+#X msg 113 176 49 50 51 32 52 53;
+#N canvas 246 152 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION convert ASCII codes into PD messages;
+#X text 12 65 INLET_0 bang float list;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control conversion anything_op;
+#X text 12 45 LICENSE GPL v2;
+#X restore 499 353 pd META;
+#X text 218 285 Optional argument: output data once that ASCII code
+is received;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 11 0 4 0;
+#X connect 13 0 4 0;
+#X connect 14 0 4 0;

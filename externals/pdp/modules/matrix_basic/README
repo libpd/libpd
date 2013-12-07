@@ -1,0 +1,5 @@
+This directory contains "normal" matrix packet processors, 
+derived from the t_pdp_base class defined in pdp_base.h
+
+Most modules are wrappers around Gnu Scientific Library (gsl) calls
+

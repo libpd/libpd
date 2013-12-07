@@ -1,0 +1,20 @@
+#N canvas 128 118 680 254 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X text 136 10 absolute value of matrix elements;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X obj 48 100 mtx 3 3;
+#X text 45 42 compute the absolute value of each element of a matrix
+;
+#X obj 595 63 abs;
+#X obj 48 164 mtx_abs;
+#X obj 48 192 mtx_print abs;
+#X obj 48 131 t a a;
+#X obj 91 132 mtx_print org;
+#X msg 48 80 0 1 -2 -3 -4 5 -6 7 8;
+#X connect 5 0 10 0;
+#X connect 8 0 9 0;
+#X connect 10 0 8 0;
+#X connect 10 1 11 0;
+#X connect 12 0 5 0;

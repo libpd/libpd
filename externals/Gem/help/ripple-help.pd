@@ -1,0 +1,87 @@
+#N canvas 45 35 710 402 10;
+#X text 54 30 Class: geometric object;
+#X obj 479 47 cnv 15 170 300 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 544 284 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 549 323 pd gemwin;
+#X msg 549 304 create;
+#X text 545 283 Create window:;
+#X text 485 29 Example:;
+#X obj 7 52 cnv 15 450 132 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 244 cnv 15 450 145 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 249 Inlets:;
+#X obj 8 189 cnv 15 450 50 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 189 Arguments:;
+#X text 27 275 Inlet 1: message: draw [line|fill|point];
+#X text 452 8 GEM object;
+#X text 27 261 Inlet 1: gemlist;
+#X text 9 358 Outlets:;
+#X text 20 371 Outlet 1: gemlist;
+#X obj 484 141 cnv 15 160 140 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 488 54 gemhead;
+#X floatatom 566 59 5 0 0 0 - - -;
+#X msg 494 144 draw line;
+#X msg 494 164 draw fill;
+#X msg 494 184 draw point;
+#X obj 488 79 rotateXYZ 135 0 0;
+#X obj 574 156 bng 25 250 50 0 empty empty grab 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 572 192 5 0 0 1 amount - -;
+#X text 7 56 Description: Renders and distorts a square.;
+#X text 27 331 Inlet 4: float: posX (centered);
+#X text 27 343 Inlet 5: float: posY (centered);
+#X text 27 288 Inlet 1: bang: grab;
+#X text 65 216 default: 32 32;
+#X text 63 202 segments of the square;
+#X text 33 14 Synopsis: [ripple];
+#X obj 488 259 ripple 16 16;
+#X text 16 73 When banged \, ripple will grab the vertex nearest to
+the specified (ctrX ctrY) position. The vertices will be accelerated
+towards the selected one for a moment and then gradually fall back
+to their original position.;
+#X obj 575 214 tgl 15 0 empty empty ctrX 18 8 0 8 -262144 -1 -1 0 1
+;
+#X obj 575 234 tgl 15 0 empty empty ctrY 18 8 0 8 -262144 -1 -1 0 1
+;
+#X text 27 317 Inlet 3: float: amount;
+#X text 17 131 The amount of excursion can be specified.;
+#X floatatom 510 217 5 0 0 0 - - -;
+#X text 17 150 note: [ripple] distorts a bit different when texture-mapping
+is used!;
+#X text 27 303 Inlet 2: float: size;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 18 0 23 0;
+#X connect 19 0 23 1;
+#X connect 20 0 33 0;
+#X connect 21 0 33 0;
+#X connect 22 0 33 0;
+#X connect 23 0 33 0;
+#X connect 24 0 33 0;
+#X connect 25 0 33 2;
+#X connect 35 0 33 3;
+#X connect 36 0 33 4;
+#X connect 39 0 33 1;

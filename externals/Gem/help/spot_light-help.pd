@@ -1,0 +1,166 @@
+#N canvas 107 312 724 516 10;
+#X text 471 28 Example:;
+#X obj 7 64 cnv 15 450 265 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 377 cnv 15 450 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 19 374 Inlets:;
+#X obj 8 337 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 336 Arguments:;
+#X text 452 8 GEM object;
+#X text 37 386 Inlet 1: gemlist;
+#X text 22 468 Outlets:;
+#X text 34 481 Outlet 1: gemlist;
+#X obj 468 47 cnv 15 225 400 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 473 49 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 256 112 destroy;
+#X obj 322 45 inlet;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 8 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X restore 478 88 pd gemwin;
+#X msg 478 69 create;
+#X text 474 48 Create window:;
+#X obj 472 197 cnv 15 220 210 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 483 128 gemhead;
+#X text 53 30 Class: non-geometric object;
+#X msg 489 316 1 1 1;
+#X obj 482 385 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 500 385 debug \$1;
+#X floatatom 563 132 5 0 0 0 - - -;
+#X obj 586 55 cnv 15 85 50 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 588 81 lighting \$1;
+#X obj 588 59 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 489 335 1 1 0;
+#X text 18 191 The second inlet sets the color of the light-source.
+;
+#X text 17 159 You can adjust the light with [rotate]. If you are lost
+use "debug" to display the light source as a small cone.;
+#X text 33 14 Synopsis: [spot_light];
+#X text 7 69 Description: adds a spot-light to the scene;
+#X text 37 417 Inlet 1: message: debug 1|0;
+#X text 37 447 Inlet 3: list: linear_attenuation \, cone_cutoff_angle
+\, decay_at_edges;
+#X obj 484 362 spot_light;
+#N canvas 611 263 574 368 spheres 0;
+#X obj 66 12 gemhead;
+#X floatatom 84 243 5 0 0 0 - - -;
+#X obj 49 14 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 99 43 5 0 0 0 - - -;
+#X floatatom 132 60 5 0 0 0 - - -;
+#X floatatom 166 77 5 0 0 0 - - -;
+#X floatatom 103 261 5 0 0 0 - - -;
+#X obj 66 96 rotateXYZ 0 0 0;
+#X floatatom 106 130 5 0 0 0 - - -;
+#X floatatom 146 147 5 0 0 0 - - -;
+#X floatatom 187 163 5 0 0 0 - - -;
+#X obj 66 183 translateXYZ 0 0 0;
+#X obj 306 74 gemhead;
+#X floatatom 410 143 5 0 0 0 - - -;
+#X floatatom 450 160 5 0 0 0 - - -;
+#X floatatom 491 176 5 0 0 0 - - -;
+#X floatatom 409 54 5 0 0 0 - - -;
+#X floatatom 442 71 5 0 0 0 - - -;
+#X floatatom 476 88 5 0 0 0 - - -;
+#X obj 373 284 sphere 0.2;
+#X msg 304 214 20;
+#X obj 302 181 loadbang;
+#X obj 376 106 rotateXYZ 0 -70 0;
+#X obj 373 232 translateXYZ 1.4 0 0;
+#X obj 66 280 sphere 0.9;
+#X connect 0 0 7 0;
+#X connect 1 0 24 1;
+#X connect 2 0 0 0;
+#X connect 2 0 12 0;
+#X connect 3 0 7 1;
+#X connect 4 0 7 2;
+#X connect 5 0 7 3;
+#X connect 6 0 24 2;
+#X connect 7 0 11 0;
+#X connect 8 0 11 1;
+#X connect 9 0 11 2;
+#X connect 10 0 11 3;
+#X connect 11 0 24 0;
+#X connect 12 0 22 0;
+#X connect 13 0 23 1;
+#X connect 14 0 23 2;
+#X connect 15 0 23 3;
+#X connect 16 0 22 1;
+#X connect 17 0 22 2;
+#X connect 18 0 22 3;
+#X connect 20 0 19 2;
+#X connect 20 0 24 2;
+#X connect 21 0 20 0;
+#X connect 22 0 23 0;
+#X connect 23 0 19 0;
+#X restore 476 418 pd spheres;
+#X text 15 267 Keep in mind that the attributes have to be set before
+rendering the vertices \, so if you are trying for frame accurate rendering
+\, you will want to set the gemhead order to a low number so that all
+of the values of the light get set first.;
+#X text 63 348 none;
+#X obj 483 176 translateXYZ 0 0 2;
+#X floatatom 498 211 5 0 0 1 linear_attenuation - -;
+#X floatatom 550 248 5 0 0 2 cone_cutoff_angle - -;
+#X floatatom 588 278 5 0 0 2 decay_at_edges - -;
+#X obj 588 297 t b f;
+#X obj 550 317 t b f;
+#X text 490 299 color;
+#X obj 483 150 rotateXYZ -33 0 0;
+#X text 37 432 Inlet 2: list: 3(RGB) float values;
+#X text 17 210 The third inlet receives a list of three floats: linear_attenuation:
+only accepts positive values cone_cutoff_angle: 0-90 or 180 decay_at_edges/exponent:
+0-128;
+#X text 19 86 [spot_light] produces a light which is at a variable
+distance from the scene. It can be used to make a pinpoint light \,
+or widened for larger illumination. The edges may appear jagged when
+lighting low polygon models: to smooth \, increase the polygon's #
+of vertices (or "slices").;
+#X obj 548 337 pack 0 90 3;
+#X obj 492 265 tgl 20 0 empty \$0-onoff empty 17 7 0 10 -262144 -1
+-1 0 1;
+#X text 37 401 Inlet 1: float: turn light on(1)/off(0);
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 16 0 43 0;
+#X connect 18 0 32 1;
+#X connect 19 0 20 0;
+#X connect 20 0 32 0;
+#X connect 21 0 43 2;
+#X connect 23 0 12 1;
+#X connect 24 0 23 0;
+#X connect 25 0 32 1;
+#X connect 36 0 32 0;
+#X connect 37 0 47 0;
+#X connect 38 0 41 0;
+#X connect 39 0 40 0;
+#X connect 40 0 47 0;
+#X connect 40 1 47 2;
+#X connect 41 0 47 0;
+#X connect 41 1 47 1;
+#X connect 43 0 36 0;
+#X connect 47 0 32 2;
+#X connect 48 0 32 0;

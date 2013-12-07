@@ -1,0 +1,53 @@
+#N canvas 191 -6 970 685 10;
+#X text 374 167 (invoke with <right mouse>Properties );
+#X text 375 156 You can set the following properties :;
+#X text 395 188 * Width : graphical x size;
+#X text 395 200 * Height : graphical y size;
+#X text 442 506 bugs and comments @ ydegoyon@free.fr;
+#X msg 404 603 \; pd dsp 0;
+#X msg 470 603 \; pd dsp 1;
+#X text 376 110 Probalizer output serial of integers according to the
+probability curve;
+#X obj 470 581 loadbang;
+#X obj 64 92 probalizer 200 200 10 100 1 0 42 1 66 2 86 3 67 4 36 5
+40 6 2 7 53 8 63 9 14;
+#X text 395 213 * Values : number of values ( range is [ 1 \, nvalues
+] );
+#X msg 93 54 bang;
+#X msg 93 4 bang;
+#X text 389 458 but without repetitions;
+#X msg 295 16 zero;
+#X msg 294 40 equi;
+#X text 389 433 Note = If the probabilities are all equal to 1 \,;
+#X msg 293 64 reset;
+#X text 338 63 Reset output;
+#X text 396 227 * Max Occurrences : max number of occurences in a serial
+;
+#X obj 68 358 probalizer 200 200 10 100 1 0 0 1 0 2 0 3 0 4 0 5 0 6
+0 7 0 8 0 9 0;
+#X obj 193 331 loadbang;
+#X msg 145 331 zero;
+#X text 306 345 The output of first probalizer;
+#X text 306 357 is stored in the second one;
+#X floatatom 187 30 5 0 0;
+#X msg 187 5 bang;
+#X text 276 281 End of the serial;
+#X text 390 445 probalizer behaves as a random object;
+#X obj 276 308 print probalizer::end;
+#X text 47 6 Start;
+#X text 332 42 Set equal probabilities;
+#X obj 93 29 metro 10;
+#X connect 8 0 6 0;
+#X connect 9 0 20 0;
+#X connect 9 1 22 0;
+#X connect 9 1 29 0;
+#X connect 11 0 9 0;
+#X connect 12 0 32 0;
+#X connect 14 0 9 0;
+#X connect 15 0 9 0;
+#X connect 17 0 9 0;
+#X connect 21 0 22 0;
+#X connect 22 0 20 0;
+#X connect 25 0 9 0;
+#X connect 26 0 25 0;
+#X connect 32 0 11 0;

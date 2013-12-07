@@ -1,0 +1,35 @@
+#N canvas 0 26 471 282 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 22 242 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 21 256 ___________________________________________________
+;
+#X obj 32 27 midiflush;
+#X text 104 27 send note offs for all hanging notes in a raw midi stream
+;
+#X obj 62 149 midiflush;
+#X obj 14 111 midiin;
+#X obj 62 176 midiout;
+#X text 145 140 passes data on unchanged \, upon bang sends note;
+#X text 144 155 off for all notes it did not see a note off for;
+#X msg 78 97 bang;
+#X msg 62 72 clear;
+#X text 115 97 send note offs;
+#X text 115 73 forget all previous notes \, no note off;
+#N canvas 247 115 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control MIDI storage max_compatible;
+#X text 12 45 DESCRIPTION send note offs for all hanging notes in a
+raw midi stream;
+#X text 12 75 INLET_0 float bang clear;
+#X text 12 95 OUTLET_0 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 421 261 pd META;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;

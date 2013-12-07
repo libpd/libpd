@@ -1,0 +1,16 @@
+#N canvas 385 142 508 466 10;
+#X obj 122 68 inlet bang;
+#X obj 122 385 outlet 1==OK;
+#X obj 122 347 b;
+#X msg 122 366 1;
+#X obj 122 161 mtx_index;
+#X text 67 37 test for existance of [mtx_index];
+#X msg 122 102 matrix 1 1 1;
+#X obj 122 126 t a a;
+#X connect 0 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;
+#X connect 7 1 4 1;

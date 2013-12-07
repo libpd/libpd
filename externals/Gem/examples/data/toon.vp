@@ -1,0 +1,36 @@
+!!ARBvp1.0
+
+# Toon Shader by James A. McCombe, Tue Jun 17 2003
+#
+# Implements a very crude toon shader.  Basically, a simple dot product between a 
+# light direction vector and the vertex normal is performed.  The output of this is 
+# used to set the texture coordinates to lookup inside a special texture which 
+# effectively quantises the light intensity into 3 bands.
+#
+# Parameters:
+#    program.env[0] - Light direction vector
+
+ATTRIB vPosition    = vertex.position;
+ATTRIB vNormal      = vertex.normal;
+
+PARAM lightDirection = program.env[0];
+
+TEMP t0, transVertex;
+
+DP4  result.position.x, state.matrix.mvp.row[0], vPosition;
+DP4  result.position.y, state.matrix.mvp.row[1], vPosition;
+DP4  result.position.z, state.matrix.mvp.row[2], vPosition;
+DP4  result.position.w, state.matrix.mvp.row[3], vPosition;
+
+DP3  t0.x, state.matrix.modelview[0].invtrans.row[0], vNormal;
+DP3  t0.z, state.matrix.modelview[0].invtrans.row[1], vNormal;
+DP3  t0.y, state.matrix.modelview[0].invtrans.row[2], vNormal;
+
+# Dot product of normal and light vector to do tone lookup
+DP3  t0, t0, lightDirection;
+SWZ  result.texcoord[0], t0, x,1,1,1;
+
+# Write the primary vertex color
+MOV  result.color, vertex.color;
+
+END

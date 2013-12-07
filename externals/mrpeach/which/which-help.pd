@@ -1,0 +1,33 @@
+#N canvas 1 53 569 267 10;
+#X obj 129 170 which tcpclient;
+#X obj 9 35 bng 15 250 50 0 empty empty output_path_to_object 17 7
+0 10 -4034 -257985 -1;
+#X text 9 7 [which] outputs the path to an object;
+#X obj 57 56 bng 15 250 50 0 empty empty set_object_name 17 7 0 10
+-4034 -257985 -1;
+#X msg 78 102 set tabdump;
+#X symbolatom 129 193 64 0 0 0 - - -;
+#X obj 57 81 symbol Gem;
+#X msg 120 144 expr;
+#X msg 99 123 counter;
+#X text 156 101 set object name;
+#X text 155 122 set object name and output path;
+#X text 227 169 argument is object name;
+#X text 130 222 2009/03/03 Martin Peach;
+#N canvas 457 202 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 105 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control;
+#X text 12 46 DESCRIPTION output the path to an object;
+#X text 12 65 INLET_0 anything set;
+#X text 12 85 OUTLET_0 symbol;
+#X restore 515 236 pd META;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 3 0 6 0;
+#X connect 4 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;

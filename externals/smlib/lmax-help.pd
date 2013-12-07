@@ -1,0 +1,33 @@
+#N canvas 1 53 441 199 10;
+#X text 345 139 j#|@2002;
+#X obj 367 117 SMLib-help;
+#X floatatom 55 73 5 0 0 0 - - -;
+#X obj 11 56 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 55 53 x(i);
+#X floatatom 11 169 5 0 0 0 - - -;
+#X obj 11 99 float;
+#X text 7 22 argument: half-decay time (in number of activations);
+#X msg 119 95 clear;
+#X text 118 77 clear accumulator;
+#X text 8 5 lmax: leaky maximum;
+#X obj 11 139 lmax 10;
+#X msg 244 106 decay 5;
+#X text 243 90 set half-decay time;
+#N canvas 277 199 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION leaky maximum;
+#X text 12 65 INLET_0 float clear decay;
+#X text 12 85 OUTLET_0 float;
+#X restore 381 159 pd META;
+#X connect 2 0 6 1;
+#X connect 3 0 6 0;
+#X connect 6 0 11 0;
+#X connect 8 0 11 0;
+#X connect 11 0 5 0;
+#X connect 12 0 11 0;

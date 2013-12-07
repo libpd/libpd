@@ -1,0 +1,27 @@
+#N canvas 632 359 559 496 10;
+#X obj 127 57 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 127 81 metro 40;
+#X obj 148 57 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 126 110 pdp_v4l;
+#X msg 229 56 open /dev/video0;
+#X msg 228 80 open /dev/video1;
+#X obj 126 151 pdp_motion_fade 1;
+#X obj 126 174 pdp_contrast 0.16;
+#X obj 126 199 pdp_mul;
+#X obj 126 224 pdp_gain 22;
+#X text 7 2 using motion_fade \, contrast \, mul and gain to get a
+motion triggered effect;
+#X obj 126 258 pdp_glx;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;

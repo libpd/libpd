@@ -1,0 +1,44 @@
+#N canvas 0 31 668 530 10;
+#X text 15 35 Compute the average value of a signal;
+#X floatatom 35 302 0 0 0 0 - - -;
+#X floatatom 254 194 0 0 0 0 - - -;
+#X obj 35 322 * 128;
+#X obj 33 349 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 209 150 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 269 169 200;
+#X msg 246 169 50;
+#X obj 209 216 metro 100;
+#X obj 31 189 adc~;
+#X text 46 252 signal input / trigger input;
+#X text 46 287 float output (between 0 and 1 for audio signals);
+#X text 38 62 When average receives a bang \, it computes the mean
+amplitude of its input signal since it last received a bang. The mean
+amplitude is the sum of the absolute values of the input divided by
+the number of samples received.;
+#X obj 33 267 avg~;
+#X text 190 123 start metro to see averages;
+#X text 299 169 try different intervals to see the change in avg~ behavior
+;
+#N canvas 309 151 494 374 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION compute the average value of a signal;
+#X text 12 5 KEYWORDS signal max_compatible conversion;
+#X text 12 65 INLET_0 bang signal;
+#X text 12 85 OUTLET_0 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 612 508 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 8 1;
+#X connect 3 0 4 0;
+#X connect 5 0 8 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 13 0;
+#X connect 9 0 13 0;
+#X connect 13 0 1 0;

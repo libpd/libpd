@@ -1,0 +1,49 @@
+#N canvas 1 53 632 505 12;
+#X obj 166 441 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 170 249 start;
+#X msg 123 351 stop;
+#X floatatom 460 286 5 0 0 0 - - -;
+#X obj 173 393 metroplus 1000 500 1000 200;
+#X msg 269 309 500 1000 200;
+#X text 28 13 metroplus;
+#X text 27 32 by mark williamson (mark@junklight.com);
+#X obj 182 279 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X text 27 65 metroplus is a variation on the metro object. Instead
+of providing a steady pulse however it can provide an irregular beat.
+It takes as its control a list of numbers representing intervals in
+milliseconds. These are the time between each "pulse". So for example
+with the initial setting below (in the metroplus object itself) - the
+first pulse comes after 1 second the second after 500ms the third after
+1 second and the fourth after 200ms - the next beat comming a second
+after that because the sequence starts again.;
+#X text 19 243 start with;
+#X text 18 257 a start message;
+#X text 18 274 or a 'bang'---->;
+#X text 12 321 stop with a;
+#X text 11 338 stop;
+#X text 13 352 message--->;
+#X text 245 286 set a new sequence;
+#X text 457 322 it still works;
+#X text 455 338 like a metro;
+#X text 428 355 object if you want;
+#X text 518 372 it to;
+#N canvas 277 222 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 AUTHOR Mark Williamson <mark@junklight.com>;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION variation on the metro object -- instead
+of providing a steady pulse it can provide an irregular beat;
+#X text 12 75 INLET_0 bang start stop;
+#X text 12 95 INLET_1 float list;
+#X text 12 115 OUTLET_0 bang;
+#X text 12 5 KEYWORDS control bang_op;
+#X restore 508 455 pd META;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 1;
+#X connect 4 0 0 0;
+#X connect 5 0 4 1;
+#X connect 8 0 4 0;

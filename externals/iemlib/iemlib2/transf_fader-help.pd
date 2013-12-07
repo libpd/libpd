@@ -1,0 +1,43 @@
+#N canvas 0 26 656 395 10;
+#X floatatom 69 56 9 0 0 0 - - -;
+#X floatatom 69 214 9 0 0 0 - - -;
+#X obj 69 152 transf_fader;
+#X text 12 8 transf_fader;
+#X text 123 9 transforms a slider range;
+#X obj 493 118 vu 15 120 empty empty -1 -8 0 8 -66577 -1 1 0;
+#X text 68 36 input from slider 0..147;
+#X text 63 239 output to dbtorms;
+#X obj 476 110 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 502 262 - 100;
+#X msg 103 88 pairs 0 0 6 40 24 70 36 80 48 88 60 94 72 98 96 102 108
+106 111 107.5 114 109 117 112 147 142;
+#X obj 444 271 dbtorms;
+#X obj 570 310 v2db;
+#X obj 561 120 vu 15 120 empty empty -1 -8 0 8 -66577 -1 1 0;
+#X text 160 127 pairs of break-points: input / output;
+#X text 175 328 IEM KUG;
+#X text 159 316 musil;
+#X text 189 316 @;
+#X text 195 316 iem.at;
+#X text 110 305 (c) Thomas Musil 2000 - 2005;
+#X text 158 338 Graz \, Austria;
+#N canvas 352 26 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION transform a slider range;
+#X text 12 65 INLET_0 float pairs;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control conversion;
+#X restore 601 367 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 9 0;
+#X connect 1 0 11 0;
+#X connect 2 0 1 0;
+#X connect 8 0 0 0;
+#X connect 9 0 5 1;
+#X connect 10 0 2 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 1;

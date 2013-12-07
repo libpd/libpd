@@ -1,0 +1,23 @@
+#N canvas 0 22 499 399 10;
+#X text 33 275 The "classification" of an attractor set uses the full
+range of the fractals acceptable parameter ranges. As this method of
+"classification" is relative \, it will not describe each fractal uniquely
+\, but rather can be used to compare attractor sets that have similar
+(closely related) parameter values. NOTE: there needs to be a way to
+increase the granularity of the classification system...;
+#X text 35 21 Parameter Ranges - Once you have an operational fractal
+external \, it is important to make sure that the assigned ranges for
+each of the parameters are "optimized" to limit the random number generator
+to those ranges. This is important when a variable can only range between
+(-1 .. 1) and you have declared that it can range from (-100 .. 100).
+Because of the much wider search space \, there is less likelyhood
+of finding anything useful \, or at least make the search times longer
+due to higher failure rates.;
+#X text 35 147 If you are unsure of what the ranges are \, you can
+either figure them out mathematically \, or use the "brute-force" method
+and iterate over ranges of the defined parameters. The points that
+return a fractal (even ones that converge) will give an indication
+as to the acceptable ranges for each param. Once you have determined
+those ranges \, adjust them in your '*.frac' file and re-make the external
+for your fractal. (Or you can just edit the Macros in the C code \,
+if you are comfortable with that.);

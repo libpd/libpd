@@ -1,0 +1,57 @@
+#N canvas 508 171 589 636 10;
+#X text 163 39 This object sould be used for the simulation of interaction
+between a collection of masse and a line.;
+#X text 175 273 6 : maximum depth (1);
+#X text 266 11 interaction with a line;
+#X text 169 513 12 : Normal displacement;
+#X text 169 544 13 : tengential displacement;
+#X text 177 107 1 : name;
+#X text 123 74 message to change parametter / default value / creation
+arg number / description;
+#X text 198 125 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X msg 108 303 setFN 0;
+#X msg 110 383 setKN 0;
+#X msg 108 512 setdN 0;
+#X obj 17 577 iLine2D;
+#X msg 106 194 setY1 0;
+#X msg 107 240 setY2 0;
+#X msg 105 169 setX1 -1;
+#X msg 106 217 setX2 1;
+#X text 176 169 2 : X coordonate of the the 1st point of the line;
+#X text 176 193 3 : Y coordonate of the the 1st point of the line;
+#X text 176 216 4 : X coordonate of the the 2nd point of the line;
+#X text 176 240 5 : Y coordonate of the the 2nd point of the line;
+#X msg 107 273 setPmax 1;
+#X text 201 257 X and Y position of the 2 points defining the line.
+;
+#X text 199 288 maximum depth of the interaction line.;
+#X text 175 305 7 : Normal constant force;
+#X text 175 325 8 : tengential constant force;
+#X text 174 383 9 : normal rigidity;
+#X text 168 445 10 : Normal damping;
+#X text 168 471 11 : Tengential damping;
+#X text 199 347 normal and tangential (to the line) constant forces
+apply to the masse when it is in interaction with this object.;
+#X msg 109 327 setFT 0;
+#X msg 109 445 setDN 0;
+#X text 199 397 normal rigidity. Forces are proportional to the depth
+between the masse and the line. The force is aply only to one side
+of the line.;
+#X text 199 489 normal and tangential damping for the masse.;
+#X msg 109 472 setDT 0;
+#X msg 107 543 setdT 0;
+#X text 198 564 displace the mass when it is in the interactor field
+;
+#X connect 8 0 11 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X connect 15 0 11 0;
+#X connect 20 0 11 0;
+#X connect 30 0 11 0;
+#X connect 33 0 11 0;
+#X connect 34 0 11 0;

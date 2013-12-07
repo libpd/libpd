@@ -1,0 +1,78 @@
+#N canvas 18 74 650 512 10;
+#X obj 37 35 3dp_windowcontext;
+#X obj 37 63 3dp_push;
+#X obj 411 55 3dp_view transz 5;
+#X obj 411 75 3dp_light;
+#X obj 37 2 metro 40;
+#X obj 37 -28 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 525 33 5 0 0 0 - - -;
+#X floatatom 511 14 5 0 0 0 - - -;
+#X floatatom 162 158 5 0 0 0 - - -;
+#X obj 36 428 3dp_draw tetra 4;
+#X obj 411 35 3dp_view roty 5;
+#X msg 511 -11 75;
+#X obj 36 306 3dp_view rotx;
+#X floatatom 160 307 5 0 0 0 - - -;
+#X obj 37 175 3dp_view scale 2;
+#X floatatom 170 356 5 0 0 0 - - -;
+#X obj 316 221 3dp_view rota 1 1 1 90;
+#X text 219 96 geometric transformations can be done using the 3dp_view
+object. the first argument is the kind of transformation: scale \,
+scalex \, scaley \, scalez \, rotx \, roty \, rotz \, rota \, transx
+\, transy \, transz \, transxyz. repectively this scales the object
+\, the x \, y \, z axis \, rotates around the x \, y \, z axis \, rotates
+around an arbitrary axis \, translates in the x \, y \, z directions
+and translates along a vector. the initial parameters can be specified
+as creation arguments \, i.e.: rotates by 90 degrees around axis (1
+\, 1 \, 1).;
+#X text 58 -27 <-- start here;
+#X text 225 434 bitch made doc for PDP 0.12.4 - http://delcorp.org/abbadingo
+;
+#X obj 514 -33 loadbang;
+#X msg 570 17 5;
+#X floatatom 160 408 5 0 0 0 - - -;
+#X obj 36 393 3dp_blend;
+#X floatatom 175 257 5 0 0 0 - - -;
+#X obj 36 356 3dp_view transxyz;
+#X obj 36 259 3dp_view transxyz;
+#X text 228 256 <-- translation before rotation: the object rotates
+around itself;
+#X text 228 356 <-- translation after rotation: the object makes an
+orbit;
+#N canvas 0 22 450 300 all 0;
+#X obj 33 19 3dp_view scale;
+#X obj 33 40 3dp_view scalex;
+#X obj 33 61 3dp_view scaley;
+#X obj 33 83 3dp_view scalez;
+#X obj 173 19 3dp_view rota;
+#X obj 173 40 3dp_view rotx;
+#X obj 173 61 3dp_view roty;
+#X obj 173 83 3dp_view rotz;
+#X obj 313 19 3dp_view transxyz;
+#X obj 313 40 3dp_view transx;
+#X obj 313 61 3dp_view transy;
+#X obj 313 83 3dp_view transz;
+#X restore 464 405 pd all possibilities;
+#X connect 0 0 1 0;
+#X connect 1 0 14 0;
+#X connect 1 1 10 0;
+#X connect 2 0 3 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 1;
+#X connect 7 0 10 1;
+#X connect 8 0 14 1;
+#X connect 10 0 2 0;
+#X connect 11 0 7 0;
+#X connect 12 0 25 0;
+#X connect 13 0 12 1;
+#X connect 14 0 26 0;
+#X connect 15 0 25 2;
+#X connect 20 0 11 0;
+#X connect 21 0 6 0;
+#X connect 22 0 9 1;
+#X connect 23 0 9 0;
+#X connect 24 0 26 2;
+#X connect 25 0 23 0;
+#X connect 26 0 12 0;

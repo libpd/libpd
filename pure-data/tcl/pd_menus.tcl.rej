@@ -1,0 +1,19 @@
+--- /home/kjetil/temp/pd-0.43-3/tcl/pd_menus.tcl	2011-09-18 05:31:14.000000000 +0200
++++ pure-data/tcl/pd_menus.tcl	2013-08-30 10:59:25.108334748 +0200
+@@ -475,10 +475,12 @@
+         -command {pdsend "pd start-path-dialog"}
+     $mymenu add command -label [_ "Startup..."] \
+         -command {pdsend "pd start-startup-dialog"}
+-    $mymenu add command -label [_ "Audio Settings..."] \
+-        -command {pdsend "pd audio-properties"}
+-    $mymenu add command -label [_ "MIDI Settings..."] \
+-        -command {pdsend "pd midi-properties"}
++    if {$::LIBPD eq 0} {
++        $mymenu add command -label [_ "Audio Settings..."] \
++            -command {pdsend "pd audio-properties"}
++        $mymenu add command -label [_ "MIDI Settings..."] \
++            -command {pdsend "pd midi-properties"}
++    }
+ }
+ 
+ # ------------------------------------------------------------------------------

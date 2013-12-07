@@ -1,0 +1,60 @@
+#N canvas 116 92 786 482 10;
+#N canvas 0 0 450 300 graph1 0;
+#X array src 100 float 1;
+#A 0 0.916135 0.888992 0.83593 0.810011 0.784501 0.759399 0.734704
+0.710418 0.663071 0.640009 0.595111 0.573274 0.551845 0.510212 0.490007
+0.450823 0.413271 0.395108 0.377353 0.326536 0.310413 0.279392 0.264494
+0.250004 0.222248 0.196126 0.171635 0.160003 0.148778 0.127553 0.0987772
+0.0900016 0.0736748 0.0661237 0.0522459 0.0459193 0.0344905 0.0246944
+0.0204086 0.0130616 0.0100003 0.00326543 0.00183682 0.000816378 5.03628e-013
+0.000204064 0.0018367 0.00510201 0.00510201 0.00999999 0.0165306 0.0204082
+0.0293879 0.0400002 0.0459187 0.05898 0.0661229 0.0816333 0.0816333
+0.0987763 0.10796 0.127552 0.13796 0.148777 0.160001 0.183675 0.196124
+0.208982 0.235921 0.250002 0.279391 0.294697 0.310411 0.343065 0.360004
+0.377351 0.395106 0.431841 0.470209 0.490005 0.510209 0.530822 0.551843
+0.573271 0.595108 0.617354 0.640007 0.663068 0.686538 0.710416 0.734702
+0.734702 0.759396 0.784498 0.810009 0.835928 0.862254 0.862254 0.88899
+0.916133;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 534 10 graph;
+#N canvas 0 0 450 300 graph1 0;
+#X array dst 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 534 176 graph;
+#X obj 60 35 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 60 110 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 58 345 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 58 215 50 20 50;
+#X text 194 318 1.arg: <symbol> source-name;
+#X text 194 331 2.arg: <symbol> destination-name;
+#X msg 115 235 src src;
+#X msg 165 253 dst dst;
+#X text 184 73 (the number of samples which are copied are:;
+#X text 197 87 the minimum of both array lengths);
+#X text 43 168 list of 3 floats:;
+#X text 77 419 IEM KUG;
+#X text 61 407 musil;
+#X text 91 407 @;
+#X text 97 407 iem.at;
+#X text 60 429 Graz \, Austria;
+#X text 12 396 (c) Thomas Musil 2000 - 2006;
+#X text 55 179 1.) src onset;
+#X text 55 189 2.) dst onset;
+#X text 225 306 initial arguments:;
+#X text 73 323 <bang> output;
+#X text 172 233 <src> xxx : change source name;
+#X text 218 252 <dst> xxx : change destination name;
+#X text 11 7 tab_sqrt;
+#X text 89 33 <bang> copy square root value from src to dst;
+#X obj 60 82 tab_sqrt src dst;
+#X text 55 198 3.) n samples to copy square root;
+#X obj 58 306 tab_sqrt src dst;
+#X connect 2 0 27 0;
+#X connect 5 0 29 0;
+#X connect 8 0 29 0;
+#X connect 9 0 29 0;
+#X connect 27 0 3 0;
+#X connect 29 0 4 0;

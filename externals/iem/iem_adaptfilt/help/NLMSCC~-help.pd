@@ -1,0 +1,274 @@
+#N canvas 284 42 905 668 10;
+#N canvas 0 0 450 300 graph1 0;
+#X array W 40 float 0;
+#X coords 0 1 39 -1 200 140 1;
+#X restore 34 496 graph;
+#X msg 26 246 update \$1;
+#X msg 103 256 beta \$1;
+#X obj 273 25 tgl 15 0 empty empty empty 0 -6 0 8 -225280 -1 -1 0 1
+;
+#X obj 273 46 dsp;
+#X floatatom 273 92 5 0 0 0 - - -;
+#X floatatom 286 71 5 0 0 0 - - -;
+#X obj 277 464 bng 15 150 20 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 423 290 2.arg: <float> learn-rate = beta;
+#X obj 54 276 noise~;
+#X obj 26 59 vradio 15 1 0 8 empty empty empty 0 -6 0 8 -225280 -1
+-1 0;
+#N canvas 165 115 464 314 /SUBPATCH/ 0;
+#X obj 76 61 inlet;
+#X msg 32 163 0;
+#X msg 63 159 1;
+#X msg 97 158 2;
+#X msg 132 156 4;
+#X msg 159 157 8;
+#X msg 191 162 16;
+#X msg 219 164 32;
+#X msg 248 165 64;
+#X obj 76 84 sel 0 1 2 3 4 5 6 7;
+#X obj 32 217 outlet;
+#X connect 0 0 9 0;
+#X connect 1 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 10 0;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 1 0;
+#X connect 9 1 2 0;
+#X connect 9 2 3 0;
+#X connect 9 3 4 0;
+#X connect 9 4 5 0;
+#X connect 9 5 6 0;
+#X connect 9 6 7 0;
+#X connect 9 7 8 0;
+#X restore 26 206 pd;
+#X text 35 38 internal downsampling of update;
+#X msg 97 338 gamma \$1;
+#N canvas 0 0 450 300 graph1 0;
+#X array W_top 40 float 0;
+#X coords 0 1 39 -1 200 140 1;
+#X restore 626 495 graph;
+#N canvas 0 0 450 300 graph1 0;
+#X array W_bottom 40 float 0;
+#X coords 0 1 39 -1 200 140 1;
+#X restore 294 495 graph;
+#X text 76 364 input signal;
+#X text 191 363 desired signal;
+#N canvas 0 0 450 300 graph1 0;
+#X array IR 40 float 0;
+#X coords 0 1 39 -1 200 140 1;
+#X restore 372 32 graph;
+#X obj 55 441 unsig~;
+#X floatatom 55 467 9 0 0 0 - - -;
+#X obj 165 440 unsig~;
+#X floatatom 165 466 9 0 0 0 - - -;
+#X text 27 364 x(n);
+#X text 282 363 d(n);
+#X text 30 409 y(n) = W * x(n);
+#X obj 277 292 FIR~ IR 32;
+#X obj 589 135 loadbang;
+#X text 473 280 (array-sizes have to be >= then FIR_size);
+#X text 423 270 1.arg: <float> number of order of FIR-filter;
+#X text 43 72 update every sample;
+#X text 43 57 stop \, no update;
+#X text 43 87 update every 2nd sample;
+#X text 43 102 update every 4th sample;
+#X text 43 117 update every 8th sample;
+#X text 43 132 update every 16th sample;
+#X text 43 147 update every 32nd sample;
+#X text 43 162 update every 64th sample;
+#N canvas 0 0 474 324 /SUBPATCH/ 0;
+#X obj 48 46 inlet;
+#X obj 205 47 inlet;
+#X msg 205 71 \; IR const 0;
+#X msg 48 120 \; IR 0 0 0 0 0.314287 0.8 0.75 0 0 0 0 -0.7 -0.65 0
+0 0 0.157143 0.128572 0 0 -0.128572 -0.1 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0;
+#X obj 92 84 loadbang;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 4 0 3 0;
+#X restore 590 110 pd;
+#X obj 603 92 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 620 89 clear;
+#X obj 590 73 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 607 70 load;
+#X text 652 79 IR;
+#X text 5 396 filtered output signal;
+#X text 169 396 error signal;
+#X text 143 408 e(n) = d(n) - W * x(n);
+#X text 294 458 constrain;
+#X text 294 468 coefficients;
+#N canvas 0 0 825 416 /SUBPATCH/ 0;
+#X obj 43 39 inlet;
+#X obj 446 39 inlet;
+#X obj 92 84 loadbang;
+#X msg 54 114 \; W_top 0 1 0.928572 0.885714 0.857142 0.828571 0.799999
+0.785713 0.757141 0.742855 0.72857 0.714284 0.699998 0.685712 0.671426
+0.642854 0.628569 0.599997 0.571425 0.557139 0.528568 0.514282 0.499996
+0.499996 0.48571 0.471424 0.457138 0.428567 0.414281 0.399995 0.385709
+0.371423 0.357137 0.342851 0.328565 0.31428 0.31428 0.31428 0.31428
+0.299994 0.299994;
+#X msg 43 226 \; W_bottom 0 -1 -0.971428 -0.942857 -0.914286 -0.885714
+-0.857143 -0.828572 -0.814286 -0.785715 -0.757143 -0.728572 -0.7 -0.671429
+-0.657143 -0.642858 -0.614286 -0.585715 -0.571429 -0.557144 -0.528572
+-0.514287 -0.500001 -0.485715 -0.471429 -0.457144 -0.442858 -0.428572
+-0.428572 -0.400001 -0.400001 -0.385715 -0.371429 -0.371429 -0.357144
+-0.357144 -0.342858 -0.328572 -0.314287 -0.285715 -0.285715;
+#X msg 446 226 \; W_bottom 0 -1 -0.857143 -0.728572 -0.671429 -0.614286
+-0.585715 -0.557143 -0.514286 -0.485715 -0.471429 -0.471429 -0.442858
+-0.428572 -0.400001 -0.371429 -0.342858 -0.328572 -0.314286 -0.285715
+-0.285715 -0.271429 -0.271429 -0.271429 -0.271429 -0.271429 -0.271429
+-0.257144 -0.242858 -0.228572 -0.214286 -0.214286 -0.214286 -0.200001
+-0.214287 -0.200001 -0.200001 -0.185715 -0.171429 -0.171429 -0.171429
+;
+#X msg 459 113 \; W_top 0 1 0.842856 0.785713 0.699998 0.642854 0.571425
+0.514282 0.457138 0.442852 0.414281 0.385709 0.342851 0.285708 0.257136
+0.214279 0.199993 0.171421 0.157135 0.142849 0.128564 0.142849 0.142849
+0.142849 0.142849 0.142849 0.128564 0.128564 0.128564 0.128564 0.128564
+0.128564 0.142849 0.142849 0.142849 0.142849 0.157135 0.157135 0.157135
+0.142849 0.142849;
+#X connect 0 0 4 0;
+#X connect 0 0 3 0;
+#X connect 1 0 6 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 2 0 4 0;
+#X restore 506 576 pd;
+#X obj 519 558 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 506 539 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 277 423 0;
+#X obj 277 443 speedlim 100;
+#X text 499 522 top & bottom;
+#X text 523 536 nonconstrained;
+#X text 536 555 constrained;
+#X obj 84 413 cnv 8 1 1 empty empty * 0 7 0 14 -262144 -1 0;
+#X obj 237 412 cnv 8 1 1 empty empty * 0 7 0 14 -262144 -1 0;
+#N canvas 0 0 470 320 /SUBPATCH/ 0;
+#X obj 137 73 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X msg 137 115 39;
+#X msg 137 156 \$1 39;
+#X msg 136 53 1;
+#X obj 137 92 metro 200;
+#X obj 136 24 inlet;
+#X obj 137 135 tabread W;
+#X obj 137 180 tabwrite W;
+#X connect 0 0 4 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;
+#X connect 6 0 2 0;
+#X restore 589 156 pd;
+#X text 614 162 update of W;
+#X text 613 151 graphical;
+#X text 423 310 4.arg: <symbol> table-name of W;
+#X text 423 320 5.arg: <symbol> table-name of lower boundary of W;
+#X text 423 330 6.arg: <symbol> table-name of upper boundary of W;
+#X text 423 300 3.arg: <float> minimum input value gamma;
+#X text 133 318 minimum input value;
+#X msg 103 219 0.1;
+#X msg 97 300 1e-05;
+#X text 156 257 beta [0 .. 2];
+#X text 153 337 gamma [0 .. 1];
+#X obj 458 250 cnv 15 68 17 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#N canvas 0 0 758 363 FORMULAS 0;
+#X obj 168 54 cnv 15 150 40 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X obj 168 125 cnv 15 270 50 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X obj 168 207 cnv 15 510 90 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X text 281 131 beta;
+#X text 232 148 >;
+#X text 233 146 _;
+#X text 233 140 _;
+#X text 278 143 2;
+#X text 341 143 2;
+#X text 312 148 gamma * blocksize);
+#X text 295 148 +;
+#X text 244 148 x[n-i];
+#X text 175 137 my(n) =;
+#X text 224 132 _________________________________;
+#X text 29 138 normalized learn rate:;
+#X text 246 243 <;
+#X text 250 237 |;
+#X text 250 249 |;
+#X text 250 230 |;
+#X text 250 256 |;
+#X text 250 270 |;
+#X text 250 223 |;
+#X text 254 206 _;
+#X text 253 270 _;
+#X text 271 211 W > W_top;
+#X text 265 275 W < W_bottom;
+#X text 260 246 &&(W <= W_top);
+#X text 256 235 (W >= W_bottom);
+#X text 175 243 W(k+1 \, i) =;
+#X text 250 216 |;
+#X text 250 263 |;
+#X text 346 275 ...... W(k+1 \, i) = W_botton(i);
+#X text 334 212 ........ W(k+1 \, i) = W_top(i);
+#X text 174 56 y(n) = W * x(n);
+#X obj 226 58 cnv 11 1 1 empty empty * 0 9 0 14 -225280 -1 0;
+#X text 174 74 e(n) = d(n) - W * x(n);
+#X obj 268 76 cnv 11 1 1 empty empty * 0 9 0 14 -225280 -1 0;
+#X text 120 75 error:;
+#X text 117 57 output:;
+#X text 27 242 coefficient iteration:;
+#X text 358 243 .... W(k+1 \, i) = W(k \, i) + my(n)* e(n)* x(n);
+#X restore 457 249 pd FORMULAS;
+#X obj 54 380 NLMSCC~ 32 0.1 1e-05 W W_bottom W_top;
+#X obj 103 239 cnv 14 31 14 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X floatatom 103 239 5 0 2 0 - - -;
+#X text 139 238 learn-rate;
+#X obj 97 320 cnv 14 31 14 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X floatatom 97 320 5 0 2 0 - - -;
+#X floatatom 26 227 5 0 0 0 - - -;
+#X text 426 221 Normalized Least Mean Square (linear adaptive FIR-filter)
+;
+#X text 455 232 with Coefficient Constraint;
+#X text 422 350 (C) 2005 \, m.noisternig & t.musil \, IEM \, Graz \,
+Austria;
+#X text 450 363 [noisternig \, musil]_AT_iem.at;
+#X connect 1 0 73 0;
+#X connect 2 0 73 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 9 0 26 0;
+#X connect 9 0 73 0;
+#X connect 10 0 11 0;
+#X connect 11 0 79 0;
+#X connect 13 0 73 0;
+#X connect 19 0 20 0;
+#X connect 21 0 22 0;
+#X connect 26 0 73 1;
+#X connect 27 0 59 0;
+#X connect 39 0 38 1;
+#X connect 41 0 38 0;
+#X connect 50 0 49 1;
+#X connect 51 0 49 0;
+#X connect 52 0 53 0;
+#X connect 53 0 7 0;
+#X connect 67 0 75 0;
+#X connect 68 0 78 0;
+#X connect 73 0 19 0;
+#X connect 73 1 21 0;
+#X connect 73 2 52 0;
+#X connect 75 0 2 0;
+#X connect 78 0 13 0;
+#X connect 79 0 1 0;

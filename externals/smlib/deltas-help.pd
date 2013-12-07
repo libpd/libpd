@@ -1,0 +1,48 @@
+#N canvas 1 53 489 293 10;
+#X text 390 239 j#|@2002;
+#X obj 412 217 SMLib-help;
+#X floatatom 14 74 5 0 0 0 - - -;
+#X obj 12 165 print deltas;
+#X floatatom 68 108 5 0 0 0 - - -;
+#X floatatom 120 107 5 0 0 0 - - -;
+#X obj 24 104 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 12 138 deltas 1 10 10;
+#X obj 14 54 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 9 4 deltas: generates vector with differences between last
+input and past inputs;
+#X text 9 186 x(i)-x(i-a);
+#X text 9 200 x(i)-x(i-(a+1));
+#X text 9 214 x(i)-x(i-(a+2));
+#X text 9 240 x(i)-x(i-(b));
+#X text 7 225 ...;
+#X text 153 137 [deltas a b c];
+#X text 120 86 b;
+#X text 66 87 a;
+#X text 152 183 requires a<b and b<=c;
+#X text 152 167 c = buffer size;
+#X text 35 50 x(i);
+#X msg 79 57 clear;
+#N canvas 101 197 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 75 INLET_0 float factor clear;
+#X text 12 45 DESCRIPTION generate vector with differences between
+last input and past inputs;
+#X text 12 115 INLET_2 float;
+#X text 12 95 INLET_1 float;
+#X text 12 135 OUTLET_0 list;
+#X text 12 5 KEYWORDS control list_op;
+#X restore 419 263 pd META;
+#X connect 2 0 6 0;
+#X connect 2 0 7 0;
+#X connect 4 0 7 1;
+#X connect 5 0 7 2;
+#X connect 6 0 7 0;
+#X connect 7 0 3 0;
+#X connect 8 0 2 0;
+#X connect 21 0 7 0;

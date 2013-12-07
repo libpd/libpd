@@ -1,0 +1,76 @@
+#N canvas 92 197 605 585 10;
+#X obj 24 85 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 42 25 stop;
+#X msg 80 24 bang;
+#X floatatom 122 25 5 0 0;
+#X obj 60 485 pdp_glx;
+#X obj 60 439 pdp_bq;
+#X obj 111 334 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 169 332 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 97 278 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 154 277 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X msg 95 303 lr \$1;
+#X msg 150 304 rl \$1;
+#X msg 99 350 tb \$1;
+#X msg 154 351 bt \$1;
+#X obj 392 240 hsl 128 15 0.05 0.5 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 3000 1;
+#X obj 450 280 hsl 128 15 0.1 10 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 1900 1;
+#X obj 391 307 t b f;
+#X obj 394 345 pack s 0 0;
+#X msg 391 378 \$1 \$2 \$3;
+#X obj 447 310 t b f;
+#X msg 301 199 lpf;
+#X msg 333 200 apf;
+#X obj 130 198 random 2;
+#X obj 195 198 random 2;
+#X obj 60 147 pdp_trigger;
+#X obj 128 235 random 2;
+#X obj 193 235 random 2;
+#X obj 60 111 pdp_v4l;
+#X obj 301 121 loadbang;
+#X obj 60 53 metro 40;
+#X text 388 219 frequency;
+#X text 447 261 Q;
+#X text 312 175 filter type;
+#X connect 0 0 27 0;
+#X connect 1 0 29 0;
+#X connect 2 0 29 0;
+#X connect 3 0 29 1;
+#X connect 5 0 4 0;
+#X connect 6 0 12 0;
+#X connect 7 0 13 0;
+#X connect 8 0 10 0;
+#X connect 9 0 11 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 13 0 5 0;
+#X connect 14 0 16 0;
+#X connect 15 0 19 0;
+#X connect 16 0 17 0;
+#X connect 16 1 17 1;
+#X connect 17 0 18 0;
+#X connect 18 0 5 0;
+#X connect 19 0 17 0;
+#X connect 19 1 17 2;
+#X connect 20 0 17 0;
+#X connect 21 0 17 0;
+#X connect 22 0 8 0;
+#X connect 23 0 9 0;
+#X connect 24 0 5 0;
+#X connect 24 1 23 0;
+#X connect 24 1 22 0;
+#X connect 24 1 26 0;
+#X connect 24 1 25 0;
+#X connect 25 0 6 0;
+#X connect 26 0 7 0;
+#X connect 27 0 24 0;
+#X connect 28 0 20 0;
+#X connect 29 0 27 0;

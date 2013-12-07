@@ -1,0 +1,12 @@
+#N canvas 800 696 381 197 10;
+#X obj 58 49 inlet~;
+#X obj 58 159 outlet~;
+#X text 49 5 complex addition;
+#X obj 195 49 inlet~;
+#X obj 114 49 inlet~;
+#X obj 114 159 outlet~;
+#X obj 251 49 inlet~;
+#X connect 0 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 6 0 5 0;

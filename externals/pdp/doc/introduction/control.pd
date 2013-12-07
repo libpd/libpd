@@ -1,0 +1,17 @@
+#N canvas 372 355 668 154 10;
+#X obj 33 107 pdp_glx;
+#X obj 33 57 pdp_v4l;
+#X msg 33 12 bang;
+#X obj 33 81 pdp_trigger;
+#X obj 33 35 metro 1000;
+#X obj 105 108 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 140 20 pdp_trigger sends out a bang message on the right outlet
+before it passes the incoming pdp message on the left outlet.;
+#X msg 73 12 stop;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 0 0;
+#X connect 3 1 5 0;
+#X connect 4 0 1 0;
+#X connect 7 0 4 0;

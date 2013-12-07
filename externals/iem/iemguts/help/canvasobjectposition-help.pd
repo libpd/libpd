@@ -1,0 +1,56 @@
+#N canvas 424 144 674 662 10;
+#X text 48 441 you can specify the depth of the parent-patch via a
+optional argument:;
+#X text 219 473 will work on the grandparent (parent-depth:2) of this
+patch;
+#X msg 98 124 bang;
+#X obj 98 172 unpack;
+#X floatatom 137 194 5 0 0 0 - - -;
+#X floatatom 98 194 5 0 0 0 - - -;
+#N canvas 0 0 648 414 getpos 0;
+#X obj 75 48 inlet;
+#X obj 75 189 outlet;
+#X obj 75 129 canvasobjectposition 1 18;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 98 148 pd getpos;
+#N canvas 0 0 450 300 setpos 0;
+#X obj 75 48 inlet;
+#X obj 167 63 loadbang;
+#X msg 167 84 350 200;
+#X obj 75 129 canvasobjectposition 1 18;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X restore 108 332 pd setpos;
+#X obj 111 290 hsl 128 15 300 400 0 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 300 1;
+#X text 60 631 (c) 2009 IOhannes m zmoelnig;
+#X obj 48 28 canvasobjectposition;
+#X text 207 25 get/set the position of an arbitrary object in the specified
+(parent) canvas.;
+#X text 217 143 you can move this object and click "bang" again;
+#X text 363 164 |;
+#X text 364 176 V;
+#X obj 350 200 blabla;
+#X msg 108 310 \$1 200;
+#X text 50 534 you can specify the object to set/query via a 2nd optional
+argument \, or via the 2nd inlet;
+#X obj 52 475 canvasobjectposition 2;
+#X obj 53 595 canvasobjectposition 0 18;
+#X text 240 594 will work on object #18 in this patch;
+#X msg 53 573 350 210;
+#X msg 225 570 18;
+#X text 39 88 this object allows you to retrieve the position of any
+object (with a known index) within it's containing canvas;
+#X text 54 260 you can move an object around (without any hackish mouse
+emulation);
+#X text 53 394 arguments:;
+#X connect 2 0 6 0;
+#X connect 3 0 5 0;
+#X connect 3 1 4 0;
+#X connect 6 0 3 0;
+#X connect 8 0 16 0;
+#X connect 16 0 7 0;
+#X connect 21 0 19 0;
+#X connect 22 0 19 1;

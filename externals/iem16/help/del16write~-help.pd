@@ -1,0 +1,25 @@
+#N canvas 83 192 678 431 12;
+#X text 88 202 signal input;
+#X text 136 16 writes a signal in a delay line;
+#X text 281 235 1st argument: name of delay line;
+#X obj 24 203 sig~ 0;
+#X text 304 265 (= max. delay time);
+#X text 281 251 2nd argument: length of delay line in msec;
+#X text 24 292 see also:;
+#X obj 24 16 del16write~;
+#X obj 112 294 del16read~;
+#X obj 209 294 vd16~;
+#X text 16 353 similar pd-objects:;
+#X obj 201 352 delread~;
+#X obj 285 352 delwrite~;
+#X obj 378 352 vd~;
+#X obj 24 237 del16write~ del_line_xxx 500;
+#X text 21 51 This is very similar to the pd-object;
+#X text 49 81 It uses only 16bit to store the samples \, which will
+need only half of the memory of pd's floatingpoint-based object.;
+#X text 50 119 However \, there are 2 drawbacks: there will be some
+additional noise (because floats are more precise than 16bit) \, and
+you cannot have values>1 stored in the delay-line;
+#X obj 368 51 delwrite~;
+#X text 411 306 updated for iem16 version1.0;
+#X connect 3 0 14 0;

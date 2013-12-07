@@ -1,0 +1,93 @@
+#N canvas 1 53 905 635 10;
+#X obj 14 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 7 173 0 1125 0.671429 300 0.557143 700 0.571429 0 0.792857 375
+1 100 0.0857143 1250 0.492857 1150 0;
+#X obj 7 144 loadbang;
+#X obj 671 307 r \$0s;
+#X obj 616 307 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 617 355 dump;
+#X obj 673 355 r \$0d;
+#X obj 616 328 s \$0r;
+#X obj 617 377 s \$0r;
+#X text 616 281 The beakpoints can now be controlld remotely:;
+#X msg 23 237 duration 5000;
+#X obj 7 550 line;
+#X msg 36 263 dump;
+#X obj 106 551 print DUMP;
+#X obj 671 327 print data;
+#X obj 673 380 print dump;
+#X obj 206 551 bng 15 250 50 0 empty empty Change 17 7 0 10 -262144
+-1 -1;
+#X obj 9 400 tof/breakpoints;
+#X obj 487 320 tof/breakpoints 100 50 3000 \$0r \$0s \$0d;
+#X obj 6 9 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 11 60 author: mrtoftrash@gmail.com;
+#X text 11 79 version: 2009-04-14 (initial release);
+#X text 11 9 description: A graphical breakpoint envelope generator
+based on [envgen] by ggee.;
+#X text 12 41 tags: ui timing;
+#X text 35 208 Inlet 1 bang: deliver values for line or line~.;
+#X text 68 137 Inlet 1 list: sets the point data (value0 delay1 value1
+delay2 value2 etc...);
+#X text 111 237 Inlet 1 duration: set the total duration in milliseconds
+;
+#X text 76 262 Inlet 1 dump: dump the current point data out the second
+outlet;
+#X text 53 345 Select a point with the mouse and press the backspace
+key to delete it.;
+#X text 54 326 Click and drag to change points;
+#X obj 7 577 nbx 5 28 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 22
+-262144 -1 -1 0 256;
+#X text 474 139 Argument 1: display width;
+#X text 474 154 Argument 2: display height;
+#X text 474 169 Argument 3: receive name;
+#X text 474 184 Argument 4: send name;
+#X text 474 199 Argument 5: dump receive name;
+#X text 474 214 Argument 6: contents change by mouse receive name;
+#X text 478 245 The following breakpoints was created with the following:
+[breakpoints 100 50 3000 \$0r \$0s \$0d];
+#X text 147 119 -- Inlets --;
+#X text 557 119 -- Arguments --;
+#X floatatom 56 298 5 0 600 0 - - -;
+#X text 459 475 -- Outlets --;
+#X text 294 540 Outlet 2: The point data when dumped.;
+#X text 294 565 Outlet 3: Bangs when the contents was modified with
+the mouse.;
+#X text 94 292 Inlet 1 float: output the interpolated value at that
+index.;
+#X text 294 505 Outlet 1: The line or line~ data if [breakpoints] was
+banged \, or the value at that index if a float was sent.;
+#X text 607 421 -- See also --;
+#X text 600 441 [tof/breakpoints~];
+#X msg 150 371 0 0.5 1 0.5 0;
+#N canvas 297 202 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 5 KEYWORDS signal GUI;
+#X text 12 135 OUTLET_2 bang;
+#X text 12 115 OUTLET_1 list;
+#X text 12 75 INLET_0 bang list float dump;
+#X text 12 95 OUTLET_0 list;
+#X text 12 45 DESCRIPTION graphical breakpoint envelope generator based
+on [envgen] by ggee;
+#X restore 852 586 pd META;
+#X connect 0 0 17 0;
+#X connect 1 0 17 0;
+#X connect 2 0 1 0;
+#X connect 3 0 14 0;
+#X connect 4 0 7 0;
+#X connect 5 0 8 0;
+#X connect 6 0 15 0;
+#X connect 10 0 17 0;
+#X connect 11 0 30 0;
+#X connect 12 0 17 0;
+#X connect 17 0 11 0;
+#X connect 17 1 13 0;
+#X connect 17 2 16 0;
+#X connect 40 0 17 0;
+#X connect 48 0 17 0;

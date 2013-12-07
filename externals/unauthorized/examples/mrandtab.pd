@@ -1,0 +1,7 @@
+#N canvas 187 22 737 487 10;
+#X obj 300 10 import unauthorized;
+#X obj 138 151 dac~;
+#X obj 136 114 randtab;
+#X text 174 86 Everything is in the subpatch;
+#X connect 2 0 1 0;
+#X connect 2 0 1 1;

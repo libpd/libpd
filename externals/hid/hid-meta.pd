@@ -1,0 +1,9 @@
+#N canvas 10 22 200 200 10;
+#N canvas 20 22 420 300 META 1;
+#X text 10 10 META this is a prototype of a libdir meta file;
+#X text 10 30 NAME hid;
+#X text 10 50 AUTHOR Hans-Christoph Steiner;
+#X text 10 70 DESCRIPTION;
+#X text 10 90 LICENSE GNU GPL;
+#X text 10 110 VERSION 0.7.1;
+#X restore 10 10 pd META;

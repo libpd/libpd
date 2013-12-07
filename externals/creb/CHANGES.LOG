@@ -1,0 +1,42 @@
+0.1-0.7:	the dark ages
+0.8:		2003/02/18
+		fixed makefiles, added window~
+		(0.8.1) some bugfixes + gcc 3 compilation problems
+
+0.9:		lots of bugfixes and new objects & abstractions
+
+		bugfixes:
+			exponential envelopes no longer have a 'hold feature' 
+			(use eadsr~ or ear~ combined with a del obj to get a hold)
+			fdn~ blowup fixed
+			lattice~ blowup fixed
+			
+		new objects:
+			blocknorm~: normalizes a set of blocks to rms = 1
+			sbosc~: smallband pitched complex oscillator (i.e. for formant synth)
+			bitsplit~: splits a signal into a binary representation
+			clog~/cexp~: complex log and exp (clib functions)
+			nfft~/nifft~: normalized versions of the fft~/ifft~ objects
+			blosc~: minimum phase filtered bandlimited oscillators + comparator
+			resofilt~: some vintage filters with all-signal input and proper interpolation
+			scrollgrid1D~: chaotic scroll grid oscillator
+			
+		new abstractions:
+			step_*: some array readers/writers (for step sequencer)
+			cstate~/cstate+~: complex dynwav state read & write
+			pulsor~: pulse with duty cycle for dynwav spectral filtering
+			frequor~: a phasor for frequencies (fft traversal)
+			dsfosc~: complex discrete summation formula oscillator
+			idsfosc~: infinite series version (cheaper, but aliased)
+			cosc~: complex oscillator (complex phasor)
+			ucnorm~: complex unit circle normalization
+			ucmod~: complex unit circle modulation
+			lattice3: expand a (3d) harmonic lattice vector to a frequency ratio
+			ccmap~: complex conformal map of the unit disk
+			cinv~: complex inverse
+			cmul~: complex multipy
+			cadd~/csub~: complex add/sub
+			cconj~: complex conjugate
+			fmop~: fm operator
+			cep~/icep~: cepstrum transform and inverse
+			sin~: sine

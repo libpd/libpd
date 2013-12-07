@@ -1,0 +1,28 @@
+#N canvas 338 375 593 300 10;
+#X symbolatom 78 197 40 0 0;
+#X obj 78 46 pdp_noise;
+#X obj 78 23 bng 15 250 50 0 empty empty empty 0 -6 32 8 -262144 -1
+-1;
+#X obj 183 44 pdp_noise;
+#X obj 183 21 bng 15 250 50 0 empty empty empty 0 -6 32 8 -262144 -1
+-1;
+#X obj 183 71 pdp_grey;
+#X text 263 139 output packet description as a symbol;
+#X obj 288 44 pdp_noise;
+#X obj 288 21 bng 15 250 50 0 empty empty empty 0 -6 32 8 -262144 -1
+-1;
+#X obj 288 71 pdp_mchp;
+#X floatatom 178 171 5 0 0;
+#X obj 78 118 pdp_reg;
+#X obj 78 142 pdp_description;
+#X connect 1 0 11 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 11 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 0 0;
+#X connect 12 1 10 0;

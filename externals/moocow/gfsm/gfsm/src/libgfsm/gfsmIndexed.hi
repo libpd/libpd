@@ -1,0 +1,293 @@
+/*=============================================================================*\
+ * File: gfsmIndexed.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library: indexed automaton: inline definitions
+ *
+ * Copyright (c) 2007-2008 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+/*======================================================================
+ * Constructors etc.
+ */
+
+//----------------------------------------
+gfsmIndexedAutomaton *gfsm_indexed_automaton_new_full(gfsmAutomatonFlags flags,
+						      gfsmSRType         srtype,
+						      gfsmStateId        n_states,
+						      guint              n_arcs)
+						      
+{
+  gfsmIndexedAutomaton *xfsm = g_new0(gfsmIndexedAutomaton,1);
+#if 0
+  gfsmStateId qid;
+  gfsmWeight  srzero;
+#endif
+
+  xfsm->flags   = flags;
+  xfsm->sr      = gfsm_semiring_new(srtype);
+  xfsm->root_id = gfsmNoState;
+
+  //xfsm->state_is_valid     = gfsm_bitvector_sized_new(n_states);
+  xfsm->state_final_weight = gfsm_weight_vector_sized_new(n_states);
+  xfsm->arcs               = gfsm_arc_table_index_sized_new(n_states, n_arcs);
+
+#if 0
+  //-- initialize: states
+  for (qid=0; qid < n_states; qid++) {
+    g_array_index(xfsm->state_final_weight,gfsmWeight,qid) = xfsm->sr->zero;
+  }
+#endif
+
+  return xfsm;
+}
+
+//----------------------------------------
+GFSM_INLINE
+gfsmIndexedAutomaton *gfsm_indexed_automaton_new(void)
+{
+  return gfsm_indexed_automaton_new_full(gfsmAutomatonDefaultFlags,
+					 gfsmAutomatonDefaultSRType,
+					 gfsmAutomatonDefaultSize,
+					 gfsmAutomatonDefaultSize
+					 );
+}
+
+
+//----------------------------------------
+GFSM_INLINE
+gfsmIndexedAutomaton *gfsm_indexed_automaton_clone(gfsmIndexedAutomaton *src)
+{
+  return gfsm_indexed_automaton_copy(gfsm_indexed_automaton_new_full(src->flags,
+								     src->sr->type,
+								     gfsm_indexed_automaton_n_states(src),
+								     gfsm_indexed_automaton_n_arcs(src)),
+				     src);
+}
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_clear(gfsmIndexedAutomaton *xfsm)
+{
+  //gfsm_bitvector_clear(xfsm->state_is_valid);
+  gfsm_weight_vector_resize(xfsm->state_final_weight,0);
+  gfsm_arc_table_index_resize(xfsm->arcs,0,0);
+  xfsm->root_id = gfsmNoState;
+  return;
+ }
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_free(gfsmIndexedAutomaton *xfsm)
+{
+  if (!xfsm) return;
+  if (xfsm->sr)                 gfsm_semiring_free(xfsm->sr);
+  //if (xfsm->state_is_valid)     gfsm_bitvector_free(xfsm->state_is_valid);
+  if (xfsm->state_final_weight) gfsm_weight_vector_free(xfsm->state_final_weight);
+  if (xfsm->arcs)               gfsm_arc_table_index_free(xfsm->arcs);
+  g_free(xfsm);
+}
+
+/*======================================================================
+ * Methods: Import & Export
+ */
+//-- EXTERN
+
+
+/*======================================================================
+ * Methods: Accessors: gfsmIndexedAutomaton
+ */
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_reserve_states(gfsmIndexedAutomaton *xfsm, gfsmStateId n_states)
+{
+#if 0
+  gfsmStateId n_states_old = gfsm_indexed_automaton_n_states(xfsm);
+  gfsmStateId qid;
+  gfsmWeight  srzero;
+#endif
+
+  //-- resize state-indexed arrays
+  //gfsm_bitvector_resize(xfsm->state_is_valid, n_states);
+  gfsm_weight_vector_resize(xfsm->state_final_weight, n_states);
+  gfsm_arc_table_index_resize(xfsm->arcs, n_states, xfsm->arcs->tab->len);
+
+#if 0
+  //-- ... adjust final weights
+  srzero = xfsm->sr->zero;
+  for (qid=n_states_old; qid < n_states; qid++) {
+    g_array_index(xfsm->state_final_weight,gfsmWeight,qid) = srzero;
+  }
+#endif
+}
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_reserve_arcs(gfsmIndexedAutomaton *xfsm, guint n_arcs)
+{
+  gfsm_arc_table_index_resize(xfsm->arcs, xfsm->arcs->first->len-1, n_arcs);
+}
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_sort(gfsmIndexedAutomaton *xfsm, gfsmArcCompMask sort_mask)
+{
+  if (xfsm->flags.sort_mode != sort_mask && sort_mask != gfsmASMNone) {
+    gfsm_arc_table_index_sort_bymask(xfsm->arcs, sort_mask, xfsm->sr);
+  }
+  xfsm->flags.sort_mode = sort_mask;
+}
+
+
+/*======================================================================
+ * Methods: Accessors: gfsmAutomaton API: Automaton
+ */
+
+//----------------------------------------
+GFSM_INLINE
+gfsmSemiring *gfsm_indexed_automaton_set_semiring(gfsmIndexedAutomaton *xfsm, gfsmSemiring *sr)
+{
+  if (xfsm->sr) gfsm_semiring_free(xfsm->sr);
+  xfsm->sr = gfsm_semiring_copy(sr);
+  return sr;
+}
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_set_semiring_type(gfsmIndexedAutomaton *xfsm, gfsmSRType srtype)
+{
+  if (!xfsm->sr) xfsm->sr = gfsm_semiring_new(srtype);
+  else if (xfsm->sr->type != srtype) {
+    gfsm_semiring_free(xfsm->sr);
+    xfsm->sr = gfsm_semiring_new(srtype);  
+  }
+}
+
+//----------------------------------------
+GFSM_INLINE
+gfsmStateId gfsm_indexed_automaton_n_states(gfsmIndexedAutomaton *xfsm)
+{ return xfsm->state_final_weight->len; }
+
+//----------------------------------------
+GFSM_INLINE
+guint gfsm_indexed_automaton_n_arcs(gfsmIndexedAutomaton *xfsm)
+{ return xfsm->arcs->tab->len; }
+
+//----------------------------------------
+GFSM_INLINE
+guint gfsm_indexed_automaton_get_root(gfsmIndexedAutomaton *xfsm)
+{ return xfsm->root_id; }
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_set_root(gfsmIndexedAutomaton *xfsm, gfsmStateId qid)
+{
+  if (qid >= gfsm_indexed_automaton_n_states(xfsm) && qid != gfsmNoState) {
+    gfsm_indexed_automaton_reserve_states(xfsm,qid+1);
+  }
+  xfsm->root_id = qid;
+}
+
+/*======================================================================
+ * Methods: Accessors: gfsmAutomaton API: States
+ */
+
+//----------------------------------------
+GFSM_INLINE
+gboolean gfsm_indexed_automaton_has_state(gfsmIndexedAutomaton *xfsm, gfsmStateId qid)
+{ return qid < gfsm_indexed_automaton_n_states(xfsm); }
+
+//----------------------------------------
+GFSM_INLINE
+gfsmStateId gfsm_indexed_automaton_ensure_state(gfsmIndexedAutomaton *xfsm, gfsmStateId qid)
+{
+  if (qid >= gfsm_indexed_automaton_n_states(xfsm) && qid != gfsmNoState) {
+    gfsm_indexed_automaton_reserve_states(xfsm,qid+1);
+  }
+  return qid;
+}
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_remove_state(GFSM_UNUSED gfsmIndexedAutomaton *fsm, GFSM_UNUSED gfsmStateId qid)
+{ return; }
+
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_indexed_automaton_set_final_state_full(gfsmIndexedAutomaton *xfsm,
+						 gfsmStateId    qid,
+						 gboolean       is_final,
+						 gfsmWeight     final_weight)
+{
+  gfsm_indexed_automaton_ensure_state(xfsm,qid);
+  if (!is_final) final_weight = xfsm->sr->zero;
+  g_array_index(xfsm->state_final_weight,gfsmWeight,qid) = final_weight;
+}
+
+//----------------------------------------
+GFSM_INLINE
+gboolean gfsm_indexed_automaton_lookup_final(gfsmIndexedAutomaton *xfsm, gfsmStateId qid, gfsmWeight *wp)
+{
+  if (!gfsm_indexed_automaton_has_state(xfsm,qid)) {
+    *wp = xfsm->sr->zero;
+    return FALSE;
+  }
+  *wp = g_array_index(xfsm->state_final_weight,gfsmWeight,qid);
+  return ((*wp)!=xfsm->sr->zero);
+}
+
+//----------------------------------------
+GFSM_INLINE
+gboolean gfsm_indexed_automaton_state_is_final(gfsmIndexedAutomaton *xfsm, gfsmStateId qid)
+{
+  gfsmWeight fw;
+  return gfsm_indexed_automaton_lookup_final(xfsm,qid,&fw);
+}
+
+//----------------------------------------
+GFSM_INLINE
+gfsmWeight gfsm_indexed_automaton_get_final_weight(gfsmIndexedAutomaton *xfsm, gfsmStateId qid)
+{
+  if (!gfsm_indexed_automaton_has_state(xfsm,qid)) return xfsm->sr->zero;
+  return g_array_index(xfsm->state_final_weight,gfsmWeight,qid);
+}
+
+
+//----------------------------------------
+GFSM_INLINE
+guint gfsm_indexed_automaton_out_degree(gfsmIndexedAutomaton *fsm, gfsmStateId qid)
+{
+  if (!gfsm_indexed_automaton_has_state(fsm,qid)) return 0;
+  return gfsm_arc_table_index_out_degree(fsm->arcs,qid);
+}
+
+
+/*======================================================================
+ * gfsmArcRange
+ */
+
+//----------------------------------------
+GFSM_INLINE
+void gfsm_arcrange_open_indexed(gfsmArcRange *range, gfsmIndexedAutomaton *xfsm, gfsmStateId qid)
+{
+  if (gfsm_indexed_automaton_has_state(xfsm,qid)) {
+    gfsm_arcrange_open_table_index(range,xfsm->arcs,qid);
+  } else {
+    gfsm_arcrange_close(range);
+  }
+}

@@ -1,0 +1,156 @@
+#N canvas 536 22 647 648 10;
+#X text 452 8 GEM object;
+#X obj 8 392 cnv 15 430 235 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 19 394 Inlets:;
+#X text 22 575 Outlets:;
+#X obj 8 352 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 351 Arguments:;
+#X obj 8 56 cnv 15 430 285 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 450 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 515 462 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 234 221 dimen 500 500;
+#X msg 279 189 dimen 1024 768;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X restore 520 501 pd gemwin;
+#X msg 520 482 create;
+#X text 516 461 Create window:;
+#X obj 455 266 cnv 15 160 160 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 22 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X text 312 85 re-send the image to the [pix_]-object;
+#X text 231 37 open;
+#X text 79 30 gemlist;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X obj 454 437 pix_texture;
+#X text 63 362 <none>;
+#X text 57 592 Outlet 1: gemlist;
+#X text 33 408 Inlet 1: gemlist;
+#X obj 452 461 square 3;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 50 12 Synopsis: [pix_texture];
+#X text 29 57 Description: apply texture mapping;
+#X text 16 79 enables texture mapping with the current pix. Whatever
+pix values are in the network currently will be used (ie \, all processing
+after the pix_texture will not have any effect).;
+#X msg 461 341 quality \$1;
+#X obj 461 322 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 33 423 Inlet 1: 0|1 turn texturing On/off;
+#X text 33 437 Inlet 1: quality 0|1 : GL_NEAREST | GL_LINEAR(default)
+;
+#X text 15 122 Send a quality message to change the quality of the
+texture mapping. GL_LINEAR is better than GL_NEAREST (but also more
+computationally expensive). However \, on many machines (especially
+SGIs) \, there is no speed difference.;
+#X text 14 233 [pix_texture] is able to texture images of ANY size
+(even non-power of 2);
+#X obj 542 362 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 542 381 rectangle \$1;
+#X obj 469 387 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 542 322 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 469 406 client_storage \$1;
+#X msg 542 341 repeat \$1;
+#X text 33 453 Inlet 1: repeat 0|1 : CLAMP_TO_EDGE or REPEAT(default)
+;
+#X text 32 470 Inlet 1: rectangle 0|1 : use rectangle-texturing when available
+(default=1);
+#X text 32 498 Inlet 1: client_storage 0|1 : use client-storage when
+available (default=1);
+#X msg 493 297 env \$1;
+#X obj 494 277 hradio 15 1 0 6 empty empty empty 0 -6 0 8 -262144 -1
+-1 5;
+#X obj 472 222 pack 0 0 1;
+#X obj 452 243 color 0 0.5 0;
+#X obj 498 196 t b f;
+#X obj 499 177 nbx 3 14 0 1 0 0 empty empty green 0 -6 0 10 -262144
+-1 -1 1 256;
+#X obj 540 196 t b f;
+#X obj 541 177 nbx 3 14 0 1 0 0 empty empty blue 0 -6 0 10 -262144
+-1 -1 1 256;
+#X obj 458 196 nbx 3 14 0 1 0 0 empty empty red 0 -6 0 10 -262144 -1
+-1 1 256;
+#X text 57 608 Outlet 2: texture ID;
+#X text 14 262 [pix_texture] tries to use the fastest way to get a
+pix onto a texture. This implies using "rectangle"-texturing if available.
+This \, in turn \, can lead to some problems with several geos. Try
+using "rectangle 0" if you experience problems. Rectangle textures cannot
+be REPEATed (they are always clamped-to-edge);
+#X text 32 526 Inlet 1: env 0|1|2|3|4|5 : texture environment mode
+;
+#X text 57 541 0=GL_REPLACE \, 1=GL_DECAL \, 2=GL_BLEND \, 3=GL_ADD
+\,;
+#X text 57 556 4=GL_COMBINE \, >4=GL_MODULATE (default);
+#X text 16 176 - env message changes the texture environment mode.
+Some modes allow mixing with fragment colors (BLEND \, ADD \, COMBINE
+\, MODULATE) \, while REPLACE and DECAL ignore the current fragment/texture
+color.;
+#X text 457 149 set base fragment color;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 46 0;
+#X connect 18 0 22 0;
+#X connect 28 0 18 0;
+#X connect 29 0 28 0;
+#X connect 34 0 35 0;
+#X connect 35 0 18 0;
+#X connect 36 0 38 0;
+#X connect 37 0 39 0;
+#X connect 38 0 18 0;
+#X connect 39 0 18 0;
+#X connect 43 0 18 0;
+#X connect 44 0 43 0;
+#X connect 45 0 46 1;
+#X connect 46 0 18 0;
+#X connect 47 0 45 0;
+#X connect 47 1 45 1;
+#X connect 48 0 47 0;
+#X connect 49 0 45 0;
+#X connect 49 1 45 2;
+#X connect 50 0 49 0;
+#X connect 51 0 45 0;

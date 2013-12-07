@@ -1,0 +1,51 @@
+#N canvas 1 53 763 458 10;
+#X obj 62 387 print rate;
+#X obj 139 388 print file;
+#X obj 323 386 print channels;
+#X msg 172 225 bang;
+#X obj 432 386 print end;
+#X obj 499 385 print start;
+#X msg 62 196 sample smpunpck;
+#X text 67 48 Tags: Sample Sound;
+#X text 65 29 Description: Outputs a sample's information;
+#X text 169 195 Inlet 1 \, sample symbol: output the sample's information
+;
+#X text 208 223 Inlet1 \, bang: re-outputs the sample's information
+;
+#X obj 367 151 tof/sample smpunpck;
+#X msg 367 124 read \$1;
+#X obj 367 100 openpanel;
+#X obj 367 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 391 77 Load a sound file (wav);
+#X obj 62 267 tof/sample_unpack;
+#X obj 578 385 print size;
+#X obj 221 387 print basename;
+#N canvas 295 170 494 344 META 0;
+#X text 12 245 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 225 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control filesystem soundfile;
+#X text 12 25 DESCRIPTION output a sample's information;
+#X text 12 65 INLET_0 bang sample;
+#X text 12 105 OUTLET_1 symbol;
+#X text 12 125 OUTLET_2 symbol;
+#X text 12 145 OUTLET_3 float;
+#X text 12 165 OUTLET_4 float;
+#X text 12 185 OUTLET_5 float;
+#X text 12 205 OUTLET_6 float;
+#X restore 705 415 pd META;
+#X connect 3 0 16 0;
+#X connect 6 0 16 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 16 0 0 0;
+#X connect 16 1 1 0;
+#X connect 16 2 18 0;
+#X connect 16 3 2 0;
+#X connect 16 4 4 0;
+#X connect 16 5 5 0;
+#X connect 16 6 17 0;

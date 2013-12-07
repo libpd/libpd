@@ -1,0 +1,15 @@
+
+AUTOMAKE_OPTIONS = foreign
+AM_CPPFLAGS = -I$(top_srcdir)
+
+noinst_LTLIBRARIES = libopenGL.la
+
+libopenGL_la_CXXFLAGS =
+libopenGL_la_LIBADD   =
+
+# RTE flags
+libopenGL_la_CXXFLAGS += @GEM_RTE_CFLAGS@
+libopenGL_la_LIBADD   += @GEM_RTE_LIBS@
+
+libopenGL_la_SOURCES= @SOURCES@
+

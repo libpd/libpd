@@ -1,0 +1,103 @@
+## File: pdexternal.am
+## Description: common automake stuff for pd externals
+## Usage:
+##   + in source-level Makefile.am just do:
+##       include $(top_srcdir)/pdexternal.am
+##     ... or wherever you copied this file to ...
+##-----------------------------------------------------------------------
+
+##-----------------------------------------------------------------------
+## Options & Subdirectories
+
+##-- aclocal options (top level only)
+#ACLOCAL_AMFLAGS = -I m4 
+
+## --- automake options (top level only)
+#AUTOMAKE_OPTIONS = foreign dist-bzip2 dist-zip
+#AUTOMAKE_OPTIONS = foreign
+
+##-----------------------------------------------------------------------
+## Additional suffixes
+
+DEXT    = @PDEXT@
+EXEEXT   = .@PDEXT@
+
+## --- pseudo-deps for '.SUFFIXES'
+SUFFIXES = .@PDEXT@ .pod .txt .html
+
+##-----------------------------------------------------------------------
+## Additional flags
+AM_CPPFLAGS = $(EXTRA_CPPFLAGS)
+
+##-----------------------------------------------------------------------
+## Distribution
+
+##--- extra distribution files
+EXTRA_DIST = \
+	$(PODS) \
+	$(PODS:.pod=.txt) \
+	$(pddoc_DATA) \
+	$(pdext_DATA) \
+	$(pdexterns_DATA) \
+	$(pdexec_DATA) \
+	$(wildcard COPYING) \
+	$(wildcard Changes) \
+	$(wildcard ChangeLog) \
+	$(wildcard README.cvs) \
+	$(wildcard depcomp) \
+	$(wildcard install-sh) \
+	$(wildcard ltmain.sh) \
+	$(wildcard mising) \
+	$(wildcard mkinstalldirs)
+
+
+##-----------------------------------------------------------------------
+## Rules: .pod
+
+.pod.txt:
+	pod2text $< $@
+
+.pod.html:
+	pod2html $< --outfile=$@
+
+#all-local: $(PODS:.pod=.txt)
+
+
+##-----------------------------------------------------------------------
+## Cleanup
+
+##--- clean: built by 'make'
+CLEANFILES = *.$(PDEXT)
+
+##--- distclean: built by 'configure'
+DISTCLEANFILES = \
+	config.log	\
+	config.cache	\
+	config.status
+
+##-- maintainerclean: built by maintainer / by hand
+MAINTAINERCLEANFILES = *~ \
+	$(PODS:.pod=.txt) \
+	Makefile \
+	Makefile.in \
+	aclocal.m4 \
+	compile \
+	configure \
+	config.h.in \
+	config.guess \
+	config.sub \
+	depcomp \
+	install-sh \
+	ltmain.sh \
+	missing \
+	mkinstalldirs \
+	stamp-h.in \
+	texinfo.tex \
+	ylwrap
+
+maintainer-clean-local:
+	rm -rf autom4te.cache
+
+.PHONY: cvsclean cvsclean-hook
+
+cvsclean: maintainer-clean ;

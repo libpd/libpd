@@ -1,0 +1,72 @@
+#N canvas 0 26 390 300 10;
+#X obj 181 138 junction~ 4;
+#X obj 253 167 delwrite~ del1 1000;
+#X obj 123 51 vd~ del1;
+#X obj 183 51 vd~ del2;
+#X obj 244 51 vd~ del3;
+#X obj 304 51 vd~ del4;
+#X obj 123 30 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 183 30 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 245 31 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 305 31 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 63 262 dac~;
+#X obj 13 121 ead~;
+#X obj 30 97 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 90 97 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 4 97 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1 -1
+;
+#X obj 229 189 delwrite~ del2 1000;
+#X obj 205 210 delwrite~ del3 1000;
+#X obj 181 232 delwrite~ del4 1000;
+#X msg 313 111 random \$1;
+#X obj 314 85 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X text 61 5 junction~: a circular lossless signal junction;
+#X obj 58 238 vols~;
+#X obj 105 221 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#N canvas 379 250 494 421 META 0;
+#X text 12 245 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION a circular lossless signal junction;
+#X text 12 65 INLET_0 signal random;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 INLET_3 signal;
+#X text 12 145 OUTLET_0 signal;
+#X text 12 165 OUTLET_1 signal;
+#X text 12 185 OUTLET_2 signal;
+#X text 12 205 OUTLET_3 signal;
+#X text 12 5 KEYWORDS signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 225 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 341 280 pd META;
+#X connect 0 0 17 0;
+#X connect 0 0 21 0;
+#X connect 0 1 16 0;
+#X connect 0 1 21 1;
+#X connect 0 2 15 0;
+#X connect 0 3 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 2;
+#X connect 5 0 0 3;
+#X connect 6 0 2 0;
+#X connect 7 0 3 0;
+#X connect 8 0 4 0;
+#X connect 9 0 5 0;
+#X connect 11 0 0 0;
+#X connect 12 0 11 1;
+#X connect 13 0 11 2;
+#X connect 14 0 11 0;
+#X connect 18 0 0 0;
+#X connect 19 0 18 0;
+#X connect 21 0 10 0;
+#X connect 21 1 10 1;
+#X connect 22 0 21 2;

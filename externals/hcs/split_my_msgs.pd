@@ -1,0 +1,64 @@
+#N canvas 0 31 532 592 10;
+#X obj 75 146 inlet;
+#X obj 100 476 outlet;
+#X obj 278 143 inlet;
+#X text 260 125 name to select;
+#X text 69 126 raw messages;
+#X obj 76 383 niagara 1;
+#X obj 100 432 spigot;
+#X obj 171 239 niagara 1;
+#X obj 76 214 t a a;
+#X obj 10 8 cnv 15 480 110 empty empty split_my_msgs 20 12 1 18 -233017
+-66624 0;
+#X msg 171 380 1;
+#X msg 278 380 0;
+#X obj 171 339 symbol;
+#X obj 242 477 outlet;
+#X obj 242 433 spigot;
+#X obj 279 413 expr 1-$f1;
+#X text 100 499 my_msgs;
+#X text 216 496 everything else;
+#X obj 171 359 select localhost;
+#X obj 278 339 symbol \$1;
+#X obj 302 317 loadbang;
+#X text 33 34 This object is used to split a stream of messages. A
+unique ID is set either with a creation argument or by sending it to
+the right-inlet. That unique ID is then compared to the first element
+in each message \, and if it matches \, the rest of that message is
+sent to the left outlet. Otherwise \, the result is sent to the right
+outlet.;
+#X obj 277 213 route float;
+#X obj 277 233 makesymbol split_on_%s;
+#X obj 171 268 route float;
+#X obj 171 288 makesymbol split_on_%s;
+#X obj 352 279 debug SELECT_KEY;
+#X obj 179 533 debug MSG_SELECT;
+#X obj 393 528 debug MSG_HEADER;
+#X connect 0 0 8 0;
+#X connect 2 0 22 0;
+#X connect 5 1 6 0;
+#X connect 5 1 14 0;
+#X connect 6 0 1 0;
+#X connect 7 0 24 0;
+#X connect 7 0 28 0;
+#X connect 8 0 5 0;
+#X connect 8 1 7 0;
+#X connect 10 0 6 1;
+#X connect 10 0 15 0;
+#X connect 11 0 6 1;
+#X connect 11 0 15 0;
+#X connect 12 0 18 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 1;
+#X connect 18 0 10 0;
+#X connect 18 1 11 0;
+#X connect 19 0 18 1;
+#X connect 20 0 19 0;
+#X connect 22 0 23 0;
+#X connect 22 1 19 0;
+#X connect 23 0 19 0;
+#X connect 23 0 26 0;
+#X connect 24 0 25 0;
+#X connect 24 1 12 0;
+#X connect 25 0 12 0;
+#X connect 25 0 27 0;

@@ -1,0 +1,128 @@
+Version history of oggamp~ external for pure-data
+
+v 0.3 (2nd january 2004):
+- removed the crappy resampling to get rid of audio clicks
+- multichannel support
+
+v 0.2f (20st july 2002):
+- recompiled with the final 1.0 release of Ogg Vorbis
+
+v 0.2e (21st june 2002 - stable release):
+- added downsamling
+- cleaned up code a bit
+- added some more info-printout
+- fixed some bugs to make it work correctly on Linux
+  thanks to Oliver Thuns at radiostudio.org
+- now disconnects correctly at end-of-stream (when no
+  chained stream follows)
+- KNOWN BUG: graphic buffer status display might cause ugly
+  printout of Tcl/Tk commands to console window on Linux
+  under some circumstances (e.g. in case server dies)
+
+v 0.2d (12th june 2002):
+- added upsamling
+- finally fixed the End-Of-Stream bug: it's now 
+  possible to listen to a playlist with correct
+  update of stream information
+
+v 0.2c (10th june 2002):
+- fixed some bugs, introduced some new ones...
+
+v 0.2a (11th mar. 2002):
+- introduced child thread for connect: now pd
+  does no longer 'stop' audio; as a side effect it
+  is now possible to connect to an oggcast~ stream
+  from the same instance of pd
+- threads now use pthreads libraray on Win to have 
+  things compatible with UNIX
+- fixed a small bug that made 'old' audio appear on 
+  the beginning of 'new' one after reconnecting
+
+v 0.1c (19th feb. 2002):
+- first (sort of) stable release
+
+************************************************************************
+
+Version history of oggcast~ external for pure-data
+
+v 0.2k (29th Sept. 2003):
+- fixed a bug in multichannel support
+- fixed a memory leak in Icecast2 login
+
+v 0.2i (13th September 2003):
+- updated login scheme to work with latest Icecast2 server 
+  from CVS (tested on Windows and Debian Linux)
+- changed handling of comment tags: it's no longer necessarry
+  to replace spaces with underscores! Just use spaces for spaces.
+- fixed (no: avoided!) the bug that deleted underscores from 
+  the Pd patch
+- made Icecast2 login the default scheme
+
+v 0.2h (27th March 2003):
+- added HTTP base auth login for (alpha) Icecast2 server:
+  message 'server 1' switches to Icecast2, 'server 0' back
+  top JRoar and PeerCast compatibility (which is the default)
+
+v 0.2g (3rd August 2002):
+- finally fixed the bug that made oggcast~ crash after a 
+  while. seems to be realted with output from child thread
+  using t_clocks but couldn't proove that
+
+v 0.2f (20st july 2002):
+- recompiled with the final 1.0 release of Ogg Vorbis
+- changed the URL to the new akustische-kunst.org domain
+
+v 0.2e (5th july 2002):
+- added simple downsampling to stream at lower sample rates
+
+v 0.2d (21st june 2002 - stable release!):
+- cleaned up code a bit
+- now clean disconnect in case server dies or closes
+  socket
+
+v 0.2c (13th june 2002):
+- fixed some small bugs
+- buffer size now in kbytes per channel
+- some more info-printout
+
+v 0.2b (12th june 2002):
+- completetly rewritten multithreaded version, first
+  sort-of-stable release
+- KNOWN BUG: eats too much CPU power
+
+v 0.1g (23rd feb. 2002, not for public use!):
+- added multithreading functionality: now sending data
+  to server in a second thread
+- now included the static ogg vorbis libraries - no dll's
+  needed under win any longer
+- fixed a bug that sometimes made pd crash
+
+v 0.1f (11th feb. 2002):
+- converted ringbuffer to simple buffer of fixed size
+
+v 0.1e (10th feb. 2002):
+- now really fixed the bug that made pd die when server
+  disconnected 
+
+v 0.1d (9th feb. 2002):
+- fixed a bug in the "vorbis" setting that made on-the-run
+  changes impossible 
+- introduced a function to check writeability of the socket
+- fixed the bug that crashed pd due to an access violation
+  in vorbis.dll when send() returned an error (more of a 
+  fast workaround) 
+- corrected bitrate setting, now it really is _k_bps
+  
+
+v 0.1c (9th feb. 2002):
+- added support for setting / changing the comment tags in 
+  the ogg/vorbis header, spaces have to be replaced by '='
+- fixed a bug in oggcast_stream() that made Pd crash - now
+  it's vorbis.dll that makes Pd crash... ;-(
+
+v 0.1b (not released):
+- added support for changing encoder settings when stream 
+  is running (no need to disconnect), seems to be unstable 
+  on linux (with JRoar)
+
+v 0.1: first public release

@@ -1,0 +1,15 @@
+#N canvas 190 161 423 354 10;
+#X obj 89 71 nop~;
+#X obj 105 156 osc~ 440;
+#X obj 105 252 -~;
+#X obj 105 279 env~;
+#X floatatom 104 304 0 0 0 0 - - -;
+#X obj 133 187 nop~;
+#X text 301 30 part of zexy;
+#X text 255 308 updated for zexy-2.0;
+#X text 158 77 will do nothing !!!;
+#X connect 1 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 2 1;

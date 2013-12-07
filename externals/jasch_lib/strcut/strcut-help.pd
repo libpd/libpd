@@ -1,0 +1,14 @@
+#N canvas 264 113 544 306 10;
+#X obj 305 26 import jasch_lib;
+#X obj 159 207 prepend set;
+#X msg 160 230 alpha/;
+#X floatatom 239 131 5 0 0 0 - - -;
+#X obj 159 163 strcut 3;
+#X msg 181 109 symbol supercalifragilisti;
+#X text 281 130 cut-position;
+#X msg 158 90 symbol alpha/beta;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 7 0 4 0;

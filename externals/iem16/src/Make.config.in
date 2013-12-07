@@ -1,0 +1,34 @@
+LIBRARY_NAME=@LIBRARY_NAME@
+
+# when build as a library this holds a pre-processor define
+# (e.g. "-DZEXY_LIBRARY")
+# when build as single externals this is empty
+BUILDLIBRARY =@BUILDLIBRARY@
+
+PREFIX     =@prefix@@PDLIBDIR@
+
+INSTALL_BIN=$(DESTDIR)$(PREFIX)/lib/pd/extra
+INSTALL_DOC=$(DESTDIR)$(PREFIX)/lib/pd/@REFERENCEPATH@$(LIBRARY_NAME)
+
+EXT = @EXT@ 
+DEFS = @DFLAGS@
+IFLAGS = -I. @INCLUDES@
+
+CC = @CC@
+LD = @LD@
+STRIP = @STRIP@
+STRIPFLAGS= @STRIPFLAGS@
+
+AFLAGS = 
+LFLAGS = @LFLAGS@
+WFLAGS =
+
+TARNAME =  $(LIBRARY_NAME)-@LIBRARY_VERSION@.tgz
+
+# ICCFLAGS=-march=pentiumiii -axK
+LIBRARY_CFLAGS = $(IFLAGS) $(DEFS) $(BUILDLIBRARY) -DPD $(WFLAGS) @CFLAGS@ $(CFLAGS)
+
+MAKEDEP_FLAGS = @MAKEDEP_FLAGS@
+CONFIGUREFLAGS = @CONFIGUREFLAGS@
+
+LIBS = @LIBS@

@@ -1,0 +1,61 @@
+# if configure can't find the m_pd.h header         
+# specify pd's include path here and ignore the warning
+#
+#PD_CPPFLAGS=-I/path_to_pd_dir/src
+#PD_EXECUTABLE=/path_to_pd_dir/bin/pd
+PD_CPPFLAGS=@PD_CPPFLAGS@
+PD_EXECUTABLE=@PD_EXECUTABLE@
+PDP_CFLAGS=@PDP_CFLAGS@
+
+# these are reused in opengl module
+prefix=@prefix@
+PDP_VERSION=@PDP_VERSION@
+PDP_TARGET=@PDP_TARGET@
+
+PDP_LIBRARY_NAME = @PDP_LIBRARY_NAME@
+PDP_EXTRA_CPPFLAGS = @PDP_EXTRA_CPPFLAGS@
+PDP_EXTRA_CFLAGS = @PDP_EXTRA_CFLAGS@
+SDL_FLAGS = -D_REENTRANT
+
+# optional objects
+PDP_OPTMOD = @PDP_OPTMOD@
+PDP_X11MOD = @PDP_X11MOD@
+PDP_PDMOD = @PDP_PDMOD@
+PDP_OPTTYPES = @PDP_OPTTYPES@
+PDP_MATRIX_BASIC = @PDP_MATRIX_BASIC@
+PDP_IMAGE_BASIC = @PDP_IMAGE_BASIC@
+PDP_IMAGE_SPECIAL = @PDP_IMAGE_SPECIAL@
+
+
+
+
+PDP_CPPFLAGS =  -I. -I/usr/X11R6/include  -I../include -I../../include $(PD_CPPFLAGS) $(PDP_EXTRA_CPPFLAGS) 
+PDP_LIBS    = @LIBS@
+PDP_AFLAGS  = 
+#--gstabs
+
+PDP_CFLAGS += $(SDL_CFLAGS) $(PDP_EXTRA_CFLAGS) -DPDP_VERSION=\"$(PDP_VERSION)\"
+
+ifeq ($(shell uname -s),Darwin)
+  PDP_CFLAGS += -fnested-functions
+endif
+
+#PDP_CFLAGS  = -DPD -O2 -funroll-loops -fomit-frame-pointer  -ffast-math \
+#    -Wall -W -Wstrict-prototypes \
+#    -Wno-unused -Wno-parentheses -Wno-switch -DPDP_VERSION=\"$(PDP_VERSION)\" \
+#   -g $(SDL_CFLAGS) $(PDP_EXTRA_CFLAGS)
+# -Werror
+# -Wshadow
+
+# compiler and assembler
+#CC = gcc-3.2
+#CC = gcc
+#AS = as
+CC = @CC@
+
+# build rules
+
+.c.o:
+	$(CC) $(PDP_CFLAGS) $(PDP_CPPFLAGS) -o $*.o -c $*.c
+.s.o:
+	$(AS) -o $*.o $*.s $(PDP_AFLAGS)

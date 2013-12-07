@@ -1,0 +1,59 @@
+#N canvas 259 276 910 567 10;
+#X obj 143 325 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 143 415 pdp_control;
+#X msg 143 366 thread \$1;
+#X obj 48 54 pdp_help_input;
+#X msg 48 24 start;
+#X msg 105 24 stop;
+#X obj 48 205 pdp_help_output;
+#X obj 48 154 pdp_conv;
+#X floatatom 117 86 5 0 0;
+#X obj 46 361 osc~;
+#X floatatom 46 326 5 0 0;
+#X obj 46 430 osc~;
+#X floatatom 79 402 5 0 0;
+#X obj 46 460 dac~;
+#X obj 143 454 print;
+#X text 182 323 switch thread processing on or of;
+#X text 197 455 a pdp_drop message will be sent out;
+#X text 197 471 when a package is dropped;
+#X text 119 155 a convolution object to burn cycles;
+#X obj 666 254 pdp_control;
+#X msg 666 226 collectgarbage;
+#X obj 646 478 pdp_control;
+#X text 175 82 increase this with thread processing enabled \, no audio
+should be dropped. if you do it with thread processing disabled \,
+increasing it too much can lock up the machine when real time scheduling
+is enabled.;
+#X msg 646 452 memlimit \$1;
+#X msg 688 422 5e+07;
+#X msg 615 421 0;
+#X text 687 402 50M;
+#X text 613 401 off;
+#X text 472 178 free all unused packets. pdp's garbage collection is
+"lazy" meaning packets will only be freed when the maximum usage limit
+is reached.;
+#X text 179 25 pdp_control: fine tune the pdp system. (threads & memory).
+;
+#X text 470 357 set the max memory usage limit for the packet pool.
+the default is off (value <= 0).;
+#X text 475 511 (this is a safety measure: in pdp it is easy to use
+too much memory \, i.e. with delay lines \, which will likely crash
+pd);
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 7 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 1;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 1;
+#X connect 20 0 19 0;
+#X connect 23 0 21 0;
+#X connect 24 0 23 0;
+#X connect 25 0 23 0;

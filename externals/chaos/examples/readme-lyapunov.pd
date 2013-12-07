@@ -1,0 +1,16 @@
+#N canvas 0 22 565 389 10;
+#X text 74 61 Lyapunov Exponent;
+#X text 25 82 This value is an estimate of the attractors potential
+for chaos. It will not necessarily be the same for any given run using
+any arbitrary fractal. The description below attempts to put "attractors"
+into three catagories.;
+#X text 48 262 Don't forget \, just because an "attractor" is not chaotic
+\, it does not mean that it will not generate an interesting stream
+of number \, if only until they converge.;
+#X text 40 151 < 0;
+#X text 78 151 These are not chaotic \, may produce a "short-term"
+stream of intrest;
+#X text 39 179 == 0;
+#X text 80 179 Attractors converge to one or more points;
+#X text 40 197 > 0;
+#X text 80 198 Chaos begins. Higher values indicate "more" chaos.;

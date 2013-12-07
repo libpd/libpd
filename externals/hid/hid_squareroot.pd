@@ -1,0 +1,13 @@
+#N canvas 170 430 436 353 10;
+#X obj 72 63 inlet;
+#X obj 72 240 outlet;
+#X text 120 63 input range: 0 to 1;
+#X text 128 240 output range: 0 to 1;
+#X text 41 18 [hid_sqrt];
+#X obj 72 143 sqrt;
+#X obj 72 95 min 1;
+#X obj 72 115 max 0;
+#X connect 0 0 6 0;
+#X connect 5 0 1 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;

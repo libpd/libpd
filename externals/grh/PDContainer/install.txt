@@ -1,0 +1,18 @@
+PDContainer installation:
+
+
+1) open the right makefile for your platform/compiler
+
+2) adapt the makefile for your needs:
+     PD-PATH should point to your pd installation (usually /usr/local/lib/pd or /usr/lib/pd)
+     PD-SCR should point to the PD source diretory
+
+3) type "make" to compile
+(or the equicalent command with other compilers than gcc, e.g. nmake with msvc)
+
+4) type "make install" to install help patches and binary
+(you have to be root probably)
+
+
+in case of problems:
+grh@mur.at

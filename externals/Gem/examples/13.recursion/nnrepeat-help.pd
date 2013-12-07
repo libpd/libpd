@@ -1,0 +1,28 @@
+#N canvas 0 0 506 325 10;
+#X floatatom 87 195 5 0 0 0 - - -;
+#X text 94 11 - repeat a message several times with counter;
+#X obj 54 273 print repeat;
+#X msg 22 110 bang;
+#X msg 49 136 1 1 2 3 5 8 13 21 44 fibonacchi;
+#X text 63 111 repeat bangs;
+#X text 282 138 repeat a list;
+#X msg 69 166 set 5;
+#X text 117 167 repeat anything;
+#X text 127 194 reset the number of repetitions;
+#X text 100 220 creation argument initializes the number of repeats
+;
+#X obj 19 12 nnrepeat 1;
+#X obj 22 219 nnrepeat 3;
+#X obj 87 250 print n1;
+#X obj 22 297 print n2;
+#X text 19 44 Similar to [repeat] from Zexy but outputs the repetition
+count from the right-hand outlet then outputs the repeated input from
+the middle outlet \, then outputs the repetition count again from the
+left-hand outlet.;
+#X connect 0 0 12 1;
+#X connect 3 0 12 0;
+#X connect 4 0 12 0;
+#X connect 7 0 12 0;
+#X connect 12 0 14 0;
+#X connect 12 1 2 0;
+#X connect 12 2 13 0;

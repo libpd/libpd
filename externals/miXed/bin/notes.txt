@@ -1,0 +1,14 @@
+Keeping help files and binaries in the same directory ensures opening
+proper patches for clashing clones on crippled file systems.
+
+TODO for help files
+  * simple guide into importing
+  * describe compatibility mode
+  * detailed notes for any clone with incompatibilities
+
+DONE for help files
+
+with cyclone alpha53
+  * short notes about main differences between clashing clones (Append,
+    Clip, Clip~, Line~, Scope~, Snapshot~, Table) and the corresponding
+    internal Pd classes.

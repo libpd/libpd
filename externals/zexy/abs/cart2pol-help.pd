@@ -1,0 +1,25 @@
+#N canvas 410 364 513 356 10;
+#X obj 124 246 cart2pol;
+#X text 24 31 [cart2pol]: convert cartesian coordinates to polar coordinates
+;
+#X text 360 325 updated for zexy-2.0;
+#X floatatom 175 198 5 0 0 1 z - -;
+#X floatatom 134 156 5 0 0 1 y - -;
+#X obj 134 174 t b f;
+#X floatatom 124 138 5 0 0 1 x - -;
+#X floatatom 175 268 5 0 0 1 z - -;
+#X floatatom 149 288 5 0 0 1 phi - -;
+#X floatatom 124 308 5 0 0 1 r - -;
+#X msg 32 204 1 2 3;
+#X text 77 204 x y z;
+#X text 21 76 all angles are in rad.;
+#X text 399 6 part of zexy;
+#X connect 0 0 9 0;
+#X connect 0 1 8 0;
+#X connect 0 2 7 0;
+#X connect 3 0 0 2;
+#X connect 4 0 5 0;
+#X connect 5 0 0 0;
+#X connect 5 1 0 1;
+#X connect 6 0 0 0;
+#X connect 10 0 0 0;

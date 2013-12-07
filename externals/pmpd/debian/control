@@ -1,0 +1,18 @@
+cSource: pd-pmpd
+Section: sound
+Priority: optional
+Maintainer: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 7.0.50~), puredata
+Standards-Version: 3.8.3
+Homepage: http://drpichon.free.fr/pmpd/
+
+Package: pd-pmpd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, pd
+Description: physical modeling library for Pd
+ A library for Pd for modeling the interactions of the physical world. These
+ objects provide real-time simulations, specially physical behaviors. pmpd can
+ be used to create natural dynamic systems, like a bouncing ball, string
+ movement, Brownian movement, chaos, fluid dynamics, sand, gravitation, and
+ more. It can also be used to create displacements thus allowing a completely
+ dynamic approach of pd computing.

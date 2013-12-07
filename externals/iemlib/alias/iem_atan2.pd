@@ -1,0 +1,9 @@
+#N canvas 466 588 364 164 10;
+#X text 9 13 iem_atan2: alias for the iem_atan2 external;
+#X obj 96 103 expr atan2($f1 \, $f2);
+#X obj 96 80 inlet;
+#X obj 202 80 inlet;
+#X obj 96 126 outlet;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 1;

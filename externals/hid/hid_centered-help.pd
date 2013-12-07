@@ -1,0 +1,41 @@
+#N canvas 1 88 468 398 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_centered 2 11 1 18 -233017
+-66577 0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 320 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 334 released under the GNU GPL;
+#X text 98 291 For more info:;
+#X obj 102 234 hid/hid_centered;
+#X obj 137 105 tgl 25 0 empty empty empty 0 -6 0 8 -225271 -1 -1 0
+1;
+#X msg 200 138 open \$1;
+#X obj 200 118 hradio 15 1 1 8 \$0-device-number empty choose_a_device
+0 -6 1 9 -262144 -1 -1 7;
+#X obj 174 118 nbx 1 14 -1e+37 1e+37 0 0 empty \$0-device-number empty
+0 -6 0 14 -166441 -1 -1 7 256;
+#X obj 137 170 joystick 0;
+#X obj 205 235 hid/hid_centered;
+#X floatatom 205 256 5 0 0 0 Y - -;
+#X floatatom 102 255 5 0 0 0 X - -;
+#X floatatom 205 216 5 0 0 0 Y - -;
+#X floatatom 102 215 5 0 0 0 X - -;
+#X text 19 34 Convert the standard "0 to 1" [hid] format to "-1 to
+1" so that 0 is the center point of the range. With a joystick \, for
+example \, this can make the center point of the joystick (0 \, 0)
+rather than (0.5 \, 0.5).;
+#N canvas 476 214 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 35 LICENSE GPL;
+#X text 12 85 INLET_0 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 55 DESCRIPTION convert the standard "0 to 1" [hid] format
+to "-1 to 1" so that 0 is the center point of the range;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X restore 408 368 pd META;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 7 0;

@@ -1,0 +1,86 @@
+#N canvas 1 53 476 398 10;
+#X obj 5 2 cnv 15 450 20 empty empty sinusoid 2 11 1 18 -233017 -66577
+0;
+#X text 27 320 (C) Copyright 2004 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 244 334 released under the GNU GPL;
+#X text 158 291 For more info:;
+#X floatatom 25 163 8 0 0 0 - - -;
+#X floatatom 25 224 8 0 0 0 - - -;
+#X obj 28 241 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 28 143 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -261681
+-1 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0_ 100 float 0;
+#X coords 0 1 99 0 100 100 1;
+#X restore 321 111 graph;
+#N canvas 266 69 411 401 draw_array 0;
+#X msg 54 82 bang;
+#X obj 54 103 until;
+#X text 85 82 start;
+#X obj 54 125 f;
+#X obj 83 125 + 1;
+#X obj 83 147 mod 100;
+#X obj 54 43 loadbang;
+#X obj 139 53 t b s;
+#X obj 139 32 symbol;
+#X obj 138 9 receive \$0-type;
+#X obj 54 180 trigger float float;
+#X obj 127 127 select 0;
+#X obj 53 313 tabwrite \$0_;
+#X text 96 257 mapping output range: 0 to 1;
+#X obj 54 257 / 100;
+#X obj 53 283 sinusoid sin;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 10 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 5 0 11 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 7 1 15 1;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 14 0;
+#X connect 10 1 12 1;
+#X connect 11 0 1 1;
+#X connect 14 0 15 0;
+#X connect 15 0 12 0;
+#X restore 321 79 pd draw_array;
+#X msg 61 82 atan;
+#X msg 98 82 cos;
+#X obj 104 184 receive \$0-type;
+#X msg 128 82 sin;
+#X text 296 221 related objects:;
+#X obj 352 240 curve_power;
+#X obj 352 258 curve_log;
+#X obj 269 258 curve_exp;
+#X obj 107 114 send \$0-type;
+#X obj 25 203 sinusoid sin;
+#X obj 269 240 curve;
+#X text 17 39 This object maps the input range to a sinusoidal curve.
+;
+#X obj 262 289 pddp/open mapping-about;
+#N canvas 467 227 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 45 DESCRIPTION map the input range to a sinusoidal curve
+;
+#X text 12 85 INLET_1 atan cos sin;
+#X text 12 5 KEYWORDS control abstraction trigonometry;
+#X restore 416 366 pd META;
+#X connect 4 0 19 0;
+#X connect 5 0 6 0;
+#X connect 7 0 4 0;
+#X connect 10 0 18 0;
+#X connect 11 0 18 0;
+#X connect 12 0 19 1;
+#X connect 13 0 18 0;
+#X connect 19 0 5 0;

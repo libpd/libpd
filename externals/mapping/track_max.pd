@@ -1,0 +1,35 @@
+#N canvas 1 53 461 389 10;
+#X obj 83 269 outlet;
+#X obj 294 7 inlet;
+#X obj 37 7 inlet;
+#X obj 294 27 route float bang;
+#X obj 58 92 select 0;
+#X msg 58 111 0;
+#X msg 109 111 1;
+#X obj 177 7 inlet;
+#X obj 224 137 loadbang;
+#X obj 37 207 moses;
+#X obj 37 143 spigot 1;
+#X text 59 235 max;
+#X obj 177 164 purepd/float_argument \$1 -9.99e+37;
+#X obj 83 234 + 1e-09;
+#X text 33 292 1e-09 is added so [moses] doesn't output the current
+maximum value again.;
+#X text 229 347 released under the GNU GPL;
+#X text 12 333 (C) Copyright 2006 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X connect 1 0 3 0;
+#X connect 2 0 10 0;
+#X connect 3 0 4 0;
+#X connect 3 1 12 0;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 5 0 10 1;
+#X connect 6 0 10 1;
+#X connect 7 0 12 0;
+#X connect 8 0 12 0;
+#X connect 9 1 13 0;
+#X connect 10 0 9 0;
+#X connect 12 0 9 1;
+#X connect 13 0 0 0;
+#X connect 13 0 9 1;

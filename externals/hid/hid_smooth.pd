@@ -1,0 +1,7 @@
+#N canvas 346 512 462 312 10;
+#X obj 67 31 inlet;
+#X obj 67 256 outlet;
+#X text 9 9 [hid_smooth];
+#X obj 67 149 hid_average;
+#X connect 0 0 3 0;
+#X connect 3 0 1 0;

@@ -1,0 +1,41 @@
+#N canvas 0 31 518 348 10;
+#X floatatom 59 148 0 0 0 0 - - -;
+#X floatatom 59 254 0 0 0 0 - - -;
+#X floatatom 129 255 0 0 0 0 - - -;
+#X obj 59 276 dbtorms;
+#X floatatom 59 299 0 0 0 0 - - -;
+#X text 272 269 see also:;
+#X obj 277 296 env~;
+#X obj 59 233 env~;
+#X obj 315 296 envrms~;
+#X obj 59 173 osc~ 5512.5;
+#X obj 373 296 avg~;
+#X obj 129 234 tavg~;
+#X obj 71 51 tavg~;
+#X text 130 51 calculates the arithmetic mean of a signal between 2
+bangs;
+#X obj 176 195 metro 1000;
+#X msg 176 167 bang;
+#X msg 211 167 stop;
+#X text 392 23 part of zexy;
+#N canvas 460 154 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION calculates the arithmetic mean of a signal
+between 2 bangs;
+#X text 12 75 INLET_0 signal bang;
+#X text 12 95 OUTLET_0 float;
+#X text 12 5 KEYWORDS signal conversion;
+#X restore 463 319 pd META;
+#X connect 0 0 9 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 7 0 1 0;
+#X connect 9 0 7 0;
+#X connect 9 0 11 0;
+#X connect 11 0 2 0;
+#X connect 14 0 11 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;

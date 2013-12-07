@@ -1,0 +1,34 @@
+#N canvas 489 199 450 300 10;
+#X obj 72 150 flite testary;
+#X obj 312 53 table testary;
+#X msg 54 13 moo;
+#X msg 91 14 is;
+#X msg 127 13 a;
+#X msg 175 13 cow;
+#X msg 175 62 marmoset;
+#X msg 176 38 bovine;
+#X obj 72 174 tabplay~ testary;
+#X obj 181 199 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 110 222 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 8100 1;
+#X obj 107 245 dbtorms;
+#X obj 63 247 dac~;
+#X obj 72 222 *~ 0;
+#X msg 72 109 text \$1 \, synth;
+#X obj 72 87 pack s;
+#X connect 0 0 8 0;
+#X connect 2 0 15 0;
+#X connect 3 0 15 0;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 6 0 15 0;
+#X connect 7 0 15 0;
+#X connect 8 0 13 0;
+#X connect 8 1 9 0;
+#X connect 10 0 11 0;
+#X connect 11 0 13 1;
+#X connect 13 0 12 0;
+#X connect 13 0 12 1;
+#X connect 14 0 0 0;
+#X connect 15 0 14 0;

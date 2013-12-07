@@ -1,0 +1,15 @@
+#N canvas 235 59 721 476 10;
+#X obj 49 128 testtools/unit-test-frame;
+#X obj 49 58 loadbang;
+#X msg 49 90 linspace 0;
+#X obj 370 51 t b b b b;
+#X text 47 -9 generates a vector with linear spaced floats;
+#X obj 370 89 smlib/linspace 0 1 128;
+#X connect 0 3 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 3 1 5 0;
+#X connect 3 2 5 0;
+#X connect 3 3 5 0;
+#X connect 5 0 0 1;

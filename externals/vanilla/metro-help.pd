@@ -1,0 +1,98 @@
+#N canvas 0 0 555 619 10;
+#X obj 0 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 0 0 cnv 15 552 40 empty \$0-pddp.cnv.header metro 3 12 0 18
+-204280 -1 0;
+#X obj 0 327 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#N canvas 51 246 507 361 META 0;
+#X text 12 125 LIBRARY internal;
+#X text 12 165 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Miller Puckette;
+#X text 12 205 HELP_PATCH_AUTHORS This help patch was updated for Pd
+version 0.35 test 28 by Dave Sabine as part of a project called pddp
+proposed to build comprehensive documentation for Pd. Jonathan Wilkes
+revised the patch to conform to the PDDP template for Pd version 0.42.
+;
+#X text 12 45 DESCRIPTION send a bang periodically ala metronome;
+#X text 12 105 OUTLET_0 bang;
+#X text 12 85 INLET_1 float;
+#X text 12 65 INLET_0 float bang list stop;
+#X text 12 5 KEYWORDS control time bang_op;
+#X text 12 185 RELEASE_DATE 1997;
+#X restore 500 597 pd META;
+#X obj 0 483 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 0 525 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 -228856 -1 0;
+#X obj 0 567 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+0 13 -228856 -1 0;
+#N canvas 96 378 428 249 Related_objects 0;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -204280 -1 0;
+#X text 8 2 [metro] Related Objects;
+#X text 20 101 These objects are offered in Pd only if you have downloaded
+and properly installed the appropriate library. These objects may or
+may not exist in a single library.;
+#X text 19 150 The best places to find information about Pd's libraries
+is:;
+#X text 19 172 www.puredata.org and click on "Downloads" then "Software"
+;
+#X text 20 188 or;
+#X text 21 202 iem.kug.ac.at/pdb/;
+#X obj 24 35 pddp/helplink mjlib/metroplus;
+#X obj 24 55 pddp/helplink iemlib/t3_metro;
+#X obj 24 75 pddp/helplink maxlib/pulse;
+#X restore 102 597 pd Related_objects;
+#X obj 78 336 cnv 17 3 75 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 98 335 float;
+#X text 98 395 list;
+#X obj 78 492 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 78 417 cnv 17 3 55 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 98 416 float;
+#X obj 483 3 metro;
+#X obj 455 20 pddp/pddplink http://wiki.puredata.info/en/metro -text
+pdpedia: metro;
+#X obj 109 224 metro 500;
+#X floatatom 160 201 4 0 0 0 - - -;
+#X msg 109 125 1;
+#X text 177 124 nonzero number or "bang" to start;
+#X msg 150 158 0;
+#X msg 141 125 bang;
+#X msg 182 158 stop;
+#X obj 109 247 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 219 158 zero or "stop" to stop;
+#X text 168 335 - sending a nonzero number to the left inlet starts
+the metronome. Sending a zero stops it.;
+#X text 98 361 bang;
+#X text 98 378 stop;
+#X text 98 446 list;
+#X text 167 446 - a list to the right inlet will be truncated to the
+first item.;
+#X text 143 247 The metro object sends a series of bangs at a constant
+rate.;
+#X text 98 491 bang;
+#X text 168 544 - (optional) sets the initial rate in milliseconds.
+;
+#X text 168 361 - start the metronome.;
+#X text 168 378 - the "stop" message turns off the metronome.;
+#X text 167 416 - the right inlet sets the interval in milliseconds
+between each "bang" that is sent to the outlet of [metro].;
+#X text 168 491 - [metro] outputs a bang at a constant rate \, defined
+by the creation argument or a value sent to its right inlet.;
+#X text 80 544 1) float;
+#X text 11 23 send a bang periodically ala metronome;
+#X text 168 395 - a list will be distributed to the inlets of [metro].
+;
+#X obj 4 597 pddp/pddplink pddp/help.pd -text help;
+#X connect 16 0 23 0;
+#X connect 17 0 16 1;
+#X connect 18 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 16 0;
+#X connect 22 0 16 0;

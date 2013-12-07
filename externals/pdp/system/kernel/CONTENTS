@@ -1,0 +1,7 @@
+debug		debug stuff
+forth		the forth system
+list		the list implementation
+mem		memory allocation stuf
+packet		the packet memory manager
+type		the type handling and conversion system
+symbol		symbol implementation, with namespaces for forth, types, classes, ...

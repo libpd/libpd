@@ -1,0 +1,43 @@
+#N canvas 0 31 583 376 10;
+#X text 56 7 locale : access to C99-style localization;
+#X obj 41 298 locale;
+#X obj 41 320 print locale-out;
+#X text 202 342 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X msg 41 48 set;
+#X text 222 49 "set" : initialize locale from environment variables
+;
+#X msg 47 68 set LC_CTYPE de_DE.UTF-8;
+#X msg 50 107 get;
+#X msg 56 127 get LC_CTYPE;
+#X text 226 128 "get CATEGORY" : get value for CATEGORY;
+#X text 226 107 "get" : symbol representing current locale;
+#X msg 66 193 reset;
+#X text 226 189 "reset" : alias for "set LC_ALL C";
+#X text 130 216 WARNING:;
+#X text 150 229 Injudicious use of "set" can cause bizarre and unexpected
+results. In particular \, setting LC_NUMERIC (possibly via LC_ALL or
+LANG) to a locale whose floats are comma-separated rather than dot-separated
+(e.g. de_DE) can confuse Pd's underlying float-parsing mechanism.;
+#X msg 66 173 bang;
+#X text 224 69 "set CATEGORY VALUE" : set CATEGORY to VALUE;
+#X msg 64 151 which;
+#X text 226 153 "which" : list supported categories;
+#X text 226 173 "bang" : alias for "set \, set LC_NUMERIC C";
+#N canvas 260 141 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 45 DESCRIPTION access to C99-style localization;
+#X text 12 65 INLET_0 set get which bang reset;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control;
+#X restore 531 347 pd META;
+#X connect 1 0 2 0;
+#X connect 4 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 11 0 1 0;
+#X connect 15 0 1 0;
+#X connect 17 0 1 0;

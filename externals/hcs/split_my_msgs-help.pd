@@ -1,0 +1,43 @@
+#N canvas 0 26 505 387 10;
+#X obj 10 8 cnv 15 480 110 empty empty split_my_msgs 20 12 1 18 -233017
+-66624 0;
+#X symbolatom 60 291 25 0 0 0 - - -;
+#X msg 218 200 bar;
+#X msg 84 138 foo 12 ag 24 ga;
+#X obj 61 271 list2symbol;
+#X symbolatom 244 291 25 0 0 0 - - -;
+#X obj 245 271 list2symbol;
+#X msg 92 156 bar 30 eo 20 fa;
+#X msg 99 174 234 as asdf asdf;
+#X text 36 34 This object is used to split a stream of messages. A
+unique ID is set either with a creation argument or by sending it to
+the right-inlet. That unique ID is then compared to the first element
+in each message \, and if it matches \, the rest of that message is
+sent to the left outlet. Otherwise \, the result is sent to the right
+outlet.;
+#X msg 250 200 234;
+#X text 23 327 There are a number of issues due to oddness in [select]:
+only symbols and ints will work for selectors on the right inlet \,
+floats probably won't work properly. Only a symbol can be used for
+a creation argument;
+#X obj 115 229 split_my_msgs foo;
+#N canvas 280 175 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION split a stream of messages;
+#X text 12 65 INLET_0 anything;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 105 OUTLET_1 anything;
+#X restore 452 367 pd META;
+#X connect 2 0 12 1;
+#X connect 3 0 12 0;
+#X connect 4 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 12 0;
+#X connect 8 0 12 0;
+#X connect 10 0 12 1;
+#X connect 12 0 4 0;
+#X connect 12 1 6 0;

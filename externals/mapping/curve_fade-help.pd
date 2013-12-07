@@ -1,0 +1,45 @@
+#N canvas 2 82 649 503 10;
+#X obj 18 168 line;
+#X obj 18 262 timeroll;
+#X obj 18 189 resample 20;
+#X text 377 154 utilisation example :;
+#X obj 376 180 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 376 222 line;
+#X obj 376 308 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 545 303 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X text 439 304 better than :;
+#X text 332 283 smooth fade in and out;
+#X obj 18 210 curve_fade;
+#X obj 376 246 curve_fade;
+#X msg 18 144 0 \, 1 5000;
+#X msg 376 199 \$1 3000;
+#X text 148 10 This object input and output range is 0-1;
+#N canvas 465 169 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION perform a non-linearity to allow the continuity
+of the diferenciate of the signal;
+#X restore 589 473 pd META;
+#X text 144 30 It performs a non-linearity in order to allow the continuity
+of the diferenciate of the signal (assuming the input signal is a ramp
+from 0 to 1). The shape of this non-linearity is a 3d order polygone
+;
+#X text 144 92 This object is useful when natural fade in or fade out
+is neaded. (same result can be acheived with the line3 external);
+#X connect 0 0 2 0;
+#X connect 2 0 10 0;
+#X connect 4 0 13 0;
+#X connect 5 0 7 0;
+#X connect 5 0 11 0;
+#X connect 10 0 1 0;
+#X connect 11 0 6 0;
+#X connect 12 0 0 0;
+#X connect 13 0 5 0;

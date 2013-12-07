@@ -1,0 +1,22 @@
+#N canvas 256 192 450 300 10;
+#X msg 259 89 500;
+#X msg 272 112 1000;
+#X msg 197 107 1500;
+#X obj 187 76 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 187 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 139 108 stop;
+#X obj 351 265 delay 1000;
+#X text 278 266 see also:;
+#X obj 187 150 ldelay2 1000;
+#X obj 266 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 17 17 Testing multiple clocks in one object...;
+#X connect 0 0 8 1;
+#X connect 1 0 8 1;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 5 0 8 0;
+#X connect 8 0 4 0;
+#X connect 8 1 9 0;

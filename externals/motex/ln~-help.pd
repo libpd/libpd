@@ -1,0 +1,26 @@
+#N canvas 1 31 450 300 10;
+#X obj 145 100 ln~;
+#X obj 158 126 ln~ -1;
+#X text 23 4 ln~;
+#X text 22 23 same as log~ however '-1' argument creates inverse;
+#X obj 129 53 sig~ 22;
+#X msg 47 94 bang;
+#X obj 59 128 print~ log;
+#X obj 43 165 print~ alog;
+#N canvas 649 250 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION same as log~ however '-1' argument creates
+inverse;
+#X text 12 75 INLET_0 signal;
+#X text 12 115 AUTHOR Iain Mott (iain.mott@bigpond.com);
+#X restore 394 272 pd META;
+#X connect 0 0 1 0;
+#X connect 0 0 6 0;
+#X connect 1 0 7 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 5 0 7 0;

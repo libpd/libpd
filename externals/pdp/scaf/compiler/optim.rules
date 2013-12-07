@@ -1,0 +1,74 @@
+#    Pure Data Packet - scaf optimization rules.
+#    Copyright (c) by Tom Schouten <tom@zwizwa.be>
+# 
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+# 
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+# 
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+# this file contains scaf source optimization rules for scaf compiler
+# applied after kernel word inlining and before compilation to asm
+
+# one rule that's not in here, and is the responsability for the
+# final compilation step: "word ;" is "jmp word" instead of "call word ret"
+
+# TODO: think about order!
+
+# no discrimination between pre inline and post inline optimization ops yet
+
+# pre inline optimizations
+
+"over xor" 	-> "overxor" 
+"over and"	-> "overand"
+"over or"	-> "overor"
+
+"drop 1"	-> "dropone"
+"drop 0"	-> "dropzero"
+"over add"	-> "overadd"
+"over addc"	-> "overaddc"
+
+"dup !a0"	-> "dupsta0"	
+"dup !a1"	-> "dupsta1"	
+"dup !a2"	-> "dupsta2"	
+"dup !a3"	-> "dupsta3"
+
+"drop @a0"	-> "droplda0"
+"drop @a1"	-> "droplda1"
+"drop @a2"	-> "droplda2"
+"drop @a3"	-> "droplda3"
+
+"drop ?anz"	-> "dropisnonzero4"
+"drop ?anz4"	-> "dropisnonzero4"
+"drop ?anz3"	-> "dropisnonzero3"
+"drop ?anz2"	-> "dropisnonzero2"
+"drop ?anz1"	-> "dropisnonzero1"
+
+"drop @-+"	-> "dropldTL"
+"drop @0+"	-> "dropldTM"
+"drop @++"	-> "dropldTR"
+"drop @-0"	-> "dropldML"
+"drop @00"	-> "dropldMM"
+"drop @+0"	-> "dropldMR"
+"drop @--"	-> "dropldBL"
+"drop @0-"	-> "dropldBM"
+"drop @+-"	-> "dropldBR"
+
+
+# post inline optimizations
+
+"dup drop"	-> ""
+"swap drop"	-> "nip"
+"dup swap"	-> "dup"
+"drop dup"	-> "dropdup"
+"drop over"	-> "dropover"
+"nip dup"	-> "nipdup"

@@ -1,0 +1,13 @@
+#N canvas 52 28 474 268 10;
+#X obj 30 52 spec2+~;
+#X text 86 51 no arg;
+#X text 83 169 IEM KUG;
+#X text 67 157 musil;
+#X text 97 157 @;
+#X text 103 157 iem.at;
+#X text 66 179 Graz \, Austria;
+#X text 18 146 (c) Thomas Musil 2000 - 2006;
+#X text 30 15 spec2+~;
+#X text 183 49 like;
+#X obj 234 50 +~;
+#X text 106 14 add 2 signal spectras with (blocksize/2 + 1) bins;

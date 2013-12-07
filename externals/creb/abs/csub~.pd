@@ -1,0 +1,16 @@
+#N canvas 703 725 381 197 10;
+#X obj 58 49 inlet~;
+#X obj 58 159 outlet~;
+#X obj 195 49 inlet~;
+#X obj 59 101 -~;
+#X obj 116 49 inlet~;
+#X obj 116 159 outlet~;
+#X obj 253 49 inlet~;
+#X obj 117 101 -~;
+#X text 49 5 complex subtraction;
+#X connect 0 0 3 0;
+#X connect 2 0 3 1;
+#X connect 3 0 1 0;
+#X connect 4 0 7 0;
+#X connect 6 0 7 1;
+#X connect 7 0 5 0;

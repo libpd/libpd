@@ -1,0 +1,8 @@
+TODO for ViCious
+  * use a newer default compiler than 6.0
+  * conditionally use posix features (float versions of math calls, dirent)
+
+DONE for ViCious
+
+with cyclone alpha55
+  * /O2 added to all makefiles (why was it not there in the first place?)

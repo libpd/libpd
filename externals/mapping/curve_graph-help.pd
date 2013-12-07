@@ -1,0 +1,39 @@
+#N canvas 1 53 495 470 10;
+#X obj 5 2 cnv 15 450 20 empty empty curve_graph 2 11 1 18 -233017
+-66577 0;
+#X msg 422 3 pddp;
+#X text 27 410 (C) Copyright 2004 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 244 424 released under the GNU GPL;
+#X text 98 381 For more info:;
+#X obj 202 379 pddp/pddplink ../all_about_curve_mapping.pd -text all_about_curve_mapping
+;
+#X msg 19 150 reset;
+#X floatatom 95 163 5 0 0 0 - - -;
+#X floatatom 94 314 5 0 0 0 - - -;
+#X obj 97 331 hsl 250 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 98 143 hsl 250 15 0 1 0 0 empty empty empty 22 8 1 12 -261681
+-1 -1 0 1;
+#X obj 94 187 curve_graph;
+#X text 18 33 This object allows you to draw an arbitrary curve \,
+which is then applied to the input range. To change the curve \, click
+anywhere on the black diagonal line and start dragging.;
+#X text 19 86 There are 100 points in [curve_graph] \, each one pixel
+in size.;
+#N canvas 464 140 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 45 DESCRIPTION draw an arbitrary curve \, which is then
+applied to the input range;
+#X text 12 5 KEYWORDS control abstraction GUI;
+#X restore 441 442 pd META;
+#X connect 6 0 11 0;
+#X connect 7 0 11 0;
+#X connect 8 0 9 0;
+#X connect 10 0 7 0;
+#X connect 11 0 8 0;

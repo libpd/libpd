@@ -1,0 +1,66 @@
+#N canvas 186 56 629 692 10;
+#X text 230 37 lia3D : get position of masses \, output force;
+#X text 133 637 this object is a 3D version of link. more exemple can
+be find in the link help;
+#X msg 67 511 position3D $f1 $f2 $f3;
+#X text 253 620 forces depend of the physicals properies of the liaison
+;
+#X text 260 13 link between 2 masses;
+#X text 227 595 1 : force to apply to mass 1 (float);
+#X text 227 568 2 : force to apply to mass 2 (float);
+#X text 251 389 if the size of the link is < Lmin then force of the
+link will be null;
+#X text 257 440 if the size of the link is > Lmax then force of the
+link will be null;
+#X text 225 68 1 : name;
+#X msg 105 125 setL 0;
+#X msg 105 154 setK 0;
+#X msg 105 184 setD 0;
+#X msg 104 214 setD2 0;
+#X text 226 122 2 : Lenght;
+#X text 250 139 change Length of the link;
+#X text 226 153 3 : rigidity;
+#X text 249 168 change rigidity;
+#X text 230 238 change position of mass 1;
+#X msg 104 270 bang;
+#X text 229 266 compute and output forces \, according to the last
+masses positions;
+#X msg 106 300 reset;
+#X msg 105 326 resetF;
+#X msg 105 350 resetL;
+#X msg 104 374 setLmin 0;
+#X text 229 185 4 : Damping of the link deformation;
+#X text 231 214 5 : Damping of the masses speed;
+#X text 226 297 reset position of masses and set speed of the link
+to zero;
+#X text 226 324 reset damping and inertial force of the link.;
+#X text 224 351 set the length of the liaison to it's curent lengh
+;
+#X text 228 371 set the minimum size of the link;
+#X text 227 424 set the maximum size of the link;
+#X msg 104 424 setLmax 10000;
+#X text 250 84 you can use it in pd to send messages / bang / etc to
+the lia. this is for simplifying connection.;
+#X text 227 510 position of mass 2;
+#X obj 36 538 link3D;
+#X msg 58 239 position3D $f1 $f2 $f3;
+#X obj 67 565 unpack s f f f;
+#X obj 36 593 unpack s f f f;
+#X msg 104 475 setM 1;
+#X text 227 472 change mucle force : a muscle can change the link size
+(link size = muscle * lenght);
+#X connect 2 0 35 1;
+#X connect 10 0 35 0;
+#X connect 11 0 35 0;
+#X connect 12 0 35 0;
+#X connect 13 0 35 0;
+#X connect 19 0 35 0;
+#X connect 21 0 35 0;
+#X connect 22 0 35 0;
+#X connect 23 0 35 0;
+#X connect 24 0 35 0;
+#X connect 32 0 35 0;
+#X connect 35 0 38 0;
+#X connect 35 1 37 0;
+#X connect 36 0 35 0;
+#X connect 39 0 35 0;

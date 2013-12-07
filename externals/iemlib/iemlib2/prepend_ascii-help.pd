@@ -1,0 +1,55 @@
+#N canvas 0 26 576 444 10;
+#X msg 94 245 jkl 555 uuu;
+#X msg 208 243 abc ghj 78;
+#X msg 433 242 zyx 3.17;
+#X text 118 104 1.arg: <float> ascii-number (1 .. 255) \, which will
+be;
+#X text 157 119 interpreted as a character \, which will be used as
+a;
+#X text 158 132 selector-symbol for a message (creates a denormal symbol)
+;
+#X text 13 7 prepend_ascii;
+#X obj 66 272 prepend_ascii 1;
+#X obj 195 272 prepend_ascii 2 open ttt 666;
+#X obj 52 241 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 68 215 44;
+#X msg 99 214 symbol hhh;
+#X obj 420 271 prepend_ascii 3 55 66;
+#X obj 66 348 print xxx;
+#X obj 195 348 print yyy;
+#X obj 420 347 print zzz;
+#X text 128 22 message \, the first item of the arguments has to be
+;
+#X text 125 51 as a ascii-character \, which will be converted to;
+#X text 126 64 a selector-symbol;
+#X text 105 160 nth.arg: anything;
+#X text 115 408 IEM KUG;
+#X text 99 396 musil;
+#X text 129 396 @;
+#X text 135 396 iem.at;
+#X text 50 385 (c) Thomas Musil 2000 - 2005;
+#X text 98 418 Graz \, Austria;
+#X text 126 36 an integer between 1 and 255 and will be interpreted
+;
+#N canvas 496 267 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 115 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 75 INLET_0;
+#X text 12 95 OUTLET_0;
+#X text 12 5 KEYWORDS control anything_op;
+#X text 12 45 DESCRIPTION prepends arguments in front of an incoming
+message;
+#X restore 521 418 pd META;
+#X text 127 9 prepends the list-arguments in front of an incoming;
+#X connect 0 0 7 0;
+#X connect 1 0 8 0;
+#X connect 2 0 12 0;
+#X connect 7 0 13 0;
+#X connect 8 0 14 0;
+#X connect 9 0 7 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 15 0;

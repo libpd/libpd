@@ -1,0 +1,28 @@
+#N canvas 66 122 731 401 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X text 465 42 see also help for;
+#X text 26 12 mtx_gauss:: gauss elimination algorithm;
+#X text 71 62 apply row- & column-transformation to a matrix to shape
+it into an upper-triangle matrix;
+#X obj 595 43 matrix;
+#X obj 595 63 abs;
+#X msg 174 146 bang;
+#X obj 174 190 t a a;
+#X msg 87 144 bang;
+#X obj 87 165 mtx_rand 5;
+#X obj 174 167 mtx_eye 5;
+#X obj 264 167 mtx_egg 5;
+#X obj 204 235 mtx_print original;
+#X msg 264 144 bang;
+#X obj 174 270 mtx_gauss;
+#X obj 174 327 mtx_print gauss;
+#X connect 7 0 11 0;
+#X connect 8 0 15 0;
+#X connect 8 1 13 0;
+#X connect 9 0 10 0;
+#X connect 10 0 8 0;
+#X connect 11 0 8 0;
+#X connect 12 0 8 0;
+#X connect 14 0 12 0;
+#X connect 15 0 16 0;

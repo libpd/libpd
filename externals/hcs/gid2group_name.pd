@@ -1,0 +1,18 @@
+#N canvas 0 31 514 233 10;
+#X obj 18 12 inlet;
+#X obj 19 183 outlet;
+#X obj 66 12 inlet;
+#X obj 118 31 loadbang;
+#X obj 66 59 purepd/float_argument \$1;
+#X obj 82 183 outlet;
+#X obj 18 118 list;
+#X obj 18 147 list split 1;
+#X obj 18 85 hcs/group;
+#X connect 0 0 8 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 8 1;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 6 0;
+#X connect 8 1 5 0;

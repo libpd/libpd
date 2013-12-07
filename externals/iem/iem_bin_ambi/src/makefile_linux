@@ -1,0 +1,53 @@
+current: all
+
+.SUFFIXES: .pd_linux
+
+INCLUDE = -I. -I/usr/local/src/pd/src
+
+LDFLAGS = -export-dynamic -shared
+LIB = -ldl -lm -lpthread
+
+#select either the DBG and OPT compiler flags below:
+
+CFLAGS = -DPD -DUNIX -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O6 -funroll-loops -fomit-frame-pointer -fno-strict-aliasing \
+        -DDL_OPEN -fPIC
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = bin_ambi_calc_HRTF.c \
+	bin_ambi_reduced_decode2.c \
+	bin_ambi_reduced_decode.c \
+	bin_ambi_reduced_decode_fft2.c \
+	bin_ambi_reduced_decode_fft.c \
+	bin_ambi_reduced_decode_fir2.c \
+	bin_ambi_reduced_decode_fir.c \
+	iem_bin_ambi.c
+
+TARGET = iem_bin_ambi.pd_linux
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ..\$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(LD) $(LDFLAGS) -o $(TARGET) *.o $(LIB)
+	strip --strip-unneeded $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

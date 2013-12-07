@@ -1,0 +1,15 @@
+#N canvas 380 59 361 316 10;
+#X obj 142 44 knob 20 20 0 127 0 0 knob knob knob 0 -8 192 8 -143491
+-260818 -1 0 1;
+#X obj 90 121 knob 128 128 100 -100 0 1 knob knob empty 0 -8 192 8
+-262144 -258699 -1 4300 0;
+#X obj 129 269 nbx 5 14 -1e+37 1e+37 0 0 knob knob empty 0 -6 192 10
+-262144 -1 -1 0 256;
+#X obj 136 75 knob 32 32 0 127 0 0 knob knob empty 0 -8 192 8 -262144
+-24198 -1 0 1;
+#X obj 271 162 knob 32 32 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-250685 -62784 2 1;
+#X floatatom 271 207 8 0 0;
+#X floatatom 271 135 5 0 0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;

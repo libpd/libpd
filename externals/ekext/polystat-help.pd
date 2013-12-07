@@ -1,0 +1,107 @@
+#N canvas 0 31 726 429 10;
+#X obj 76 256 polystat;
+#X floatatom 76 351 5 0 0 1 voice - -;
+#X floatatom 88 337 5 0 0 1 instances - -;
+#X floatatom 101 323 5 0 0 1 voices - -;
+#X floatatom 114 309 5 0 0 1 voice - -;
+#X obj 127 292 print map;
+#X text 195 309 with most instances;
+#X obj 76 206 + 7;
+#X obj 76 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 76 228 5 0 0 0 - - -;
+#X msg 213 184 clear \$1;
+#X floatatom 264 145 5 7 38 0 - - -;
+#X msg 213 162 8;
+#X msg 312 219 voices;
+#X msg 312 199 getmap;
+#X msg 312 239 clearall;
+#X msg 312 159 clear 12;
+#X obj 76 184 random 32;
+#X obj 26 142 metro 100;
+#X obj 26 123 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 247 162 f;
+#X obj 247 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 312 179 print;
+#X text 360 199 outputs a list of the instances of voices 0 to HIGHEST
+;
+#X text 353 180 some stats;
+#X msg 340 323 \$1;
+#X text 374 239 resets the object;
+#X text 374 159 clears a specific voice;
+#X obj 26 26 polystat;
+#X text 88 26 outputs statistics about voice usage. See also;
+#X obj 416 24 polymap;
+#X obj 473 24 sieve;
+#X text 360 220 outputs a list of all the voices used;
+#X text 246 128 clear voice with most instances;
+#X text 202 53 most stealing: voice with most instances set to new
+value when another voice's instances are equal;
+#X text 201 84 first-past-the-post: voice with most instances only
+updated when another voice's instances exceed;
+#X text 218 144 V;
+#X text 218 133 |;
+#X text 218 125 |;
+#X text 217 113 clear most recent voice;
+#X obj 26 79 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 26 97 1;
+#X msg 49 97 0;
+#X obj 26 59 loadbang;
+#X obj 49 121 pipe 2000;
+#X msg 151 145 set \$1;
+#X msg 150 57 mode 0;
+#X msg 150 87 mode 1;
+#X obj 515 24 maskxor;
+#X text 44 389 Polyphony control objects by Ed Kelly \, November 2006
+;
+#N canvas 379 254 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 185 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 5 KEYWORDS control MIDI;
+#X text 12 45 DESCRIPTION outpu statistics about voice usage;
+#X text 12 65 INLET_0 float mode clear print getmap voices clearall
+;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 145 OUTLET_3 float;
+#X text 12 165 OUTLET_4 list;
+#X restore 666 401 pd META;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 0 3 4 0;
+#X connect 0 4 5 0;
+#X connect 4 0 25 0;
+#X connect 7 0 9 0;
+#X connect 7 0 45 0;
+#X connect 8 0 17 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 20 1;
+#X connect 12 0 10 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 7 0;
+#X connect 18 0 8 0;
+#X connect 19 0 18 0;
+#X connect 20 0 10 0;
+#X connect 21 0 20 0;
+#X connect 22 0 0 0;
+#X connect 25 0 11 0;
+#X connect 40 0 41 0;
+#X connect 40 0 42 0;
+#X connect 41 0 19 0;
+#X connect 42 0 44 0;
+#X connect 43 0 40 0;
+#X connect 44 0 19 0;
+#X connect 45 0 12 0;
+#X connect 46 0 0 0;
+#X connect 47 0 0 0;

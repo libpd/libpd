@@ -1,0 +1,43 @@
+#N canvas 0 26 485 308 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 25 270 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 24 284 ___________________________________________________
+;
+#X obj 26 26 split;
+#X text 82 28 look for a range of numbers;
+#X obj 230 149 split 10 20;
+#X floatatom 230 205 5 0 0 0 - - -;
+#X floatatom 302 175 5 0 0 0 - - -;
+#X floatatom 230 80 5 0 0 0 - - -;
+#X text 351 174 not in range;
+#X text 275 206 in range;
+#X floatatom 266 104 5 0 0 0 - - -;
+#X floatatom 302 129 5 0 0 0 - - -;
+#X text 309 104 set min;
+#X text 346 127 set max;
+#X msg 108 118 3 0 10;
+#X text 28 72 list means:;
+#X msg 32 90 val_to_compare min max;
+#X text 64 118 i.e.:;
+#N canvas 380 180 494 397 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION look for a range of numbers;
+#X text 12 65 INLET_0 float list;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 OUTLET_1 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X restore 433 285 pd META;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 8 0 5 0;
+#X connect 11 0 5 1;
+#X connect 12 0 5 2;
+#X connect 15 0 5 0;

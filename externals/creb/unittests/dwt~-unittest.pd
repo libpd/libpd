@@ -1,0 +1,13 @@
+#N canvas 0 22 787 536 10;
+#X obj 394 189 creb/dwt~;
+#X obj 394 142 phasor~ 440;
+#X msg 457 105 0;
+#X obj 73 243 testtools/unit-test-frame~;
+#X obj 73 165 loadbang;
+#X msg 73 204 dwt~ 100;
+#X connect 0 0 3 1;
+#X connect 1 0 0 0;
+#X connect 2 0 1 1;
+#X connect 3 2 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;

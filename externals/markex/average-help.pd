@@ -1,0 +1,29 @@
+#N canvas 1 53 600 500 10;
+#X text 124 68 GEM object;
+#X obj 123 298 print out1;
+#X obj 123 220 average;
+#X floatatom 123 160 0 0 0 0 - - -;
+#X msg 184 162 bang;
+#X msg 247 164 reset 5;
+#X msg 345 168 clear;
+#X text 89 408 The initial argument is the number to average together.
+The default is 10 numbers, the maximum is 100 numbers;
+#X obj 421 231 average 20;
+#X text 139 23 [average];
+#X text 81 371 [average] together a series of numbers.;
+#N canvas 507 340 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float bang reset clear;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X restore 541 470 pd META;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;

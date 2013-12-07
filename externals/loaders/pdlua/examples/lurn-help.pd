@@ -1,0 +1,188 @@
+#N canvas 457 204 823 609 10;
+#X msg 81 156 bang;
+#X obj 104 275 print urne;
+#X obj 125 251 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 155 158 seed 10;
+#X msg 157 181 clear;
+#X floatatom 139 231 5 0 0 0 - - -;
+#X text 78 41 generates random numbers without repetition;
+#X text 37 23 urne: Unique Random Generator;
+#X text 352 177 bang: output next random number without repetitions.
+;
+#X text 351 200 clear: put all numbers back into urn.;
+#X text 351 224 seed NUM: seed random number generator;
+#X text 331 157 Inlet 0:;
+#X text 332 258 Inlet 1:;
+#X text 335 319 Outlet 0:;
+#X text 361 338 random number;
+#X text 337 371 Outlet 1:;
+#X text 373 279 int - set range of random numbers and reset the urn.
+;
+#X text 333 125 Arguments: int - range of random numbers in urn (optional)
+;
+#X text 83 68 Clone of the Max object [urn]. Stops when all values
+have been chosen and bangs right outlet. Send "clear" message to make
+it start over.;
+#X msg 83 371 bang;
+#N canvas 0 0 450 300 display 0;
+#X obj 46 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 63 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 80 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 97 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 114 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 156 135 list append 0;
+#X obj 46 134 list append 1;
+#N canvas 0 0 450 300 count 0;
+#X obj 158 193 + 1;
+#X obj 122 158 until;
+#X obj 122 194 f;
+#X obj 122 101 inlet;
+#X msg 167 157 0;
+#X obj 122 120 t a b;
+#X obj 122 224 outlet;
+#X connect 0 0 2 1;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 2 0 6 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 1;
+#X connect 5 0 1 0;
+#X connect 5 1 4 0;
+#X restore 156 90 pd count;
+#X obj 46 160 route 0 1 2 3 4 5 6 7 8 9;
+#X obj 131 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 148 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 165 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 182 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 199 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 46 36 inlet;
+#X obj 156 37 inlet;
+#X obj 156 64 max 1;
+#X connect 5 0 8 0;
+#X connect 6 0 8 0;
+#X connect 7 0 5 0;
+#X connect 8 0 0 0;
+#X connect 8 1 1 0;
+#X connect 8 2 2 0;
+#X connect 8 3 3 0;
+#X connect 8 4 4 0;
+#X connect 8 5 9 0;
+#X connect 8 6 10 0;
+#X connect 8 7 11 0;
+#X connect 8 8 12 0;
+#X connect 8 9 13 0;
+#X connect 14 0 6 0;
+#X connect 15 0 16 0;
+#X connect 16 0 7 0;
+#X coords 0 -1 1 1 180 40 1 40 170;
+#X restore 83 519 pd display;
+#X text 363 389 bang \, when an empty urn receives a bang into first
+inlet.;
+#X msg 101 395 clear \, bang;
+#X obj 127 448 t b b;
+#X obj 127 468 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 256 493 f 10;
+#X floatatom 150 425 5 0 0 0 - - -;
+#N canvas 0 0 450 300 display 0;
+#X obj 46 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 63 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 80 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 97 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 114 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 156 135 list append 0;
+#X obj 46 134 list append 1;
+#N canvas 0 0 450 300 count 0;
+#X obj 158 193 + 1;
+#X obj 122 158 until;
+#X obj 122 194 f;
+#X obj 122 101 inlet;
+#X msg 167 157 0;
+#X obj 122 120 t a b;
+#X obj 122 224 outlet;
+#X connect 0 0 2 1;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 2 0 6 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 1;
+#X connect 5 0 1 0;
+#X connect 5 1 4 0;
+#X restore 156 90 pd count;
+#X obj 46 160 route 0 1 2 3 4 5 6 7 8 9;
+#X obj 131 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 148 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 165 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 182 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 199 191 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 46 36 inlet;
+#X obj 156 37 inlet;
+#X obj 156 66 max 1;
+#X connect 5 0 8 0;
+#X connect 6 0 8 0;
+#X connect 7 0 5 0;
+#X connect 8 0 0 0;
+#X connect 8 1 1 0;
+#X connect 8 2 2 0;
+#X connect 8 3 3 0;
+#X connect 8 4 4 0;
+#X connect 8 5 9 0;
+#X connect 8 6 10 0;
+#X connect 8 7 11 0;
+#X connect 8 8 12 0;
+#X connect 8 9 13 0;
+#X connect 14 0 6 0;
+#X connect 15 0 16 0;
+#X connect 16 0 7 0;
+#X coords 0 -1 1 1 180 40 1 40 170;
+#X restore 81 300 pd display;
+#X obj 254 273 f 10;
+#X obj 254 247 b;
+#X text 365 425 Use the second outlet to make the urn refill automatically
+if it gets empty as show in the second example with a combined "clear
+\, bang" message.;
+#X obj 100 492 print urne_auto;
+#X obj 81 230 lurn 10;
+#X obj 83 425 lurn 10;
+#X connect 0 0 32 0;
+#X connect 3 0 32 0;
+#X connect 4 0 29 0;
+#X connect 4 0 32 0;
+#X connect 5 0 32 1;
+#X connect 19 0 33 0;
+#X connect 22 0 33 0;
+#X connect 23 0 22 0;
+#X connect 23 0 24 0;
+#X connect 23 1 25 0;
+#X connect 25 0 20 1;
+#X connect 26 0 25 0;
+#X connect 26 0 33 1;
+#X connect 28 0 27 1;
+#X connect 29 0 28 0;
+#X connect 32 0 1 0;
+#X connect 32 0 27 0;
+#X connect 32 1 2 0;
+#X connect 33 0 20 0;
+#X connect 33 0 31 0;
+#X connect 33 1 23 0;

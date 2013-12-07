@@ -1,0 +1,38 @@
+#N canvas 0 26 514 431 12;
+#X floatatom 27 304 8 0 0 0 - - -;
+#X floatatom 27 73 5 0 0 0 - - -;
+#X text 196 28 written by <olaf.matthes@gmx.de>;
+#X floatatom 56 131 5 0 0 0 - - -;
+#X floatatom 85 152 5 0 0 0 - - -;
+#X text 84 71 input value;
+#X text 57 104 creation arguments can be changed dynamically:;
+#X text 35 341 creation arguments:;
+#X obj 27 249 split 6 40;
+#X text 111 130 lower limit;
+#X text 137 151 upper limit;
+#X text 35 378 All floats that fall below the lower limit or above
+the upper limit get routed to the 2nd outlet.;
+#X text 36 358 split <lower limit> <upper limit>;
+#X floatatom 102 276 5 0 0 0 - - -;
+#X text 154 276 floats 'out of range';
+#X text 122 11 split :: split incoming floats according to value;
+#X text 106 305 floats 'in range' (including borders!);
+#N canvas 292 198 494 344 META 0;
+#X text 12 190 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 170 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 90 INLET_1 float;
+#X text 12 5 KEYWORDS control filter anything_op;
+#X text 12 45 DESCRIPTION split incoming floats according to value
+;
+#X text 12 70 INLET_0 float;
+#X text 12 110 INLET_2 float;
+#X text 12 130 OUTLET_0 float;
+#X text 12 150 OUTLET_1 float;
+#X restore 453 402 pd META;
+#X connect 1 0 8 0;
+#X connect 3 0 8 1;
+#X connect 4 0 8 2;
+#X connect 8 0 0 0;
+#X connect 8 1 13 0;

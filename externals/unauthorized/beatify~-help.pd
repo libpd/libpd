@@ -1,0 +1,36 @@
+#N canvas 45 57 695 405 10;
+#X obj 86 268 dac~;
+#X text 288 313 comments & bugs @ ydegoyon.free.fr;
+#X floatatom 143 104 5 -100 500;
+#X text 244 42 musiscript \, an excellent sound generation tool;
+#X text 245 53 by David Piott ( http://musicscript.sourceforge.net
+);
+#X text 243 32 The idea was borrowed from;
+#X floatatom 171 129 5 -100 500;
+#X floatatom 194 156 5 -100 500;
+#X floatatom 210 183 5 0 0;
+#X floatatom 277 211 5 -100 500;
+#X obj 233 213 / 100;
+#X obj 108 41 osc~ 400;
+#X text 268 273 Note : the default values are tuned for the osc~ input
+;
+#X text 268 286 You might need to set other values for your source
+;
+#X text 188 103 attack [ min=1.0 \, default= 10 ];
+#X text 215 128 sustain [ min=0.0 \, default=2.0 ];
+#X text 238 155 decay [ min=1.0 \, default = 50 ];
+#X text 254 182 size [ min=1.0 \, default = 700 ];
+#X text 321 210 global amplitude [ min=0.0 \, max=1.0 \, default=0.5]
+;
+#X obj 107 237 beatify~ -------------;
+#X text 244 19 Beatify~ : an audio amplitude modulator [ ADSR + loop
+size ];
+#X connect 2 0 19 1;
+#X connect 6 0 19 2;
+#X connect 7 0 19 3;
+#X connect 8 0 19 4;
+#X connect 9 0 10 0;
+#X connect 10 0 19 5;
+#X connect 11 0 19 0;
+#X connect 19 0 0 0;
+#X connect 19 0 0 1;

@@ -1,0 +1,74 @@
+#N canvas 0 26 666 402 10;
+#X text 16 9 peakamp~;
+#X text 406 101 Outlet: float (peak amplitude of signal);
+#X text 406 65 Left inlet: signal \, bang;
+#X floatatom 291 206 0 0 0 0 - - -;
+#X floatatom 246 252 10 0 0 0 - - -;
+#X floatatom 36 310 5 0 0 0 - - -;
+#X obj 225 196 adc~;
+#X obj 36 288 peakamp~;
+#X text 132 10 measure the peak amplitude of a signal;
+#X text 17 103 Banging the left inlet makes peakamp~ output its current
+peak value \, or you can set the internal metro to output at regular
+intervals by sending a non-zero number in the right inlet or setting
+a non-zero number as an argument.;
+#X text 406 77 Right inlet: float (ms);
+#X text 406 89 Argument: float (optional \, ms);
+#X obj 294 184 hsl 128 15 0 127 0 1 empty empty empty -2 -8 0 10 -262144
+-1 -1 12700 1;
+#X text 19 48 peakamp~ tracks and outputs the absolute value of the
+peak amplitude of the incoming signal. It outputs when banged or using
+its own internal clock. The peak value is reset each time peakamp~
+outputs a value.;
+#X obj 246 230 peakamp~;
+#X floatatom 275 298 10 0 0 0 - - -;
+#X obj 52 261 metro 250;
+#X obj 52 242 tgl 15 1 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 36 217 *~;
+#X obj 36 171 noise~;
+#X obj 55 195 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 68 218 5 0 0 0 - - -;
+#X obj 225 301 * 1000;
+#X obj 225 323 osc~;
+#X text 308 275 <-- argument causes automatic reporting;
+#X obj 225 346 *~ 0.2;
+#X obj 220 369 dac~;
+#X obj 262 326 hsl 128 15 0.01 1 1 0 empty empty volume 15 8 0 10 -204786
+-1 -1 0 1;
+#X obj 225 276 peakamp~ 25;
+#X text 272 360 Example: the amplitude sets the frequency;
+#X text 319 206 <-- set the delay for the internal metro;
+#N canvas 247 115 494 384 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible;
+#X text 12 45 DESCRIPTION measure the peak amplitude of a signal;
+#X text 12 65 INLET_0 bang signal;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 616 382 pd META;
+#X connect 3 0 14 1;
+#X connect 6 0 28 0;
+#X connect 6 1 14 0;
+#X connect 7 0 5 0;
+#X connect 12 0 3 0;
+#X connect 14 0 4 0;
+#X connect 16 0 7 0;
+#X connect 17 0 16 0;
+#X connect 18 0 7 0;
+#X connect 19 0 18 0;
+#X connect 20 0 21 0;
+#X connect 20 0 18 1;
+#X connect 22 0 23 0;
+#X connect 23 0 25 0;
+#X connect 25 0 26 0;
+#X connect 25 0 26 1;
+#X connect 27 0 25 1;
+#X connect 28 0 15 0;
+#X connect 28 0 22 0;

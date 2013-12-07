@@ -1,0 +1,14 @@
+#N canvas 550 527 517 215 10;
+#X obj 62 132 pdp_sub;
+#X obj 62 104 pdp_reg;
+#X obj 62 72 pdp_trigger bang pdp;
+#X obj 62 38 inlet;
+#X obj 62 163 outlet;
+#X text 161 17 compute the difference between current;
+#X text 161 33 and previous frame;
+#X connect 0 0 4 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 0;
+#X connect 2 1 1 1;
+#X connect 2 1 0 0;
+#X connect 3 0 2 0;

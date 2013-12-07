@@ -1,0 +1,17 @@
+#N canvas 0 0 670 367 10;
+#X obj 93 216 mtx_qr;
+#X obj 93 108 mtx_rand;
+#X obj 93 131 t a a;
+#X text 442 338 Franz Zotter \, 2009;
+#X obj 169 155 mtx_print A;
+#X msg 93 85 4 3;
+#X obj 201 298 mtx_print R;
+#X obj 93 298 mtx_print Q;
+#X text 353 153 A = Q * R;
+#X text 64 24 [mtx_qr] qr decomposition using gsl;
+#X connect 0 0 7 0;
+#X connect 0 1 6 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 2 1 4 0;
+#X connect 5 0 1 0;

@@ -1,0 +1,41 @@
+#N canvas 400 106 550 495 10;
+#X obj 91 117 inlet bang;
+#X obj 91 410 outlet result;
+#X obj 91 138 t b b b;
+#X obj 91 380 i;
+#X text 57 56 when the outlet of [msgfile] is used to trigger the object
+\, the same line will be output again and again instead of advancing
+to the next line.;
+#X obj 109 252 msgfile;
+#X obj 79 270 t b l;
+#X msg 109 186 bang;
+#X msg 157 183 clear \, add line #1 \, add line #2 \, add end-of-the-world
+\, rewind;
+#X obj 104 287 route symbol;
+#X obj 104 304 symbol;
+#X obj 104 324 select end-of-the-world;
+#X msg 104 344 1;
+#X msg 133 344 0;
+#X obj 171 305 t b;
+#X obj 104 360 t f;
+#X obj 109 157 t b b;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 16 0;
+#X connect 2 2 13 0;
+#X connect 3 0 1 0;
+#X connect 5 0 6 0;
+#X connect 6 0 5 0;
+#X connect 6 1 9 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 10 0;
+#X connect 9 1 14 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 14 0 13 0;
+#X connect 15 0 3 1;
+#X connect 16 0 7 0;
+#X connect 16 1 8 0;

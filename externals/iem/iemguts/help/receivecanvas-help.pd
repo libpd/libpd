@@ -1,0 +1,18 @@
+#N canvas 33 0 430 262 10;
+#N canvas 386 115 340 151 subpatch 0;
+#N canvas 450 70 152 94 subsubpatch 0;
+#X obj 2 10 receivecanvas 1;
+#X obj 2 37 print pd-subpatch;
+#X connect 0 0 1 0;
+#X restore 52 90 pd subsubpatch;
+#X text 48 33 The first argument sets the parent depth.;
+#X text 51 49 Have a look at the subsubpatch.;
+#X restore 26 206 pd subpatch;
+#X obj 25 104 receivecanvas 0;
+#X obj 25 129 print receivecanvas-help.pd;
+#X obj 23 16 receivecanvas;
+#X text 111 16 receives all messages sent to the canvas;
+#X text 21 66 depth 0 receives from the canvas containing the [receivecanvas]
+object.;
+#X text 25 181 Check also:;
+#X connect 1 0 2 0;

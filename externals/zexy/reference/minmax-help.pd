@@ -1,0 +1,25 @@
+#N canvas 0 31 477 241 10;
+#X obj 73 61 minmax;
+#X text 127 60 get minimum and maximum of a (list of floats);
+#X obj 45 152 minmax;
+#X floatatom 45 184 4 0 0 0 - - -;
+#X floatatom 78 184 4 0 0 0 - - -;
+#X msg 45 112 10 2;
+#X msg 80 129 1 2 3 4 9 6 -1 7;
+#X text 352 14 part of zexy;
+#N canvas 515 193 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION get minimum and maximum of a list of floats
+;
+#X text 12 65 INLET_0 list;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X restore 420 212 pd META;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;

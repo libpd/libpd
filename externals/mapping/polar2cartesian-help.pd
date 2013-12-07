@@ -1,0 +1,53 @@
+#N canvas 1 53 504 451 10;
+#X text 61 213 (x \, y \, z);
+#X obj 277 122 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 218 102 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 160 72 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 164 93 5 0 0 0 - - -;
+#X floatatom 221 122 5 0 0 0 - - -;
+#X floatatom 282 141 5 0 0 0 - - -;
+#X floatatom 214 214 5 0 0 0 - - -;
+#X floatatom 157 214 5 0 0 0 - - -;
+#X floatatom 274 214 5 0 0 0 - - -;
+#X obj 157 181 cartesian;
+#X obj 96 356 pddp/pddplink http://en.wikipedia.org/wiki/Cylindrical_coordinate_system
+;
+#X obj 96 336 pddp/pddplink http://en.wikipedia.org/wiki/Polar_coordinate_system
+;
+#X obj 96 386 pddp/pddplink http://en.wikipedia.org/wiki/Cartesian_coordinate_system
+;
+#X text 32 336 2D input:;
+#X text 32 356 3D input:;
+#X text 44 386 output:;
+#X text 51 20 convert polar/cylindrical coordinates to cartesian coordinates
+;
+#X text 61 158 (r \, phi \, z);
+#X obj 5 2 cnv 15 450 20 empty empty cartesian 2 11 1 18 -233017 -66577
+0;
+#N canvas 507 146 494 344 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 195 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 95 INLET_1 float;
+#X text 12 75 INLET_0 float;
+#X text 12 45 DESCRIPTION convert polar/cylindrical coordinates to
+cartesian coordinates;
+#X text 12 115 INLET_2 float;
+#X text 12 135 OUTLET_0 float;
+#X text 12 155 OUTLET_1 float;
+#X text 12 175 OUTLET_2 float;
+#X text 12 5 KEYWORDS control abstraction conversion;
+#X restore 453 422 pd META;
+#X connect 1 0 6 0;
+#X connect 1 0 10 2;
+#X connect 2 0 5 0;
+#X connect 2 0 10 1;
+#X connect 3 0 4 0;
+#X connect 3 0 10 0;
+#X connect 10 0 8 0;
+#X connect 10 1 7 0;
+#X connect 10 2 9 0;

@@ -1,0 +1,55 @@
+#N canvas 1 53 536 537 10;
+#X obj 113 119 openpanel;
+#X obj 112 96 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 333 47 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 54 342 pix_texture;
+#X obj 135 176 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 118 317 5 0 0 0 - - -;
+#X msg 113 144 open \$1;
+#X floatatom 180 204 5 0 0 0 - - -;
+#X obj 333 82 tof/gemwin+;
+#X text 218 206 inlet 3 \, float: speed;
+#X text 159 174 inlet 2 \, 0/1: stop/play;
+#X text 167 143 inlet 2 \, open (file): opens the movie file;
+#X obj 54 54 gemhead;
+#X obj 54 365 rectangle 5.333 4;
+#X floatatom 184 294 5 0 0 0 - - -;
+#X text 220 295 outlet 3 \, float: total number of frames;
+#X text 158 313 outlet 2 \, float: current frame;
+#X text 37 -18 Description: A more user friendly movie file player
+for Gem.;
+#X text 37 1 Tags: Gem File;
+#X text 171 363 outlet 1 \, gemlist;
+#X text 107 52 inlet 1 \, gemlist;
+#X obj 54 236 tof/pix_film+ mov0.mov;
+#X text 198 235 argument 1 \, (file): opens the movie file (optional)
+;
+#N canvas 373 162 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 185 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION a more user friendly movie file player for
+Gem;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 gemlist;
+#X text 12 85 INLET_1 float open;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 gemlist;
+#X text 12 145 OUTLET_1 float;
+#X text 12 165 OUTLET_2 float;
+#X restore 461 418 pd META;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 8 0;
+#X connect 3 0 13 0;
+#X connect 4 0 21 1;
+#X connect 6 0 21 1;
+#X connect 7 0 21 2;
+#X connect 12 0 21 0;
+#X connect 21 0 3 0;
+#X connect 21 1 5 0;
+#X connect 21 2 14 0;

@@ -1,0 +1,36 @@
+#N canvas 0 26 496 360 10;
+#X obj 33 173 pointer_position;
+#X obj 33 145 tgl 15 1 empty empty empty 0 -6 0 10 -262144 -1 -1 1
+1;
+#X msg 52 144 bang;
+#X obj 342 136 cnv 15 100 60 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 52 84 keyup;
+#X obj 52 105 select 32;
+#X text 124 41 give mouse coordinates only after clicking and dragging
+in a region.;
+#X obj 145 295 unpack float float;
+#X floatatom 145 325 5 0 0 0 - - -;
+#X floatatom 250 325 5 0 0 0 - - -;
+#N canvas 419 129 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 175 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control user_input;
+#X text 12 45 DESCRIPTION give mouse coordinates only after clicking
+and dragging a region;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 135 INLET_3 float;
+#X text 12 155 OUTLET_0 list;
+#X text 12 75 INLET_0 float;
+#X restore 437 330 pd META;
+#X obj 145 246 mouse_region 342 443 137 194;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 7 0 8 0;
+#X connect 7 1 9 0;
+#X connect 11 0 7 0;

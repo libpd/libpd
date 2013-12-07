@@ -1,0 +1,64 @@
+#N canvas 289 160 710 345 10;
+#X text 54 30 Class: geometric object;
+#X obj 519 47 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 584 224 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 589 263 pd gemwin;
+#X msg 589 244 create;
+#X text 585 223 Create window:;
+#X obj 7 65 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 216 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 221 Inlets:;
+#X obj 8 176 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X text 27 247 Inlet 1: message: draw [line|fill|point];
+#X text 27 261 Inlet 2: float: size;
+#X text 452 8 GEM object;
+#X text 27 233 Inlet 1: gemlist;
+#X text 9 280 Outlets:;
+#X text 21 293 Outlet 1: gemlist;
+#X text 525 29 Example:;
+#X obj 522 78 cnv 15 150 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 525 85 draw line;
+#X msg 525 106 draw fill;
+#X msg 525 128 draw point;
+#X obj 593 54 gemhead;
+#X floatatom 624 114 5 0 0 0 - - -;
+#X text 624 98 size;
+#X obj 593 159 square;
+#X text 7 69 Description: Renders a square;
+#X text 33 14 Synopsis: [square];
+#X text 63 186 size of the square;
+#X text 16 86 The [square] object renders a square at the current position
+with current color. The size of the square can be changed via the second
+inlet.;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 19 0 25 0;
+#X connect 20 0 25 0;
+#X connect 21 0 25 0;
+#X connect 22 0 25 0;
+#X connect 23 0 25 1;

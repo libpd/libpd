@@ -2,6 +2,8 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
 
+#include <string.h>
+
 #include "m_pd.h"
 #include "s_stuff.h"
 #include "z_libpd.h"
@@ -15,46 +17,54 @@
 
 #define CHANNEL ((CLAMP12BIT(port) << 4) | CLAMP4BIT(channel))
 
+extern void *libpd_hook_data;
+
 void outmidi_noteon(int port, int channel, int pitch, int velo) {
   if (libpd_noteonhook)
-    libpd_noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
+    libpd_noteonhook(libpd_hook_data, CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
 }
 
 void outmidi_controlchange(int port, int channel, int ctl, int value) {
   if (libpd_controlchangehook)
-    libpd_controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
+    libpd_controlchangehook(libpd_hook_data, CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
 }
 
 void outmidi_programchange(int port, int channel, int value) {
   if (libpd_programchangehook)
-    libpd_programchangehook(CHANNEL, CLAMP7BIT(value));
+    libpd_programchangehook(libpd_hook_data, CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_pitchbend(int port, int channel, int value) {
   if (libpd_pitchbendhook)
-    libpd_pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
+    libpd_pitchbendhook(libpd_hook_data, CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
 }
 
 void outmidi_aftertouch(int port, int channel, int value) {
   if (libpd_aftertouchhook)
-    libpd_aftertouchhook(CHANNEL, CLAMP7BIT(value));
+    libpd_aftertouchhook(libpd_hook_data, CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
   if (libpd_polyaftertouchhook)
-    libpd_polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
+    libpd_polyaftertouchhook(libpd_hook_data, CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
 }
 
 void outmidi_byte(int port, int value) {
   if (libpd_midibytehook)
-    libpd_midibytehook(CLAMP12BIT(port - 1), CLAMP8BIT(value));
+    libpd_midibytehook(libpd_hook_data, CLAMP12BIT(port - 1), CLAMP8BIT(value));
+}
+
+void sys_get_midi_apis(char *buf) {
+  strcpy(buf, "{}");
+}
+
+void sys_get_midi_params(int *pnmidiindev, int *pmidiindev, int *pnmidioutdev, int *pmidioutdev){
+  *pnmidiindev = 0;
+  *pnmidioutdev = 0;
 }
 
 // The rest is not relevant to libpd.
-void sys_get_midi_apis(char *buf) {}
 void sys_listmididevs(void) {}
-void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,
-    int *pnmidioutdev, int *pmidioutdev) {}
 void sys_open_midi(int nmidiindev, int *midiindev,
     int nmidioutdev, int *midioutdev, int enable) {}
 void sys_close_midi() {}
@@ -66,3 +76,4 @@ void glob_midi_setapi(void *dummy, t_floatarg f) {}
 void glob_midi_properties(t_pd *dummy, t_floatarg flongform) {}
 void glob_midi_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv) {}
 
+void sys_putmidimess(int portno, int a, int b, int c){}

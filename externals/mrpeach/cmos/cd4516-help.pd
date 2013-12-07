@@ -1,0 +1,88 @@
+#N canvas 406 127 747 414 12;
+#X obj 75 -57 tgl 15 1 empty empty clock 17 7 0 10 -44926 -258699 -1
+0 1;
+#X obj 96 -37 tgl 15 1 empty empty up_down 17 7 0 10 -44926 -258699
+-1 1 1;
+#X obj 117 -88 tgl 15 1 empty empty reset 17 7 0 10 -44926 -258699
+-1 0 1;
+#X obj 139 -111 tgl 15 1 empty empty preset_enable 17 7 0 10 -44926
+-258699 -1 0 1;
+#X obj 177 -24 tgl 15 0 empty empty P1 17 7 0 10 -260818 -258699 -1
+1 1;
+#X obj 211 -24 tgl 15 0 empty empty P2 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 243 -24 tgl 15 0 empty empty P3 17 7 0 10 -260818 -258699 -1
+1 1;
+#X obj 283 -24 tgl 15 0 empty empty P4 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 75 47 tgl 15 0 empty empty Q1 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 117 47 tgl 15 0 empty empty Q2 17 7 0 10 -24198 -258699 -1 0
+1;
+#X obj 160 47 tgl 15 0 empty empty Q3 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 203 47 tgl 15 0 empty empty Q4 17 7 0 10 -24198 -258699 -1 1
+1;
+#X obj 246 47 tgl 15 0 empty empty carry_out 17 7 0 10 -62784 -258699
+-1 1 1;
+#X text 197 -90 1 clears counter;
+#X text 285 204 20070314_MartinPeach;
+#X obj 9 -121 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 9 -89 metro 100;
+#X obj 75 5 cd4516 up down counter;
+#X text 283 -115 1 loads data into counter;
+#X obj 160 -55 tgl 15 1 empty empty carry_in 17 7 0 10 -44926 -258699
+-1 0 1;
+#X text 32 -155 cd4516 emulates the CMOS binary up/down counter;
+#X text 271 -1 0 to 1 transition on clock counts if reset = 0 and preset_enable
+= 0 and carry_in = 0;
+#X obj 208 82 tgl 15 0 empty empty P1 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 242 82 tgl 15 0 empty empty P2 17 7 0 10 -260818 -258699 -1
+0 1;
+#X obj 274 82 tgl 15 0 empty empty P3 17 7 0 10 -260818 -258699 -1
+1 1;
+#X obj 314 82 tgl 15 0 empty empty P4 17 7 0 10 -260818 -258699 -1
+1 1;
+#X obj 143 163 tgl 15 0 empty empty Q1 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 185 163 tgl 15 0 empty empty Q2 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 228 163 tgl 15 0 empty empty Q3 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 271 163 tgl 15 0 empty empty Q4 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 314 163 tgl 15 0 empty empty carry_out 17 7 0 10 -62784 -258699
+-1 1 1;
+#X obj 123 108 cd4516 up down counter;
+#X connect 0 0 17 0;
+#X connect 0 0 31 0;
+#X connect 1 0 17 1;
+#X connect 1 0 31 1;
+#X connect 2 0 17 2;
+#X connect 2 0 31 2;
+#X connect 3 0 17 3;
+#X connect 3 0 31 3;
+#X connect 4 0 17 5;
+#X connect 5 0 17 6;
+#X connect 6 0 17 7;
+#X connect 7 0 17 8;
+#X connect 15 0 16 0;
+#X connect 16 0 0 0;
+#X connect 17 0 8 0;
+#X connect 17 1 9 0;
+#X connect 17 2 10 0;
+#X connect 17 3 11 0;
+#X connect 17 4 12 0;
+#X connect 17 4 31 4;
+#X connect 19 0 17 4;
+#X connect 22 0 31 5;
+#X connect 23 0 31 6;
+#X connect 24 0 31 7;
+#X connect 25 0 31 8;
+#X connect 31 0 26 0;
+#X connect 31 1 27 0;
+#X connect 31 2 28 0;
+#X connect 31 3 29 0;
+#X connect 31 4 30 0;

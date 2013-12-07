@@ -1,0 +1,31 @@
+#N canvas 0 26 588 239 10;
+#X text 52 33 generate an impulse;
+#X msg 243 128 set 1;
+#X msg 207 107 set 0.25 0.5 0.75 1 0.67 0.3;
+#X obj 171 187 *~ 0.5;
+#X obj 171 218 dac~;
+#X obj 171 120 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 210 63 use the set message to create a personalized band-limited
+impulse (maximum 256 samples);
+#X text 223 153 optional argument(s) to set impulse (default impulse:
+1.0);
+#X obj 171 156 click~;
+#N canvas 212 102 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible;
+#X text 12 45 DESCRIPTION generate an impulse;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 65 INLET_0 float list set bang;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 538 219 pd META;
+#X connect 1 0 8 0;
+#X connect 2 0 8 0;
+#X connect 3 0 4 0;
+#X connect 3 0 4 1;
+#X connect 5 0 8 0;
+#X connect 8 0 3 0;

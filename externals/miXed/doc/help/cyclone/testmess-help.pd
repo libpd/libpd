@@ -1,0 +1,23 @@
+#N canvas 0 26 350 326 10;
+#N canvas 247 115 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible needs_work (what does
+it do?);
+#X text 12 45 DESCRIPTION ???;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 300 302 pd META;
+#X msg 84 114 1;
+#X obj 84 149 testmess;
+#X obj 84 182 print;
+#X msg 124 114 asdf;
+#X text 79 69 No idea why this object exists... do you?;
+#X text 77 232 I don't find it in max/msp docs...;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 2 0;

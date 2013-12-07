@@ -1,0 +1,10 @@
+#N canvas 176 296 462 312 10;
+#X text 48 47 open the specified file on the click of the button:;
+#X text 66 200 only relative paths work \, no absolute.;
+#X text 29 241 for better or worse \, the .pd is automatically appended
+;
+#X obj 56 78 pddp/open dsp-help;
+#X text 19 9 BUG: relative paths now work \, but files with no path
+don't;
+#X obj 57 107 pddp/open dsp-help;
+#X obj 57 137 pddp/open ../../3.audio.examples/F02.just.say;

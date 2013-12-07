@@ -1,0 +1,21 @@
+Source: pd-template
+Section: sound
+Priority: optional
+Maintainer: Debian Multimedia Maintainers <pkg-multimedia-maintainers@lists.alioth.debian.org>
+DM-Upload-Allowed: yes
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>= 7.0.50~),
+               puredata-dev | puredata (<< 0.43)
+Standards-Version: 3.9.2
+Homepage: http://puredata.info
+Vcs-Git: git://git.debian.org/pkg-multimedia/pd-template.git
+Vcs-Browser: http://git.debian.org/?p=pkg-multimedia/pd-template.git;a=summary
+
+Package: pd-template
+Architecture: any
+Depends: ${shlibs:Depends},
+         pd,
+         pd-libdir,
+         ${misc:Depends}
+Recommends: pd-import
+Description: 

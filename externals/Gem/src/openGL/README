@@ -1,0 +1,49 @@
+this intends to make Gem into a real openGL-wrapper
+
+the idea came from the DIPS-project (Digital Image Processing with Sound) by some japanese-guys who presented it at the icmc2002.
+They did a very Gem-like thing for jmax, and i did like this idea of being able to programm openGL without having to (re)compile.
+
+
+the policy is quite simple:
+each openGL-command is wrapped into a pd-object with a prefixed "GEM"
+for instance "glVertex3fv" becomes [GEMglVertex3fv]
+
+if an openGL-command eats scalars (byte, int, double, ...) these are fed into the corresponding gem.object as single (floating-point) numbers.
+if  an openGL-command eats pointers to arrays, these are fed into the corresponding gem.object as lists of (floating-point) numbers.
+if the openGL-command eats pixel-data, these are taken from the [pix_*]-objects in the rendering chain. you don't have to worry about format,... but maybe you have to worry about the dimensions (because of sub-images -- i have to check this)
+
+as for now, GLenum's are represented as integer values (not very user-friendly).
+There should be at least a [GLenum] object that takes (lists of) GL_defines and translates them into the corresponding integer-values (something like a interpreting preporcessor) and a [GLbitfield] that allows bitwise operations.
+but how to set the default-values, when everything is an unreadable number?)
+
+portability:
+i am not quite sure.
+Having had long quarrels with chris, i somehow stated, that Gem has to portable.
+Now i am doing something contradictionary:
+the openGL-wrapper somehow gives deep interaction with the system. it is meant for experts only (i don't know, whether i would use it...), who do know, what they are doing.
+i do think, that it would be best to wrap all available functions for all systems, but they have to be #ifdef'd.
+For instance, windof (VC++6) does not support openGL1.2, only 1.1, so no ARB-multitexturing and the like.
+The openGL-wrapper would thus produce Gem-patches that are as portable as openGL is: "very much, but!"
+
+
+
+
+
+
+LOG:
+httah : "Have To Think About How to make sensible use of these from within pd"
+
+missing are:
+openGL-1.0
+	hopefully everything has been wrapped
+
+openGL-1.1
+	gl*Pointer(), glInterleavedArrays	: httah
+	glGetMap?v(), glGetPointerv() : httah. anyhow, they are there now
+	the rest should be there...
+
+openGL-1.2: not yet
+
+mesaGL:
+
+ARB-extensions:

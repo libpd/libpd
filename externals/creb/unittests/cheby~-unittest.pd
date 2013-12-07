@@ -1,0 +1,18 @@
+#N canvas 107 296 738 457 10;
+#X obj 371 138 creb/cheby~ 4;
+#X obj 50 179 testtools/unit-test-frame~;
+#X obj 371 48 osc~ 440;
+#X msg 416 22 0;
+#X msg 390 103 coef 1 0.5 \, coef 2 0.25 \, coef 3 0.125 \, coef 4
+0.0625;
+#X msg 50 143 cheby~ 200;
+#X obj 50 113 loadbang;
+#X obj 391 77 loadbang;
+#X connect 0 0 1 1;
+#X connect 1 2 3 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 1;
+#X connect 4 0 0 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 0;

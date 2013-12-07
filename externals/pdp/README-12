@@ -1,0 +1,16 @@
+This is `old' pdp. Adapted from the version 0.12.4 released on 09-Jul-2004. 
+
+As you might know, i started working on Packet Forth about two years
+ago. This has shifted my opinion as to what PDP should be quite a bit.
+In order not to annoy people using the old PDP with my new and exciting
+insights about forth, I declare this version to be the `stable' PDP 12.
+The DEC PDP 13 never existed, so this might have been a sign...
+
+For people interested in packet forth, check http://zwizwa.be/packetforth
+for more information. Stable PDP might include some additions from PF
+later on, but main focus right now is stability.
+
+Groet,
+Tom
+
+Mon Oct 31 16:53:49 EST 2005

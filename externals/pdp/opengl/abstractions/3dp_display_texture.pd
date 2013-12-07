@@ -1,0 +1,31 @@
+#N canvas 277 275 874 339 10;
+#X obj 244 246 3dp_view scale_aspect;
+#X obj 37 131 inlet;
+#X obj 222 130 inlet;
+#X obj 351 131 inlet;
+#X text 27 107 context inlet;
+#X text 198 106 texture inlet;
+#X text 328 106 scaling inlet;
+#X text 406 244 <- scale the square to the window aspect ratio;
+#X obj 37 269 outlet;
+#X text 40 16 this abstraction can be used for texture display. i.e.
+if you use a subcontext at a fixed resolution to create a texture \,
+this abstraction stretches the texture to the full size of the window
+.;
+#X obj 244 274 3dp_draw square 8;
+#X obj 244 220 3dp_view scale 1;
+#X text 405 219 <- extra scaling (i.e. to clip off garbage boundaries)
+;
+#X obj 37 162 3dp_toggle depth_test 0;
+#X text 404 164 <- disable depth test so the draw will overwrite;
+#X obj 193 190 3dp_push;
+#X text 405 193 <- save modelview;
+#X text 27 295 context outlet;
+#X connect 0 0 10 0;
+#X connect 1 0 13 0;
+#X connect 2 0 10 1;
+#X connect 3 0 11 1;
+#X connect 11 0 0 0;
+#X connect 13 0 8 0;
+#X connect 13 1 15 0;
+#X connect 15 1 11 0;

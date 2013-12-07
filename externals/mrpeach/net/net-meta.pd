@@ -1,0 +1,6 @@
+#N canvas 17 107 200 200 10;
+#N canvas 486 145 761 300 META 1;
+#X text 10 5 VERSION 0.1;
+#X text 11 25 NAME net;
+#X text 9 45 AUTHOR Martin Peach martin.peach@sympatico.ca;
+#X restore 10 10 pd META;

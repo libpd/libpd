@@ -1,0 +1,10 @@
+#N canvas 416 189 491 300 10;
+#X text 98 82 right-click on the objects and select "properties".;
+#X text 99 103 then modify the properties and click on "OK";
+#X text 100 125 finally save this patch and re-open it!;
+#X obj 73 195 gopcanvas 150 212 0;
+#X text 77 175 [gopcanvas];
+#X text 263 179 [gopcanvas];
+#X text 266 164 another;
+#X text 46 43 persistent properties for abstractions!;
+#X obj 259 199 gopcanvas 255 120 28;

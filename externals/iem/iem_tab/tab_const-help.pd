@@ -1,0 +1,54 @@
+#N canvas 117 93 790 448 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array dst 100 float 1;
+#A 0 0 0 0 0 0 0 0.0428571 0.1 0.128571 0.185714 0.257143 0.3 0.371429
+0.428571 0.471429 0.557143 0.614286 0.671429 0.4 0.171429 0.0714286
+-0.0857142 -0.285714 -0.557143 -0.542857 -0.485714 -0.457143 -0.428571
+-0.357143 -0.314286 -0.271429 -0.221429 -0.171429 -0.128571 -0.0857143
+-0.0428571 1.49012e-08 0.0428572 0.0857143 0.128571 0.171429 0.271429
+0.357143 0.442857 0.471429 -0.514286 -0.514286 -0.485714 -0.428571
+-0.342857 -0.292857 -0.242857 -0.2 -0.157143 -0.0285715 0.0357142 0.1
+0.152381 0.204762 0.257143 0.321429 0.385714 0.435714 0.485714 0.528571
+0.571429 0.621429 -0.242857 -0.414286 -0.414286 -0.4 -0.357143 -0.328571
+-0.3 -0.257143 -0.214286 -0.185714 -0.157143 -0.128571 -0.0785714 -0.0285714
+0.00476191 0.0380952 0.0714286 0.114286 0.157143 0.2 0.242857 0.278571
+0.314286 -0.228571 -0.242857 -0.214286 -0.2 -0.142857 -0.114286 -0.0714285
+-0.0285714 3.53903e-08 0.114286;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 518 36 graph;
+#X obj 61 31 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 130 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 60 302 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 122 218 dst dst;
+#X obj 61 102 tab_const dst;
+#X msg 60 195 30 50 0.5;
+#X text 172 270 1.arg: <symbol> destination-name;
+#X obj 60 261 tab_const dst;
+#X msg 82 59 -0.7;
+#X msg 114 78 0.8;
+#X text 11 6 tab_const;
+#X text 90 29 <bang> set all samples of array to zero;
+#X text 114 58 <float> set all samples of array to this float value
+;
+#X text 55 163 1.) dst onset;
+#X text 55 174 2.) n samples to set;
+#X text 190 257 initial arguments:;
+#X text 174 219 <dst> xxx : change destination name;
+#X text 75 374 IEM KUG;
+#X text 54 362 musil;
+#X text 89 362 @;
+#X text 97 362 iem.at;
+#X text 58 384 Graz \, Austria;
+#X text 65 280 <bang> output;
+#X text 43 153 list of 2 floats:;
+#X text 10 351 (c) Thomas Musil 2000 - 2009;
+#X connect 1 0 5 0;
+#X connect 4 0 8 0;
+#X connect 5 0 2 0;
+#X connect 6 0 8 0;
+#X connect 8 0 3 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;

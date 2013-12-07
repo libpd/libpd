@@ -1,0 +1,59 @@
+current: all
+
+.SUFFIXES: .pd_linux
+
+PDSOURCE?=/usr/local/src/pd/src
+INCLUDE = -I. -I$(PDSOURCE)
+
+LDFLAGS = --export-dynamic -shared
+LIB = -ldl -lm -lpthread
+
+#select either the DBG and OPT compiler flags below:
+
+CFLAGS = -DPD -DUNIX -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O6 -funroll-loops -fomit-frame-pointer -fno-strict-aliasing \
+        -DDL_OPEN -fPIC
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC =	room_sim_2d.c \
+	room_sim_3d.c \
+	cube_sphere.c \
+	sym_dial.c \
+	iem_image.c \
+	iem_vu.c \
+	hfadl_scale.c \
+	hfadr_scale.c \
+	vfad_scale.c \
+	numberbox_matrix.c \
+	iem_event.c \
+	iemgui.c
+
+TARGET = iemgui.pd_linux
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(LD) $(LDFLAGS) -o $(TARGET) *.o $(LIB)
+	strip --strip-unneeded $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+
+

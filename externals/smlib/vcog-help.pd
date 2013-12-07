@@ -1,0 +1,33 @@
+#N canvas 1 53 471 165 10;
+#X msg 18 40 1 2 3 4;
+#X floatatom 50 96 5 0 0 0 - - -;
+#X msg 84 40 3 4 5;
+#X text 387 99 j#|@2002;
+#X obj 409 77 SMLib-help;
+#X obj 52 69 vcog;
+#X text 16 14 vcog computes the center of gravity of a list of floats
+;
+#X msg 134 40 0 1 0 1;
+#X msg 199 40 0 0 1 1;
+#X msg 263 40 8;
+#X msg 144 74 1 -1;
+#X text 142 94 zero sum causes no output;
+#N canvas 208 165 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 75 INLET_0 list float;
+#X text 12 45 DESCRIPTION compute the center of gravity of a list of
+floats;
+#X text 12 95 OUTLET_0 float;
+#X restore 417 124 pd META;
+#X connect 0 0 5 0;
+#X connect 2 0 5 0;
+#X connect 5 0 1 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;

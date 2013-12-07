@@ -1,0 +1,20 @@
+#N canvas 1 53 515 325 10;
+#X obj -8 -53 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text -3 -9 author: mrtoftrash@gmail.com;
+#X text -3 2 version: 2009-04-14 (initial release);
+#X text -3 -54 description: forwards all incomming OSC messages to
+matching params.;
+#X text -3 -20 tags: routing param OSC;
+#X obj -3 81 tof/OSCToParam 3475;
+#X text 137 72 All OSC messages received on port 3475 will be forwarded
+to matching params.;
+#N canvas 237 203 494 344 META 0;
+#X text 12 95 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 55 LICENSE GPL v2;
+#X text 12 75 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 5 KEYWORDS control network;
+#X text 12 25 DESCRIPTION forward all incomming OSC messages to matching
+params;
+#X restore 444 238 pd META;

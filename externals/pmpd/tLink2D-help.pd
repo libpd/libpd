@@ -1,0 +1,29 @@
+#N canvas 712 340 590 388 10;
+#X text 181 337 1 : distance between the 2 masses;
+#X text 181 309 2 : elongation speed of the link;
+#X text 181 281 3 : orientation of the link;
+#X text 182 257 4 : position of the center of the link;
+#X text 181 39 link2D : get position of masses \, output forces;
+#X text 216 12 link between 2 masses;
+#X text 181 67 1 : name;
+#X text 185 162 change position of mass 1;
+#X msg 57 131 bang;
+#X text 182 127 compute and output forces \, according to the last
+masses positions;
+#X text 206 83 you can use it in pd to send messages / bang / etc to
+the lia. this is for simplifying connection.;
+#X msg 58 162 position2D $f1 $f2;
+#X msg 62 194 position2D $f1 $f2;
+#X text 184 194 position of mass 2;
+#X obj 25 220 tLink2D;
+#X floatatom 25 339 5 0 0 0 - - -;
+#X floatatom 37 311 5 0 0 0 - - -;
+#X floatatom 49 284 5 0 0 0 - - -;
+#X obj 62 258 unpack s f f;
+#X connect 8 0 14 0;
+#X connect 11 0 14 0;
+#X connect 12 0 14 1;
+#X connect 14 0 15 0;
+#X connect 14 1 16 0;
+#X connect 14 2 17 0;
+#X connect 14 3 18 0;

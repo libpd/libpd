@@ -1,0 +1,28 @@
+0.12
+  fixed coordinates for GOP support
+0.11
+  added option to hide the graphic parts ( embedded list )
+  scroll by numbers
+0.10
+  added GOP support
+0.9
+  do not output directories ( for clicks and seeks )
+  fixed cut&paste of playlists
+0.8
+  added colors and font properties 
+  added a "font" message
+  added a "sort" message ( using alphabetical or creation order )
+0.7
+  adapted for pd 0.37
+0.6
+  added properties menu
+0.5
+  handle location messages with wrong argument
+0.4
+  added location message + fix memory allocation problems
+0.3
+  fixed crash when list is empty
+0.2
+  fixed extension saving ( all ---> ll )
+0.1
+  first implementation

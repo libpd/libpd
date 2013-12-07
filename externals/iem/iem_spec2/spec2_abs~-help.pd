@@ -1,0 +1,14 @@
+#N canvas 52 28 470 264 10;
+#X text 102 53 no arg;
+#X text 83 169 IEM KUG;
+#X text 67 157 musil;
+#X text 97 157 @;
+#X text 103 157 iem.at;
+#X text 66 179 Graz \, Austria;
+#X text 18 146 (c) Thomas Musil 2000 - 2006;
+#X text 183 49 like;
+#X obj 29 52 spec2_abs~;
+#X text 30 16 spec2_abs~;
+#X obj 226 52 abs~;
+#X text 109 25 with (blocksize/2 + 1) bins;
+#X text 106 14 take absolute value of a signal spectrum;

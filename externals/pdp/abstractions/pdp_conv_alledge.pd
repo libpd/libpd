@@ -1,0 +1,28 @@
+#N canvas 245 202 522 199 10;
+#X obj 29 17 inlet;
+#X obj 29 156 outlet;
+#X obj 29 97 pdp_conv;
+#X msg 95 36 hmask 0.33 0.33 0.33;
+#X msg 95 59 vmask -0.33 -0.33 -0.33;
+#X obj 29 126 pdp_add;
+#X obj 95 13 loadbang;
+#X obj 292 34 int;
+#X obj 292 56 * 2;
+#X obj 292 79 - 1;
+#X obj 292 12 inlet;
+#X text 101 115 pdp_alledge is an all edge sensitive convolution filter
+using pdp_add and pdp_conv to compose a non separable edge detection
+convolution mask (pdp_conv can only compute separable convolution masks).
+the right inlet sets number of times the filter is run (2n-1);
+#X connect 0 0 2 0;
+#X connect 0 0 5 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 5 0 1 0;
+#X connect 6 0 3 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 2 1;
+#X connect 10 0 7 0;

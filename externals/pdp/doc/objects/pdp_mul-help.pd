@@ -1,0 +1,28 @@
+#N canvas 224 229 462 390 10;
+#X msg 130 53 start;
+#X msg 177 53 stop;
+#X obj 130 85 pdp_help_input;
+#X obj 130 345 pdp_help_output;
+#X obj 174 179 pdp_reg;
+#X obj 248 142 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 281 140 click here;
+#X obj 130 310 pdp_gain;
+#X floatatom 181 282 5 0 0;
+#X text 282 216 multiplies 2 packets;
+#X obj 130 212 pdp_mul;
+#X msg 181 256 2;
+#X floatatom 40 150 5 0 0;
+#X msg 40 177 chanmask \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 10 0;
+#X connect 2 0 4 1;
+#X connect 4 0 10 1;
+#X connect 5 0 4 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 1;
+#X connect 10 0 7 0;
+#X connect 11 0 8 0;
+#X connect 12 0 13 0;
+#X connect 13 0 10 0;

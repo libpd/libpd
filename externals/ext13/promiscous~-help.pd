@@ -1,0 +1,20 @@
+#N canvas 0 31 411 264 10;
+#X obj 89 151 dac~;
+#X text 15 19 promiscous~ converts all network traffic;
+#X text 15 41 from a given interface to signal.;
+#X text 15 196 pd must run with root permissions \, to catch the traffic
+;
+#X obj 100 93 promiscous~ eth0;
+#N canvas 421 178 494 344 META 0;
+#X text 12 115 RELEASE_DATE 2009-06-12;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 95 AUTHOR d13@klingt.org;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION convert all network traffic from a given
+interface to a signal;
+#X text 12 75 OUTLET_0 signal;
+#X text 12 5 KEYWORDS signal network;
+#X restore 354 237 pd META;
+#X connect 4 0 0 0;
+#X connect 4 0 0 1;

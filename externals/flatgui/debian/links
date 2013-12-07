@@ -1,0 +1,3 @@
+usr/lib/pd/extra/template/README.txt        usr/share/doc/pd-template/README
+usr/lib/pd/extra/template/examples          usr/share/doc/pd-template/examples
+usr/share/common-licenses/GPL-2             usr/lib/pd/extra/template/LICENSE.txt

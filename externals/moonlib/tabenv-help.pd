@@ -1,0 +1,35 @@
+#N canvas 1 88 534 360 10;
+#X text 22 332 (c) Antoine Rousseau 2001;
+#X obj 21 19 tabenv;
+#X text 78 21 A envelope follower for table (not in real-time).;
+#X text 35 65 args: arrayname [computation_num_points [output_period]]
+;
+#X text 147 151 change the array;
+#X msg 64 181 reset;
+#X msg 64 152 set Array1;
+#X obj 64 255 tabenv Array0;
+#X floatatom 64 283 5 0 0 0 - - -;
+#X msg 64 209 0 44100;
+#X text 125 209 compute 1 sec from the beginning;
+#X text 126 181 reset the computation buffers;
+#X obj 258 86 env~;
+#X text 294 85 );
+#X text 217 86 (like;
+#X text 151 84 );
+#X text 47 86 (like;
+#X obj 90 86 tabplay~;
+#X text 79 38 (in fact it's a mix between tabplay and env~);
+#N canvas 379 147 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Antoine Rousseau;
+#X text 12 125 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION dump the contents of a table as a list;
+#X text 12 65 INLET_0 set reset list;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control array;
+#X restore 471 332 pd META;
+#X connect 5 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 9 0 7 0;

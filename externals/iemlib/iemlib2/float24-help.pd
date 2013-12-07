@@ -1,0 +1,88 @@
+#N canvas 0 26 829 358 10;
+#X obj 14 95 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 11 6 float24;
+#X floatatom 73 259 9 0 0 0 - - -;
+#X obj 14 117 float24 0.999999 762;
+#X obj 26 191 -;
+#X obj 14 145 t b f;
+#X obj 14 167 1;
+#X obj 150 116 float 1;
+#X obj 150 96 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 162 186 -;
+#X obj 150 140 t b f;
+#X obj 150 162 1;
+#X text 200 112 then save and close the patch;
+#X text 200 123 then open the pach \, and click on both bangs;
+#X text 200 88 try to type the argument "0.999 999 762" without the
+spaces;
+#X text 201 100 into a float-object \,;
+#X obj 587 123 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 587 167 9 0 0 0 - - -;
+#X obj 587 144 float24 -12.3 4 56;
+#X obj 588 194 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 588 238 11 0 0 0 - - -;
+#X obj 588 264 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 588 330 11 0 0 0 - - -;
+#X obj 588 215 float24 0.00314159 26538;
+#X obj 588 285 float24 3.14159 26538;
+#X obj 588 308 cos;
+#X obj 584 16 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 584 82 11 0 0 0 - - -;
+#X obj 584 60 cos;
+#X obj 584 37 float 1.5708;
+#X obj 669 18 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 669 84 11 0 0 0 - - -;
+#X obj 669 62 cos;
+#X obj 669 39 float24 1.5707 963268;
+#X text 321 227 IEM KUG;
+#X text 305 215 musil;
+#X text 335 215 @;
+#X text 341 215 iem.at;
+#X text 256 204 (c) Thomas Musil 2000 - 2005;
+#X text 304 237 Graz \, Austria;
+#N canvas 496 267 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 115 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control storage;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION concatenate a list of float fragment strings
+to a 23 bit accurate mantissa;
+#X text 12 75 INLET_0 float bang;
+#X text 12 95 OUTLET_0 float;
+#X restore 780 338 pd META;
+#X text 79 7 concatenate a list of float-fragment-strings to a 23 bit
+accurate mantissa (usefull to save a number into an object with more
+than 6 decimals [7 .. 8 decimals]);
+#X connect 0 0 3 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 1 4 1;
+#X connect 6 0 4 0;
+#X connect 7 0 10 0;
+#X connect 8 0 7 0;
+#X connect 9 0 2 0;
+#X connect 10 0 11 0;
+#X connect 10 1 9 1;
+#X connect 11 0 9 0;
+#X connect 16 0 18 0;
+#X connect 18 0 17 0;
+#X connect 19 0 23 0;
+#X connect 21 0 24 0;
+#X connect 23 0 20 0;
+#X connect 24 0 25 0;
+#X connect 25 0 22 0;
+#X connect 26 0 29 0;
+#X connect 28 0 27 0;
+#X connect 29 0 28 0;
+#X connect 30 0 33 0;
+#X connect 32 0 31 0;
+#X connect 33 0 32 0;

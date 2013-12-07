@@ -1,0 +1,15 @@
+#this file starts with the changes for version 0.14 because i was too lazy before:
+
+0.14
+  included --prefix option in configure/makefile
+  ossmixer 
+
+0.15
+  send13 / receive13 (s13/r13) like s/r with "set"
+
+0.16 
+  cdplayer for linux-atapi-cdrom-playing
+
+0.17 
+  minor bugfixes in scramble~
+

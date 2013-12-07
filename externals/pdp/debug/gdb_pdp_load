@@ -1,0 +1,29 @@
+cd ~/pd/packet
+file ~/pd/distro/pd/bin/pd.debug
+# file ~/pd/distro/pd/bin/pd
+#set args -noadc -nodac -lib pdp -lib opengl/pdp_opengl:scaf/pdp_scaf -nodac  -noadc -path abstractions:opengl/abstractions opengl/doc/examples/example06.pd
+set args -nodac -noadc -nomidi -lib pdp -path abstractions  ../deadlocktest.pd
+#set args -nodac -noadc -nomidi -lib pdp -path abstractions -nogui
+#set args -nodac -noadc -nomidi  -lib pdp -path abstractions  ../xvdualtest.pd
+#opengl/test/pdp_ogl_draw_limb.pd
+# set args  -lib pdp -nodac -noadc -path abstractions test/test_pdp_thread.pd
+# set args  -lib pdp -nodac -noadc test/test_pdp_ca.pd
+# set args -r 44100 -alsa -frags 64 -lib pdp -nodac -noadc test/test_pdp_qt_read.pd 
+# dir ~/pd/distro/pd/src
+dir include
+dir modules
+dir system
+dir system/mmx
+dir scaf/include
+dir scaf/pdp
+
+# until i figure out how to stop pd without hanging it
+# or set a breakpoint before a library is loaded
+# i'll use the bng_new routine (alt-b) to stop
+
+break bng_new
+
+# uncomment this to break in the library loader
+# break sys_load_lib
+
+

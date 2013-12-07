@@ -1,0 +1,40 @@
+#N canvas 0 26 663 491 12;
+#X obj 41 152 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 41 249 5 0 0 0 - - -;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-a1 6 float 1;
+#A 0 1.1 2.67143 3.24285 3.1 4.38571 8.67143;
+#X coords 0 10 5 0 200 140 1;
+#X restore 347 71 graph;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-a2 6 float 1;
+#A 0 0.0229077 0.204366 0.486501 0.0632986 0.204028 0.025319;
+#X coords 0 1 5 0 200 140 1;
+#X restore 347 240 graph;
+#X text 39 21 arbran :: generates a random variable that conforms to
+the piecewise probability density functions specified in two arrays
+;
+#X text 40 297 array1 has values between 0 and 10;
+#X text 40 317 array2 between 0 and 1 !;
+#X msg 99 152 pdfscale;
+#X text 41 389 array1 stores the values and array2 the corresponding
+probabilities (0 - 1) for each of that values \, use message 'pdfscale'
+to check (and adjust) the probability values to correct settings (the
+area below the curve has to be 1);
+#N canvas 293 158 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 45 DESCRIPTION generate a random variable conforming to
+the piecewise probability density functions specified in two arrays
+;
+#X text 12 95 INLET_0 bang pdfscale;
+#X text 12 115 OUTLET_0 float;
+#X text 12 5 KEYWORDS control random array;
+#X restore 605 463 pd META;
+#X obj 41 202 arbran \$0-a1 \$0-a2;
+#X connect 0 0 10 0;
+#X connect 7 0 10 0;
+#X connect 10 0 1 0;

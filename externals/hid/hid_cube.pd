@@ -1,0 +1,13 @@
+#N canvas 0 31 483 309 10;
+#X obj 72 63 inlet;
+#X obj 72 240 outlet;
+#X text 120 63 input range: 0 to 1;
+#X text 128 240 output range: 0 to 1;
+#X obj 72 166 pow 3;
+#X text 7 9 [hid_cube];
+#X obj 72 106 min 1;
+#X obj 72 126 max 0;
+#X connect 0 0 6 0;
+#X connect 4 0 1 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;

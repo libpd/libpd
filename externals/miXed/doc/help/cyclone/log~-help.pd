@@ -1,0 +1,62 @@
+#N canvas 0 26 809 409 10;
+#X text 15 35 Output the log (to a specified base) of a signal;
+#X obj 377 314 clip~ 0 1;
+#X floatatom 460 173 0 0 0 0 - - -;
+#X floatatom 439 326 0 0 0 0 - - -;
+#X obj 419 240 log~ 2;
+#X obj 411 171 line~ 1;
+#X msg 406 145 1 \, 1.8 3000 1 300;
+#X obj 19 116 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 19 386 dac~;
+#X obj 19 330 *~ 0.2;
+#X obj 19 243 *~ 440;
+#X msg 19 152 1.44 \, 4 3000;
+#X obj 19 174 line~ 1;
+#X obj 19 300 cycle~;
+#X obj 19 207 log~ 2;
+#X text 20 58 log~ is useful for generating curves from line~. In the
+example below \, log~ with an argument 2 (for log to the base 2) is
+used to generate a pitch glissando and a logarithmic amplitude envelope.
+;
+#X text 58 194 optional argument determines the base of the logarithm.
+If no argument is present \, e (the natural logarithm) is used. base
+can be changed via right inlet.;
+#X text 31 281 result goes from around 220 to 880 Hz;
+#X text 402 121 log amplitude envelope;
+#X text 103 152 pitch glissando;
+#X text 467 200 try different bases...the lower the base (above 1)
+the bigger the output. bases between 0 and 1 result in a negative output.
+;
+#X text 42 117 click to hear something;
+#X obj 439 296 Snapshot~ 50;
+#N canvas 309 151 494 374 META 0;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X text 12 45 DESCRIPTION output the log (to a specified base) of a
+signal;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X restore 752 381 pd META;
+#X connect 1 0 9 1;
+#X connect 2 0 4 1;
+#X connect 4 0 1 0;
+#X connect 4 0 22 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 11 0;
+#X connect 7 0 6 0;
+#X connect 9 0 8 0;
+#X connect 9 0 8 1;
+#X connect 10 0 13 0;
+#X connect 11 0 12 0;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 14 0 10 0;
+#X connect 22 0 3 0;

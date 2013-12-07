@@ -1,0 +1,5 @@
+shared/shared.h
+shared/common/loud.c
+shared/common/loud.h
+shared/common/os.c
+shared/common/os.h

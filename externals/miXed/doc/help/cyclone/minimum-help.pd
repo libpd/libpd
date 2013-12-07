@@ -1,0 +1,41 @@
+#N canvas 0 26 434 384 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 16 343 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 15 357 ___________________________________________________
+;
+#X obj 165 52 maximum;
+#X text 100 49 see also;
+#X obj 38 32 minimum;
+#X msg 83 114 1 2 3 4 3 2;
+#X floatatom 83 286 5 0 0 0 - - -;
+#X msg 21 144 bang;
+#X text 55 145 send most recent output again;
+#X floatatom 103 170 5 0 0 0 - - -;
+#X floatatom 127 221 5 0 0 0 - - -;
+#X text 174 221 set current value;
+#X text 146 180 otherwise output current val;
+#X text 99 35 output the smallest in a list of numbers;
+#X text 147 168 output if lower than current value \,;
+#N canvas 247 115 494 421 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION output the smallest in a list of numbers
+;
+#X text 12 65 INLET_0 list float bang;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 384 363 pd META;
+#X text 136 303 arg: float to set initial value against which;
+#X text 135 318 to compare the value at the left inlet;
+#X obj 83 251 minimum;
+#X connect 6 0 19 0;
+#X connect 8 0 19 0;
+#X connect 10 0 19 0;
+#X connect 11 0 19 1;
+#X connect 19 0 7 0;

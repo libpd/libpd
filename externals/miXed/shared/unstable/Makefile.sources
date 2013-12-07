@@ -1,0 +1,5 @@
+OTHER_SOURCES = \
+forky.c \
+fragile.c \
+fringe.c \
+loader.c

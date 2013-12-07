@@ -1,0 +1,32 @@
+#N canvas 473 208 581 484 10;
+#X obj 43 134 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 94 135 5 0 0 0 - - -;
+#X text 91 208 Reset To Initial Conditions;
+#X text 102 251 Modify Parameters;
+#X msg 88 191 reset 0.1 0.1;
+#X floatatom 115 419 10 0 0 0 Y - -;
+#X floatatom 43 388 10 0 0 0 X - -;
+#X text 19 50 (This attractor is not continuous);
+#X text 20 34 Chaos PD Externals - Copyright Michael McGonagle 2003
+;
+#X obj 43 151 metro 50;
+#X obj 18 150 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 25 83 examples/readme-fractals;
+#X text 21 19 Hopalong Attractor;
+#X msg 99 234 param -639.064 886.792 -150.226;
+#X obj 43 348 hopalong 0.1 0.1 -639.064 886.792 -150.226;
+#X obj 220 378 search-tools;
+#X connect 0 0 9 0;
+#X connect 1 0 9 1;
+#X connect 4 0 14 0;
+#X connect 9 0 14 0;
+#X connect 10 0 14 0;
+#X connect 13 0 14 0;
+#X connect 14 0 6 0;
+#X connect 14 1 5 0;
+#X connect 14 2 15 0;
+#X connect 14 3 15 1;
+#X connect 14 4 15 2;
+#X connect 15 0 14 0;

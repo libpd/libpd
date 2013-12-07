@@ -1,0 +1,29 @@
+#N canvas 655 0 575 333 10;
+#X obj 46 262 pdp_help_output;
+#X obj 46 149 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 174 71 dim 320 240;
+#X text 270 71 set packet dimensions;
+#X msg 174 98 type grey;
+#X msg 174 121 type yv12;
+#X text 270 100 generate greyscale;
+#X text 270 119 generate colour (default);
+#X msg 174 152 seed 123;
+#X text 270 152 set seed value;
+#X text 167 21 pdp_noise creates a random image (with uniform distribution
+between -1 and 1) when a bang is received;
+#X obj 46 198 pdp_plasma;
+#X floatatom 174 176 5 0 0 0 - - -;
+#X text 270 176 turbulence;
+#X obj 46 241 pdp_reg;
+#X obj 113 221 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X connect 1 0 11 0;
+#X connect 2 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
+#X connect 8 0 11 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 1;
+#X connect 14 0 0 0;
+#X connect 15 0 14 0;

@@ -1,0 +1,39 @@
+#N canvas 161 27 461 483 10;
+#X obj 5 6 cnv 15 450 30 empty empty [Scope~] 20 12 1 18 -233017 -66577
+0;
+#X obj 111 217 Scope~ 281 213 256 3 100 -1 1 0 0 0 0 0 255 0 0 0 255
+0;
+#X msg 202 74 bufsize 100;
+#X msg 212 101 range 1 2;
+#X msg 278 159 brgb 0 0 255;
+#X msg 263 139 frgb 0 255 0;
+#X text 248 122 colors;
+#X obj 22 80 osc~ 500;
+#X obj 25 51 hsl 100 18 20 500 1 1 empty empty frequency 5 8 1 10 -262131
+-1 -1 1200 0;
+#X obj 111 155 *~;
+#X obj 126 75 vsl 15 60 0.01 1 1 1 empty empty empty 0 -8 0 8 -225271
+-1 -1 4500 0;
+#X obj 422 11 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#N canvas 224 141 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 105 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal GUI max_compatible;
+#X text 12 65 INLET_0 signal bufsize range frgb brgb;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 45 DESCRIPTION scope;
+#X text 12 85 AUTHOR Krzysztof Czaja;
+#X restore 409 449 pd META;
+#X obj 253 451 pddp/helplink ggee/envgen;
+#X obj 394 48 pddp/dsp;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 1;

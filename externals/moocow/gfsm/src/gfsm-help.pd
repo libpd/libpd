@@ -1,0 +1,26 @@
+#N canvas 0 0 436 349 10;
+#X text 138 257 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 21 43 EXTERNALS:;
+#X obj 41 72 gfsm_alphabet;
+#X obj 41 98 gfsm_automaton;
+#X text 159 71 integer <-> atom mapping;
+#X obj 41 124 gfsm_state;
+#X text 161 125 automaton position;
+#X text 160 98 weighted finite state machine;
+#X text 21 194 SEE ALSO:;
+#X text 38 211 gfsmutils(1);
+#X text 100 7 : finite state machine external library;
+#X obj 40 150 gfsm_markov;
+#X text 161 151 trainable Markov chain;
+#X text 38 227 http://www.ling.uni-potsdam.de/~moocow/projects/gfsm
+;
+#X obj 66 7 gfsm;
+#N canvas 446 120 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 45 DESCRIPTION finite state machine external library;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0;
+#X restore 375 308 pd META;

@@ -1,0 +1,91 @@
+#N canvas 3 62 1018 535 12;
+#X msg 134 135 disconnect;
+#X obj 255 328 unpack 0 0 0 0;
+#X floatatom 255 351 3 0 0 0 - - -;
+#X floatatom 286 351 3 0 0 0 - - -;
+#X floatatom 318 351 3 0 0 0 - - -;
+#X floatatom 350 351 3 0 0 0 - - -;
+#X text 219 351 from;
+#X msg 71 72 connect 132.205.142.12 80;
+#X obj 235 256 tcpclient;
+#X obj 275 307 tgl 15 0 empty empty connected 18 7 0 8 -24198 -241291
+-1 0 1;
+#X text 187 21 connect with an IP address and port number;
+#X msg 46 47 connect www.concordia.ca 80;
+#X text 306 255 tcpclient opens a tcp socket to send and receive bytes
+on;
+#X text 44 257 See also:;
+#X msg 21 22 connect 127.0.0.1 9997;
+#X obj 45 279 tcpreceive;
+#X text 320 158 semicolon-terminated string for netserver or netreceive
+;
+#X msg 159 160 send 49 127 128 51 59;
+#X obj 45 302 tcpserver;
+#X text 593 24 tcpclient can connect to a server and send and receive
+messages as lists of bytes. Any integer value between 0 and 255 can
+be transmitted or received.;
+#X msg 199 184 71 69 84 32 104 116 116 112 58 47 47 47 105 110 100
+101 120 46 104 116 109 108 13 10;
+#X text 226 220 'send' prefix is optional;
+#X obj 235 402 spigot;
+#X obj 274 379 tgl 15 0 empty empty enable_print 18 7 0 8 -24198 -241291
+-1 0 1;
+#X floatatom 797 190 9 0 0 0 - - -;
+#X msg 110 95 send 71 69 84 32 104 116 116 112 58 47 47 47 105 110
+100 101 120 46 112 104 112 13 10 13 10;
+#X text 40 399 2010/03/01 Martin Peach;
+#X text 418 430 Attempting to print long messages can hang Pd!;
+#X obj 797 166 route sent;
+#X text 869 190 sent bytes;
+#X floatatom 797 347 3 0 0 0 - - -;
+#X floatatom 851 347 3 0 0 0 - - -;
+#X floatatom 824 347 3 0 0 0 - - -;
+#X obj 797 268 route address;
+#X obj 797 296 unpack f f f f f;
+#X floatatom 878 347 3 0 0 0 - - -;
+#X floatatom 906 321 6 0 0 0 - - -;
+#X text 904 347 ip;
+#X text 952 320 port;
+#X obj 235 431 print tcpclient:received;
+#X obj 520 344 spigot;
+#X obj 559 321 tgl 15 0 empty empty enable_print 18 7 0 8 -24198 -241291
+-1 0 1;
+#X obj 520 373 print tcpclient:status;
+#X text 286 401 Received messages are output as a stream of bytes;
+#X text 515 103 GET http://index.phpCRLF;
+#X text 45 477 NOTE: outlet's #2 & #3 are for compatibility with mrpeach's
+net objects. all information is available via outlet#4 as well!;
+#X text 41 414 2010/10/08 Roman Haefeli;
+#X obj 295 281 s \$0.tcpclient.o4;
+#X obj 520 298 r \$0.tcpclient.o4;
+#X obj 797 242 r \$0.tcpclient.o4;
+#X obj 797 142 r \$0.tcpclient.o4;
+#X connect 0 0 8 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 1 3 5 0;
+#X connect 7 0 8 0;
+#X connect 8 0 22 0;
+#X connect 8 1 1 0;
+#X connect 8 2 9 0;
+#X connect 8 3 47 0;
+#X connect 11 0 8 0;
+#X connect 14 0 8 0;
+#X connect 17 0 8 0;
+#X connect 20 0 8 0;
+#X connect 22 0 39 0;
+#X connect 23 0 22 1;
+#X connect 25 0 8 0;
+#X connect 28 0 24 0;
+#X connect 33 0 34 0;
+#X connect 34 0 30 0;
+#X connect 34 1 32 0;
+#X connect 34 2 31 0;
+#X connect 34 3 35 0;
+#X connect 34 4 36 0;
+#X connect 40 0 42 0;
+#X connect 41 0 40 1;
+#X connect 48 0 40 0;
+#X connect 49 0 33 0;
+#X connect 50 0 28 0;

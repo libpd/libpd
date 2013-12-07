@@ -1,0 +1,7 @@
+#define PDDP_VERSION "0.1"
+#define PDDP_RELEASE "alpha"
+#define PDDP_BUILD 3
+
+#if 0
+PDDP_SNAPSHOT = 0.1-alpha3
+#endif

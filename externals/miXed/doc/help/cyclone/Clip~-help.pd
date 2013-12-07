@@ -1,0 +1,54 @@
+#N canvas 0 26 475 245 10;
+#X text 135 149 Optional arguments set the range. Default is 0 \, 0
+;
+#N canvas 247 115 494 390 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible filter;
+#X text 12 45 DESCRIPTION constrain a signal within a certain range
+;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 65 INLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 425 225 pd META;
+#X text 15 35 Constrain a signal within a certain range;
+#X obj 67 149 Clip~ -1 1;
+#X obj 67 216 tabwrite~ \$0-a;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-a 100 float 3;
+#A 0 -0.0359154 -0.0299979 -0.0239626 -0.0178332 -0.0116339 -0.00538884
+0.000877383 0.0071402 0.013375 0.0195573 0.0256626 0.031667 0.037547
+0.0432796 0.0488422 0.054213 0.0593709 0.0642958 0.0689681 0.0733685
+0.0774808 0.0812888 0.0847776 0.0879334 0.090744 0.0931982 0.0952864
+0.0970005 0.0983322 0.0992777 0.0998333 0.0999968 0.0997677 0.0991469
+0.0981367 0.0967412 0.0949657 0.0928162 0.0903018 0.0874329 0.0842206
+0.0806776 0.0768177 0.0726562 0.0682094 0.0634947 0.0585301 0.0533352
+0.0479309 0.0423384 0.0365796 0.0306773 0.0246544 0.0185347 0.0123421
+0.006101 -0.000164146 -0.00642858 -0.0126677 -0.0188571 -0.0249724
+-0.0309896 -0.0368852 -0.042636 -0.0482194 -0.0536127 -0.0587954 -0.0637472
+-0.0684486 -0.0728812 -0.0770276 -0.0808716 -0.084398 -0.087593 -0.090443
+-0.0929374 -0.0950669 -0.096823 -0.0981989 -0.0991891 -0.0997899 -0.0999988
+-0.099815 -0.0992384 -0.0982713 -0.0969184 -0.0951848 -0.0930775 -0.0906047
+-0.087776 -0.0846027 -0.0810971 -0.0772726 -0.0731438 -0.0687278 -0.0640419
+-0.0591046 -0.0539352 -0.048554 -0.0429821;
+#X coords 0 1 99 -1 100 75 1;
+#X restore 306 58 graph;
+#X obj 83 193 metro 150;
+#X obj 83 173 tgl 15 1 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 67 76 osc~ 440;
+#X floatatom 136 69 5 0 0 0 - - -;
+#X obj 67 114 *~ 0;
+#X obj 136 90 / 10;
+#X connect 3 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 6 0;
+#X connect 8 0 10 0;
+#X connect 9 0 11 0;
+#X connect 10 0 3 0;
+#X connect 11 0 10 1;

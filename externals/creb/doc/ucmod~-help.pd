@@ -1,0 +1,17 @@
+#N canvas 0 0 404 300 10;
+#X text 84 18 unit circle modulator. (1+r conj(z)/(1+rz);
+#N canvas 331 92 494 366 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 145 OUTLET_1 signal;
+#X text 12 5 KEYWORDS signal abstraction needs_work (example patch)
+;
+#X text 12 45 DESCRIPTION unit circle modulator;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 352 275 pd META;
+#X obj 95 121 ucmod~;

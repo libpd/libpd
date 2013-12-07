@@ -1,0 +1,2 @@
+This directory contains input/output modules for image packets.
+Most of this is platform dependent stuff, and will be conditionally compiled.

@@ -1,0 +1,172 @@
+last modified: 2003/02/27
+
+
+ChangeLog:
+
+v0.1:	2002/11/23
+	initial release
+
+v0.2:	2002/11/27
+ 	added support for BC_YUV422 video and audio playback in pdp_qt /
+	pdp_qt~ (thanks to Yves Degoyon for contrib)
+	some makefile cleanups
+
+v0.3:	2002/11/28
+	pdp_qt / pdp_qt~: fixed some bugs in audio playback and added 
+	suport for BC_RGB888 colormodel (loads as greyscale until there 
+	is internal support for a rgb image packet)
+
+v0.4:	2002/12/03
+	code style changes
+	added scaf / cellular automata support. 
+	added some basic filter abstractions. (blur, phase)
+
+v0.5:	2002/12/13
+	first attempt at a documentation (see doc/)
+	added support for processing in separate lower priority thread 
+	with a packet dropping mechanism to avoid audio dropouts.
+	added pdp_control object for controlling pdp's scheduling and
+	detecting packet drops
+	pdp api cleanup (name changes)
+	added some more filter abstractions 
+	(motion blur/phase, emboss, sobel, edge)
+	added pdp_route
+
+v0.6:	2003/01/03
+	added pdp_gain, finished pdp_gradient
+	added channel method to pdp_v4l, display method to pdp_xv
+	added some examples in doc/examples
+	fixed gcc3 compilation probs
+	fixed some pdp_qt bugs (shouldn't crash any more)
+
+v0.7:	2003/01/12
+	moved image format conversion routines to pdp_llconv.c
+	added support for rgb->PDP_IMAGE_YV12 in pdp_v4l, pdp_qt
+	added pdp_grey, pdp_chrot, pdp_scope~
+	moved mmx wrappers to pdp_imageproc_mmx.c
+	added portable c code in pdp_imageproc_portable.c
+	added mmx code for pdp_gain
+	fixed bug in pdp_mix/pdp_mix2
+	fixed bug in pdp_bq (removed state reset)
+	moved CA stuff to separate lib (see scaf/)
+	(0.7.1) fixed rgb colour conversion bug
+
+v0.8:	2003/02/02
+	added pdp_scale, pdp_zoom, pdp_rotate, pdp_zrot, pdp_scan~, pdp_cheby
+	added support for 1D ca's + shift compensation in pdp_ca
+	thread processing is off by default now
+	added cursor method to pdp_xv, freq method to pdp_v4l (thanks CK)
+	added pdp_sdl (thanks Martin Pi)
+	added some example patches in doc/examples
+	(0.8.1) fixed scaf + gcc<3 compilation problem
+	(0.8.2) fixed compile prob + added documentation
+	(0.8.3) completed documentation
+
+v0.9:	2003/02/27
+	added pdp_scanxy~, pdp_invert
+	now uses autoconf for configuration
+	standard "make install" target
+	optional compililation for external dependencies (xv,qt,v4l,sdl)
+	experimental OSX port (without i/o)
+	fixed crash when closing xv window manually
+	added mouse event output to pdp_xv
+	pdp_ca now automaticly compiles rule files
+	fixed image dimension crashes
+	fixed pdp_xv bang crash
+	added pdp_grey2mask
+	added pdp_slice_cut/pdp_slice_glue (experimental/nondoc)
+
+v0.10:	2003/03/06
+	modules code reorganization
+	removed pdp_affine object and added compatibility object based on pdp_cheby
+	added pdp_mchp and PDP_IMAGE_MCHP packet format (experimental)
+	added pdp_and, pdp_or, pdp_xor, pdp_not, pdp_bitmask, pdp_bitdepth
+	added base class for pdp objects
+	added incremental garbage collector
+	added support for "not so pure" data packets
+	added opengl subproject containing a pdp_glx display object
+	added a PDP_TEX opengl texture packet (opengl lib)
+	added PDP_IMAGE_GREY8, PDP_IMAGE_RGB8, PDP_IMAGE_RGBA8 packets
+	(0.10.1) fixed (fatal) bug in pdp_base, and bug in pdp_noise (non-mmx)
+	(0.10.1) pdp_glx now compiles on mac osx
+
+v0.11:	2003/04/08
+	updated pdp_trigger to behave like pd's trigger object
+	added automatic philips web cam detection
+	removed "zombie" packet passing and made pool manager thread safe
+	(this required an api change: backward compat for pdp thread proc broken)
+	added gem style object rendering & transformation objects (opengl lib)
+	removed pdp_gradient binary module (it is now an abstraction)
+	added pdp_loop (a packet array / loop sampler)
+	added pdp_description
+	added support for libquicktime on osx (thanks Jamie)
+	added support for accumulation packets (dpd) (still experimental)
+	(0.11.1) fixed some packet registering and frame dropping bugs	
+
+v0.12:	2003/06/21
+	added support for high level packet conversion (mime-like descriptions)
+	added pdp_convert
+	added "memlimit" message to pdp_control (to limit pdp's mem usage)
+	maximum nb of packets is now only limited by the memlimit
+	added new basic type: bitmap/*/* (PDP_BITMAP) for standard fourcc formats
+	cleaned up pdp_xv/glx  (x window glue code reuse)
+	fixed rgb/bgr bug in conversion code
+	added pdp_abs, pdp_zthresh
+	completed dpd framework (for context based processing, i.e. 3dp)
+	rewrote gem like 3d library on top of dpd (it's almost stable)
+	added a matrix type (float/double real/complex) for linear algebra stuff
+	added matrix processors pdp_m_*: mv, mm, +=mm, LU, LU_inverse, LU_solve 
+	pdp_cheby now accepts an array with a mapping function
+	added pdp_plasma
+	fixed outlet_pdp bug (this caused all kind of weirdness)
+	added embedded scheme interpreter for testing (see the guile/ dir)
+	added simple forth-style scripting language (pdp's rpn calculator)
+	added png load/save support to pdp_reg
+	(0.12.1) fixed OSX compilation probs
+	(0.12.1) fixed texture coordinate bugs (pdp_opengl)
+	(0.12.1) added multipass rendering support (pdp_opengl)
+	(0.12.1) pdp_cog (Johannes Taelman's gaussian blob estimator)
+	(0.12.1) pdp_sthresh, hthresh, positive, offset, sign
+	(0.12.1) pdp_agc, contrast, flip_lr, flip_tb
+	(0.12.1) added pdp and pdp_opengl examples
+	(0.12.2) pdp_histo, dither, pointcloud
+	(0.12.2) more examples & added some conversion code
+	(0.12.2) fixed c++ compilation issues
+
+0.12.3:	2004/01/13
+	various bug fixes
+	added pdp_grey2array
+	fixed window event routing problem (3dp)
+	cleaned up source tree (for libpdp)
+	added pdp_netsend / pdp_netreceive to send packets over udp (experimental)
+	more forth scripting stuff
+	added "norm" message and rgb32 colour model to pdp_v4l
+	added keyboard and mouse motion events to pdp_xv and pdp_glx
+	compiles without x support, for use with sdl (i.e. svgalib)
+	more packet forth work
+	started sliceforth library (core signal processing routines)
+	finished pd interface to forth scripting language
+	fixed some crashes with pdp_xv and pdp_glx
+	removed "passing packet" hack
+	added minimal OO support to packet forth
+	moved all the forth stuff to libpdp project (no longer in pdp distro)
+	fixed (worked around) pdp_opengl deadlock bug on startup
+	pdp_opengl still not working properly
+
+	
+0.12.4:	2004/07/09
+	build fixes
+	
+0.12.5:
+	build fixes
+	libquicktime api change
+	help patches renamed xxx.pd -> xxx-help.pd
+	pd-0.40 compatibility
+	sdl delayed window creation
+
+0.12.6:
+        fixes to pdp_imageproc from John Harrison
+        64-bit support
+        other random fixes
+        build fixes
+

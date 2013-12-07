@@ -1,0 +1,96 @@
+These are the objects that come with the zexy-external
+
+============================ DSP~ ===============================
+
+---------------------------- IO~ --------------------------------
+sfplay		play back (multi-channel) soundfiles
+sfrecord	record (multichannel) soundfiles
+
+------------------------ generators~ ----------------------------
+dirac~		dirac-pulse
+step~		unity step
+noish~		downsampled noise (hold)
+noisi~		downsampled noise (interpolate)
+
+------------------------ processing~ ----------------------------
+limiter~	a limiter/compressor module
+quantize~	quantizes signals
+swap~		bytes swap a 16bit-signal
+blockmirror~	time-reverse a signal-vector (1,2,...,64 -> 64,63,...,1)
+blockswap~	swap the upper and lower half of a signal-vector
+z~		samplewise delay
+
+------------------------- analytic~ -----------------------------
+sigzero~	detects whether a signal is zero throughout the vector or not
+pdf~		probability density function 
+envrms~		like env~, but outputting rms instead of dB
+avg~		arithmetic mean of 1 signal-vector
+tavg~		arithmetic mean between two bangs
+dfreq~		frequency detector
+
+------------------------- sigbinops~ ----------------------------
+>~, <~, ==~, &&~, ||~	logical operators
+abs~		absolute value of a signal
+sgn~		signum of a signal
+
+--------------------------- misc~ -------------------------------
+nop~		no-operation
+pack~		convert a signal to a list of floats
+unpack~		convert a list of floats to a signal
+multiline~	multiply a number of signals with scalars (interpolated)
+multiplex~	multiplex 1-of-n inlets to 1 outlet
+demultiplex~	demultiplex 1 inlet to 1-of-n outlets
+
+
+========================= control ==============================
+
+-------------------------- basic -------------------------------
+nop		no-operation
+repeat		repeat a message several times
+lister		store lists (like "float" for floats)
+repack		(re)pack atoms to packages of a given size
+packel		get a specified element of a list
+drip		extract the atoms of a package (opt. scheduled)
+length		get the length of a list
+niagara		split 1 packages into 2
+glue		append a package to another (glue them together)
+segregate	segregate the input to various outlets, depending on the type
+any2list	convert "anythings" to "lists"
+list2int	cast each float of a list to integer
+atoi		ascii to integer
+strcmp		compare lists as strings
+list2symbol	convert a list into a single symbol
+symbol2list	convert a symbol to a list
+fifop		list FIFO with priorities
+lifop		list LIFO with priorities
+
+------------------------ advanced ------------------------------
+tabdump		dump out a table as a list of floats
+tabset		set a table with a list of floats
+tabminman	get minimum and maximum of a table
+makesymbol	concatenate lists to formatted symbols
+date		get system date
+time		get system time
+index		map symbols to indices
+msgfile		a powerful "textfile" derivative
+freadln		a simplified "textfile" derivative for reading line-wise
+fwriteln	a simplified "textfile" derivative for writing line-wise
+demultiplex	demultiplex the input to a specified outlet
+lpt		write to the (parallel) port
+operating_system      get the current OS
+
+
+-------------------------- maths --------------------------------
+mavg		moving average filter for floats
+mean		get the mean value of a list of floats
+sum		get the sum of a list of floats
+minmax		get minimum and maximum of a list of floats
+sort		shell-sort a list of floats
+urn		unique random numbers
+prime		test whether a number is prime or not
+wrap		wrap the float-input between to boundaries
+.		scalar multiplication of vectors (=lists of floats)
+deg2rad		convert between degree and radiant
+rad2deg		convert between radiant and degree
+cart2pol, pol2cart, cart2sph, sph2cart, pol2sph, sph2pol	convert between coordinate systems (cartesian, polar, shperic)
+

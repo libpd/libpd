@@ -1,0 +1,38 @@
+#N canvas 327 276 676 444 10;
+#X obj 41 318 pdp_reg;
+#X obj 41 287 bng 15 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X msg 85 15 start;
+#X msg 135 15 stop;
+#X obj 85 53 pdp_help_input;
+#X obj 41 359 pdp_help_output;
+#X text 121 90 pdp_reg works in the same way as the pd float or int
+objects;
+#X text 271 124 bang: sends stored packet to output;
+#X text 271 109 pdp: stores packet and sends to output;
+#X text 271 145 pdp: stores a new packet;
+#X text 121 111 left intlet (hot):;
+#X text 120 145 right intlet (cold):;
+#X msg 122 236 load_png \$1;
+#X obj 122 212 openpanel;
+#X obj 122 190 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 219 189 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 219 235 save_png \$1;
+#X text 331 226 as a png image file.;
+#X text 332 211 you can save the contents of the register;
+#X obj 219 211 savepanel;
+#X msg 219 266 save_png /tmp/snap.png;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 1;
+#X connect 12 0 0 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 15 0 19 0;
+#X connect 16 0 0 0;
+#X connect 19 0 16 0;
+#X connect 20 0 0 0;

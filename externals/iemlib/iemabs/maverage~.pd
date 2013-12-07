@@ -1,0 +1,32 @@
+#N canvas 167 77 544 344 10;
+#X text 28 56 ~~in~~;
+#X obj 30 71 inlet~;
+#X obj 30 248 outlet~;
+#X text 28 262 ~~out~~;
+#X obj 78 92 inlet;
+#X text 91 77 average-time <float> [ms];
+#X text 157 168 changing the average-time resets the calculation the
+first average-time milliseconds !!;
+#X obj 30 208 delwrite~ \$0-avrg_del \$1;
+#X obj 78 138 delread~ \$0-avrg_del \$2;
+#X text 191 208 1.arg: max. average-time <float> [ms] \; 2.arg: average-time
+<float> [ms];
+#X obj 78 113 t f f;
+#X text 80 11 moving average filter with IIR-solution;
+#X text 209 42 N = 0.001 * average-time_ms * samplerate;
+#X text 185 27 y[n] = (x[n] + x[n-1] + x[n-2] +...+ x[n-N]) / N;
+#X obj 30 165 mov_avrg_kern~ \$2;
+#X text 10 10 maverage~;
+#X text 186 295 IEM KUG;
+#X text 170 283 musil;
+#X text 200 283 @;
+#X text 206 283 iem.at;
+#X text 121 272 (c) Thomas Musil 2000 - 2005;
+#X text 169 305 Graz \, Austria;
+#X connect 1 0 7 0;
+#X connect 1 0 14 0;
+#X connect 4 0 10 0;
+#X connect 8 0 14 1;
+#X connect 10 0 8 0;
+#X connect 10 1 14 2;
+#X connect 14 0 2 0;

@@ -1,0 +1,106 @@
+#N canvas 25 206 921 653 10;
+#X obj 289 329 xfm~ 0 0 0 0;
+#X obj 279 280 *~;
+#X obj 398 233 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 862.744 256;
+#X obj 306 279 *~;
+#X obj 398 250 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 795.103 256;
+#X obj 332 279 *~;
+#X obj 399 266 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 23.7527 256;
+#X obj 359 278 *~;
+#X obj 398 284 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 224.294 256;
+#X obj 251 170 xfm~ 0 0 0 0;
+#X obj 392 111 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 703.454 256;
+#X obj 392 132 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 675.315 256;
+#X obj 304 138 *~;
+#X obj 393 148 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 51.5902 256;
+#X obj 331 137 *~;
+#X obj 392 166 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 49.5265 256;
+#X obj 191 403 vols~;
+#X floatatom 233 374 5 0 0;
+#X obj 195 525 dac~;
+#X obj 274 51 vd~ del1;
+#X obj 274 24 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 73 256;
+#X obj 339 23 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -6 0 10
+-262144 -1 -1 339 256;
+#X obj 339 50 vd~ del2;
+#X obj 296 393 delwrite~ del1 1000;
+#X obj 448 393 delwrite~ del2 1000;
+#X msg 136 125 type 0;
+#X msg 137 146 type 1;
+#X obj 464 110 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 21700 1;
+#X obj 464 130 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 21600 1;
+#X obj 463 150 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 15300 1;
+#X obj 464 168 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 15200 1;
+#X obj 465 232 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 22200 1;
+#X obj 465 252 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 22000 1;
+#X obj 464 271 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 13400 1;
+#X obj 465 289 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 18900 1;
+#X text 479 29 2 xfm oscillators coupled by 2 delay lines;
+#X obj 188 475 *~;
+#X obj 217 474 *~;
+#X obj 270 458 osc~;
+#X obj 269 433 hsl 300 15 0.1 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 18900 1;
+#X connect 0 0 23 0;
+#X connect 0 1 24 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 1;
+#X connect 3 0 0 1;
+#X connect 4 0 3 1;
+#X connect 5 0 0 2;
+#X connect 6 0 5 1;
+#X connect 7 0 0 3;
+#X connect 8 0 7 1;
+#X connect 9 0 3 0;
+#X connect 9 0 5 0;
+#X connect 9 0 16 0;
+#X connect 9 1 1 0;
+#X connect 9 1 7 0;
+#X connect 9 1 16 1;
+#X connect 10 0 9 0;
+#X connect 11 0 9 1;
+#X connect 12 0 9 2;
+#X connect 13 0 12 1;
+#X connect 14 0 9 3;
+#X connect 15 0 14 1;
+#X connect 16 0 36 0;
+#X connect 16 1 37 0;
+#X connect 17 0 16 2;
+#X connect 19 0 12 0;
+#X connect 20 0 19 0;
+#X connect 21 0 22 0;
+#X connect 22 0 14 0;
+#X connect 25 0 9 0;
+#X connect 25 0 0 0;
+#X connect 26 0 9 0;
+#X connect 26 0 0 0;
+#X connect 27 0 10 0;
+#X connect 28 0 11 0;
+#X connect 29 0 13 0;
+#X connect 30 0 15 0;
+#X connect 31 0 2 0;
+#X connect 32 0 4 0;
+#X connect 33 0 6 0;
+#X connect 34 0 8 0;
+#X connect 36 0 18 0;
+#X connect 37 0 18 1;
+#X connect 38 0 37 1;
+#X connect 38 0 36 1;
+#X connect 39 0 38 0;

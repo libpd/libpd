@@ -10,8 +10,8 @@ extern "C" {
 
 #define PD_MAJOR_VERSION 0
 #define PD_MINOR_VERSION 43
-#define PD_BUGFIX_VERSION 3
-#define PD_TEST_VERSION ""
+#define PD_BUGFIX_VERSION 4
+#define PD_TEST_VERSION "extended"
 
 /* old name for "MSW" flag -- we have to take it for the sake of many old
 "nmakefiles" for externs, which will define NT and not MSW */
@@ -57,6 +57,25 @@ extern "C" {
 #include <stddef.h>     /* just for size_t -- how lame! */
 #endif
 
+/* Microsoft Visual Studio is not C99, it does not provide stdint.h */
+#ifdef _MSC_VER
+typedef signed __int8     int8_t;
+typedef signed __int16    int16_t;
+typedef signed __int32    int32_t;
+typedef signed __int64    int64_t;
+typedef unsigned __int8   uint8_t;
+typedef unsigned __int16  uint16_t;
+typedef unsigned __int32  uint32_t;
+typedef unsigned __int64  uint64_t;
+#elif defined(IRIX)
+typedef long int32_t;  /* a data type that has 32 bits */
+#else
+# include <stdint.h>
+#endif
+
+/* for FILE, needed by sys_fopen() and sys_fclose() only */
+#include <stdio.h>
+
 #define MAXPDSTRING 1000        /* use this for anything you want */
 #define MAXPDARG 5              /* max number of args we can typecheck today */
 
@@ -64,9 +83,24 @@ extern "C" {
 #if !defined(PD_LONGINTTYPE)
 #define PD_LONGINTTYPE long
 #endif
-#if !defined(PD_FLOATTYPE)
-#define PD_FLOATTYPE float
+
+#if !defined(PD_FLOAT_PRECISION)
+  /* normally, our floats (t_float, t_sample,...) are 32bit */
+# define PD_FLOAT_PRECISION 32
 #endif
+
+#if PD_FLOAT_PRECISION == 32
+# define PD_FLOATTYPE float
+/* an unsigned int of the same size as FLOATTYPE: */
+# define PD_FLOATUINTTYPE unsigned int
+
+#elif PD_FLOAT_PRECISION == 64
+# define PD_FLOATTYPE double
+# define PD_FLOATUINTTYPE unsigned long
+#else
+# error invalid FLOATSIZE: must be 32 or 64
+#endif
+
 typedef PD_LONGINTTYPE t_int;       /* pointer-size integer */
 typedef PD_FLOATTYPE t_float;       /* a float type at most the same size */
 typedef PD_FLOATTYPE t_floatarg;    /* float type for function calls */
@@ -112,6 +146,16 @@ typedef struct _gpointer           /* pointer to a gobj in a glist */
     t_gstub *gp_stub;               /* stub which points to glist/array */
 } t_gpointer;
 
+#define PD_BLOBS 1 /* MP20070211 Use this to test for blob capability */
+/* MP20061223 blob type: */
+typedef struct _blob /* pointer to a blob */
+{
+   unsigned long s_length; /* length of blob in bytes */
+   unsigned char *s_data; /* pointer to 1st byte of blob */
+} t_blob;
+/* ...MP20061223 blob type */
+
+
 typedef union word
 {
     t_float w_float;
@@ -120,6 +164,7 @@ typedef union word
     t_array *w_array;
     struct _glist *w_list;
     int w_index;
+    t_blob *w_blob; /* MP20061223 blob type */
 } t_word;
 
 typedef enum
@@ -135,7 +180,8 @@ typedef enum
     A_DOLLAR, 
     A_DOLLSYM,
     A_GIMME,
-    A_CANT
+    A_CANT,
+    A_BLOB /* MP20061223 blob type */
 }  t_atomtype;
 
 #define A_DEFSYMBOL A_DEFSYM    /* better name for this */
@@ -222,6 +268,7 @@ EXTERN t_pd pd_canvasmaker;     /* factory for creating canvases */
 EXTERN t_symbol s_pointer;
 EXTERN t_symbol s_float;
 EXTERN t_symbol s_symbol;
+EXTERN t_symbol s_blob;
 EXTERN t_symbol s_bang;
 EXTERN t_symbol s_list;
 EXTERN t_symbol s_anything;
@@ -265,6 +312,7 @@ EXTERN void *resizebytes(void *x, size_t oldsize, size_t newsize);
 #define SETFLOAT(atom, f) ((atom)->a_type = A_FLOAT, (atom)->a_w.w_float = (f))
 #define SETSYMBOL(atom, s) ((atom)->a_type = A_SYMBOL, \
     (atom)->a_w.w_symbol = (s))
+#define SETBLOB(atom, st) ((atom)->a_type = A_BLOB, (atom)->a_w.w_blob = (st)) /* MP 20061226 blob type */
 #define SETDOLLAR(atom, n) ((atom)->a_type = A_DOLLAR, \
     (atom)->a_w.w_index = (n))
 #define SETDOLLSYM(atom, s) ((atom)->a_type = A_DOLLSYM, \
@@ -273,6 +321,7 @@ EXTERN void *resizebytes(void *x, size_t oldsize, size_t newsize);
 EXTERN t_float atom_getfloat(t_atom *a);
 EXTERN t_int atom_getint(t_atom *a);
 EXTERN t_symbol *atom_getsymbol(t_atom *a);
+EXTERN t_blob *atom_getblob(t_atom *a);/* MP 20070108 blob type */
 EXTERN t_symbol *atom_gensym(t_atom *a);
 EXTERN t_float atom_getfloatarg(int which, int argc, t_atom *argv);
 EXTERN t_int atom_getintarg(int which, int argc, t_atom *argv);
@@ -336,6 +385,7 @@ EXTERN void pd_bang(t_pd *x);
 EXTERN void pd_pointer(t_pd *x, t_gpointer *gp);
 EXTERN void pd_float(t_pd *x, t_float f);
 EXTERN void pd_symbol(t_pd *x, t_symbol *s);
+EXTERN void pd_blob(t_pd *x, t_blob *st); /* MP 20061226 blob type */
 EXTERN void pd_list(t_pd *x, t_symbol *s, int argc, t_atom *argv);
 EXTERN void pd_anything(t_pd *x, t_symbol *s, int argc, t_atom *argv);
 #define pd_class(x) (*(x))
@@ -360,6 +410,7 @@ EXTERN void outlet_bang(t_outlet *x);
 EXTERN void outlet_pointer(t_outlet *x, t_gpointer *gp);
 EXTERN void outlet_float(t_outlet *x, t_float f);
 EXTERN void outlet_symbol(t_outlet *x, t_symbol *s);
+EXTERN void outlet_blob(t_outlet *x, t_blob *st); /* MP 20061226 blob type */
 EXTERN void outlet_list(t_outlet *x, t_symbol *s, int argc, t_atom *argv);
 EXTERN void outlet_anything(t_outlet *x, t_symbol *s, int argc, t_atom *argv);
 EXTERN t_symbol *outlet_getsymbol(t_outlet *x);
@@ -416,6 +467,7 @@ EXTERN void class_addbang(t_class *c, t_method fn);
 EXTERN void class_addpointer(t_class *c, t_method fn);
 EXTERN void class_doaddfloat(t_class *c, t_method fn);
 EXTERN void class_addsymbol(t_class *c, t_method fn);
+EXTERN void class_addblob(t_class *c, t_method fn);/* MP 20061226 blob type */
 EXTERN void class_addlist(t_class *c, t_method fn);
 EXTERN void class_addanything(t_class *c, t_method fn);
 EXTERN void class_sethelpsymbol(t_class *c, t_symbol *s);
@@ -445,6 +497,7 @@ EXTERN t_propertiesfn class_getpropertiesfn(t_class *c);
 #define class_addpointer(x, y) class_addpointer((x), (t_method)(y))
 #define class_addfloat(x, y) class_doaddfloat((x), (t_method)(y))
 #define class_addsymbol(x, y) class_addsymbol((x), (t_method)(y))
+#define class_addblob(x, y) class_addblob((x), (t_method)(y)) /* MP20061226 blob type */
 #define class_addlist(x, y) class_addlist((x), (t_method)(y))
 #define class_addanything(x, y) class_addanything((x), (t_method)(y))
 #endif
@@ -474,11 +527,18 @@ EXTERN void sys_bashfilename(const char *from, char *to);
 EXTERN void sys_unbashfilename(const char *from, char *to);
 EXTERN int open_via_path(const char *dir, const char *name, const char *ext,
     char *dirresult, char **nameresult, unsigned int size, int bin);
-EXTERN int sys_close(int fd);
 EXTERN int sched_geteventno(void);
 EXTERN double sys_getrealtime(void);
 EXTERN int (*sys_idlehook)(void);   /* hook to add idle time computation */
 
+/* Win32's open()/fopen() do not handle UTF-8 filenames so we need
+ * these internal versions that handle UTF-8 filenames the same across
+ * all platforms.  They are recommended for use in external
+ * objectclasses as well so they work with Unicode filenames on Windows */
+EXTERN int sys_open(const char *path, int oflag, ...);
+EXTERN int sys_close(int fd);
+EXTERN FILE *sys_fopen(const char *filename, const char *mode);
+EXTERN int sys_fclose(FILE *stream);
 
 /* ------------  threading ------------------- */ 
 EXTERN void sys_lock(void);
@@ -489,6 +549,10 @@ EXTERN int sys_trylock(void);
 /* --------------- signals ----------------------------------- */
 
 typedef PD_FLOATTYPE t_sample;
+typedef union _sampleint_union {
+  t_sample f;
+  PD_FLOATUINTTYPE i;
+} t_sampleint_union;
 #define MAXLOGSIG 32
 #define MAXSIGSIZE (1 << MAXLOGSIG)
 
@@ -641,14 +705,26 @@ defined, there is a "te_xpix" field in objects, not a "te_xpos" as before: */
 
 #if defined(__i386__) || defined(__x86_64__)
 /* a test for NANs and denormals.  Should only be necessary on i386. */
-#define PD_BADFLOAT(f) ((((*(unsigned int*)&(f))&0x7f800000)==0) || \
-    (((*(unsigned int*)&(f))&0x7f800000)==0x7f800000))
+# if PD_FLOAT_PRECISION == 32
+static inline int PD_BADFLOAT(t_sample f) {
+  t_sampleint_union u;
+  u.f=f;
+  return ((u.i & 0x7f800000)==0) || ((u.i&0x7f800000)==0x7f800000);
+}
 /* more stringent test: anything not between 1e-19 and 1e19 in absolute val */
-#define PD_BIGORSMALL(f) ((((*(unsigned int*)&(f))&0x60000000)==0) || \
-    (((*(unsigned int*)&(f))&0x60000000)==0x60000000))
+static inline int PD_BIGORSMALL(t_sample f) {
+  t_sampleint_union u;
+  u.f=f;
+  return ((u.i & 0x60000000)==0) || ((u.i & 0x60000000)==0x60000000);
+}
+# else
+#  warning 64bit mode: BIGORSMALL not implemented yet
+#  define PD_BADFLOAT(f) 0
+#  define PD_BIGORSMALL(f) 0
+# endif
 #else
-#define PD_BADFLOAT(f) 0
-#define PD_BIGORSMALL(f) 0
+# define PD_BADFLOAT(f) 0
+# define PD_BIGORSMALL(f) 0
 #endif
 
     /* get version number at run time */

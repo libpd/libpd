@@ -1,0 +1,262 @@
+
+
+
+k_cext PD external
+
+
+
+INTRODUCTION
+
+	The k_cext PD external makes you able to program
+	the programming language "C" directly within
+	the PD objects.
+
+	+-------------------------------------------------------+
+	| Which means: You don't need an external text-editor.  |
+	+-------------------------------------------------------+
+
+
+
+WHY USE K_CEXT
+
+	First, the reason for using "C", and not some other programming
+	or scripting language, was simply because it is
+	so easy to compile and link c code inside externals in pd.
+	Because C is probably not the best suited language for this
+	task, except when extreme cpu-efficiency is needed.
+
+	Still, I personally think making small k_cext objects
+	is a lot more comfortable than making large pd sub-patches
+	doing the same things. And thats probably the main reason
+	to use k_cext.
+	
+
+
+
+A SMALL EXAMPLE IN K_CEXT
+
+	The following k_cext object have one inlet and one outlet.
+	What it does, when receiving a value on the inlet, is to
+	send the _previously_ received inlet value to the outlet.
+
+
+	[ k_cext 1 1;
+	  static t_float prev=0;
+	  O(0,prev);
+	  prev=V(0); ]
+
+
+	The "k_cext 1 1" line is the k_cext header. The first "1"
+	means that it has one inlet, and the second "1" means that
+	it has one outlet.
+
+	The "static t_float prev=0;" line declares a variable for the
+	object called "prev". "t_float" means that the type of the variable is
+	a floating-point number. "static" means here that the value
+	for the variable is remembered the next time the object
+	is runned, which is necesarry if we want to send out the
+	previous value sent to the inlet.
+
+	"O(0,prev);" sends the value of "prev" to outlet number 0.
+	"O" is a function.
+
+	"prev=V(0);" stores the value of the current inlet to the
+	variable "prev" for the next time the object is run.
+
+
+
+
+THE SAME EXAMPLE AS A PD SUB-PATCH
+
+
+	The following PD-patch does the same:
+
+	[inlet]
+	|
+	[t f b]
+	 \   /
+	  \ /
+	   X	
+	  / \
+	 /   \
+	[float]
+	|
+	[outlet]
+	
+
+	I guess its a matter of personal taste, but I really don't
+	find the PD-way of sending out a previous value very intuitive.
+
+	And the advantage of using k_cext instead of making
+	PD sub-patches becomes more appearent the larger the tasks are.
+	Look at the help-file, and try to do the same things directly in PD.
+
+
+
+K_CEXT OBJECT
+
+	A k_cext object can be divided into three parts:
+
+	1. Header.
+	2. Variables
+	3. Body.
+
+
+
+K_CEXT HEADER
+
+	The first line in a k_cext header is built up like this:
+
+	"k_cext <num_inlets> <num_outlets> <default inlet values>".
+
+	"k_cext 4 5 1 2 3 4" means that the object has 4 inlets,
+	5 outlets, and the value of V(0) is by default 1, the
+	value of V(1) is by default 2, the value of V(2) is by
+	default 3, and the value of V(3) is by default 4.
+
+	Its optional whether you want to set "default inlet values"
+	or not. If not set, they get the value 0.
+
+
+
+K_CEXT VARIABLES
+
+	There are four types of variables that makes sense using
+	in a k_cext object. These are:
+
+	"int" - integer number.
+	"t_float" - floating point numbers.
+	"INTARRAY" - An array of integer numbers.
+	"FLOATARRAY" - An array of floating point numbers.
+
+	See the help patch for examples of use.
+
+
+
+MACROS / USING THE PD OBJECT AS A TEXT-EDITOR
+
+	Using the pd object as a text-editor is unfortunately
+	a bit limited. But by using some pre-defined macros
+	spesified in the "k_cext.h" file, its not that bad.
+
+	begin/end -
+		The most noticable limitation is probably that you are
+		not able to write { or }. This is solved by
+		using the BEGIN and END macros. Or better; the "DO"
+	        symbol which makes k_cext automaticly insert BEGIN and
+	        END for you. Look at the help-do.pd patch.
+
+	lineshift - 
+		The pd object text editor doesn't understand lineshift
+		directly. Instead you have to use ";" at the end
+		of each line.
+
+	semicolon -
+		If you need to write ";", but dont want the line to end
+		right there, use the "SC" macro instead.
+
+	indentation -
+		The pd object text editor automaticly removes spaces and
+		tabs from the beginning of lines. You can work around this by
+		writing ". " instead. The k_cext external removes all
+		". "'s at the beginning of lines before compiling the code.
+
+	strings -
+		It does not seem to be possible to write "'s anymore in PD.
+		The workaround is to define strings like this: s<thisisastring>s
+
+
+	More macros are defined in the k_cext.h header file.
+
+
+
+OS
+	k_cext runs fine in linux using gcc and in windows using visual C.
+	The macosx code was made by looking at code inside PD, and has never
+	been tested (at least not that I know if). It might work, but probably
+	not. Check out the k_cext_macosx.c file.
+
+
+FAQ
+	Q: I can not get k_cext to work in windows, and I dont have Visual C.
+	A: You need Visual C.
+
+	Q: Where can I get a windows .dll file?
+	A: Since you allready need to have some basic knowledge about C, in
+	   addition to a C compiler, it should not be that hard for you to
+	   compile the .dll file yourself, if you know how to use the k_cext
+	   external. So you have to make it yourself.
+
+	Q: k_func does not work with Visual C.
+	A: Visual C does not have a varargs macro. Send complains to Microsoft.
+
+
+
+CHANGES
+	0.3.0 -> 0.3.1:
+	-Works with VisualC. (0.3.0 didn't):
+	  -Workaround for missing variable number of argument macros in VisualC, (which is not a gcc
+	   extension, by the way, but a part of the iso99 c-standard). (Does not work)
+	  -Workaround for missing stdbool.h file in VisualC. (also a part of the iso99 c-standard)
+	   (Thomas Grill)
+	  -Workaround for missing static <something> <something>[] in VisualC.
+	  -Fixed a variable which was not defined at the beginning of the function. (Thomas Grill)
+	  -Added macros to bang outlet and to access values (Tim Blechman)
+	  -Support for $0 values. (Tim Blechmann)
+	  -Some changes to k_cext to link with functions defined in k_cext, which wasn't possible
+           before. (for Windows). (Tim Blechmann)
+	  -Added code to make it possible to use strings again. See help-strings.pd.
+	  -Fixed horrible bug that sometime caused FLOAT k_cfuncs to crash PD.
+
+	0.2.5 -> 0.3.0:
+	-Added the k_cfunc object. k_cfunc is very similar to k_cext, but instead of being triggered
+	 by getting a bang or value on the first inlet, the k_cfunc-code is run
+	 when being called from another k_cfunc object or a k_cext object. In other words,
+	 its a c function object available for k_cext.
+
+	0.2.4 -> 0.2.5:
+	-Fixed the problem that integer numbers sometimes was converted to
+	 floats before compiling.
+	-Fixed ENDSWITCH macro.
+	-Small internal changes.
+	-Changed the PD subpatch example in the README file to use the trigger
+	 object. The information that was written earlier that you had to
+	 make connections in a certain order, was misinformation. The behaviour
+	 is unspesified according to the spesification. The trigger object fix
+	 such situations. (But if you need to use the trigger-object, its a good
+	 sign that you should rather use k_cext for the operation anyway. My
+	 opinion.)
+	-Removed the windows .dll file. If you are not able to compile up k_cext
+	 yourself, you most probably aren't able to use k_cext either.
+	-Added a "print" message, which prints out the generated c-code with
+	 line-numbers to the terminal.
+	-Prints out the generated c-code with linenumbers if compilation fails.
+	 Makes debugging a lot faster.
+	-Added a SEND macro that takes a symbol string and a number, and sends
+	 a pd message.
+	-Added "DO", which can (and should) be used instead of the BEGIN macro.
+	 DO is not a macro, but a special symbol used by the k_cext
+	 preprocessor to know when to automaticly insert BEGIN and
+	 END based on indentation. Just like Python. :)
+	-Changed the main example patch to use DO instead of BEGIN/END.
+	-Added some more example patches.
+	-Fixed nearly correct indentation for the generated C code.
+
+	0.2.3 -> 0.2.4:
+	-Added a lot of new macros to k_cext.h.
+	-Fixed the help file a bit.
+	-Wrote the README file.
+	-Changed the license for k_cext.h from GPL to LGPL.
+	 (Note, the k_cext external is still GPL)
+	-Some windows code was for some strange reason put
+	 in the macosx file. Fixed.
+	-Added Mac OSX to the Makefile. (Not tested.)
+
+
+CREDITS
+	k_cext is made by Kjetil S. Matheussen 2002/2003.
+	k.s.matheussen@notam02.no
+
+	The windows-port is made by Olaf Matthes.
+	olaf.matthes@gmx.de
+

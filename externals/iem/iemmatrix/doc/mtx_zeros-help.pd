@@ -1,0 +1,17 @@
+#N canvas 61 0 491 290 10;
+#X text 295 230 updated for;
+#X obj 383 230 iemmatrix 0.2;
+#X obj 432 256 matrix;
+#X text 302 255 see also help for;
+#X obj 103 201 mtx_zeros 5;
+#X obj 103 227 mtx_print;
+#X msg 103 130 bang;
+#X msg 133 174 3 5;
+#X msg 119 150 10;
+#X text 129 20 [mtx_zeros];
+#X text 30 89 create a matrix with all elements := 0;
+#X text 74 248 all matrix elements=0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;

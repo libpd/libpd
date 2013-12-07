@@ -1,0 +1,1018 @@
+GEM ONLINE DOCUMENTATION CHAPTER 5: RELEASE NOTES
+
+---------------------------------------------------------------
+---------------------------- 0.91 -----------------------------
+this is the first release for 3 years, codename 'tigital'
+it includes many changes, so probably i have forgotten most...
+
+openGL runtime checks: GEM now uses GLEW to detect openGL-features 
+	at runtime this allows you to use all the cool features of 
+	your brand-new graphics card with the same binary as you 
+	used for your old gfx-card...cool
+
+w32-installer: there is now a w32 installer (based on NSIS) to 
+	ease the installation of GEM on windows.
+
+single vs dual context: GEM uses a dual context approach to establish
+	a valid openGL-context at startup;
+	you can now turn this OFF by setting the environmental
+	variable "GEM_SINGLE_CONTEXT=1"
+	this should allow you to work if GEM crashes otherwise
+
+SIMD: better MMX/SSE2 handling
+
+pixes:	fiducial tracking, artoolkit,
+	multitexture, texture sharing
+	recording streams of images into movies,
+	better movie reading support, better video in support,
+	more sophisticated pix_buffer handling
+	shared memory objects
+
+text:	allow unicode characters
+	use vera.ttf as default font instead of the
+	copyrighted arial.ttf
+	allow to override the default font with the environment
+	variable "GEM_DEFAULT_FONT"
+
+
+bugfixes: like always we have removed (and introduced) numerous
+	bugs, so all in all GEM should now run more stable
+	for an incomplete list of fixed bug see the bug-tracker
+	at http://sourceforge.net/projects/pd-gem
+
+openGL: generally use openGL-2.0 (if available)
+	vertex/fragment shaders (GLSL and ARB/NV)
+	framebuffers
+
+
+deletion:
+	MarkEX has been removed from GEM and is now available as
+	a separate library;
+	hardware-interfacing objects like [gemorb] and [gemtablet]
+	have been removed
+
+
+
+
+---------------------------- 0.90 -----------------------------
+this is the same as 0.888
+just a naming issue
+
+---------------------------------------------------------------
+---------------------------- 0.888 ----------------------------
+
+this has taken a long time (2 years...)
+
+development is now done by several people:
+	chris clepper
+	günter geiger
+	daniel heckenberg
+	james tittle
+	IOhannes m zmölnig <zmoelnig@iem.at>
+günter has removed himself from the splash-screen, but he still contributes stuff
+
+supported platforms: windows (XP,2000,...), linux, and (tadah:) macOS-X(>10.2)
+irix-support seems to be broken, but i cannot prove it
+
+architecture: up till now, the rendering-tree was statically built when rendering was
+	turned on, so you couldn't add objects dynamically and editing was painful.
+	now, Gem utilizes the normal pd-messaging system all the time: you can disable 
+	parts of the rendering tree with [spigot], render sub-trees multiple times with
+	[t a a] and put objects into the gem-tree on the fly.
+
+documentation: added help for (almost ?) all Gem-objects (excluding openGL-wrappers)
+	new reference-patches are now working out of the box (not the old "abstract" way)
+	added a small pdf-tutorial
+
+
+openGL: GEM features now a full openGL-wrapper (supporting openGL-1.2)
+	you can use any openGL-command like "glNormal3f" by creating a pd-object like
+	[GEMglNormal3f] (note the "GEM"-prefix); this should be very powerful, 
+	however most of the objects are not (yet) tested. 
+	if you intend to use them and think they don't 	work, 
+	send me a bug report for the objects you need; 
+	i will try to fix them gradually.
+	there will be not much help in GEM, since you might consult any openGL-reference
+
+text:	we now use FTGL instead of GLTT (which is still available at compile time)
+	for freetype-rendering. this is supported on all 3 platforms, 
+	looks better (at all sizes!) and allows the new [textextruded]
+
+geos:	tube, curve3d, rubber, ripple, slideSquares, newWave
+
+manips:	polygon_smooth for anti-aliasing of single objects
+	[camera]
+
+controls: the output of [gemmouse] can now be normalized (by giving the maxVal for x/y as
+	arguments: [gemmouse 1 1] will output coordinates between 0..1, no matter what
+	dimensions the screen has.
+
+particles: now the underlying libparticle-engine can be used more directly.
+	velocity-domains (like [part_velcone]) are deprecated and [part_velocity]
+	should be used instead (allowing on-the-fly domain-switching)
+	there are objects that allow to influence single particles 
+	(like [part_vertex])
+	most interesting: with [part_render] and [part_info] you can now use any
+	geo as particles (e.g: .obj-models) not only points/lines as before.
+
+texturing: [pix_texture] and [pix_texture2] has merged. so [pix_texture] will texture
+	textures of any size (even non-power-of-2) and it will use hw-support if available
+	(at least on macOS and on linux if the gfx-card supports it
+	(at least nvidia does so))
+
+pixes:	lots of new objects (too much to enumerate them here)
+	we now support 3 different colorspaces: RGBA, YUV, Greyscale
+	YUV is new and allows processing of coloured-images with far less memory/CPU
+	than RGBA (factor 2) but without alpha.
+	lots of pix-processing on apple-computers is ALTIVEC-enhanced (faster by numbers!)
+	SIMD-enhancements for PCs (MMX/SSE2) is yet to come...
+	as the new colorspace has been pushed, also a lot of objects has received 
+	greyscale-support
+	the TV-class has been deprecated and is now part of pix_* again
+	lot's of color-space converters (most of them not available as objects)
+	the "pix_fx"-stuff is now built into all pix-objects
+
+video:	on mac-OS the [pix_video] object supports all cameras that are supported by the OS
+	on windows there is now support for DirectShow, 
+	which makes new (usb/ieee1394) cameras work most probably
+	on linux there is some prelaminary(!) support for ieee1394 devices.
+	the v4l-support is now multi-threaded which speeds up the whole thing significantly
+
+film-formats:
+	windows: AVI; there is also some QUICKTIME-support
+	(needs the quicktime-sdk at compile time and quicktime installed on execution time),
+	but this crashes sometimes (haven't found out when).
+	it should enable "a lot" of file-formats (MPEG, MOV)
+	macOS: quicktime serves your needs
+	linux: support for libavifile, libmpeg3 (or libmpeg1 but libmpeg3 is preferred),
+		libquicktime (or libquicktime4linux; doesn't matter) and ffmpeg.
+
+codecs: macOS: everything that is supported by your system should work fine
+	win: all codecs installed on your machine should work
+	 (if another program can play a avi-file, Gem should be able to do so too)
+	linux: depends on how you compiled Gem. libmpegX will decode mpegs,
+	libquicktime will (most likely) decode quicktime-files with non-proprietary codecs,
+	libavifile decodes a lot of formats (avi, quicktime, divx, asf,...)
+	and you can utilize windows-codecs (.dll-files; if you have them ;-))
+	which enables you to play-back 	proprietary codecs!
+
+bug-fixes: probably lots of, but most of them seem to linger around for a while now.
+
+
+
+---------------------------------------------------------------
+---------------------------- 0.87 -----------------------------
+Added much documentation
+
+Added [gemkeyboard] and [gemkeyname] for keyboard-interaction in the GEM-window. However, Windows and Linux versions do not give the same results...
+
+Added Red/Green stereo
+Cleaned up the stereo-thing. we can switch between the different stereo-modes (including no-stereo) while rendering
+
+You can set the title of the GEM-window with the "title"-message. Up till now only one symbol is allowed.
+Added "fullscreen" mode
+Fixed "border" under linux
+"cursor" is now available on Windoze
+
+readded "externals" with additional libraries to close up with the windows version::
+Added pix_movie for Linux (mpeg2+quicktime-support)
+Added pix_film, which is in fact like pix_movie but does not write the pix-buf directly into a texture
+Fixed the model
+Added the stupid "teapot"
+Added a pix_write that let's you capture the current screen into a file (TIFF/JPEG)
+Added pix_hsv2rgb, pix_rgb2hsv (colour-space converters)
+Added pix_blob (center of gravity:: colour detection)
+Added pix_curves, pix_histo
+Added pix_set, pix_dump
+Added pix_pix2sig~, pix_sig2pix~
+
+Started a new class "tv" for pix-operations that change over time: like tv_movement (formerly: pix_movement), tv_biquad, tv_rtx; but i am not really happy with this...
+
+Started a new pix_fx class for inserting pix-FX. there is not much about it, but you can now bend the image.data pointer to wherever you like (including size-changes, format-changes) it will be bent back in the postrender()-thing
+
+Started to import classes from effecTV (by Fukuchi Kentarou): pix_aging, pix_puzzle; most of his FX are real crap, but some are ok and it's easy to import them
+Made a pix_rgba
+
+
+---------------------------------------------------------------
+---------------------------0.84-5 -----------------------------
+Bugfixes for gemwin "cursor" message (cursor [1|0])
+Removed "externals" with additional libraries, they are separated now
+Added a "freq" and "mode" message to Linux video object, you can watch
+  TV now ...
+It is possible to add the display to the create command for X windows,
+  whole initialization stuff is moved into the create method,
+  so you can look at the patches without having succesfully generated
+  an OpenGl context.
+Made the pix_video and pix_movie into real base classes of OS specific
+  classes. The OS spezific classes for Windows and SGI have to be fixed ..
+
+
+---------------------------------------------------------------
+--------------------------0.84a -----------------------------
+text2d:  added a message "alias", which toggles between antialiases
+  and standard fonts. Usage "alias 1" or "alias 0"
+
+gemwin:  additional message cursor, which hides the cursor in
+  GEM windows
+
+
+
+
+---------------------------------------------------------------
+---------------------------- 0.84 -----------------------------
+Fixed a bug where delete [] was called instead of delete.  This
+could explain a lot of random crashes.
+
+Fixed camera message routing.
+
+---------------------------------------------------------------
+---------------------------- 0.84 -----------------------------
+I long time ago, I changed the behavior for gemhead, so that
+matrices where automatically restored, etc.  However, this 
+broke the camera object.  Use the view message to gemwin
+instead.
+
+Fixed a bug in GemMan.  If you didn't use "border 0" and you 
+requested a window size with "dimen # #", then the window
+size was likely to be wrong.  This is now fixed.
+
+Fixed a bug in the view message to gemwin.  There was an offset
+which should not have occured.  You might need to change your
+view messages to account for it.  Just subtract 4 from any
+Z values.
+
+There are some examples for pix_snap in
+		examples/gemAdvanced/gemPixSnap.pd - Single buffered example
+		examples/gemAdvanced/gemPixSnap2.pd - Double buffered example
+Keep in mind that pix_snap is a fairly slow operation...I also fixed
+a nasty memory bug which could easily cause crashes.
+
+I added Miller Puckette's pix_video for linux into the
+code base.
+
+If you load a movie in pix_movie with an open message, the
+object will output the number of frames to the right output.  This
+will not work if you have a "pix_movie homer.avi" for your object
+since the output message cannot get processed correctly at
+startup.
+
+The disk object has an inlet on the rightmost side for the
+inner radius...turning the disk into a ring.  If the inner
+radius value is just 0., then the disk is just a circle.
+
+Fog can be turned on in gemwin.  Look at
+		examples/gemAdvanced/gemFog.pd
+for examples.  The various control messages are documented
+in the gemwin.pd help patch.
+
+These next objects are thanks to hannes - mailto:zmoelnig@iem.mhsg.ac.at
+---------------------------
+Added OpenGL material objects -
+		ambient, ambientRGB, diffuse, diffuseRGB, emission,
+		emissionRGB, shininess, specular, specularRGB
+  They provide much greater control over the color of objects.
+Look at
+		examples/gemLighting/gem5.materials.pd
+for examples.
+
+Guenter found a bug in the ortho object.  It is now fixed.  The
+ortho object has the same general unit size as the normal
+perspective matrix.  Look at
+		examples/gemAdvanced/gemOrtho.pd
+for how to use the object.
+
+---------------------------------------------------------------
+---------------------------- 0.83 -----------------------------
+Added another outlet to counter.  When the counter reaches
+the "count to" value, the right outlet will send a bang.  The
+bang happens after the left inlet sends its float.
+
+Fixed a dumb bug in pix_2grey.  It didn't calculate the
+number of pixels correctly.
+
+Adding some comments to the FAQ that pix_draw is almost
+always slower than pix_texture on PCs.  Basically, graphics
+accelerators do not accelerate glDrawPixels().
+
+Added rectangle and cylinder.
+
+Cleaned up the text objects (text3d, etc).  Should display
+text a bit better and manage memory more intelligently.
+
+These next objects are thanks to hannes - mailto:zmoelnig@iem.mhsg.ac.at
+---------------------------
+Added pix_rectangle - creates a rectangle in a pix
+Added pix_a_2grey - only changes the pixel to grey based
+on the alpha component.  See the help page and the example
+in manual/gem_pix/gemAlphaGrey.pd
+
+---------------------------------------------------------------
+---------------------------- 0.82 -----------------------------
+Free-view sterescopic rendering is possible.  If you send 
+'createStereo' message to the gemwin instead of a 'create'
+message, then your rendering area will be split in two.  Send a
+'stereoSep float' message to set the stereo seperation.  Send
+a 'stereoFoc float' message to set the focal distance.  See the
+example patch gem_advanced/gemStereo.pd patch for an example.
+
+'color' message was registered twice in gemwin.  The second should
+have been a 'perspec' message, for perspective.  This also fixes
+the error which pd-0.29 gives about GEM now.
+
+primTri is a new object.  It is a triangle primtive.  Unlike the
+normal triangle object, it has 6 inlets.  The first three inlets
+are for setting the vertex positions.  The last three inlets
+are for setting the color at each vertex.  The color can
+be either RGB or RGBA values.  Look at gem_advanced/gemPrimTri.pd
+for an example.
+
+The particle objects are now frame rate independent.  If you needed
+them to run at a certain speed, you can send a multiplier into
+part_head with the message 'speed float'.  Run the fountain
+at 60fps to see how smooth it is.  The particles still default
+to 20fps, which is GEM's default.  You can slow down the particle
+systems or speed them up by sending a different speed value
+into the part_head.
+
+Thanks to Guenter for making the sgi image loader 64-bit compliant.
+
+Received new Gnu makefiles for Linux from Guenter.
+
+new particle objects - These all have help files.  See
+gem_particles/gem6.target.pd for how the target objects work.
+	part_damp - apply a damping force to the particles
+	part_targetcolor - Change color of the particles toward
+							the specified color.
+	part_targetsize - Change size of the particles toward
+								the specified size.
+
+Added some help files, mainly for the particle objects.
+
+Updated the FAQ.
+
+---------------------------------------------------------------
+---------------------------- 0.81 -----------------------------
+On WinNT, you can remove the window border.  Send a 'border 0' message
+to gemwin to remove it, or a 'border 1' to put it back.  The default
+includes the border.
+
+Fixed some bugs when in single buffer mode and in the pix_snap
+object.
+
+A bunch more help documentation is done. This includes reference pages
+and the html manual pages.
+
+The inlets for alternate and counter were backwards.
+
+Integrated unix event handling into the code base.
+
+Fixed other random bugs.
+
+---------------------------------------------------------------
+---------------------------- 0.80 -----------------------------
+A real manual has been started!  This means that the doc directory
+will not be as important.  The release notes will still be here and 
+few of the other doc files, but hopefully most people will just be
+able to use the on-line manual.  Look at gem/manual/index.html
+to get started.
+
+pix_movie has been added.  It automatically does the texture mapping
+so you don't need to use pix_texture.  This also means that you can't
+process the pix image.  This will change in the future, but I wanted
+to get the object out and have people hammer on it.  Also, only
+certain objects can texture the movie data correctly.  They are square,
+triangle, circle, and cube.  Cone and sphere will have a black region
+if the movie isn't a power of two (most movies are 320x160 or something).
+This will be fixed in the future.  See gem_pix/gemMovie.pd for an example
+
+hsv2rgb and rgb2hsv have been added.
+
+There is no ambient lighting in the default case.  If you want
+to have ambient lighting, send a message "ambient r g b" to gemwin.
+
+On WinNT, if you hit Ctrl + r in the GEM window, then rendering
+will stop.  This does not go through the normal Pd interface, so it can
+be used if you accidentally create a patch which takes so much processing
+that you cannot turn it off because the patch UI is unresponsive.
+
+Fixed a really bad bug in the text rendering objects.
+
+Various other random bugs.
+
+---------------------------------------------------------------
+---------------------------- 0.79 -----------------------------
+The example patches have been organized a little bit.  There is 
+now a collection of directories which are installed with GEM.
+Eventually, they will be fleshed out a lot more (I hope), but for
+the time being, at least there is some order to them.
+
+The model and multimodel objects accept a "rescale 0" or "rescale 1"
+message.  In previous versions, the model objects would resize your
+model to fit within the unit cube (all vertices where within -1 to 1).
+This made it dificult to coordinate diferent model files together,
+because they would all be resized by diferent factors.  Now, if you
+send a "rescale 0" message into model or multimodel, it will not
+do resizing for any _SUBSEQUENT_ loading.  In other words, if you
+have already loaded in a model, and you send a "rescale 0", the
+currently loaded model (or models) will not change.  Look at the
+example patch gem_advanced/gemModelRescale.pd for how this works.
+The left model chain is much larger and a scaleXYZ object with a
+value of .1 is needed to even get the model into the viewport.
+The model and multimodel objects default to "rescale 1" so that it
+doesn't break any existing patches.
+
+The middle and right buttons work in gemtablet now.  The outlets
+are all pretty close together now, so until you can resize objects,
+it will be difficult to select the correct outlet.  Look in
+examples/gemTablet.pd for all of the outlets.
+
+I have upgraded to Visual C++ 6.0.  I doubt that the GEM library
+is backwards compatible for people who are writing their own
+libraries.  Sorry, but the IDE is a little less painful in 6.0.
+
+I removed the position inlet from the light object.  If you want
+to move/rotate a world_light/light, then just put a translate
+or rotate object into the chain.  It was broken before, but now
+there is no reason for the position inlet.
+
+light and world_light accept a "debug" message with a value of
+1 or 0.  Look at the gemLightSphere.pd patch for an example.
+It was too hard to figure out where the light is, and this turns on
+a sphere for the light object (since it is a point light), and 
+a cone for the world_light object (since it is a directional
+light).  The world_light is NOT a spot light, even though
+its icon is a cone.  The icons are the color of the light.
+
+MarkEx has been merged into GEM.  I was tired of maintaining
+two libraries.  Also, people didn't seem to be downloading
+MarkEx, and there are a lot of good objects in there, IMHO.
+
+The camera object is finally useable.  It has an inlet for the
+translation and rotation vectors.  Anyone who was using it
+before is now broken, but the change was very necessary.
+
+gemwin can accept a perspective message.  This will set up the
+viewing paramaters for the window.  You need to pass in 6 floats
+with the "perspective" message, for the left, right, bottom,
+top, front, and back.  The defaults are -1., 1., -1., 1., 1., 20.
+If you send a reset message to gemwin, it will reset the perspective
+values as well.
+
+The big change in this release is a particle system.  It is based
+on code from David McAllister.  There are many new object, all
+of which interact in certain ways.  One design issue is that
+there are far too many controls and variables to be able to 
+expose directly in GEM.  People who want to get complete control
+over all aspects of the particle system are going to need to
+write their own externals.  However, most people should be fine with
+the particle objects.  The new objects are:
+
+CREATION
+--------
+part_head - The start of a particle group
+part_color - Set the range of colors for the new particles
+part_size - Set the size of new particles
+part_velsphere - Set the velocity based on a sphere distribution
+				 You need 4 args - xvel, yvel, zvel, and radius
+part_velcone - Set the velocity based on a cone distribution
+
+part_source - Generate particles
+
+MANIP
+-----
+part_follow - Particles will follow each other like a snake
+part_gravity - Have the particles accelerate in a direction
+part_killold - Remove particles past a certain age
+part_killslow - Remove particles below a certain speed
+part_orbitpoint - Orbit the particles around a specified point
+
+part_draw - Apply the actions and render the particles.  Accepts a
+	message "draw line" or "draw point" to change the drawing style.
+
+Look in the example files to get some idea how to use the particle
+objects.  Notice that you still need a gemhead starting off the
+chain, but after that, you just use the part_* objects.  Regular
+GEM manips like rotate, translateXYZ, and scale will affect the
+particles.  In general, you start with part_head, then modify
+the particle parameters with the creation objects like part_color
+and part_velocity. Then use part_source to actual generate the
+particles.  Next in the chain, use the manip objects to control 
+the particles behavior.  When you actually want to display the
+particles, use part_draw.  Make sure that you remove particles as
+well.  The best method is probably with part_killold.  If you 
+don't remove particles, then you will eventually not be able to
+add any new ones (the default number of particles at once is
+1000, set by part_head).  You can also slow down the rate of the
+particle generation with the part_source object.
+
+---------------------------------------------------------------
+---------------------------- 0.78 -----------------------------
+If you don't want GEM to take control of the tablet if it finds 
+one, set the environment variable GEM_NO_TABLET to the
+value "1" (no quotes of course).  There will be a print out if
+GEM finds the environment variable.
+
+I added a few more setup access function so that people who
+use "-lib gem" or "-lib GEM" will work correctly.
+
+Lighting will now work under single buffer mode, but you have
+to destroy then create the graphics window to change the mode.  This
+will not work with the GEM_SINGLE_CONTEXT variable.
+
+pix_data is a new object.  It outputs color information from a pix.
+    The first inlet accepts a bang to trigger it.
+    The second inlet accepts a gem list (probably from pix_image)
+    The third inlet is the x position (between 0 and 1)
+    The fourth inlet is the y position (between 0 and 1)
+    The first outlet is the gem list
+    The second outlet is the color (an RGB list)
+    The third outlet is the gray scale value (a float)
+  See the example patches gemPixDataSimple.pd and gemPixDataComplex.pd
+for possible use.
+
+Fixed a pretty bad bug in the SGI image loading.  Basically, unless
+the image was RGBA, it was going to core dump.  Also, the orientation
+was wrong.
+
+---------------------------------------------------------------
+---------------------------- 0.77 -----------------------------
+GEM is now under the Gnu Public License.  This should not affect
+any one.  I also cleaned up the license information for the AuxLibs.
+All of the license and usage information can be found in
+GEM.LICENSE.TERMS
+
+GEM has a new home - http://www.danks.org/mark/GEM
+
+gemorb - a new object to interface with the SpaceTec SpaceOrb360.
+It is a 6DoF ball with 6 buttons that connects to your serial port.
+It is a very cool device, and is relatively cheap ($50 US).  If gemorb
+is able to connect, it will print out a message, or an error if there
+is a problem.  John Stone wrote the library.
+
+There is a particle system with a number of new objects.  The system
+uses a library by David McAllister.
+ps I haven't had time to bring all of the objects online.  particle
+is the only object right now.  It just creates a fountain.
+
+accumrotate was added - three inlets to control the rotation.  Each
+time a new value is sent in, it increases the rotation.  Sending
+'reset' to the leftmost inlet sets the rotation matrix to
+identity (ie, it resets it to no rotation).
+
+rotateXYZ was added - three inlets to control the rotation.  Order
+is X rotation, then Y, then Z.
+
+The tablet cleanup is a little better now on WinNT.  There are still
+some bugs, like it doesn't return to normal mouse usage after GEM exits.
+However, the DLL is being released correctly...I just need to reset
+to the default state somehow.
+
+Cone and sphere have changed behavior as of 0.77.  The middle inlet
+is now the size and the right inlet is the number of slices.
+
+depth used to be sending '1' would turn on depth testing, but this
+was conceptually wrong.  It should be 1 to turn on the depth
+object (which would disable depth testing).  This is now the
+current behavior.
+
+ortho was added.  It changes the viewing from perspective to
+orthogonal.  The size is the size of the window with (0, 0) 
+being the lower left corner.  I made this object for creating
+a background the size of the window, but you can probably
+find other uses for it.
+
+There is a matrix class for those who are writing objects.
+It is in src/Base/Matrix.
+
+---------------------------------------------------------------
+---------------------------- 0.76 -----------------------------
+Fixed a bug in spline-path.  I wasn't doing the knot logic 
+correctly.  Thanks to Patrick Rost for finding this.
+
+A bunch of internal changes to get GEM working with Pd 0.22
+All instances of A_INT went away and the inlets and outlets are
+created in the correct "logical" order now.
+
+---------------------------------------------------------------
+---------------------------- 0.75 -----------------------------
+You can resize the window under WinNT and the viewport will change
+to reflect the new size.
+
+Also, the correct aspect ratio is maintained no matter what the
+width/height ratio is for the GEM window.  The ratio is 
+x:y -> (width/height):1.  This is currently only under WinNT.
+
+gemmouse and gemtablet are new objects.  They currently only
+work in WinNT.  You should be able to create the object in
+the Irix/Linux versions, but you won't get any output.  See
+gemmouse.pd and gemtablet.pd for examples.
+gemmouse outputs the current mouse position and button up/down
+for the GEM window.
+gemtablet outputs the current pen position, pressure, orientation,
+and pen up/down, with the GEM window mapped to the tablet.  If
+GEM can connect to your tablet, a message will be printed at startup.
+If you don't see a message at startup from GEM about connecting to
+the tablet, then gemtablet will not output any values.  You must
+have the wintab32.dll library installed.  Your tablet's installation
+should do this.
+
+Added a bunch of utility functions (spline, bias functions, etc).
+
+linear_path and spline_path are new objects.  If you give them
+an array, then they will generate a point from an index.  linear_path
+will linearly interpolate between points.  spline_path uses the
+points as knots for a curve.  See gemSplinePath.pd and
+gemLinearPath.pd for examples.
+
+Added __declspec declarations for Windows.  This should
+make it easy for people to use GEM as a dll.
+
+---------------------------------------------------------------
+---------------------------- 0.74 -----------------------------
+I replaced the images in the example directory with JPGs.  They
+are alot smaller.  However, in gemMoveImages.pd, you can see
+the effect that the compression has.  Look at the red dancer. All
+of the "black" should be alpha masked out, yet there are little
+bits which get all jaggy.
+
+Got gltt-1.8  Looks like it fixes a bunch of bugs.
+
+Finally put an alpha test into the alpha object.  This means that
+if the alpha of a pixel == 0., then it won't be put written into
+the frame buffer.  Look at the example file gemMoveImages.pd for
+an example of this.  Notice that the dancer is texture mapped to
+a sphere, yet you can always see her correctly.  You can disable
+this behavior by sending a 'test 0' to the alpha object.
+
+Oh boy, were my texture coordinates off.  Unknown to me, my reference
+image (dancer.tif) was actually upside down.  This meant that all
+of the texture coordinates in the Geos objects were compensating
+for the rotation.  Sorry if this messes anyone up, but it is now
+correct for all of the geos.
+
+I also now load in images in OpenGL format.  This means that
+data[0][0] == lower-left corner.  This shouldn't have any effect
+on anyone unless you are doing position sensitive image processing.
+
+Fixed the orientation problem when using pix_draw.
+
+imageVert handles gray8 pixes
+
+Fixed a problem if pix_multiimage loaded in images that were different
+formats or sizes.
+
+GEM supports search paths!  Basically, GEM will look for auxiliary
+files (images, models, fonts, etc.) from whatever directory the
+patch is in (unless you use an absolute path name with '/').
+
+---------------------------------------------------------------
+---------------------------- 0.73 -----------------------------
+Fixed profiling on Unix
+
+Added text2d, text3d, textoutline.  The text objects will render
+a truetype font (I have provided a couple fonts in gem/examples).
+text2d renders a flat bitmap...no rotation or Z movement.  text3d is
+full polygonal text, so you can translate and rotate.  textoutline
+is also polygonal, it is just a vectored outline.
+    PS text2d has some problems...
+
+JPEG and SGI image file formats are supported!  Depending on the number
+of color components, GEM will automatically convert them to grayscale
+or RGBA (just like TIFF files).
+
+pix_video is working slightly on WinNT.  There are still some
+serious problems, so consider this version a complete pre-alpha.  I'm
+releasing a version now to find out if it even works on other systems.
+I am using a Connectix QuickCam2.
+
+Shifted all of the auxilary libraries into a common directory.  Considering
+that I'm currently using 6 outside packages, it is just easier.
+
+---------------------------------------------------------------
+---------------------------- 0.72 -----------------------------
+
+Did a bunch of cleaning so that the Linux compile is happier (and easier).
+This involved getting rid of some warning messages and changing
+the makefiles slightly.
+
+The strange core dump on WinNT went away...
+
+All of the code and extra files are under source code control (CVS).
+You can just ignore the CVS directories. Eventually, I will try to keep
+them out of the release build.
+
+Added profiling.  If you send 'profile 1' to gemwin, then normal profiling
+is turned on (GEM displays the number of milliseconds per frame).  If you 
+send 'profile 2', then images will not be cached (ie, the pixes will always
+be processed).  If you send 'profile 0', then profiling is turned off.
+
+pix_multiply multiplies the color components of two images together.
+It doesn't modify the alpha channel.
+
+Optimized pix code.
+
+Because Miller is removing the INT type, I have slowly been moving it
+out of the code.  If any objects have stopped working, please let me know.
+I redid the construction macros in CPPExtern to reflect this change. 
+If you have made any new GEM objects, you will probably need to
+change to the new macro format.
+
+Most of the dual input pix objects will process gray8 and RGBA data
+gracefully.
+
+---------------------------------------------------------------
+---------------------------- 0.71 -----------------------------
+
+Guenter got GEM working under Linux!  The biggest impact is that I
+have changed all of the #ifdef __sgi to #ifdef _UNIX_ If specific versions
+of Un*x need certain things, then they can be #ifdef'ed with __sgi,
+or LINUX, or whatever.
+
+Fixed a bug in polygon and curve.  I'm not sure why it ever worked on
+the SGI...
+
+All pix objects accept a 0 or 1 to turn on and off their processing.
+The 0 or 1 should just be sent to the first inlet.
+
+The inlets were backwards for colorRGB.
+
+Fixed a bug in turning on and off texture mapping in pix_texture.
+
+GemMan::initGem is now called from Gem_setup.  There seems to be a problem
+with Linux creating the dummy static class to initialize GEM.
+
+Changes pix_texture so that it deal with OpenGL 1.1, GL_EXT_texture_obj,
+and base OpenGL 1.0  I think that every OS has the texture_obj
+extension, but just in case, I also have the OpenGL 1.0 technique of display
+lists.
+
+Removed some spurious print outs.
+
+I looked into using GL_BGRA_EXT for images on Windows.  It is faster
+in the software version, but my Intergraph card doesn't support it.
+It only makes a difference for OpenGL in software...and texture
+download time isn't the primary problem then.  With a 512x512 image
+using glDrawPixels in software, I got 6 frames/sec with RGBA and 7
+frames/sec with BGRA_EXT.  Older SGIs like ABGR_EXT, but the newer machines
+want RGBA.  Looks like I'm going to stick with RGBA for a while.
+
+You can now load in Gray8 and RGBA images and they will retain their
+format.  Before, everything was slammed into an RGBA image, with A == 255.
+This means that you can have alpha masks on images, etc. The only pix
+object which can currently handle a gray8 is pix_mask.  All of the other
+pixes throw errors if they get a gray8.  This will slowly be fixed.
+
+Added some new functions to GemPixUtil (from a paper by Alvy Ray Smith).
+They should speed things up. Currently, only pix_composite is using them.
+
+The color channels of pixels should be gotten by the const ints that
+are in GemPixUtil (for instance, chRed, chGreen, etc).  Using hard coded
+offsets like 0 or 2 for red and blue is asking for trouble.
+
+gemheads no longer push and pop the entire matrix state when renderGL is
+called. This should be faster (push/pop is slow on some platforms).  Also,
+all objects are required to "reset" the OpenGL state when they are done,
+so it shouldn't be neccessary.
+
+Strangeness: There is an unreferenced memory exception on WinNT when you
+quit Pd. However, it only happens if you use pix_image.  It doesn't
+happen while you are using Pd, only when you quit...
+
+---------------------------------------------------------------
+---------------------------- 0.70 -----------------------------
+
+All geos can now accept a size argument (they default to 1.0)
+
+I cleaned up the texture coordinate mapping.  The order was slightly
+random before. The order is more logical now; it is counterclockwise
+starting at 0, 0.  If you use pix_coordinate any where, you will need
+to fix the values.
+
+Fixed a bug in translateXYZ.  The inlets where backwards.
+
+You can now move the GEM window under NT.  NT doesn't automatically
+take care of the basic window functions unless you pass the messages
+through (unlike X Windows).
+
+Texture mapping can be turned on and off by sending a 0 or 1 to pix_texture
+
+Texture mapping defaults to GL_LINEAR.  Send a quality message to pix_texture
+to change this. A "quality 0" means GL_NEAREST, "quality 1" means GL_LINEAR.
+
+---------------------------------------------------------------
+---------------------------- 0.69 -----------------------------
+
+Fixed a bunch of bugs in imageVert.
+
+Cleaned up some lingering problems in various objects (the open message to 
+pix_multiimage didn't work as advertised for instance).
+
+Setting window color is now dynamic.
+
+multimodel now exists.  Works just like pix_multiimage, only it reads in 
+Alias/Wavefront files.  It also has a caching mechanism.
+
+---------------------------------------------------------------
+---------------------------- 0.68 -----------------------------
+
+fixed pix_2grey so it uses real color weights, instead of just averaging
+the three colors.
+
+pix_image now works the same way as pix_multiimage.  If you load in an
+image which another pix_image has already loaded, they will share the
+image.  This means that if you create a bunch of dummy pix_image
+objects, you can send an open message to pix_images which have a gemhead
+connected to them and get instantaneous image changes.
+
+Found a MAJOR bug in the NT version of pix_texture.  Basically, if you
+used it, the program would core dump.
+
+Found another bug in square.  It involved texture mapping and texture
+coordinates (mainly when you don't designate them).
+
+Changed the default values for scaleXYZ (to 1, 1, 1) and translateXYZ
+(to 0, 0, 0)
+
+---------------------------------------------------------------
+---------------------------- 0.67 -----------------------------
+
+Forgot to add the arguments for the scale object.  This has been fixed.
+
+Added translateXYZ, scaleXYZ, and colorRGB.  These create three inlets
+which you can modify, instead of having to mess with vector messages.
+
+Fixed a bug in pix_image and pix_multiimage (or more, an unacceptable
+response to user error).  Basically, if you started rendering without
+an image being loaded (or if an image failed to load, then you were
+_VERY_ likely to core dump.  A check has been added, so this shouldn't
+be a problem anymore.
+
+pix_multiimage HAS CHANGED!  It accepts up to four arguments:
+
+filename, number : will load the image files from 0 up to AND INCLUDING
+the number
+
+filename, lownum, highnum : will load the image files from the lownum up
+to AND INCLUDING the highnum
+
+filename, lownum, highnum, skiprate : will load the image files from
+the low num up to AND INCLUDING the highnum, but incrementing the counter
+by the skiprate, not by one.
+
+No matter how many images are loaded, you can change which image is
+displayed by sending a number.  The number must be between 0 and the
+number of images which were loaded (notice that this number may not be
+the highnum!)  If you try to display an image out of range, you will
+get an error.
+
+pix_multiimage now uses a shared cache.  Basically, if you give two
+pix_multiimage objects the EXACT same values (filename, base number,
+top number and skip number), then they will use the same collection of
+images.  This will save massive amounts of memory if there is any
+commonality between pix_multiimages.
+
+pix_flip - see help file
+
+---------------------------------------------------------------
+---------------------------- 0.66 -----------------------------
+
+Finished the port to NT (mainly had to get images working).
+
+Made pix_colormatrix - This is really good for things like saturation,
+hue rotate, etc.  I will eventually include a bunch of matrices to do
+cool stuff.  Check out Paul Haeberli's paper on color matrices at
+http://www.sgi.com/grafica/index.html
+
+I removed pix_color.  It was a hold over from earlier days and I
+don't think that anyone (including myself) is using it any more.
+
+I got a title bar onto the graphics window, but you still can't move it
+around.  I am not certain why this is the case, but I'll keep looking.
+
+I made general speed ups to most of the pix objects.  Mainly, I have
+been removing GetPixel() and SetPixel() functions (they have a lot
+of overhead).  I will continue to use Get/SetPixel() while I'm developing
+because they make things easy to deal with, but as objects get finished,
+I will remove them.
+
+Some of the manipulators (color, rotate, and translate) accept arguments.
+For instance, if you do color 1 0 0, it will automatically set the
+color to red.  The objects try to be intelligent about their arguments.
+For instance, if color receives three args, it sets RGB, but if it
+gets 4, it sets RGBA.  If rotate or translate get 3 args, then they just
+set the vector, but if they get 4, then they set both the vector and
+the value.
+
+---------------------------------------------------------------
+---------------------------- 0.65 -----------------------------
+
+GEM works under NT!  I got the port working last night.  I had to make some
+major changes to the underlying classes (specifically CPPExtern) because
+MS VisC++ puts the vtable pointer in the first four bytes...no matter what.
+This is a different behavior than SGI's compiler (and I think that it requires
+more work for MS VisC++'s compiler).  While it was a pain to change things, it
+is good in the long run.  The C++ standard doesn't say where the vtable is 
+located, so this would have bitten me at some point.
+
+---------------------------------------------------------------
+---------------------------- 0.64 -----------------------------
+
+Because MS VisC++ really wants files to end in .cpp (how stupid...),
+I renamed all of the C++ files.
+
+I looked into making all of the pixes be float, instead of unsigned char. This
+would give increased flexibility because we could use negative numbers, not
+worry about wrap around on the unsigned char, etc. In running performance
+tests on an SGI O2, the performance difference is fairly great.  If GEM
+was only an image processing program (ie, PhotoShop), then I would definetely
+have pixes be floats.  However, since GEM is meant for real-time, I will 
+continue to use unsigned chars to represent pixels.
+
+For the tech heads...I used to generate the rendering by creating a 
+linked list of the GEM objects.  The problem was that objects like
+separator weren't possible because it wasn't a true DAG.  That is now
+fixed so that tree/leaf graphs are possible.
+
+Made render_trigger so you can know exactly when the rendering is occuring.
+
+Made pix_multiimage! Just give it a file with a * (like myfiles*.tif) and an
+integer for a range (the number of images).
+
+Made pix_invert, separator
+
+---------------------------------------------------------------
+---------------------------- 0.63 -----------------------------
+
+The src directory has been made into a tree.
+
+Made pix_add and pix_subtract
+Added a scale object
+
+---------------------------------------------------------------
+---------------------------- 0.62 -----------------------------
+
+A dummy glxContext is created at startup.  What this means is that
+in the constructors of objects, OpenGL calls can be made, display
+lists can be constructed, etc.  Eventually, I would like to have a 
+single window which is always in existance that can change between
+single and double buffering, but that may be a little while.
+
+I put Sam Leffler's tiff library back in.  All image files must be in
+TIFF format again.  Basically, I think that Win NT would have trouble
+making SGI .rgb files, while anyone can make TIFF formats.  Currently
+there is some code bloat because libtiff does more than just read in a
+TIFF file.
+
+The pix_coordinate object allows users to set the S,T texture coordinates
+for geos.  For instance, by giving pix_coordinate 4 S,T pairs, the texture
+coordinates for a square can be changed on the fly.  Not all of the geos
+can support this ability right now (currently only square, triangle, and
+polygon, but this will change in the near future).
+
+A FAQ has been started, but there really aren't any questions in it yet.
+As people think of them, please let me know and I'll add them.
+
+---------------------------------------------------------------
+---------------------------- 0.61 -----------------------------
+
+Cocoon html help files for developers have been created.
+
+GEM now uses an internally generated DAG for rendering.  This 
+removes a serious bug where by objects could still try to reference
+dangling pointers.  GEM objects act like the tidle objects do
+from a users point of view.  Even if you break a connection
+in a GEM chain, the GEM objects will continue to work.  This
+means that it is safe to edit patches while a GEM chain is 
+running.  To rebuild the GEM patch, rendering must be turned
+off and then back on (just like the tilde objects).
+
+Using the td library from Evans & Sutherland by Nate Robbins to display
+Alias/Wavefront files (.obj).  It also takes care of image
+loading, although it is only .rgb.  If people complain enough,
+then I may return to the Sam's libTiff library, but it is so
+big that the td library is better.  The td library can also be
+compiled on Windows (or else I wouldn't have used it).  The new
+object is called model (although it may change its name some day).
+
+There is a new object which maps the color of a pix to the Z of
+a polygon.  It is isn't overly useful right now, but it is a cool
+demo.  It is called imageVert.
+
+---------------------------------------------------------------
+---------------------------- 0.60 -----------------------------
+
+Major changes to the internals of GEM.  gemwin is now only
+an access point to the window manager, instead of actually
+being the window manager.  This should make it easier to have
+multiple graphics windows.
+
+While I was getting the O2 video camera to work, I seem to
+have broken the Indycam object...
+
+---------------------------------------------------------------
+---------------------------- 0.50 -----------------------------
+
+Made the port from Max over to Pd.  Redesigned the class 
+heirarchy somewhat.
+

@@ -1,0 +1,43 @@
+#N canvas 0 0 448 398 10;
+#X obj 1 1 cnv 15 445 20 empty \$0-pddp.cnv.header all_about_cyclone
+20 10 1 18 -261106 -33289 0;
+#X obj 407 2 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X obj 1 376 cnv 15 445 20 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -233017 -33289 0;
+#N canvas 44 246 494 344 META 0;
+#X text 12 5 GENRE all_about_pd;
+#X text 12 45 DESCRIPTION outline of the cyclone library;
+#X text 12 65 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 25 KEYWORDS cyclone needs_work;
+#X restore 392 378 pd META;
+#N canvas 8 287 428 105 Related_objects 0;
+#X text 31 37 Hm...what to put here?;
+#X obj 1 1 cnv 15 425 20 empty \$0-pddp.cnv.subheading empty 3 12 0
+14 -261106 -33289 0;
+#X text 7 2 Atoms- Related Objects;
+#X restore 103 378 pd Related_objects;
+#X obj 6 378 pddp/pddplink pddp/help.pd -text help;
+#X text 40 36 Cyclone is a library of Pure Data classes \, bringing
+some level of compatibility between Max/MSP and Pd environments. Although
+being itself in the early stage of development \, it is meant to eventually
+become part of a much larger project \, aiming at unification and standardization
+of computer musicians' tools. In its current form \, cyclone is mainly
+for people using both Max and Pd \, and thus wanting to develop cross-platform
+patches \, but it also provide many very useful objects for the Pd-only
+user.;
+#X text 39 154 - hammer contains Pd versions of Max objects;
+#X text 39 174 - sickle contains Pd versions of MSP objects;
+#X text 39 194 - optional dummies sub-library \, which contains a large
+set of dummy classes \, serving as substitutions for Max/MSP classes
+not (yet) implemented in the cyclone;
+#X text 38 236 - cyclone sub-library \, taking care of loading the
+other three components \, and which itself contains: a small set of
+operators (!- \, !/ \, ==~ \, !=~ \, <~ \, <=~ \, >~ \, >=~ \, !-~
+\, !/~ \, %~ \, +=~) and an importing mechanism provided by the cyclone
+class;
+#X text 38 302 For more info:;
+#X obj 38 342 pddp/pddplink http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X obj 38 322 pddp/pddplink maxmode-help.pd;

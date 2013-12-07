@@ -1159,11 +1159,14 @@ int garray_getfloatarray(t_garray *x, int *size, t_float **vec)
 {
     if (sizeof(t_word) != sizeof(t_float))
     {
-        static int warned;
-        if (!warned)
-            post(
- "warning: extern using garray_getfloatarray() won't work in 64-bit version");
-        warned = 1;
+        t_symbol *patchname;
+        if (x->x_glist->gl_owner)
+            patchname = x->x_glist->gl_owner->gl_name;
+        else
+            patchname = x->x_glist->gl_name;
+        error("An operation on the array '%s' in the patch '%s'",
+              x->x_name->s_name, patchname->s_name);
+        error("failed since it uses garray_getfloatarray while running 64-bit!");
     }
     return (garray_getfloatwords(x, size, (t_word **)vec));
 }
@@ -1438,8 +1441,7 @@ static void garray_write(t_garray *x, t_symbol *filename)
     }
     canvas_makefilename(glist_getcanvas(x->x_glist), filename->s_name,
         buf, MAXPDSTRING);
-    sys_bashfilename(buf, buf);
-    if (!(fd = fopen(buf, "w")))
+    if (!(fd = sys_fopen(buf, "w")))
     {
         error("%s: can't create", buf);
         return;

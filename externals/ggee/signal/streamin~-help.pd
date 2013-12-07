@@ -1,0 +1,58 @@
+#N canvas 0 26 470 459 12;
+#X obj 45 133 print~;
+#X msg 45 105 bang;
+#X obj 23 62 streamin~ 3000;
+#X obj 132 210 streamout~;
+#X msg 132 108 disconnect;
+#X obj 371 87 osc~;
+#X obj 371 65 sig~ 220;
+#X floatatom 371 42 0 0 0 0 - - -;
+#X msg 285 162 format float;
+#X msg 284 184 format 16bit;
+#X text 14 432 (C) 1999 Guenter Geiger;
+#X msg 286 204 format 8bit;
+#X floatatom 132 235 0 0 0 0 - - -;
+#X text 21 295 The streamin~ object just takes the portnumber it is
+listening to as it's argument.;
+#X text 23 334 For help on the streamout object \, see the streamout.pd
+patch.;
+#X obj 23 197 dac~;
+#X obj 355 115 *~ 0.1;
+#X floatatom 418 88 0 0 0 0 - - -;
+#X floatatom 149 159 0 0 0 0 - - -;
+#X msg 285 252 connect gige 3001;
+#X msg 132 86 connect localhost 3000;
+#X msg 23 8 reset 4;
+#X msg 40 32 print;
+#X text 96 8 reset \, using n frames (default = 128);
+#X text 96 32 print queue info;
+#N canvas 461 224 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 45 DESCRIPTION needs a description;
+#X text 12 5 KEYWORDS signal network needs_work (description);
+#X text 12 65 INLET_0 signal reset print connect disconnect format
+;
+#X text 12 85 OUTLET_0 signal;
+#X restore 413 436 pd META;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 2 0 15 0;
+#X connect 2 0 15 1;
+#X connect 3 0 12 0;
+#X connect 4 0 3 0;
+#X connect 5 0 16 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 3 0;
+#X connect 9 0 3 0;
+#X connect 11 0 3 0;
+#X connect 16 0 3 0;
+#X connect 17 0 16 1;
+#X connect 18 0 3 0;
+#X connect 19 0 3 0;
+#X connect 20 0 3 0;
+#X connect 21 0 2 0;
+#X connect 22 0 2 0;

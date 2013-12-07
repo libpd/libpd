@@ -1,0 +1,10 @@
+#N canvas 700 418 285 166 10;
+#X obj 58 49 inlet~;
+#X obj 57 105 outlet~;
+#X obj 195 49 inlet~;
+#X obj 194 105 outlet~;
+#X obj 194 75 *~ -1;
+#X text 49 5 complex conjugate;
+#X connect 0 0 1 0;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;

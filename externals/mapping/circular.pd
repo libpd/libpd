@@ -1,0 +1,6 @@
+#N canvas 1 53 599 452 10;
+#X obj 62 10 inlet;
+#X obj 195 405 outlet;
+#X obj 65 172 expr 1 - sqrt(1 - pow($f1 \, 2));
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

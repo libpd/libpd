@@ -1,0 +1,77 @@
+Internal Stuff
+==============
+
+This is a developer document, not a user document.  You probably don't
+need to read this.
+
+
+Private/Internal Variables
+--------------------------
+
+Everything that the user shouldn't dabble with starts with '_'.
+For example 'pd._constructor', 'self._object', etc.  This includes
+everything that messes with pointers, for many purposes have a
+stub: function f(self, ...) return _f(self._object, ...) end
+
+Things that the user can use shouldn't start with '_'.
+
+Everything in pdlua should be in the 'pd' global table.
+
+
+Table Indices
+-------------
+
+As per Lua conventions, Lua tables start at index 1.  See:
+
+lua.c/pdlua_pushatomtable()  (C->Lua)
+lua.c/pdlua_popatomtable()   (Lua->C) (makes additional assumptions)
+
+
+Inlet/Outlet Numbers
+--------------------
+
+C   code uses 0,1,...
+Lua code uses 1,2,...
+
+Translations are performed in:
+
+lua.c/pdlua_dispatch() (C->Lua)
+lua.c/pdlua_outlet()   (Lua->C)
+
+
+Pointers
+--------
+
+Pointers are all Light User Data values.  This means there is no type 
+safety, make sure you're using the right pointers!
+
+pd._classes    :: string   => Lua object (class prototypes)
+object._class  :: t_class*
+
+pd._objects    :: t_pdlua* => Lua object (object instances)
+object._object :: t_pdlua*
+
+pd._clocks     :: t_clock* => Lua object (clock instances)
+clock._clock   :: t_clock*
+
+pdtable._array :: PDLUA_ARRAY_ELEM*
+
+Pointer atoms are also stored as Light User Data.  It's possible for
+things to crash if they are used/stored/etc, as far as I understand the 
+way Pd uses them.
+
+
+Architecture Issues
+-------------------
+
+:initialize() is called before the object is created.
+:postinitialize() is called after the object is created.
+
+
+Other Issues
+------------
+
+"#t does not invoke the __len metamethod when t is a table."
+See end of: http://lua-users.org/wiki/GeneralizedPairsAndIpairs
+
+This means pd.Table will remain ugly, with :length() :set() :get()

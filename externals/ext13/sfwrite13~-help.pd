@@ -1,0 +1,15 @@
+#N canvas 0 31 497 321 10;
+#X text 50 110 This is a placeholder help patch. You can help by making
+a real help patch for this object!;
+#X obj 120 173 sfwrite13~;
+#N canvas 227 138 494 344 META 0;
+#X text 12 125 RELEASE_DATE 2009-06-12;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR d13@klingt.org;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION;
+#X text 12 65 INLET_0;
+#X text 12 85 OUTLET_0;
+#X text 12 5 KEYWORDS signal soundfile;
+#X restore 438 287 pd META;

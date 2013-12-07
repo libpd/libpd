@@ -1,0 +1,76 @@
+#N canvas 15 212 532 190 10;
+#X obj 134 144 hello;
+#X text 31 122 See also:;
+#X obj 33 88 pdluax hello;
+#X obj 123 88 pdluax hello;
+#X obj 213 88 pdluax hello;
+#X obj 303 88 pdluax hello;
+#X obj 88 144 pdlua;
+#X text 31 16 [pdluax foo] loads the source file "foo.pd_luax" on each
+object creation. Less efficient than the loader ([foo] loads "foo.pd_lua"
+just once for all time) but more flexible when developing or live-coding.
+;
+#N canvas 9 90 607 714 pdluax_HOWTO 0;
+#X obj 16 4 cnv 15 600 100 empty empty pdluax_HOWTO 20 12 0 14 -261682
+-66577 0;
+#X obj 16 105 cnv 15 600 140 empty empty Advantages 20 12 0 14 -204786
+-66577 0;
+#X obj 16 246 cnv 15 600 200 empty empty Disadvantages 20 12 0 14 -204800
+-66577 0;
+#X obj 17 448 cnv 15 600 470 empty empty How_To_Write_Code_For_pdluax
+20 12 0 14 -203904 -66577 0;
+#X text 32 34 The pdluax class allows "volatile" loading of Lua source
+code files that define Pd object behaviour.;
+#X text 32 69 The [pdluax foo] object loads "foo.pd_luax" at object
+creation time.;
+#X text 32 127 + You can edit "foo.pd_luax" and new [pdluax foo] objects
+will reflect the changes in the file.;
+#X text 32 163 + Good for rapid development/testing cycles.;
+#X text 32 185 + Good for live coding.;
+#X text 32 206 + No need to restart Pd if you made a little mistake.
+;
+#X text 32 273 - Reloading the file each time is slower.;
+#X text 32 293 - Syntax is different to the syntax expected by the
+Lua loader (see below for discussion).;
+#X text 32 326 - There is no "reload" functionality \, so you can have
+multiple objects called [pdluax foo] but that have different behaviours.
+;
+#X text 32 368 - Data shared between objects must be accessible globally.
+;
+#X text 32 387 - The above two points mean some mistakes/changes mean
+you have to restart Pd anyway.;
+#X text 32 473 The last expression/statement in the file should be
+of the form:;
+#X obj 60 520 cnv 15 400 60 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 72 524 return function (self \, sel \, atoms);
+#X text 74 541 -- code here;
+#X text 73 561 end;
+#X text 32 585 This function is executed in the context of the 'initialize'
+method of the pdluax class \, and has the same arguments:;
+#X text 71 628 'self' is the object to be created.;
+#X text 70 645 'sel' is the name of the class.;
+#X text 70 663 'atoms' are the creation arguments.;
+#X obj 60 730 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 75 731 function self:in_1_float(f) ... end;
+#X obj 60 780 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 61 753 or:;
+#X text 75 781 self.in_1_float = function(self \, f) ... end;
+#X text 31 805 If using the second form \, remember the self argument.
+;
+#X text 31 830 If you need a shared state between objects \, you need
+to use a global name. Try to pick something unique to avoid conflicts
+with other scripts. You also need to ensure that you don't clobber
+this state - remember the script can be executed more than once.;
+#X obj 12 36 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 12 924 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 33 931 by mrpeach 2011/10/06;
+#X text 33 918 modified from doc/examples/pdlua/luax.txt;
+#X text 31 684 To add methods to the new object you need to add code
+_inside_ the returned function. There are two syntaxes for this:;
+#X connect 31 0 32 0;
+#X restore 228 120 pd pdluax_HOWTO;

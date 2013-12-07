@@ -25,6 +25,7 @@ typedef void (*t_bangmethod)(t_pd *x);
 typedef void (*t_pointermethod)(t_pd *x, t_gpointer *gp);
 typedef void (*t_floatmethod)(t_pd *x, t_float f);
 typedef void (*t_symbolmethod)(t_pd *x, t_symbol *s);
+typedef void (*t_blobmethod)(t_pd *x, t_blob *st); /* MP20061226 blob type */
 typedef void (*t_listmethod)(t_pd *x, t_symbol *s, int argc, t_atom *argv);
 typedef void (*t_anymethod)(t_pd *x, t_symbol *s, int argc, t_atom *argv);
 
@@ -41,6 +42,7 @@ struct _class
     t_pointermethod c_pointermethod;
     t_floatmethod c_floatmethod;
     t_symbolmethod c_symbolmethod;
+    t_blobmethod c_blobmethod;  /* MP20061226 blob type */
     t_listmethod c_listmethod;
     t_anymethod c_anymethod;
     struct _widgetbehavior *c_wb;       /* "gobjs" only */

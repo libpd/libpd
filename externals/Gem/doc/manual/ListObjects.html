@@ -1,0 +1,231 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (WinNT; I) [Netscape]">
+   <title>List of GEM objects</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>List of GEM objects</u></h2></center>
+<a href="#Controls">Controls</a>
+<br><a href="#Manips">Manipulators</a>
+<br><a href="#Geos">Geos</a>
+<br><a href="#Particles">Particles</a>
+<br><a href="#Nongeos">Nongeos</a>
+<br><a href="#Pixes">Pixes</a>
+<br><a href="#TV">TV</a>
+<br><a href="#MarkEx">MarkEx</a>
+<p>
+<hr WIDTH="100%"><a NAME="Controls"></a><i><u>Controls</u></i>
+<br>gemhead - the start of rendering chain
+<br>gemwin - the window manager
+<br>gemmouse - outputs the mouse position and buttons in the GEM window
+<br>gemkeyboard - outputs the keycode of a key pressed when you are in the GEM window (there might be different keycodes in Windows/Linux)
+<br>gemkeyname - outputs a symbolic description of a key pressed when you are in the GEM window (there might be different symbols in Windows/Linux)
+<br>gemorb - outputs the position, rotation, and buttons for a Space Orb
+<br>gemtablet - outputs the pen position, pressure, and buttons in the
+GEM window
+<p>
+<hr WIDTH="100%">
+<br><a NAME="Manips"></a><i><u>Manipulators</u></i>
+<br>accumrotate - accumulate a rotation
+<br>alpha - enable/disable alpha blending
+<br>ambient - set the ambient color with a vector
+<br>ambientRGB - set the ambient color with 3 discrete values
+<br>camera - 
+<br>color - set the color with a vector
+<br>colorRGB - set the color with 3 discrete values
+<br>depth - enable/disable depth testing
+<br>diffuse - set the diffuse color with a vector
+<br>diffuseRGB - set the diffuse color with 3 discrete values
+<br>emission - set the emissive color with a vector
+<br>emissionRGB - set the emissive color with 3 discrete values
+<br>linear_path - generate a path from an array of points
+<br>ortho - change the view to orthogonal, with the viewport the size of
+the window
+<br>polygon_smooth - turn on anti-aliasing for the objects below
+<br>rotate - rotate with an angle and vector
+<br>rotateXYZ - rotate with 3 discrete values
+<br>scale - scale with a vector
+<br>scaleXYZ - scale with 3 discrete values
+<br>separator - push the OpenGL state for the rest of the chain and pop
+when done
+<br>shininess - set the shininess of an object
+<br>specular - set the specular color with a vector
+<br>specularRGB - set the specular color with 3 discrete values
+<br>spline_path - generate a spline from an array of knots
+<br>translate - translate with a vector
+<br>translateXYZ - translate with 3 discrete values
+
+<p><a NAME="Geos"></a><i><u>Geos</u></i>
+<br>circle - render a circle
+<br>colorSquare - render a colored square (evtl. with color gradients)
+<br>cone - render a cone
+<br>cube - render a cube
+<br>cuboid - render a box
+<br>curve - render a Bezier curve
+<br>curve3d - render a surface
+<br>cylinder - render a cylinder
+<br>disk - render a disk
+<br>imageVert - make pixel colors to a height field map
+<br>model - render an Alias|Wavefront model
+<br>multimodel - render a series of Alias|Wavefront models, render by number
+<br>newWave - render a wave (that is evolving over time)
+<br>polygon - render a polygon
+<br>primTri - a triangle primitive
+<br>rectangle - render a rectangle
+<br>ripple - a rectangle with distorted (over time) texture-coordinates
+<br>rubber - a grid where you can move one of the grid-points
+<br>slideSquare - render a number of sliding squares
+<br>sphere - render a sphere
+<br>square - render a square
+<br>teapot - render a teapot
+<br>text2d - render 2-D text (a bitmap)
+<br>text3d - render 3-D text (polygonal)
+<br>textextruded - render an extruded 3D-text
+<br>textoutline - render outlined text (polygonal)
+<br>triangle - render a triangle
+<p><a NAME="Particles"></a><i><u>Particles</u></i>
+<br>part_head - The start of a particle group
+<br>part_color - Set the range of colors for the new particles
+<br>part_damp - set the damping for particles
+<br>part_draw - Apply the actions and render the particles.&nbsp; Accepts
+a message "draw line" or "draw point" to change the drawing style.
+<br>part_follow - Particles will follow each other like a snake
+<br>part_gravity - Have the particles accelerate in a direction
+<br>part_info - get the information (position, color, size,...) of each particle
+<br>part_killold - Remove particles past a certain age
+<br>part_killslow - Remove particles below a certain speed
+<br>part_orbitpoint - Orbit the particles around a specified point
+<br>part_render - render the remaining gem-tree as particles.
+<br>part_size - Set the size of new particles
+<br>part_source - Generate particles
+<br>part_targetcolor - Change color of the particles toward the specified
+color
+<br>part_targetsize - Change size of the particles toward the specified
+size
+<br>part_velocity - Set the velocity domain
+(distribution like CONE and the appropriate arguments)
+<br>part_vertex - emit a single particle
+
+<p><a NAME="Nongeos"></a><i><u>Nongeos</u></i>
+<br>light - make a point light
+<br>world_light - make a light at infinity
+<p><a NAME="Pixes"></a><i><u>Pixes</u></i>
+<br>pix_2grey - convert rgb pixels to grey (still an RGBA image)
+<br>pix_a_2grey - convert rgb pixels to grey based on alpha channel
+<br>pix_add - add two pixes together
+<br>pix_aging - super8-like aging effect
+<br>pix_alpha - set the alpha value of a pix
+<br>pix_background - let through only pixels that differ from a static "background" image
+<br>pix_backlight - a backlight photo effect
+<br>pix_biquad - 2p2z-filter for subsequent images
+<br>pix_bitmask - apply a bitmask to a pix
+<br>pix_blob - get center of gravity
+<br>pix_buf - buffer a pix
+<br>pix_buffer - storage room for pixes (like [table] for floats)
+<br>pix_buffer_read/pix_buffer_write - put/get pixes into/from a pix_buffer
+<br>pix_chroma_key - color keying (like "blue-box")
+<br>pix_coloralpha - set the alpha-channel of a pix as a mean-value of the color-components
+<br>pix_colormatrix - recombine the RGBA-channels with matrix-operation
+<br>pix_color - set the color of a pix (leaving alpha alone)
+<br>pix_colorreduce - reduce the number of colors (statistically)
+<br>pix_composite - composite two pixes together
+<br>pix_convolve - convolve a pix with a kernal
+<br>pix_coordinate - set the texture coordinates
+<br>pix_crop - get a sub-image of a pix
+<br>pix_curve - apply color-curves onto a pix
+<br>pix_data - get pixel data information
+<br>pix_delay - frame-wise delay
+<br>pix_diff - get absolute difference of two pixes
+<br>pix_dot - rasterize a pix with big dots
+<br>pix_draw - draw a pix
+<br>pix_dump - dump the pixel-data as a long list of floats
+<br>pix_duotone - reduce the number of colors by thresholding
+<br>pix_film - use a movie file as a pix source for image-processing
+<br>pix_flip - flip the pixels of a pix
+<br>pix_gain - apply a gain to a pix
+<br>pix_grey - convert any pix into greyscale colorspace
+<br>pix_halftone - rasterize a pix like it was printed in a newspaper
+<br>pix_histo - get the histogram of a pix
+<br>pix_hsv2rgb - transform a pix from HSV-colorspace into RGB-colorspace
+<br>pix_image - load in an image file
+<br>pix_imageInPlace - load a series of image files directly into texture-buffer, display by number
+<br>pix_info - get information about the pix (like dimension, colorspace,...)
+<br>pix_invert - invert a pix
+<br>pix_kaleidoscope - as if you were looking at the pix through a kaleidoscope
+<br>pix_levels - level adjustment
+<br>pix_lumaoffset - y-offset pixels depending on their luminance
+<br>pix_mask - mask a pix based on another pix
+<br>pix_metaimage - recompose an image out of smaller versions of itself
+<br>pix_mix - mix to pixes together
+<br>pix_motionblur - motionblur an image
+<br>pix_movie - use a movie file as a pix source and load it immediately into the texture-buffer
+<br>pix_movement - set the alpha-channel with respect to the change between two frames
+<br>pix_multiply - multiply two pixes
+<br>pix_multiimage - load in a series of image files, display by number
+<br>pix_normalize - normalize a pix
+<br>pix_offset - add an offset to a pix (wrapping instead of clipping)
+<br>pix_pix2sig~ - interpret a pix as 4 (RGBA) audio-signals
+<br>pix_posterize - posterization photo effect
+<br>pix_puzzle - shuffle an image
+<br>pix_rds - generate a Random Dot Stereogram out of the image (aka: Magic Eye (tm))
+<br>pix_rectangle - generate a rectangle in a pix buffer
+<br>pix_refraction - break up an image into coloured "glass-bricks"
+<br>pix_resize - resize a pix to next power of 2
+<br>pix_rgb2hsv - transform a pix from RGB-colorspace into HSV-colorspace
+<br>pix_rgba - transform a pix of any format into RGBA
+<br>pix_roll - (sc)roll through an image (wrapping)
+<br>pix_rtx - swap time-axis and x-axis
+<br>pix_scanline - take every nth line of the original image
+<br>pix_set - set the pixel-data with a long list of floats
+<br>pix_sig2pix~ - interpret 4 audio-signals as (RGBA) image-data
+<br>pix_snap - capture the render window into a pix
+<br>pix_snap2tex - capture the render window directly as a texture
+<br>pix_subtract - subtract two pixes
+<br>pix_tIIR - time-base Infinite-Impulse-Response filter (for motion-bluring,...) with settable number of poles/zeros
+<br>pix_takealpha - take the alpha channel of one pix and put it into another pix
+<br>pix_texture - use a pix as a texture map
+<br>pix_threshold - apply a threshold to a pix
+<br>pix_video - use a video camera as a pix source
+<br>pix_write -  capture the render window to disk
+<br>pix_zoom - zoom into a pix (using OpenGL)
+
+<p><a NAME="openGL"></a><i><u>openGL</u></i>
+there are more than 250 objects that
+form a complete wrapper around the openGL set of functions
+(as defined in the openGL-1.2 standard).<br>
+each openGL-function is prefixed with "GEM", eg:
+<i>[GEMglVertex3f]</i> is wrapped around <i>glVertex3f</i>.
+
+<p><a NAME="MarkEx"></a><i><u>MarkEx</u></i>
+<br>alternate - alternate between two outlets
+<br>average - average a sequence of numbers
+<br>change - only output on change
+<br>counter - count bangs
+<br>invert - non-zero numbers to zero, zero to 1
+<br>multiselect/multisel - a select object which accepts a list in the
+right inlet
+<br>oneshot - send a bang, then block until reset
+<br>randomF / randF - floating point random numbers
+<br>strcat - string concatentation
+<br>tripleLine - do a line with three numbers
+<br>tripleRand - random with three numbers
+<br>vector+ / v+ - add a scalar to a vector
+<br>vector- / v- - subtract a scalar from a vector
+<br>vector* / v* - multiply a vector by a scalar
+<br>vector/ / v/ - divide a vector by a scalar
+<br>vectorpack / vpack - attach a scalar to the end of a vector
+<br>rgb2hsv - convert a list of three floats from RGB to an HSV value
+<br>hsv2rgb - convert a list of three floats from HSV to an RGB value
+<br>abs~ - absolute value of a signal
+<br>reson~ - resonant filter
+<p><a href="index.html">[return]</a>
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

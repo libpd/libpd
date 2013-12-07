@@ -1,0 +1,85 @@
+#N canvas 89 39 931 736 10;
+#X obj 68 204 pdp_noise;
+#X obj 68 85 metro 40;
+#X obj 68 58 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 112 303 pdp_gain;
+#X floatatom 240 518 5 0 0;
+#X obj 68 514 pdp_blur;
+#X obj 243 499 hsl 128 15 0 1 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 6500 1;
+#X floatatom 240 233 5 0 0;
+#X obj 243 208 hsl 128 15 0 5 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 240 587 5 0 0;
+#X obj 243 567 hsl 128 15 0 1 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 5000 1;
+#X floatatom 239 307 5 0 0;
+#X obj 242 288 hsl 128 15 -5 5 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 8920 1;
+#X msg 15 339 reset;
+#X obj 68 338 pdp_add;
+#X obj 68 243 pdp_gain;
+#X text 393 286 a |gain| > 1 ensures regeneration;
+#X floatatom 119 56 5 0 0;
+#X obj 68 582 pdp_motion_phase;
+#X floatatom 133 338 5 0 0;
+#X text 392 495 blur ensures spatial coupling (determines the speed
+at which "blobs" move around the screen);
+#X text 392 565 a motion phase effect to spice it up (this causes local
+negative feedback around suddon changes);
+#X msg 109 13 40;
+#X msg 144 13 1000;
+#X msg 146 119 type grey;
+#X msg 147 90 type yv12;
+#X obj 68 619 pdp_glx;
+#X text 393 206 mix in some noise to get it going (set blur to minimal
+when starting so the added noise won't be blurred to black);
+#X obj 68 363 pdp_del 50;
+#X text 242 14 this example is like example03 with a zoom / rotation
+object thrown in;
+#X obj 68 480 pdp_zrot;
+#X floatatom 239 377 5 0 0;
+#X obj 242 358 hsl 128 15 0.1 10 1 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 8567 1;
+#X floatatom 239 446 5 0 0;
+#X obj 242 426 hsl 128 15 0 360 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 300 1;
+#X text 393 357 zoom;
+#X msg 239 334 1;
+#X msg 239 403 0;
+#X msg 239 261 1;
+#X text 392 420 rotation;
+#X connect 0 0 15 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 14 1;
+#X connect 5 0 18 0;
+#X connect 6 0 4 0;
+#X connect 6 0 5 1;
+#X connect 8 0 7 0;
+#X connect 8 0 15 1;
+#X connect 10 0 9 0;
+#X connect 10 0 18 1;
+#X connect 12 0 11 0;
+#X connect 12 0 3 1;
+#X connect 13 0 28 0;
+#X connect 14 0 28 0;
+#X connect 15 0 14 0;
+#X connect 17 0 1 1;
+#X connect 18 0 3 0;
+#X connect 18 0 26 0;
+#X connect 19 0 28 1;
+#X connect 22 0 17 0;
+#X connect 23 0 17 0;
+#X connect 24 0 0 0;
+#X connect 25 0 0 0;
+#X connect 28 0 30 0;
+#X connect 30 0 5 0;
+#X connect 31 0 30 1;
+#X connect 32 0 31 0;
+#X connect 33 0 30 2;
+#X connect 34 0 33 0;
+#X connect 36 0 32 0;
+#X connect 37 0 34 0;
+#X connect 38 0 12 0;

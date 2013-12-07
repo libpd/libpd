@@ -1,0 +1,1070 @@
+2010-10-11 16:04  zmoelnig
+
+	* tcpreceive.c, udpreceive.c: use SO_REUSEPORT (if available during
+	  compile-time)
+
+2010-10-11 15:34  zmoelnig
+
+	* .: svn:ignore all *.pd_linux
+
+2010-10-11 12:15  zmoelnig
+
+	* AUTHORS: authors
+	  
+	  illiterati
+
+2010-10-11 12:13  zmoelnig
+
+	* ChangeLog, NEWS: ChangeLog and NEWS files
+	  
+	  with bugs bunny and bill clinton
+
+2010-10-11 12:04  zmoelnig
+
+	* udpserver.c: at least accept one(1) client
+
+2010-10-11 12:03  zmoelnig
+
+	* iemnet.h: these debug things
+
+2010-10-08 22:11  rdz
+
+	* tcpserver-help.pd: added 'port' for outlet #4
+
+2010-10-08 22:08  rdz
+
+	* udpserver-help.pd: added help for [udpserver]
+
+2010-10-08 21:57  rdz
+
+	* tcpclient-help.pd, tcpreceive-help.pd, tcpsend-help.pd,
+	  tcpserver-help.pd, udpreceive-help.pd, udpsend-help.pd: added a
+	  'check also:' section where applicable
+
+2010-10-08 21:43  rdz
+
+	* udpclient-help.pd: added help for [udpclient]
+
+2010-10-08 20:53  rdz
+
+	* tcpserver-help.pd: corrected NOTE: there is no outlet 6. made
+	  outlet counting consistent (start at 1).
+
+2010-10-06 20:06  zmoelnig
+
+	* tcpclient-help.pd, tcpreceive-help.pd, tcpserver-help.pd,
+	  udpreceive-help.pd, udpsend-help.pd: more iemnet specifics
+
+2010-10-05 22:26  rdz
+
+	* iemnet-meta.pd: made iemnet-meta.pd comply with the
+	  libname-meta.pd format
+
+2010-10-02 20:39  rdz
+
+	* tcpserver-help.pd: added description to the 'bufsize' status
+	  message
+
+2010-10-02 20:34  rdz
+
+	* tcpclient-help.pd, tcpreceive-help.pd, tcpsend-help.pd,
+	  tcpserver-help.pd: updated help of [tcpsend]/[tcpreceive] to
+	  reflect their current behaviour
+
+2010-10-02 19:46  rdz
+
+	* tcpclient-help.pd: updated help to reflect current behaviour of
+	  [tcpclient]
+
+2010-10-02 19:15  rdz
+
+	* tcpserver-help.pd: updated help to reflect [tcpserver]'s current
+	  behaviour
+
+2010-09-20 15:06  zmoelnig
+
+	* iemnet.h: global debuglevel
+
+2010-09-20 14:35  zmoelnig
+
+	* iemnet_receiver.c: more debugging in the tick
+
+2010-09-20 13:31  zmoelnig
+
+	* Makefile: added DEBUG_CFLAGS
+
+2010-09-20 13:19  zmoelnig
+
+	* iemnet.c: less verbose when changing debuglevel
+
+2010-09-20 13:14  zmoelnig
+
+	* iemnet.c, iemnet.h, iemnet_data.c, iemnet_receiver.c,
+	  iemnet_sender.c, tcpclient.c, tcpreceive.c, tcpsend.c,
+	  tcpserver.c, udpclient.c, udpreceive.c, udpsend.c, udpserver.c:
+	  debugging levels
+
+2010-09-15 12:37  mescalinum
+
+	* Makefile: remove -mcpu/-mtune flags as it breaks x64 build. we
+	  should eventually figure a way of determining automatically the
+	  CPU, but 'uname -m' doesn't tell the truth
+
+2010-09-14 08:53  zmoelnig
+
+	* iemnet_receiver.c: receive in nonblocking mode
+
+2010-09-14 08:39  zmoelnig
+
+	* iemnet_receiver.c: on the way to thread safety...(?)
+	  
+	  a number of new mutexes to protect what is there to protect.
+	  avoid deadlocks when using the big pd-lock
+
+2010-09-13 13:48  zmoelnig
+
+	* udpserver.c: more DEBUG; alternative algorithm to add clients
+	  
+	  with a connection-less protocol it's a bit hard to know which
+	  clients are
+	  connected to a server...
+
+2010-09-13 13:43  zmoelnig
+
+	* iemnet_receiver.c, udpreceive.c: nada: whitespace
+
+2010-09-13 13:38  zmoelnig
+
+	* iemnet_receiver.c: removed the "return" at the beginning of
+	  iemnet__receiver_destroy()
+	  
+	  it looks like i put it there for debugging something; but i
+	  cannot remember now
+	  exactly...
+
+2010-09-09 13:53  zmoelnig
+
+	* iemnet_receiver.c: more debug output
+
+2010-09-09 13:52  zmoelnig
+
+	* udpclient.c: ...
+
+2010-08-27 09:15  zmoelnig
+
+	* tcpserver.c: get rid o fwarning in sprintf()
+
+2010-08-23 14:35  zmoelnig
+
+	* iemnet_receiver.c: on read termination read the status variables
+	  in a protected area
+
+2010-08-23 12:46  zmoelnig
+
+	* iemnet.c, iemnet_data.c, iemnet_receiver.c, iemnet_sender.c,
+	  udpserver.c: use malloc() rather than getbytes(); use
+	  pthread_exit();
+
+2010-08-22 11:57  zmoelnig
+
+	* udpserver.c: more support for udpserver
+
+2010-08-20 17:19  zmoelnig
+
+	* udpsend.c: fixed reentrancy issue
+
+2010-08-20 16:54  zmoelnig
+
+	* iemnet_data.c, iemnet_sender.c: fixed bugs in multithreading code
+
+2010-08-20 16:20  zmoelnig
+
+	* iemnet.h: in DEBUG mode, define IEMNET_HAVE_DEBUG
+
+2010-08-20 14:32  zmoelnig
+
+	* iemnet_data.c: reindentated; add some comments
+
+2010-08-20 14:12  zmoelnig
+
+	* iemnet_sender.c: more DEBUGs; clear memory before freeing it
+
+2010-08-20 14:11  zmoelnig
+
+	* iemnet_data.c: added more DEBUGs
+
+2010-08-20 14:09  zmoelnig
+
+	* udpreceive.c: output sender address
+
+2010-08-09 09:22  zmoelnig
+
+	* iemnet_data.c: allow to resize NULL-floatlists
+	  
+	  trying to resize a NULL-floatlist, will create a new one with the
+	  required size
+
+2010-07-14 17:52  zmoelnig
+
+	* udpsend.c: fixed crasher bug when printing "[udpsend] not
+	  connected"
+
+2010-04-07 14:45  zmoelnig
+
+	* iemnet.c, iemnet.h, tcpclient.c, tcpreceive.c, tcpserver.c:
+	  iemnet__streamout() takes an argument telling us whether to
+	  serialize or not
+	  (non-serialization might be useful for proxies)
+
+2010-04-07 14:29  zmoelnig
+
+	* udpserver.c: first working prototype - still loads of problems
+	  
+	  the socket outlet doesn't make any sense (remove it?)
+	  disconnecting kills the receiver thread!
+
+2010-04-07 14:27  zmoelnig
+
+	* iemnet.h, iemnet_receiver.c, tcpclient.c, tcpreceive.c,
+	  tcpserver.c, udpclient.c, udpreceive.c: new receiver callback:
+	  chunk2list has to be handled by client
+
+2010-04-07 14:24  zmoelnig
+
+	* iemnet_sender.c: sender now optionally uses sendto()
+	  
+	  if the chunk has an address/port specified, sendto() is used;
+	  else the default send() on the socket is used
+
+2010-04-07 14:22  zmoelnig
+
+	* iemnet_data.h: nice documentation (this file is not so private
+	  any more)
+
+2010-04-01 12:22  zmoelnig
+
+	* Makefile: don't need verbose auto-vectorizer
+
+2010-04-01 12:21  zmoelnig
+
+	* tcpserver.c: floatlist should be handled in the object
+
+2010-04-01 12:21  zmoelnig
+
+	* iemnet_receiver.c: cleanup queue in destructor
+
+2010-04-01 12:18  zmoelnig
+
+	* iemnet_data.c: check whether queue is !NULL before
+	  pushing/popping
+
+2010-04-01 11:20  zmoelnig
+
+	* tcpserver.c: call sender_destroy/receiver_destroy before cleaning
+	  up socketreceiver
+
+2010-04-01 10:20  zmoelnig
+
+	* iemnet.h: use <sys/types.h> directly rather than <stdlib.h> for
+	  getting needed types
+
+2010-04-01 09:51  zmoelnig
+
+	* iemnet.h: include stdlib.h
+	  
+	  on OSX (10.4) you cannot use INADDR_ANY without types, which are
+	  not provided by
+	  the header that defines INADDR_ANY...
+
+2010-04-01 09:33  zmoelnig
+
+	* tests/sequence/01_server.pd: display the queue status
+
+2010-04-01 09:24  zmoelnig
+
+	* tcpsend.c: fixed objName for tcpsend
+
+2010-04-01 09:14  zmoelnig
+
+	* build/w32-vs2003/iemnet.vcproj, iemnet.c: updated M$VC project
+
+2010-04-01 09:03  zmoelnig
+
+	* udpserver.c: added note about udpserver not being useable yet
+
+2010-04-01 09:01  zmoelnig
+
+	* udpserver.c: use error() for errors
+
+2010-04-01 07:22  zmoelnig
+
+	* Makefile, udpserver.c: non-functional crashy copy of tcpserver
+	  for udp
+
+2010-04-01 07:21  zmoelnig
+
+	* udpreceive.c: status outlet and forgotten struct member...
+
+2010-04-01 07:21  zmoelnig
+
+	* iemnet_sender.c: iemnet__sender_destroy() now also closes the
+	  socket
+
+2010-04-01 07:21  zmoelnig
+
+	* udpclient.c: use error instead of post
+
+2010-04-01 07:21  zmoelnig
+
+	* iemnet.c, iemnet.h, tcpclient.c, tcpreceive.c, tcpsend.c,
+	  tcpserver.c, udpclient.c, udpreceive.c, udpsend.c: exporting
+	  symbols; using objName
+
+2010-04-01 07:20  zmoelnig
+
+	* iemnet.c, iemnet.h: convenience function for outputting the
+	  socket
+
+2010-04-01 07:20  zmoelnig
+
+	* iemnet.c, iemnet.h: convenience function for outputting the
+	  number of connections
+
+2010-04-01 07:20  zmoelnig
+
+	* tcpreceive-help.pd, tcpreceive.c: tcpclient fixes and features
+	  
+	  fixed the callback (API changed but due to cast this has gone
+	  unnoticed)
+	  featured settable ports (and now creation failure is port is
+	  taken)
+
+2010-04-01 07:20  zmoelnig
+
+	* tcpclient.c: made connection thread safe
+	  
+	  the connection thread modifies the object's state (and calls
+	  clock_delay())
+	  since this is not thread safe, it is now protected by sys_lock()
+	  NOTE1: i remember someone saying that clock_delay() is thread
+	  safe
+	  NOTE2: this might still crash if the object is deleted before
+	  while the thread is executing
+
+2010-04-01 07:20  zmoelnig
+
+	* tcpserver.c: removed duplicate inclusion
+	  
+	  <arpa/inet.h> is already included in iemnet.h
+
+2010-03-31 13:44  zmoelnig
+
+	* tests, tests/sequence, tests/sequence/01_client.pd,
+	  tests/sequence/01_server.pd: simple test, whether sequences
+	  qppear in the right order
+
+2010-03-31 09:21  zmoelnig
+
+	* tcpserver.c: made "target" persistent, even if clients disconnect
+	  added "targetsocket" to specify the target via socket
+
+2010-03-31 08:58  zmoelnig
+
+	* iemnet.c, iemnet.h, tcpclient.c, tcpreceive.c, tcpserver.c:
+	  output the data of stream-based objects in a serialized form
+
+2010-03-31 08:51  zmoelnig
+
+	* FEATURES.txt, README.txt: features sheet
+
+2010-03-31 08:04  zmoelnig
+
+	* tcpserver.c: query the server port
+	  
+	  especially useful when autoassigning ports (port=0)
+
+2010-03-30 12:45  zmoelnig
+
+	* tcpserver.c: tcpserver now does not fail to create if port is
+	  already in use
+	  
+	  with the "port" message, the listening port can be changed at
+	  runtime
+	  (LATER we also want to query the port...)
+
+2010-03-30 11:51  zmoelnig
+
+	* tcpclient.c: avoid double registration of tcpclient
+
+2010-03-30 10:54  zmoelnig
+
+	* build/w32-vs2003/iemnet.vcproj: updated M$VC project
+
+2010-03-30 10:52  zmoelnig
+
+	* iemnet.h, tcpserver.c: added "target" method to tcpserver, to
+	  specify how to send ordinary lists
+	  
+	  target 0: broadcast
+	  target >0: send to specified client
+	  target <0: send not to specified client (but all others)
+
+2010-03-30 09:46  zmoelnig
+
+	* iemnet_data.c, iemnet_data.h, iemnet_receiver.c, iemnet_sender.c,
+	  tcpclient.c, tcpserver.c: query queue sizes
+	  
+	  with [tcpclient] use [bang(
+	  with [tcpserver] use [client <x>(
+
+2010-03-30 09:06  zmoelnig
+
+	* Makefile, iemnet.h, iemnet_data.c, iemnet_data.h: inline code
+	  documentation
+
+2010-03-30 07:36  zmoelnig
+
+	* Makefile, iemnet.c, iemnet.h, iemnet_data.c, iemnet_data.h,
+	  iemnet_receiver.c, iemnet_sender.c: split core library into
+	  separate files
+
+2010-03-29 17:32  zmoelnig
+
+	* build/w32-vs2003/iemnet.vcproj, iemnet.h, tcpreceive.c: made it
+	  compile on w32 again
+
+2010-03-29 17:30  zmoelnig
+
+	* tcpreceive.c, tcpsend.c, udpreceive.c, udpsend.c: replaced &s_...
+	  by gensym("...")
+	  
+	  this time it's the right lib
+
+2010-03-29 17:18  zmoelnig
+
+	* tcpserver.c: disable DEBUG
+
+2010-03-29 17:11  zmoelnig
+
+	* tcpclient.c, tcpserver.c: output additional data just like with
+	  mrpeach's objects
+
+2010-03-29 16:15  zmoelnig
+
+	* tcpclient.c: use error() rather than post() where appropriate
+
+2010-03-29 16:13  zmoelnig
+
+	* tcpclient.c: proper handling of remote disconnect
+
+2010-03-29 14:10  zmoelnig
+
+	* iemnet.c, tcpserver.c: provide feedback to Pd main-thread whether
+	  sender-thread still exists
+
+2010-03-29 13:37  zmoelnig
+
+	* iemnet.c: sender/receiver dtors can now be called recursively
+	  without double freeing
+	  resources (hopefully)
+
+2010-03-29 13:07  zmoelnig
+
+	* iemnet.c, tcpclient.c, tcpserver.c: clean up more properly on
+	  disconnect
+	  
+	  disconnecting has the awful tendency to trigger itself;
+	  for now, this is handled in the calling object's code,
+	  but later iemnet_(sender|receiver) should take care themselves
+
+2010-03-29 13:04  zmoelnig
+
+	* NOTES.txt: remind me of doing tests
+
+2010-03-27 08:55  zmoelnig
+
+	* iemnet.c: no need to lock the entire Pd-process
+
+2010-03-26 14:36  zmoelnig
+
+	* iemnet-meta.pd: iemnet-meta.pd is needed for "make dist"
+	  
+	  this should be properly documented within the Makefile...
+
+2010-03-26 14:35  zmoelnig
+
+	* Makefile: make cleaner
+
+2010-03-26 14:35  zmoelnig
+
+	* NOTES.txt, README.txt: more mission and scratchpad
+
+2010-03-26 14:35  zmoelnig
+
+	* iemnet.c: sys_lock() before calling clock_delay()
+	  
+	  LATER: think about using sys_trylock
+
+2010-03-26 14:35  zmoelnig
+
+	* tcpclient.c, udpclient.c: output server address
+
+2010-03-26 14:34  zmoelnig
+
+	* Makefile, udpclient.c: a simple udpclient
+	  
+	  bidirectional communication using UDP
+
+2010-03-26 14:34  zmoelnig
+
+	* tcpclient.c, tcpreceive.c, tcpsend.c, tcpserver.c, udpreceive.c,
+	  udpsend.c: proper use of DEBUG
+	  
+	  use DEBUG() directly rather than "#ifdef DEBUG"
+
+2010-03-26 14:34  zmoelnig
+
+	* udpsend.c: whitespaces...
+
+2010-03-26 14:33  zmoelnig
+
+	* udpreceive~.c, udpsend~-help.pd, udpsend~.c, udpsend~.h: no more
+	  audio-over-net objects
+	  
+	  use AOO (Audio Over OSC) or the like for such things...
+
+2010-03-26 14:33  zmoelnig
+
+	* Makefile, udpsend.c: udpsend
+
+2010-03-26 14:33  zmoelnig
+
+	* udpreceive.c: fix description: udpreceive is really a server
+
+2010-03-26 14:32  zmoelnig
+
+	* tcpserver.c: output the sending host
+
+2010-03-26 14:32  zmoelnig
+
+	* Makefile, udpreceive.c: udpreceive
+	  
+	  seems to work...
+
+2010-03-26 14:32  zmoelnig
+
+	* tcpserver.c: compatibility with mrpeach; convenience
+	  
+	  re-add all those stupid outlets.
+	  use convenience functions to send data to these outlets
+
+2010-03-26 14:32  zmoelnig
+
+	* iemnet.c, iemnet.h: convenience functions
+	  
+	  these probably should go into a separate file
+
+2010-03-26 14:31  zmoelnig
+
+	* tcpsend.c: use DEBUG()
+
+2010-03-26 14:31  zmoelnig
+
+	* iemnet.c, iemnet.h, tcpclient.c, tcpserver.c: changed API of
+	  read-callback
+	  
+	  the callback will provide the raw data chunk as well (easier to
+	  add more data)
+
+2010-03-25 11:36  zmoelnig
+
+	* iemnet.c, iemnet.h: DEBUG mechanism
+
+2010-03-25 11:35  zmoelnig
+
+	* README.txt: more missions
+
+2010-03-25 11:34  zmoelnig
+
+	* README.txt: mission statement
+
+2010-03-25 08:29  zmoelnig
+
+	* Makefile: included tcp* objects in Makefile
+
+2010-03-25 08:28  zmoelnig
+
+	* iemnet.h: most of the tcp-objects seem to work now;
+	  
+	  performance increase as measured until now is great :-)
+
+2010-03-25 08:28  zmoelnig
+
+	* iemnet.c, tcpclient.c, tcpreceive.c, tcpsend.c, tcpserver.c: most
+	  of the tcp-objects seem to work now;
+	  
+	  performance increase as measured until now is great :-)
+
+2010-03-24 22:47  eighthave
+
+	* Makefile: added include path for Pd-extended.app include folder
+	  to include path, after the -I$(PD_PATH)/src/ so it'll only use
+	  the headers inside the Pd-extended.app if the source is not
+	  specified
+
+2010-03-24 17:39  zmoelnig
+
+	* iemnet.c, tcpclient.c: on M$VC we only build libraries (and the
+	  autoregistration doesn't work)
+
+2010-03-24 17:38  zmoelnig
+
+	* build/w32-vs2003/iemnet.vcproj: removed the "shared.c"
+
+2010-03-24 17:25  zmoelnig
+
+	* iemnet.h, tcpserver.c: fixed M$VC preprocessor code
+
+2010-03-24 17:20  zmoelnig
+
+	* Makefile, iemnet.c, iemnet.h, shared.c, tcpclient.c, tcpserver.c:
+	  automatic calling
+
+2010-03-24 16:41  zmoelnig
+
+	* shared.c: cleaned up
+
+2010-03-24 16:40  zmoelnig
+
+	* tcpclient.c: check for validity before disconnecting (and
+	  invalidate pointers after)
+
+2010-03-24 16:31  zmoelnig
+
+	* shared.c: call shutdown before closesocket()
+
+2010-03-24 15:58  zmoelnig
+
+	* iemnet.c, iemnet.h, shared.c, tcpclient.c, tcpserver.c: made it
+	  compile (and run) on w32
+
+2010-03-24 15:57  zmoelnig
+
+	* build, build/w32-vs2003, build/w32-vs2003/iemnet.sln,
+	  build/w32-vs2003/iemnet.vcproj: w32 project
+
+2010-03-24 15:24  zmoelnig
+
+	* Makefile, shared.c, tcpclient.c, tcpserver.c: a first client
+
+2010-03-24 12:09  zmoelnig
+
+	* iemnet.h, shared.c, tcpserver.c: kind of works now: we can dump
+	  about 500MB within 5secs into tcpserver on lo
+
+2010-03-24 12:09  zmoelnig
+
+	* Makefile: only build tcpserver for now
+
+2010-03-23 19:26  zmoelnig
+
+	* shared.c: clock-based interfacing with Pd's main thraed
+
+2010-03-23 19:05  zmoelnig
+
+	* iemnet.h, shared.c, tcpserver.c: hmm, less crashes; threads hang
+
+2010-03-23 17:49  zmoelnig
+
+	* Makefile, iemnet.h, shared.c, tcpserver.c: factored out code into
+	  "shared";
+	  it's still rather unstable...
+
+2010-03-23 13:36  zmoelnig
+
+	* tcpserver.c: cleaned up
+
+2010-03-23 12:10  zmoelnig
+
+	* Makefile: Makefile (taken from ext13)
+
+2010-03-23 11:54  zmoelnig
+
+	* .: forked mrpeach's "net"
+
+2010-03-22 20:12  mrpeach
+
+	* Changed valid-stream output to be a signal output. Moved all
+	  post()s out of the perform routine. Updated help patch and
+	  version.
+
+2010-03-22 15:29  zmoelnig
+
+	* check for NULL-pointer in destructor
+
+2010-03-16 17:22  mrpeach
+
+	* Output valid state only when it changes.
+
+2010-03-16 16:42  mrpeach
+
+	* Added an outlet to udpreceive~ to indicate valid audio. Ouput
+	  address and port only if changed. Updated version and help patch.
+
+2010-03-11 21:04  mrpeach
+
+	* Updfated version number and help patch.
+
+2010-03-11 19:28  mrpeach
+
+	* Added a "TAG!" identifier field to the tag so it can be verified
+	  as a tag. This should help prevent crashes in case of dropped
+	  packets.
+
+2010-03-09 17:31  mrpeach
+
+	* Moved client-specific parameters into a single
+	  t_tcpserver_socketreceiver struct.
+
+2010-03-09 10:28  zmoelnig
+
+	* fixing bug #2966186
+
+2010-03-02 17:44  mrpeach
+
+	* Added a verbosity method to stop [tcpclient] printing in the main
+	  window every time it connects/disconnects.
+	  Updated the help patch to match.
+
+2010-02-24 18:37  mrpeach
+
+	* Corrected some error messages, check for EINVAL after recvfrom(),
+	  to try to find out why it happens...
+
+2010-01-20 19:41  mrpeach
+
+	* Added SO_BROADCAST so you can actually broadcast with a .255
+	  address...
+
+2010-01-18 17:41  mrpeach
+
+	* use unix line endings
+
+2010-01-18 17:25  mrpeach
+
+	* Make the connection thread detached and don't refer to its struct
+	  directly, check for thread
+	  creation errors.
+
+2010-01-18 04:31  mrpeach
+
+	* Use NULL instead of 0 to reset thread pointer so maybe now MinGW
+	  can compile it...removed unused symbols
+
+2010-01-15 18:53  mrpeach
+
+	* Added include for ws2tcpip.h for socklen_t for _WIN32
+
+2010-01-14 20:26  mrpeach
+
+	* Don't need float_cast.h anymore, using the flint union with
+	  ntohl/htonl instead.
+
+2010-01-14 20:24  mrpeach
+
+	* Always send in network byte order for all architectures. UDP
+	  receiving socket doesn't need to be
+	  non-blocking (I think...). Cleaned up help patch.
+
+2010-01-14 20:21  mrpeach
+
+	* Changed int optLen to socklen_t to avoid signedness warning
+
+2010-01-13 21:54  mrpeach
+
+	* Fixed header files for _WIN32
+
+2010-01-12 18:58  mrpeach
+
+	* Block size is settable by creation argument. Buffer size message
+	  is specified in frames. Info message gives some more info.
+	  Channels
+	  transmitted can be set to zero. Cleaned up help patch.
+
+2010-01-11 16:56  mrpeach
+
+	* Added "unix" to the test for "UNIX".
+
+2010-01-11 14:27  mrpeach
+
+	* help patch for udpsend~ and udpreceive~
+
+2010-01-11 14:25  mrpeach
+
+	* Versions of netsend~ for udp.
+
+2010-01-04 16:49  mrpeach
+
+	* Had the wrong #include for ioctl...
+
+2010-01-02 20:50  mrpeach
+
+	* Changed MSW to _WIN32. Added
+	  tcpserver_send_buffer_avaliable_for_client()
+	  using SIOCOUTQ ioctl in linux to see if send buffer has any room
+	  left. Apparently no equivalent exists for BSD or Windows.
+
+2010-01-02 20:04  mrpeach
+
+	* Changed MSW to _WIN32
+
+2010-01-02 20:03  mrpeach
+
+	* Changed MSW to _WIN32
+
+2010-01-02 19:59  mrpeach
+
+	* Changed MSW to _WIN32
+
+2010-01-02 19:52  mrpeach
+
+	* Changed MSW to _WIN32
+
+2010-01-02 19:51  mrpeach
+
+	* Changed MSW to _WIN32
+
+2009-11-29 17:37  mrpeach
+
+	* Sender threads are now created in the detached state so their
+	  resources will be freed when the threads complete. This appears
+	  to stop the accumulation of handles on WinXP at least.
+
+2009-11-28 21:38  mrpeach
+
+	* Removed duplicate send, added threaded send for files, and also
+	  send whenever buffer is full (65536 bytes) for incoming lists
+	  (although [tcpserver] is unlikely to be fed lists that long)
+
+2009-11-12 22:16  mrpeach
+
+	* Using pthreads to send each message to each client in its own
+	  thread. This should eliminate hangups when clients disappear
+	  halfway through, and increase responsiveness of Pd with
+	  [tcpserver]. Messages are sent as one unit instead of
+	  byte-by-byte. Select() is no longer used to check for available
+	  space in the buffer.
+
+2009-04-08 19:48  mrpeach
+
+	* Oops, I had forgotten to add the default timeout of 1000us.
+
+2009-04-08 19:34  mrpeach
+
+	* Added timeout message to set send timeout in microseconds,
+	  defaults to 1000.
+	  Changed help patch to match.
+
+2009-04-08 18:35  mrpeach
+
+	* Added [timeout( message to set microsecond timeout for send. This
+	  gives time for unusually small buffers to clear.
+	  Set default timeout to 1000us.
+	  Also prints a message if the whole send didn't complete.
+	  Updated help patch to match.
+
+2009-03-09 16:01  mrpeach
+
+	* The 'sent' message now contains client number, bytes sent, socket
+	  number. Empty 'send' message triggers list of client messages on
+	  right outlet. Empty socket number message causes a client message
+	  on right outlet.
+	  Help patch updated.
+
+2009-03-04 22:33  mrpeach
+
+	* Changed send routine to send one byte at a time and output number
+	  of bytes sent, so it won't block if the other end disappears.
+	  Also settable buffer size.
+	  Help path updated.
+
+2009-03-02 17:55  mrpeach
+
+	* Fixed some warnings about signed/unsigned variables.
+
+2009-03-02 17:01  mrpeach
+
+	* Fixed a bug that prevented the send routine from leaving the loop
+	  when no more data can be sent.
+	  Now it won't hang if you try sending to a recently disconnected
+	  client, honest!
+
+2009-03-02 03:41  mrpeach
+
+	* tcpserver_send_buf: send only one byte at a time into the buffer
+	  to avoid buffer overflow. This should not slow the whole thing
+	  down too much since we're already passing things one byte at a
+	  time.
+
+2009-03-01 21:56  mrpeach
+
+	* Added a [clientbuf( message to set the send buffer size for that
+	  client. Also the [client( message will output the current buffer
+	  size as well as the socket and ip for that client. Help patch
+	  updated.
+
+2009-02-24 21:07  mrpeach
+
+	* Updated help files to reflect new [tcpserver], cleaned up a bit
+	  more.
+
+2009-02-24 21:06  mrpeach
+
+	* Adds a status outlet which currently gives info about connected
+	  clients and the amount of sent data.
+
+2009-02-23 20:58  mrpeach
+
+	* Fixed select call so it works properly
+
+2009-02-22 23:39  mrpeach
+
+	* include errno.h for linux
+
+2009-02-22 22:36  mrpeach
+
+	* Removed some commented-out stuff
+
+2009-02-22 22:25  mrpeach
+
+	* Checks to see if a socket can be written to before sending. If
+	  not, prints a message to the pd window and doesn't send the data.
+
+2008-11-05 19:58  mrpeach
+
+	* Updated to add port number to list on right outlet
+
+2008-11-05 19:58  mrpeach
+
+	* Added port number output to ip list on right outlet as suggested
+	  by zmoelnig
+
+2008-11-05 19:35  mrpeach
+
+	* Updated to add port number on ip (right) outlet
+
+2008-11-05 19:34  mrpeach
+
+	* Added port number to ip outlet as suggested by zmoelnig
+
+2008-11-05 19:06  mrpeach
+
+	* Added broadcast permission to sockets as suggested by zmoelnig's
+	  patch 2221504
+
+2008-06-18 17:30  mrpeach
+
+	* Clarify what SO_REUSEADDR is for, no code changes.
+
+2008-05-07 09:56  zmoelnig
+
+	* removed svn:executable-flag
+
+2008-03-27 19:56  mrpeach
+
+	* No limit on sendable file size.
+
+2008-03-20 15:57  mrpeach
+
+	* Updated with dump message
+
+2008-03-20 15:50  mrpeach
+
+	* Added dump message for hexdump of received characters to main
+	  window.
+	  Added #include <sys.types.h> for u_long define.
+
+2008-01-21 14:09  mrpeach
+
+	* Applied W.Ritsch's patch to fix sign error with input > 127
+
+2007-08-06 22:18  mrpeach
+
+	* Closing socket should actually work now. Before it was just
+	  removing it from the list.
+
+2007-08-02 15:56  mrpeach
+
+	* Added disconnectclient and disconnectsocket methods so server can
+	  close connections too.
+
+2007-07-23 16:48  mrpeach
+
+	* Removed unused static binbuf that caused occasional crashes when
+	  reinstantiating the object. Thanks IOhannes
+	  for pointing it out!
+
+2007-06-20 21:10  mrpeach
+
+	* Updated
+
+2007-06-20 20:31  mrpeach
+
+	* Implemented IOhannes' list send
+
+2006-12-12 09:07  zmoelnig
+
+	* removed the "break;" statement in the broadcast() code to enable
+	  broadcasting
+	  to all connected clients (and not jsut the first one)
+
+2006-12-04 20:18  mrpeach
+
+	* make sure bytes > 127 are not interpreted as negative.
+
+2006-12-04 20:17  mrpeach
+
+	* make sure bytes >127 are not interpreted as negative.
+
+2006-12-01 16:50  mrpeach
+
+	* Use sprintf_s instead of snprintf if _MSC_VER defined
+
+2006-11-28 16:44  mrpeach
+
+	* changed MAX_PATH to FILENAME_MAX.
+
+2006-11-28 16:43  mrpeach
+
+	* changed MAX_PATH to FILENAME_MAX
+
+2006-11-07 21:58  mrpeach
+
+	* test file for net object help patches
+
+2006-11-07 21:57  mrpeach
+
+	* added send filename
+
+2006-11-07 21:21  mrpeach
+
+	* removed declspec
+
+2006-11-07 21:20  mrpeach
+
+	* added file send
+
+2006-08-24 06:51  mrpeach
+
+	* Renamed files without x_net_ prefix.
+	  Removed extra copies of tcpserver and tcpclient
+
+2006-08-17 05:33  eighthave
+
+	* added mrpeach targets and added missing header to get things
+	  compiling on Mac OS X
+
+2006-08-16 20:22  mrpeach
+
+	* Added the net, osc and sqosc~ directories
+

@@ -1,0 +1,72 @@
+#N canvas 0 0 654 431 10;
+#X text 452 8 GEM object;
+#X obj 8 305 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 308 Inlets:;
+#X text 38 395 Outlets:;
+#X obj 8 270 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 269 Arguments:;
+#X obj 7 76 cnv 15 430 190 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 128 cnv 15 160 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 16 408 Outlet 1: gemlist;
+#X text 23 322 Inlet 1: gemlist;
+#X text 71 31 Class: pix source;
+#X obj 451 233 pix_texture;
+#X obj 451 256 square;
+#X obj 451 196 pix_multiimage;
+#X msg 467 135 open myFiles*.tif 5;
+#X floatatom 544 173 3 0 5 0 image# - -;
+#X text 28 96 pix_multiimage loads in an image to be used a texture
+\, bitblit \, or something else. If you don't give it a default image
+file \, you can send the open message with a filename.;
+#X text 26 144 The integer to select which image you want to display
+is selects the image starting from ZERO! This means \, to display the
+first image \, you need to send a 0 \, for the second image \, a 1
+\, etc.;
+#X text 27 202 [pix_multiimage] loads TIFF \, JPEG and PNG images.
+;
+#X text 50 12 Synopsis: [pix_multiimage];
+#X text 29 76 Description: loads in multiple image files;
+#X text 63 281 <filename> (with wildcard *) for images to load;
+#X text 23 335 Inlet 1: open <filename> <#> : open images (the wildcard
+in the filename is expanded with integer 0..#);
+#X text 23 365 Inlet 2: <int> : select image (starting at 0);
+#X text 14 221 The image can be either drawn directly using [pix_draw]
+(VERY slow) or applied as a texture onto a Geo ([pix_texture]);
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 20 0;
+#X connect 18 0 19 0;
+#X connect 20 0 18 0;
+#X connect 21 0 20 0;
+#X connect 22 0 20 1;

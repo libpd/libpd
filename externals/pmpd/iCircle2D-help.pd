@@ -1,0 +1,82 @@
+#N canvas 352 49 574 849 10;
+#X text 156 130 1 : name;
+#X obj 12 785 iCircle2D;
+#X text 151 193 2 : center circle X;
+#X text 153 219 3 : center circle Y;
+#X text 260 23 Circlular interaction;
+#X text 154 52 This object sould be used for the simulation of interaction
+between a collection of masse and a circle;
+#X text 152 281 5 : Maximum Radius;
+#X text 151 258 4 : Minimum Radius;
+#X text 150 341 6 : constante Normal Force;
+#X text 149 374 7 : constante tengential Force;
+#X text 150 412 8 : normal rigidity;
+#X text 150 430 9 : tengential rigidity;
+#X text 143 492 10 : normal force proportional to 1/R;
+#X text 141 512 11 : tengential force proportional to 1/R;
+#X text 144 558 12 : normal damping;
+#X text 142 580 13 : tengential damping;
+#X text 144 614 14 : Normal displacement;
+#X text 143 633 15 : Tengential displacement;
+#X text 143 670 16 : link damping.;
+#X text 143 731 18 : normal constant displacement;
+#X text 142 753 19 : tangential constant displacement;
+#X text 98 97 message to change parametter / default value / creation
+arg number / description;
+#X text 177 148 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X msg 80 194 setX 0;
+#X msg 80 219 setY 0;
+#X msg 80 257 setRmin 0;
+#X msg 81 281 setRmax 1;
+#X text 177 236 center of the circle defining the interactor;
+#X text 176 300 minimal and maximal radius of the circle. If the mass
+is outside or inside this circles \, it will not interact with this
+link.;
+#X text 175 358 constant force normal to the circle.;
+#X text 176 391 add a constant force tangential to the circle.;
+#X msg 78 373 setFT 0;
+#X msg 79 339 setFN 0;
+#X text 175 447 normal and tangential rigidity of the circle. Forces
+are proportional to the distance between the masse and the maximum
+diametter of the circle.;
+#X text 175 528 normal and tangential forces proportional to the 1/distance
+between the masse and the center of the circle.;
+#X text 174 596 normal and tangential (to the circle) damping to the
+masse.;
+#X text 174 649 normal and tangential displacement field.;
+#X text 143 695 17 : Gravitation;
+#X text 172 714 Gravitation : this is a normal force proportional to
+1/R*R.;
+#X msg 78 694 setG;
+#X text 173 770 displace the masse if it's inside the interactor;
+#X msg 78 731 setdN;
+#X msg 78 750 setdT;
+#X msg 79 412 setKN;
+#X msg 78 431 setKT;
+#X msg 78 492 setRN;
+#X msg 78 514 setRT;
+#X msg 80 558 setDN;
+#X msg 80 582 setDT;
+#X msg 80 615 setdN;
+#X msg 79 636 setdT;
+#X msg 78 670 setD;
+#X connect 23 0 1 0;
+#X connect 24 0 1 0;
+#X connect 25 0 1 0;
+#X connect 26 0 1 0;
+#X connect 31 0 1 0;
+#X connect 32 0 1 0;
+#X connect 39 0 1 0;
+#X connect 41 0 1 0;
+#X connect 42 0 1 0;
+#X connect 43 0 1 0;
+#X connect 44 0 1 0;
+#X connect 45 0 1 0;
+#X connect 46 0 1 0;
+#X connect 47 0 1 0;
+#X connect 48 0 1 0;
+#X connect 49 0 1 0;
+#X connect 50 0 1 0;
+#X connect 51 0 1 0;

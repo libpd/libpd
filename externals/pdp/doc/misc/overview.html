@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Pure Data Packet</title></head>
+<body>
+
+<h1>Pure Data Packet</h1>
+
+
+<h2>Introduction</h2>
+
+<p>Pure Data Packet (PDP) is an extension library for the computer music 
+program <a href="http://www.puredata.info">Pure Data</a> (PD), by <a href = 
+"http://www-crca.ucsd.edu/~msp/software.html">Miller Puckette</a> and 
+others. Its goal is to provide a way to use arbitrary data types (data 
+packets) as messages that can be passed around inside PD, along side the 
+standard PD numbers and symbol types. In short it puts any data object on 
+the same level as a float or a symbol.
+
+<p>PDP runs on Linux and OSX. The OSX version depends on <a 
+href="http://fink.sourceforge.net/">Fink</a>. There is no 
+windows version.
+
+<p> Currently, PDP's focus is on images and video, but there is no reason it 
+should stay like that. There is limited support for matrix processing 
+included in the main library (like Jitter or Gridflow). There is an 
+extension library for 1D and 2D binary cellular automata, opengl rendering 
+(like Gem). Some plans include audio buffers (like Vasp), ascii packets, 
+text buffers, ... Finally there's a library that enables you to connect a 
+scheme interpreter (guile) to PD/PDP. For more image processing objects,
+have a look at Yves Degoyon's <a 
+href="http://ydegoyon.free.fr/pidip.html">PiDiP</a> library.
+
+<h2>Getting Started</h2>
+
+If you're used to working with PD, the the documentation and example 
+patches should be enough to get you started. Have a look at the README file 
+in the distribution to find out how to compile and setup. The file 
+<code>doc/reference.txt</code> contains a list of objects. If you have installed PDP 
+properly, you can just press the right mouse button on an object and select 
+help to get a help patch. If this doesn't work, look in the directory 
+<code>doc/objects</code> for a collection of help patches. The directory <code>doc/examples</code>
+contains some more demos. The directory <code>doc/objects</code> contains two 
+abstractions that are used to setup the input and output in the help 
+patches. You might want to cut and connect some wires to use the 
+input/output setup that works for you.
+
+<h2>Packets and Types</h2>
+
+<p> PDP is about packets and operations on packets. Packets are just chunks
+of dumb data. The interpretation of this data depends on its type name.
+There are several types of packets. The default type for most 
+objects is <code><b>image/YCrCb/320x240</b></code>. This is a single video 
+frame, encoded in the internal 16bit YUV format, measuring 320 by 240 
+pixels. Another image type is the grayscale image 
+<code><b>image/grey/320x240</b></code>. Important notes: All image processing objects that
+combine two or more packets need to be fed with the same packet types, i.e.
+encoding (YCrCb/grey) and dimensions need to be the same. Image dimensions need to be a 
+multiple of <code><b>8x8</b></code>.
+
+<p> The 
+<code><b>bitmap/*/*</b></code> type is another image representation type 
+supporting several encodings. I.e. <code><b>bitmap/rgb/*</b></code>,  
+<code><b>bitmap/rgba/*</b></code>, <code><b>bitmap/yv12/*</b></code>, ...
+
+This type cannot be processed directly by most of the image processing 
+objects, but it can be used to store in delay lines, or to send over the 
+network. It's main use is to support all kinds of input/output devices, and 
+opengl textures, without introducing too many conversions, but it can serve 
+as a space and bandwidth saver too (especially 
+<code><b>bitmap/yv12/*</b></code>).
+
+<p> One of the interesting
+features in PD is the possibility of connecting everything with everything. 
+If you want to generalize this to all kinds of media objects, the complexity 
+of managing the different types starts to grow quite fast. Therefore PDP has 
+a type conversion system that can take care of most of the conversions 
+using the <code><b>[pdp_convert]</b></code> object. You can manually convert 
+packets to a certain type by specifying a type template as a creation 
+argument. I.e. <code><b>[pdp_convert image/grey/*]</b></code> will convert 
+any packet to a greyscale image. Most of the conversion will become 
+automatic later on.
+
+<p> An example: You can use the basic PDP library together with the 
+cellular automata library and the opengl rendering library to use a cellular 
+automaton as an input to a video processing chain. You can convert the 
+processed image to a texture that can be applied to a 3d object, which then 
+can be drawn to the screen, captured as a texture, converted back to an 
+image, which can then be converted to a sound, processed and converted back 
+to an image,  etc... You get the point. The possibilities are endless.
+
+<p> Over the last couple of years, PDP has given birth to a forked off project called
+<a href="http://zwizwa.goto10.org/zwikizwaki.php?page=PacketForth">Packet Forth</a>.
+This is a programming laguage based on ideas from Forth and Lisp. It's aim is
+loosely to be a kind of 'media Perl'.
+
+    <hr>
+    <address><a href="mailto:pdp@zzz.kotnet.org">Tom Schouten</a></address>
+<!-- Created: Thu Apr 24 22:21:03 CEST 2003 -->
+<!-- hhmts start -->
+Last modified: Thu Jan 25 23:56:07 CEST 2006
+<!-- hhmts end -->
+  </body>
+</html>

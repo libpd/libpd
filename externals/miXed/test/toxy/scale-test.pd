@@ -1,0 +1,47 @@
+#N canvas 79 51 599 397 12;
+#X obj 22 197 widget scale s -command [concat ::toxy::scale_command
+.| _cb] -variable ::toxy::simplescale -label "Simple Scale" -orient
+h -length 300 -width 50 -font "Helvetica 12" -from -16 -to 16 -showvalue
+0 @float .- set .#1;
+#X floatatom 22 336 5 0 0 0 - - -;
+#X floatatom 191 128 5 0 0 0 - - -;
+#X msg 191 159 -from \$1;
+#X floatatom 287 128 5 0 0 0 - - -;
+#X msg 287 159 -to \$1;
+#X msg 44 159 -showvalue \$1;
+#X obj 44 133 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 214 336 5 0 0 0 - - -;
+#X msg 33 103 -command [concat ::toxy::scale_command .| _cb];
+#X obj 214 306 r \$0-scale;
+#X msg 22 70 -command [concat ::toxy::scale_command \$1-scale float]
+;
+#X obj 22 10 loadbang;
+#X obj 22 40 int \$0;
+#X msg 113 10 bang;
+#X msg 188 10 @float .- set .#1;
+#X msg 188 40 remove @float;
+#X floatatom 89 45 5 0 0 0 - - -;
+#N canvas 0 0 450 420 linked 0;
+#X obj 54 49 widget scale s -command [concat ::toxy::scale_command .|
+_cb] -variable ::toxy::simplescale -orient v -length 300 -width 50
+-font "Helvetica 12" -from -16 -to 16 -showvalue 0 @float .- set .#1
+;
+#X coords 0 0 1 1 80 360 1;
+#X restore 472 20 pd linked;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X connect 10 0 8 0;
+#X connect 11 0 0 0;
+#X connect 12 0 13 0;
+#X connect 13 0 11 0;
+#X connect 14 0 13 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;

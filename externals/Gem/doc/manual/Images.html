@@ -1,0 +1,112 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="Author" content="IOhannes m zmölnig">
+   <title>Images</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Dealing with Images</u></h2></center>
+Images are files which are loaded into GEM.  The images can be manipulated,
+applied to objects, and used in any number of different ways.  In
+this section, you will load in an image and display it on the screen. 
+This section will not apply the images to a <i>geo</i>; that occurs in
+the next part of the manual.
+<p>The pix objects are GEM objects which deal with <i>pix</i>els. 
+They do everything from loading in images to applying filters to the data. 
+The objects in this section of the manual only load in pix data from outside
+sources.  How you actually display the image is up to you.  The
+most common usages are with <i>[pix_draw]</i> and <i>[pix_texture]</i>.
+<p><b>Warning</b>:  <i>[pix_draw]</i> is almost always slower than <i>[pix_texture]</i>. 
+Because <i>[pix_draw]</i> is easier to use than <i>[pix_texture]</i>, it is
+used in these examples.  However, in any real usage or piece, <i>[pix_texture]</i>
+should always be used instead.  <i>[pix_draw]</i> is slow because PC
+graphics accelerators do not provide hardware acceleration for that functionality. 
+<i>[pix_texture]</i> does have hardware acceleration and will be much faster.
+<p><a href="#pix_image">[pix_image]</a> - load in an image
+<br><a href="#pix_multiimage">[pix_multiimage]</a> - load in multiple images
+<br><a href="#pix_movie">[pix_movie]</a> - load in a movie file
+<br><a href="#pix_video">[pix_video]</a> - use a real time video source
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="pix_image"></a>[pix_image]</h3>
+<i>[pix_image]</i> is used to load in images.  Images can be in a variety
+of different formats, including TIFF, JPEG, and SGI formats.  The
+patch gem_pix/gemImage.pd is the simplest use of the <i>[pix_image]</i> object. 
+In this patch, the <i>[pix_image]</i> object loads in the file dancer.JPG.
+<center>
+<p><img SRC="pixImage.jpg" BORDER=1 height=180 width=151></center>
+
+<p>As is the case with every GEM chain, this patch starts with the <i>[gemhead]</i>
+object.  The next object is <i>[pix_image]</i>, which actually loads
+the image.  <i>[pix_image]</i> makes the file dancer.JPG the current
+pixel data, which will be used in all subsequent operations in the chain. 
+The <i>[translateXYZ]</i> object is used to move the image around. 
+Finally, the <i>[pix_draw]</i> object renders the pixel data to the screen.
+<p>The patch mentions that changing the Z in <i>[translateXYZ]</i> does not
+change the size of the image, as would occur with a <i>geo</i> object like
+<i>[square]</i>. 
+This is because <i>[pix_draw]</i> simply draws the pixel at the current raster
+position, without any transformation.  If you want to change the size
+on the fly and rotate the image, you need to texture map the pix, which
+is described in the next section.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="pix_multiimage"></a>[pix_multiimage]</h3>
+The <i>[pix_image]</i> object only loads in one image at time.  If you
+try to change the image rapidly while the patch is running, you will notice
+a lag every time it has to load in a new file.  To avoid this lag,
+there is another object called <i>[pix_multiimage]</i>.  If you look
+at patch gem_pix/gemMultiImage.pd, you will see this object in action.
+<p>Basically, the * in the file name is replaced by the number that you
+pass in.  This allows you to play sequences of images with random
+access.  The one downside is that every image is loaded into memory
+when the object is created, so you need to have a lot of RAM to use it.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3><a NAME="pix_movie"></a>[pix_movie]/[pix_film]</h3>
+These objects are used to read movie-files from disk (or if supported from the internet).
+
+The movie is streamed off of disk, 
+using whatever decompression libraries are installed on your computer. 
+On Windows AVI movies seem to work fine,
+but there is also a prelaminary support for quicktimes (and mpeg).
+On macOS-X all formats supported by the system (basically: quicktime) should work ok.
+On linux the support is highly depending on what libraries are installed during compile time.
+There is support for MPEG (with libmpeg1 or (preferred:) libmpeg3), 
+quicktime (either libquicktime or quicktime4linux; 
+most likely you will not be able to decode quicktimes with proprietary codecs)
+and AVI (with libavifile which is able to utilize windows-dlls for (proprietary) codecs).
+There is also some rudimentary support for FFMPEG.
+
+The right inlet of <i>[pix_movie]</i>
+accepts a number to specify the frame to display.  Look at 04.pix/04.movie.pd
+for an image.
+<p>A key fact of <i>[pix_movie]</i> is that it immediately sends the movie
+data to OpenGL as a texture map.  This means that you do not need
+the <i>[pix_texture]</i> object in your chain.  This also means that
+you cannot process the movie data with pix objects.  The main reason
+for this is that it removes the need for a copy of all of the movie data. 
+If you want to apply some image-processing, you will have to use <i>[pix_film]</i>
+(and <i>[pix_texture]</i> for texture-mapping).
+<p>Some of the geos will not texture map the <i>[pix_movie]</i> data correctly. 
+Cone and sphere do not use texture coordinates when they are provided,
+so when you display a movie on one of these objects, you will have a black
+region (unless your movie size is a power of two...however, most movies
+are 320x160 pixels or something).  This will be fixed in a future
+release.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="pix_video"></a>pix_video</h3>
+The "image" can come from the <i>[pix_video]</i> object.
+This means that you can use a real-time video source and display it on the screen.
+<p>You can play with <i>[pix_video]</i> with the patches in 04.video/.
+The patches are explained in more depth in the advanced section of the GEM manual.
+<p><img SRC="tribar.gif" height=13 width=561>
+<p><a href="index.html">[return]</a>
+<br>
+</body>
+</html>

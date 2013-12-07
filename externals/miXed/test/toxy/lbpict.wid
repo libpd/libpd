@@ -1,0 +1,9 @@
+proc ::toxy::lbpict {path fname} {
+    if {[catch {$path config -image [image create photo -file $fname]} res]} {
+	puts stderr [concat failed ::toxy::lbpict: $res]
+    }
+}
+
+#> lbpict label
+
+::toxy::lbpict .- .#fname

@@ -1,0 +1,14 @@
+#N canvas 1 31 450 300 10;
+#X obj 140 126 sinh;
+#X text 54 47 placeholder help patch;
+#N canvas 479 242 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 45 DESCRIPTION;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control trigonometry needs_work (description)
+;
+#X restore 380 265 pd META;

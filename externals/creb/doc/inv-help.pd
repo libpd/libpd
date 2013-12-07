@@ -1,0 +1,13 @@
+#N canvas 0 26 450 300 10;
+#N canvas 331 92 494 307 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION inverse;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction needs_work (example patch)
+;
+#X text 12 105 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 391 275 pd META;
+#X obj 139 143 inv;

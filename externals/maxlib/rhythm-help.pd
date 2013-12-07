@@ -1,0 +1,50 @@
+#N canvas 0 26 533 403 12;
+#X obj 25 273 rhythm 0;
+#X floatatom 25 356 5 0 0 0 - - -;
+#X obj 25 59 notein;
+#X obj 348 237 makenote 100 100;
+#X msg 348 209 60;
+#X floatatom 54 328 5 0 0 0 - - -;
+#X text 81 360 beats per minute;
+#X text 111 331 beats in milliseconds;
+#X msg 79 113 reset;
+#X msg 90 146 model 0;
+#X msg 96 175 model 1;
+#X text 158 147 Large and Kolen adaptation model;
+#X text 164 174 Toiviainen adaptation model;
+#X text 53 21 rhythm :: detects the beat of rhythmic patterns;
+#X text 134 39 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 134 56 based on code written by Rober Rowe and published;
+#X text 133 72 in 'Mashine musicianship' \, Massachusetts \, 2001;
+#X text 115 275 creation: rhythm <adaptation model>;
+#X obj 84 303 bng 20 100 10 0 empty empty empty 0 -6 0 8 -262144 -42246
+-1;
+#X text 115 304 beat pulse;
+#X text 132 114 reset all values \, forget rhythm and stop beat pulse
+;
+#N canvas 293 158 494 344 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 float;
+#X text 12 5 KEYWORDS control analysis;
+#X text 12 45 DESCRIPTION detects the beat of rhythmic patterns;
+#X text 12 165 AUTHOR Olaf Matthes <olaf.matthes@gmx.de> \, based on
+code written by Rober Rowe and published in 'Mashine Musicianship'
+\, Massachusetts \, 2001;
+#X text 12 65 INLET_0 float reset model;
+#X text 12 145 OUTLET_2 bang;
+#X restore 473 374 pd META;
+#X connect 0 0 1 0;
+#X connect 0 1 5 0;
+#X connect 0 2 18 0;
+#X connect 2 0 0 0;
+#X connect 2 1 0 1;
+#X connect 3 0 0 0;
+#X connect 3 1 0 1;
+#X connect 4 0 3 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;

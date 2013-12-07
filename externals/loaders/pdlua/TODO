@@ -1,0 +1,24 @@
+todo
+- fix Pd crash when a Lua error contains '{'
+- documentation
+- install target for make
+- audit require support thoroughly:
+  - make require() support compiled packages
+  - make require() look next to Lua source before containing Pd patch
+- add access to this script's and (containing/parent) Pd patch paths
+- /usr/bin/ld: lua-lua.o: relocation R_X86_64_32 against `.rodata.str1.1'
+  can not be used when making a shared object; recompile with -fPIC
+
+done
+- variable support (like [v foo])
+- table support (like [tabread]/[tabwrite])
+- send support
+- add hook for object (post creation)
+- receive support (preferably multiple receives)
+- clock support
+- audit possible bugs relating to self.f = f(self, ...) misuse
+- write docs on foo.lua vs foo.luax
+- change inlet/outlet numbering to start from 1 instead of 0
+- add pd.dofile(file) that searches via Pd's path (actually obj:dofile(file))
+- write docs implementation (eg foo._bar => internal, etc)
+- add more features to lexpr

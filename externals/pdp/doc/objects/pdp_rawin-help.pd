@@ -1,0 +1,40 @@
+#N canvas 504 520 841 405 10;
+#X msg 103 130 open /tmp/otherpipe;
+#X msg 403 219 open;
+#X text 135 173 set type (how to interpret raw data);
+#X obj 75 307 pdp_help_output;
+#X text 442 219 open default pipe;
+#X text 143 258 creation args: <pipe> <type>;
+#X obj 371 280 print done;
+#X text 236 306 2nd outlet: bang if pipe is closed;
+#X text 249 131 open any pipe for reading;
+#X msg 118 152 close;
+#X text 164 152 close pipe;
+#X obj 403 199 spigot;
+#X obj 439 178 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 137 191 type bitmap/rgb/320x240;
+#X obj 103 236 pdp_rawin /tmp/pipe image/grey/320x240;
+#X text 102 19 pdp_rawin: read raw data from a pipe (or file);
+#X obj 64 73 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 64 96 sync \$1;
+#X obj 10 194 metro 40;
+#X obj 10 173 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X text 237 322 connect to [open< to ensure pipe stays open \, or file
+loops.;
+#X text 130 96 synchronize to pipe (1) or bang (0 = default);
+#X connect 0 0 14 0;
+#X connect 1 0 14 0;
+#X connect 9 0 14 0;
+#X connect 11 0 1 0;
+#X connect 12 0 11 1;
+#X connect 13 0 14 0;
+#X connect 14 0 3 0;
+#X connect 14 1 6 0;
+#X connect 14 1 11 0;
+#X connect 16 0 17 0;
+#X connect 17 0 14 0;
+#X connect 18 0 14 0;
+#X connect 19 0 18 0;

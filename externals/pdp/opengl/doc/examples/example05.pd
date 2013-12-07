@@ -1,0 +1,41 @@
+#N canvas 352 162 732 325 10;
+#X obj 54 43 metro 40;
+#X obj 54 19 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 314 120 pdp_convert texture/*/*;
+#X floatatom 343 212 5 0 0;
+#X obj 286 247 3dp_draw sphere 5;
+#X obj 314 95 pdp_plasma;
+#X obj 408 48 loadbang;
+#X msg 408 70 dim 512 256;
+#X obj 314 65 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 181 144 3dp_windowcontext;
+#X obj 181 203 3dp_view roty;
+#X floatatom 267 176 5 0 0;
+#X obj 31 144 3dp_windowcontext;
+#X obj 31 203 3dp_view roty;
+#X floatatom 117 176 5 0 0;
+#X obj 286 278 3dp_draw cube 2;
+#X obj 336 164 pdp_del 3;
+#X text 414 164 <- textures can be stored in a delay line;
+#X text 133 9 convert pdp image packets to textures and map them on
+a sphere and cube. create 2 independent viewing windows.;
+#X connect 0 0 9 0;
+#X connect 0 0 12 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 1;
+#X connect 2 0 16 0;
+#X connect 3 0 4 2;
+#X connect 4 0 15 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 4 0;
+#X connect 11 0 10 1;
+#X connect 12 0 13 0;
+#X connect 13 0 4 0;
+#X connect 14 0 13 1;
+#X connect 16 0 15 1;

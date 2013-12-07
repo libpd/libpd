@@ -1,0 +1,75 @@
+#N canvas 0 22 804 338 10;
+#X obj 153 192 _;
+#X obj 153 228 print;
+#X floatatom 154 131 5 0 0 0 - - -;
+#X msg 162 147 some message;
+#X floatatom 346 136 5 0 0 0 - - -;
+#X obj 333 222 _ alpha;
+#X symbolatom 363 173 10 0 0 0 - - -;
+#X obj 440 14 import jasch_lib;
+#X obj 334 248 _;
+#X msg 359 248 alpha 1 2 3 4;
+#X symbolatom 170 167 10 0 0 0 - - -;
+#X text 308 13 comment;
+#X obj -20 13 cnv 15 780 40 empty empty _(underscore) 20 12 0 24 -233139
+-66577 0;
+#X text 666 18 jasch 05/2006;
+#X text 624 34 http://www.jasch.ch;
+#X obj 646 61 import jasch_lib;
+#X text 208 20 lazy man's prepender;
+#X msg 370 190 1 2 3 4;
+#X obj 334 115 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 355 153 any old message;
+#X text 208 34 argument (optional): prependee (default "set");
+#N canvas 387 94 429 483 more 0;
+#X msg 96 71 1;
+#X obj 96 50 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 96 159 11 22;
+#X msg 96 115 symbol foo;
+#X msg 96 93 float 1.1;
+#X msg 96 137 set;
+#X msg 96 182 list -55 -66;
+#X msg 96 205 list aaa 123;
+#X msg 96 228 jkl 555 uuu;
+#X obj 96 318 route bang float symbol list;
+#X obj 95 367 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 142 368 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 191 367 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 239 367 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 287 366 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 308 366 anything;
+#X obj 96 273 _;
+#X connect 0 0 16 0;
+#X connect 1 0 16 0;
+#X connect 2 0 16 0;
+#X connect 3 0 16 0;
+#X connect 4 0 16 0;
+#X connect 5 0 16 0;
+#X connect 6 0 16 0;
+#X connect 7 0 16 0;
+#X connect 8 0 16 0;
+#X connect 9 0 10 0;
+#X connect 9 1 11 0;
+#X connect 9 2 12 0;
+#X connect 9 3 13 0;
+#X connect 9 4 14 0;
+#X connect 16 0 9 0;
+#X restore 581 210 pd more;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 0;
+#X connect 8 0 9 0;
+#X connect 10 0 0 0;
+#X connect 17 0 5 0;
+#X connect 18 0 5 0;
+#X connect 19 0 5 0;

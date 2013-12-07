@@ -1,0 +1,35 @@
+#N canvas 0 26 472 323 10;
+#X obj 99 139 colorpanel;
+#X msg 99 56 bang;
+#X obj 112 198 pddp/print;
+#X obj 98 226 unpack float float float;
+#X obj 30 278 nbx 8 20 -1e+37 1e+37 0 0 empty empty red 0 28 0 14 -261234
+-1 -1 0 256;
+#X obj 150 278 nbx 8 20 -1e+37 1e+37 0 0 empty empty green 0 28 0 14
+-204786 -1 -1 0 256;
+#X obj 270 278 nbx 8 20 -1e+37 1e+37 0 0 empty empty blue 0 28 0 14
+-203904 -1 -1 0 256;
+#X text 35 16 pop up a color picker and output the red \, green \,
+blue values as a list of three floats ranging from 0 to 1;
+#X text 129 177 the list:;
+#X text 202 78 or open the window with an initial color;
+#X msg 108 78 symbol #beefee;
+#X msg 160 107 0.5 0.5 0.5;
+#N canvas 442 194 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control GUI;
+#X text 12 45 DESCRIPTION graphical color chooser;
+#X text 12 65 INLET_0 bang symbol list;
+#X text 12 85 OUTLET_0 list;
+#X restore 422 302 pd META;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 3 1 5 0;
+#X connect 3 2 6 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;

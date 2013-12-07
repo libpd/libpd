@@ -1,0 +1,50 @@
+#N canvas 0 26 461 431 10;
+#X text 15 35 smooth out an incoming signal via a ramp;
+#X msg 49 161 1;
+#X msg 18 161 0;
+#X msg 217 222 rampdown \$1;
+#X floatatom 217 203 0 0 0 0 - - -;
+#X msg 155 222 rampup \$1;
+#X floatatom 155 203 0 0 0 0 - - -;
+#X text 19 60 rampsmooth~ smooths an incoming signal across n samples.
+Each time an incoming value changes \, it begins a linear ramp of n
+samples to reach this value. Useful for envelope following and lowpass
+filtering. The number of samples is specified either as arguments or
+with the ramp \, rampup \, rampdown messages.;
+#X obj 32 222 sig~;
+#X floatatom 32 203 0 0 0 0 - - -;
+#X msg 93 222 ramp \$1;
+#X floatatom 93 203 0 0 0 0 - - -;
+#X text 181 246 args: <rampup> <rampdown>;
+#X obj 144 280 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 32 246 rampsmooth~ 44100 44100;
+#X obj 32 294 Snapshot~ 100;
+#X obj 33 325 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#N canvas 247 115 494 398 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION smooth out an incoming signal via a ramp
+;
+#X text 12 5 KEYWORDS signal max_compatible ramp;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 65 INLET_0 signal ramp rampup rampdown;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 411 410 pd META;
+#X connect 1 0 9 0;
+#X connect 2 0 9 0;
+#X connect 3 0 14 0;
+#X connect 4 0 3 0;
+#X connect 5 0 14 0;
+#X connect 6 0 5 0;
+#X connect 8 0 14 0;
+#X connect 9 0 8 0;
+#X connect 10 0 14 0;
+#X connect 11 0 10 0;
+#X connect 14 0 13 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;

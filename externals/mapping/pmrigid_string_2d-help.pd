@@ -1,0 +1,71 @@
+#N canvas 1 53 665 585 10;
+#X obj 54 62 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 75 62 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X text 227 278 arguments : number of moving masses \, rigidity \,
+damping;
+#X text 210 19 simple Physical model of "string";
+#X text 164 40 usefull to create different correlated output with few
+input.;
+#X text 111 83 inlet : 1 \, 2 : position of 1st mass and last mass
+;
+#X text 180 106 3 : forces apply to masses;
+#X text 180 128 4 : rigidity;
+#X text 180 148 5 : damping;
+#X text 171 249 mass 3 \, force = 1;
+#X text 106 309 outlet 1 : position of masses;
+#X msg 116 250 3 0.01;
+#X obj 38 421 gemhead;
+#X obj 38 339 t b l;
+#X obj 38 516 translateXYZ;
+#X obj 96 447 unpack f f f;
+#X obj 38 256 f;
+#X obj 135 470 - 0.5;
+#X obj 134 490 * 4;
+#X obj 175 470 - 0.5;
+#X obj 174 490 * 4;
+#X obj 249 460 gemwin;
+#X msg 249 408 create \, 1;
+#X msg 266 431 destroy;
+#X obj 54 365 loadbang;
+#X msg 54 388 0;
+#X obj 38 541 square 0.1;
+#X obj 38 206 gemhead;
+#X obj 38 230 b;
+#X obj 38 277 pmrigid_string_2d 9 0.1 0.01;
+#N canvas 529 303 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 185 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 65 INLET_0 float;
+#X text 12 125 INLET_3 float;
+#X text 12 165 OUTLET_0 list;
+#X text 12 45 DESCRIPTION simple Physical model of "string";
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 list;
+#X text 12 145 INLET_4 float;
+#X restore 603 553 pd META;
+#X connect 0 0 16 1;
+#X connect 1 0 29 1;
+#X connect 11 0 29 2;
+#X connect 12 0 14 0;
+#X connect 13 0 12 0;
+#X connect 13 1 15 0;
+#X connect 14 0 26 0;
+#X connect 15 1 17 0;
+#X connect 15 2 19 0;
+#X connect 16 0 29 0;
+#X connect 17 0 18 0;
+#X connect 18 0 14 1;
+#X connect 19 0 20 0;
+#X connect 20 0 14 2;
+#X connect 22 0 21 0;
+#X connect 23 0 21 0;
+#X connect 24 0 25 0;
+#X connect 25 0 12 0;
+#X connect 27 0 28 0;
+#X connect 28 0 16 0;
+#X connect 29 0 13 0;

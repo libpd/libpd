@@ -1,0 +1,26 @@
+#N canvas 1 53 392 166 10;
+#X msg 17 39 1 2 3 4;
+#X floatatom 50 96 5 0 0 0 - - -;
+#X msg 84 40 3 4 5;
+#X text 315 100 j#|@2002;
+#X obj 337 78 SMLib-help;
+#X obj 52 69 vrms;
+#X text 16 14 vrms computes the root-mean-square of a vector;
+#X msg 134 40 1 1 1 1;
+#X msg 200 40 1 -1 1 -1;
+#N canvas 159 173 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 85 OUTLET_0 float list;
+#X text 12 45 DESCRIPTION root-mean-square of a vector;
+#X restore 338 125 pd META;
+#X connect 0 0 5 0;
+#X connect 2 0 5 0;
+#X connect 5 0 1 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;

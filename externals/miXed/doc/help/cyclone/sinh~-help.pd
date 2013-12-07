@@ -1,0 +1,40 @@
+#N canvas 0 26 632 311 10;
+#X text 268 91 this is probably only useful for mathematical calculations
+;
+#X obj 18 78 cycle~ 2;
+#X msg 235 149 range -12 12;
+#X obj 150 110 -~ 3.14159;
+#X text 15 35 Hyperbolic sine function (sinh(x)) for signals;
+#X obj 150 87 *~ 6.28319;
+#X obj 150 65 phasor~ 2;
+#X obj 18 109 *~ 3.14159;
+#X obj 158 175 Scope~ 130 130 256 3 128 -12 12 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 18 175 Scope~ 130 130 256 3 128 -12 12 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 236 123 loadbang;
+#X obj 149 140 sinh~;
+#X obj 18 140 sinh~;
+#N canvas 309 151 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible trigonometry;
+#X text 12 45 DESCRIPTION hyperbolic sine function (sinh(x)) for signals
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 583 290 pd META;
+#X connect 1 0 7 0;
+#X connect 2 0 8 0;
+#X connect 2 0 9 0;
+#X connect 3 0 11 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 7 0 12 0;
+#X connect 10 0 2 0;
+#X connect 11 0 8 0;
+#X connect 12 0 9 0;

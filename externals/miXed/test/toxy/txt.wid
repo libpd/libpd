@@ -1,0 +1,9 @@
+#> txt text
+#. -bg lightgreen -foreground brown -font .(helvetica 12 bold.) -width 40 -height 16
+#. @bang pd .| _cb [string map .(" " ".`.` ".) [.- get "0.0" end]] .`.:
+#. @float pd .| _cb [string map .(" " ".`.` ".) [.- get .#1.0 .#1.end]] .`.:
+#. @insert .- insert .#2 .#1
+#. @replace .- delete "0.0" end .: .- insert "0.0" .#1
+
+#. @store set .#1 [.- get 0.0 end]
+#. @restore insert 0.0 .#1

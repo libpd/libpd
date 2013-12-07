@@ -1,0 +1,11 @@
+#N canvas 805 557 415 150 10;
+#X obj 21 49 pdp_m_LU;
+#X obj 21 24 inlet;
+#X obj 21 103 outlet;
+#X text 150 31 computes a matrix inverse using the;
+#X text 149 48 LU decomposition (PA = LU);
+#X text 148 84 (uses double precision processing);
+#X obj 21 77 pdp_m_LU_inverse;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 6 0 2 0;

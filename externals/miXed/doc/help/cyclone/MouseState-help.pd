@@ -1,0 +1,66 @@
+#N canvas 0 26 561 485 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 25 444 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 24 458 ___________________________________________________
+;
+#X obj 33 64 MouseState;
+#X text 127 64 report mouse x/y/deltax/y and buttonpress;
+#X obj 58 223 MouseState;
+#X obj 58 349 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 74 330 5 0 0 0 - - -;
+#X floatatom 90 304 5 0 0 0 - - -;
+#X text 114 333 x;
+#X msg 107 124 poll;
+#X text 134 305 y;
+#X floatatom 106 280 5 0 0 0 - - -;
+#X text 156 281 delta x;
+#X floatatom 123 251 5 0 0 0 - - -;
+#X text 173 252 delta y;
+#X text 77 350 button pressed ? (one button of course \, mac you know)
+;
+#X text 149 124 poll the mouse device;
+#X msg 58 100 bang;
+#X text 100 100 update current state;
+#X msg 107 143 nopoll;
+#X text 159 143 come on you guessed it right ...;
+#X msg 107 171 zero;
+#X text 149 173 set current pos to 0 \, 0 of our coordinate system
+;
+#X msg 105 196 reset;
+#X text 155 196 reset 0 \, 0 to upper left corner;
+#X text 182 392 For more info:;
+#X obj 286 392 pddp/pddplink ../all_about_hid.pd -text all_about_hid
+;
+#X obj 5 3 cnv 15 550 30 empty empty [MouseState] 20 12 1 14 -233017
+-66577 0;
+#X obj 386 392 pddp/pddplink all_about_cyclone.pd -text all_about_cyclone
+;
+#N canvas 168 192 494 442 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 205 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible user_input;
+#X text 12 45 DESCRIPTION report mouse x/y/deltax/y and buttonpress
+;
+#X text 12 65 INLET_0 bang poll nopoll zero reset;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 145 OUTLET_3 float;
+#X text 12 165 OUTLET_4 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 185 AUTHOR Krzysztof Czaja;
+#X restore 510 463 pd META;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 5 2 8 0;
+#X connect 5 3 12 0;
+#X connect 5 4 14 0;
+#X connect 10 0 5 0;
+#X connect 18 0 5 0;
+#X connect 20 0 5 0;
+#X connect 22 0 5 0;
+#X connect 24 0 5 0;

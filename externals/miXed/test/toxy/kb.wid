@@ -1,0 +1,215 @@
+proc ::toxy::kbout {path target remote oldchord newchord} {
+    foreach key $oldchord {
+	pd [concat $target _cb [lindex $key 0] 0 \;]
+	if {$remote != "."} {
+	    pd [concat $remote [lindex $key 0] 0 \;]
+	}
+    }
+    foreach key $newchord {
+	pd [concat $target _cb [lindex $key 0] [lindex $key 1] \;]
+	if {$remote != "."} {
+	    pd [concat $remote [lindex $key 0] [lindex $key 1] \;]
+	}
+    }
+}
+
+proc ::toxy::kbput {path target remote keys appendmode doout} {
+    set oldchord {}
+    set newchord {}
+    if {$appendmode} {
+	foreach key $keys {
+	    set ndx [lindex $key 0]
+# FIXME upper limit
+	    if {$ndx >= 0} {
+		if {$appendmode == 1} {
+		    set found \
+			[lsearch $::toxy::kbchord($target) [concat $ndx *]]
+		} else { set found -1 }
+		if {$found < 0} {
+		    $path itemconfig $path.$ndx -fill grey
+		    lappend newchord $key
+		    lappend ::toxy::kbchord($target) $key
+		} else {
+		    $path itemconfig $path.$ndx \
+			-fill [lindex [$path gettags $path.$ndx] 2]
+		    lappend oldchord $key
+		    set ::toxy::kbchord($target) \
+			[lreplace $::toxy::kbchord($target) $found $found]
+		}
+	    }
+	}
+# FIXME oldchord
+	set ::toxy::kbchord($target) \
+	    [lsort -unique -integer -index 0 $::toxy::kbchord($target)]
+    } else {
+	set oldchord $::toxy::kbchord($target)
+	foreach key $::toxy::kbchord($target) {
+	    set ndx [lindex $key 0]
+	    $path itemconfig $path.$ndx \
+		-fill [lindex [$path gettags $path.$ndx] 2]
+	}
+	foreach key $keys {
+	    set ndx [lindex $key 0]
+# FIXME upper limit
+	    if {$ndx >= 0} {
+		$path itemconfig $path.$ndx -fill grey
+		lappend newchord $key
+	    }
+	}
+	set ::toxy::kbchord($target) [lsort -unique -integer -index 0 $newchord]
+    }
+    if {$doout} {
+	::toxy::kbout $path $target $remote $oldchord $newchord
+    }
+}
+
+proc ::toxy::kb {path target remote noctaves size} {
+# guard against BadAlloc crashes
+    if {$size > 10} {set size 10}
+    set lft [expr {round(5 * $size)}]
+    set top [expr {round(5 * $size)}]
+    set bot [expr {round(100 * $size)}]
+    set dx [expr {round(17 * $size)}]
+    set wid [expr {round($dx - $size * .5)}]
+    set blbot [expr {round($bot * .65)}]
+
+    $path config -height [expr {$bot + $top}] \
+	-width [expr {$dx * ($noctaves * 7 + 1) + $lft * 2 - 1}]
+
+    bind $path <Enter> +[concat ::toxy::kbenter $path $target]
+    bind $path <Leave> +[concat ::toxy::kbleave $path $target]
+    bind $path <B1-Motion> \
+	 +[concat ::toxy::kbdrag $path $target $remote %X %Y 0]
+    bind $path <B1-Shift-Motion> \
+	+[concat ::toxy::kbdrag $path $target $remote %X %Y 1]
+    bind $path <B1-Control-Motion> \
+	+[concat ::toxy::kbdrag $path $target $remote %X %Y 2]
+
+    for {set octave 0} {$octave <= $noctaves} {incr octave} {
+	set prevkey 0
+	foreach key {0 2 4 5 7 9 11} {
+	    set ndx [expr $octave * 12 + $key]
+	    set id [$path create rect $lft $top [expr {$lft + $wid}] $bot \
+		-fill white -tags "$ndx $path.$ndx white"]
+	    $path bind $id <1> \
+		[concat ::toxy::kbpress  $path $target $remote $ndx %y 0]
+	    $path bind $id <Shift-1> \
+		[concat ::toxy::kbpress $path $target $remote $ndx %y 1]
+	    $path bind $id <Control-1> \
+		[concat ::toxy::kbcontrolon $path $target $remote $ndx %y]
+	    $path bind $id <Control-ButtonRelease> \
+		[concat ::toxy::kbcontroloff $path $target $remote $ndx]
+	    if {$key - $prevkey > 1} {
+		incr ndx -1
+		set x [expr {$lft - $wid * .22}]
+		set id [$path create rect $x $top [expr {$x + $wid * .44}] \
+		    $blbot -fill black -tags "$ndx $path.$ndx black"]
+		$path bind $id <1> \
+		    [concat ::toxy::kbpress $path $target $remote $ndx %y 0]
+		$path bind $id <Shift-1> \
+		    [concat ::toxy::kbpress $path $target $remote $ndx %y 1]
+		$path bind $id <Control-1> \
+		    [concat ::toxy::kbcontrolon $path $target $remote $ndx %y]
+		$path bind $id <Control-ButtonRelease> \
+		    [concat ::toxy::kbcontroloff $path $target $remote $ndx]
+	    }
+	    set prevkey $key
+	    incr lft $dx
+	    if {$octave == $noctaves && $key == 0} break
+	}
+    }
+    set ::toxy::kbisinside($target) 0
+    set chord $::toxy::kbchord($target)
+    set ::toxy::kbchord($target) {}
+    ::toxy::kbput $path $target $remote $chord 0 0
+}
+
+proc ::toxy::kbgetvel {path ndx y} {
+    set g [$path coords $path.$ndx]
+    set top [lindex $g 1]
+    set bot [lindex $g 3]
+    set vel [expr 100.0 - 99.0 * ($top - $y) / ($top - $bot)]
+    if {$vel < 1.0} {set vel 1.0} elseif {$vel > 100.0} {set vel 100.0}
+    return $vel
+}
+
+proc ::toxy::kbcontrolon {path target remote ndx y} {
+    if {[$path cget -state] == "normal"} {
+	$path itemconfig $path.$ndx -fill red
+	::toxy::kbout $path $target $remote {} \
+	    [list [concat $ndx [::toxy::kbgetvel $path $ndx $y]]]
+    }
+}
+
+proc ::toxy::kbcontroloff {path target remote ndx} {
+    if {[$path cget -state] == "normal"} {
+	if {[lsearch $::toxy::kbchord($target) [concat $ndx *]] < 0} {
+	    $path itemconfig $path.$ndx \
+		-fill [lindex [$path gettags $path.$ndx] 2]
+	} else {
+	    $path itemconfig $path.$ndx -fill grey
+	}
+	::toxy::kbout $path $target $remote [list [concat $ndx 0]] {}
+    }
+}
+
+proc ::toxy::kbpress {path target remote ndx y shift} {
+    if {[$path cget -state] == "normal"} {
+	::toxy::kbput $path $target $remote \
+	    [list [concat $ndx [::toxy::kbgetvel $path $ndx $y]]] $shift 1
+    }
+}
+
+proc ::toxy::kbdrag {path target remote rx ry shift} {
+    if {$shift <= 1 && $::toxy::kbisinside($target) && \
+	    [$path cget -state] == "normal"} {
+	set x [expr $rx - [winfo rootx $path]]
+	set y [expr $ry - [winfo rooty $path]]
+	set ndx [lindex [$path gettags [$path find closest $x $y]] 0]
+	if {[lsearch $::toxy::kbchord($target) [concat $ndx *]] < 0} {
+	    ::toxy::kbput $path $target $remote \
+		[list [concat $ndx [::toxy::kbgetvel $path $ndx $y]]] $shift 1
+	}
+    }
+}
+
+proc ::toxy::kbenter {path target} {
+    set ::toxy::kbisinside($target) 1
+}
+
+proc ::toxy::kbleave {path target} {
+    set ::toxy::kbisinside($target) 0
+}
+
+proc ::toxy::kbbang {path target remote} {
+    ::toxy::kbout $path $target $remote {} $::toxy::kbchord($target)
+}
+
+proc ::toxy::kbfloat {path target remote ndx} {
+    ::toxy::kbput $path $target $remote [list [concat $ndx 50.0]] 0 1
+}
+
+proc ::toxy::kblist {path target remote args} {
+# LATER (::toxy::kbput ... 1)
+}
+
+proc ::toxy::kbset {path target remote args} {
+# LATER (::toxy::kbput ... 0)
+}
+
+#> kb canvas
+#. -bg yellow -cursor hand1
+#. #oct 4 #size .75
+#. @bang ::toxy::kbbang .- .| .
+#. @float ::toxy::kbfloat .- .| . .#1
+#. @list ::toxy::kblist .- .| . .#args
+#. @set ::toxy::kbset .- .| . .#args
+#. @clear ::toxy::kbput .- .| . {} 0 1
+
+::toxy::kb .- .| . .#oct .#size
+
+#@ new
+set ::toxy::kbchord(.|) {}
+
+#@ free
+unset ::toxy::kbchord(.|)

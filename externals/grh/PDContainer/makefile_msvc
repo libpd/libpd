@@ -1,0 +1,121 @@
+PD_PATH = "C:\pd"
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio\Vc98"
+PD_SCR = $(PD_PATH)\src
+
+CC = cl.exe
+LD = link.exe
+INCLUDE = /I. /I$(PD_SCR) /I$(VIS_CPP_PATH)\include
+CC_FLAGS = /nologo /W3 /DNT /DPD /GX /GD /Ox /MT /LD
+LD_FLAGS = /nologo /dll /export:PDContainer_setup
+LIB = $(VIS_CPP_PATH)\lib\libc.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_CPP_PATH)\lib\kernel32.lib \
+        $(PD_PATH)\bin\pd.lib
+
+
+TARGET=PDContainer.dll
+OBJ=PDContainer.obj HMap.obj h_map.obj HMultiMap.obj h_multimap.obj \
+    HSet.obj h_set.obj HMultiSet.obj h_multiset.obj \
+    HVector.obj h_vector.obj HDeque.obj h_deque.obj \
+    HQueue.obj h_queue.obj HStack.obj h_stack.obj \
+    HList.obj h_list.obj HPrioQueue.obj h_prioqueue.obj \
+    tinystr.obj tinyxml.obj tinyxmlerror.obj tinyxmlparser.obj
+#--------------------------------------------------------
+
+all: pd_dll
+
+pd_dll: $(TARGET)
+
+
+$(TARGET): $(OBJ)
+	$(LD) $(LD_FLAGS) /out:$(TARGET) $(OBJ) $(LIB)
+	
+  
+PDContainer.obj: h_map.obj src/PDContainer.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/PDContainer.cpp
+
+h_map.obj: HMap.obj src/h_map.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_map.cpp
+	
+HMap.obj: src/HMap.cpp include/HMap.h include/MapBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HMap.cpp
+
+h_multimap.obj: HMultiMap.obj src/h_multimap.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_multimap.cpp
+
+HMultiMap.obj: src/HMultiMap.cpp include/HMultiMap.h include/MapBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HMultiMap.cpp
+
+h_set.obj: HSet.obj src/h_set.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_set.cpp
+
+HSet.obj: src/HSet.cpp include/HSet.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HSet.cpp
+
+h_multiset.obj: HMultiSet.obj src/h_multiset.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_multiset.cpp
+
+HMultiSet.obj: src/HMultiSet.cpp include/HMultiSet.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HMultiSet.cpp
+
+h_vector.obj: HVector.obj src/h_vector.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_vector.cpp
+
+HVector.obj: src/HVector.cpp include/HVector.h include/SequBase.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HVector.cpp
+
+h_deque.obj: HDeque.obj src/h_deque.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_deque.cpp
+
+HDeque.obj: src/HDeque.cpp include/HDeque.h include/SequBase.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HDeque.cpp
+
+h_queue.obj: HQueue.obj src/h_queue.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_queue.cpp
+
+HQueue.obj: src/HQueue.cpp include/HQueue.h include/QueueStack.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HQueue.cpp
+
+h_stack.obj: HStack.obj src/h_stack.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_stack.cpp
+
+HStack.obj: src/HStack.cpp include/HStack.h include/QueueStack.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HStack.cpp
+
+h_list.obj: HList.obj src/h_list.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_list.cpp
+
+HList.obj: src/HList.cpp include/HList.h include/SequBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HList.cpp
+
+h_prioqueue.obj: HPrioQueue.obj src/h_prioqueue.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/h_prioqueue.cpp
+
+HPrioQueue.obj: src/HPrioQueue.cpp include/HPrioQueue.h include/QueueStack.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c src/HPrioQueue.cpp
+
+#TinyXML:
+
+tinyxml.obj: tinyxml/tinyxml.h tinyxml/tinyxml.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c tinyxml/tinyxml.cpp
+
+tinystr.obj: tinyxml/tinystr.h tinyxml/tinystr.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c tinyxml/tinystr.cpp
+
+tinyxmlerror.obj: tinyxml/tinyxmlerror.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c tinyxml/tinyxmlerror.cpp
+
+tinyxmlparser.obj: tinyxml/tinyxmlparser.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) /c tinyxml/tinyxmlparser.cpp
+
+
+#-----------------------------------------------------
+
+
+clean:
+	del *.obj *.dll *.lib *.exp
+	
+
+install:
+	copy $(TARGET) $(PD_PATH)/extra
+	copy help/*.pd $(PD_PATH)/doc/5.reference

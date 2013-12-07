@@ -1,0 +1,31 @@
+#N canvas 634 346 592 397 10;
+#X obj 27 64 inlet;
+#X obj 27 105 3dp_windowcontext;
+#X obj 27 138 3dp_subcontext \$1 \$2;
+#X obj 220 211 outlet;
+#X obj 370 211 outlet;
+#X text 350 236 event outlet;
+#X obj 162 267 3dp_snap;
+#X obj 27 318 3dp_display_texture;
+#X text 150 23 a fixed size (window size independent) rendering context
+that can be used as 3dp_windowcontext replacement.;
+#X text 151 56 creation arguments are the context dimensions.;
+#X text 175 87 NOTE: the general subcontext rule applies: if the actual
+window size is small than the subcontext \, or is covered by other
+windows \, the results might not be what you expect.;
+#X text 176 236 context outlet (1);
+#X text 241 266 <- when the render chain connected to (1) is done;
+#X text 261 281 it will be snapped to texture;
+#X text 241 316 <- this texture will then be drawn to cover;
+#X text 263 332 the entire window size;
+#X obj 162 177 pdp_t p p;
+#X obj 184 300 inlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 4 0;
+#X connect 2 0 7 0;
+#X connect 2 1 16 0;
+#X connect 6 1 7 1;
+#X connect 16 0 6 0;
+#X connect 16 1 3 0;
+#X connect 17 0 7 2;

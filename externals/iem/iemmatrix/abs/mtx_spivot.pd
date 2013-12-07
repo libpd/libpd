@@ -1,0 +1,69 @@
+#N canvas 835 313 564 462 10;
+#X obj 154 166 mtx;
+#X obj 154 208 mtx_*;
+#X obj 115 78 inlet;
+#X obj 115 99 t a a;
+#X obj 154 248 mtx_*;
+#X obj 154 228 t a a;
+#X obj 115 119 mtx_pivot \$1;
+#X obj 154 270 outlet pivoted;
+#X obj 260 271 outlet pivoter;
+#X obj 154 139 t b a a;
+#N canvas 118 188 669 439 resizer 0;
+#X obj 322 204 mtx_size;
+#X obj 236 283 mtx_eye;
+#X obj 366 303 mtx_eye;
+#X obj 322 225 pack;
+#X obj 206 231 t a a;
+#X obj 206 263 mtx_resize;
+#X obj 236 323 mtx_-;
+#X obj 236 303 mtx_resize;
+#X obj 322 246 t l l l;
+#X text 138 30 what's going on here ?;
+#X obj 206 182 inlet A;
+#X obj 322 182 inlet B;
+#X obj 206 379 outlet C;
+#X text 153 52 a matrix A should be resized to the same size as a reference
+matrix B. the missing elements should be taken from the identity-matrix
+rather than from the zeros-matrix.;
+#X text 153 100 what we do is: resize A (with zeros) \, calculate the
+missing identity matrix (by subtracting a (zero-padded) resized I-matrix
+from a big I-matrix) and add them together;
+#X text 159 150 C=A+I(B)-I(A);
+#X obj 206 350 mtx_-;
+#X connect 0 0 3 0;
+#X connect 0 1 3 1;
+#X connect 1 0 7 0;
+#X connect 2 0 6 1;
+#X connect 3 0 8 0;
+#X connect 4 0 5 0;
+#X connect 4 1 1 0;
+#X connect 5 0 16 0;
+#X connect 6 0 16 1;
+#X connect 7 0 6 0;
+#X connect 8 0 5 1;
+#X connect 8 1 7 1;
+#X connect 8 2 2 0;
+#X connect 10 0 4 0;
+#X connect 11 0 0 0;
+#X connect 16 0 12 0;
+#X restore 154 187 pd resizer;
+#X text 72 316 (c) 2005 by IOhannes m zmoelnig \, IEM KUG \, graz austria
+;
+#X text 72 333 for license-details see LICENSE.txt that must come with
+iemmatrix.;
+#X text 62 38 semi-pivotize a matrix;
+#X connect 0 0 10 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 6 0;
+#X connect 3 1 4 1;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 5 1 8 0;
+#X connect 6 1 9 0;
+#X connect 6 2 0 1;
+#X connect 9 0 0 0;
+#X connect 9 1 1 1;
+#X connect 9 2 10 1;
+#X connect 10 0 1 0;

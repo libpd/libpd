@@ -1,0 +1,16 @@
+#N canvas 670 174 478 232 12;
+#X obj 86 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 155 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 86 137 tgl 15 0 empty empty empty 17 7 0 10 -258699 -241291
+-1 1 1;
+#X obj 225 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 86 106 cd4023 triple nand;
+#X text 18 47 cd4023 emulates 1/3 of the CMOS triple NAND gate;
+#X text 210 170 20070319_Martin_Peach;
+#X connect 0 0 4 0;
+#X connect 1 0 4 1;
+#X connect 3 0 4 2;
+#X connect 4 0 2 0;

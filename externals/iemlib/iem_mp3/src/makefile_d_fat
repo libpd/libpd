@@ -1,0 +1,44 @@
+current: all
+
+.SUFFIXES: .d_fat
+
+PD_INSTALL_PATH ?= "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+CFLAGS =-DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
+        -Wno-unused -Wno-parentheses -Wno-switch
+
+LFLAGS = -bundle -undefined suppress -flat_namespace
+
+# the sources
+
+SRC = 	mp3play~.c \
+	iem_mp3.c
+
+TARGET = iem_mp3.d_fat
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) -arch i386 -arch ppc $(LFLAGS) -o $(TARGET) *.o
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) -arch i386 -arch ppc $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

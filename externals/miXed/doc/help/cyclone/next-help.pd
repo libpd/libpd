@@ -1,0 +1,59 @@
+#N canvas 0 26 423 391 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 18 350 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 17 364 ___________________________________________________
+;
+#X obj 19 19 next;
+#X text 67 21 Try to separate messages into logical parts;
+#X obj 104 184 next;
+#X obj 104 264 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 127 214 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 59 118 5 0 0 0 - - -;
+#X obj 104 74 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 104 103 1;
+#X msg 104 120 2;
+#X msg 104 139 3;
+#X text 128 258 bang if the current message is not part;
+#X text 127 271 of the same logical stream;
+#X text 150 221 of the same logical stream;
+#X text 151 208 bang if the current message is part;
+#X msg 167 100 1 2 3 4;
+#X msg 167 150 4 3 2 1;
+#X obj 167 126 spigot;
+#X obj 215 127 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 17 88 1 \, 2 \, 3 \, 4;
+#N canvas 247 115 494 389 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 55 DESCRIPTION try to separate messages into logical parts
+;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 OUTLET_0 bang;
+#X text 12 115 OUTLET_1 bang;
+#X text 12 35 LICENSE SIBSD;
+#X text 12 135 AUTHOR Krzysztof Czaja;
+#X text 12 155 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible needs_work (please review
+someone-- is this ok?);
+#X restore 370 363 pd META;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 8 0 5 0;
+#X connect 9 0 10 0;
+#X connect 9 0 11 0;
+#X connect 9 0 12 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 17 0 5 0;
+#X connect 17 0 19 0;
+#X connect 18 0 5 0;
+#X connect 19 0 18 0;
+#X connect 20 0 19 1;
+#X connect 21 0 5 0;

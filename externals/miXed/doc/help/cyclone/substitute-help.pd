@@ -1,0 +1,32 @@
+#N canvas 0 26 426 299 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text -8 259 docs based on the MAX/MSP reference (c) cycling'74;
+#X text -9 273 ___________________________________________________
+;
+#X obj -2 28 substitute;
+#X text 83 27 substitute a symbol for another symbol in a message;
+#X obj 1 135 substitute foo bar;
+#X msg 1 89 bar foo;
+#X obj 1 180 print;
+#X msg 122 89 bar foo;
+#X msg 192 88 set bar foo;
+#X text 179 90 =;
+#N canvas 380 180 494 389 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 155 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 INLET_1 anything;
+#X text 12 115 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control max_compatible anything_op;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 45 DESCRIPTION substitute a symbol for another symbol in
+a message;
+#X text 12 135 AUTHOR Krzysztof Czaja;
+#X restore 369 276 pd META;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 8 0 5 1;
+#X connect 9 0 5 1;

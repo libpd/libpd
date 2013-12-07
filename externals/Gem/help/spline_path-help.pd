@@ -1,0 +1,69 @@
+#N canvas 37 45 711 482 10;
+#X text 458 11 GEM object;
+#X text 41 430 see also:;
+#X obj 115 429 linear_path;
+#X text 54 22 Synopsis: [spline_path];
+#X obj 504 56 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 510 38 Example:;
+#X obj 22 60 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 22 288 cnv 15 450 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 23 288 Inlets:;
+#X obj 22 164 cnv 15 450 120 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 31 164 Arguments:;
+#X text 22 328 Outlets:;
+#X obj 516 212 unpack 0 0 0;
+#X floatatom 516 279 0 0 0 0 - - -;
+#X floatatom 550 257 0 0 0 0 - - -;
+#X floatatom 585 235 0 0 0 0 - - -;
+#X floatatom 524 112 5 0 0 0 - - -;
+#X text 22 64 Description: reads out a table;
+#X text 48 78 You can specify the reading-point by sending a float
+between 0.0f (beginning of table) and 1.0f (end of table). Between
+points \, a spline interpolation is made.;
+#X text 48 120 You can set the table to be read with the "open" message
+or as the second creation-argument.;
+#X text 89 197 [spline_path] is able to excerpt more than 1 dimension
+of a linear table. You can specify the dimension <D> of the table with
+the first creation-argument. (default 1);
+#X text 44 346 Outlet 1:;
+#X text 46 307 Inlet 1: reading point 0.0f...1.0f;
+#X obj 519 71 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 516 90 / 127;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array array 102 float 1;
+#A 0 0 0 0 0 0 0 0 0 0.220005 0.460011 0.520012 0.540012 0.580013 0.580013
+0.580013 0.160004 -0.0200005 -0.140003 -0.300007 -0.42001 -0.660015
+0.42001 0.44001 0.44001 0.44001 0.560013 0.560013 0.560013 0.260006
+0.0800018 -0.280006 0.520012 0.400009 0.313341 0.226672 0.140003 -0.120003
+-0.190004 -0.260006 -0.380009 -0.520012 0.300007 0.640015 0.640015
+0.640015 0.460011 0.330008 0.200005 -0.760017 -0.760017 -0.760017 -0.760017
+-0.760017 -0.760017 -0.760017 -0.760017 -0.760017 -0.760017 -0.760017
+-0.760017 0.42001 0.520012 0.560013 0.620014 0.620014 0.620014 0.580013
+0.530012 0.480011 0.280006 0.180004 0.130003 -0.0400009 0.44001 0.44001
+0.400009 0.320007 0.180004 -0.0400009 -0.180004 -0.160004 -0.0400009
+0.0200005 0.0800018 0.160004 0.240005 0.360008 0.520012 0.660015 0.500011
+0.380009 0.120003 -0.200005 -0.240005 0 0 0 0 0 0 0 0;
+#X coords 0 1 101 -1 170 100 1;
+#X restore 503 337 graph;
+#X obj 511 132 cnv 15 130 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 48 183 dimensions of the table;
+#X text 102 346 a list of <D> floats. A multi-dimensional table stores
+its values in n-tuples like: "<r1> <g1> <b1> <r2> <g2> <b2>..." Therefore
+\, a table must have the size <D>*<n>;
+#X text 50 240 name of the table;
+#X obj 516 168 spline_path 3 array;
+#X msg 543 140 open array;
+#X connect 12 0 13 0;
+#X connect 12 1 14 0;
+#X connect 12 2 15 0;
+#X connect 23 0 24 0;
+#X connect 24 0 16 0;
+#X connect 24 0 30 0;
+#X connect 30 0 12 0;
+#X connect 31 0 30 0;

@@ -1,0 +1,12 @@
+#N canvas 0 22 470 320 10;
+#X msg 96 64 start;
+#X msg 105 83 stop;
+#X obj 77 30 inlet;
+#X obj 77 107 hid \$1;
+#X obj 77 139 route key;
+#X obj 77 273 outlet;
+#X connect 0 0 3 0;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;

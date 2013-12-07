@@ -1,0 +1,50 @@
+#N canvas 199 254 540 290 12;
+#X obj 198 62 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X msg 41 62 capture \$1;
+#X obj 99 171 unpack 0 0 0;
+#X floatatom 99 212 5 0 0 0 - - -;
+#X floatatom 150 212 5 0 0 0 - - -;
+#X floatatom 202 212 5 0 0 0 - - -;
+#X obj 99 136 route motion mouseup mouse key;
+#X msg 260 171 \$1;
+#X obj 260 212 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 297 208 route float;
+#X msg 297 171 \$2;
+#X floatatom 297 242 5 0 0 0 - - -;
+#X obj 364 171 print other;
+#N canvas 10 26 352 252 dux 1;
+#X obj 30 20 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 84 19 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 29 222 do some editing here \, too;
+#X restore 248 32 pd dux;
+#N canvas 408 26 352 252 comes 1;
+#X obj 30 20 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 84 19 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X restore 326 32 pd comes;
+#X obj 41 97 tot dux;
+#X obj 79 242 s pd-comes;
+#X msg 121 97 1;
+#X connect 0 0 1 0;
+#X connect 1 0 15 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 0;
+#X connect 6 0 2 0;
+#X connect 6 1 2 0;
+#X connect 6 2 2 0;
+#X connect 6 3 7 0;
+#X connect 6 3 10 0;
+#X connect 6 4 12 0;
+#X connect 7 0 8 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 15 2 16 0;
+#X connect 15 2 6 0;
+#X connect 15 3 17 0;
+#X connect 17 0 0 0;

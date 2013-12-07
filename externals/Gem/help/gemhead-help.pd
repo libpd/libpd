@@ -1,0 +1,104 @@
+#N canvas 20 14 913 610 10;
+#X text 52 365 Any gem object can be connected after the gemhead and
+it will receive the render command.;
+#X text 47 294 gemhead connects the gem objects to the window manager.
+The start of any gemList begins with the gemhead. Without the gemhead
+\, gem objects will not receive the render command.;
+#X text 217 12 gemhead;
+#X text 50 399 If gemhead receives a bang \, it will execute render.
+This is useful for a single buffered window when you want to control
+when things are rendered.;
+#X text 45 468 gemhead also accepts a 1 or 0 to enable and disable
+rendering for the chain.;
+#X text 474 386 you can dynamically set this value via the "set" message
+;
+#X obj 337 528 cnv 15 140 65 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X msg 352 548 create;
+#X text 348 527 Create window:;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 93 create \, 1 \, frame 2;
+#X msg 198 112 destroy \, reset;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 352 568 pd gemwin (2fps);
+#X obj 42 37 cnv 15 200 240 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 51 42 enable/disable rendering;
+#X obj 71 86 cnv 15 100 40 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 90 203 gemList;
+#X obj 90 97 gemhead;
+#X msg 90 64 1;
+#X msg 126 64 0;
+#X obj 90 244 print ENABLE;
+#X obj 90 141 translate 2 -1 0 0;
+#X obj 90 162 square 0.5;
+#X obj 285 34 cnv 15 200 240 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 528 32 cnv 15 200 240 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 316 35 force rendering;
+#X text 547 37 set rendering order;
+#X obj 326 88 cnv 15 100 40 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 559 93 cnv 15 100 40 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 335 55 bang;
+#X msg 569 59 set 45;
+#X msg 632 61 set 55;
+#X obj 569 244 print SETTABLE;
+#X obj 335 244 print FORCEABLE;
+#X obj 335 98 gemhead 50;
+#X obj 569 102 gemhead 55;
+#X obj 335 141 translate 2 0 1 0;
+#X msg 335 203 gemList;
+#X msg 569 203 gemList;
+#X obj 569 141 translate 2 1 0 0;
+#X obj 335 162 circle 0.5;
+#X obj 569 162 triangle 0.5;
+#X text 469 288 gemhead takes an argument to determine when it receives
+the render command. The default value is 50 The lower the value is
+\, the sooner the gemhead will receive the rendering command (a value
+of 1 is the lowest possible value (see below)). This value becomes
+important when you are doing alpha blending and for certain objects
+(such as light).;
+#X text 469 495 example: "1" before "50" before "-10" before "-23"
+;
+#X text 470 416 the rendering-order value can also be negative. Negative
+numbered [gemhead]s will be rendered AFTER all positive [gemhead]s.
+Note \, that Higher values (-3) will be rendered BEFORE lower values
+(-10). [gemhead]s with negative numbers will NOT be affected by view-point
+changes !!!;
+#X connect 7 0 9 0;
+#X connect 9 0 7 0;
+#X connect 13 0 17 0;
+#X connect 14 0 18 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 18 0 19 0;
+#X connect 19 0 13 0;
+#X connect 26 0 31 0;
+#X connect 27 0 32 0;
+#X connect 28 0 32 0;
+#X connect 31 0 33 0;
+#X connect 32 0 36 0;
+#X connect 33 0 37 0;
+#X connect 34 0 30 0;
+#X connect 35 0 29 0;
+#X connect 36 0 38 0;
+#X connect 37 0 34 0;
+#X connect 38 0 35 0;

@@ -1,0 +1,23 @@
+#N canvas 39 54 741 577 10;
+#X obj 39 248 testtools/unit-test-frame~;
+#X obj 30 67 cnv 15 150 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 38 106 1 - reference name;
+#X text 38 125 2 - test delay in ms;
+#X text 37 86 test arguments (list):;
+#X obj 39 154 loadbang;
+#X obj 323 67 cnv 15 150 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X msg 360 142 0;
+#X text 337 85 system under test;
+#X text 322 29 Use a bang from one of [testtools/unit-test-frame~] outlets to
+reset phase at test start.;
+#X obj 360 169 creb/ramp~;
+#X msg 39 183 ramp~ 0;
+#X obj 360 223 /~ 512;
+#X connect 0 2 7 0;
+#X connect 5 0 11 0;
+#X connect 7 0 10 0;
+#X connect 10 0 12 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 1;

@@ -1,0 +1,39 @@
+#N canvas 0 31 475 392 10;
+#X text 27 340 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 354 released under the GNU GPL;
+#X floatatom 102 195 5 0 0 0 - - -;
+#X floatatom 102 251 5 0 0 0 - - -;
+#X text 98 303 For more info:;
+#X obj 102 131 noise4hidhelp;
+#X obj 105 273 hsl 250 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 105 164 hsl 250 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 5 2 cnv 15 450 20 empty empty hid_smooth 2 11 1 18 -233017 -66577
+0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X obj 102 221 hid/hid_smooth;
+#X text 18 36 Smooths a stream of numbers using weighted averaging
+of the last 10 values. This object is an shortcut for [hid_average]
+with the default settings.;
+#X obj 102 94 tgl 30 0 empty empty start 1 15 1 12 -90049 -1 -1 0 1
+;
+#N canvas 485 31 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 95 OUTLET_0 float;
+#X text 12 45 DESCRIPTION smooth a stream of numbers using weighted
+averaging of the last 10 values;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control filter abstraction;
+#X restore 422 361 pd META;
+#X connect 2 0 10 0;
+#X connect 3 0 6 0;
+#X connect 5 0 7 0;
+#X connect 7 0 2 0;
+#X connect 10 0 3 0;
+#X connect 12 0 5 0;

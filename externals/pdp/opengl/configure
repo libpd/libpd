@@ -1,0 +1,11 @@
+#!/bin/bash
+# hack: use parent dir's Makefile.config
+
+cp ../Makefile.config .
+
+TARGET=`cat Makefile.config | grep PDP_TARGET | awk -F= '{print $2}'`
+
+echo "PDP_OPENGL_LIBRARY_NAME=pdp_opengl.pd_${TARGET}" >> Makefile.config
+echo "TARGET=${TARGET}" >> Makefile.config
+
+

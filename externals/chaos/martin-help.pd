@@ -1,0 +1,38 @@
+#N canvas 203 283 593 496 10;
+#X obj 43 134 tgl 15 0 empty empty empty 0 -6 32 8 -262144 -1 -1 0
+1;
+#X floatatom 94 135 5 0 0 0 - - -;
+#X text 89 174 Reset To Initial Conditions;
+#X text 102 216 Modify Parameters;
+#X msg 88 191 reset 0.1 0.1;
+#X floatatom 51 451 10 0 0 0 Y - -;
+#X floatatom 42 427 10 0 0 0 X - -;
+#X text 19 50 (This attractor is not continuous);
+#X text 20 34 Chaos PD Externals - Copyright Michael McGonagle 2003
+;
+#X obj 43 151 metro 50;
+#X obj 18 150 bng 15 250 50 0 empty empty empty 0 -6 32 8 -262144 -1
+-1;
+#X obj 25 83 examples/readme-fractals;
+#X obj 42 347 martin;
+#X text 143 429 This fractal exhibits chaotic tendencies when A (param)
+is in the vicinity of an odd multiple of PI.;
+#X msg 97 237 param 3.14159;
+#X text 21 19 Martin Attractor;
+#X obj 68 379 search-tools;
+#X obj 204 344 print vars;
+#X obj 239 317 print param;
+#X connect 0 0 9 0;
+#X connect 1 0 9 1;
+#X connect 4 0 12 0;
+#X connect 9 0 12 0;
+#X connect 10 0 12 0;
+#X connect 12 0 6 0;
+#X connect 12 1 5 0;
+#X connect 12 2 16 0;
+#X connect 12 3 16 1;
+#X connect 12 3 17 0;
+#X connect 12 4 16 2;
+#X connect 12 4 18 0;
+#X connect 14 0 12 0;
+#X connect 16 0 12 0;

@@ -1,0 +1,23 @@
+#N canvas 1 53 454 304 10;
+#X obj 181 131 strcat foo;
+#X msg 147 58 symbol bar;
+#X symbolatom 181 182 0 0 0 0 - - -;
+#X text 16 255 [strcat] prepends its text to any symbol that is sent
+to it.;
+#X msg 173 79 symbol kneipe;
+#X msg 195 101 symbol d;
+#N canvas 457 170 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 115 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION prepend text to any symbol that is sent to
+the inlet;
+#X text 12 75 INLET_0 symbol;
+#X text 12 95 OUTLET_0 symbol;
+#X text 12 5 KEYWORDS control symbol_op;
+#X restore 401 276 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;

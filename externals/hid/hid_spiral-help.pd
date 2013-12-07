@@ -1,0 +1,52 @@
+#N canvas 0 31 475 480 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_spiral 2 11 1 18 -233017 -66577
+0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 245 451 released under the GNU GPL;
+#X floatatom 70 283 5 0 0 0 - - -;
+#X floatatom 70 375 5 0 0 0 radius-> - -;
+#X text 175 408 For more info:;
+#X text 28 437 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X obj 73 201 hsl 128 15 0 1 0 0 empty empty x-axis 133 7 1 10 -225280
+-1 -1 0 0;
+#X obj 127 143 vsl 15 128 0 1 0 0 empty empty y-axis -6 -9 1 10 -261681
+-1 -1 0 0;
+#X floatatom 136 376 8 0 0 1 <-angle - -;
+#X floatatom 127 283 5 0 0 0 - - -;
+#X obj 127 305 t b f;
+#X text 246 271 related objects:;
+#X text 264 324 example:;
+#X msg 70 126 0.5;
+#X text 15 126 center:;
+#X obj 323 324 spiral-joystick;
+#X obj 70 335 hid/hid_spiral;
+#X obj 362 271 hid/hid_polar;
+#X text 23 32 Converts cartesian coordinates(x \, y) to spiral in polar
+coordinates (radius \, angle). The angle is from 0 to 1 The angle 0
+is at cartesian (1 \, 0) or far right center.;
+#X text 24 81 The angle will just keep going up/down as long as there
+is rotation rather than reset like [hid_polar].;
+#N canvas 485 31 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 155 AUTHOR Hans-Christoph Steiner;
+#X text 12 115 OUTLET_0 float;
+#X text 12 45 DESCRIPTION convert cartesian coordinates(x \, y) to
+spiral in polar coordinates (radius \, angle);
+#X text 12 75 INLET_0 float bang;
+#X text 12 95 INLET_1 float;
+#X text 12 135 OUTLET_1 float;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X restore 424 439 pd META;
+#X connect 3 0 17 0;
+#X connect 7 0 3 0;
+#X connect 8 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 17 0;
+#X connect 11 1 17 1;
+#X connect 14 0 7 0;
+#X connect 17 0 4 0;
+#X connect 17 1 9 0;

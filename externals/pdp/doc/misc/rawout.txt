@@ -1,0 +1,136 @@
+How to use [pdp_rawout] to record video
+---------------------------------------
+
+Some observations
+* pdp is a real time performance tool
+* ffmpeg and mencoder are very nice pieces of software that
+  solve the video encoding problem
+* encoding video is cpu intensive
+* large harddisks are cheap
+
+For these reason, I decide to not implement container/codec
+recording in pdp. Using [pdp_rawout] and [pdp_rawout~] it is
+possible to dump video and audio streams directly to harddisk
+using the minimal amount of cpu time. There they can be picked
+up later by tools like mencoder and ffmpeg.
+
+( For playback, pdp supports only libquicktime, which is, next
+to mjpegtools, a good solution for frame-based seekable video
+files. Since version 0.9.4 libquicktime supposedly supports AVI
+playback and record. Streaming playback and more efficient block 
+codecs can be supported externally using [pdp_rawin] )
+
+FFMPEG
+------
+
+FFMPEG is the 'industry standard' for open source video encoding.
+Its core components are libavcodec and libavformat, which implement
+the coder/decoder and container format handling. The latter two
+are used in a lot of other projects, like MPlayer and libquicktime.
+
+Send a video stream through [pdp_convert bitmap/i420/*]
+then stream it to disk using [pdp_rawout /tmp/video.i420] while
+you are performing. You can convert it to divx avi using
+
+ffmpeg -an -r 25 -s 320x240 -f rawvideo -i video.i420 video.avi
+
+To include audio, use [pdp_rawout~ 2 /tmp/audio.s16] to stream
+audio to disk. You can convert it with ffmpeg using
+
+ffmpeg -ar 44100 -ac 2 -f s16le -i audio.s16 audio.mp3
+
+
+Doing both at the same time:
+
+ffmpeg -r 25 -s 320x240 -f rawvideo -i video.i420 -ar 44100 -ac 2 -f s16le -i audio.s16 -vcodec mjpeg -b 3000 clip.avi
+
+Note: i didn't figure out how to make ffmpeg read yv12 encoded files. However,
+pdp supports the bitmap/i420/* format. The latter is also the data format used in
+the yuv4mpeg protocol from the mjpeg tools.
+
+
+Codecs and Bitrates
+-------------------
+
+The preferred codec to use during the editing stage is motion JPEG. If
+you have the space, use raw files, but i haven't figured out how to make
+them portable. The most portable mjpeg format seems to be wrapped in a mov.
+This is the format used in cinelerra.
+
+Uncompressed 320x240x25 yv12/i420 is 2.88 mbyte/sec
+A decent mjpeg compresion rate is 4:1, giving 720 kbyte/sec = 5760 kbit/sec
+with practically no loss of quality. 3000 and 2000 kbps are still acceptable.
+
+Sometimes it might be interesting to create DV files. These have a tighter
+binding to TV norms PAL and NTSC, and seem to be a standard at this moment.
+DV gives about 13gig/hour or 3 mbyte/sec. The actual rate is 5:1 compression
+at 25 Mbps (video only). Adding audio, timecode, etc.. comes to about 29 Mbps.
+(TODO: how to create DV files)
+
+The preferred distribution codec is either DIVX or H.264 (don't confuse
+with H.263 which is aimed at low bitrate video conferencing)
+
+
+A/V sync
+--------
+
+The key to A/V sync is the observation that the ratio between audio and
+video frequency (samplerate and framerate), is a _rational_ one. This enables
+to have perfect sync: there are no roundoff errors since the relation between
+audio and video sample times can be computed exactly. 
+The object [pdp_metro~] can be used to produce a locked video clock, given a 
+rational framerate. It can produce a video clock that is compatible with 
+standard A/V rates. 
+For example the awkward 29.97Hz video rate is exactly supported as 29970/1000. 
+Note that the 44.1kHz audio rate does not yield simple fractions for standard 
+NTSC and PAL/SECAM framerates. I.e. in DV you have to use 48kHz. Enabling 
+arbitrary long buffering (bufsize -1) in [pdp_rawout] and using [pdp_metro~] 
+with the correct sample rate and video frame rate should produce perfect A/V 
+sync without dropouts if your harddisk can keep up on the average.
+
+
+MJPEGTOOLS
+----------
+
+I mainly use lavtrans for converting the avi/mjpeg file made with ffmpeg
+to quicktime format. This should be readable by most video editing software.
+I had some problems with sharing th avi/mjpeg files themselves. To convert
+the avi file to mov use:
+
+lavtrans -o clip.mov -f q clip.avi
+
+
+
+Mplayer/Mencoder
+----------------
+
+The MPlayer project uses libavcodec, and even distributes a copy with
+the MPlayer source.  You'll need mencoder mainly if you want to use an
+encoder that's not in the ffmpeg package (lavcodec), or what to do
+some format conversion that's not supported by ffmpeg directly. Of
+course mplayer is handy for inspecting raw files.  To play a raw video
+stream try:
+
+mplayer -rawvideo on:w=320:h=240:fps=25 video.i420
+
+To encode video only using the ffmpeg (lavc) mjpeg codec
+(it is possible to use yv12 here, using the format=yv12 option)
+
+mencoder -rawvideo on:w=320:h=240:fps=25 video.i420 -ovc lavc \
+	 -lavcopts vcodec=mjpeg -o clip.avi
+
+
+
+
+
+links
+-----
+http://mjpeg.sourceforge.net/
+http://ffmpeg.sourceforge.net/index.php
+http://libquicktime.sourceforge.net/
+http://www.mplayerhq.hu
+http://libdv.sourceforge.net/
+http://solarmuri.ssl.berkeley.edu/~fisher/public/manuscripts/scientific-movie-HOWTO.txt
+http://mpeg4ip.sourceforge.net/
+http://heroinewarrior.com/cinelerra.php3
+http://www.adamwilt.com/DV-tech.html

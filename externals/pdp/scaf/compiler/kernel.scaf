@@ -1,0 +1,130 @@
+(	Pure Data Packet - scaforth kernel.					)
+(	Copyright (c) by Tom Schouten <tom@zwizwa.be>			)
+(										) 
+(	This program is free software; you can redistribute it and/or modify	)
+(	it under the terms of the GNU General Public License as published by	)
+(	the Free Software Foundation; either version 2 of the License, or	)
+(	[at your option] any later version.					)
+(										) 
+(	This program is distributed in the hope that it will be useful,		)
+(	but WITHOUT ANY WARRANTY; without even the implied warranty of		)
+(	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		)
+(	GNU General Public License for more details.				)
+(										)
+(	You should have received a copy of the GNU General Public License	)
+(	along with this program; if not, write to the Free Software		)
+(	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.		)
+
+
+
+
+
+(	this file contains the inline words in the scaforth kernel.		)
+(	when a file is compiled to asm, it will consist of word			)
+(	definition asm routines, macros and jmp call ret instructions.		)
+(										)
+(	all words in this file are defined in terms of asm macros		)
+(	defined in scafmacros.s							)
+
+
+
+( stack manip words )
+
+: over dup dropover ;
+
+( neighbourhood cell fetch words )
+
+: @-+ dup dropldTL ;
+: @0+ dup dropldTM ;
+: @++ dup dropldTR ;
+: @-0 dup dropldML ;
+: @00 dup dropldMM ;
+: @+0 dup dropldMR ;
+: @-- dup dropldBL ;
+: @0- dup dropldBM ;
+: @+- dup dropldBR ;
+
+( boolean logic )
+
+: or overor nip ;
+: xor overxor nip ;
+: and overand nip ;
+
+( binary constant loading )
+
+: 1 dup dropone ;
+: 0 dup dropzero ;
+
+( 4,3,2,1 bit add stack to register, leave carry on stack )
+
+: ++++ adb0 adb1 adb2 adb3 ;
+: +++ adb0 adb1 adb2 ;
+: ++ adb0 adb1 ;
+: + adb0 ;
+
+( 4,3,2 bit shifted 1 add )
+
+: ++++<<1 adb1 adb2 adb3 ;
+: +++<<1 adb1 adb2 ;
+: ++<<1 adb1 ;
+
+( 4,3 bit shifted 2 add )
+
+: ++++<<2 adb2 adb3 ;
+: +++<<2 adb2 ;
+
+( 4 bit shifted 3 add )
+
+: ++++<<3 adb3 ;
+
+( 4 bit accumulator access )
+
+: !a0 dupsta0 drop ;
+: !a1 dupsta1 drop ;
+: !a2 dupsta2 drop ;
+: !a3 dupsta3 drop ;
+
+: @a0 dup droplda0 ;
+: @a1 dup droplda1 ;
+: @a2 dup droplda2 ;
+: @a3 dup droplda3 ;
+
+( 4,3,2,1 bit accumulator zero tests )
+
+: ?anz dup dropisnonzero4 ;
+: ?anz4 dup dropisnonzero4 ;
+: ?anz3 dup dropisnonzero3 ;
+: ?anz2 dup dropisnonzero2 ;
+: ?anz1 dup dropisnonzero1 ;
+
+( load constants into accumulator )
+
+: a0 a0000 ;
+: a-0 a0000 ;
+: a+0 a0000 ;
+: a+1 a0001 ;
+: a+2 a0010 ;
+: a+3 a0011 ;
+: a+4 a0100 ;
+: a+5 a0101 ;
+: a+6 a0110 ;
+: a+7 a0111 ;
+
+: a+8 a1000 ;
+: a+9 a1001 ;
+: a+10 a1010 ;
+: a+11 a1011 ;
+: a+12 a1100 ;
+: a+13 a1101 ;
+: a+14 a1110 ;
+: a+15 a1111 ;
+
+: a-8 a1000 ;
+: a-7 a1001 ;
+: a-6 a1010 ;
+: a-5 a1011 ;
+: a-4 a1100 ;
+: a-3 a1101 ;
+: a-2 a1110 ;
+: a-1 a1111 ;
+

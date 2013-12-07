@@ -1,0 +1,27 @@
+#N canvas 0 26 549 368 12;
+#X obj 29 242 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 29 295 print good morning;
+#X obj 29 202 timebang 7 10 13 19 47 50;
+#X obj 224 235 print good night;
+#X text 32 13 timebang :: send out bangs at given times of day;
+#X text 130 34 written by Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 31 119 creation arguments: triples of hour minute and second
+for;
+#X text 191 137 the times of day you want a bang to occur;
+#X text 191 156 each time will get it's own outlet;
+#X text 184 297 this gets banged at 7:10:13 in the morning;
+#X text 224 257 this gets banged at 19:47:50;
+#N canvas 304 317 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_N bang;
+#X text 12 45 DESCRIPTION send out bangs at given times of day;
+#X restore 491 339 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 2 1 3 0;

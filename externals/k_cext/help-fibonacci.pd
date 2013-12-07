@@ -1,0 +1,12 @@
+#N canvas 0 0 450 300 10;
+#X floatatom 51 143 5 0 0 0 - - -;
+#X floatatom 49 231 10 0 0 0 - - -;
+#X obj 50 174 k_cext 1 1 \; IF I(0)< 30 THEN DO \; . O(0 \, INT_fib(I(0)))
+\;;
+#X text 216 177 Set a limit on 30 \, because of;
+#X text 215 192 the computing time.;
+#X text 43 27 The simplest way to find the fibonacci numbers.;
+#X obj 49 62 k_cfunc INT_fib int n \; IF n<2 THEN DO \; . return n
+\; ELSE \; . return INT_fib(n-1)+INT_fib(n-2) \;;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

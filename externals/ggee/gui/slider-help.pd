@@ -1,0 +1,41 @@
+#N canvas 0 26 592 446 12;
+#X obj 14 121 slider 127 0 15;
+#X floatatom 12 42 0 0 0 0 - - -;
+#X floatatom 14 319 0 0 0 0 - - -;
+#X text 140 188 This was instantiated with slider 200 100;
+#X obj 14 85 random 127;
+#X obj 468 343 state sl;
+#X msg 468 283 save;
+#X msg 520 283 1;
+#X floatatom 98 296 0 0 0 0 - - -;
+#X obj 186 252 slider 127 0 40;
+#X text 184 231 This was instantiated with slider 127 0 40;
+#X obj 274 333 sliderh 127 0 30;
+#X text 273 307 Same with sliderh;
+#X floatatom 274 384 5 0 0 0 - - -;
+#X obj 12 64 metro 2;
+#X obj 98 167 slider 200 100 15;
+#X text 125 117 Slider is state aware.;
+#N canvas 447 185 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control GUI;
+#X text 12 45 DESCRIPTION graphical slider;
+#X text 12 65 INLET_0 float bang;
+#X text 12 85 OUTLET_0 float;
+#X restore 532 416 pd META;
+#X text 126 11 Instantiate a new slider with Put->Object and type slider
+into the object. The slider takes up to 3 parameters \, the first is
+the maximum value \, the second is the minimum. The third is the width
+of the slider (contributed by Dieter <dieter@rhiz.org>. Click on the
+trough to move in 0.01. Middle button jumps.;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 4 0 0 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 11 0 13 0;
+#X connect 14 0 4 0;
+#X connect 15 0 8 0;

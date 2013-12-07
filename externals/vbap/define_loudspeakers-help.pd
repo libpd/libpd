@@ -1,0 +1,36 @@
+#N canvas 95 333 792 481 10;
+#X text 22 149 In two dimensions \, only specify the azimuth. (for
+example "define_loudspeakers 2 -45 45 0 180";
+#X obj 48 228 define_loudspeakers 3 -45 0 45 0 0 45 180 45;
+#X msg 48 207 bang;
+#X obj 148 280 define_loudspeakers 2 -45 45 0 180;
+#X obj 112 322 vbap 0 0;
+#X text 23 19 [define_loudspeakers] works with;
+#X obj 255 19 vbap;
+#X text 18 50 Use [define_loudspeakers] to list the speaker positions.
+The example here defines loudspeakers in three dimensions (the first
+parameter). For each speaker \, define its azimuth and elevation. Here
+we have speakers front left and right with no elevation (-45 0 45 0)
+and front and back with 45 degrees of elevation (0 45 180 45). Send
+the data to:;
+#X text 36 355 (see [vbap] for more details);
+#X msg 410 336 ls-directions 3 -30 0 30 0 -90 0 90 0 0 0 -150 0 150
+0 180 45 -45 45 45 45;
+#X msg 399 273 ls-triplets 1 2 7 2 7 8 1 3 7;
+#X obj 399 418 define_loudspeakers 2 -40 0 40 80 130 180 -130 -80;
+#X text 395 228 If you are not happy with triangle selections of define_loudspeakers
+\, you can define your own. (for experts only);
+#X text 415 383 2-D setup -> only loudspeaker azimuths specified:;
+#X text 414 398 (2 azi1 azi2 azi3 azi4...);
+#X text 411 302 3-D setup -> (azimuth elevation) pairs are specified:
+;
+#X text 411 317 (3 azi1 ele1 azi2 ele2 ...);
+#X msg 148 259 bang;
+#X text 190 259 a 2D setup;
+#X text 93 212 a 3D setup;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 0;
+#X connect 17 0 3 0;

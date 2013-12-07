@@ -1,0 +1,33 @@
+#N canvas 1 53 518 452 10;
+#X obj 136 234 unpack 0 0 0;
+#X floatatom 136 280 4 0 0 0 - - -;
+#X floatatom 175 280 4 0 0 0 - - -;
+#X floatatom 215 280 4 0 0 0 - - -;
+#X text 138 24 tripleRine;
+#X text 84 395 [tripleRand] generates three distinct random numbers
+at once within the range specified.;
+#X obj 136 184 tripleRand 5;
+#X floatatom 215 146 5 0 0 0 - - -;
+#X obj 136 134 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 123 68 MarkEx object;
+#X msg 278 142 1 5 10;
+#N canvas 459 228 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 OUTLET_0 list;
+#X text 12 45 DESCRIPTION generate three distinct random numbers at
+once within the range specified;
+#X text 12 75 INLET_0 bang;
+#X text 12 95 INLET_1 float list;
+#X text 12 5 KEYWORDS control random;
+#X restore 456 420 pd META;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 1;
+#X connect 8 0 6 0;
+#X connect 10 0 6 1;

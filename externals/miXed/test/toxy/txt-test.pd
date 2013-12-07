@@ -1,0 +1,25 @@
+#N canvas 0 0 487 327 12;
+#X obj 20 24 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 72 92 5 0 0 0 - - -;
+#X obj 95 251 print;
+#X obj 20 210 route bang;
+#N canvas 517 44 481 430 txtpanel 1;
+#X obj 64 37 widget txt t;
+#X restore 305 31 pd txtpanel;
+#X obj 20 173 tow txtpanel txt t;
+#X msg 79 126 tot pd nlines [expr [.- index end] - 1] .`.:;
+#X obj 243 173 r nlines;
+#X floatatom 243 210 5 0 0 0 - - -;
+#X msg 136 92 replace test;
+#X msg 65 59 insert trailer end;
+#X msg 60 24 insert header "0.0";
+#X connect 0 0 5 0;
+#X connect 1 0 5 0;
+#X connect 3 1 2 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;

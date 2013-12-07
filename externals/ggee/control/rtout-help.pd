@@ -1,0 +1,12 @@
+#N canvas 0 31 450 300 10;
+#X obj 140 126 rtout;
+#X text 54 47 placeholder help patch;
+#N canvas 407 106 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 85 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control needs_work;
+#X text 12 45 DESCRIPTION;
+#X text 12 65 INLET_0;
+#X restore 387 267 pd META;

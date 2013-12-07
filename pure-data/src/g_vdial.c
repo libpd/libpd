@@ -269,8 +269,8 @@ static void vradio_properties(t_gobj *z, t_glist *owner)
             ----------dimensions(pix):----------- %d %d size: 0 0 empty \
             empty 0.0 empty 0.0 empty %d \
             %d new-only new&old %d %d number: %d \
-            %s %s \
-            %s %d %d \
+            {%s} {%s} \
+            {%s} %d %d \
             %d %d \
             %d %d %d\n",
             x->x_gui.x_w, IEM_GUI_MINSIZE,

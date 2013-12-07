@@ -1,0 +1,96 @@
+#N canvas 265 101 654 413 10;
+#X text 452 8 GEM object;
+#X obj 8 295 cnv 15 430 90 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 298 Inlets:;
+#X text 38 355 Outlets:;
+#X obj 8 256 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 255 Arguments:;
+#X obj 7 76 cnv 15 430 175 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 158 cnv 15 160 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 56 368 Outlet 1: gemlist;
+#X text 63 312 Inlet 1: gemlist;
+#X obj 451 233 pix_draw;
+#X obj 451 196 pix_image;
+#X obj 467 116 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 0 450 300 openpanel 0;
+#X obj 114 62 inlet;
+#X obj 121 254 outlet;
+#X obj 114 125 openpanel;
+#X msg 114 162 set open \$1;
+#X obj 114 199 t b a;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 1 1 0;
+#X restore 467 137 pd openpanel;
+#X msg 467 165 open somefile.jpg;
+#X text 63 325 Inlet 1: open <filename>;
+#X text 29 76 Description: loads in an image file;
+#X text 50 12 Synopsis: [pix_image];
+#X text 71 31 Class: pix source;
+#X text 16 93 [pix_image] loads in an image to be used a texture \,
+bitblit \, or something else. If you don't give it a default image
+file \, you can send the open message with a filename.;
+#X text 63 266 <filename>;
+#X text 15 202 The image can be either drawn directly using [pix_draw]
+(VERY slow) or applied as a texture onto a Geo ([pix_texture]);
+#X text 63 338 Inlet 1: thread <1|0>;
+#X text 237 339 see;
+#N canvas 747 482 552 300 threaded 0;
+#X text 53 58 on some systems (namely: linux) \, [pix_image] will usually
+be compiled with threaded image-loading.;
+#X text 52 90 this will make loading of images more smooth \, as chances
+are low that it will block the entire Pd-process.;
+#X text 56 130 caveat: some users have reported problems when using
+large numbers of [pix_image]s (e.g. 300) which will create 300 helper-threads.
+this might eventually slow down your machine.;
+#X text 57 197 you can turn off thread-loading by sending a [thread
+0( message to [pix_image] _before_ loading an image.;
+#X restore 272 340 pd threaded loading;
+#X msg 521 196 thread \$1;
+#X obj 592 200 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 15 138 [pix_image] loads in TIFFs \, JPEGs and probably more
+(depending on your platform and how Gem was compiled);
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 18 0;
+#X connect 18 0 17 0;
+#X connect 19 0 20 0;
+#X connect 20 0 21 0;
+#X connect 21 0 18 0;
+#X connect 32 0 18 0;
+#X connect 33 0 32 0;

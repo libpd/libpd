@@ -1,0 +1,41 @@
+#N canvas 0 26 423 410 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 23 347 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 22 361 ___________________________________________________
+;
+#X obj 41 22 bangbang 4;
+#X text 147 21 send a number of bangs in order;
+#X text 148 46 like;
+#X obj 186 41 trigger b b b b b b b;
+#X obj 48 91 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 48 117 bangbang 7;
+#X obj 113 142 print one;
+#X obj 102 165 print two;
+#X obj 91 188 print three;
+#X obj 80 212 print t-;
+#X obj 69 234 print t-;
+#X obj 58 256 print testin';
+#X obj 48 280 print done;
+#X text 140 118 arg sets number of outlets;
+#N canvas 309 151 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible bang_op;
+#X text 12 45 DESCRIPTION send a number of bangs in order;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 OUTLET_N bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 372 388 pd META;
+#X connect 7 0 8 0;
+#X connect 8 0 15 0;
+#X connect 8 1 14 0;
+#X connect 8 2 13 0;
+#X connect 8 3 12 0;
+#X connect 8 4 11 0;
+#X connect 8 5 10 0;
+#X connect 8 6 9 0;

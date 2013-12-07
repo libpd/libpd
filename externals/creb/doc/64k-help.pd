@@ -1,0 +1,21 @@
+#N canvas 0 0 450 300 10;
+#X text 102 32 a beat shuffler using raw 64k/break sample banks;
+#N canvas 331 92 494 506 META 0;
+#X text 12 265 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION an overlap add tabread~ clone;
+#X text 12 65 INLET_0 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 bang;
+#X text 12 145 INLET_4 float;
+#X text 12 165 INLET_5 float;
+#X text 12 185 OUTLET_0 signal;
+#X text 12 205 OUTLET_1 float;
+#X text 12 225 OUTLET_2 float;
+#X text 12 5 KEYWORDS signal abstraction array needs_work (example
+patch);
+#X text 12 245 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 398 277 pd META;
+#X obj 33 32 64k ------;

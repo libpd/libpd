@@ -1,0 +1,50 @@
+#N canvas 387 61 565 382 10;
+#X obj 67 112 ivnt 100 100 0 0 empty empty;
+#X obj 67 112 cnv 15 100 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 67 248 unpack;
+#X floatatom 67 271 5 0 0 0 - - -;
+#X floatatom 104 273 5 0 0 0 - - -;
+#X obj 75 320 print;
+#X obj 149 250 unpack;
+#X floatatom 149 273 5 0 0 0 - - -;
+#X floatatom 186 275 5 0 0 0 - - -;
+#X obj 230 249 unpack 0 0 0;
+#X obj 230 276 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 263 276 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 297 277 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 67 218 route move_x_y dragg_x_y mouse_shft_alt key;
+#X obj 370 249 sel 0 127;
+#X obj 336 352 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 375 329 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 419 274 makefilename %c;
+#X symbolatom 419 297 2 0 0 0 - - -;
+#X text 356 352 return and end;
+#X text 395 327 backspace = correct;
+#X msg 67 46 size 100 100;
+#X msg 80 67 send from_ivnt;
+#X msg 93 88 receive to_ivnt;
+#X connect 0 0 13 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 6 0 7 0;
+#X connect 6 1 8 0;
+#X connect 9 0 10 0;
+#X connect 9 1 11 0;
+#X connect 9 2 12 0;
+#X connect 13 0 2 0;
+#X connect 13 1 6 0;
+#X connect 13 2 9 0;
+#X connect 13 3 14 0;
+#X connect 14 0 15 0;
+#X connect 14 1 16 0;
+#X connect 14 2 17 0;
+#X connect 17 0 18 0;
+#X connect 21 0 0 0;
+#X connect 22 0 0 0;
+#X connect 23 0 0 0;

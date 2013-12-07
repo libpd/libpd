@@ -1,0 +1,144 @@
+
+/*=============================================================================*\
+ * File: gfsmState.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library: states: inline definitions
+ *
+ * Copyright (c) 2004-2007 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+#include <gfsmMem.h>
+
+/*======================================================================
+ * Methods: Constructors etc.
+ */
+
+/*--------------------------------------------------------------
+ * new_full()
+ */
+GFSM_INLINE
+gfsmState *gfsm_state_new_full(gboolean is_final, gfsmArcList *arcs)
+{
+  gfsmState *s = g_new(gfsmState,1);
+  s->is_valid = TRUE;
+  s->is_final = is_final;
+  s->arcs     = arcs;
+  return s;
+}
+
+/*--------------------------------------------------------------
+ * new()
+ */
+GFSM_INLINE
+gfsmState *gfsm_state_new(void)
+{
+  return gfsm_state_new_full(FALSE, NULL);
+}
+
+/*--------------------------------------------------------------
+ * clear()
+ */
+GFSM_INLINE
+void gfsm_state_clear(gfsmState *s)
+{
+  gfsm_arclist_free(s->arcs);
+  s->is_valid = FALSE;
+  s->is_final = FALSE;
+  s->arcs     = NULL;
+}
+
+/*--------------------------------------------------------------
+ * clone()
+ */
+GFSM_INLINE
+gfsmState *gfsm_state_copy(gfsmState *dst, const gfsmState *src)
+{
+  gfsm_state_clear(dst);
+  if (!src->is_valid) return dst;
+  dst->is_valid = src->is_valid;
+  dst->is_final = src->is_final;
+  //dst->arcs     = g_slist_concat(gfsm_arclist_clone(src->arcs), dst->arcs);
+  dst->arcs     = gfsm_arclist_clone(src->arcs);
+  return dst;
+}
+
+
+/*--------------------------------------------------------------
+ * free()
+ */
+GFSM_INLINE
+void gfsm_state_free(gfsmState *s, gboolean free_arcs)
+{
+  if (free_arcs && s->arcs) gfsm_arclist_free(s->arcs);
+  g_free(s);
+}
+
+/*--------------------------------------------------------------
+ * close()
+ */
+GFSM_INLINE
+void gfsm_state_close(gfsmState *s)
+{
+  if (s->arc_data_temp) {
+    //-- data=temp, list=temp
+    gfsm_arclist_free(s->arcs);
+    s->arcs = NULL;
+  }
+#if 0 //-- only sensible for GSList arclists
+  else if (s->arc_list_temp) {
+    //-- data=shared, list=temp
+    g_slist_free(s->arcs);
+    s->arcs = NULL;
+  }
+#endif
+  if (s->is_temp) { g_free(s); }
+}
+
+/*======================================================================
+ * Methods: Accessors
+ */
+
+/*--------------------------------------------------------------
+ * is_ok()
+ */
+GFSM_INLINE
+gboolean gfsm_state_is_ok(const gfsmState *s)
+{ return s && s->is_valid; }
+
+
+/*--------------------------------------------------------------
+ * is_final()
+ */
+GFSM_INLINE
+gboolean gfsm_state_is_final(const gfsmState *s)
+{ return s && s->is_final; }
+
+/*--------------------------------------------------------------
+ * set_final()
+ */
+GFSM_INLINE
+void gfsm_state_set_final(gfsmState *s, gboolean is_final)
+{ s->is_final=is_final; }
+
+/*--------------------------------------------------------------
+ * out_degree()
+ */
+GFSM_INLINE
+guint gfsm_state_out_degree(const gfsmState *s)
+{
+  return gfsm_arclist_length(s->arcs);
+}

@@ -1,0 +1,45 @@
+#N canvas 75 94 762 547 10;
+#X obj 126 224 dollarg;
+#X obj 126 40 inlet;
+#X obj 32 387 outlet;
+#X obj 415 374 outlet;
+#X obj 251 150 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 420 352 5 0 0 0 - - -;
+#X obj 25 310 prepend set;
+#X msg 25 339 aa bb cc dd ee ff gg 33 44 55 66 77 88 99;
+#X floatatom 247 181 5 0 0 0 - - -;
+#X text 11 6 dollarg;
+#X text 93 7 receives the parent initial arguments <list> \, like a
+$n;
+#X text 250 61 into internal buffer and to output;
+#X text 83 406 or output float or symbol of list-atom at index (if
+input:;
+#X text 235 47 at creation-time dollarg copy parent initial arguments
+;
+#X text 302 88 pargs = parent arguments;
+#X text 302 101 n_pa = number of pargs;
+#X text 468 347 output n_pa (if input: n = 0 \, or bang);
+#X text 471 363 or output index of parg (if input: n != 0);
+#X text 475 378 or output 0 (if input: n > n_pa);
+#X text 82 389 output list of pargs (if input: n = 0 \, or bang);
+#X text 485 402 -n_pa <= n <= n_pa);
+#X text 276 149 if (input == bang) -> dollarg output all pargs;
+#X text 302 181 if (input = 0) -> dollarg output all pargs;
+#X text 302 195 if (input > 0) -> dollarg output the n-th parg;
+#X text 526 207 (n_pa + 1 + input)-th parg;
+#X text 304 208 if (input < 0) -> dollarg output the;
+#X text 106 485 IEM KUG;
+#X text 90 473 musil;
+#X text 120 473 @;
+#X text 126 473 iem.at;
+#X text 89 495 Graz \, Austria;
+#X text 41 462 (c) Thomas Musil 2000 - 2006;
+#X connect 0 0 2 0;
+#X connect 0 0 6 0;
+#X connect 0 1 3 0;
+#X connect 0 1 5 0;
+#X connect 1 0 0 0;
+#X connect 4 0 0 0;
+#X connect 6 0 7 0;
+#X connect 8 0 0 0;

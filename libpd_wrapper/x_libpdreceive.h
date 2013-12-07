@@ -11,6 +11,6 @@
 #include "m_pd.h"
 
 void libpdreceive_setup(void);
-void *libpdreceive_new(t_symbol *);
+void *libpdreceive_new(t_symbol *, void *);
 
 #endif

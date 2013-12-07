@@ -1,0 +1,37 @@
+#N canvas 0 26 553 346 10;
+#X msg 116 32 bang;
+#X msg 144 63 menu;
+#X obj 242 244 flatgui/popup 124 25 #ffffff _ option;
+#X msg 141 209 options;
+#X obj 203 163 route clear;
+#X symbolatom 116 277 0 0 0 0 - - -;
+#X text 183 64 see all options in the popup menu;
+#X obj 308 111 symbol;
+#X text 250 283 select a new input method with the popup menu;
+#X obj 202 185 bang;
+#X msg 197 208 name language;
+#N canvas 231 99 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control GUI needs_work (object won't create)
+;
+#X text 12 45 DESCRIPTION needs a description;
+#X text 12 65 INLET_0 bang menu symbol;
+#X text 12 85 OUTLET_0;
+#X text 12 105 OUTLET_1;
+#X restore 502 322 pd META;
+#X obj 116 144 keyboard_layout;
+#X connect 0 0 12 0;
+#X connect 1 0 12 0;
+#X connect 2 1 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 9 0;
+#X connect 4 1 2 0;
+#X connect 7 0 12 0;
+#X connect 9 0 3 0;
+#X connect 9 0 10 0;
+#X connect 10 0 2 0;
+#X connect 12 0 5 0;
+#X connect 12 1 4 0;

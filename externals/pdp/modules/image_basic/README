@@ -1,0 +1,5 @@
+This directory contains "normal" planar 16 bit unsigned image packet processors, 
+derived from the t_pdp_imagebase class defined in pdp_imagebase.h
+
+Most modules are wrappers around monochrome bitmap processors (pdp_imageproc_*)
+

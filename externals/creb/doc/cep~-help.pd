@@ -1,0 +1,16 @@
+#N canvas 0 26 521 228 10;
+#X text 229 45 forward cepstrum;
+#X text 229 64 using normalized fft/ifft objects;
+#N canvas 21 119 494 354 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 125 OUTLET_1 signal;
+#X text 12 145 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION complex cepstrum;
+#X text 12 5 KEYWORDS signal abstraction needs_work;
+#X restore 448 207 pd META;
+#X obj 72 111 cep~;

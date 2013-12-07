@@ -1,0 +1,87 @@
+.\" This -*- nroff -*- file has been generated from
+.\" DocBook SGML with docbook-to-man on Debian GNU/Linux.
+...\"
+...\"	transcript compatibility for postscript use.
+...\"
+...\"	synopsis:  .P! <file.ps>
+...\"
+.de P!
+\\&.
+.fl			\" force out current output buffer
+\\!%PB
+\\!/showpage{}def
+...\" the following is from Ken Flowers -- it prevents dictionary overflows
+\\!/tempdict 200 dict def tempdict begin
+.fl			\" prolog
+.sy cat \\$1\" bring in postscript file
+...\" the following line matches the tempdict above
+\\!end % tempdict %
+\\!PE
+\\!.
+.sp \\$2u	\" move below the image
+..
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+'\" t 
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n  
+.TH "PDP" "1" 
+.SH "NAME" 
+pdp \(em script to get information about the installed version of PDP 
+.SH "SYNOPSIS" 
+.PP 
+\fBpdp\fP [\fB--version\fP]  [\fB--cflags\fP]  [\fB--libdir\fP]  
+.SH "DESCRIPTION" 
+.PP 
+\fBpdp\fP is a tool that is used to configure to determine the compiler and linker flags that should be used to compile and links modules that use PDP. 
+ 
+.SH "OPTIONS" 
+.PP 
+\fBpdp\fP accepts the following options: 
+.IP "\fB--version\fP         " 10 
+Print the currently installed version of PDP on the standard output. 
+.IP "\fB--cflags\fP         " 10 
+Print the compiler flags that are necessary to compile a PDP module. 
+.IP "\fB--libdir\fP         " 10 
+Print the linker flags that are necessary to link a PDP module. 
+.SH "SEE ALSO" 
+.PP 
+pd (1). 
+.SH "AUTHOR" 
+.PP 
+This manual page was written by Pablo Martín caedes@sindominio.net for 
+the \fBDebian\fP system (but may be used by others).  Permission is 
+granted to copy, distribute and/or modify this document under 
+the terms of the GNU Free Documentation 
+License, Version 1.1 or any later version published by the Free 
+Software Foundation; with no Invariant Sections, no Front-Cover 
+Texts and no Back-Cover Texts. 
+...\" created by instant / docbook-to-man, Thu 14 Aug 2003, 15:18 

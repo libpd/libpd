@@ -1,0 +1,20 @@
+#N canvas 137 170 448 308 10;
+#X text 338 10 part of zexy;
+#X text 122 40 calculate a polynomial function;
+#X text 289 279 updated for zexy-2.1;
+#X floatatom 45 164 0 0 0 0 x - -;
+#X floatatom 45 264 0 0 0 0 y - -;
+#X msg 89 189 1 2;
+#X text 128 190 y=2x+1;
+#X msg 110 214 3 0 -1;
+#X text 166 215 y=3-x^2;
+#X text 32 80 on the right inlet you give the coefficients (a0..aN)
+of the polynomial function: y=a0+a1*x+a2*x^2+...+aN*x^N;
+#X text 33 109 the length of the coefficient list determines the order
+of the polynomial function.;
+#X obj 60 39 polyfun;
+#X obj 45 238 polyfun;
+#X connect 3 0 12 0;
+#X connect 5 0 12 1;
+#X connect 7 0 12 1;
+#X connect 12 0 4 0;

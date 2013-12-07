@@ -1,0 +1,5 @@
+pd-template (0.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Hans-Christoph Steiner <hans@eds.org>  Thu, 21 Jan 2010 23:27:04 -0500

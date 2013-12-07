@@ -1,0 +1,42 @@
+#N canvas 0 0 450 300 10;
+#X text 21 17 these three are equivalent \, default start count is
+0;
+#X obj 22 78 simplecounter;
+#X floatatom 22 113 5 0 0 0 - - -;
+#X obj 22 50 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 152 116 5 0 0 0 - - -;
+#X obj 152 53 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 152 81 simplecounter 0;
+#X floatatom 287 113 5 0 0 0 - - -;
+#X obj 287 50 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 287 78 simplecounter foo;
+#X text 19 141 the first creation argument (when a float) is start
+count;
+#X floatatom 17 252 5 0 0 0 - - -;
+#X obj 17 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 140 252 5 0 0 0 - - -;
+#X obj 140 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 17 217 simplecounter 10;
+#X obj 140 217 simplecounter -20;
+#X floatatom 284 250 5 0 0 0 - - -;
+#X obj 284 187 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 284 215 simplecounter 10 foo;
+#X text 18 157 further creation arguments are ignored;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 12 0 15 0;
+#X connect 14 0 16 0;
+#X connect 15 0 11 0;
+#X connect 16 0 13 0;
+#X connect 18 0 19 0;
+#X connect 19 0 17 0;

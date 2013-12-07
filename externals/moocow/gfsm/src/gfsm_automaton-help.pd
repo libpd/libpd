@@ -1,0 +1,340 @@
+#N canvas 0 31 479 520 10;
+#X text 89 7 gfsm_automaton : weighted finite state machine;
+#X text 183 489 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 7 436 SEE ALSO:;
+#X obj 22 457 gfsm;
+#X text 12 73 INLETS:;
+#X text 30 87 1 - control messages;
+#X text 244 74 OUTLETS:;
+#X text 260 87 1 - value outlet;
+#X text 48 48 NAME - symbolic name of the machine;
+#X text 14 31 SYNTAX: gfsm_automaton [NAME];
+#X text 7 211 SUBTOPICS:;
+#X text 10 114 DESCRIPTION:;
+#X text 245 211 GUTS:;
+#X obj 265 272 print fsm-help-out;
+#X obj 135 457 gfsm_alphabet;
+#N canvas 192 14 651 458 help-automaton-flags 0;
+#X text 167 4 gfsm_automaton : flags;
+#X msg 22 36 weighted;
+#X msg 32 171 transducer 1;
+#X msg 33 192 transducer 0;
+#X msg 22 151 transducer;
+#X msg 33 57 weighted 1;
+#X msg 34 78 weighted 0;
+#X msg 24 275 semiring;
+#X msg 37 299 semiring boolean;
+#X msg 37 320 semiring log;
+#X msg 37 361 semiring real;
+#X msg 37 382 semiring trivial;
+#X msg 38 402 semiring tropical;
+#X text 192 35 "weighted" : get value of the boolean "weighted" flag
+;
+#X text 157 57 "weighted BOOL" : set "weighted" flag;
+#X text 214 87 weighted automata may behave differently than unweighted
+automata with respect to certain algebraic operations.;
+#X text 178 148 "transducer" : get value of the boolean "transducer"
+flag;
+#X text 143 170 "transducer BOOL" : set "transducer" flag;
+#X text 216 195 transducers may behave differently than acceptors (which
+have only one label per arc) with respect to certain algebraic operations.
+;
+#X text 157 297 "semiring TYPE" : set semiring to use for weight arithmetic
+;
+#X text 192 272 "semiring" : get semiring type used for weight arithmetic
+;
+#X text 336 434 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 218 328 algebraic operations may be called on to alter arc
+weights \; in this case \, the semiring type associated with the automaton
+will be used to interpret arc weights. work in progress -- if you need
+this for something \, let me know.;
+#X obj 22 101 s fsm-help-in;
+#X obj 22 216 s fsm-help-in;
+#X obj 24 428 s fsm-help-in;
+#X msg 37 341 semiring plog;
+#X connect 1 0 23 0;
+#X connect 2 0 24 0;
+#X connect 3 0 24 0;
+#X connect 4 0 24 0;
+#X connect 5 0 23 0;
+#X connect 6 0 23 0;
+#X connect 7 0 25 0;
+#X connect 8 0 25 0;
+#X connect 9 0 25 0;
+#X connect 10 0 25 0;
+#X connect 11 0 25 0;
+#X connect 12 0 25 0;
+#X connect 26 0 25 0;
+#X restore 19 230 pd help-automaton-flags;
+#N canvas 71 31 651 409 help-automaton-basic 0;
+#X text 345 383 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X obj 21 119 s fsm-help-in;
+#X text 167 4 gfsm_automaton : basic operations;
+#X msg 21 45 automaton;
+#X msg 28 69 automaton fsm-help-2;
+#X msg 29 91 automaton fsm-help;
+#X text 179 38 "automaton" : use an object-local machine;
+#X text 145 51 "automaton NAME" : use a shared machine named NAME;
+#X msg 29 193 clear;
+#X text 124 192 "clear" : clears the automaton;
+#X msg 34 217 info;
+#X text 130 215 "info" : prints summary information to the Pd console
+;
+#X msg 35 241 print;
+#X text 221 74 data is shared between automata of the same name. when
+using multiple shared automata \, take care always to leave at least
+one object "pointing" to each name \, since the underlying data structures
+are freed when all references are lost.;
+#X text 124 236 "print" : prints automaton in at&t text format to stdout
+;
+#X obj 19 269 s fsm-help-in;
+#X text 145 262 WARNING: these methods may hog the cpu for extended
+periods of time when called for large machines.;
+#X msg 22 169 renumber;
+#X text 102 170 "renumber" : renumber automaton states \, closing gaps
+;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 8 0 15 0;
+#X connect 10 0 15 0;
+#X connect 12 0 15 0;
+#X connect 17 0 15 0;
+#X restore 19 252 pd help-automaton-basic;
+#N canvas 27 14 658 321 help-automaton-io 0;
+#X text 101 2 gfsm_automaton : input/output;
+#X obj 13 93 s fsm-help-in;
+#X text 211 44 "load FILE" : load an automaton in at&t-style text format
+;
+#X text 212 68 "save FILE" : save automaton in at&t-style text format
+;
+#X obj 10 235 s fsm-help-in;
+#X text 225 160 "load_bin FILE" : load an automaton in GFSM binary
+format;
+#X text 354 292 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X msg 23 48 load gfsm-help.tfst;
+#X msg 17 162 load_bin gfsm-help.gfst;
+#X msg 23 69 save gfsm-help.tfst;
+#X text 243 240 NOTE: gfsm binary format is not portable across different
+architectures.;
+#X text 235 87 NOTE: currently \, all text i/o is done in "weighted
+transducer" format \, regardless of automaton flags or input file content.
+;
+#X text 227 184 "save_bin FILE" : save automaton in GFSM binary format
+;
+#X msg 18 184 save_bin gfsm-help.gfst;
+#X text 228 209 "save_bin FILE ZLEVEL" : save with zlib compression
+;
+#X msg 24 208 save_bin gfsm-help.gfst 9;
+#X connect 7 0 1 0;
+#X connect 8 0 4 0;
+#X connect 9 0 1 0;
+#X connect 13 0 4 0;
+#X connect 15 0 4 0;
+#X restore 21 296 pd help-automaton-io;
+#N canvas 199 1 636 611 help-automaton-algebra 0;
+#X msg 24 33 complement;
+#X msg 24 62 closure 0;
+#X msg 24 79 closure 1;
+#X msg 24 170 determinize;
+#X msg 24 201 difference fsm-help-2;
+#X msg 24 235 intersect fsm-help-2;
+#X msg 24 267 invert;
+#X msg 24 352 product fsm-help-2;
+#X msg 24 413 reverse;
+#X msg 24 444 rmepsilon;
+#X msg 24 479 union fsm-help-2;
+#X text 222 32 "complement" : compute complement of an acceptor;
+#X msg 24 140 concat fsm-help;
+#X text 215 141 "concat FSM2" : concatenate with automaton named FSM2
+;
+#X text 187 203 "difference FSM2" : remove language of automaton named
+FSM2;
+#X text 194 235 "intersect FSM2" : intersect with automaton named FSM2
+;
+#X text 250 268 "invert" : swap upper and lower labels;
+#X msg 24 302 project 0;
+#X msg 24 319 project 1;
+#X text 208 298 "project SIDE" : project one label side;
+#X text 327 311 SIDE=0: project lower labels;
+#X text 328 323 SIDE=1: project upper labels;
+#X text 208 348 "product FSM2" : compute Cartesian product with FSM2
+;
+#X text 243 414 "reverse" : reverse language of an automaton;
+#X text 95 6 gfsm_automaton : algebraic operations;
+#X text 229 444 "rmepsilon" : remove epsilon arcs;
+#X text 222 480 "union FSM2" : compute union with automaton FSM2;
+#X obj 24 505 s fsm-help-in;
+#X text 31 551 WARNING: these methods may block for long periods of
+time for large automata.;
+#X text 329 578 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X msg 24 109 compose fsm-help-2;
+#X text 208 109 "compose FSM2" : compose with transducer FSM2;
+#X text 229 70 "closure N" : compute N-ary closure;
+#X text 215 170 "determinize" : determinize an acceptor;
+#X msg 24 383 connect;
+#X text 244 385 "connect" : remove useless states and arcs;
+#X connect 0 0 27 0;
+#X connect 1 0 27 0;
+#X connect 2 0 27 0;
+#X connect 3 0 27 0;
+#X connect 4 0 27 0;
+#X connect 5 0 27 0;
+#X connect 6 0 27 0;
+#X connect 7 0 27 0;
+#X connect 8 0 27 0;
+#X connect 9 0 27 0;
+#X connect 10 0 27 0;
+#X connect 12 0 27 0;
+#X connect 17 0 27 0;
+#X connect 18 0 27 0;
+#X connect 30 0 27 0;
+#X connect 34 0 27 0;
+#X restore 21 362 pd help-automaton-algebra;
+#X obj 58 457 gfsm_state;
+#X obj 265 230 r fsm-help-in;
+#N canvas 293 117 651 504 help-automaton-access 0;
+#X msg 22 42 size;
+#X floatatom 33 66 5 0 0 0 - - -;
+#X msg 33 82 size \$1;
+#X obj 22 104 s fsm-help-in;
+#X text 118 38 "size" : get number of states in the machine;
+#X text 90 51 "size INT" : grow machine to at least INT states;
+#X text 99 5 gfsm_automaton : automaton access;
+#X floatatom 35 177 5 0 0 0 - - -;
+#X obj 24 215 s fsm-help-in;
+#X msg 24 153 root;
+#X msg 35 193 root \$1;
+#X text 120 149 "root" : get id of machine's initial state or "bang"
+;
+#X text 134 72 note that values reported do not take the VALIDITY of
+states into account -- your mileage may vary.;
+#X text 132 180 in the second form \, the state will be created if
+it does not already exist. states are internally stored in an array
+\, and indexed with positive integer IDs beginning from 0 (zero) --
+i.e. \, a message such as "root 1E+37" is likely to crash Pd.;
+#X text 99 162 "root ID" : set machine's initial state to ID (an integer)
+;
+#X text 139 273 "final ID" : check whether state ID is marked as final
+;
+#X text 104 297 "final ID BOOL" : set final-status of state ID to BOOL
+;
+#X obj 23 344 s fsm-help-in;
+#X text 143 314 same caveats as for "root";
+#X obj 26 436 s fsm-help-in;
+#X msg 23 276 final 1;
+#X msg 30 299 final 1 1;
+#X msg 31 319 final 1 0;
+#X text 207 388 "add_arc FROM TO LO HI WEIGHT" : add an arc;
+#X text 242 403 adds an arc from state FROM to state TO on lower (input)
+label LO and upper (output) label HI with weight WEIGHT. states FROM
+and TO are implicitly created.;
+#X msg 33 390 add_arc 0 1 2 3 4;
+#X msg 38 412 add_arc 0 2 42 24 0.7;
+#X text 349 480 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 7 0 10 0;
+#X connect 9 0 8 0;
+#X connect 10 0 8 0;
+#X connect 20 0 17 0;
+#X connect 21 0 17 0;
+#X connect 22 0 17 0;
+#X connect 25 0 19 0;
+#X connect 26 0 19 0;
+#X restore 20 274 pd help-automaton-access;
+#N canvas 15 0 687 348 help-automaton-draw 0;
+#X obj 13 256 s fsm-help-in;
+#X text 246 63 NOTE: interpreting the resulting file requires the 'graphviz'
+package from at&t.;
+#X text 225 39 "draw_dot FILE [OPTIONS]" : save a 'dot' graph specification
+;
+#X text 235 97 OPTIONS:;
+#X text 318 113 title TITLE : graph title;
+#X text 318 168 width WIDTH : graph width (inches);
+#X text 248 127 ilabels ALPHABET_NAME : lower-label alphabet name;
+#X text 248 140 olabels ALPHABET_NAME : upper-label alphabet name;
+#X text 248 154 slabels ALPHABET_NAME : state-label alphabet name;
+#X text 304 180 height HEIGHT : graph height (inches);
+#X text 304 193 fontsize SIZE : font size (points?);
+#X text 304 206 fontname NAME : font name (?);
+#X text 304 219 portrait BOOL : draw in portrait mode? (default=no)
+;
+#X text 304 231 vertical BOOL : draw top-to-bottom? (default=no);
+#X text 297 244 nodesep INCHES : node-separation distance;
+#X text 297 257 ranksep INCHES : rank-separation distance;
+#X text 115 9 gfsm_automaton : draw;
+#X text 370 326 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X msg 13 40 draw_dot fsm-help.dot;
+#X obj 14 311 shell;
+#X msg 14 291 dotty fsm-help.dot;
+#X text 235 291 ... try this if you have the "graphviz" package installed
+;
+#X connect 18 0 0 0;
+#X connect 20 0 19 0;
+#X restore 20 318 pd help-automaton-draw;
+#X text 234 457 gfsmutils(1);
+#X obj 265 344 gfsm_automaton fsm-help-2;
+#X text 248 303 PLACEHOLDERS:;
+#X obj 265 323 gfsm_automaton fsm-help;
+#X obj 265 251 gfsm_automaton fsm-help;
+#N canvas 0 0 450 300 help-automaton-properties 0;
+#X msg 15 13 cyclic;
+#X text 89 15 "cyclic" : is the fsm cyclic?;
+#X obj 14 192 s fsm-help-in;
+#X connect 0 0 2 0;
+#X restore 22 340 pd help-automaton-properties;
+#N canvas 448 142 552 352 help-automaton-lookup 0;
+#N canvas 0 0 450 300 lookup_init 0;
+#X obj 22 16 inlet;
+#X msg 22 40 clear \, root 0 \, add_arc 0 0 1 2 0.5 \, add_arc 0 0
+2 1 0.5 \, add_arc 0 1 1 1 0 \, final 0 1 \, final 1 1;
+#X obj 22 76 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 24 54 pd lookup_init;
+#X msg 24 33 bang;
+#X obj 24 232 gfsm_automaton lookup-help;
+#X msg 39 93 lookup fsm-help 1 2;
+#X obj 24 255 print lookup-help-out;
+#N canvas 0 0 450 300 view-automaton 0;
+#X obj 30 16 inlet;
+#X obj 30 60 t b s;
+#X msg 60 85 \; \$1-in draw_dot gfsm_help.dot;
+#X msg 30 133 dotty gfsm_help.dot;
+#X obj 30 154 shell;
+#X obj 30 38 symbol;
+#X connect 0 0 5 0;
+#X connect 1 0 3 0;
+#X connect 1 1 2 0;
+#X connect 3 0 4 0;
+#X connect 5 0 1 0;
+#X restore 326 222 pd view-automaton;
+#X msg 326 177 lookup-help;
+#X msg 326 198 fsm-help;
+#X text 303 145 VIEWING:;
+#X text 321 158 (requires 'graphviz');
+#X obj 38 209 r lookup-help-in;
+#X text 221 92 "lookup RESULT LABELS..." : linear composition;
+#X text 313 108 result = compose(id(labels) \, fsm);
+#X text 243 297 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 135 -2 gfsm_automaton : lookup;
+#X msg 41 117 lookup fsm-help 1 1 1;
+#X text 137 32 <-- START HERE: create lookup transducer;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 10 0 2 0;
+#X connect 15 0 2 0;
+#X restore 22 386 pd help-automaton-lookup;
+#X text 28 130 gfsm_automaton objects represent weighted finite state
+machines (acceptors or transducers) -- rooted and possibly cyclic graphs
+whose edges are labelled with triples (LO \, HI \, WEIGHT) \, where
+LO and HI are alphabet labels (see gfsm_alphabet) \, and WEIGHT is
+a floating point number.;
+#X connect 20 0 27 0;
+#X connect 27 0 13 0;

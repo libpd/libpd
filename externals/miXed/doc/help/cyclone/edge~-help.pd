@@ -1,0 +1,39 @@
+#N canvas 0 26 594 299 10;
+#X text 15 35 Detect zero to non-zero signal transitions;
+#X text 176 256 zero to non- zero transition;
+#X floatatom 156 85 0 0 0 0 - - -;
+#X obj 185 235 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 156 259 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 156 113 sig~;
+#X text 199 80 change signal value above and below 1;
+#X text 209 233 non-zero to zero transition;
+#X obj 299 142 expr~;
+#X obj 156 149 expr~ $v1>1;
+#X obj 156 200 edge~;
+#X obj 209 182 Snapshot~ 100;
+#X obj 210 205 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#N canvas 77 68 494 395 META 0;
+#X text 12 65 PLATFORM windows macosx gnulinux;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible;
+#X text 12 45 DESCRIPTION detect zero to non-zero signal transitions
+;
+#X text 12 85 INLET_0 signal;
+#X text 12 105 OUTLET_0 bang;
+#X text 12 125 OUTLET_1 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 544 277 pd META;
+#X connect 2 0 5 0;
+#X connect 5 0 9 0;
+#X connect 9 0 10 0;
+#X connect 9 0 11 0;
+#X connect 10 0 4 0;
+#X connect 10 1 3 0;
+#X connect 11 0 12 0;

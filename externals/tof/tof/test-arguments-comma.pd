@@ -1,0 +1,23 @@
+#N canvas 402 618 450 300 10;
+#X obj 140 54 inlet;
+#X obj 143 110 tof/arguments comma;
+#X obj 140 83 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X symbolatom 41 232 10 0 0 0 - - -;
+#X obj 260 257 print;
+#X obj 41 210 symbol;
+#X obj 33 165 route go list;
+#X obj 118 199 unpack f f f;
+#X floatatom 118 231 5 0 0 0 - - -;
+#X floatatom 159 231 5 0 0 0 - - -;
+#X floatatom 203 232 5 0 0 0 - - -;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X connect 6 1 7 0;
+#X connect 7 0 8 0;
+#X connect 7 1 9 0;
+#X connect 7 2 10 0;

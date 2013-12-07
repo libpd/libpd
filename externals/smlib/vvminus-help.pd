@@ -1,0 +1,35 @@
+#N canvas 1 53 326 251 10;
+#X msg 25 90 1 2 3;
+#X msg 82 94 4 5 6;
+#X msg 168 95 1 2 3;
+#X msg 228 95 4;
+#X msg 25 66 1;
+#X msg 168 71 1;
+#X text 248 191 j#|@2002;
+#X text 18 10 vvminus substracts two lists of floats;
+#X text 18 26 or a float from a list of floats;
+#X obj 49 124 vvminus;
+#X obj 189 125 vvminus 0;
+#X obj 268 170 SMLib-help;
+#X obj 49 148 print vvminus;
+#X obj 189 149 print vvminus;
+#N canvas 102 157 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 85 INLET_1 list float;
+#X text 12 105 OUTLET_0 list float;
+#X text 12 45 DESCRIPTION substracts two lists of floats;
+#X restore 267 216 pd META;
+#X connect 0 0 9 0;
+#X connect 1 0 9 1;
+#X connect 2 0 10 0;
+#X connect 3 0 10 1;
+#X connect 4 0 9 0;
+#X connect 5 0 10 0;
+#X connect 9 0 12 0;
+#X connect 10 0 13 0;

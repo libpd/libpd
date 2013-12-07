@@ -1,0 +1,211 @@
+#N canvas 576 203 637 279 10;
+#X declare -stdpath doc/examples/pdlua;
+#X declare -stdpath extra/pdlua/examples;
+#X msg 44 58;
+#X text 70 57 << more methods will come (maybe);
+#X text 53 99 << global interface to pdlua;
+#X text 113 20 << load and run a Lua file (searches Pd's path);
+#X msg 17 21 load hello.lua;
+#X text 17 191 See also:;
+#X obj 37 216 hello;
+#X text 15 135 Side-effects:;
+#X obj 17 101 pdlua;
+#X obj 87 216 pdluax hello;
+#X text 29 157 [pdlua] registers a loader that allows Pd classes written
+in Lua to be loaded.;
+#X obj 282 109 declare -stdpath doc/examples/pdlua;
+#N canvas 128 92 621 356 pdlua_HOWTO 0;
+#X obj 13 3 cnv 15 500 140 empty empty pdlua_HOWTO 20 12 0 14 -135137
+-66577 0;
+#X obj 13 144 cnv 15 500 160 empty empty Class_Creation 20 12 0 14
+-203904 -66577 0;
+#X obj 13 305 cnv 15 500 300 empty empty Object_Initialization 20 12
+0 14 -261234 -66577 0;
+#X obj 13 606 cnv 15 500 120 empty empty empty 20 12 0 14 -135137 -66577
+0;
+#X obj 13 727 cnv 15 500 170 empty empty empty 20 12 0 14 -203904 -66577
+0;
+#X obj 13 1601 cnv 15 500 100 empty empty Sending_To_Receivers 20 12
+0 14 -261234 -66577 0;
+#X obj 13 1702 cnv 15 500 120 empty empty Receivers 20 12 0 14 -135137
+-66577 0;
+#X text 31 28 The Lua loader included in -lib pdlua allows externals
+for Pd to be written in the Lua programming language. (http://www.lua.org/)
+;
+#X text 31 70 If you try to create an object [foo] in Pd \, Pd checks
+if the class "foo" exists. If it doesn't \, it tries to load an external
+file that "probably" will contain code for "foo". The Lua loader adds
+support for loading "foo.pd_lua" when you try to create [foo].;
+#X obj 13 898 cnv 15 500 70 empty empty Object_Finalization 20 12 0
+14 -261234 -66577 0;
+#X text 31 216 This creates a new Pd class called "foo". The 'local'
+declaration is optional \, but recommended -- without it \, 'foo' is
+global \, which means any Lua code can modify it (possibly by accident).
+;
+#X text 31 164 The first expression/statement in the text file "foo.pd_lua"
+should be of the form:;
+#X obj 13 969 cnv 15 500 400 empty empty Inlet_Methods 20 12 0 14 -135137
+-66577 0;
+#X text 31 418 or equivalently:;
+#X obj 13 1370 cnv 15 500 230 empty empty Sending_To_Outlets 20 12
+0 14 -203904 -66577 0;
+#X text 31 326 Then you can add methods to the Pd class. The most important
+one is 'initialize' \, which is executed when a new object is created:
+;
+#X text 47 514 [foo a b 1 2 3 c];
+#X text 31 485 'sel' is usually (always?) the class name \, 'atoms'
+are the creation arguments in a Lua table. For example a Pd object
+;
+#X text 32 532 would have sel equal to "foo" and the atoms:;
+#X text 31 605 Being a method \, 'initialize' has a 'self' variable
+(which is the object to be created) \, and if you want your objects
+to have inlets or outlets you need need to set those fields in this
+method (Pd doesn't support changing the number of inlets or outlets
+after an object is created):;
+#X text 31 712 The default inlet/outlet counts are 0;
+#X text 31 732 The return value of 'initialize' is used to allow objects
+to fail to create (for example \, if the creation arguments are bad).
+Most of the time you will 'return true' \, but if you really can't
+create then you can 'return false'.;
+#X text 31 920 The 'finalize' method is called when the object is deleted
+by Pd. You can clean up stuff here if needed. The default implementation
+does nothing.;
+#X text 31 1620 You can send messages to receivers like this:;
+#X text 31 567 where <> should be curly brackets \, but Pd won't print
+them in a comment.;
+#X text 30 1661 (again the <> represent curly brackets);
+#X text 32 1782 Remember to clean up your receivers in object:finalize()
+\, or weird things will happen.;
+#X obj 13 1823 cnv 15 500 120 empty empty Clocks 20 12 0 14 -203904
+-66577 0;
+#X obj 13 1944 cnv 15 500 140 empty empty Miscellaneous_Object_Methods
+20 12 0 14 -261234 -66577 0;
+#X text 32 1843 You can bind methods to clocks \, for timing based
+on Pd's logical clock.;
+#X text 32 1886 Remember to clean up your clocks in object:finalize()
+\, or weird things will happen.;
+#X text 31 1964 Execute a Lua file using Pd's path to find it:;
+#X text 31 2001 Report an error to Pd's console:;
+#X obj 13 2086 cnv 15 500 80 empty empty Miscellaneous_Functions 20
+12 0 14 -135137 -66577 0;
+#X text 31 2109 Print a string to Pd's console:;
+#X text 31 2146 Note that pd.post() should not really be used for errors.
+;
+#X obj 9 2176 pdlua;
+#X obj 9 30 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 31 1724 You can bind methods to receivers \, to get messages
+from [send receiver] and " \; receiver message".;
+#X obj 479 1900 bng 15 250 50 0 empty empty empty 17 7 0 10 -13381
+-4034 -1;
+#X obj 48 195 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 57 197 local foo = pd.Class:new():register("foo");
+#X obj 48 368 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X obj 48 437 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 55 367 function foo:initialize(sel \, atoms);
+#X text 56 380 -- code;
+#X text 56 394 end;
+#X text 56 436 foo.initialize = function (self \, sel \, atoms);
+#X text 55 450 -- code;
+#X text 56 463 end;
+#X obj 48 844 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X obj 48 679 cnv 15 400 30 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 48 551 <"a" \, "b" \, 1 \, 2 \, 3 \, "c">;
+#X text 56 677 self.inlets = 1;
+#X text 55 843 function foo:postinitialize();
+#X text 55 857 -- code;
+#X text 56 872 end;
+#X obj 48 1982 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X obj 48 2025 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X obj 48 2126 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 56 1982 self:dofile("filename");
+#X text 56 2025 self:error("message");
+#X text 56 2126 pd.post("a string");
+#X obj 479 1663 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -257985
+-1;
+#X floatatom 602 1789 5 0 0 0 - - -;
+#X msg 514 1614 1000;
+#X msg 552 1614 100;
+#X text 32 1761 See doc/examples/lreceive.pd_lua for details.;
+#X text 32 1682 See doc/examples/lsend.pd_lua for details.;
+#X text 32 1871 See doc/examples/ldelay.pd_lua for details.;
+#X obj 479 1685 lsend splat-1;
+#X obj 514 1667 lsend splat-2;
+#X obj 479 1760 lreceive splat- 1 2 3;
+#X obj 479 1870 ldelay 1000;
+#X text 75 2173 modified from doc/examples/pdlua/lua.txt;
+#X text 31 994 Each inlet should have at least one method that will
+be called when an item it can handle arrives at that input.;
+#X obj 48 1080 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 55 1084 function foo:in_1_float(f);
+#X text 54 1097 -- code;
+#X text 56 1110 end;
+#X obj 48 1153 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 54 1170 -- code;
+#X text 56 1183 end;
+#X obj 48 1227 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 54 1244 -- code;
+#X text 56 1257 end;
+#X text 32 1206 A "gimme" method for [foo] accepts any input:;
+#X text 55 1231 function foo:in_1(sel \, atoms);
+#X obj 48 1428 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 55 1432 self:outlet(2 \, "bang" \, <>);
+#X text 29 1451 (as usual <> should be curly brackets);
+#X text 31 1407 This will cause the second outlet to emit a bang:;
+#X obj 48 1498 cnv 15 400 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 31 1477 This will cause the second outlet to emit a float:
+;
+#X text 55 1502 self:outlet(2 \, "float" \, <123>);
+#X obj 48 1548 cnv 15 400 40 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 31 1526 This will cause the first outlet to emit a list:;
+#X text 55 1569 self:outlet(1 \, "list" \, somelist);
+#X text 55 1552 self.somelist = <some items in a list>;
+#X text 32 1132 A "stop" method for inlet 2 of [foo]:;
+#X text 55 1157 function foo:in_2_stop();
+#X text 31 1024 The name of the method is constructed as "in_n_selector"
+where n is the inlet number (starting from 1) and selector is a type
+such as "float" or "bang" \, or a selector name such as "start". Here
+is a float method for [foo] inlet 1:;
+#X obj 48 1639 cnv 15 460 20 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 55 1639 pd.send("receiver" \, "selector" \, <"a" \, "message"
+\, 1 \, 2 \, 3>;
+#X obj 48 1301 cnv 15 400 50 empty empty empty 20 12 0 14 -204786 -66577
+0;
+#X text 54 1318 -- code;
+#X text 56 1331 end;
+#X text 32 1280 A method for symbols on any input:;
+#X text 55 1305 function foo:in_n_symbol(i \, s);
+#X text 31 786 If you need to do things after the Pd object is created
+\, but before control is returned to Pd \, (such as registering receivers
+or clocks) you can use the 'postinitialize' method:;
+#X text 75 2186 by mrpeach 2011/10/06;
+#X text 31 2046 This will allow the object to be highlighted from Pd's
+menu using Find->Find Last Error.;
+#X text 56 693 self.outlets = 2;
+#X text 31 1389 Use self:outlet(outlet_number \, type \, table);
+#X connect 37 0 36 0;
+#X connect 63 0 70 0;
+#X connect 65 0 71 0;
+#X connect 66 0 71 0;
+#X connect 72 0 73 0;
+#X connect 72 1 64 0;
+#X connect 73 0 39 0;
+#X restore 282 90 pd pdlua_HOWTO;
+#X obj 282 129 declare -stdpath extra/pdlua/examples;
+#X connect 0 0 8 0;
+#X connect 4 0 8 0;

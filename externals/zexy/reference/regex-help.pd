@@ -1,0 +1,62 @@
+#N canvas 0 31 458 529 10;
+#X floatatom 98 295 0 0 0 0 - - -;
+#X text 353 6 part of zexy;
+#X obj 17 36 regex;
+#X text 74 36 -- check whether a symbol matches a regular expression
+;
+#X symbolatom 267 212 10 0 0 0 - - -;
+#X symbolatom 169 167 10 0 0 0 - - -;
+#X msg 50 143 case \$1;
+#X obj 56 121 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 46 327 print result;
+#X obj 126 327 print details;
+#X obj 212 327 print num;
+#X obj 245 178 symbol;
+#X msg 284 141 Ab;
+#X msg 293 170 bA;
+#X msg 297 191 bAc;
+#X msg 245 145 aba;
+#X msg 104 80 list a a a;
+#X text 11 352 list of details:;
+#X text 124 447 for more info \, see: http://www.delorie.com/gnu/docs/regex/regex_toc.html
+;
+#X text 34 368 1) ID number of match (in case of multiple matches)
+;
+#X text 34 417 3) position of the end of the match (or last character
+if no match);
+#X text 34 388 2) position of the start of the match (or first character
+if no match;
+#X obj 103 264 regex;
+#N canvas 717 266 494 344 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 175 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION check whether a symbol matches a regular
+expression;
+#X text 12 5 KEYWORDS control;
+#X text 12 75 INLET_0 case list regex;
+#X text 12 95 INLET_1 symbol;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 OUTLET_1 list;
+#X text 12 155 OUTLET_2 float;
+#X restore 402 495 pd META;
+#X msg 125 139 list aba Aa Ac;
+#X msg 222 89 list bA bA;
+#X connect 4 0 22 1;
+#X connect 5 0 22 0;
+#X connect 6 0 22 0;
+#X connect 7 0 6 0;
+#X connect 11 0 22 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X connect 15 0 11 0;
+#X connect 16 0 22 0;
+#X connect 22 0 0 0;
+#X connect 22 0 8 0;
+#X connect 22 1 9 0;
+#X connect 22 2 10 0;
+#X connect 24 0 22 0;
+#X connect 25 0 22 0;

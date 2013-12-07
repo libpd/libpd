@@ -1,0 +1,11 @@
+return function (self, sel, atoms)
+  self.inlets = 1
+  self.outlets = 1
+  self.count = 0
+  if type(atoms[1]) == "number" then self.count = atoms[1] end
+  function self:in_1_bang()
+    self:outlet(1, "float", {self.count})
+    self.count = self.count + 1
+  end
+  return true
+end

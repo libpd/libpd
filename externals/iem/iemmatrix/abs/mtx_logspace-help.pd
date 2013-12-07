@@ -1,0 +1,14 @@
+#N canvas 439 163 841 379 10;
+#X text 482 28 part of iemmatrix;
+#X text 268 138 inlet: [startval stopval n(;
+#X text 268 157 outlet: matrix/vector;
+#X text 465 324 see also:;
+#X obj 33 187 mtx_print;
+#X text 43 34 [mtx_logspace];
+#X text 166 69 creates a logarithmically spaced vector from a startvalue
+to a stopvalue with n entries;
+#X obj 33 165 mtx_logspace;
+#X msg 33 142 1 10000 9;
+#X obj 535 325 mtx_linspace;
+#X connect 7 0 4 0;
+#X connect 8 0 7 0;

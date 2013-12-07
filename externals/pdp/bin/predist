@@ -1,0 +1,6 @@
+
+# patch version if environment variable is set
+[ -z $PDP_DIST_VERSION ] || sh bin/patchversion $PDP_DIST_VERSION
+
+# run autoconf with (patched) configure.ac
+sh bootstrap

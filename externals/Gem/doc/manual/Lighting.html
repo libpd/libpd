@@ -1,0 +1,107 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="Author" content="IOhannes m zmölnig">
+   <title>Lighting</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Lighting</u></h2></center>
+Lighting is an important factor is how we perceive the quality of an image. 
+For example, without lighting and shading, a sphere would just look like
+a circle.  GEM provides two types of lights, a local light and world
+light.
+<p>OpenGL uses a vertex lighting model.  This means that for every
+vertex in the scene, the influence of the light is calculated.  The
+color for the polygon is then modified by the light value of all of the
+vertices.  This generally produces a very smooth effect, but you will
+occasionally run into rendering artifacts, especially if you use local
+lights.  For example, imagine you have a local light close a large
+square.  The corners of the square are far away from the light, so
+none of them will be lit very brightly, even though the light itself is
+very close to the surface of the square.
+<p>It is important to realize that lighting is an expensive operation to
+use.  The number of polygons that you will be able to render will
+be much lower if lighting is turned on.  As usual, the complexity
+of the scene and the speed of your computer and graphics card will greatly
+affect your frame rate.
+<p>GEM has only a maximum of 8 lights at one time.  If you try to
+create more lights than that, you will get an error message.
+<p><a href="#Activate">Activate lighting</a>
+<br><a href="#world_light">[world_light]</a> - A directional light
+<br><a href="#light">[light]</a> - A point light in the world
+<br><a href="#Moving">Moving lights</a>
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="Activate"></a>Activate lighting</h3>
+Lighting is activated by sending a message to <i>[gemwin]</i>.  If you
+send "lighting 1", then lighting will be turned on.  If you send "lighting
+0", then lighting will be turned off.  The lighting state is kept
+even if you destroy the gemwin.  This means that if you close a patch
+and open another one, the lighting will still be the same.
+<p>Individual lights can be turned on and off by sending a 1 or 0 to the
+left inlet of the light object itself.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="world_light"></a>[world_light]</h3>
+A <i>[world_light]</i> is a light which exists infintely far away. 
+This reduces the computation needed, so your patch can run faster, but
+it means that all of the light rays are parallel.  The <i>[world_light]</i>
+is good for objects like the sun and other lighting affects.  This
+means that translating a <i>[world_light]</i> has no effect, although rotation
+does.
+<p>The following patch is 03.lighting/01.world_light.pd.
+<center>
+<p><img SRC="world_light.jpg" BORDER=1 height=152 width=370></center>
+
+<p>The <i>[world_light]</i> has one extra inlet.  The right inlet accepts
+three floats to set the color of the light.  A <i>[color]</i> object
+would do nothing.  In this case, the light is being set to purple. 
+The <i>[world_light]</i> also accepts a debug message.  The debug message
+turns on and off a graphical representation of the light in the scene. 
+The <i>[world_light]</i> looks like a cone.  The cone shows the direction
+that the light is coming from.  Remember that the actual position
+of the light does not matter, so geos behind the cone will still be lit. 
+It is the direction of the light that matters.  This is why you can
+rotate the light.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="light"></a>[light]</h3>
+A <i>[light]</i> object generates a point light in the world.  Because
+the light is local to the scene, there is more math to generate the effect
+of the light on the vertices.  However, unlike a <i>[world_light]</i>,
+you can translate the <i>[light]</i> object.
+<p>Below is the patch 03.lighting/02.light.pd.
+<center>
+<p><img SRC="light.jpg" BORDER=1 height=215 width=212></center>
+
+<p>The <i>[light]</i> object has a right inlet for the color, just light
+the <i>[world_light]</i> object.  As this patch shows, the light can
+be moved around the scene with both <i>[rotate]</i> and <i>[translate]</i>
+objects.  If you were to set the translate X value equal to 1.0, then
+the sphere would not be lit at all.  This is because the light would
+be inside of the sphere.  When you turn on the debug representation,
+it is a sphere with its origin where the light it.  The <i>[light]</i>
+object does not have any size.  It exists as a point source.
+<p><img SRC="tribar.gif" height=13 width=561>
+<h3>
+<a NAME="Moving"></a>Moving lights</h3>
+The patch 03.lighting/03.controlLights.pd allows you to move a <i>[light]</i>
+and <i>[world_light]</i> object in the same scene to see the difference between
+the two objects.
+<p>The patch 03.lighting/04.moveSpheres.pd is an example which moves
+two spheres around the world.  Turn on and off the individual lights
+for a demonstration of a local versus infinite light.
+<p>The patch 03.lighting/05.materials.pd uses the material objects to
+selectively control the color of the object. Notice that the diffuse object
+sets the "overall" color, while the specular objects sets the bright reflective
+area where the light directly shines.
+<p><img SRC="tribar.gif" height=13 width=561>
+<p><a href="index.html">[return]</a>
+<br> 
+</body>
+</html>

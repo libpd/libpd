@@ -1,0 +1,52 @@
+#N canvas 1 53 476 445 10;
+#X text 61 158 (r \, phi \, theta);
+#X text 61 198 (x \, y \, z);
+#X obj 277 122 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 218 102 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 160 72 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 164 93 5 0 0 0 - - -;
+#X floatatom 221 122 5 0 0 0 - - -;
+#X floatatom 282 141 5 0 0 0 - - -;
+#X obj 277 249 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 225 204 5 0 0 0 - - -;
+#X floatatom 168 204 5 0 0 0 - - -;
+#X floatatom 285 204 5 0 0 0 - - -;
+#X obj 157 181 spherical2cartesian;
+#X obj 89 327 pddp/pddplink http://en.wikipedia.org/wiki/Spherical_coordinate_system
+;
+#X obj 89 307 pddp/pddplink http://en.wikipedia.org/wiki/Cartesian_coordinate_system
+;
+#X text 43 307 input:;
+#X text 37 327 output:;
+#X obj 5 2 cnv 15 450 20 empty empty cartesian2spherical 2 11 1 18
+-233017 -66577 0;
+#X text 73 36 convert cartesian to spherical coordinates;
+#N canvas 466 198 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 185 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction conversion;
+#X text 12 45 DESCRIPTION convert cartesian to spherical coordinates
+;
+#X text 12 105 INLET_2 float;
+#X text 12 145 OUTLET_1 float;
+#X text 12 165 OUTLET_2 float;
+#X restore 416 405 pd META;
+#X connect 2 0 7 0;
+#X connect 2 0 12 2;
+#X connect 3 0 6 0;
+#X connect 3 0 12 1;
+#X connect 4 0 5 0;
+#X connect 4 0 12 0;
+#X connect 12 0 10 0;
+#X connect 12 1 9 0;
+#X connect 12 2 8 0;
+#X connect 12 2 11 0;

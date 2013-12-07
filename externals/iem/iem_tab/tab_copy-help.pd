@@ -1,0 +1,60 @@
+#N canvas 116 92 784 483 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array src 100 float 1;
+#A 0 -0.442858 -0.414287 -0.385715 -0.342858 -0.314287 -0.257144 -0.128572
+-0.0428573 0.128572 0.228572 0.285715 0.328572 0.400001 0.414287 0.457144
+0.457144 0.442858 0.385715 0.314287 0.257144 0.214286 0.1 0.0428572
+-0.0142858 -0.0428573 -0.114286 -0.142858 -0.200001 -0.242858 -0.285715
+-0.328572 -0.342858 -0.37143 -0.385715 -0.414287 -0.414287 -0.414287
+-0.414287 -0.400001 -0.357144 -0.314287 -0.257144 -0.185715 -0.0714288
+0.0142857 0.0571429 0.171429 0.328572 0.400001 0.442858 0.47143 0.485715
+0.485715 0.485715 0.485715 0.485715 0.442858 0.357144 0.242858 0.185715
+0.114286 0.0714285 -0.071429 -0.242858 -0.300001 -0.328573 -0.357144
+-0.37143 -0.385715 -0.400001 -0.442858 -0.457144 -0.47143 -0.457144
+-0.428573 -0.400001 -0.378573 -0.328572 -0.271429 -0.242858 -0.200001
+-0.128572 -0.0428574 -0.0285717 0.0142858 0.114286 0.128572 0.185715
+0.214286 0.257144 0.285715 0.314287 0.342858 0.357144 0.357144 0.357144
+0.357144 0.357144 0.342858 0.328572;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 533 14 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array dst 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 533 180 graph;
+#X obj 60 35 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 60 110 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 58 345 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 58 215 50 20 50;
+#X text 194 318 1.arg: <symbol> source-name;
+#X text 194 331 2.arg: <symbol> destination-name;
+#X msg 115 235 src src;
+#X msg 165 253 dst dst;
+#X text 184 73 (the number of samples which are copied are:;
+#X text 197 87 the minimum of both array lengths);
+#X text 43 168 list of 3 floats:;
+#X text 77 419 IEM KUG;
+#X text 56 407 musil;
+#X text 91 407 @;
+#X text 99 407 iem.at;
+#X text 60 429 Graz \, Austria;
+#X text 55 179 1.) src onset;
+#X text 55 189 2.) dst onset;
+#X text 225 306 initial arguments:;
+#X text 73 323 <bang> output;
+#X text 172 233 <src> xxx : change source name;
+#X text 218 252 <dst> xxx : change destination name;
+#X text 11 7 tab_copy;
+#X text 89 33 <bang> copy value from src to dst;
+#X obj 60 82 tab_copy src dst;
+#X text 55 198 3.) n samples to copy;
+#X obj 58 306 tab_copy src dst;
+#X text 12 396 (c) Thomas Musil 2000 - 2009;
+#X connect 2 0 26 0;
+#X connect 5 0 28 0;
+#X connect 8 0 28 0;
+#X connect 9 0 28 0;
+#X connect 26 0 3 0;
+#X connect 28 0 4 0;

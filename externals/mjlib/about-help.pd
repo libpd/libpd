@@ -1,0 +1,35 @@
+#N canvas 1 53 563 440 12;
+#X floatatom 215 277 5 0 0 0 of_this_number---> - -;
+#X floatatom 215 374 5 0 0 0 here---> - -;
+#X obj 215 172 bng 35 250 50 0 empty empty empty 20 8 0 8 -262144 -1
+-1;
+#X floatatom 325 214 5 0 0 0 - - -;
+#X obj 215 323 about 10;
+#X text 24 16 about;
+#X text 25 34 by mark williamson;
+#X text 22 56 (mark@junklight.com);
+#X text 26 92 about makes numbers that are + or - a percenage error
+from a given value. That is it makes numbers that are "about" the given
+value.;
+#X text 67 168 click here --->;
+#X text 88 194 and get;
+#X text 255 192 a number which is within;
+#X text 377 215 %;
+#X text 319 340 %age as a parameter;
+#X text 304 322 note: you can set the default;
+#N canvas 273 106 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 AUTHOR Mark Williamson <mark@junklight.com>;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION make numbers that are + or - a percenage
+error from a given value;
+#X text 12 75 INLET_0 float;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 5 KEYWORDS control filter;
+#X restore 496 407 pd META;
+#X connect 0 0 4 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 1;
+#X connect 4 0 1 0;

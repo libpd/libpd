@@ -1,0 +1,23 @@
+#N canvas 167 104 735 504 10;
+#X obj 37 215 testtools/unit-test-frame~;
+#X obj 358 138 creb/blosc~ saw;
+#X msg 445 104 0;
+#X obj 37 139 loadbang;
+#X obj 445 73 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 579 36 creb/blosc~ saw;
+#X obj 579 62 creb/blosc~ saw;
+#X obj 579 88 creb/blosc~ saw;
+#X obj 579 114 creb/blosc~ saw;
+#X obj 580 144 creb/blosc~ saw;
+#X obj 580 170 creb/blosc~ saw;
+#X msg 358 105 100;
+#X msg 37 177 blosc~ 100;
+#X connect 0 2 4 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 1;
+#X connect 3 0 12 0;
+#X connect 4 0 11 0;
+#X connect 4 0 2 0;
+#X connect 11 0 1 0;
+#X connect 12 0 0 0;

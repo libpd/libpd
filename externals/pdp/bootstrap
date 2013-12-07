@@ -1,0 +1,5 @@
+chmod +x buildall bin/*
+autoconf
+cd scaf
+autoconf
+cd ..

@@ -1,0 +1,331 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\vieww17000\viewh11120\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural
+
+\f0\fs22 \cf0 HID Utilities Source\
+Human Interface Device Manager Utility Functions\
+\
+Version 3.7		28 Oct 2K2\
+			General cleanup for web posting.\
+\
+Version 3.6		23 Oct 2K2\
+			Added new API's: HIDSetElementValue, HIDSetQueueCallback, HIDGetReport, HIDSetReport & HIDPrintElement,\
+			Note: <IOHIDPowerUsage.h> & <PID.h> have been incorporated into <IOKit/hid/IOHIDUsageTables.h>.\
+\
+Version 3.5		10 Aug 2K2\
+			HIDConfigureAction now only checks kHIDElementTypeInput elements.\
+			Changed some "for (x=0;x<n;x++) i[x] = 0;" code to use bzero instead.\
+			Moved device & element finding code into its own routines: HIDFindActionDeviceAndElement & HIDFindSubElement.\
+			The original HID utilities depended on the BSD FILE* implementation for HID[Save/Restore]ElementConfig and didn't work in CFM applications.\
+			So two new routine (HIDSaveElementPref & HIDRestoreElementPref) were added that use the CFPreferences API's instead. \
+\
+Version 3.4		Added code to support hot plugging & un-plugging devices. Note to developers: It's very important to use the HIDIsValidDevice\
+			and HIDIsValidElement API's to verify that cached device or element pointers are still valid before de-referencing them.\
+			This validation code has been added to all HID Utilities AIP's that take a device or element pointer as a parameter.\
+			Note also that this required that queueRunLoopSource and notification port fields be added to the device record. (see <HID_Utilities.h>)\
+\
+Version 3.3		Added output transaction support for UPS & FFB devices (see <HID_Transaction_Utilities.c> & <HID_Transaction_Utilities.h>).\
+\
+Version 3.2		Since 10.2 changed the cookie numbers (by adding a usage == -1element for arrays) a cookie agnostic method of getting\
+			device and element names was needed. Plus the nested (device & element) switch statements hardcoding the strings.\
+			So all the device, element & cookie strings have been moved out of the source file(s) and put into XML data files instead.\
+			NOTE: all local (static) routines now begin with "hid_" instead of "HID".\
+			All references to "Kernel/IOKit/hidsystem/" now (correctly) point to "IOKit/hid/" instead.\
+\
+Version 3.1: 	Added the basics of a element naming scheme.  Right now it just supports one device (macally iShock) but as I get more \
+			device info I can add other devices (feel free to add to the name lookup file and send me the results).  Added bad device \
+			and element chencking in config/save.  Fixed one case of swapped usage page and usage variables.  Fixed a few leaks \
+			noted by a developer.  Add a NULL check to top level element handler to prevent NULL deference also noted by developer.  \
+			Checked build with gcc3. Rebuilt bundle and static lib.\
+\
+Version 3.0: 	Major Change: Added CFM support.\
+			Project now can be built in three different ways with the interface being straight C with Mac OS X type reliance, thus completely\
+			suitable for CFM or MachO binary formats and Carbon, Cocoa, or command line interfaces.\
+\
+			- Static Library: For use with Mac OS X MachO projects.  The build product (in the build directory) can be static linked\
+			  into any exisiting Mac OS X MachO project.  The project should include HID_Utilities_External.h only for declarations.\
+\
+			- Source: This is just including the HID Utilities source files in the target project.  Works as previous, but now all the \
+			  declarations needed are in the HID_Utilities_External.h header file.\
+\
+			- Dynamic Library: Should only be used by CFM applications.  There are some notes which MUST be followed.  See the HID Explorer\
+			  or the HID Config Save samples for CW7 projects which show the actual use of the library.  The dylib is housed in a bundle\
+			  which the CFM app finds at runtime and calls into.  This bundle is included and the dylib project will automatically place\
+			  the actual dylib in the bundle (contents/MacOS/). NOTE: The path to this is an absolute path for the build product of the \
+			  project, you MUST modify this if you rebuild the dylib (which never be required).  To do this select the prject name in the\
+			  Files tab and Get Info.  Point the build product to the HID.bundle/contents/MacOS/ directory in the HID Utilities directory.\
+			  Then point the intermediates to the intermediates directory already in the build directory.  This is required since the build\
+			  product path is absolute and can't be project relative (yes, a bug has been filed). Again, this is only if you wnat to rebuild\
+			  the dylib used for CFM applications.  Also note, you must copy the HID.bundle into your application directory (if you are using\
+			  the method in the sample to find the bundle) for your CFM application to use it.\
+				  \
+			Other Notes:\
+			  The interface is now completely Mac OS X type free. This means minor mods to your projects.  See the element and device structures\
+			  for guidence on the types.  For example cookies now should be void *'s.  Fixed a couple bugs in allocating queues.  CLean up error\
+			  checking to only dump DebugStrs if the source is used (vice the static or dynamic libraries).\
+\
+Version 2.0: 	Update. Fixed some 10.1 issues, notably spelling errors in constants and include differences.  Fixed 10.0.x errors, notably \
+			type errors in retrieving element info, negative value handling (see GetElementValue), queuing error, and other minor changes.\
+			Major change in element list handling...  Elements are now stored in a binary tree to mimic the tree sturcture of the \
+			device.  This allows hierarchial diplay and parsing (See HID Explorer sample). Additionally, some of the routine declarations \
+			have chnaged to work with this tree structure, one can still get same list functionality by using GetNextDeviceElement routine \
+			with kHIDElementTypeIO constant. Collections are now stored in tree, so users of these functions must understand if they are \
+			looking at a valid IO element or a collection. Lastly, new parsing strings and two new headers are included to aid in decoding \
+			PID and power device elements.\
+\
+Version 1.0: 	Initial release featuring functions to get HID device list, get devices and elements, poll for values, setup queues and get events, \
+			handle configuration set up and saving/restoring of configurations.\
+\
+----\
+\
+This group of utilities is stand alone code to help developers work more easily with the HID Manager for Mac OS X with both MachO and CFM support.  \
+It provides a high level abstract of the current HID interface that sacrifices slight flexibility in favor single function set up, device and element \
+retrieval, current value and event query, and configuration.  This sample is the source code for the Utilities and does not provide a sample of the \
+utilization.  There are other samples which provide complete working examples of a HID device explorer and a simple game implementation.  More samples \
+will be forth coming shortly.\
+\
+This set of utilities is constantly evolving to both address any bugs and provide better support for developer requested features.\
+Any suggestions and/or bugs can be directed to the Apple bug reporter at:\
+<http://developer.apple.com/bugreporter/index.html>\
+\
+// ==================================\
+\
+// Device and Element Interfaces\
+\
+enum HIDElementTypeMask\
+\{\
+	kHIDElementTypeInput				= 1 << 1,\
+	kHIDElementTypeOutput            			= 1 << 2,\
+	kHIDElementTypeFeature           			= 1 << 3,\
+	kHIDElementTypeCollection        			= 1 << 4,\
+	kHIDElementTypeIO					= kHIDElementTypeInput | kHIDElementTypeOutput | kHIDElementTypeFeature,\
+	kHIDElementTypeAll					= kHIDElementTypeIO | kHIDElementTypeCollection\
+\};\
+typedef enum HIDElementTypeMask HIDElementTypeMask;\
+\
+\
+struct recElement\
+\{\
+    unsigned long type;						// the type defined by IOHIDElementType in IOHIDKeys.h\
+    long usagePage;						// usage page from IOUSBHIDParser.h which defines general usage\
+    long usage;							// usage within above page from IOUSBHIDParser.h which defines specific usage\
+    void * cookie;				 			// unique value (within device of specific vendorID and productID) which identifies element, will NOT change\
+    long min;								// reported min value possible\
+    long max;							// reported max value possible\
+    long scaledMin;						// reported scaled min value possible\
+    long scaledMax;						// reported scaled max value possible\
+    long size;							// size in bits of data return from element\
+    unsigned char relative;					// are reports relative to last report (deltas)\
+    unsigned char wrapping;					// does element wrap around (one value higher than max is min)\
+    unsigned char nonLinear;					// are the values reported non-linear relative to element movement\
+    unsigned char preferredState;				// does element have a preferred state (such as a button)\
+    unsigned char nullState;					// does element have null state\
+    long units;							// units value is reported in (not used very often)\
+    long unitExp;							// exponent for units (also not used very often)\
+    char name[256];						// name of element (not used often)\
+\
+// runtime variables\
+    long minReport; 						// min returned value\
+    long maxReport; 						// max returned value (calibrate call)\
+    long userMin; 							// user set value to scale to (scale call)\
+    long userMax;							\
+    \
+	struct recElement * pPrevious;			// previous element (NULL at list head)\
+    struct recElement * pChild;				// next child (only of collections)\
+    struct recElement * pSibling;				// next sibling (for elements and collections)\
+	\
+\};\
+typedef struct recElement recElement;\
+typedef recElement* pRecElement;\
+\
+struct recDevice\
+\{\
+    void * interface;						// interface to device, NULL = no interface\
+    void * queue;							// device queue, NULL = no queue\
+    char transport[256];						// device transport\
+    long vendorID;							// id for device vendor, unique across all devices\
+    long productID;						// id for particular product, unique across all of a vendors devices\
+    long version;							// version of product\
+    char manufacturer[256];					// name of manufacturer\
+    char product[256];						// name of product\
+    char serial[256];						// serial number of specific product, can be assumed unique across specific product or specific vendor (not used often)\
+    long locID;							// long representing location in USB (or other I/O) chain which device is pluged into, can identify specific device on machine\
+    long usage;							// usage page from IOUSBHID Parser.h which defines general usage\
+    long usagePage;						// usage within above page from IOUSBHID Parser.h which defines specific usage\
+    long totalElements;						// number of total elements (should be total of all elements on device including collections) (calculated, not reported by device)\
+	long features;						// number of elements of type kIOHIDElementTypeFeature\
+	long inputs;							// number of elements of type kIOHIDElementTypeInput_Misc or kIOHIDElementTypeInput_Button or kIOHIDElementTypeInput_Axis or kIOHIDElementTypeInput_ScanCodes\
+	long outputs;						// number of elements of type kIOHIDElementTypeOutput\
+	long collections;						// number of elements of type kIOHIDElementTypeCollection\
+    long axis;							// number of axis (calculated, not reported by device)\
+    long buttons;							// number of buttons (calculated, not reported by device)\
+    long hats;							// number of hat switches (calculated, not reported by device)\
+    long sliders;							// number of sliders (calculated, not reported by device)\
+    long dials;							// number of dials (calculated, not reported by device)\
+    long wheels;							// number of wheels (calculated, not reported by device)\
+    recElement* pListElements; 				// head of linked list of elements \
+    struct recDevice* pNext; 					// next device\
+\};\
+typedef struct recDevice recDevice;\
+typedef recDevice* pRecDevice;\
+\
+// ==================================\
+\
+// builds list of device with elements (allocates memory and captures devices)\
+// list is allcoated internally within HID Utilites and can be accessed via accessor functions\
+// structures within list are considered flat and user accessable, butnot user modifiable\
+// can be called again to rebuild list to account for new devices (will do the right thing in case of disposing existing list)\
+unsigned char HIDBuildDeviceList (unsigned long usagePage, unsigned long usage);\
+\
+// release list built by above function\
+// MUST be called prior to application exit to properly release devices\
+// if not called (or app crashes) devices can be recovered by pluging into different location in USB chain\
+void HIDReleaseDeviceList (void);\
+\
+// does a device list exist\
+unsigned char HIDHaveDeviceList (void);\
+\
+// how many HID devices have been found\
+// returns 0 if no device list exist\
+unsigned long HIDCountDevices (void);\
+\
+// how many elements does a specific device have\
+// returns 0 if device is invalid or NULL\
+// uses mask of HIDElementTypeMask to restrict element found\
+// use kHIDElementTypeIO to get non-collection elements\
+unsigned long HIDCountDeviceElements (pRecDevice pDevice, HIDElementTypeMask typeMask);\
+\
+// get the first device in the device list\
+// returns NULL if no list exists\
+pRecDevice HIDGetFirstDevice (void);\
+\
+// get next device in list given current device as parameter\
+// returns NULL if end of list\
+pRecDevice HIDGetNextDevice (pRecDevice pDevice);\
+\
+// get the first element of device passed in as parameter\
+// returns NULL if no list exists or device does not exists or is NULL\
+// uses mask of HIDElementTypeMask to restrict element found\
+// use kHIDElementTypeIO to get previous HIDGetFirstDeviceElement functionality\
+pRecElement HIDGetFirstDeviceElement (pRecDevice pDevice, HIDElementTypeMask typeMask);\
+\
+// get next element of given device in list given current element as parameter\
+// will walk down each collection then to next element or collection (depthwise traverse)\
+// returns NULL if end of list\
+// uses mask of HIDElementTypeMask to restrict element found\
+// use kHIDElementTypeIO to get previous HIDGetNextDeviceElement functionality\
+pRecElement HIDGetNextDeviceElement (pRecElement pElement, HIDElementTypeMask typeMask);\
+\
+// get previous element of given device in list given current element as parameter\
+// this wlaks directly up the tree to the top element and does not search at each level\
+// returns NULL if beginning of list\
+// uses mask of HIDElementTypeMask to restrict element found\
+// use kHIDElementTypeIO to get non-collection elements\
+pRecElement HIDGetPreviousDeviceElement (pRecElement pElement, HIDElementTypeMask typeMask);\
+\
+// returns C string type name given a type enumeration passed in as parameter (see IOHIDKeys.h)\
+// returns empty string for invlid types\
+void HIDGetTypeName (unsigned long type, char * cstrName);\
+\
+// returns C string usage given usage page and usage passed in as parameters (see IOUSBHIDParser.h)\
+// returns usage page and usage values in string form for unknown values\
+void HIDGetUsageName (long valueUsagePage, long valueUsage, char * cstrName);\
+\
+// ==================================\
+\
+// Element Event Queue and Value Interfaces\
+\
+enum\
+\{\
+    kDefaultUserMin = 0,	// default user min and max used for scaling\
+    kDefaultUserMax = 255\
+\};\
+\
+enum\
+\{\
+    kDeviceQueueSize = 50	// this is wired kernel memory so should be set to as small as possible\
+					// but should account for the maximum possible events in the queue\
+					// USB updates will likely occur at 100 Hz so one must account for this rate of\
+					// if states change quickly (updates are only posted on state changes)\
+\};\
+\
+// ==================================\
+\
+// queues specific element, performing any device queue set up required\
+unsigned long  HIDQueueElement (pRecDevice pDevice, pRecElement pElement);\
+\
+// adds all elements to queue, performing any device queue set up required\
+unsigned long  HIDQueueDevice (pRecDevice pDevice);\
+\
+// removes element for queue, if last element in queue will release queue and device\
+unsigned long  HIDDequeueElement (pRecDevice pDevice, pRecElement pElement);\
+\
+// completely removes all elements from queue and releases queue and device\
+unsigned long  HIDDequeueDevice (pRecDevice pDevice);\
+\
+// returns true if an event is avialable for the element and fills out *pHIDEvent structure, returns false otherwise\
+// pHIDEvent is a poiner to a IOHIDEventStruct, using void here for compatibility, users can cast a required\
+unsigned char HIDGetEvent (pRecDevice pDevice, void * pHIDEvent);\
+\
+// returns current value for element, creating device interface as required, polling element\
+// Note: this DOES NOT release the inteface so applications must properly release devices via ReleaseHIDDeviceList\
+long HIDGetElementValue (pRecDevice pDevice, pRecElement pElement);\
+\
+// returns calibrated value given raw value passed in\
+// calibrated value is equal to min and max values returned by HIDGetElementValue since device list built scaled to element reported min and max values\
+long HIDCalibrateValue (long value, pRecElement pElement);\
+\
+// returns scaled value given raw value passed in\
+// scaled value is equal to current value assumed to be in the range of element reported min and max values scaled to user min and max scaled values\
+long HIDScaleValue (long value, pRecElement pElement);\
+\
+// ==================================\
+\
+// Conguration and Save Interfaces\
+\
+enum\
+\{\
+    kPercentMove = 10 // precent of overall range a element must move to register\
+\};\
+\
+struct recSaveHID\
+\{\
+    long actionCookie;\
+    // device\
+		// need to add serial number when I have a test case\
+    long vendorID;\
+    long productID;\
+    long locID;\
+    long usage;\
+    long usagePage;\
+    // elements\
+    long usagePageE;\
+    long usageE;\
+    void * cookie;\
+\};\
+typedef struct recSaveHID recSaveHID;\
+typedef recSaveHID * pRecSaveHID;\
+\
+// polls all devices and elements for a change greater than kPercentMove.  Times out after given time\
+// returns true and pointer to device and element if found\
+// returns false and NULL for both parameters if not found\
+unsigned char HIDConfigureAction (pRecDevice * ppDevice, pRecElement * ppElement, float timeout);\
+\
+// take input records, save required info\
+// assume file is open and at correct position.\
+void HIDSaveElementConfig (FILE * fileRef, pRecDevice pDevice, pRecElement pElement, long actionCookie);\
+\
+// take file, read one record (assume file position is correct and file is open)\
+// search for matching device\
+// return pDevice, pElement and cookie for action\
+long HIDRestoreElementConfig (FILE * fileRef, pRecDevice * ppDevice, pRecElement * ppElement);\
+\
+----\
+\
+Requirements: Mac OS X, Project Builder (CodeWarrior 7 for sample CFM projects)\
+\
+We hope this helps people get up and running with HID Manager in a quick and painless manner.\
+\
+ggs}

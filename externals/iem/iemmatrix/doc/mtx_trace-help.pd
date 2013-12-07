@@ -1,0 +1,16 @@
+#N canvas 108 140 615 247 10;
+#X text 360 64 updated for;
+#X obj 448 64 iemmatrix 0.2;
+#X text 83 25 get the trace of a matrix;
+#X obj 84 106 mtx_ones 7;
+#X msg 84 83 bang;
+#X obj 84 147 mtx_trace;
+#X floatatom 84 189 4 0 0 0 - - -;
+#X text 86 68 get trace of a matrix;
+#X text 81 204 trace = sum(diagonal elements);
+#X obj 497 90 matrix;
+#X text 367 89 see also help for;
+#X obj 498 114 mtx_diag;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;

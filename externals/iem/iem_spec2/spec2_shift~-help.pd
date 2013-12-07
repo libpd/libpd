@@ -1,0 +1,40 @@
+#N canvas 10 8 548 293 10;
+#X obj 15 90 dsp;
+#X obj 15 67 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 15 131 5 0 0 0 - - -;
+#X floatatom 28 114 5 0 0 0 - - -;
+#N canvas 0 0 450 300 graph2 0;
+#X array array100 64 float 1;
+#A 0 -0.550001 -0.750001 -0.700001 -0.600001 -0.500001 -0.400001 -0.400001
+-0.350001 -0.25 -0.2 -0.15 -0.1 -0.0500001 -0.0500001 3.72529e-008
+0.0500001 0.0500001 0.1 0.1 0.15 0.2 0.2 0.250001 0.250001 0.300001
+0.350001 0.350001 0.400001 0.500001 0.500001 0.516668 0.533334 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 1 63 -1 64 40 1;
+#X restore 436 66 graph;
+#X text 83 210 IEM KUG;
+#X text 67 198 musil;
+#X text 97 198 @;
+#X text 103 198 iem.at;
+#X text 66 220 Graz \, Austria;
+#X text 18 187 (c) Thomas Musil 2000 - 2006;
+#N canvas 0 0 450 300 graph2 0;
+#X array array101 64 float 0;
+#X coords 0 1 63 -1 64 40 1;
+#X restore 436 126 graph;
+#X obj 143 102 spec2_shift~ 10;
+#X obj 144 131 tabsend~ array101;
+#X obj 142 71 tabreceive~ array100;
+#X floatatom 105 51 5 -32 32 0 - - -;
+#X text 15 10 spec2_shift~;
+#X text 248 101 1.arg: <float> shift width;
+#X text 136 6 shift a spectrum of (blocksize/2 + 1) to the left or
+right about n bins (+- blocksize/2);
+#X text 80 37 shift width;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
+#X connect 12 0 13 0;
+#X connect 14 0 12 0;
+#X connect 15 0 12 0;

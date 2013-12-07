@@ -1,0 +1,57 @@
+#N canvas 1 53 553 386 10;
+#X obj 61 317 dac~;
+#X obj 59 73 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 73 94 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X floatatom 135 183 5 0 0 0 - - -;
+#X text 13 -28 Description: Plays a sample;
+#X text 14 -8 Tags: Sound Table Sample;
+#X text 85 71 Inlet 1 \, bang: play sample once;
+#X text 90 91 Inlet 1 \, float: stop/play sample in a loop;
+#X text 180 146 Inlet 1 \, sample symbol: set sample;
+#X msg 98 146 sample smppl;
+#X text 96 328 Outlet 1 \, signal: left channel audio output;
+#X text 97 316 Outlet 2 \, signal: right channel audio output;
+#X obj 279 -12 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 279 12 tof/sample smppl ../../doc/sound/voice.wav;
+#X obj 207 247 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 172 180 set playback speed;
+#X floatatom 192 203 5 0 0 0 - - -;
+#X text 229 200 set duration (in ms);
+#X obj 144 266 cyclone/Snapshot~ 100;
+#X floatatom 145 288 5 0 0 0 - - -;
+#X text 211 288 Outlet 3 \, signal: progress;
+#X text 234 245 Outlet 4 \, bang: done;
+#X text 152 117 Inlet 1 \, list: play a segment of the sample;
+#X obj 59 229 tof/sample_play~ smppl;
+#X msg 88 119 0.25 0.5;
+#N canvas 242 185 494 344 META 0;
+#X text 12 225 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 205 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION play a sample;
+#X text 12 65 INLET_0 bang float list sample;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 145 OUTLET_1 signal;
+#X text 12 165 OUTLET_2 signal;
+#X text 12 185 OUTLET_3 bang;
+#X text 12 5 KEYWORDS control abstraction array soundfile;
+#X restore 497 313 pd META;
+#X connect 1 0 23 0;
+#X connect 2 0 23 0;
+#X connect 3 0 23 1;
+#X connect 9 0 23 0;
+#X connect 12 0 13 0;
+#X connect 16 0 23 2;
+#X connect 18 0 19 0;
+#X connect 23 0 0 0;
+#X connect 23 1 0 1;
+#X connect 23 2 18 0;
+#X connect 23 3 14 0;
+#X connect 24 0 23 0;

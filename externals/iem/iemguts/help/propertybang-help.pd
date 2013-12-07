@@ -1,0 +1,25 @@
+#N canvas 233 253 645 300 10;
+#X obj 90 43 propertybang;
+#N canvas 0 0 450 300 with 0;
+#X obj 110 126 propertybang;
+#X obj 110 146 t b b;
+#X obj 135 166 print property;
+#X obj 110 200 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 1 2 0;
+#X restore 86 172 pd with propertybang;
+#X obj 86 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 184 44 enables the "property" menu for abstractions;
+#X text 90 77 usage:;
+#X text 140 77 put a [propertybang] object into your abstraction;
+#X text 139 94 put your abstraction into your patch;
+#X text 61 224 note: the [propertybang] is PER ABSTRACTION! having
+multiple [propertybang]s within one abstraction \, will trigger them
+all at the same time.;
+#X text 127 114 --> the [propertybang] will send out a bang \, everytime
+you right-clock on your abstraction instance and select "Properties"
+;
+#X text 369 275 (c) IOhannes m zmoelnig @ iem \, 2010;
+#X connect 1 0 2 0;

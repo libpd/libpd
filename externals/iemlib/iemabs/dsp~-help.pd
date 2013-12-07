@@ -1,0 +1,30 @@
+#N canvas 0 26 322 228 10;
+#X text 43 40 dsp ON/OFF;
+#X floatatom 24 121 5 0 0 0 - - -;
+#X obj 24 42 tgl 15 1 empty dsp_tgl empty 8 -8 0 10 -262144 -1 -1 0
+1;
+#X text 72 122 % mean-cpu-load;
+#X floatatom 45 91 5 0 0 0 - - -;
+#X text 91 91 % peak-cpu-load;
+#X text -4 7 dsp~ : control audio \, measure dsp-load;
+#X obj 24 62 dsp~;
+#X text 124 184 IEM KUG;
+#X text 108 172 musil;
+#X text 138 172 @;
+#X text 144 172 iem.at;
+#X text 59 161 (c) Thomas Musil 2000 - 2005;
+#X text 107 194 Graz \, Austria;
+#N canvas 249 208 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control abstraction pd_op;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION control audio \, measure dsp load;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X restore 269 207 pd META;
+#X connect 2 0 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 4 0;

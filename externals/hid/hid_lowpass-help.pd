@@ -1,0 +1,46 @@
+#N canvas 0 31 475 392 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_lowpass 2 11 1 18 -233017
+-66577 0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 340 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 354 released under the GNU GPL;
+#X floatatom 112 199 5 0 0 0 - - -;
+#X floatatom 112 255 5 0 0 0 - - -;
+#X text 98 312 For more info:;
+#X obj 102 225 hid/hid_lowpass;
+#X obj 194 198 hsl 75 18 1 100 1 1 empty empty refresh(Hz) 4 9 1 12
+-228992 -1 -1 0 0;
+#X floatatom 216 225 5 0 0 0 - - -;
+#X obj 105 272 hsl 250 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 105 173 hsl 250 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 20 35 Smooths a stream of numbers by converting it to an audio
+signal and low-pass filtering that signal. By default \, the the filter
+is set to 10 Hz. You can set this using the right inlet. The lower
+the frequency \, the smoother the data \, but the greater the latency.
+;
+#X obj 102 140 noise4hidhelp;
+#X obj 102 105 tgl 30 0 empty empty start 1 15 1 12 -90049 -1 -1 0
+1;
+#N canvas 482 227 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 95 OUTLET_0 float;
+#X text 12 45 DESCRIPTION smooth a stream of numbers by converting
+it to an audio signal and low-pass filtering that signal;
+#X text 12 5 KEYWORDS signal filter abstraction;
+#X restore 422 362 pd META;
+#X connect 7 0 5 0;
+#X connect 7 0 10 0;
+#X connect 8 0 7 1;
+#X connect 8 0 9 0;
+#X connect 11 0 4 0;
+#X connect 11 0 7 0;
+#X connect 13 0 11 0;
+#X connect 14 0 13 0;

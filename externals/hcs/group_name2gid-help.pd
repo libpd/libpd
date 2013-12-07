@@ -1,0 +1,46 @@
+#N canvas 0 26 481 320 10;
+#X floatatom 56 240 5 0 0 0 - - -;
+#X msg 14 148 bang;
+#X msg 137 162 symbol daemon;
+#X obj 30 240 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 93 109 symbol lp;
+#X msg 99 135 symbol trash;
+#X floatatom 262 227 5 0 0 0 - - -;
+#X msg 262 162 bang;
+#X obj 137 240 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 140 262 ^-- bang if not found;
+#X obj 379 227 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 56 49 symbol wheel;
+#X msg 75 81 symbol staff;
+#X text 12 14 convert a group name to a GID.;
+#X obj 262 197 group_name2gid staff;
+#X obj 56 190 group_name2gid;
+#X msg 379 162 symbol postfix;
+#N canvas 417 281 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION convert a group name to a GID;
+#X text 12 65 INLET_0 bang symbol;
+#X text 12 85 INLET_1 symbol;
+#X text 12 105 OUTLET_0 bang float;
+#X text 12 125 OUTLET_1 bang;
+#X restore 431 300 pd META;
+#X connect 1 0 15 0;
+#X connect 2 0 15 1;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 7 0 14 0;
+#X connect 11 0 15 0;
+#X connect 12 0 15 0;
+#X connect 14 0 6 0;
+#X connect 14 1 10 0;
+#X connect 15 0 0 0;
+#X connect 15 0 3 0;
+#X connect 15 1 8 0;
+#X connect 16 0 14 1;

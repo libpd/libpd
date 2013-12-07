@@ -1,0 +1,35 @@
+#N canvas 43 348 497 337 10;
+#X obj 88 104 pdp_grey2mask;
+#X obj 88 148 pdp_gain;
+#X obj 88 174 pdp_gain;
+#X obj 88 198 pdp_gain;
+#X msg 6 130 chanmask 1;
+#X msg 6 180 chanmask 4;
+#X msg 6 156 chanmask 2;
+#X obj 6 103 loadbang;
+#X floatatom 208 130 5 0 0;
+#X floatatom 208 156 5 0 0;
+#X floatatom 208 180 5 0 0;
+#X obj 88 234 pdp_glx;
+#X obj 88 40 metro 30;
+#X obj 88 13 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 88 75 pdp_v4l;
+#X text 26 267 a simple colour gradient patch using grey2mask and individual
+channel gains (set with the binary chanmask);
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 11 0;
+#X connect 4 0 1 0;
+#X connect 4 0 6 0;
+#X connect 5 0 3 0;
+#X connect 6 0 2 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 0;
+#X connect 8 0 1 1;
+#X connect 9 0 2 1;
+#X connect 10 0 3 1;
+#X connect 12 0 14 0;
+#X connect 13 0 12 0;
+#X connect 14 0 0 0;

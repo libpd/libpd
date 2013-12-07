@@ -15,18 +15,19 @@ static t_class *libpdrec_class;
 typedef struct _libpdrec {
     t_object x_obj;
     t_symbol *x_sym;
+    void *data;
 } t_libpdrec;
 
 static void libpdrecbang(t_libpdrec *x) {
-  if (libpd_banghook) (*libpd_banghook)(x->x_sym->s_name);
+  if (libpd_banghook) (*libpd_banghook)(x->data, x->x_sym->s_name);
 }
 
 static void libpdrecfloat(t_libpdrec *x, t_float f) {
-  if (libpd_floathook) (*libpd_floathook)(x->x_sym->s_name, f);
+  if (libpd_floathook) (*libpd_floathook)(x->data, x->x_sym->s_name, f);
 }
 
 static void libpdrecsymbol(t_libpdrec *x, t_symbol *s) {
-  if (libpd_symbolhook) (*libpd_symbolhook)(x->x_sym->s_name, s->s_name);
+  if (libpd_symbolhook) (*libpd_symbolhook)(x->data, x->x_sym->s_name, s->s_name);
 }
 
 static void libpdrecpointer(t_libpdrec *x, t_gpointer *gp) {
@@ -34,22 +35,23 @@ static void libpdrecpointer(t_libpdrec *x, t_gpointer *gp) {
 }
 
 static void libpdreclist(t_libpdrec *x, t_symbol *s, int argc, t_atom *argv) {
-  if (libpd_listhook) (*libpd_listhook)(x->x_sym->s_name, argc, argv);
+  if (libpd_listhook) (*libpd_listhook)(x->data, x->x_sym->s_name, argc, argv);
 }
 
 static void libpdrecanything(t_libpdrec *x, t_symbol *s,
                 int argc, t_atom *argv) {
   if (libpd_messagehook)
-    (*libpd_messagehook)(x->x_sym->s_name, s->s_name, argc, argv);
+    (*libpd_messagehook)(x->data, x->x_sym->s_name, s->s_name, argc, argv);
 }
 
 static void libpdreceive_free(t_libpdrec *x) {
     pd_unbind(&x->x_obj.ob_pd, x->x_sym);
 }
 
-void *libpdreceive_new(t_symbol *s) {
+void *libpdreceive_new(t_symbol *s, void *data) {
   t_libpdrec *x = (t_libpdrec *)pd_new(libpdrec_class);
   x->x_sym = s;
+  x->data = data;
   pd_bind(&x->x_obj.ob_pd, s);
   return x;
 }

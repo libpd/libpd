@@ -1,0 +1,80 @@
+______________________________________________________________________________
+= curves
+
+review all curves in accordance with the paper
+
+- [curve_table] or [curve_graph]?
+
+
+______________________________________________________________________________
+= spread/segment/seglet
+
+Make [collect] and [distribute], which are like [segment] and [desegment].
+Perhaps it should be called [seglet] and [deseglet]
+
+______________________________________________________________________________
+= one->many
+
+something like [segment]? or [seglet]?
+
+______________________________________________________________________________
+=
+- check out behavior of [curve_power] and [curve_root] if non-integers are
+  used as arguments on in the right inlets
+
+
+- merge ds_ list objects with abstractions/footils/list-abs
+
+
+- http://www.fredrikolofsson.com/pages/code-pd.html
+  check out f0.smooth and f0.smooth2 (single/double exponential smoothing)
+
+
+-track down Golan Levin's curve algorithm page
+
+______________________________________________________________________________
+= figure out whole degree issue
+
+- should degree conversion also change rotation direction and 0 point?  The
+  degrees on a compass rotate the opposite direction of radians.  The 0 point
+  of a compass is due north, with radians, its right/due east.
+
+- [hid_polar] should take an argument (in degrees?) which specifies where the
+  0 is on the circle
+
+
+=========
+smoothing algorithms
+
+
+http://www.chem.uoa.gr/applets/AppletSmooth/Appl_Smooth2.html
+
+
+http://www.nist.gov/dads/
+
+
+______________________________________________________________________________
+= mapping object ideas
+
+[hid2midi] [midi2hid]
+
+midi value + bend <-> hid
+	  - use MIDI pitch and bend data for values in between MIDI notes?
+
+object for Fletcher-Munson Equal-loudness contours 
+
+median average object
+
+[infinitepot] for use with a [knob] or any single axis that could be infinite.
+
+[hid_debounce]
+
+peak finder object
+
+"kalman filters"
+
+Curves!!
+
+http://www.2dcurves.com
+______________________________________________________________________________
+lot's more physical model

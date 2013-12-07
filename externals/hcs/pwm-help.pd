@@ -1,0 +1,65 @@
+#N canvas 0 26 502 423 10;
+#X text 130 148 the argument sets the frequency;
+#X obj 86 102 tgl 15 0 empty empty empty 0 -6 0 8 -24198 -1 -1 0 1
+;
+#X obj 122 96 hsl 128 15 0 1 0 0 empty empty amount -2 -6 1 12 -261681
+-1 -1 0 1;
+#X floatatom 129 118 5 0 0 0 - - -;
+#X text 14 20 this object does Pulse Width Modulation at the message
+rate:;
+#X text 11 100 turn on/off;
+#X obj 67 397 pddp/pddplink http://en.wikipedia.org/wiki/Pulse-width_modulation
+;
+#X text 7 376 for more info:;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array \$0-pwm 200 float 0;
+#X coords 0 1.2 199 -0.2 200 140 1;
+#X restore 274 202 graph;
+#N canvas 570 94 454 304 display 0;
+#X obj 115 35 inlet;
+#X obj 117 265 tabwrite \$0-pwm;
+#X obj 238 127 float;
+#X obj 281 127 + 1;
+#X obj 275 157 arraysize \$0-pwm;
+#X obj 250 31 inlet;
+#X obj 356 110 bang;
+#X obj 258 181 mod;
+#X obj 116 103 spigot;
+#X obj 118 239 float;
+#X obj 194 204 trigger bang float;
+#X obj 237 105 metro 3;
+#X connect 0 0 8 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 1;
+#X connect 4 0 7 1;
+#X connect 5 0 6 0;
+#X connect 5 0 8 1;
+#X connect 5 0 11 0;
+#X connect 6 0 4 0;
+#X connect 7 0 3 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 1;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X connect 10 1 1 1;
+#X connect 11 0 2 0;
+#X restore 86 310 pd display guts;
+#X obj 173 283 tgl 15 0 empty empty display 0 -6 0 8 -225271 -1 -1
+0 1;
+#X obj 86 147 pwm 10;
+#N canvas 280 175 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION pulse width modulation at message rate;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X restore 453 403 pd META;
+#X connect 1 0 11 0;
+#X connect 2 0 3 0;
+#X connect 2 0 11 1;
+#X connect 10 0 9 1;
+#X connect 11 0 9 0;

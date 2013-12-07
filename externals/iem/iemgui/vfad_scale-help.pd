@@ -1,0 +1,27 @@
+#N canvas 4 20 454 377 10;
+#X obj 82 90 vfad_scale -1;
+#X obj 65 92 vsl 15 121 0 120 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 65 221 fadtodb;
+#X obj 65 243 - 100;
+#X floatatom 65 264 5 0 0 0 - - -;
+#X text 105 266 dB;
+#X text 10 9 vfad_scale;
+#X text 121 8 vertical fader scale;
+#X text 101 31 for vertical slider with height of 121 pixels;
+#X text 96 312 IEM KUG;
+#X text 80 300 musil;
+#X text 110 300 @;
+#X text 116 300 iem.at;
+#X text 79 322 Graz \, Austria;
+#X text 31 289 (c) Thomas Musil 2000 - 2006;
+#X text 113 84 |;
+#X text 113 95 |;
+#X text 179 84 |;
+#X text 179 95 |;
+#X text 113 90 |vfad_scale|;
+#X text 116 76 ___________;
+#X text 116 93 ___________;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;

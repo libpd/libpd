@@ -1,0 +1,64 @@
+#N canvas 61 18 639 342 10;
+#X text 452 8 GEM object;
+#X obj 8 196 cnv 15 430 130 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 198 Inlets:;
+#X text 63 211 Inlet 1: gemlist;
+#X text 39 252 Outlets:;
+#X text 57 265 Outlet 1: gemlist;
+#X obj 8 146 cnv 15 430 40 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 145 Arguments:;
+#X obj 8 76 cnv 15 430 60 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 197 134 destroy;
+#X msg 132 112 reset \, lighting 1 \, create \, 1;
+#X msg 277 206 lighting \$1;
+#X obj 313 182 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X text 71 31 Class: manipulation object;
+#X obj 450 118 cnv 15 160 60 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X obj 451 193 cube;
+#X text 62 156 a list of 3 (RGB) or 4 (RGBA) float-values.;
+#X msg 478 130 0.4 0.8 1;
+#X text 63 229 Inlet 2: list: 3(RGB) or 4(RGBA) float values;
+#X text 60 171 defaults: 0 0 0 1;
+#X text 50 12 Synopsis: [emission];
+#X obj 451 156 emission 0 1 0;
+#X text 29 77 Description: emission colouring;
+#X text 21 91 [emission] accepts a gemList and sets the emission-color
+for all subsequent vertex-operations. You have to enable lighting to
+see any effects.;
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 17 0 24 0;
+#X connect 20 0 24 1;
+#X connect 24 0 18 0;

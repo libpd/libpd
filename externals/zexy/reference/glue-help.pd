@@ -1,0 +1,34 @@
+#N canvas 0 31 577 363 10;
+#X obj 111 58 glue;
+#X text 171 58 glue together 2 packages (append \, prepend \, ...)
+;
+#X msg 95 143 1 2 3;
+#X msg 127 170 4 you and me;
+#X obj 95 274 print;
+#X obj 277 270 print;
+#X msg 277 154 bang;
+#X msg 317 154 symbol click;
+#X text 104 335 creation argument: preset the second inlet;
+#X msg 51 175 bang;
+#X obj 95 206 glue;
+#X obj 277 206 glue and stick;
+#X text 490 14 part of zexy;
+#N canvas 538 191 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 85 OUTLET_0 anything;
+#X text 12 45 DESCRIPTION glue together 2 packages (append \, prepend
+\, ...);
+#X text 12 65 INLET_0 anything;
+#X text 12 105 OUTLET_1 anything;
+#X text 12 5 KEYWORDS control anything_op storage;
+#X restore 524 335 pd META;
+#X connect 2 0 10 0;
+#X connect 3 0 10 1;
+#X connect 6 0 11 0;
+#X connect 7 0 11 0;
+#X connect 9 0 10 0;
+#X connect 10 0 4 0;
+#X connect 11 0 5 0;

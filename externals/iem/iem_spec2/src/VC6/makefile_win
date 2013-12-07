@@ -1,0 +1,59 @@
+
+all: ..\iem_spec2.dll
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio\Vc98"
+
+PD_INST_PATH = "C:\Programme\pd"
+
+PD_WIN_INCLUDE_PATH = /I. /I$(PD_INST_PATH)\src /I$(VIS_CPP_PATH)\include
+
+PD_WIN_C_FLAGS = /nologo /W3 /WX /DMSW /DNT /DPD /DWIN32 /DWINDOWS /Ox -DPA_LITTLE_ENDIAN
+
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = /NODEFAULTLIB:libc /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel /NODEFAULTLIB:uuid \
+	$(VIS_CPP_PATH)\lib\libc.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_CPP_PATH)\lib\kernel32.lib \
+	$(VIS_CPP_PATH)\lib\wsock32.lib \
+	$(VIS_CPP_PATH)\lib\winmm.lib \
+	$(PD_INST_PATH)\bin\pd.lib
+
+
+SRC =	spec2_1p1z_freq~.c \
+	spec2_1p1z_time~.c \
+	spec2_abs~.c \
+	spec2_add_scalar~.c \
+	spec2_add~.c \
+	spec2_block_delay~.c \
+	spec2_clip_max~.c \
+	spec2_clip_min~.c \
+	spec2_dbtopow~.c \
+	spec2_dbtorms~.c \
+	spec2_matrix_bundle_stat~.c \
+	spec2_mul_scalar~.c \
+	spec2_mul~.c \
+  	spec2_powtodb~.c \
+	spec2_rmstodb~.c \
+	spec2_shift~.c \
+	spec2_sqrt~.c \
+	spec2_stretch~.c \
+	spec2_sub~.c \
+	spec2_sum~.c \
+	spec2_tab_conv~.c \
+	spec2_tabreceive_enable~.c \
+	spec2_tabreceive~.c \
+	iem_spec2.c
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	cl $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+..\iem_spec2.dll: $(OBJ)
+	link $(PD_WIN_L_FLAGS) /dll /export:iem_spec2_setup \
+	/out:..\iem_spec2.dll $(OBJ) $(PD_WIN_LIB)
+
+clean:
+	del *.obj

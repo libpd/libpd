@@ -1,0 +1,4 @@
+#N canvas 50 50 600 400 12;
+#X text 10 10 Scope~ clone's main purpose is quick \, preliminary;
+#X text 10 30 verification of other tilde clones. One can run MSP;
+#X text 10 50 patches alongside their Pd imports and watch the scope~s.;

@@ -1,0 +1,22 @@
+#N canvas 0 31 450 300 10;
+#X obj 138 153 hex2dec;
+#X floatatom 137 189 5 0 0 0 - - -;
+#X msg 139 105 symbol fff;
+#X msg 237 123 123;
+#X obj 257 194 print;
+#X text 136 51 doesn't seem to work;
+#N canvas 397 200 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 55 DESCIPTION hexadecimal to decimal conversion;
+#X text 12 75 INLET_0 symbol float;
+#X text 12 95 OUTLET_0 float symbol;
+#X text 12 5 KEYWORDS control conversion symbol_op needs_work (object
+doesn't work);
+#X text 12 35 LICENSE GPL v2;
+#X text 12 115 AUTHOR jdl@xdv.org;
+#X restore 394 274 pd META;
+#X connect 0 0 1 0;
+#X connect 0 0 4 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;

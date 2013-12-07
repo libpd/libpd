@@ -1,0 +1,73 @@
+#N canvas 51 56 650 553 10;
+#X obj 53 224 gemwin;
+#X obj 38 397 gemmouse;
+#X obj 109 206 r gemwin_mess;
+#X obj 63 459 s gemwin_mess;
+#X obj 63 418 del 100;
+#X msg 63 439 destroy;
+#X obj 15 86 cnv 15 100 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 53 105 create;
+#X msg 26 143 destroy;
+#X obj 238 3 cnv 15 400 480 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X obj 14 296 cnv 15 180 80 empty empty cursor 20 0 0 14 -195568 -66577
+0;
+#X msg 20 327 \; gemwin_mess cursor \$1;
+#X obj 20 308 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X text 39 306 show/hide cursor;
+#X text 32 484 press the left-mouse-button to kill the gem-window;
+#X obj 247 36 cnv 15 380 120 empty empty title-bar 20 0 0 14 -233017
+-66577 0;
+#X msg 253 49 title Graphic's_Environment_for_Multimedia;
+#X msg 286 94 title \$1;
+#X symbolatom 286 72 10 0 0;
+#X text 359 94 type your own title;
+#X obj 253 125 s gemwin_mess;
+#X obj 247 259 cnv 15 380 120 empty empty dimensions+positioning 20
+0 0 14 -233017 -66577 0;
+#X obj 253 348 s gemwin_mess;
+#X obj 248 167 cnv 15 380 80 empty empty window-decorations 20 0 0
+14 -233017 -66577 0;
+#X obj 258 185 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X msg 258 204 \; gemwin_mess border \$1;
+#X msg 253 285 dimen 500 500;
+#X msg 273 315 dimen 200 421;
+#X obj 417 347 s gemwin_mess;
+#X msg 417 284 offset 0 0;
+#X msg 437 314 offset 500 70;
+#X text 277 183 with/out borders;
+#X text 534 282 offset might;
+#X text 540 298 work only;
+#X text 552 315 without;
+#X text 548 330 borders !;
+#X obj 247 391 cnv 15 380 80 empty empty full-screen 20 0 0 14 -233017
+-66577 0;
+#X obj 257 409 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X msg 257 428 \; gemwin_mess fullscreen \$1;
+#X text 276 407 fullscreen/windowed;
+#X text 11 14 how to control the GEM-window;
+#X text 291 7 use these BEFORE creating the window!;
+#X text 466 398 titles \, borders \,;
+#X text 458 415 dimensions & offsets;
+#X text 468 432 mean nothing in;
+#X text 463 448 fullscreen mode !;
+#X connect 1 2 4 0;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 12 0 11 0;
+#X connect 16 0 20 0;
+#X connect 17 0 20 0;
+#X connect 18 0 17 0;
+#X connect 24 0 25 0;
+#X connect 26 0 22 0;
+#X connect 27 0 22 0;
+#X connect 29 0 28 0;
+#X connect 30 0 28 0;
+#X connect 37 0 38 0;

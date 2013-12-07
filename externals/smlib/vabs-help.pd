@@ -1,0 +1,19 @@
+#N canvas 1 53 452 302 10;
+#X obj 106 129 vabs;
+#X msg 106 95 1 2 3 -4 -5 -6;
+#X obj 106 165 print;
+#N canvas 222 207 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 65 INLET_0 list float;
+#X text 12 85 OUTLET_0 float list;
+#X text 12 45 DESCRIPTION absolute value for lists;
+#X restore 389 244 pd META;
+#X text 351 213 j#|@2002;
+#X obj 373 193 SMLib-help;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;

@@ -1,0 +1,17 @@
+#N canvas 0 26 500 184 10;
+#X obj 33 88 atan2~;
+#X text 30 121 (C) Guenter Geiger;
+#X text 30 18 The atan2 function is used to get the phase from a imaginary
+value of the fft.;
+#N canvas 46 242 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 5 KEYWORDS signal trigonometry;
+#X text 12 125 AUTHOR Guenter Geiger;
+#X text 12 45 DESCRIPTION get the phase from a imaginary value of the
+fft;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X restore 440 153 pd META;

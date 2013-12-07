@@ -1,0 +1,41 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="Author" content="IOhannes m zmölnig">
+   <title>Writing new objects</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Creating new GEM objects</u></h2></center>
+Look at the source code :-)&nbsp; GEM is written in C++, which means that
+you have to jump through some hopes to interact properly with Pd, which
+is written in C.&nbsp; If you look in Base/CPPExtern.h, you will see a
+collection of macros which you can use to help you create new objects.&nbsp;
+Use one of the GEM objects which is closest to what you want to do as a
+template.
+<p>One problem on SGI...you will need to
+<p>setenv LD_LIBRARY_PATH "/where/ever/pd/gem"
+<p>so that rld (the run-time linker) can find the GEM dso.&nbsp; Because
+you are linking with GEM, Pd isn't involved with the run time linking process;
+it is all done when Pd calls dlopen.
+<p>On NT, there is much the same problem...
+<p>set your PATH environment variable to \where\ever\pd\gem
+<p>or
+<p>make sure that your new .dll is located in the same directory where
+GEM is.
+<p>On NT, all of the classes and functions are exported through declexport/declimport.&nbsp;
+You shouldn't have to do anything to call the functions.&nbsp; I have not
+had any problems making other dll's which are loaded into Pd at runtime.&nbsp;
+You need to make certain that you are exporting the correct functions.&nbsp;
+If your dll cannot find the gem.dll, then it will silently fail.
+<p>And of course, e-mail IOhannes m zmölnig (<a href="mailto:zmoelnig@iem.at">zmoelnig@iem.at</a>) if you have any problems,
+questions, or solutions
+<p><img SRC="tribar.gif" height=13 width=561>
+<p><a href="index.html">[return]</a>
+<br>&nbsp;
+</body>
+</html>

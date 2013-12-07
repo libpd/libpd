@@ -1,0 +1,21 @@
+#N canvas 306 280 575 277 10;
+#X obj 46 231 pdp_help_output;
+#X obj 46 149 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 125 76 dim 320 240;
+#X text 221 76 set packet dimensions;
+#X msg 125 103 type grey;
+#X msg 125 126 type yv12;
+#X obj 46 198 pdp_constant;
+#X floatatom 125 172 5 0 0;
+#X text 221 105 generate greyscale image;
+#X text 221 124 generate colour image (default);
+#X text 221 174 set constant;
+#X text 118 26 pdp_constant creates an image filled with a constant
+when a bang is received;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 1;

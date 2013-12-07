@@ -1,0 +1,46 @@
+#N canvas 6 5 586 578 10;
+#X text 129 40 This object sould be used for testing the masse position.
+;
+#X text 129 56 It receive masse position \, and output 0/1 according
+to the position of the masse (1 if the mass is on a side of the line)
+;
+#X text 175 146 1 : name;
+#X text 121 113 message to change parametter / default value / creation
+arg number / description;
+#X text 196 164 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X msg 104 233 setY1 0;
+#X msg 105 279 setY2 0;
+#X msg 103 208 setX1 -1;
+#X msg 104 256 setX2 1;
+#X text 174 208 2 : X coordonate of the the 1st point of the line;
+#X text 174 232 3 : Y coordonate of the the 1st point of the line;
+#X text 174 255 4 : X coordonate of the the 2nd point of the line;
+#X text 174 279 5 : Y coordonate of the the 2nd point of the line;
+#X msg 105 312 setPmax 1;
+#X text 199 296 X and Y position of the 2 points defining the line.
+;
+#X text 197 327 maximum depth of the interaction line.;
+#X text 269 14 test line;
+#X obj 35 450 tLine2D;
+#X text 173 312 6 : maximum depth;
+#X floatatom 72 481 5 0 0 0 - - -;
+#X floatatom 72 481 5 0 0 0 - - -;
+#X floatatom 53 505 5 0 0 0 - - -;
+#X floatatom 35 529 5 0 0 0 - - -;
+#X text 172 479 speed regarding the distance from the segment;
+#X text 171 504 distance from the segment;
+#X text 171 530 0/1 according to the position of the masse;
+#X text 195 378 position of the mass (first outlet of the mass object)
+;
+#X msg 92 379 position2D 0 0;
+#X connect 5 0 17 0;
+#X connect 6 0 17 0;
+#X connect 7 0 17 0;
+#X connect 8 0 17 0;
+#X connect 13 0 17 0;
+#X connect 17 0 22 0;
+#X connect 17 1 21 0;
+#X connect 17 2 20 0;
+#X connect 27 0 17 0;

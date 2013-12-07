@@ -1,0 +1,95 @@
+current: all
+
+.SUFFIXES: .pd_linux
+
+#edit or define outside
+
+PD_INCLUDE=/usr/local/src/pd/src
+
+INCLUDE = -I. -I$(PD_INCLUDE)
+
+LDFLAGS = -export-dynamic -shared
+LIB = -ldl -lm
+
+#select either the DBG and OPT compiler flags below:
+
+CFLAGS = -DPD -DUNIX -W -Wno-unused \
+	-Wno-parentheses -Wno-switch -O2 -funroll-loops -fomit-frame-pointer \
+        -fno-strict-aliasing -DDL_OPEN -fPIC
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = \
+	tab_abs.c \
+	tab_add.c \
+	tab_add_scalar.c \
+	tab_carth2polar.c \
+	tab_complex_inv.c \
+	tab_complex_mul.c \
+	tab_const.c \
+	tab_conv.c \
+	tab_copy.c \
+	tab_counter.c \
+	tab_cross_corr.c \
+	tab_dbtopow.c \
+	tab_dbtorms.c \
+	tab_div.c \
+	tab_eq.c \
+	tab_eq_scalar.c \
+	tab_fft.c \
+	tab_find_exact_peaks.c \
+	tab_find_peaks.c \
+	tab_ge.c \
+	tab_ge_scalar.c \
+	tab_gt.c \
+	tab_gt_scalar.c \
+	tab_get_size.c \
+	tab_ifft.c \
+	tab_le.c \
+	tab_le_scalar.c \
+	tab_lt.c \
+	tab_lt_scalar.c \
+	tab_max_index.c \
+	tab_min_index.c \
+	tab_min_max.c \
+	tab_mul.c \
+	tab_mul_scalar.c \
+	tab_ne.c \
+	tab_ne_scalar.c \
+	tab_powtodb.c \
+	tab_reverse.c \
+	tab_rfft.c \
+	tab_rifft.c \
+	tab_rmstodb.c \
+	tab_sqrt.c \
+	tab_sub.c \
+	tab_sum.c \
+	iem_tab.c
+
+TARGET = iem_tab.pd_linux
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(LD) $(LDFLAGS) -o $(TARGET) *.o $(LIB)
+	strip --strip-unneeded $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

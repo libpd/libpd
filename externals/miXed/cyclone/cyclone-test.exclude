@@ -1,0 +1,6 @@
+*~
+*.pict
+import-result.pd
+import-debug.pd
+temporary
+temporary/*

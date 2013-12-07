@@ -1,0 +1,64 @@
+#N canvas 0 26 595 316 10;
+#X msg 294 123 clear;
+#X obj 369 51 loadbang;
+#X obj 340 173 pre_netsend 80;
+#X obj 31 206 r aaa;
+#X floatatom 31 229 5 0 0 0 - - -;
+#X floatatom 93 231 5 0 0 0 - - -;
+#X floatatom 168 231 5 0 0 0 - - -;
+#X obj 93 208 r bbbb;
+#X obj 168 209 r ccccc;
+#X msg 226 206 \; bbbb 5.556;
+#X obj 340 227 unpack 0 0;
+#X floatatom 340 249 5 0 0 0 - - -;
+#X floatatom 405 250 5 0 0 0 - - -;
+#X obj 340 198 route send;
+#X obj 340 148 pp set_item_name;
+#X msg 350 81 aaa 0;
+#X msg 359 103 bbbb 1;
+#X msg 369 125 ccccc 2;
+#X text 4 3 pre_netsend;
+#X text 99 2 receive messages without prepended float-index and;
+#X text 87 15 convert to message-lists with a prepended float-index
+;
+#X obj 125 77 nbx 5 28 -1e+37 1e+37 0 0 aaa aaa aaa -68 13 0 28 -225280
+-1109 -260818 0 256;
+#X obj 125 113 nbx 5 28 -1e+37 1e+37 0 0 bbbb bbbb bbbb -88 13 0 28
+-225280 -1109 -260818 0 256;
+#X obj 125 148 nbx 5 28 -1e+37 1e+37 0 0 ccccc ccccc ccccc -110 13
+0 28 -225280 -1109 -260818 0 256;
+#X text 305 35 set_item_name: receive-symbol + para-index;
+#X text 115 278 IEM KUG;
+#X text 99 266 musil;
+#X text 129 266 @;
+#X text 135 266 iem.at;
+#X text 50 255 (c) Thomas Musil 2000 - 2005;
+#X text 98 288 Graz \, Austria;
+#X text 447 1 obsolete \, replaced by;
+#X text 474 13 receive2list;
+#N canvas 496 267 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 5 KEYWORDS control deprecated;
+#X text 12 45 DESCRIPTION receive messages without prepended float-index
+;
+#X text 12 65 INLET_0;
+#X text 12 85 OUTLET_0;
+#X restore 541 288 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 15 0;
+#X connect 1 0 16 0;
+#X connect 1 0 17 0;
+#X connect 2 0 13 0;
+#X connect 3 0 4 0;
+#X connect 7 0 5 0;
+#X connect 8 0 6 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 13 0 10 0;
+#X connect 14 0 2 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 17 0 14 0;

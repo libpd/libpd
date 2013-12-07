@@ -1,0 +1,30 @@
+#N canvas 0 31 450 300 10;
+#X obj 87 161 cupd;
+#X obj 87 94 metro 100;
+#X obj 87 56 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 110 134 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 87 201 5 0 0 0 - - -;
+#X msg 197 102 160;
+#X text 109 59 bang counts;
+#X text 70 14 cupd counts up ^_^ and down _^_;
+#X text 223 101 float sets next;
+#X text 132 135 != 0 counts down \, 0 counts up;
+#X text 69 235 aaaaah \, simplicity!;
+#N canvas 379 254 447 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 KEYWORDS control storage;
+#X text 12 125 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 65 INLET_0 float bang;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 45 DESCRIPTION cup counts up ^_^ and down _^_;
+#X text 12 25 LICENSE GPL v3;
+#X restore 390 270 pd META;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 1;
+#X connect 5 0 0 0;

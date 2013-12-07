@@ -1,0 +1,111 @@
+#N canvas 535 299 684 437 10;
+#X declare -lib pdlua;
+#X obj 23 8 import pdlua;
+#X obj 166 218 lsymbol-drip;
+#X msg 24 59 what;
+#X symbolatom 121 157 10 0 0 0 - - -;
+#X obj 91 141 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 73 108 symbol qwertyuiop;
+#X obj 166 253 print dripped;
+#X text 234 284 by Martin Peach 2012_04_03;
+#X text 258 218 [lsymbol-drip] spits out the characters of a symbol.
+;
+#X msg 45 80 why not;
+#X text 98 79 <- but a message is rejected;
+#X text 58 59 <- a lone selector is taken to be a symbol;
+#X text 216 181 <- unicode should be handled correctly;
+#X obj 43 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 237 286 sel a b c d e f g h i j k l m n o p q r s t u v w x
+y z;
+#X obj 63 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 83 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 103 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 123 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 143 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 163 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 183 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 203 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 223 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 243 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 263 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 283 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 303 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 323 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 343 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 363 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 383 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 403 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 423 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 443 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 463 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 483 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 503 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 523 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 543 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 146 181 symbol zéyé;
+#X text 430 404 by Martin Peach 2012_04_03;
+#X msg 121 130 set Who;
+#X symbolatom 564 314 10 0 0 0 - - -;
+#X connect 1 0 6 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 1 0;
+#X connect 9 0 1 0;
+#X connect 14 0 13 0;
+#X connect 14 1 15 0;
+#X connect 14 2 16 0;
+#X connect 14 3 17 0;
+#X connect 14 4 18 0;
+#X connect 14 5 19 0;
+#X connect 14 6 20 0;
+#X connect 14 7 21 0;
+#X connect 14 8 22 0;
+#X connect 14 9 23 0;
+#X connect 14 10 24 0;
+#X connect 14 11 25 0;
+#X connect 14 12 26 0;
+#X connect 14 13 27 0;
+#X connect 14 14 28 0;
+#X connect 14 15 29 0;
+#X connect 14 16 30 0;
+#X connect 14 17 31 0;
+#X connect 14 18 32 0;
+#X connect 14 19 33 0;
+#X connect 14 20 34 0;
+#X connect 14 21 35 0;
+#X connect 14 22 36 0;
+#X connect 14 23 37 0;
+#X connect 14 24 38 0;
+#X connect 14 25 39 0;
+#X connect 14 26 43 0;
+#X connect 40 0 1 0;
+#X connect 42 0 3 0;

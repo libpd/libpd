@@ -1,0 +1,33 @@
+#N canvas 166 141 740 545 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X text 90 15 [mtx_conv];
+#X text 47 34 2-dimensional convolution;
+#X text 18 63 you can calculate the convolution of a matrix with a
+filter matrix kernel (2 dimensional FIR filtering). Of course \, it
+can also be used for 1-dimensional FIR convolutions.;
+#X msg 42 127 bang;
+#X obj 42 151 t b b b;
+#X obj 64 215 t a a;
+#X obj 94 248 mtx_print orig;
+#X obj 64 274 mtx_conv;
+#X obj 173 197 t a a;
+#X obj 200 217 mtx_print filter_kernel;
+#X obj 64 304 mtx_print result;
+#X msg 173 174 matrix 2 3 1 1 1 1 1 1 1;
+#X msg 64 176 element 4 4 1;
+#X obj 63 196 matrix 5 5;
+#X connect 7 0 8 0;
+#X connect 8 0 17 0;
+#X connect 8 1 16 0;
+#X connect 8 2 15 0;
+#X connect 9 0 11 0;
+#X connect 9 1 10 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 1;
+#X connect 12 1 13 0;
+#X connect 15 0 12 0;
+#X connect 16 0 17 0;
+#X connect 17 0 9 0;

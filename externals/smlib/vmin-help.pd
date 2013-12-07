@@ -1,0 +1,33 @@
+#N canvas 1 53 473 167 10;
+#X floatatom 35 104 5 0 0 0 - - -;
+#X text 387 99 j#|@2002;
+#X obj 409 77 SMLib-help;
+#X msg 133 47 0;
+#X msg 168 47 0 1 0 1;
+#X msg 236 47 0 0 1 1;
+#X floatatom 86 104 5 0 0 0 - - -;
+#X msg 15 47 1 2 3 1;
+#X msg 81 47 3 4 1;
+#X text 14 3 vcog computes minimum of a list of floats;
+#X text 13 21 and the location of the first occurance of the minimum
+;
+#X obj 49 76 vmin;
+#N canvas 186 171 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 45 DESCRIPTION minimum of a list of floats;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X restore 415 124 pd META;
+#X connect 3 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
+#X connect 7 0 11 0;
+#X connect 8 0 11 0;
+#X connect 11 0 0 0;
+#X connect 11 1 6 0;

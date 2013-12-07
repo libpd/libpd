@@ -1,0 +1,69 @@
+#N canvas 277 111 566 710 10;
+#X text 177 107 1 : name;
+#X text 285 12 Circlular interaction;
+#X text 179 41 This object sould be used for the simulation of interaction
+between a collection of masse and a circle;
+#X text 123 74 message to change parametter / default value / creation
+arg number / description;
+#X text 198 125 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X msg 104 332 setRmin 0;
+#X msg 105 355 setRmax 1;
+#X text 200 374 minimal and maximal radius of the circle. If the mass
+is outside or inside this circles \, it will not interact with this
+link.;
+#X text 199 432 constant force normal to the circle.;
+#X msg 103 413 setFN 0;
+#X obj 20 632 iCircle3D;
+#X text 176 170 2 : X coordonate of the orientation vector of the circle
+;
+#X text 175 195 3 : Y coordonate of the orientation vector of the circle
+;
+#X text 209 237 normal vector of the circle;
+#X msg 108 255 setX 0;
+#X msg 107 280 setY 0;
+#X msg 107 303 setZ 0;
+#X text 175 255 5 : center circle X;
+#X text 175 279 6 : center circle Y;
+#X text 174 304 7 : center circle Z;
+#X msg 105 171 setVX 0;
+#X msg 105 196 setVY 0;
+#X msg 107 218 setVZ 0;
+#X text 199 318 center of the circle;
+#X text 176 332 8 : Minimum Radius;
+#X text 176 355 9 : Maximum Radius;
+#X text 171 415 10 : constante Normal Force;
+#X text 170 448 11 : normal rigidity;
+#X text 176 219 4 : Z coordonate of the orientation vector of the circle
+;
+#X text 201 466 Force is proportional to the distance between the masse
+and the circle plane.;
+#X msg 104 448 setKN 0;
+#X text 168 493 12 : damping;
+#X text 199 509 normal (to the circle plane) damping to the masses.
+;
+#X msg 104 493 setD 0;
+#X text 170 560 14 : Normal constant displacement;
+#X text 171 589 15 : displace the masse proportionaly to it's depth
+of the mass in the interactor;
+#X msg 103 558 setdN 0;
+#X msg 104 589 setdKN 0;
+#X text 170 532 13 : maximum profound of the circle interaction;
+#X text 168 642 this object is like iPlane3D \, but it's action is
+more limited in space.;
+#X msg 104 532 setPmax 10000;
+#X connect 5 0 10 0;
+#X connect 6 0 10 0;
+#X connect 9 0 10 0;
+#X connect 14 0 10 0;
+#X connect 15 0 10 0;
+#X connect 16 0 10 0;
+#X connect 20 0 10 0;
+#X connect 21 0 10 0;
+#X connect 22 0 10 0;
+#X connect 30 0 10 0;
+#X connect 33 0 10 0;
+#X connect 36 0 10 0;
+#X connect 37 0 10 0;
+#X connect 40 0 10 0;

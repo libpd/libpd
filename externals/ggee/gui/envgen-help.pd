@@ -1,0 +1,122 @@
+#N canvas 0 26 433 454 10;
+#X obj 101 192 envgen 203 123 1 0  ;
+#X text 21 6 envgen:;
+#X text 22 27 Envelope generator. This external delivers value for
+line~ if it is banged. When numbers are sent to its input it delivers
+the corresponding value of the envelope;
+#X msg 79 135 bang;
+#X text 21 75 arguments;
+#X text 51 84 xsize ysize xmax ymax send_symbol receive_symbol ...
+;
+#X obj 124 158 metro 2000;
+#X obj 124 134 tgl 15 0 empty empty empty 0 -6 0 8 -24198 -1 -1 0 1
+;
+#X obj 192 138 hsl 128 15 20 2000 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X msg 345 183 \; pd dsp 1;
+#N canvas 0 22 462 312 guts 0;
+#X obj 151 62 osc~ 250;
+#X obj 151 101 *~;
+#X obj 241 101 *~;
+#X obj 241 61 noise~;
+#X obj 177 172 *~;
+#X obj 133 150 line~;
+#X obj 188 235 dac~;
+#X obj 215 188 hsl 128 15 0.01 1 1 0 empty empty master_amplitude -2
+-6 0 8 -262144 -1 -1 0 1;
+#X obj 254 11 inlet;
+#X obj 393 18 inlet;
+#X obj 157 15 inlet;
+#X obj 6 8 inlet;
+#X obj 196 207 *~ 0.6;
+#X connect 0 0 1 0;
+#X connect 1 0 4 1;
+#X connect 2 0 4 1;
+#X connect 3 0 2 0;
+#X connect 4 0 12 0;
+#X connect 5 0 4 0;
+#X connect 7 0 12 1;
+#X connect 8 0 1 1;
+#X connect 9 0 2 1;
+#X connect 10 0 0 0;
+#X connect 11 0 5 0;
+#X connect 12 0 6 1;
+#X connect 12 0 6 0;
+#X restore 168 380 pd guts;
+#X obj 183 353 tgl 15 0 empty empty empty 0 -6 0 8 -225271 -1 -1 0
+1;
+#X obj 206 353 tgl 15 1 empty empty empty 0 -6 0 8 -225271 -1 -1 1
+1;
+#X obj 170 329 hsl 128 15 100 1000 0 0 empty empty empty -2 -6 0 8
+-262144 -1 -1 0 1;
+#N canvas 95 30 517 478 all 0;
+#X obj 43 276 envgen 203 123 1 0  ;
+#X msg 83 169 motion 4 4;
+#X msg 57 74 duration 5000;
+#X msg 15 14 bang;
+#X msg 81 127 release;
+#X msg 42 43 0 50 1 50;
+#X text 109 44 reset to default;
+#X text 53 15 output data;
+#X text 149 74 set the duration in milliseconds (ms);
+#X obj 165 220 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X msg 68 102 sustain 5000;
+#X obj 41 414 print ENVGEN_TIMED_OUTPUT;
+#X text 155 169 move selected point (values are x and y amounts in
+pixels);
+#X connect 0 0 11 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X restore 145 413 pd all messages;
+#X text 45 413 For more info:;
+#N canvas 122 39 527 491 saving 0;
+#X obj 73 134 envgen 203 123 1 0  ;
+#X msg 71 26 bang;
+#X msg 105 73 dump;
+#X obj 277 278 list prepend set;
+#X obj 277 299 list trim;
+#X msg 195 95 0 50 1 50;
+#X text 262 96 reset to default;
+#X text 115 19 a bang outputs the data on the left inlet as separate
+messages and times them properly to work with [line~];
+#X text 126 60 outputs all of the data as a list on the right outlet
+;
+#X text 21 427 This message box will then save the data. Click to send
+it back to [envgen];
+#X obj 71 278 print ENVGEN_LEFT;
+#X msg 12 333;
+#X connect 0 0 10 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 11 0;
+#X connect 5 0 0 0;
+#X connect 11 0 0 0;
+#X restore 258 413 pd saving state;
+#N canvas 445 185 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 125 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control GUI storage;
+#X text 12 45 DESCRIPTION envelope generator;
+#X text 12 65 INLET_0 bang list float duration sustain release motion
+dump;
+#X text 12 85 OUTLET_0 list;
+#X text 12 105 OUTLET_1 list;
+#X restore 382 433 pd META;
+#X connect 0 0 10 0;
+#X connect 3 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 1;
+#X connect 11 0 10 2;
+#X connect 12 0 10 3;
+#X connect 13 0 10 1;

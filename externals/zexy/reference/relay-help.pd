@@ -1,0 +1,103 @@
+#N canvas 0 31 778 668 10;
+#X text 625 11 part of;
+#X obj 700 10 zexy;
+#X obj 183 223 print x1;
+#X obj 261 223 print x2;
+#X obj 339 223 print x3;
+#X obj 422 223 print x4;
+#X obj 183 195 relay 23 54 1;
+#X msg 183 165 234 345 456;
+#X msg 308 165 23 34 45;
+#X msg 414 165 54 43;
+#X msg 485 165 1 foo bar;
+#X msg 254 257 impeach ringo starr;
+#X obj 191 285 relay big apple;
+#X msg 435 258 apple pie;
+#X msg 191 257 1 2 3;
+#X msg 523 258 big apple pie;
+#X msg 578 165 walk the dog;
+#X text 45 43 Relay checks the first element of a message against each
+of its arguments \, which may be numbers or symbols (but not a mixture
+of the two.);
+#X text 19 195 numeric arguments:;
+#X text 17 285 symbolic arguments:;
+#X obj 157 499 print z1;
+#X obj 233 499 print z2;
+#X msg 124 434 bang;
+#X msg 170 434 list;
+#X msg 213 434 5;
+#X msg 251 434 float 5;
+#X msg 320 434 list 5;
+#X msg 385 434 symbol pie;
+#X msg 560 434 pie;
+#X msg 483 434 list pie;
+#X msg 70 434 1 2 3;
+#X obj 157 471 relay list float symbol bang;
+#X obj 310 499 print z3;
+#X obj 387 499 print z4;
+#X obj 461 499 print z5;
+#X obj 191 315 print y1;
+#X obj 269 315 print y2;
+#X obj 347 315 print y3;
+#X text 76 354 To avoid confusion between \, say \, the number 5 and
+the list contining only the number 5 \, both messages match "float"
+\, and ditto for symbols. An empty list matches "bang". In Pd these
+are all considered special cases of lists.;
+#X text 97 9 - relay messages according to their first element;
+#X obj 43 8 relay;
+#X text 44 93 If a match is found \, the complete(!) message appears
+on the corresponding outlet. If no match \, the message is repeated
+to the last "rejection" outlet. The number of outlets is the number
+of arguments plus one.;
+#X obj 624 541 route;
+#X text 72 576 the only difference is \, that a matching first element
+is NOT stripped from the message.;
+#X text 76 619 (btw \, this help patch has been taken from [route])
+;
+#X text 72 543 [relay] is very similar to pd's built-in object [route]
+;
+#X text 612 520 see also;
+#X text 72 644 NOTE: "relay" as in "mail relay" \, not as in "reed
+relay";
+#N canvas 509 158 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 INLET_N anything;
+#X text 12 105 INLET_R anything;
+#X text 12 45 DESCRIPTION relay messages according to their first element
+;
+#X restore 715 637 pd META;
+#X connect 6 0 2 0;
+#X connect 6 1 3 0;
+#X connect 6 2 4 0;
+#X connect 6 3 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 12 0;
+#X connect 12 0 35 0;
+#X connect 12 1 36 0;
+#X connect 12 2 37 0;
+#X connect 13 0 12 0;
+#X connect 14 0 12 0;
+#X connect 15 0 12 0;
+#X connect 16 0 6 0;
+#X connect 22 0 31 0;
+#X connect 23 0 31 0;
+#X connect 24 0 31 0;
+#X connect 25 0 31 0;
+#X connect 26 0 31 0;
+#X connect 27 0 31 0;
+#X connect 28 0 31 0;
+#X connect 29 0 31 0;
+#X connect 30 0 31 0;
+#X connect 31 0 20 0;
+#X connect 31 1 21 0;
+#X connect 31 2 32 0;
+#X connect 31 3 33 0;
+#X connect 31 4 34 0;

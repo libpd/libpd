@@ -1,0 +1,40 @@
+#N canvas 0 31 580 361 10;
+#X obj 71 51 envrms~;
+#X text 174 51 an envelope follower that outputs rms instead of dB
+;
+#X obj 59 172 sig~ 3;
+#X floatatom 59 148 0 0 0 0 - - -;
+#X obj 59 233 env~;
+#X floatatom 59 254 0 0 0 0 - - -;
+#X floatatom 129 255 0 0 0 0 - - -;
+#X obj 129 234 envrms~;
+#X text 177 93 (i found it very often quite annoying \, to get dB all
+the times \, and i wouldn't use snapshot~ instead);
+#X obj 59 276 dbtorms;
+#X floatatom 59 299 0 0 0 0 - - -;
+#X text 179 172 of course \, this is cheaper than using env~ + dbtorms
+;
+#X text 272 269 see also:;
+#X obj 277 296 env~;
+#X obj 315 296 avg~;
+#X obj 354 296 tavg~;
+#X msg 484 217 \; pd dsp 1;
+#X text 479 17 part of zexy;
+#N canvas 593 163 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION an envelope follower that outputs rms instead
+of dB;
+#X text 12 5 KEYWORDS signal conversion;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 float;
+#X restore 525 333 pd META;
+#X connect 2 0 7 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 9 0;
+#X connect 7 0 6 0;
+#X connect 9 0 10 0;

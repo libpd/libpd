@@ -1,0 +1,14 @@
+<!ELEMENT PDContainer (element)+>
+<!ATTLIST PDContainer
+   type   (h_vector | h_list | h_deque | h_set | h_multiset)   #REQUIRED
+>
+
+<!ELEMENT element (s, symbol, f, float)+>
+
+<!-- s is equivalent to symbol -->
+<!ELEMENT s (#PCDATA)>
+<!ELEMENT symbol (#PCDATA)>
+
+<!-- f is equivalent to float -->
+<!ELEMENT f (#PCDATA)>
+<!ELEMENT float (#PCDATA)>

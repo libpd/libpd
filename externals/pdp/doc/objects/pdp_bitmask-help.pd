@@ -1,0 +1,22 @@
+#N canvas 504 211 500 438 10;
+#X msg 77 38 start;
+#X msg 124 38 stop;
+#X obj 77 70 pdp_help_input;
+#X obj 77 287 pdp_help_output;
+#X obj 77 243 pdp_gain;
+#X msg 128 215 1;
+#X text 229 182 apply a bitwise mask (16 bit);
+#X floatatom 149 144 8 0 0;
+#X obj 152 120 hsl 128 15 0 65535 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 175 213 5 0 0;
+#X obj 77 178 pdp_bitmask;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 10 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 1;
+#X connect 7 0 10 1;
+#X connect 8 0 7 0;
+#X connect 9 0 4 1;
+#X connect 10 0 4 0;

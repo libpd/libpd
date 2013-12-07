@@ -1,0 +1,28 @@
+#N canvas 0 31 430 247 10;
+#X obj 0 0 cnv 8 100 60 empty empty basedir 20 20 1 18 -262144 -1109
+0;
+#X text 7 221 (c) Moonix: Antoine Rousseau 2003;
+#X text 135 12 basename/dirname functions;
+#X obj 124 102 basedir;
+#X obj 124 136 unpack s s;
+#X symbolatom 124 158 0 0 0 0 - - -;
+#X symbolatom 189 158 0 0 0 0 - - -;
+#X msg 124 62 symbol /usr/local/bin/pd;
+#X obj 124 42 loadbang;
+#X text 108 175 basename;
+#X text 212 175 dirname;
+#N canvas 380 146 494 344 META 0;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 65 INLET_0 symbol;
+#X text 12 105 AUTHOR Antoine Rousseau;
+#X text 12 125 HELP_PATCH_AUTHORS Antoine Rousseau. "pd meta" information
+added by Jonathan Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS control symbol_op filesystem;
+#X text 12 45 DESCRIPTION basename/dirname functions;
+#X text 12 85 OUTLET_0 list;
+#X restore 373 217 pd META;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 0;

@@ -1,0 +1,344 @@
+package provide toxywidgets 0.1.0.17
+
+# LATER keep standard widget setup in a .tcl file (transfered into a .wiq), and
+# glue separate .wid files with standard widget definitions into another .wiq
+# LATER think about using a slave interpreter, and a toxy-specific connection
+# LATER gather aqua incompatibilities, and decide, if there is no other
+# way than branching (different meaning of -bg, -borderwidth trouble,
+# right click, etc.)
+
+# LATER ask for adding something of the sort to pd.tk:
+bind Canvas <1> {+focus %W}
+
+# FIXME args
+proc ::toxy::package_require {pkg dll} {
+    if {[catch {package require $pkg} res] == 0} {
+	puts stderr "using package $pkg $res"
+    } elseif {[catch {load $dll $pkg}] != 0} {
+	puts stderr "ERROR: missing package $pkg ($res)"
+    }
+}
+
+# valid options: "show", "hide"
+proc ::toxy::console {op} {
+    if {[catch {::console $op}]} {
+	if {[catch {package require tkcon}] == 0} {
+	    tkcon $op
+	}
+    }
+}
+
+# FIXME this should be explicitly requested
+# In order to keep the state after tk canvas has been destroyed
+# try setting -variable and -textvariable traces
+
+proc ::toxy::item_dotrace {target varname ndxname op} {
+    if {[catch {set v [set $varname]} res] == 0} {
+	if {$v != [set $varname.last]} {
+# FIXME activate this on demand (for explicit traces)
+#	    pd $target.rp _data $v \;
+	    set $varname.last $v
+	}
+    } else { puts stderr [concat failed ::toxy::item_dotrace: $res] }
+}
+
+proc ::toxy::item_bindtrace {varname mastername ndxname op} {
+    set $varname [set $mastername]
+}
+
+proc ::toxy::item_settrace {op path target varname} {
+    if {[catch {$path cget $op} res] == 0} {
+	if {$res == ""} {
+	    if {[catch {$path config $op $varname} err]} {
+		error $err
+	    }
+	} else {
+	    if {[info tclversion] < 8.4} {
+		trace variable $res w "::toxy::item_bindtrace $varname"
+	    } else {
+		trace add variable $res write "::toxy::item_bindtrace $varname"
+	    }
+	}
+	if {![info exists $varname.last]} { set $varname.last "" }
+	if {[info tclversion] < 8.4} {
+	    trace variable $varname w "::toxy::item_dotrace $target"
+	} else {
+	    trace add variable $varname write "::toxy::item_dotrace $target"
+	}
+	return
+    } else { return 0 }
+}
+
+# LATER revisit -- seems clumsy and fragile
+proc ::toxy::item_removetrace {op path varname} {
+    if {[catch {$path cget $op} res] == 0} {
+	if {$res == $varname} {
+	    if {[catch {$path config $op ""} err]} {
+		error $err
+	    }
+	} elseif {$res != ""} {
+	    if {[info tclversion] < 8.4} {
+		catch { trace vdelete $res w "::toxy::item_bindtrace $varname" }
+	    } else {
+		catch { trace remove variable \
+		    $res write "::toxy::item_bindtrace $varname" }
+	    }
+	}
+    }
+}
+
+proc ::toxy::item_destroy {path varname} {
+    ::toxy::item_removetrace -variable $path $varname.var
+    ::toxy::item_removetrace -textvariable $path $varname.txt
+    if {[info tclversion] < 8.4} {
+	catch { unset $varname.last $varname.var $varname.txt $varname }
+    } else {
+	unset -nocomplain $varname.last $varname.var $varname.txt $varname
+    }
+    catch {destroy $path}
+}
+
+proc ::toxy::item_getconfig {path target} {
+    set wd [winfo reqwidth $path]
+    set ht [winfo reqheight $path]
+    if {$wd < 2 || $ht < 2} {
+# LATER rethink
+	update idletasks
+	set wd [winfo width $path]
+	set ht [winfo height $path]
+    }
+    pd $target.rp _config $target.rp [$path cget -bg] $wd $ht \
+	[catch {$path config -state normal}]\;
+}
+
+proc ::toxy::item_visconfig {path target name varname cvpath px py} {
+    if {[info exists ::toxy::itemoptions]} {
+	set failed [catch {eval $path config $::toxy::itemoptions} res]
+	unset ::toxy::itemoptions
+	if {$failed} { error [concat in $path config: $res] }
+    }
+
+    if {[info exists ::toxy::longnewhook]} {
+	set failed [catch {eval $::toxy::longnewhook} res]
+	unset ::toxy::longnewhook
+	if {$failed} { error [concat in ::toxy::longnewhook: $res] }
+    }
+
+    $cvpath create window $px $py \
+	-anchor nw -window $path -tags [concat toxy$name $target]
+
+# FIXME use ${name}::explicittrace
+    if {[info exists ::toxy::storethispath]} {
+# FIXME explicit traces
+	set needtraces 0
+    } else {
+	set needtraces 1
+    }
+
+    if {$needtraces != 0} {
+	if {[catch {::toxy::item_settrace -variable \
+		$path $target $varname.var} res1]} {
+	    error [concat in ::toxy::item_settrace: $res1]
+	}
+	if {[catch {::toxy::item_settrace -textvariable \
+		$path $target $varname.txt} res2]} {
+	    error [concat in ::toxy::item_settrace: $res2]
+	}
+#	puts stderr [concat traces: ($res1) ($res2)]
+	if {$res1 == 0 && $res2 == 0} {
+#	    puts stderr [concat toxy warning: $path untraceable]
+	}
+    }
+
+    set failed [catch {::toxy::master $path $cvpath $target} res]
+    if {$failed} { error [concat in ::toxy::master: $res] }
+
+    if {[info exists ::toxy::longvishook]} {
+	set failed [catch {eval $::toxy::longvishook} res]
+	unset ::toxy::longvishook
+	if {$failed} { error [concat in ::toxy::longvishook: $res] }
+    }
+    if {[info exists ::toxy::shortvishook]} {
+	set failed [catch {eval $::toxy::shortvishook} res]
+	unset ::toxy::shortvishook
+	if {$failed} { error [concat in ::toxy::shortvishook: $res] }
+    }
+
+    ::toxy::item_getconfig $path $target
+
+    return
+}
+
+proc ::toxy::item_vis {tkclass path target name varname cvpath px py} {
+    if {[winfo exists $path]} {
+#	puts stderr [concat $path exists]
+	set ::toxy::itemfailure 0
+    } else {
+	set ::toxy::itemfailure [catch {$tkclass $path} ::toxy::itemerrmess]
+    }
+    if {$::toxy::itemfailure == 0} {
+	set ::toxy::itemfailure [catch {::toxy::item_visconfig \
+	    $path $target $name $varname $cvpath $px $py} \
+	    ::toxy::itemerrmess]
+    }
+    if {$::toxy::itemfailure} {
+	if {[winfo exists $path]} {destroy $path}
+	puts stderr [concat tcl error: $::toxy::itemerrmess]
+	pd $target.rp _failure \;
+    }
+}
+
+# empirically, binding event coords as %X - [winfo rootx $cvpath] works
+# better, than %x + [winfo x %W], or %x + t->te_xpix, LATER investigate
+
+proc ::toxy::item_click {target cvpath x y b f} {
+    pd $target.rp _click \
+	[$cvpath canvasx [expr {$x - [winfo rootx $cvpath]}]] \
+	[$cvpath canvasy [expr {$y - [winfo rooty $cvpath]}]] $b $f\;
+}
+
+proc ::toxy::item_inout {target v} {
+    pd [concat $target.rp _inout $v \;]
+}
+
+proc ::toxy::master_release {target cvpath x y b} {
+    ::toxy::item_inout $target 3
+# pdtk_canvas_mouseup is a hack, which we must call anyway
+    pdtk_canvas_mouseup $cvpath \
+	[expr {$x - [winfo rootx $cvpath]}] \
+	[expr {$y - [winfo rooty $cvpath]}] $b
+}
+
+proc ::toxy::master_motion {target cvpath x y} {
+    pd $target.rp _motion \
+	[$cvpath canvasx [expr {$x - [winfo rootx $cvpath]}]] \
+	[$cvpath canvasy [expr {$y - [winfo rooty $cvpath]}]] 0 \;
+}
+
+proc ::toxy::master {path cvpath target} {
+    bind $path <ButtonRelease> "::toxy::master_release $target $cvpath %X %Y %b"
+    bind $path <1> "::toxy::item_click $target $cvpath %X %Y %b 0"
+    bind $path <Shift-1> "::toxy::item_click $target $cvpath %X %Y %b 1"
+    bind $path <Control-1> "::toxy::item_click $target $cvpath %X %Y %b 2"
+    bind $path <Control-Shift-1> "::toxy::item_click $target $cvpath %X %Y %b 3"
+    bind $path <Alt-1> "::toxy::item_click $target $cvpath %X %Y %b 4"
+    bind $path <Alt-Shift-1> "::toxy::item_click $target $cvpath %X %Y %b 5"
+    bind $path <Alt-Control-1> "::toxy::item_click $target $cvpath %X %Y %b 6"
+    bind $path <Alt-Control-Shift-1> \
+	"::toxy::item_click $target $cvpath %X %Y %b 7"
+    bind $path <3> "::toxy::item_click $target $cvpath %X %Y %b 8"
+
+    bind $path <Motion> "::toxy::master_motion $target $cvpath %X %Y"
+    bind $path <B1-Motion> "::toxy::master_motion $target $cvpath %X %Y"
+    bind $path <Enter> "::toxy::item_inout $target 1"
+    bind $path <Leave> "::toxy::item_inout $target 0"
+
+    if {[catch {$path config -state normal}] == 0} {
+	bind $path <<disable>> "$path config -state disabled"
+	bind $path <<enable>> "$path config -state normal"
+    }
+
+    if {[winfo class $path] == "Canvas"} {
+# undo the "bind Canvas <1> {+focus %W}" from above
+	bind $path <FocusIn> "focus $cvpath"
+    }
+}
+
+# to be called explicitly from vis proc, LATER rethink
+proc ::toxy::subwidget {path parent cvpath target} {
+    bind $path <ButtonRelease> "::toxy::master_release $target $cvpath %X %Y %b"
+    bind $path <1> "::toxy::item_click $target $cvpath %X %Y %b 0"
+    bind $path <Shift-1> "::toxy::item_click $target $cvpath %X %Y %b 1"
+    bind $path <Control-1> "::toxy::item_click $target $cvpath %X %Y %b 2"
+    bind $path <Control-Shift-1> "::toxy::item_click $target $cvpath %X %Y %b 3"
+    bind $path <Alt-1> "::toxy::item_click $target $cvpath %X %Y %b 4"
+    bind $path <Alt-Shift-1> "::toxy::item_click $target $cvpath %X %Y %b 5"
+    bind $path <Alt-Control-1> "::toxy::item_click $target $cvpath %X %Y %b 6"
+    bind $path <Alt-Control-Shift-1> \
+	"::toxy::item_click $target $cvpath %X %Y %b 7"
+    bind $path <3> "::toxy::item_click $target $cvpath %X %Y %b 8"
+
+    bind $path <Motion> "::toxy::master_motion $target $cvpath %X %Y"
+    bind $path <B1-Motion> "::toxy::master_motion $target $cvpath %X %Y"
+    bind $path <Enter> "::toxy::item_inout $target 1"
+    bind $path <Leave> "::toxy::item_inout $target 0"
+
+    if {[catch {$path config -state normal}] == 0} {
+	bind $parent <<disable>> "+$path config -state disabled"
+	bind $parent <<enable>> "+$path config -state normal"
+    }
+}
+
+# standard widget types, LATER move to separate .wid files
+
+# FIXME
+proc ::toxy::scale_command {target sel v} {
+    if {$::toxy::scale_isactive} {
+	pd [concat $target $sel $v \;]
+    }
+    set ::toxy::scale_isactive 1
+}
+
+proc ::toxy::scale_doset {path v} {
+    set ::toxy::scale_isactive 0
+    $path set $v
+}
+
+proc ::toxy::popup_command {path target remote i text} {
+    set [$path cget -textvariable] $text
+    pd [concat $target _cb $i \;]
+    if {$remote != "."} {
+	pd [concat $remote $i \;]
+    }
+}
+
+proc ::toxy::popup {path target remote entries args} {
+    if {[winfo exists $path.pop]} {
+#	puts stderr [concat $path.pop exists]
+    } elseif {[catch {eval {menu $path.pop} $args} err] == 0} {
+	set i 0
+	foreach e $entries {
+	    if {$e == "."} {
+		$path.pop add separator
+	    } else {
+		incr i
+		$path.pop add command -label [lindex $e 0] \
+		    -command [concat ::toxy::popup_command \
+			$path $target $remote $i \
+			    [lindex $e [expr {[llength $e] > 1}]]]
+	    }
+	}
+    } else { error [concat in ::toxy::popup: $err] }
+}
+
+# FIXME should be part of the float widget type, but we need it for plain scales
+set ::toxy::scale_isactive 1
+
+#> bang button
+#. -image ::toxy::img::empty -command .<.>
+#. -bg pink -activebackground red -width 50 -height 50
+#. @bang .- flash .: .- invoke
+
+#> float scale
+#. -command [concat ::toxy::scale_command .| _cb]
+#. -bg pink -activebackground red -length 200
+#. @float .- set .#1
+#. @vset ::toxy::scale_doset .- .#1
+
+#> symbol entry
+#. -bg pink -font .(helvetica 24.) -width 16
+#. @symbol .- delete 0 end .: .- insert 0 .#1
+
+#@ vis
+bind .- <Return> {eval .<[.- get].>; focus .^.c}
+
+#> popup menubutton
+#. -menu .-.pop
+#. -bg purple -fg white -activebackground magenta -text popup
+#. -width 8 -relief raised -borderwidth 3
+#. @float if .(.#1 >= 1.) .(.-.pop invoke .#1.)
+#. #items test
+#. #iprops "-bg" purple "-fg" white "-activebackground" magenta "-borderwidth" 3
+
+#@ vis
+::toxy::popup .- .| . [concat .#items] .#iprops

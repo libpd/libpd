@@ -1,0 +1,25 @@
+#N canvas 314 353 576 288 10;
+#X obj 98 132 pdp_reg;
+#X obj 201 86 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 205 138 5 0 0;
+#X obj 81 48 pdp_help_input;
+#X msg 81 18 start;
+#X msg 130 18 stop;
+#X obj 81 238 pdp_help_output;
+#X text 268 80 click here;
+#X obj 81 201 pdp_mix2;
+#X floatatom 205 161 5 0 0;
+#X text 158 199 pdp_mix2 adds two packets after applying attenuation
+;
+#X text 268 136 left packet attenuation;
+#X text 268 159 right packet attenuation;
+#X connect 0 0 8 1;
+#X connect 1 0 0 0;
+#X connect 2 0 8 2;
+#X connect 3 0 0 1;
+#X connect 3 0 8 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 8 0 6 0;
+#X connect 9 0 8 3;

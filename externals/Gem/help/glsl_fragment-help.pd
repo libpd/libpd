@@ -1,0 +1,91 @@
+#N canvas 90 26 633 413 10;
+#X text 452 8 GEM object;
+#X obj 8 257 cnv 15 430 140 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 11 258 Inlets:;
+#X text 10 348 Outlets:;
+#X obj 8 222 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 222 Arguments:;
+#X obj 7 66 cnv 15 430 150 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 451 77 cnv 15 170 170 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 456 108 cnv 15 160 130 empty empty empty 35 12 0 14 -24198 -66577
+0;
+#X text 14 361 Outlet 1: gemlist;
+#X text 21 272 Inlet 1: gemlist;
+#X obj 10 153 cnv 15 420 50 empty empty empty 20 12 0 14 -225280 -66577
+0;
+#X text 71 31 Class: shader object;
+#X text 451 325 see also:;
+#X obj 453 362 glsl_vertex;
+#X text 14 157 IMPORTANT NOTE: your openGL-implementation (gfx-card
+driver \, ...) has to support the GLSL-standard (which is part of openGL-2.0)
+in order to make use of this object.;
+#X floatatom 545 216 0 0 0 0 ID - -;
+#X obj 459 193 glsl_fragment;
+#X obj 453 342 glsl_program;
+#X text 50 12 Synopsis: [glsl_fragment];
+#X text 13 66 Description: load a GLSL fragment shader;
+#X text 14 85 [glsl_fragment] loads and compiles a GLSL fragment shader
+into a module \, suitable for linking with [glsl_program];
+#X text 17 118 An ID of the generated module is sent to the 2nd outlet.
+Use this ID in the "shader" message to [glsl_program];
+#X text 63 233 <filename>: filename to load as GLSL fragment shader
+;
+#X text 21 284 Inlet 1: "open <filename>": filename to load as GLSL
+fragment shader module.;
+#X text 21 315 Inlet 1: "print": print info about the GLSL-support
+in your openGL implementation;
+#X text 14 376 Outlet 2: <float>: ID of the GLSL-module;
+#X obj 459 86 gemhead;
+#X msg 552 170 print;
+#X obj 521 261 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 197 134 destroy;
+#X msg 132 112 reset \, create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 526 300 pd gemwin;
+#X msg 526 281 create;
+#X text 522 260 Create window:;
+#X obj 527 117 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#N canvas 0 22 450 300 open 0;
+#X obj 312 45 openpanel;
+#X obj 311 157 outlet;
+#X obj 312 69 t b s;
+#X msg 332 94 set open \$1;
+#X obj 312 22 inlet;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 2 1 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X restore 470 116 pd open;
+#X msg 470 136 open Toon.frag;
+#X obj 453 382 glsl_geometry;
+#X connect 18 1 17 0;
+#X connect 28 0 18 0;
+#X connect 29 0 18 0;
+#X connect 31 0 32 0;
+#X connect 32 0 31 0;
+#X connect 34 0 35 0;
+#X connect 35 0 36 0;
+#X connect 36 0 18 0;

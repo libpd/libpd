@@ -1,0 +1,13 @@
+#N canvas 455 76 573 366 10;
+#X obj 241 236 print DESTROYED;
+#X text 225 139 <- Create and destroy this external. It will send a
+bang to [receive test] everythime it is destroyed.;
+#X obj 241 203 receive test;
+#X obj 84 82 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 84 142 destroysend test;
+#X obj 84 303 destroysend;
+#X text 170 300 <- If it is created without an argument \, you can
+set the target through the right inlet.;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;

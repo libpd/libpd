@@ -1,0 +1,38 @@
+#N canvas 0 26 606 272 10;
+#X obj 35 111 test-parentdollarzero;
+#X obj 299 107 f \$0;
+#X obj 299 88 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 299 129 5 0 0 0 - - -;
+#X symbolatom 35 132 10 0 0 0 - - -;
+#X obj 35 91 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 460 113 parent1181;
+#X text 436 96 use this in an abstraction;
+#X text 55 94 open this abstraction;
+#X text 15 10 parentdollarzero;
+#X text 156 12 receives the parent \$0 symbol;
+#X text 14 28 (abbr. parent1181);
+#X text 23 148 output: <symbol> of unique number;
+#X text 241 148 output: <float> of unique number;
+#X text 115 228 IEM KUG;
+#X text 99 216 musil;
+#X text 129 216 @;
+#X text 135 216 iem.at;
+#X text 98 238 Graz \, Austria;
+#X text 50 205 (c) Thomas Musil 2000 - 2006;
+#N canvas 290 270 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Thomas Musil;
+#X text 12 45 LICENSE LGPL v2.1;
+#X text 12 25 KEYWORDS control abstraction_op;
+#X text 12 65 DESCRIPTION receives the parent \$0 symbol;
+#X text 12 85 INLET_0 bang;
+#X text 12 105 OUTLET_0 float;
+#X text 12 5 ALIAS parent\$0;
+#X restore 550 244 pd META;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 5 0 0 0;

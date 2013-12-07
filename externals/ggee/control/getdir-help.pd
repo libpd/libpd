@@ -1,0 +1,33 @@
+#N canvas 0 26 460 383 10;
+#X obj 177 95 getdir;
+#X msg 177 57 bang;
+#X obj 176 133 print;
+#X text 17 21 get the directory that this patch is operating in:;
+#X text 18 165 You can also get the path of the parent patch \, if
+this patch is an object embedded in another patch. You use the argument
+to set how many levels up to go:;
+#X msg 99 212 bang;
+#X obj 98 288 print;
+#X obj 99 250 getdir 1;
+#X msg 294 209 bang;
+#X obj 293 285 print;
+#X obj 294 247 getdir 2;
+#X text 18 331 If there is no parent at that level \, it returns the
+directory as if there was no argument \, i.e. level 0;
+#N canvas 407 106 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 45 DESCRIPTION get the directory this patch is operating
+in;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 5 KEYWORDS control patchfile_op filesystem;
+#X restore 410 362 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 5 0 7 0;
+#X connect 7 0 6 0;
+#X connect 8 0 10 0;
+#X connect 10 0 9 0;

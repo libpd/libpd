@@ -1,0 +1,25 @@
+#N canvas 288 311 566 284 10;
+#X obj 54 156 3dp_windowcontext;
+#X obj 54 43 metro 40;
+#X obj 54 19 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 54 76 t b b;
+#X obj 134 120 pdp_convert texture/*/*;
+#X obj 54 183 3dp_mouserotate;
+#X floatatom 180 202 5 0 0 0 - - -;
+#X msg 134 68 open /dev/video1;
+#X obj 54 227 3dp_draw sphere 5;
+#X text 132 18 convert pdp image packets to textures and map them on
+a sphere;
+#X obj 134 93 pdp_v4l;
+#X connect 0 0 5 0;
+#X connect 0 1 5 1;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 3 1 10 0;
+#X connect 4 0 8 1;
+#X connect 5 0 8 0;
+#X connect 6 0 8 2;
+#X connect 7 0 10 0;
+#X connect 10 0 4 0;

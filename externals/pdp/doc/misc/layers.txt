@@ -1,0 +1,222 @@
+pdp 0.13 design layers + components
+-----------------------------------
+
+from version 0.13 onwards, pdp is no longer just a pd plugin but a 
+standalone unix library (libpdp). this documents is an attempt to 
+describe the design layers.
+
+A. PD INTERFACE
+---------------
+
+on the top level, libpdp is interfaced to pd using a glue layer which 
+consists of
+
+1. pdp/dpd protocols for pd
+2. process queue
+3. base classes for pdp/dpd
+4. some small utility pd objects
+5. pd specific interfaces to part of pdp core
+6. pdp_console
+7. pd object interface to packet forth (pdp object)
+
+
+1. is the same as previous versions to ensure backwards compatibility in 
+pd with previous pdp modules and extensions that are written as pd 
+externs or external libs. this includes parts of pdp that are not yet 
+migrated to libpdp (some of them are very pd specific and will not be 
+moved to libpdp), and pidip. if you intend to write new modules, it is 
+encouraged to use the new forth based api, so your code can be part of 
+libpdp to use it in other image processing applications.
+
+2. is considered a pd part. it implements multithreading of pdp inside 
+pd. multithreading is considered a host interface part, since it usually  
+requires special code.
+
+3. the base classes (pd objects) for pdp image processing remain part of 
+the pd<->pdp layer. the reason is the same as 1. a lot of the original 
+pd style pdp is written as subclasses of the pdp_base, pdp_image_base, 
+dpd_base and pdp_3dp_base classes. if you need to write pd specific 
+code, it is still encouraged to use these apis, since they eliminate a 
+lot of red tape involving the pdp protocol. a disadvantage is that this 
+api is badly documented, and the basic api (1.) is a lot simpler to 
+learn and documented. 3dp is supposed to merge to the new forth api, 
+along with the image/video processing code.
+
+4. is small enough to be ignored here
+
+5. includes interfaces to thread system and type conversion system + 
+some pd specific stuff using 1. or 3.
+
+6. the console interface to the pdp core, basicly a console for a 
+forth like language called packet forth which is pdp's main scripting 
+language. it's inteded for develloping and testing pdp but it can be 
+used to write controllers for pd/pdp/... too. this is based on 1.
+
+7. is the main link between the new libpdp and pd. it is used to 
+instantiate pdp processors in pd which are written in the packet forth. 
+i.e. to create a mixer, you instantiate a [pdp mix] object, which would 
+be the same as the previous [pdp_mix] object. each [pdp] object creates 
+a forth environment, which is initialized by calling a forth init 
+method. [pdp mix] would call the forth word init_mix to create the local 
+environment for the mix object. wrappers will be included for backward 
+compatibility when the image processing code is moved to libpdp.
+
+
+B. PDP SYSTEM CODE
+------------------
+
+1. basic building blocks: symbol, list, memory manager
+2. packet implementation (packet class and reuse queue)
+3. packet type conversion system
+4. os interface (X11, net, png, ...)
+5. packet forth
+6. additional libraries
+
+
+1. pdp makes intensive use of symbols and lists (trees, stacks, queues). 
+pdp's namespace is built on the symbol implementation. a lot of other 
+code uses the list
+
+2. the pdp packet model is very simple. basicly nothing more than 
+constructors (new, copy, clone), destructors (mark_unused (for reuse 
+later), delete). there is no real object model for processors. this is a 
+conscious decision. processor objects are implemented as packet forth 
+processes with object state stored in process data space. this is enough 
+to interface the functionality present in packet forth code to any 
+arbitrary object oriented language or system.
+
+3. each packet type can register conversion methods to other types. the 
+type conversion system does the casting. this is not completely finished 
+yet (no automatic multistage casting yet) but most of it is in place and 
+usable. no types without casts.
+
+4. os specific modules for input/output. not much fun here..
+
+5. All of pdp is glued together with a scripting language called packet 
+forth. This is a "high level" forth dialect that can operate on floats, 
+ints, symbols, lists, trees and packets. It is a "fool proof" forth, 
+which is polymorphic and relatively robust to user errors (read: it 
+should not crash or cause memory leaks when experimenting). It is 
+intended to serve as a packet level glue language, so it is not very 
+efficient for scalar code. This is usually not a problem, since packet 
+operations (esp. image processing) are much more expensive than a this 
+thin layer of glue connecting them.
+
+All packet operations can be accessed in the forth. If you've ever 
+worked with HP's RPN calculators, you can use packet forth. The basic 
+idea is to write objects in packet forth that can be used in pd or in 
+other image processing applications. For more information on packet 
+forth, see the code (pdp_forth.h, pdp_forth.c and words.def)
+
+6. opengl lib, based on dpd (3.) which will be moved to packet forth 
+words and the cellular automata lib, which will be moved to 
+vector/slice forth later.
+
+
+C. LOW LEVEL CODE
+-----------------
+
+All the packet processing code is (will be) exported as packet forth 
+words. This section is about how the code exported by those words is 
+structured.
+
+C.1 IMAGE PROESSING: VECTOR FORTH
+
+Eventually, image operations need to be implemented, and in order 
+to do this efficiently, both codewize (good modularity) as execution speed 
+wize, i've opted for another forth. DSP and forth seem to mix well, once 
+you get the risc pipeline issues out of the way. And, as a less rational 
+explanation, forth has this magic kind of feel, something like art.. 
+well, whatever :)
+
+As opposed to the packet forth, this is a "real" lowlevel forth 
+optimized for performance. Its reason of being is the solution of 3 
+problems: image processing code factoring, quasi optimal processor 
+pipeline & instruction usage, and locality of reference for maximum 
+cache performance. Expect crashes when you start experimenting with 
+this. It's really nothing more than a fancy macro assembler. It has no 
+safety belts. Chuck Moore doctrine.. 
+
+The distinction between the two forths is at first sight not a good 
+example of minimizing glue layers. I.e. both systems (packet script 
+forth and low level slice forth) are forths in essence, requiring 
+(partial) design duplication. Both implementations are however 
+significantly different which justified this design duplication.
+
+Apart from the implementation differences, the purpose of both languages 
+is not the same. This requires the designs of both languages to be 
+different in some respect. So, with the rule of "do everything right 
+once" in mind, this small remark tries to justify the fact that forth != 
+forth.
+
+The only place where apparent design correspondence (the language model)
+is actually used is in the interface between the packet forth and the 
+slice forth. 
+
+The base forth is an ordinary minimal 32bit (or machine word 
+lenght) subroutine threaded forth, with a native code kernel for 
+i386/mmx, a portable c code kernel and room for more native code kernels 
+(i.e i386/sse/sse2/3dnow, altivec, dsp, ...) Besides support for native 
+machine words bit ints and pointers, no floats, since they clash with 
+mmx, are not needed for the fixed point image type, and can be 
+implemented using other vector instructions when needed), support for 
+slices and a separate "vector stack". 
+
+Vectors are the native machine vectors, i.e. 64bit for mmx/3dnow, 
+128bit for sse/sse2, or anything else. The architecture is supposed to 
+be open. (I've been thinking to add a block forth, operating on 256bit 
+blocks to eliminate pipeline issues). Blocks are just blocks of vectors 
+which are used as a basic loop unrolling data size grain for solving 
+pipeline operations in slice processing words.
+
+Slices are just arrays of blocks. In the mmx forth kernel, they can 
+represent 4 scanlines or a 4 colour component scanline, depending on how 
+they are fed from packet data. Slices can be anything, but right now, 
+they're just scanlines. The forth kernel has a very simple and efficient
+(branchless) reference count based memory allocator for slices. This 
+slice allocator is also stack based which ensures locality of reference: 
+a new allocated slice is the last deallocated slice.
+
+The reason for this obsession with slices is that a lot of video 
+effects can be chained on the slice level (scanline or bunch of 
+scanlines), which improves speed through more locality of reference. In 
+concreto intermediates are not flushed to slower memory. The same 
+principles can be used to do audio dsp, but that's for later.
+
+The mmx forth kernel is further factored down following another 
+virtual machine paradigm. After doing some profiling, i came to the 
+conclusion that the only, single paradigm way of writing efficient 
+vector code on today's machines is multiple accumulators to avoid 
+pipeline stalls. The nice thing about image processing is that it 
+parallellizes easily. Hence the slice/block thing. This leads to the 
+1-operand virtual machine concept for the mmx slice operations. The 
+basic data size is one 4x4 pixel block (16bit pixels), which is 
+implemented as asm macros in mmx-sliceops-macro.s and used in 
+mmx-sliceops-code.s to build slice operations. The slice operations are 
+built out of macro instructions for this 256bit or 512bit, 2 or 1 
+register virtual machine which has practically no pipeline delays 
+between its instructions.
+
+Since the base of sliceforth is just another forth, it could be that 
+(part of) 3dp will be implemented in this lowlevel forth too, if 
+performance dictates it. It's probably simpler to do it in the lowlevel 
+forth than the packet forth anyway, in the form of cwords.
+
+C.2: MATRIX PROCESSING: LIBGSL
+
+All matrix processing packet forth words are (will be) basicly wrappers 
+around gsl library calls. Very straightforward.
+
+C.3: OPENGL STUFF
+
+The same goes for opengl. The difference here is that it uses the dpd 
+protocol in pdp, which is more like the Gem way of doing things. The 
+reason for this is that, although i've tried hard to avoid it, opengl 
+seems to dictate a drawing context based, instead of an object based way 
+of working. So processing is context (accumulator) based. Packet forth 
+will probably get some object oriented, or context oriented feel when 
+this is implemented.
+
+
+
+

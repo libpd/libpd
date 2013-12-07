@@ -1,0 +1,35 @@
+#N canvas 545 156 511 332 10;
+#X obj 49 38 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X msg 47 120 symbol hello;
+#X msg 61 143 hello;
+#X text 22 7 post at different levels;
+#X obj 224 137 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 3100 1;
+#X obj 46 81 error;
+#X obj 53 289 error;
+#X obj 221 157 error this ia long box of test;
+#X msg 69 168 what is in here;
+#X msg 89 192 list this is a test;
+#X msg 90 226 list 1 2 3;
+#X msg 93 248 1 2 3;
+#X obj 285 55 pointer;
+#X msg 282 23 bang;
+#X obj 286 86 error;
+#X obj 255 287 error;
+#X msg 275 264 list;
+#X msg 275 242 list 1;
+#X msg 258 221 list word;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 4 0 7 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 6 0;
+#X connect 12 0 14 0;
+#X connect 13 0 12 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 15 0;

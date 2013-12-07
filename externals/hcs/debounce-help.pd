@@ -1,0 +1,56 @@
+#N canvas 0 26 470 540 10;
+#X obj 2 2 cnv 15 450 20 empty empty debounce 2 11 1 18 -233017 -66577
+0;
+#X msg 418 3 pddp;
+#X text 234 467 released under the GNU GPL;
+#X text 17 486 $Revision: 1.2 $$Date: 2006-03-17 04:50:03 $;
+#X text 18 499 $Author: eighthave $;
+#X text 17 453 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X obj 122 78 bng 15 250 50 0 empty empty empty 0 -6 0 8 -24198 -1
+-1;
+#X obj 123 102 t b b;
+#X obj 123 142 delay;
+#X obj 63 121 bang;
+#X obj 122 202 tgl 35 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 166 203 5 0 0 0 - - -;
+#X obj 122 271 tgl 35 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 123 166 random 2;
+#X msg 85 78 stop;
+#X obj 244 211 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 240 277 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 26 387 Right now \, it handles "floats" and "bangs". Everything
+else is converted to a "bang".;
+#X obj 152 122 random 1000;
+#X obj 237 247 debounce 900;
+#X obj 122 246 debounce 900;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filter;
+#X text 12 45 DESCRIPTION debounce;
+#X text 12 85 OUTLET_0 float bang;
+#X text 12 65 INLET_0 anything;
+#X restore 410 510 pd META;
+#X obj 249 62 namecanvas f;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 7 1 18 0;
+#X connect 8 0 9 0;
+#X connect 8 0 13 0;
+#X connect 8 0 15 0;
+#X connect 9 0 7 0;
+#X connect 10 0 20 0;
+#X connect 13 0 10 0;
+#X connect 13 0 11 0;
+#X connect 14 0 8 0;
+#X connect 15 0 19 0;
+#X connect 18 0 8 1;
+#X connect 19 0 16 0;
+#X connect 20 0 12 0;

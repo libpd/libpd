@@ -1,0 +1,80 @@
+#N canvas 210 529 680 275 10;
+#N canvas 0 0 450 300 graph1 0;
+#X array mapping 64 float 1;
+#A 0 0.0916017 -0.201423 -0.477099 -0.711681 -0.884964 -0.982024 -0.9945
+-0.921318 -0.76878 -0.550026 -0.283897 0.00668462 0.296691 0.561142
+0.777261 0.926433 0.995809 0.979413 0.878658 0.702222 0.465302 0.188305
+-0.104911 -0.389091 -0.639758 -0.835322 -0.958937 -0.999957 -0.954848
+-0.827497 -0.628871 -0.37608 -0.0908956 0.202118 0.477722 0.712179
+0.885295 0.982158 0.994426 0.92104 0.768324 0.54943 0.283212 -0.00739881
+-0.297373 -0.561733 -0.777711 -0.926702 -0.995875 -0.979271 -0.87832
+-0.701718 -0.464675 -0.187609 0.105617 0.389745 0.640304 0.835712 0.959139
+0.999952 0.954637 0.827096 0.628316 0.375418;
+#X coords 0 1 63 -1 200 140 1;
+#X restore 242 21 graph;
+#X msg 50 142 approx mapping;
+#X obj 20 86 pdp_t;
+#X text 235 165 -1 ----------- 0 ----------- 1;
+#X obj 50 115 spigot;
+#X obj 87 92 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 20 225 pdp_cheby 10;
+#X obj 515 138 tabsend~ mapping;
+#X obj 515 112 osc~;
+#X floatatom 515 65 5 0 0;
+#X floatatom 573 64 5 0 0;
+#N canvas 0 0 450 300 fblock 0;
+#X obj 36 36 inlet;
+#X obj 101 35 inlet;
+#X obj 42 196 outlet;
+#X obj 104 83 samplerate~;
+#X obj 59 158 +;
+#X obj 103 144 *;
+#X obj 103 59 t b b f;
+#X text 200 35 fblock: compute block relative frequencies;
+#X text 200 79 right inlet is also "active";
+#X text 201 119 main usage is to compute block synchronous frequencies
+;
+#X text 200 134 for spectral domain processing;
+#X text 201 49 out = left + right * (sys samplerate / blocksize);
+#X obj 101 115 / 64;
+#X connect 0 0 4 0;
+#X connect 1 0 6 0;
+#X connect 3 0 12 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 0;
+#X connect 6 1 3 0;
+#X connect 6 2 5 1;
+#X connect 12 0 5 0;
+#X restore 515 89 pd fblock;
+#X obj 20 40 metro 40;
+#X obj 20 62 pdp_v4l;
+#X msg 515 37 0.17;
+#X text 236 208 send a signal to a table and use this as an intensity
+mapping function in pdp_cheby;
+#X obj 20 250 pdp_glx;
+#X obj 20 15 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X msg 573 36 3;
+#X msg 133 207 chanmask \$1;
+#X floatatom 133 185 5 0 0;
+#X msg 133 165 1;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 2 1 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 1;
+#X connect 6 0 16 0;
+#X connect 8 0 7 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 1;
+#X connect 11 0 8 0;
+#X connect 12 0 13 0;
+#X connect 13 0 2 0;
+#X connect 14 0 9 0;
+#X connect 17 0 12 0;
+#X connect 18 0 10 0;
+#X connect 19 0 6 0;
+#X connect 20 0 19 0;
+#X connect 21 0 20 0;

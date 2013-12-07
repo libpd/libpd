@@ -1,0 +1,15 @@
+#N canvas 0 0 450 300 12;
+#X obj 31 52 frameaccum~;
+#X obj 31 93 capture~;
+#X obj 177 183 Scope~ 234 106 8 3 256 0 1 0 0 0 0 102 255 51 135 135
+135 0;
+#X obj 325 93 capture~;
+#X obj 325 52 framedelta~;
+#X msg 33 143 range 0 1 \, bufsize 256 \, 8;
+#X obj 177 13 train~ 46.4399;
+#X connect 0 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 6 0 0 0;
+#X connect 6 0 4 0;

@@ -1,0 +1,33 @@
+#N canvas 0 26 491 310 10;
+#X text 15 35 output the maximum of two signals;
+#X obj 272 105 cycle~ 3.14;
+#X obj 227 80 cycle~ 2;
+#X obj 226 132 maximum~;
+#X obj 226 159 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 52 173 maximum~ 0.5;
+#X obj 52 134 sig~;
+#X floatatom 52 104 5 0 0 0 - - -;
+#X obj 52 198 Snapshot~ 100;
+#X obj 53 225 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#N canvas 380 180 494 369 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION output the maximum of two signals;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 439 286 pd META;
+#X connect 1 0 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 9 0;

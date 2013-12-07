@@ -16,13 +16,11 @@
 #include <stdlib.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#include <sys/stat.h>
 #endif
+#include <sys/stat.h>
 #ifdef _WIN32
 #include <io.h>
 #include <windows.h>
-#endif
-#ifdef _WIN32
 #include <malloc.h>
 #endif
 
@@ -30,6 +28,7 @@
 #include "m_pd.h"
 #include "m_imp.h"
 #include "s_stuff.h"
+#include "s_utf8.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -254,12 +253,6 @@ void sys_setextrapath(const char *p)
     sys_staticpath = namelist_append(sys_staticpath, p, 0);
 }
 
-#ifdef _WIN32
-#define MSWOPENFLAG(bin) (bin ? _O_BINARY : _O_TEXT)
-#else
-#define MSWOPENFLAG(bin) 0
-#endif
-
     /* try to open a file in the directory "dir", named "name""ext",
     for reading.  "Name" may have slashes.  The directory is copied to
     "dirresult" which must be at least "size" bytes.  "nameresult" is set
@@ -280,11 +273,10 @@ int sys_trytoopenone(const char *dir, const char *name, const char* ext,
         strcat(dirresult, "/");
     strcat(dirresult, name);
     strcat(dirresult, ext);
-    sys_bashfilename(dirresult, dirresult);
 
     DEBUG(post("looking for %s",dirresult));
         /* see if we can open the file for reading */
-    if ((fd=open(dirresult,O_RDONLY | MSWOPENFLAG(bin))) >= 0)
+    if ((fd=sys_open(dirresult, O_RDONLY)) >= 0)
     {
             /* in unix, further check that it's not a directory */
 #ifdef HAVE_UNISTD_H
@@ -398,12 +390,93 @@ int open_via_path(const char *dir, const char *name, const char *ext,
         size, bin, sys_searchpath));
 }
 
-   /* close a previsouly opened file
-   this is needed on platforms where you cannot open/close ressources 
-   across dll-boundaries */
+    /* open a file with a UTF-8 filename
+    This is needed because WIN32 does not support UTF-8 filenames, only UCS2.
+    Having this function prevents lots of #ifdefs all over the place.
+    */
+#ifdef _WIN32
+int sys_open(const char *path, int oflag, ...)
+{
+    int i, fd;
+    char pathbuf[MAXPDSTRING];
+    wchar_t ucs2path[MAXPDSTRING];
+    sys_bashfilename(path, pathbuf);
+    u8_utf8toucs2(ucs2path, MAXPDSTRING, pathbuf, MAXPDSTRING-1);
+    /* use _O_BINARY so we don't have to think about WIN32's Unicode
+     * modes. For the create mode, we always use 0666 on UNIX, so we
+     * just hard-code the Windows equivalent here. */
+    if (oflag & O_CREAT)
+        fd = _wopen(ucs2path, oflag | _O_BINARY, _S_IREAD | _S_IWRITE);
+    else
+        fd = _wopen(ucs2path, oflag | _O_BINARY);
+    return fd;
+}
+
+FILE *sys_fopen(const char *filename, const char *mode)
+{
+    char namebuf[MAXPDSTRING];
+    wchar_t ucs2buf[MAXPDSTRING];
+    wchar_t ucs2mode[MAXPDSTRING];
+    sys_bashfilename(filename, namebuf);
+    u8_utf8toucs2(ucs2buf, MAXPDSTRING, namebuf, MAXPDSTRING-1);
+    /* mode only uses ASCII, so no need for a full conversion, just copy it */
+    mbstowcs(ucs2mode, mode, MAXPDSTRING);
+    return (_wfopen(ucs2buf, ucs2mode));
+}
+#else
+#include <stdarg.h>
+int sys_open(const char *path, int oflag, ...)
+{
+    int i, fd;
+    char pathbuf[MAXPDSTRING];
+    sys_bashfilename(path, pathbuf);
+    if (oflag & O_CREAT)
+    {
+        mode_t mode;
+        int imode;
+        va_list ap;
+        va_start(ap, oflag);
+
+        /* Mac compiler complains if we just set mode = va_arg ... so, even
+        though we all know it's just an int, we explicitly va_arg to an int
+        and then convert.
+           -> http://www.mail-archive.com/bug-gnulib@gnu.org/msg14212.html
+           -> http://bugs.debian.org/647345
+        */
+        
+        imode = va_arg (ap, int);
+        mode = (mode_t)imode;
+        va_end(ap);
+        fd = open(pathbuf, oflag, mode);
+    }
+    else
+        fd = open(pathbuf, oflag);
+    return fd;
+}
+
+FILE *sys_fopen(const char *filename, const char *mode)
+{
+  char namebuf[MAXPDSTRING];
+  sys_bashfilename(filename, namebuf);
+  return fopen(namebuf, mode);
+}
+#endif /* _WIN32 */
+
+   /* close a previously opened file
+   this is needed on platforms where you cannot open/close resources
+   across dll-boundaries, but we provide it for other platforms as well */
 int sys_close(int fd)
 {
+#ifdef _WIN32
+    return _close(fd);  /* Bill Gates is a big fat hen */
+#else
     return close(fd);
+#endif
+}
+
+int sys_fclose(FILE *stream)
+{
+    return fclose(stream);
 }
 
 
@@ -412,7 +485,8 @@ int sys_close(int fd)
     search attempts. */
 void open_via_helppath(const char *name, const char *dir)
 {
-    char realname[MAXPDSTRING], dirbuf[MAXPDSTRING], *basename;
+    char realname[MAXPDSTRING], propername[MAXPDSTRING], dirbuf[MAXPDSTRING];
+    char *basename;
         /* make up a silly "dir" if none is supplied */
     const char *usedir = (*dir ? dir : "./");
     int fd;
@@ -423,6 +497,7 @@ void open_via_helppath(const char *name, const char *dir)
     if (strlen(realname) > 3 && !strcmp(realname+strlen(realname)-3, ".pd"))
         realname[strlen(realname)-3] = 0;
     strcat(realname, "-help.pd");
+    strncpy(propername, realname, MAXPDSTRING);
     if ((fd = do_open_via_path(dir, realname, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
             goto gotone;
@@ -433,16 +508,20 @@ void open_via_helppath(const char *name, const char *dir)
     realname[MAXPDSTRING-1] = 0;
     if ((fd = do_open_via_path(dir, realname, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
-            goto gotone;
+            goto gotone_deprecated;
 
         /* 3. "objectname.pd" */
     if ((fd = do_open_via_path(dir, name, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
-            goto gotone;
-    post("sorry, couldn't find help patch for \"%s\"", name);
+            goto gotone_deprecated;
+    post("sorry, couldn't find help patch for \"%s\" in -%s-", name,dir);
     return;
+gotone_deprecated:
+    post("'%s' is a deprecated name format for a help patch.\n\tPlease rename to '%s'!",
+          basename, propername);
 gotone:
     close (fd);
+    post("Found help patch for \"%s\" in -%s-", name,dir);
     glob_evalfile(0, gensym((char*)basename), gensym(dirbuf));
 }
 
@@ -633,11 +712,23 @@ void sys_set_extrapath( void)
     sys_gui("set ::sys_staticpath $::tmp_path\n");
 }
 
+    /* send the realtime priority preference for the pref GUI */
+void sys_set_realtime(void)
+{
+    sys_vgui("set ::dialog_path::realtime_button %i\n", !sys_defeatrt);
+}
+
+    /* send the startup flags to the pref GUI */
+void sys_set_startup_flags(void)
+{
+    sys_vgui("set ::startup_flags {%s}\n", sys_flags->s_name);
+}
+
     /* start a search path dialog window */
 void glob_start_path_dialog(t_pd *dummy)
 {
-     char buf[MAXPDSTRING];
-
+    char buf[MAXPDSTRING];
+    sys_set_realtime();
     sys_set_searchpath();
     sprintf(buf, "pdtk_path_dialog %%s %d %d\n", sys_usestdpath, sys_verbose);
     gfxstub_new(&glob_pdobject, (void *)glob_start_path_dialog, buf);
@@ -698,4 +789,14 @@ void glob_startup_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv)
     }
 }
 
+    /* startup flags from the preferences window */
+void glob_startup_flags(t_pd *dummy, t_symbol *s)
+{
+    sys_flags = sys_decodedialog(s);
+}
 
+void glob_realtime(t_pd *dummy, t_floatarg f)
+{
+    /* the interface calls this "realtime" but its stored as the inverse */
+    sys_defeatrt = f > 0 ? 0 : 1;
+}

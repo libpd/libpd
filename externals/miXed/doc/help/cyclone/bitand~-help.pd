@@ -1,0 +1,202 @@
+#N canvas 0 26 739 564 10;
+#X text 17 0 Bitwise and signal operator.;
+#X obj 20 439 clip~ -1 1;
+#X floatatom 356 286 0 0 0 0 - - -;
+#X msg 356 304 mode \$1;
+#X text 38 219 bitwise boolean operation on a signal and some bitmask
+as bits;
+#X floatatom 478 284 0 0 0 0 - - -;
+#X floatatom 415 284 0 0 0 0 - - -;
+#X obj 478 304 sig~ 1;
+#X obj 415 304 sig~ 1;
+#X text 129 429 modes \; mode 0: treat both floating point signal inputs
+as raw 32 bit values \; mode 1: convert both floating point signal
+inputs to integers \; mode 2: treat left input as raw 32 bit value
+\, convert right input to integer \; mode 3: convert left input to
+integer \, treat right input as raw 32 bit value \;;
+#X text 19 103 send bitmask;
+#X floatatom 49 461 0 0 0 0 - - -;
+#X obj 20 480 *~ 0.2;
+#X obj 222 124 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 437 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 424 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 411 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 398 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 385 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 372 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 359 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 346 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 333 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 320 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 307 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 294 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 281 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 268 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 255 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 242 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 229 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 216 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 203 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 190 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 177 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 164 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 151 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 138 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 125 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 112 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 99 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 86 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 73 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 60 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 47 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 34 165 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 84 338 0 0 0 0 - - -;
+#X obj 20 519 dac~;
+#X obj 53 299 cycle~ 440;
+#X text 129 403 args: <mask> <mode>. both default to 0;
+#X text 454 166 <= set bitmask;
+#X text 346 259 bitwise boolean operation on signals as integers;
+#X text 87 364 use an integer as a bitmask;
+#X text 15 25 Performs bitwise boolean operations on a floating point
+signal as bits or as an integer. Note that if you are converting the
+floats to ints and back that single precision floating point values
+only retain 24 bits of integer resolution. The floating point bits
+from left to right are <1 sign bit> <8 exponent bits> <23 mantissa
+bits>.;
+#X obj 415 328 bitand~ 0 1;
+#X obj 415 388 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 415 361 unsig~;
+#X obj 21 397 bitand~;
+#N canvas 309 151 494 402 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal conversion max_compatible needs_work;
+#X text 12 45 DESCRIPTION bitwise and signal operator;
+#X text 12 65 INLET_0 signal bits;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 677 522 pd META;
+#X obj 21 190 pack s 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0;
+#X msg 21 125 bits;
+#X obj 21 266 list trim;
+#X connect 1 0 12 0;
+#X connect 2 0 3 0;
+#X connect 3 0 54 0;
+#X connect 5 0 7 0;
+#X connect 6 0 8 0;
+#X connect 7 0 54 1;
+#X connect 8 0 54 0;
+#X connect 11 0 12 1;
+#X connect 12 0 47 0;
+#X connect 12 0 47 1;
+#X connect 13 0 45 0;
+#X connect 13 0 44 0;
+#X connect 13 0 43 0;
+#X connect 13 0 42 0;
+#X connect 13 0 41 0;
+#X connect 13 0 40 0;
+#X connect 13 0 39 0;
+#X connect 13 0 38 0;
+#X connect 13 0 37 0;
+#X connect 13 0 36 0;
+#X connect 13 0 35 0;
+#X connect 13 0 34 0;
+#X connect 13 0 33 0;
+#X connect 13 0 32 0;
+#X connect 13 0 31 0;
+#X connect 13 0 30 0;
+#X connect 13 0 29 0;
+#X connect 13 0 28 0;
+#X connect 13 0 27 0;
+#X connect 13 0 26 0;
+#X connect 13 0 25 0;
+#X connect 13 0 24 0;
+#X connect 13 0 23 0;
+#X connect 13 0 22 0;
+#X connect 13 0 21 0;
+#X connect 13 0 20 0;
+#X connect 13 0 19 0;
+#X connect 13 0 18 0;
+#X connect 13 0 17 0;
+#X connect 13 0 16 0;
+#X connect 13 0 15 0;
+#X connect 13 0 14 0;
+#X connect 14 0 59 32;
+#X connect 15 0 59 31;
+#X connect 16 0 59 30;
+#X connect 17 0 59 29;
+#X connect 18 0 59 28;
+#X connect 19 0 59 27;
+#X connect 20 0 59 26;
+#X connect 21 0 59 25;
+#X connect 22 0 59 24;
+#X connect 23 0 59 23;
+#X connect 24 0 59 22;
+#X connect 25 0 59 21;
+#X connect 26 0 59 20;
+#X connect 27 0 59 19;
+#X connect 28 0 59 18;
+#X connect 29 0 59 17;
+#X connect 30 0 59 16;
+#X connect 31 0 59 15;
+#X connect 32 0 59 14;
+#X connect 33 0 59 13;
+#X connect 34 0 59 12;
+#X connect 35 0 59 11;
+#X connect 36 0 59 10;
+#X connect 37 0 59 9;
+#X connect 38 0 59 8;
+#X connect 39 0 59 7;
+#X connect 40 0 59 6;
+#X connect 41 0 59 5;
+#X connect 42 0 59 4;
+#X connect 43 0 59 3;
+#X connect 44 0 59 2;
+#X connect 45 0 59 1;
+#X connect 46 0 57 1;
+#X connect 48 0 57 0;
+#X connect 54 0 56 0;
+#X connect 56 0 55 0;
+#X connect 57 0 1 0;
+#X connect 59 0 61 0;
+#X connect 60 0 59 0;
+#X connect 61 0 57 0;

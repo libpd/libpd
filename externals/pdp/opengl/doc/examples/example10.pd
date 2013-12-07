@@ -1,0 +1,39 @@
+#N canvas 592 340 647 499 10;
+#X obj 231 344 pdp_xv;
+#X obj 54 72 metro 40;
+#X obj 54 47 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 54 140 3dp_push;
+#X obj 248 158 3dp_view transz 5;
+#X floatatom 362 126 5 0 0;
+#X obj 248 182 3dp_light 0;
+#X obj 54 169 3dp_mouserotate;
+#X obj 54 111 3dp_windowcontext;
+#X obj 231 311 pdp_blur;
+#X obj 285 291 hsl 128 15 0 1 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 8100 1;
+#X text 104 7 connect 3dp and basic pdp image processing with 3dp_snap
+;
+#X text 105 26 3dp_snap defaults to texture packets \, but you can
+specify the desired type as a creation argument;
+#X obj 107 377 pdp_convert texture/*/*;
+#X obj 54 412 3dp_draw cube 10;
+#X text 247 233 <- specify packet type and capture area;
+#X obj 54 200 3dp_draw cube 2;
+#X obj 54 234 3dp_snap image/*/* 320 240;
+#X connect 1 0 8 0;
+#X connect 2 0 1 0;
+#X connect 3 0 7 0;
+#X connect 3 1 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 1;
+#X connect 7 0 16 0;
+#X connect 8 0 3 0;
+#X connect 8 1 7 1;
+#X connect 9 0 13 0;
+#X connect 9 0 0 0;
+#X connect 10 0 9 1;
+#X connect 13 0 14 1;
+#X connect 16 0 17 0;
+#X connect 17 0 14 0;
+#X connect 17 1 9 0;

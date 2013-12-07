@@ -1,0 +1,11 @@
+#N canvas 0 32 389 315 10;
+#X obj 71 32 inlet;
+#X obj 71 249 outlet;
+#X text 119 32 input range: 0 to 1;
+#X text 9 5 [hid_centered];
+#X obj 71 130 * 2;
+#X obj 71 152 - 1;
+#X text 127 249 output range: -1 to 1;
+#X connect 0 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;

@@ -1,0 +1,4 @@
+#N canvas 50 50 600 400 12;
+#X text 10 10 Append clone works on messages (arrays of atoms) \, unlike the;
+#X text 10 30 internal append of Pd \, which works on data structures (lists;
+#X text 10 50 of scalars).;

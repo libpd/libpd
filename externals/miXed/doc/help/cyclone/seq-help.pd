@@ -1,0 +1,64 @@
+#N canvas 0 26 618 427 10;
+#X obj 49 298 seq;
+#X msg 306 252 write test1.mid;
+#X msg 175 132 bang;
+#X msg 167 251 record;
+#X msg 175 159 stop;
+#X obj 180 113 bng 15 250 50 0 empty empty empty 0 -6 0 10 -262144
+-1 -1;
+#X msg 222 251 stop record;
+#X obj 10 337 midiout;
+#X obj 7 167 midiin;
+#X msg 306 275 read test1.mid;
+#X msg 225 158 pause;
+#X msg 285 158 continue;
+#X obj 29 -37 seq;
+#X text 65 -36 - a simple MIDI file player and recorder;
+#X text 208 113 loop;
+#X text 213 131 play;
+#X text 236 223 recording;
+#X text 352 348 jkant.altervista.org;
+#X text 352 324 ver 0.1 05-07;
+#X text 74 302 <-- click object to open list editor;
+#X text 261 90 <-- midi file should be in the same folder or an open
+window popups to pick file;
+#X text 404 251 save in patch folder;
+#N canvas 109 124 494 383 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 155 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION a simple MIDI file player and recorder;
+#X text 12 5 KEYWORDS control MIDI storage max_compatible filesystem
+;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 OUTLET_1 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 135 AUTHOR Krzysztof Czaja;
+#X text 12 65 INLET_0 bang float read stop pause continue record stop
+record write read goto;
+#X restore 555 360 pd META;
+#X msg 199 189 goto;
+#X text 27 -10 cyclone's [seq] input accepts midi files and realtime
+midi messages through [midiin]. All trakcs of a multi-track midi file
+are merged into one. [notein] may be connected through a [midiformat]
+object. Left inlet outputs midi data to [midiout]. [noteout] may be
+connected through a [midiparse] object. Right inlet outputs a bang
+message at the sequence's end \, useful for loops. [seq] has his own
+midi list editor.;
+#X msg 173 90 read test.mid;
+#X connect 0 0 7 0;
+#X connect 0 1 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 0 0;
+#X connect 8 0 0 0;
+#X connect 8 0 7 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X connect 23 0 0 0;
+#X connect 25 0 0 0;

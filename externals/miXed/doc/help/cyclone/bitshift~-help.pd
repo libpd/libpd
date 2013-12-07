@@ -1,0 +1,62 @@
+#N canvas 0 26 619 487 10;
+#X text 308 420 see also:;
+#X text 24 -8 Bitwise shift signal operator.;
+#X floatatom 88 207 0 0 0 0 - - -;
+#X msg 88 227 shift \$1;
+#X floatatom 430 186 0 0 0 0 - - -;
+#X msg 430 206 mode \$1;
+#X obj 60 291 clip~ -1 1;
+#X floatatom 375 186 0 0 0 0 - - -;
+#X msg 375 206 shift \$1;
+#X text 64 142 bitwise operation on a signal as bits;
+#X floatatom 324 186 0 0 0 0 - - -;
+#X obj 324 206 sig~ 1;
+#X text 275 361 modes \; mode 0: treat floating point signal input
+as raw 32 bit value \; mode 1: convert floating point signal input
+to integer \;;
+#X floatatom 93 311 0 0 0 0 - - -;
+#X obj 60 335 *~ 0.2;
+#X obj 60 377 dac~;
+#X obj 62 187 cycle~ 440;
+#X text 275 335 args: <shift> <mode>. both default to 0;
+#X text 325 151 bitwise operation on signals as integers;
+#X text 15 14 Performs bitwise operations on a floating point signal
+as bits or as an integer. Note that if you are converting the floats
+to ints and back that single precision floating point values only retain
+24 bits of integer resolution. The floating point bits from left to
+right are <1 sign bit> <8 exponent bits> <23 mantissa bits>. Positive
+shift values correspond to left shifting that number of bits \, negative
+shift values correspond to right shifting that number of bits.;
+#X obj 324 230 bitshift~ 1 1;
+#X obj 325 284 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 62 256 bitshift~ 8 0;
+#X obj 324 259 Snapshot~ 100;
+#N canvas 309 151 494 356 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION bitwise shift signal operator;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 568 440 pd META;
+#X connect 2 0 3 0;
+#X connect 3 0 22 0;
+#X connect 4 0 5 0;
+#X connect 5 0 20 0;
+#X connect 6 0 14 0;
+#X connect 7 0 8 0;
+#X connect 8 0 20 0;
+#X connect 10 0 11 0;
+#X connect 11 0 20 0;
+#X connect 13 0 14 1;
+#X connect 14 0 15 0;
+#X connect 14 0 15 1;
+#X connect 16 0 22 0;
+#X connect 20 0 23 0;
+#X connect 22 0 6 0;
+#X connect 23 0 21 0;

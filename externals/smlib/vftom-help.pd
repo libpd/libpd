@@ -1,0 +1,20 @@
+#N canvas 1 53 302 152 10;
+#X text 194 88 j#|@2002;
+#X obj 216 68 SMLib-help;
+#X text 10 6 frequency to midi on a vector;
+#X msg 15 33 440 446.164 880;
+#X obj 15 56 vftom;
+#X obj 15 80 print vftom;
+#N canvas 119 152 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 65 INLET_0 list float;
+#X text 12 85 OUTLET_0 list float;
+#X text 12 45 DESCRIPTION frequency to midi on a vector;
+#X text 12 5 KEYWORDS control list_op conversion MIDI;
+#X restore 229 111 pd META;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;

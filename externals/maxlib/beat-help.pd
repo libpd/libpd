@@ -1,0 +1,79 @@
+#N canvas 0 26 608 549 12;
+#X floatatom 20 503 8 0 0 0 - - -;
+#X obj 20 66 notein;
+#X obj 183 376 makenote 100 250;
+#X floatatom 41 477 5 0 0 0 - - -;
+#X text 43 13 beat :: beat tracker;
+#X text 97 505 beats per minute;
+#X msg 71 224 reset;
+#X obj 183 219 tgl 20 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 183 346 60;
+#X msg 53 108 print;
+#X obj 63 446 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -258699
+-1;
+#X text 93 447 'on beat';
+#X text 96 479 milliseconds;
+#X msg 303 336 400;
+#X obj 319 299 + 0;
+#X text 411 245 <-- adding some jitter;
+#X obj 183 271 random 4;
+#X obj 183 298 select 0 1 2 3;
+#X text 211 218 <-- click here to play random rhythm;
+#X obj 338 243 random 3;
+#X obj 338 270 - 1;
+#X obj 20 414 beat 4;
+#X text 88 415 creation: beat <band percentage>;
+#X text 349 456 certain percentage in which;
+#X text 350 472 the beats have to lie;
+#X msg 262 337 200;
+#X msg 222 336 100;
+#X obj 183 245 metro 100;
+#X text 106 108 print internal data (toggle on/off);
+#X text 106 136 prints out: time between current and last event \,
+the five best-fitting theories (with likelyhood in brackets) \, the
+time of arrival of current event (R) and the expected time of arrival
+(E) of the next event;
+#X text 213 439 band percentage: creates a critical time band of a
+;
+#N canvas 316 146 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 85 INLET_1 float;
+#X text 12 125 OUTLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 5 KEYWORDS control analysis;
+#X text 12 45 DESCRIPTION beat tracker;
+#X text 12 65 INLET_0 float reset print;
+#X text 12 145 OUTLET_2 bang;
+#X restore 545 518 pd META;
+#X connect 1 0 21 0;
+#X connect 1 1 21 1;
+#X connect 2 0 21 0;
+#X connect 2 1 21 1;
+#X connect 6 0 21 0;
+#X connect 7 0 27 0;
+#X connect 8 0 2 0;
+#X connect 9 0 21 0;
+#X connect 13 0 14 0;
+#X connect 14 0 27 1;
+#X connect 16 0 17 0;
+#X connect 17 0 8 0;
+#X connect 17 0 26 0;
+#X connect 17 1 8 0;
+#X connect 17 1 25 0;
+#X connect 17 2 13 0;
+#X connect 17 2 8 0;
+#X connect 17 3 8 0;
+#X connect 17 3 13 0;
+#X connect 19 0 20 0;
+#X connect 20 0 14 1;
+#X connect 21 0 0 0;
+#X connect 21 1 3 0;
+#X connect 21 2 10 0;
+#X connect 25 0 14 0;
+#X connect 26 0 14 0;
+#X connect 27 0 16 0;
+#X connect 27 0 19 0;

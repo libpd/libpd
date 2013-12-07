@@ -1,0 +1,140 @@
+#N canvas 225 22 809 680 10;
+#X text 21 122 In two dimensions \, only specify the azimuth. (for
+example "define_loudspeakers 2 -45 45 0 180";
+#X text 417 17 VBAP and define_loudspeakers;
+#X text 22 166 2 For vbap \, give azimuth and elevation for the desired
+location. Bang the first inlet and vbap will output gain-factors for
+each speaker and the actual location produced. This can be different
+from the desired one depending where your speakers are.;
+#X text 418 46 loudspeaker position definition can also be sent directly
+to a vbap object. This changes the setup information only in a single
+vbap object.;
+#X text 419 94 For an example of how to use vbap with [matrix~] from
+zexy-library \, see vbap-demo.pd.;
+#X text 21 22 1 Use the define_loudspeakers object or message to list
+the speaker positions. The example here defines loudspeakers in three
+dimensions (the first parameter). For each speaker \, define its azimuth
+and elevation. Here we have speakers front left and right with no elevation
+(-45 0 45 0) and front and back with 45 degrees of elevation (0 45
+180 45). Send the data to vbap.;
+#N canvas 283 22 628 620 simple 0;
+#X floatatom 159 198 5 0 0 2 - - -;
+#X floatatom 112 425 10 0 0 0 - - -;
+#X floatatom 181 425 10 0 0 0 - - -;
+#X floatatom 209 349 0 0 0 3 actual_azimuth - -;
+#X floatatom 221 315 0 0 0 3 actual_elevation - -;
+#X floatatom 231 294 7 0 0 1 actual_spreading - -;
+#X obj 162 182 hsl 100 13 -180 180 0 1 empty empty azimuth 10 7 0 10
+-262144 -1 -1 1500 1;
+#X floatatom 237 237 5 0 0 2 - - -;
+#X obj 240 220 hsl 100 13 0 100 0 1 empty empty spread 10 7 0 10 -262144
+-1 -1 700 1;
+#X text 130 134 to output updated values;
+#X obj 112 155 metro 100;
+#X obj 112 133 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 197 200 (ignore elevation in 2D \, that's for 3D);
+#X obj 63 524 *~;
+#X obj 92 525 *~;
+#X msg 454 145 dsp 1;
+#X obj 454 169 send pd;
+#X floatatom 250 425 10 0 0 0 - - -;
+#X floatatom 319 425 10 0 0 0 - - -;
+#X obj 123 524 *~;
+#X obj 152 525 *~;
+#X msg 17 48 define_loudspeakers 2 -135 -45 0 45 135;
+#X text 263 37 Define 2D speaker arrangement with speakers at -135
+\, -45 \, 0 \, 45 and 135 degree positions (0 degrees is the center
+front). This is a classic 5.1 setup.;
+#X floatatom 389 425 10 0 0 0 - - -;
+#X obj 72 558 dac~ 1 2 3 4 5;
+#X obj 182 525 *~;
+#X obj 112 267 vbap 0 0 30;
+#X obj 112 376 route 0 1 2 3 4;
+#X obj 13 396 *~ 0.2;
+#X obj 13 374 noise~;
+#X connect 1 0 13 1;
+#X connect 2 0 14 1;
+#X connect 6 0 0 0;
+#X connect 8 0 7 0;
+#X connect 10 0 26 0;
+#X connect 11 0 10 0;
+#X connect 13 0 24 0;
+#X connect 14 0 24 1;
+#X connect 15 0 16 0;
+#X connect 17 0 19 1;
+#X connect 18 0 20 1;
+#X connect 19 0 24 2;
+#X connect 20 0 24 3;
+#X connect 21 0 26 0;
+#X connect 23 0 25 1;
+#X connect 25 0 24 4;
+#X connect 26 0 27 0;
+#X connect 27 0 1 0;
+#X connect 27 1 2 0;
+#X connect 27 2 17 0;
+#X connect 27 3 18 0;
+#X connect 27 4 23 0;
+#X connect 28 0 13 0;
+#X connect 28 0 14 0;
+#X connect 28 0 19 0;
+#X connect 28 0 20 0;
+#X connect 28 0 25 0;
+#X connect 29 0 28 0;
+#X restore 421 139 pd simple 5.1 example;
+#X obj 421 277 vbap/vbap 90 0 30;
+#X obj 100 371 testtools/unit-test-frame;
+#X msg 100 342 vbap;
+#X floatatom 454 342 5 0 0 0 - - -;
+#X floatatom 487 322 5 0 0 0 - - -;
+#X floatatom 520 300 5 0 0 0 - - -;
+#X text 22 244 The spread-parameter can be used to prevent a situation
+where sound is coming from one speaker only \, which would make speaker
+positions "visible". The range is 0 to 100;
+#X text 496 344 azimuth;
+#X text 524 324 elevation;
+#X text 556 300 spread;
+#X obj 100 315 loadbang;
+#N canvas 0 22 504 332 define-loudspeakers 0;
+#X msg 51 87 define_loudspeakers 2 -135 -45 0 45 135;
+#X msg 106 121 define_loudspeakers 3 -45 0 45 0 0 45 180 45;
+#X obj 51 21 inlet;
+#X obj 51 284 outlet;
+#X obj 188 283 outlet;
+#X obj 106 148 t b a;
+#X obj 51 112 t b a;
+#X obj 51 53 t b b b b;
+#X obj 161 199 t b a;
+#X obj 208 245 t b a;
+#X msg 161 172 define_loudspeakers 3 -30 0 30 0 0 45 180 45;
+#X msg 207 217 define_loudspeakers 3 -45 0 45 0 0 30 180 30;
+#X connect 0 0 6 0;
+#X connect 1 0 5 0;
+#X connect 2 0 7 0;
+#X connect 5 0 3 0;
+#X connect 5 1 4 0;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 7 0 0 0;
+#X connect 7 1 1 0;
+#X connect 7 2 10 0;
+#X connect 7 3 11 0;
+#X connect 8 0 3 0;
+#X connect 8 1 4 0;
+#X connect 9 0 3 0;
+#X connect 9 1 4 0;
+#X connect 10 0 8 0;
+#X connect 11 0 9 0;
+#X restore 421 237 pd define-loudspeakers;
+#X obj 421 208 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 7 0 8 1;
+#X connect 7 1 10 0;
+#X connect 7 2 11 0;
+#X connect 7 3 12 0;
+#X connect 8 3 19 0;
+#X connect 9 0 8 0;
+#X connect 17 0 9 0;
+#X connect 18 0 7 0;
+#X connect 18 1 7 0;
+#X connect 19 0 18 0;

@@ -1,0 +1,32 @@
+#N canvas 88 40 717 480 12;
+#X floatatom 50 254 0 0 0 0 - - -;
+#X obj 50 347 outlet~;
+#X text 130 346 signal output (delayed signal);
+#X obj 50 282 sig~;
+#X text 99 279 signal input (delay time in ms);
+#X text 218 310 creation argument: name of delay line;
+#X text 35 400 see also:;
+#X text 77 10 reads a signal from a 16bit delay line at a variable
+delay time (4-point-interpolation);
+#X text 31 51 vd16~ implements a 4-point interpolating delay tap from
+a corresponding delwrite~ object. The delay in milliseconds of the
+tap is specified by the incoming signal.;
+#X text 16 433 similar pd-objects:;
+#X obj 201 432 delread~;
+#X obj 285 432 delwrite~;
+#X obj 378 432 vd~;
+#X obj 123 403 del16write~;
+#X obj 242 403 del16read~;
+#X text 411 386 updated for iem16 version1.0;
+#X text 28 116 This is very similar to the pd-object;
+#X text 56 137 It uses only 16bit to store the samples \, which will
+need only half of the memory of pd's floatingpoint-based object.;
+#X text 57 175 However \, there are 2 drawbacks: there will be some
+additional noise (because floats are more precise than 16bit) \, and
+you cannot have values>1 stored in the delay-line;
+#X obj 375 112 vd~;
+#X obj 50 314 vd16~ del_example;
+#X obj 24 16 vd16~;
+#X connect 0 0 3 0;
+#X connect 3 0 20 0;
+#X connect 20 0 1 0;

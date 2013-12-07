@@ -1,0 +1,36 @@
+#N canvas 1 53 487 327 10;
+#X obj 5 2 cnv 15 450 20 empty empty degrees2mapping 2 11 1 18 -233017
+-66577 0;
+#X msg 422 3 pddp;
+#X text 254 269 released under the GNU GPL;
+#X text 185 228 For more info:;
+#X obj 289 226 pddp/pddplink ../mapping-about.pd -text mapping-about
+;
+#X text 40 254 (C) Copyright 2005 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 300 168 related objects:;
+#X obj 352 184 radians2mapping;
+#X floatatom 56 203 7 0 0 1 - - -;
+#X obj 59 103 hsl 300 15 0 360 0 0 empty empty degrees 6 7 1 10 -262131
+-1 -1 0 0;
+#X floatatom 82 133 5 0 0 0 - - -;
+#X text 26 34 This object converts numbers from the mapping range (0
+to 1) to radians (-pi to pi) with the 0's lining up in the same place.
+;
+#X obj 296 204 mapping2degrees;
+#X obj 56 168 degrees2mapping;
+#X obj 240 184 mapping2radians;
+#N canvas 466 198 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 95 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction conversion;
+#X text 12 45 DESCRIPTION convert numbers from the mapping range (0
+to 1) to radians (-pi to pi) with 0's lining up in the same place;
+#X restore 433 300 pd META;
+#X connect 9 0 10 0;
+#X connect 9 0 13 0;
+#X connect 13 0 8 0;

@@ -1,0 +1,40 @@
+#N canvas 141 50 610 449 10;
+#X text 295 18 Plane test;
+#X text 184 259 5 : X point of the plane;
+#X text 183 282 6 : Y point of the plane;
+#X text 183 305 7 : Z point of the plane;
+#X text 185 108 1 : name;
+#X text 121 74 message to change parametter / default value / creation
+arg number / description;
+#X text 206 126 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X text 217 238 normal vector of the circle;
+#X msg 96 255 setX 0;
+#X msg 95 280 setY 0;
+#X msg 95 303 setZ 0;
+#X msg 93 171 setVX 0;
+#X msg 93 196 setVY 0;
+#X msg 95 218 setVZ 0;
+#X msg 95 344 setPmax 10000;
+#X text 177 41 This object sould be used for the simulation of interaction
+between a collection of masse and a plane;
+#X text 184 171 2 : X coordonate of the orientation vector of the plane
+;
+#X text 183 196 3 : Y coordonate of the orientation vector of the plane
+;
+#X text 184 220 4 : Z coordonate of the orientation vector of the plane
+;
+#X obj 14 415 tPlane3D;
+#X text 199 379 position of the mass (first outlet of the mass object)
+;
+#X msg 94 379 position3D 0 0 0;
+#X text 184 346 8 : maximum profound of the circle interaction;
+#X connect 8 0 19 0;
+#X connect 9 0 19 0;
+#X connect 10 0 19 0;
+#X connect 11 0 19 0;
+#X connect 12 0 19 0;
+#X connect 13 0 19 0;
+#X connect 14 0 19 0;
+#X connect 21 0 19 0;

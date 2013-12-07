@@ -1,0 +1,60 @@
+#N canvas 1 53 496 515 10;
+#X obj 5 2 cnv 15 450 20 empty empty one2two 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 273 457 released under the GNU GPL;
+#X floatatom 153 110 5 0 0 0 - - -;
+#X floatatom 83 186 5 0 0 0 - - -;
+#X obj 156 91 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 0;
+#X obj 86 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 263 186 5 0 0 0 - - -;
+#X obj 266 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 18 28 Simple one-to-two mapping object. The first inlet is
+passed thru \, the range of the output data on the second inlet starts
+at the point in the input range specified as an arugment.;
+#X text 6 457 (C) Copyright 2007 Free Software Foundation;
+#X floatatom 143 303 5 0 0 0 - - -;
+#X floatatom 73 399 5 0 0 0 - - -;
+#X obj 146 284 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 76 416 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 253 399 5 0 0 0 - - -;
+#X obj 256 416 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 21 243 You can set the breakpoint using the argument or the
+right inlet:;
+#X floatatom 211 333 5 0 0 0 - - -;
+#X obj 214 314 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 143 352 one2two 0.2;
+#X obj 153 139 one2two;
+#N canvas 467 227 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 145 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 125 OUTLET_1 float;
+#X text 12 45 DESCRIPTION simple one-to-two mapping object;
+#X restore 433 484 pd META;
+#X connect 3 0 21 0;
+#X connect 4 0 6 0;
+#X connect 5 0 3 0;
+#X connect 7 0 8 0;
+#X connect 11 0 20 0;
+#X connect 12 0 14 0;
+#X connect 13 0 11 0;
+#X connect 15 0 16 0;
+#X connect 18 0 20 1;
+#X connect 19 0 18 0;
+#X connect 20 0 12 0;
+#X connect 20 1 15 0;
+#X connect 21 0 4 0;
+#X connect 21 1 7 0;

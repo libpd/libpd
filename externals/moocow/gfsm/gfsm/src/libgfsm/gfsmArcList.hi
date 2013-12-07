@@ -1,0 +1,124 @@
+
+/*=============================================================================*\
+ * File: gfsmArclist.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library: arc lists: inline definitions
+ *
+ * Copyright (c) 2004-2007 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+#include <stdlib.h>
+
+/*======================================================================
+ * Methods: Arc lists
+ */
+
+/*--------------------------------------------------------------
+ * arclist_prepend_node()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_prepend_node(gfsmArcList *al, gfsmArcList *nod)
+{
+  nod->next = al;
+  return nod;
+}
+
+/*--------------------------------------------------------------
+ * arclist_new_full()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_new_full(gfsmStateId  src,
+				   gfsmStateId  dst,
+				   gfsmLabelVal lo,
+				   gfsmLabelVal hi,
+				   gfsmWeight   wt,
+				   gfsmArcList  *nxt)
+{
+  gfsmArcList *nod = g_new(gfsmArcList,1);
+  nod->arc.source = src;
+  nod->arc.target = dst;
+  nod->arc.lower  = lo;
+  nod->arc.upper  = hi;
+  nod->arc.weight = wt;
+  nod->next       = nxt;
+  return nod;
+}
+
+/*--------------------------------------------------------------
+ * arclist_delete_node()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_delete_node(gfsmArcList *al, gfsmArcList *nod)
+{
+  al = gfsm_arclist_remove_node(al,nod);
+  g_free(nod);
+  return al;
+}
+
+/*--------------------------------------------------------------
+ * arclist_insert()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_insert(gfsmArcList *al,
+				 gfsmStateId  src,
+				 gfsmStateId  dst,
+				 gfsmLabelVal lo,
+				 gfsmLabelVal hi,
+				 gfsmWeight   wt,
+				 gfsmArcCompData *acdata)
+{
+  gfsmArcList *nod = gfsm_arclist_new_full(src,dst,lo,hi,wt,NULL);
+  if (!acdata || acdata->mask == gfsmASMNone) {
+    nod->next = al;
+    return nod;
+  }
+  return gfsm_arclist_insert_node_sorted(al,nod,acdata);
+}
+
+/*--------------------------------------------------------------
+ * arclist_insert_node()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_insert_node(gfsmArcList *al,
+				      gfsmArcList *nod,
+				      gfsmArcCompData *acdata)
+{
+  if (!acdata || acdata->mask == gfsmASMNone) return gfsm_arclist_prepend_node(al,nod);
+  return gfsm_arclist_insert_node_sorted(al,nod,acdata);
+}
+
+/*--------------------------------------------------------------
+ * arclist_sort_with_data()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_sort_with_data (gfsmArcList      *al,
+					  GCompareDataFunc  compare_func,
+					  gpointer          user_data)
+{
+  return gfsm_arclist_sort_real (al, (GFunc)compare_func, user_data);
+}
+
+
+
+/*--------------------------------------------------------------
+ * arclist_sort()
+ */
+GFSM_INLINE
+gfsmArcList *gfsm_arclist_sort(gfsmArcList *al, gfsmArcCompData *acdata)
+{
+  return gfsm_arclist_sort_real(al, (GFunc)gfsm_arc_compare_bymask, acdata);
+}

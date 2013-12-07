@@ -1,0 +1,14 @@
+#N canvas 360 364 381 307 10;
+#X obj 70 32 inlet;
+#X obj 84 249 outlet;
+#X text 140 249 output range: 0 to 1;
+#X text 9 5 [hid_invert];
+#X text 118 32 input range: 0 to 1;
+#X obj 84 142 -;
+#X msg 70 122 1;
+#X obj 70 103 t b f;
+#X connect 0 0 7 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 7 1 5 1;

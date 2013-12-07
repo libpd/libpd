@@ -1,0 +1,59 @@
+#N canvas 0 26 539 508 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 36 467 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 35 481 ___________________________________________________
+;
+#X obj 52 23 drunk;
+#X text 109 26 output random numbers in a moving range;
+#X obj 92 383 drunk 10;
+#X floatatom 92 411 5 0 0 0 - - -;
+#X obj 92 82 metro 300;
+#X obj 92 59 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 51 118 5 0 0 0 - - -;
+#X msg 104 163 set \$1;
+#X floatatom 104 140 5 0 0 0 - - -;
+#X text 157 163 set new bound without triggering output;
+#X text 172 84 bang triggers output;
+#X msg 181 249 10 20 4;
+#X text 247 249 first sets current value;
+#X text 247 262 second sets bound;
+#X text 247 275 third (if present) limits stepsize;
+#X msg 181 271 5 30;
+#X msg 123 224 seed \$1;
+#X text 188 223 seed rng;
+#X floatatom 123 202 5 0 0 0 - - -;
+#X text 96 119 set new value and output;
+#X floatatom 159 340 5 0 0 0 - - -;
+#X floatatom 164 356 5 0 0 0 - - -;
+#X text 204 338 set upper bound;
+#X text 212 353 set stepsize;
+#X text 155 378 args set initial bound and maximum stepsize;
+#X text 155 389 default 128 2;
+#N canvas 381 102 494 428 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 65 INLET_0 float bang set seed list;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 45 DESCRIPTION output random numbers in a moving range;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 486 483 pd META;
+#X connect 5 0 6 0;
+#X connect 7 0 5 0;
+#X connect 8 0 7 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 10 0;
+#X connect 14 0 5 0;
+#X connect 18 0 5 0;
+#X connect 19 0 5 0;
+#X connect 21 0 19 0;
+#X connect 23 0 5 1;
+#X connect 24 0 5 2;

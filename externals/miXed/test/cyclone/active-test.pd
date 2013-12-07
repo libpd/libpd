@@ -1,0 +1,19 @@
+#N canvas 52 81 262 185 12;
+#X obj 27 29 active;
+#X obj 27 74 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 129 29 active;
+#X obj 129 74 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#N canvas 376 80 255 181 test 1;
+#X obj 27 29 active;
+#X obj 27 74 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 129 29 active;
+#X obj 129 74 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X restore 31 138 pd test;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;

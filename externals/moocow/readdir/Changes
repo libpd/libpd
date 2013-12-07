@@ -1,0 +1,7 @@
+Change log for PD external 'readdir'
+
+v0.02 Thu, 02 Feb 2006 12:52:35 +0100
+   + automake-ified
+
+v0.01 Sun, 26 Oct 2003 14:06:29 +0100
+   + initial version

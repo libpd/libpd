@@ -1,0 +1,10 @@
+TODO:
+
+!!!! make sure no object slipped through !!!!
+
+not sure if correct:
+grab      - please review .... should maybe add krzysztofs test patch
+next      - please review someone .... is this ok ?
+index~    - my example is a bit boring I guess
+linedrive - used an old fts help patch, not ideal I guess ...
+coll      - see coll.txt

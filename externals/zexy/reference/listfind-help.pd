@@ -1,0 +1,37 @@
+#N canvas 0 31 567 344 10;
+#X text 467 29 part of zexy;
+#X obj 33 13 listfind;
+#X text 92 14 - find sublists in lists;
+#X obj 58 175 listfind;
+#X msg 249 154 1 2 3 2 1 8 2 3 4;
+#X obj 249 128 loadbang;
+#X msg 58 71 1;
+#X text 253 174 set the list to be searched;
+#X text 55 55 the list to be found;
+#X msg 70 95 list bla;
+#X msg 84 119 list 2 3;
+#X msg 96 142 list 8;
+#X obj 58 220 print found@;
+#X text 150 223 outputs a list of (0-based) indices of all occurences
+of the sublist;
+#X text 54 281 this is similar (and hopefully compatible) to foobar's
+[list-find] but it searches not only for single elements but for entire
+sub-lists;
+#N canvas 460 154 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION find sublists in lists;
+#X text 12 65 INLET_0 list;
+#X text 12 85 INLET_1 list;
+#X restore 511 317 pd META;
+#X connect 3 0 12 0;
+#X connect 4 0 3 1;
+#X connect 5 0 4 0;
+#X connect 6 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 3 0;
+#X connect 11 0 3 0;

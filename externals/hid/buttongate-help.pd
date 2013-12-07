@@ -1,0 +1,53 @@
+#N canvas 0 31 463 514 10;
+#X obj 5 2 cnv 15 450 20 empty empty buttongate 2 11 1 18 -233017 -66577
+0;
+#X obj 160 287 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 160 151 loadbang;
+#X msg 160 171 1;
+#X obj 160 199 metro 150;
+#X text 27 470 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 484 released under the GNU GPL;
+#X obj 223 417 pddp/pddplink ../all_about_hid.pd -text all_about_hid
+;
+#X text 114 418 For more info:;
+#X text 17 38 [buttongate] is a simple gate controlled by a HID button.
+You must specify the device and the button which controls the gate.
+The left inlet takes the data to be gated. The right inlet is for sending
+optional control messages to the HID.;
+#X obj 160 244 buttongate 0 btn_0;
+#X text 18 119 The first button on the first device controls this gate:
+;
+#X text 15 237 data to be gated -->;
+#X text 292 237 <-- msgs to [hid];
+#X obj 281 288 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 310 197 refresh;
+#X msg 299 176 open 2;
+#X text 39 294 button pressed->;
+#X text 310 293 <-- button released;
+#X text 23 348 Keyboard keys can also be used to control this object.
+You can get the [hid] keycode from here:;
+#X obj 324 368 ev_key-list;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#N canvas 504 253 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION simple gate controlled by a HID button;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 open refresh;
+#X text 12 105 OUTLET_0 bang;
+#X text 12 125 OUTLET_1 bang;
+#X text 12 5 KEYWORDS control user_input abstraction;
+#X restore 406 463 pd META;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 10 0;
+#X connect 10 0 1 0;
+#X connect 10 1 14 0;
+#X connect 15 0 10 1;
+#X connect 16 0 10 1;

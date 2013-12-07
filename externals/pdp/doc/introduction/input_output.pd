@@ -1,0 +1,82 @@
+#N canvas 250 34 894 848 10;
+#X obj 107 427 pdp_v4l;
+#X obj 107 53 metro 40;
+#X msg 159 14 stop;
+#X msg 107 14 bang;
+#X msg 51 14 bang;
+#X obj 107 695 pdp_glx;
+#X msg 209 93 open /dev/video0;
+#X msg 209 117 open /dev/video1;
+#X text 347 95 you can choose the input device using the 'open' message.
+the default is /dev/video0;
+#X msg 209 142 close;
+#X text 348 143 closes the video port;
+#X msg 209 168 type yv12;
+#X msg 209 192 type grey;
+#X text 348 171 type sets the ouput image package type. currently only
+yv12 (luma/chroma color) and greyscale are supported.;
+#X msg 210 221 dim 320 240;
+#X msg 210 244 dim 640 480;
+#X text 348 215 dim sets the dimensions of the captured frame. please
+note that in all objects dimensions and packet type (color/greyscale)
+have to be the same to be combined (i.e. mixed);
+#X msg 210 556 dim 320 240;
+#X msg 210 579 dim 640 480;
+#X text 349 559 dim sets the window dimensions;
+#X msg 210 510 create;
+#X msg 210 531 destroy;
+#X text 208 447 pdp_glx ouputs video in a window using the GLX extension.
+if your graphics card/driver supports it you can have multiple output
+windows. if a pdp message is received and a window is not open \, one
+is created automaticly.;
+#X text 349 513 use these messages to explicitly create/destroy the
+window;
+#X text 207 18 pdp_v4l grabs video from the video4linux device. it
+grabs a frame whenever a bang message is received. the output rate
+is limited by the maximum framerate of the video device. if there is
+no device opened \, it will attempt to open /dev/video0;
+#X msg 212 627 cursor \$1;
+#X obj 212 607 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 348 627 enables/disables cursor in xv window;
+#X msg 210 319 channel \$1;
+#X floatatom 210 295 5 0 0 0 - - -;
+#X text 347 320 sets the v4l channel (like tuner \, composite \, svideo
+\, ...);
+#X floatatom 210 359 5 0 0 0 - - -;
+#X msg 210 383 freq \$1;
+#X floatatom 271 359 5 0 0 0 - - -;
+#X msg 271 383 freqMHz \$1;
+#X text 346 359 sets the v4l tuner frequency (in v4l units and MHz)
+;
+#X text 347 655 specify the x window display;
+#X msg 212 653 display :0;
+#X obj 107 748 print;
+#X text 211 745 the output channel sends mouse event messages (press/release/drag
+and individual p/r/d for each button);
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 38 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 9 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 17 0 5 0;
+#X connect 18 0 5 0;
+#X connect 20 0 5 0;
+#X connect 21 0 5 0;
+#X connect 25 0 5 0;
+#X connect 26 0 25 0;
+#X connect 28 0 0 0;
+#X connect 29 0 28 0;
+#X connect 31 0 32 0;
+#X connect 32 0 0 0;
+#X connect 33 0 34 0;
+#X connect 34 0 0 0;
+#X connect 37 0 5 0;

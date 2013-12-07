@@ -1,0 +1,38 @@
+#N canvas 8 134 546 352 10;
+#X obj 49 118 xmlrpc 8000;
+#X text 19 59 XMLRPC configuration;
+#X obj 11 10 cnv 15 500 40 empty empty xmlrpc 10 22 0 24 -260818 -1
+0;
+#X text 148 14 xmlrpc external for PD \, author: Thomas Grill;
+#X text 144 31 (C)2003 IEM \, Graz;
+#X obj 51 183 netreceive;
+#X text 25 144 For Windows user a dummy netreceive object MUST be present
+Otherwise \, Pd uses 99% CPU power when invoked with -nogui;
+#X floatatom 19 306 5 0 0 0 - - -;
+#X text 19 246 some receivers;
+#X text 232 244 some senders;
+#X floatatom 234 272 5 0 0 0 - - -;
+#X obj 19 271 r recv1;
+#X obj 94 271 r recv2;
+#X obj 234 302 s send1;
+#X obj 327 303 s send2;
+#X msg 316 271 a b;
+#X msg 354 271 1 2 3 hula;
+#X obj 469 287 env~;
+#X obj 469 310 s send3;
+#X floatatom 504 287 5 0 0 0 - - -;
+#X obj 469 264 osc~ 0.1;
+#X obj 93 303 print PD;
+#X obj 195 224 pddp/pddplink xmlrpc-test.py;
+#X text 18 83 Create an XMLRPC network socket using a port number between
+1024 and 65000:;
+#X text 19 211 Now run the Python test script to see it in action \,
+you can open the script by clicking:;
+#X connect 10 0 13 0;
+#X connect 11 0 7 0;
+#X connect 12 0 21 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 17 0 18 0;
+#X connect 17 0 19 0;
+#X connect 20 0 17 0;

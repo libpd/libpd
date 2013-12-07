@@ -1,0 +1,44 @@
+puts "setup script: evaluated once per Pd session"
+
+proc testmess_list {path target args} {
+    set sum 0
+    foreach a $args {
+        incr sum $a
+    }
+    set lb [concat [lindex $args 0]]
+    foreach a [lrange $args 1 end] {
+        lappend lb + $a
+    }
+    lappend lb = $sum
+    set [$path cget -textvariable] $lb
+    pd [concat $target _cb $sum \;]
+}
+
+proc testmess_command {path} {
+    pd [concat lb set [set [$path cget -textvariable]] \;]
+}
+
+#> testmess button
+#. -bg green -wraplength 350 -text test
+#. -command [concat testmess_command .-]
+#. @bang .- invoke
+#. @float testmess_list .- .| .#args
+#. @list testmess_list .- .| .#args
+
+puts "\nwidget initializer: evaluated whenever a Tk widget is created"
+puts "which may happen several times during Pd object\'s lifetime"
+puts "widget needs reinitializing after:"
+puts ". closing and reopening of a subpatch window"
+puts ". minimizing and maximizing a window"
+puts ". switching virtual desktops"
+
+#@ new
+puts "\nconstructor: evaluated once per Pd object"
+puts "(after Pd object creation, before Tk widget creation)"
+
+#@ vis
+puts "another initializer part added from \"#@ vis\" block"
+
+#@ free
+puts "\ndestructor: evaluated once, after Pd object destruction"
+puts "(Tk widget should be already gone)"

@@ -1,0 +1,48 @@
+#N canvas 0 31 496 386 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 23 347 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 22 361 ___________________________________________________
+;
+#X obj 41 22 anal 64;
+#X text 102 22 generate a histogram of number pairs received;
+#X text 108 184 arg sets the number of pairs to store;
+#X obj 48 192 anal 32;
+#X text 107 199 128 is the default 1024 is max;
+#X msg 48 79 clear;
+#X msg 59 101 reset;
+#X text 99 79 erase all numbers;
+#X text 107 102 erase last number received;
+#X floatatom 68 151 5 0 0 0 - - -;
+#X msg 125 138 1;
+#X msg 154 138 2;
+#X msg 181 138 3;
+#X text 171 251 how often did the last two numbers occur ?;
+#X floatatom 48 288 5 0 0 0 - - -;
+#X floatatom 87 267 5 0 0 0 - - -;
+#X obj 48 226 unpack f f f;
+#X floatatom 127 251 5 0 0 0 - - -;
+#X text 134 281 numbers in the pair;
+#N canvas 430 169 494 399 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control storage max_compatible;
+#X text 12 45 DESCRIPTION generate a histogram of number pairs received
+;
+#X text 12 65 INLET_0 float clear reset;
+#X text 12 85 OUTLET_0 list;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 445 365 pd META;
+#X connect 6 0 19 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 12 0 6 0;
+#X connect 13 0 6 0;
+#X connect 14 0 6 0;
+#X connect 15 0 6 0;
+#X connect 19 0 17 0;
+#X connect 19 1 18 0;
+#X connect 19 2 20 0;

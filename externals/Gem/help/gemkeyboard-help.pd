@@ -1,0 +1,43 @@
+#N canvas 376 314 717 512 10;
+#X text 135 37 part of GEM;
+#X text 152 70 [gemkeyboard];
+#X text 87 100 keyboard events in the GEM window;
+#X text 82 318 It is not guaranteed \, that Windows and Linux versions
+will give the same KeyCode for the same key pressed !!!;
+#X text 77 361 Furthermore \, i would like to make this object really
+cross-platform one day. Thus the KeyCode might change on one system
+or another in future times.;
+#X text 80 407 USE AT YOUR OWN RISK !!!;
+#X text 84 261 [gemkeyboard] sends out keyboard events which occur
+in the GEM window. Such event will appear on KEY_DOWN and will give
+the KeyCode of the button.;
+#X obj 79 125 cnv 15 100 40 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 89 135 gemkeyboard;
+#X floatatom 89 173 5 0 0 1 keyCode - -;
+#X obj 418 146 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 155 70 set create;
+#X msg 197 134 destroy;
+#X msg 132 112 reset \, create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 423 185 pd gemwin;
+#X msg 423 166 create;
+#X text 419 145 Create window:;
+#X connect 8 0 9 0;
+#X connect 11 0 12 0;
+#X connect 12 0 11 0;

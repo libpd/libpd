@@ -1,0 +1,47 @@
+#N canvas 1 53 683 513 10;
+#X floatatom 266 204 5 0 0 0 - - -;
+#X text 22 11 data;
+#X obj 27 172 t f f;
+#X msg 67 100 0;
+#X msg 68 121 1;
+#X obj 441 294 timeroll;
+#X obj 235 294 timeroll;
+#X obj 234 234 iir 5;
+#X obj 27 294 timeroll;
+#X obj 27 30 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X text 504 276 high-pass;
+#X text 240 276 low-pass;
+#X text 83 441 original;
+#X text 67 467 For more info on IIR:;
+#X obj 116 483 pddp/pddplink http://www.dspguru.com/info/faqs/iirfaq.htm
+;
+#X text 89 27 [iir] computes a infinite impulse response low-pass filter.
+;
+#X msg 234 124 reset;
+#X msg 242 147 reset 10;
+#X text 293 126 reset internal state;
+#X text 313 145 reset internal state to a specific value;
+#N canvas 466 198 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 155 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION compute a infinite impulse response low-pass
+filter;
+#X text 12 75 INLET_0 float reset;
+#X text 12 135 OUTLET_1 float;
+#X restore 622 484 pd META;
+#X connect 0 0 7 1;
+#X connect 2 0 8 0;
+#X connect 2 1 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 7 0 6 0;
+#X connect 7 1 5 0;
+#X connect 9 0 2 0;
+#X connect 16 0 7 0;
+#X connect 17 0 7 0;

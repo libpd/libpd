@@ -1,0 +1,57 @@
+#N canvas 508 53 640 487 10;
+#X obj 17 376 pdp_glx;
+#X obj 17 11 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 17 32 metro 40;
+#X floatatom 67 8 5 0 0 0 - - -;
+#X obj 17 58 pdp_v4l;
+#X obj 17 279 pdp_zrot;
+#X obj 175 144 unpack 0 0;
+#X obj 280 263 * 360;
+#X obj 281 240 * 3;
+#X msg 140 303 cursor;
+#X obj 140 280 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X floatatom 325 226 5 0 0 0 - - -;
+#X floatatom 325 249 5 0 0 0 - - -;
+#X obj 175 108 route drag;
+#X obj 17 231 pdp_mix;
+#X floatatom 61 205 5 0 0 0 - - -;
+#X obj 17 453 print;
+#X obj 17 422 spigot;
+#X obj 54 397 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 83 396 print the mouse event messages;
+#X floatatom 175 180 5 0 0 0 - - -;
+#X floatatom 240 182 5 0 0 0 - - -;
+#X text 109 41 using the mouse pointer in an xv window to control a
+patch;
+#X text 262 108 drag event coordinates mapped to zoom and rotation
+;
+#X msg 86 178 0.98;
+#X msg 47 177 0;
+#X connect 0 0 13 0;
+#X connect 0 0 17 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 1;
+#X connect 4 0 14 0;
+#X connect 5 0 0 0;
+#X connect 5 0 14 1;
+#X connect 6 0 8 0;
+#X connect 6 0 20 0;
+#X connect 6 1 7 0;
+#X connect 6 1 21 0;
+#X connect 7 0 5 2;
+#X connect 8 0 5 1;
+#X connect 9 0 0 0;
+#X connect 10 0 9 0;
+#X connect 11 0 8 1;
+#X connect 12 0 7 1;
+#X connect 13 0 6 0;
+#X connect 14 0 5 0;
+#X connect 15 0 14 2;
+#X connect 17 0 16 0;
+#X connect 18 0 17 1;
+#X connect 24 0 15 0;
+#X connect 25 0 15 0;

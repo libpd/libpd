@@ -1,0 +1,10 @@
+#N canvas 313 235 450 300 10;
+#X declare -lib tclpd;
+#X text 24 52 tclpd is a loader that allows Pd to load Tcl scripts
+as regular Pd objects. Normally you would load it when you start Pd
+\, so something like:;
+#X text 50 111 pd -lib tclpd;
+#X obj 51 169 declare -lib tclpd;
+#X text 26 135 or you can load it in the patch using:;
+#X text 24 202 You shouldn't try to create a [tclpd] object \, that
+will likely cause problems and not give you the desired effect.;

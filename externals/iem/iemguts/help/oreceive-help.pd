@@ -1,0 +1,40 @@
+#N canvas 114 45 505 423 10;
+#X obj 28 355 oreceive bla 0;
+#X obj 28 381 print first;
+#X obj 228 355 oreceive bla 2;
+#X obj 128 381 print second;
+#X obj 228 381 print last;
+#X obj 56 230 send bla;
+#X symbolatom 77 172 10 0 0 0 - - -;
+#X msg 87 195 one two three four;
+#X floatatom 39 185 5 0 0 0 - - -;
+#X obj 128 355 oreceive bla 1;
+#X floatatom 209 323 5 0 0 0 - - -;
+#X symbolatom 291 170 10 0 0 0 - - -;
+#X msg 306 199 one two three four;
+#X floatatom 253 183 5 0 0 0 - - -;
+#X obj 272 229 send blu;
+#X msg 28 296 symbol blu;
+#X msg 56 316 symbol bla;
+#X obj 32 13 oreceive;
+#X text 87 13 an ordered receive object;
+#X text 245 324 change order;
+#X text 103 295 set receive symbol;
+#X text 30 106 This object behaves similar to the common [receive]
+class \, but uses a second argument to define a priority.;
+#X text 28 47 The big disadvantage of using [send]/[receive] pairs
+over a direct connection together with [trigger] is that there is no
+way to define an order \, if several [receice]s belong to a [send].
+;
+#X connect 0 0 1 0;
+#X connect 2 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 3 0;
+#X connect 10 0 9 1;
+#X connect 11 0 14 0;
+#X connect 12 0 14 0;
+#X connect 13 0 14 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;

@@ -1,0 +1,19 @@
+#N canvas 162 181 644 454 10;
+#X msg 139 99 gemList;
+#X text 176 62 GEM object;
+#X obj 139 207 part_render;
+#X msg 139 244 gemList;
+#X text 186 26 [part_render];
+#X msg 169 134 colorize 1/0;
+#X msg 170 160 size 1/0;
+#X text 43 296 [part_render] finally draws a particle system that was
+set up with [part_head] and other [part_]-objects. The particles are
+normal gemLists (for instance a [sphere]);
+#X text 39 361 you can turn on/off colouring of paticles (via [part_color])
+;
+#X text 39 381 you can turn on/off sizing of paticles (via [part_size])
+;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;

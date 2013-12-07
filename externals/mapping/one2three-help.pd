@@ -1,0 +1,77 @@
+#N canvas 1 53 481 529 10;
+#X obj 5 2 cnv 15 450 20 empty empty one2three 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X floatatom 153 110 5 0 0 0 - - -;
+#X floatatom 23 186 5 0 0 0 - - -;
+#X obj 156 91 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 26 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 173 186 5 0 0 0 - - -;
+#X obj 176 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 323 186 5 0 0 0 - - -;
+#X obj 326 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 18 28 Simple one-to-three mapping object. The first inlet is
+passed thru \, the range of the output data on the other inlet starts
+at the points in the input range specified as arugments.;
+#X text 280 473 released under the GNU GPL;
+#X floatatom 121 299 5 0 0 0 - - -;
+#X floatatom 23 416 5 0 0 0 - - -;
+#X obj 124 280 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 26 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 173 416 5 0 0 0 - - -;
+#X obj 176 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 323 416 5 0 0 0 - - -;
+#X obj 326 433 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 16 473 (C) Copyright 2007 Free Software Foundation;
+#X text 21 243 You can set the breakpoint using the argument or the
+right inlet:;
+#X floatatom 226 356 5 0 0 0 - - -;
+#X obj 229 337 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 173 336 5 0 0 0 - - -;
+#X obj 176 317 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 153 145 one2three;
+#X obj 121 375 one2three 0.2 0.4;
+#N canvas 466 198 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 185 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 105 INLET_2 float;
+#X text 12 145 OUTLET_1 float;
+#X text 12 165 OUTLET_2 float;
+#X text 12 45 DESCRIPTION simple one-to-three mapping object;
+#X restore 424 501 pd META;
+#X connect 2 0 26 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 12 0 27 0;
+#X connect 13 0 15 0;
+#X connect 14 0 12 0;
+#X connect 16 0 17 0;
+#X connect 18 0 19 0;
+#X connect 22 0 27 2;
+#X connect 23 0 22 0;
+#X connect 24 0 27 1;
+#X connect 25 0 24 0;
+#X connect 26 0 3 0;
+#X connect 26 1 6 0;
+#X connect 26 2 8 0;
+#X connect 27 0 13 0;
+#X connect 27 1 16 0;
+#X connect 27 2 18 0;

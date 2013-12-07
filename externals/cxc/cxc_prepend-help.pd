@@ -1,0 +1,24 @@
+#N canvas 0 31 450 300 10;
+#X obj 186 244 print;
+#X msg 200 102 itsch ni san chi;
+#X obj 186 187 cxc_prepend /bla;
+#X obj 186 210 cxc_prepend send;
+#X floatatom 155 79 5 0 0 0 - - -;
+#X msg 214 138 qui qua 2 3.4555 "bla ha";
+#X text 25 11 prepend arbitrary length lists/anythings with stuff;
+#N canvas 397 200 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 45 DESCIPTION prepend arbitrary length lists/anythings with
+stuff;
+#X text 12 5 KEYWORDS control anything_op;
+#X text 12 75 INLET_0 anything set;
+#X text 12 95 OUTLET_0 anything;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR jdl@xdv.org;
+#X restore 395 277 pd META;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;

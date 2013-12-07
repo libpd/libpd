@@ -1,0 +1,78 @@
+#N canvas 125 5 709 792 10;
+#X text 317 6 masse;
+#X text 152 81 M is positive. negative value give non physical things.
+;
+#X text 152 37 the somme of the forces apply to a masse modifie its
+velocity (depending of it's weight). the position his change according
+to the velocity and the weight of the masse;
+#X text 259 150 2 : M = weith of the masse;
+#X text 259 189 3 : X = initial position of the masse;
+#X text 259 210 4 : Y = initial position of the masse;
+#X text 324 327 if the position of the masse is < Xmin then position
+will be Xmin;
+#X text 259 226 5 : Z = initial position of the masse;
+#X text 259 303 6 : Xmin;
+#X text 259 319 7 : Xmax;
+#X text 259 335 8 : Ymin;
+#X text 259 351 9 : Ymax;
+#X text 252 367 10 : Zmin;
+#X text 252 383 11 : Zmax;
+#X text 252 398 12 : Threshold;
+#X msg 119 565 resetF;
+#X text 250 569 reset the total forces applied to the masse;
+#X msg 120 538 reset;
+#X text 248 534 reset position (to it's initial value) and forces to
+zero. send it's position to it's outlet.;
+#X text 285 241 change position of the masse \, and reset memory (for
+history).;
+#X text 283 169 change weith of the masse;
+#X text 323 310 set the minimum and maximum position of the masse;
+#X text 302 413 when the masses are at Xmin \, Xmax \, Ymon \, Ymax
+\, Zmin or Zmax \, the mouvement is possible only if force apply is
+superior to the threshold;
+#X msg 119 489 bang;
+#X msg 119 588 off;
+#X msg 120 610 on;
+#X msg 119 635 loadbang;
+#X text 248 637 output curent position;
+#X text 250 592 stop mass mouvement;
+#X text 249 613 restart mass movement;
+#X text 250 486 compute position and output it;
+#X text 247 515 add force to this mass;
+#X text 156 23 mass3D : get liaison forces and output position;
+#X obj 31 678 mass3D;
+#X msg 120 514 force3D $f1 $f2 $f3;
+#X msg 120 154 setM 1;
+#X msg 121 190 setX 0 \, setY 0 \, setZ 0;
+#X msg 117 270 setXmin -10000 \, setXmax 10000 \, setYmin -10000 \,
+setYmax 10000 \, setZmin -10000 \, setZmax 10000;
+#X msg 119 397 setT 0;
+#X obj 31 759 unpack s f f f;
+#X text 261 98 1 : name;
+#X text 282 116 this is the name of the mass. you can set value to
+this name instead of making a pd connection.;
+#X text 148 760 X Y Z positin of the masse;
+#X text 163 736 X Y Z & total force apply to the masse;
+#X text 178 712 X Y Z & total velocity of the masse;
+#X msg 121 214 setXYZ 0 0 0;
+#X msg 119 462 setD 0;
+#X text 252 460 13 : Damp : change the velocyty damping of the mass
+;
+#X obj 62 710 unpack s f f f f;
+#X obj 46 735 unpack s f f f f;
+#X connect 15 0 33 0;
+#X connect 17 0 33 0;
+#X connect 23 0 33 0;
+#X connect 24 0 33 0;
+#X connect 25 0 33 0;
+#X connect 26 0 33 0;
+#X connect 33 0 39 0;
+#X connect 33 1 49 0;
+#X connect 33 2 48 0;
+#X connect 34 0 33 0;
+#X connect 35 0 33 0;
+#X connect 36 0 33 0;
+#X connect 37 0 33 0;
+#X connect 38 0 33 0;
+#X connect 45 0 33 0;
+#X connect 46 0 33 0;

@@ -1,0 +1,13 @@
+#N canvas 0 0 450 300 10;
+#X obj 13 15 try this or \, that or \, f;
+#X obj 16 174 try sin~ \, cos~;
+#X text 11 81 This object provides a way to create an object with a
+fallback. [try bla 13 \, blu 134] will first try to create an obect
+[bla 13] and if this fails use [blu 134] instead.;
+#X text 15 34 create an object with a fallback to a different object
+class;
+#X text 14 141 You can open the help of this in order to see \, which
+object - [sin~] or [cos~] - was finally instantiated.;
+#X text 15 219 NOTE:;
+#X text 14 236 This does not (yet) work with abstractions \, but only
+with externals.;

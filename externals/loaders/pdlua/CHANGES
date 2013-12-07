@@ -1,0 +1,41 @@
+0.6 20110314
+    Martin Peach changed names of externals to pdlua and pdluax and added the source to svn trunk/pd/externals/pdlua
+0.6~svn	2009-09-14
+	Building:   autoconf system uses -fPIC for amd64 compatibility
+
+0.5	2008-06-18
+	Building:   Makefile.static (recommended)
+	Building:   autoconfiscated (for advanced users)
+	Feature:    interaction with [value], see [revalue] and [lexpr]
+	Feature:    interaction with [table], see [ltabdump] and [ltabfill]
+	Feature:    require() looks relative to .pd_lua and .pd_luax files
+	Internal:   support pd >= 0.41 and pd < 0.41 (pd table API change)
+
+0.4	2008-03-26
+	API change: "load $1"--[lua] users must add the file name extension
+	Bug fix:    "load $1"--[lua] works as advertised
+	API change: users must name files "*.pd_lua" instead of "*.lua"
+	API change: users must name files "*.pd_luax" instead of "*.luax"
+	Bug fix:    help patches should be found correctly
+	Examples++: [lurn], [luametro], [lpipe]
+	Internal:   Doxygenated source comments
+	Internal:   fewer leading underscores
+	Internal:   renamed all examples for API change and tested them
+
+0.3	2007-12-02
+	clock support
+	receive support
+	send support
+	support static builds
+
+0.2	2007-09-25
+	renumbered inlets/outlets: now follow Lua 1,2,... conventions
+	fixed all examples for new numbering
+	more and updated documentation
+	opening via Pd's canvas path with obj:dofile(filename)
+	better error reporting
+	lexpr example
+	bugfix in dispatch (in_3_foo doesn't pass "foo" as an arg any more)
+
+0.1	2007-09-24
+	initial release

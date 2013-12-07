@@ -1,0 +1,32 @@
+#N canvas 1 53 478 344 10;
+#X obj 2 -8 cnv 15 450 20 empty empty track_min 2 11 1 18 -233017 -66577
+0;
+#X floatatom 97 79 5 0 0 0 - - -;
+#X msg 155 61 bang;
+#X text 7 26 Track minimum value:;
+#X floatatom 97 142 5 0 0 0 - - -;
+#X text 190 62 <-- bang to reset;
+#X obj 166 86 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X text 186 86 <-- stop/start tracking;
+#X obj 97 112 track_min;
+#X floatatom 97 229 5 0 0 0 - - -;
+#X msg 190 211 bang;
+#X floatatom 97 292 5 0 0 0 - - -;
+#X text 225 212 <-- bang to reset;
+#X obj 201 236 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X text 221 236 <-- stop/start tracking;
+#X text 14 173 The argument and/or the second inlet set the initial
+minimum value.;
+#X floatatom 143 229 5 0 0 0 - - -;
+#X obj 97 262 track_min -234;
+#X connect 1 0 8 0;
+#X connect 2 0 8 2;
+#X connect 6 0 8 2;
+#X connect 8 0 4 0;
+#X connect 9 0 17 0;
+#X connect 10 0 17 2;
+#X connect 13 0 17 2;
+#X connect 16 0 17 1;
+#X connect 17 0 11 0;

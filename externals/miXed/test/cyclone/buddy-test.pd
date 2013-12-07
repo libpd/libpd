@@ -1,0 +1,28 @@
+#N canvas 242 401 623 363 12;
+#X obj 66 268 print a;
+#X obj 168 268 print b;
+#X floatatom 107 83 5 0 0;
+#X floatatom 264 184 5 0 0;
+#X msg 136 116 symbol test1;
+#X msg 264 152 symbol test2;
+#X msg 264 77 one two three;
+#X msg 264 116 1 2 3 4 5 6 7 8 9;
+#X msg 38 25 a long message with floats 1 2 3 4 5 6 7 8 9 (lets make
+it even longer);
+#X obj 260 268 print c;
+#X obj 139 212 buddy 3;
+#X msg 40 156 clear;
+#X connect 2 0 10 0;
+#X connect 2 0 10 1;
+#X connect 3 0 10 2;
+#X connect 4 0 10 0;
+#X connect 4 0 10 1;
+#X connect 5 0 10 2;
+#X connect 6 0 10 2;
+#X connect 7 0 10 2;
+#X connect 8 0 10 0;
+#X connect 8 0 10 1;
+#X connect 10 0 0 0;
+#X connect 10 1 1 0;
+#X connect 10 2 9 0;
+#X connect 11 0 10 0;

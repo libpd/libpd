@@ -1,0 +1,120 @@
+PD-PATH=c:/pd
+PD-SCR=c:/pd/src
+
+
+CC = g++
+LD = g++
+INCLUDE=-I$(PD-SCR) -I.
+LIB=$(PD-PATH)/bin/pd.dll 
+CC_FLAGS = -DPD -DWINDOWS -c -mms-bitfields -Wall
+LD_FLAGS = --export-dynamic -shared -o
+
+
+TARGET=PDContainer.dll
+OBJ=PDContainer.o HMap.o h_map.o HMultiMap.o h_multimap.o \
+    HSet.o h_set.o HMultiSet.o h_multiset.o \
+    HVector.o h_vector.o HDeque.o h_deque.o \
+    HQueue.o h_queue.o HStack.o h_stack.o \
+    HList.o h_list.o HPrioQueue.o h_prioqueue.o \
+    tinystr.o tinyxml.o tinyxmlerror.o tinyxmlparser.o
+#--------------------------------------------------------
+
+all: pd_linux
+
+pd_linux: $(TARGET)
+
+
+$(TARGET): $(OBJ)
+	$(LD) $(LD_FLAGS) $(TARGET) $(OBJ) $(LIB)
+	strip --strip-unneeded $(TARGET)
+	chmod 755 $(TARGET)
+
+PDContainer.o: h_map.o src/PDContainer.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/PDContainer.cpp
+
+h_map.o: HMap.o src/h_map.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_map.cpp
+	
+HMap.o: src/HMap.cpp include/HMap.h include/MapBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HMap.cpp
+
+h_multimap.o: HMultiMap.o src/h_multimap.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_multimap.cpp
+
+HMultiMap.o: src/HMultiMap.cpp include/HMultiMap.h include/MapBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HMultiMap.cpp
+
+h_set.o: HSet.o src/h_set.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_set.cpp
+
+HSet.o: src/HSet.cpp include/HSet.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HSet.cpp
+
+h_multiset.o: HMultiSet.o src/h_multiset.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_multiset.cpp
+
+HMultiSet.o: src/HMultiSet.cpp include/HMultiSet.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HMultiSet.cpp
+
+h_vector.o: HVector.o src/h_vector.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_vector.cpp
+
+HVector.o: src/HVector.cpp include/HVector.h include/SequBase.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HVector.cpp
+
+h_deque.o: HDeque.o src/h_deque.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_deque.cpp
+
+HDeque.o: src/HDeque.cpp include/HDeque.h include/SequBase.h include/SimpleBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HDeque.cpp
+
+h_queue.o: HQueue.o src/h_queue.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_queue.cpp
+
+HQueue.o: src/HQueue.cpp include/HQueue.h include/QueueStack.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HQueue.cpp
+
+h_stack.o: HStack.o src/h_stack.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_stack.cpp
+
+HStack.o: src/HStack.cpp include/HStack.h include/QueueStack.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HStack.cpp
+
+h_list.o: HList.o src/h_list.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_list.cpp
+
+HList.o: src/HList.cpp include/HList.h include/SequBase.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HList.cpp
+
+h_prioqueue.o: HPrioQueue.o src/h_prioqueue.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/h_prioqueue.cpp
+
+HPrioQueue.o: src/HPrioQueue.cpp include/HPrioQueue.h include/QueueStack.h include/ContainerBase.h include/GlobalStuff.h
+	$(CC) $(CC_FLAGS) $(INCLUDE) src/HPrioQueue.cpp
+  
+#TinyXML:
+
+tinyxml.o: tinyxml/tinyxml.h tinyxml/tinyxml.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) tinyxml/tinyxml.cpp
+
+tinystr.o: tinyxml/tinystr.h tinyxml/tinystr.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) tinyxml/tinystr.cpp
+
+tinyxmlerror.o: tinyxml/tinyxmlerror.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) tinyxml/tinyxmlerror.cpp
+
+tinyxmlparser.o: tinyxml/tinyxmlparser.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDE) tinyxml/tinyxmlparser.cpp
+
+
+#-----------------------------------------------------
+
+
+clean:
+	rm -f $(OBJ) $(TARGET)
+	
+
+install:
+	cp -f $(TARGET) $(PD-PATH)/extra
+	cp -f help/*.pd $(PD-PATH)/doc/5.reference
+

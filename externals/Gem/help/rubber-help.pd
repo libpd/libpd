@@ -1,0 +1,93 @@
+#N canvas 0 0 710 387 10;
+#X text 54 30 Class: geometric object;
+#X obj 479 47 cnv 15 170 300 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 544 284 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 549 323 pd gemwin;
+#X msg 549 304 create;
+#X text 545 283 Create window:;
+#X text 485 29 Example:;
+#X obj 7 65 cnv 15 450 102 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 226 cnv 15 450 145 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 231 Inlets:;
+#X obj 8 171 cnv 15 450 50 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 170 Arguments:;
+#X text 27 257 Inlet 1: message: draw [line|fill|point];
+#X text 452 8 GEM object;
+#X text 27 243 Inlet 1: gemlist;
+#X text 9 340 Outlets:;
+#X text 20 353 Outlet 1: gemlist;
+#X obj 484 141 cnv 15 160 140 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 488 48 gemhead;
+#X floatatom 530 67 5 -10 10 0 - - -;
+#X msg 494 144 draw line;
+#X msg 494 164 draw fill;
+#X msg 494 184 draw point;
+#X obj 581 156 bng 15 250 50 0 empty empty grab 20 7 0 8 -262144 -1
+-1;
+#X obj 581 122 select 1;
+#X floatatom 573 217 5 0 0 1 ctrX - -;
+#X floatatom 573 234 5 0 0 1 ctrY - -;
+#X floatatom 582 175 5 0 0 1 size - -;
+#X floatatom 582 192 5 0 0 1 height - -;
+#X text 33 14 Synopsis: [rubber];
+#X text 7 69 Description: Renders and distorts a square.;
+#X text 27 313 Inlet 4: float: posX (centered);
+#X text 27 325 Inlet 5: float: posY (centered);
+#X text 16 86 When banged \, rubber will grab the vertex of the square
+specified by ctrX and ctrY and expose it at the specified height. You
+can then move the grabbed vertex and the adjacent vertices will follow
+inertly. When you bang the rubber object again \, the grabbed vertex
+will fall back to its original position;
+#X text 65 197 default: 32 32;
+#X text 63 183 segments of the square;
+#X text 480 362 and move the mouse;
+#X obj 542 103 gemmouse 1 1;
+#X obj 488 259 rubber 8 8;
+#X text 27 270 Inlet 1: bang: grab/release;
+#X text 27 285 Inlet 2: float: size;
+#X text 27 298 Inlet 3: float: height;
+#X obj 488 84 accumrotate 135 0 0;
+#X obj 488 67 t a b;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 18 0 43 0;
+#X connect 19 0 42 1;
+#X connect 20 0 38 0;
+#X connect 21 0 38 0;
+#X connect 22 0 38 0;
+#X connect 23 0 38 0;
+#X connect 24 0 23 0;
+#X connect 25 0 38 3;
+#X connect 26 0 38 4;
+#X connect 27 0 38 1;
+#X connect 28 0 38 2;
+#X connect 37 0 25 0;
+#X connect 37 1 26 0;
+#X connect 37 2 24 0;
+#X connect 42 0 38 0;
+#X connect 43 0 42 0;
+#X connect 43 1 19 0;

@@ -1,0 +1,12 @@
+#N canvas 0 31 384 218 10;
+#X obj 68 22 inlet;
+#X obj 221 22 inlet;
+#X obj 68 112 bytes2any \$1 \$2;
+#X obj 68 73 wchars2bytes \$1;
+#X obj 68 146 outlet;
+#X obj 168 146 outlet;
+#X connect 0 0 3 0;
+#X connect 1 0 2 1;
+#X connect 2 0 4 0;
+#X connect 2 1 5 0;
+#X connect 3 0 2 0;

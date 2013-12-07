@@ -1,0 +1,31 @@
+#N canvas 0 26 484 280 10;
+#X text 93 233 IEM KUG;
+#X text 72 221 musil;
+#X text 107 221 @;
+#X text 115 221 iem.at;
+#X text 76 243 Graz \, Austria;
+#X text 28 210 (c) Thomas Musil 2000 - 2008;
+#X text 27 16 iem_symtoalist;
+#X obj 46 128 iem_symtoalist;
+#X msg 47 86 symbol abcd;
+#X msg 164 88 symbol ABCD;
+#X obj 47 152 print;
+#X msg 271 88 1234;
+#X msg 324 87 9.876e-08;
+#N canvas 496 267 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION convert a symbol to a list of ASCII floats
+;
+#X text 12 5 KEYWORDS control conversion symbol_op;
+#X text 12 65 INLET_0 symbol;
+#X text 12 85 OUTLET_0 list;
+#X restore 429 256 pd META;
+#X text 152 15 convert a symbol to a list of ASCII floats;
+#X connect 7 0 10 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 7 0;

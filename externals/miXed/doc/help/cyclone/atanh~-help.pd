@@ -1,0 +1,41 @@
+#N canvas 0 26 616 359 10;
+#X text 6 315 input values should be constrained between -1 and 1;
+#X text 236 97 this is probably only useful for mathematical calculations
+;
+#X obj 28 109 *~ 0.999;
+#X obj 28 86 cycle~ 2;
+#X msg 215 138 range -3.14159 3.14159;
+#X obj 160 112 -~ 0.999;
+#X obj 160 89 *~ 2;
+#X obj 160 67 phasor~ 2;
+#X text 16 35 Arc Hyperbolic tangent function (atanh(x)) for signals
+;
+#X text 22 330 Note: asymptotic to infinity around -1 and 1;
+#X obj 26 164 Scope~ 130 130 256 3 128 -3.14159 3.14159 0 0 0 0 102
+255 51 135 135 135 0;
+#X obj 171 168 Scope~ 130 130 256 3 128 -3.14159 3.14159 0 0 0 0 102
+255 51 135 135 135 0;
+#X obj 28 136 atanh~;
+#X obj 159 136 atanh~;
+#N canvas 309 151 494 454 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible trigonometry;
+#X text 12 45 DESCRIPTION arc hyperbolic tangent function (atanh(x))
+for signals;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 signal;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE SIBSD;
+#X restore 565 337 pd META;
+#X connect 2 0 12 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 4 0 11 0;
+#X connect 5 0 13 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 12 0 10 0;
+#X connect 13 0 11 0;

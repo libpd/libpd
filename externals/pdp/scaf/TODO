@@ -1,0 +1,3 @@
+* add decimating to pdp_ca2image
+* clean up library
+* add translation option to pdp_ca (modify so horizontal shifts by 1 are possible)

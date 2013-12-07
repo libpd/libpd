@@ -1,0 +1,33 @@
+#N canvas 0 26 437 208 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 21 167 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 20 181 ___________________________________________________
+;
+#X obj 39 17 forward;
+#X text 102 18 send remote messages;
+#X obj 218 78 r foo;
+#X obj 268 78 tgl 15 0 empty bar empty 0 -6 0 8 -262144 -1 -1 0 1;
+#X floatatom 218 104 5 0 0 0 - - -;
+#X obj 57 108 forward foo;
+#X floatatom 57 78 5 0 0 0 - - -;
+#X msg 102 76 send bar;
+#X obj 28 77 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X msg 102 57 send foo;
+#N canvas 30 89 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 105 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control nonlocal max_compatible;
+#X text 12 45 DESCRIPTION send remote messages;
+#X text 12 65 INLET_0 anything set;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 85 AUTHOR Krzysztof Czaja;
+#X restore 387 186 pd META;
+#X connect 5 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 8 0;
+#X connect 11 0 8 0;
+#X connect 12 0 8 0;

@@ -1,0 +1,20 @@
+#N canvas 151 91 705 277 12;
+#X text 113 26 writes one block of a signal continuously to an array
+;
+#X text 41 60 creation argument: name of array;
+#X text 29 96 By default a block is 64 samples \; this can be reset
+using the block~ object.;
+#X text 376 239 updated for iem16 version1.0;
+#X obj 5 216 tab16write~;
+#X obj 5 235 tab16read4~;
+#X obj 109 235 tab16read;
+#X obj 109 216 tab16write;
+#X obj 204 216 tab16send~;
+#X obj 204 235 tab16receive~;
+#X obj 328 221 table16;
+#X text 17 195 see also:;
+#X text 14 137 16bit-signals are limited to 65536 values between -1.0..+1.0
+;
+#X text 16 157 if your signal has absolute values >1.0 \, these are
+wrapped around...;
+#X obj 11 27 tab16send~;

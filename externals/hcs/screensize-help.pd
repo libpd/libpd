@@ -1,0 +1,21 @@
+#N canvas 0 26 372 243 10;
+#X msg 184 101 bang;
+#X floatatom 184 170 5 0 0 0 width - -;
+#X floatatom 241 170 5 0 0 1 height - -;
+#X text 111 47 get the current screen resolution;
+#X obj 184 138 screensize;
+#N canvas 280 175 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 25 KEYWORDS control;
+#X text 12 5 GENRE help filesystem;
+#X text 12 65 DESCRIPTION get the current screen resolution;
+#X text 12 85 INLET_0 bang;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 float;
+#X restore 323 223 pd META;
+#X connect 0 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 1 2 0;

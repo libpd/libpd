@@ -1,0 +1,27 @@
+0.10
+  fixed coordinates for GOP support
+0.9
+  added GOP support
+0.8
+  adapted for pd 0.37
+0.7
+  fixed more crashes in carmona
+0.6
+  fixed a crash when resizing
+0.5
+  introduced turntable inertia
+  allow playing when the scratcher is stopped
+0.4.1
+  little optimisation in movement processing
+0.4
+  change algorithm, new one requires a small block size
+  added maximum speed limit
+  added ability to toggle speed line
+  suppressed internal velocity measurement
+  ( because time measurement is not reliable )
+0.3
+  introduced internal velocity measurement
+0.2
+  added sensibility setting
+0.1
+  first implementation

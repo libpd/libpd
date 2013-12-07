@@ -1,0 +1,62 @@
+#N canvas 116 92 784 436 10;
+#N canvas 0 0 450 300 graph1 0;
+#X array src 100 float 1;
+#A 0 -0.442858 -0.414287 -0.385715 -0.342858 -0.314287 -0.257144 -0.128572
+-0.0428573 0.128572 0.228572 0.285715 0.328572 0.400001 0.414287 0.457144
+0.457144 0.442858 0.385715 0.314287 0.257144 0.214286 0.1 0.0428572
+-0.0142858 -0.0428573 -0.114286 -0.142858 -0.200001 -0.242858 -0.285715
+-0.328572 -0.342858 -0.37143 -0.385715 -0.414287 -0.414287 -0.414287
+-0.414287 -0.400001 -0.357144 -0.314287 -0.257144 -0.185715 -0.0714288
+0.0142857 0.0571429 0.185715 0.185715 0.200001 0.214286 0.214286 0.214286
+0.228572 0.228572 0.214286 0.200001 0.185715 0.171429 0.142857 0.1
+0.114286 0.0714285 -0.071429 -0.242858 -0.300001 -0.328573 -0.357144
+-0.37143 -0.385715 -0.400001 -0.442858 -0.457144 -0.47143 -0.457144
+-0.428573 -0.400001 -0.378573 -0.328572 -0.271429 -0.242858 -0.200001
+-0.128572 -0.0428574 -0.0285717 0.0142858 0.114286 0.128572 0.185715
+0.214286 0.257144 0.285715 0.314287 0.342858 0.357144 0.357144 0.357144
+0.357144 0.357144 0.342858 0.328572;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 529 24 graph;
+#X obj 61 31 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 106 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 59 294 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 205 270 1.arg: <symbol> source-name;
+#X msg 101 213 src src;
+#X floatatom 109 103 5 0 0 0 - - -;
+#X floatatom 158 104 5 0 0 0 - - -;
+#X floatatom 107 320 5 0 0 0 - - -;
+#X floatatom 156 336 5 0 0 0 - - -;
+#X msg 59 193 35 50;
+#X text 75 384 IEM KUG;
+#X text 59 372 musil;
+#X text 89 372 @;
+#X text 95 372 iem.at;
+#X text 58 394 Graz \, Austria;
+#X text 10 361 (c) Thomas Musil 2000 - 2006;
+#X text 229 258 initial arguments:;
+#X text 65 280 <bang> output;
+#X text 152 213 <src> xxx : change source name;
+#X text 43 150 list of 2 floats:;
+#X text 55 160 1.) src onset;
+#X text 11 6 tab_min_index;
+#X obj 61 78 tab_min_index src;
+#X obj 59 262 tab_min_index src;
+#X text 55 171 2.) n samples to calculate minimum;
+#X text 115 301 <float> minimum index output;
+#X text 163 319 <float> minimum value output;
+#X text 166 118 min;
+#X text 97 117 min_index;
+#X text 85 29 <bang> calculate minimum element and its index of array
+;
+#X connect 1 0 23 0;
+#X connect 5 0 24 0;
+#X connect 10 0 24 0;
+#X connect 23 0 2 0;
+#X connect 23 1 6 0;
+#X connect 23 2 7 0;
+#X connect 24 0 3 0;
+#X connect 24 1 8 0;
+#X connect 24 2 9 0;

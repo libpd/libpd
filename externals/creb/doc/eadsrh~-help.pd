@@ -1,0 +1,20 @@
+#N canvas 0 26 430 230 10;
+#N canvas 331 92 494 388 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 155 INLET_4 float;
+#X text 12 175 OUTLET_0 signal;
+#X text 12 45 DESCRIPTION exponential attack decay sustain release
+(with hold == duration);
+#X text 12 75 INLET_0 bang;
+#X text 12 135 INLET_3 float;
+#X text 12 5 KEYWORDS signal abstraction ramp needs_work (example patch)
+;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 195 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 378 207 pd META;
+#X obj 105 92 eadsrh~;
+#X text 22 15 exponential attack decay sustain release (with hold ==
+duration);

@@ -1,0 +1,114 @@
+
+all: iemmatrix.dll
+
+
+
+CC = cl
+LD = link
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio\Vc98"
+
+PD_INST_PATH = C:\Programme\pd
+
+PD_WIN_INCLUDE_PATH = /I. /I"$(PD_INST_PATH)\src"
+
+PD_WIN_C_FLAGS = /nologo /W3 /WX /DPD /D__WIN32__ /Ox -DPA_LITTLE_ENDIAN
+
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = /NODEFAULTLIB:libc /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel /NODEFAULTLIB:uuid \
+	libc.lib \
+	/LIBPATH:$(PD_INST_PATH)\bin pd.lib
+
+SRC = mtx_powtodb.c \
+	mtx_dbtopow.c \
+	mtx_bspline.c \
+	mtx_atan.c \
+	mtx_not.c \
+	mtx_add.c \
+	mtx_and.c \
+	mtx_cos.c \
+	mtx_decay.c \
+	mtx_rowrfft.c \
+	mtx_conv.c \
+	mtx_diag.c \
+	mtx_colon.c \
+	mtx_check.c \
+	mtx_rowrifft.c \
+	mtx_col.c \
+	mtx_diff.c \
+	mtx_diegg.c \
+	mtx_distance2.c \
+	mtx_cholesky.c \
+	mtx_egg.c \
+	mtx_exp.c \
+	mtx_fill.c \
+	mtx_find.c \
+	mtx_bitright.c \
+	mtx_int.c \
+	mtx_bitand.c \
+	mtx_eq.c \
+	mtx_eye.c \
+	mtx_bitleft.c \
+	mtx_bitor.c \
+	mtx_inverse.c \
+	mtx_ge.c \
+	mtx_log.c \
+	mtx_matrix.c \
+	mtx_concat.c \
+	mtx_minmax.c \
+	mtx_dbtorms.c \
+	mtx_gt.c \
+	mtx_mul~.c \
+	mtx_prod.c \
+	mtx_element.c \
+	mtx_sin.c \
+	mtx_mean.c \
+	mtx_max2.c \
+	mtx_min2.c \
+	mtx_le.c \
+	mtx_lt.c \
+	mtx_resize.c \
+	mtx_or.c \
+	mtx_repmat.c \
+	mtx_neq.c \
+	mtx_sort.c \
+	mtx_ones.c \
+	mtx_pivot.c \
+	mtx_rmstodb.c \
+	mtx_sub.c \
+	mtx_pow.c \
+	mtx_slice.c \
+	mtx_sum.c \
+	mtx_print.c \
+	mtx_abs.c \
+	mtx_rand.c \
+	mtx_reverse.c \
+	mtx_roll.c \
+	mtx_binops.c \
+	mtx_row.c \
+	mtx_cumsum.c \
+	mtx_scroll.c \
+	mtx_gauss.c \
+	mtx_size.c \
+	mtx_index.c \
+	mtx_trace.c \
+	mtx_transpose.c \
+	mtx_zeros.c \
+	mtx_mul.c \
+	iemmatrix_sources.c \
+	iemmatrix.c
+
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	$(CC) $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+iemmatrix.dll: $(OBJ)
+	$(LD) $(PD_WIN_L_FLAGS) /dll /export:iemmatrix_setup \
+	/out:iemmatrix.dll $(OBJ) $(PD_WIN_LIB)
+
+clean:
+	del *.obj

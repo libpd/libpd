@@ -1,0 +1,41 @@
+#N canvas 1 53 510 283 10;
+#X floatatom 100 175 9 0 0 0 - - -;
+#X floatatom 100 71 9 8 24000 0 - - -;
+#X floatatom 166 125 6 0 0 0 - - -;
+#X obj 100 101 f2note 440;
+#X msg 132 148 #F2;
+#X text 8 52 <float> input frequency;
+#X text 173 70 Hz;
+#X text 215 124 cents;
+#X text 67 147 note;
+#X text 4 2 f2note;
+#X text 233 241 IEM KUG;
+#X text 209 229 musil;
+#X text 247 229 @;
+#X text 257 229 iem.at;
+#X text 216 251 Graz \, Austria;
+#X text 67 3 converts a frequency in Hz into a floatingpoint midi pitch
+;
+#X text 96 16 and a note plus its deviation in cents;
+#X text 195 97 1.arg: <float> reference-frequency a' or A4;
+#X text 344 112 (today 440 .. 444 Hz);
+#X text 168 218 (c) Thomas Musil 2000 - 2011;
+#X text 24 174 midi pitch;
+#X text 35 122 deviation;
+#N canvas 507 270 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 155 AUTHOR Thomas Musil;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 75 INLET_0 float;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 OUTLET_1 set;
+#X text 12 135 OUTLET_2 float;
+#X text 12 45 DESCRIPTION converts a frequency in Hz into a floating
+point midi pitch;
+#X restore 437 253 pd META;
+#X connect 1 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 1 4 0;
+#X connect 3 2 2 0;

@@ -1,0 +1,44 @@
++ move gfsmArcList back to a native type, ditching GSList
+  - sorting, splicing, etc. is then tricky, but maybe we can use
+    temporaries for this 
+  - would save us sizeof(void*) per arc: all the space lost by adding source state!
+
++ (style): clearer API/internals demarcation
+
++ allow (arbitrary?) automaton indices
+  - esp. (source_state,lower), (source_state,upper)
+  - load & save with automaton
+  - either:
+    (1) maintain indices over destructive operations, or
+        - generic hooks for destructive gfsmAutomaton API?
+    (2) maintain a "dirty" marker to note when index need update, or
+    (3) maintain a "smart list" of changed data and update on demand
+
++ get rid of "GArray fsm->states": it's just wasting space
+  (30 of 64 bits are unused: track these at compile time with -Wpadded)
+  - replace with (gfsmBitVector)s state_is_valid, state_is_final and
+    a dedicated arc-list array (we can still call that "states" for
+    backwards compatibility, esp. the fsm->states->len idiom)
+    * tagh from 148MB to 129MB: -13%
+
++ allow gfsmArcList to be an array
+  - better: allow *all* arcs for an automaton to be a single array
+
++ [DONE] source state tracking in gfsmArc
+  - obsoletes gfsmReverseArcIndex
+  - adds sizeof(gfsmStateId) bytes per arc (tagh from 148MB to 184MB: +24%)
+
++ Basic types
+  - configure option for gfsmLabelId to fit a pointer
+    * tricky to handle without a union or other explicit label API
+    * without source tracking: tagh from 148MB to 184MB: +24%
+    * with source tracking   : tagh from 184MB to 220MB: +20%
+  - configure option for 64-bit gfsmStateId (also 64-bit gfsmLabelId?)
+    * breaks binary compatibility: add header flag?
+
++ store alphabet with fsm
+  - tricky with user alphabets: loadable modules?
+
++ loadable modules for user-defined alphabets & semirings
+  - libgmodule ?
+  - look at Micha's tomata2 code for ideas

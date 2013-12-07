@@ -1,0 +1,22 @@
+#N canvas 0 22 454 304 10;
+#X obj 113 163 ext13/strippath;
+#X symbolatom 113 196 0 0 0 0 - - -;
+#X msg 113 109 symbol /this/is/a/testfile.txt;
+#X msg 58 88 bang;
+#X obj 58 109 getdir;
+#N canvas 463 219 494 344 META 0;
+#X text 12 125 RELEASE_DATE 2009-06-12;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR d13@klingt.org;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION remove path from a filename;
+#X text 12 85 INLET_1 symbol;
+#X text 12 65 INLET_0 bang symbol;
+#X text 12 5 KEYWORDS control symbol_op filter;
+#X restore 370 271 pd META;
+#X text 112 24 remove path from a filename;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;

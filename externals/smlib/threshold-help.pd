@@ -1,0 +1,62 @@
+#N canvas 1 53 708 422 10;
+#X text 221 309 Arguments:;
+#X text 310 310 1 trigger threshold;
+#X floatatom 20 235 5 0 0 0 - - -;
+#X obj 42 363 print trigger;
+#X obj 183 363 print rest;
+#X text 310 341 3 rest threshold;
+#X msg 172 268 1;
+#X msg 208 268 0;
+#X text 249 209 "set" to change the parameters;
+#X text 245 263 zero or nonszero in inlet to set the state to "high"
+or "low". There is no debounce period after this.;
+#X text 208 12 - TRIGGER FROM FLOAT STREAM;
+#X obj 124 11 threshold;
+#X text 26 48 threshold monitors its input float stream and outputs
+bangs when the signal exceeds a specified "trigger" value \, and also
+when the input value recedes below a "rest" value. You can specify
+debounce in number of floats received \, for the threshold~ to wait
+after the two event types before triggering again.;
+#X text 310 326 2 trigger debounce number;
+#X text 309 358 4 rest debounce number;
+#X obj 20 212 float;
+#X obj 20 189 metro 100;
+#X obj 20 148 loadbang;
+#X obj 20 170 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 132 171 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X msg 129 208 set 50 0 10 0;
+#X msg 130 231 set 50 15 10 15;
+#X text 12 393 see also threshold~;
+#X obj 164 363 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 20 363 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 20 332 threshold 70 10 30 10;
+#X text 615 345 j#|@2002;
+#X obj 633 323 SMLib-help;
+#N canvas 339 203 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION trigger float from stream;
+#X text 12 65 INLET_0 float set;
+#X text 12 85 OUTLET_0 bang;
+#X text 12 105 OUTLET_1 bang;
+#X restore 650 367 pd META;
+#X connect 2 0 25 0;
+#X connect 15 0 2 0;
+#X connect 16 0 15 0;
+#X connect 17 0 18 0;
+#X connect 18 0 16 0;
+#X connect 19 0 15 1;
+#X connect 20 0 25 0;
+#X connect 21 0 25 0;
+#X connect 25 0 3 0;
+#X connect 25 0 24 0;
+#X connect 25 1 4 0;
+#X connect 25 1 23 0;

@@ -1,0 +1,11 @@
+#N canvas 0 0 450 300 10;
+#X msg 31 84 bang;
+#X obj 30 125 k_cext \; system(s<echo something>s) \;;
+#X text 26 40 Strings are started with s< and ended with >s;
+#X obj 248 125 k_cext \; SEN(s<ai>s \, 1) \;;
+#X obj 31 200 r ai;
+#X obj 33 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X connect 0 0 1 0;
+#X connect 0 0 3 0;
+#X connect 4 0 5 0;

@@ -1,0 +1,62 @@
+TODO for cyclone
+  * add folder class, so people forget about using tot for that purpose
+  * plug import into file/open
+
+DONE for cyclone
+
+alpha55
+  * new class: overdrive~
+  * seq:
+    . new incompatible message 'tempo': 1-based coef, does not start playback
+    . fix for double-to-float-pair calc in 'scoretime' and 'goto'
+  * abs~: performance fix
+  * slide~, rampsmooth~: bashing denormals
+
+alpha54
+  * comment: fixing namespace bug, reducing traffic
+  * testmess: optionally filling message with symbols (numbers in hex form
+    or names of all registered classes)
+
+alpha53
+  * matrix~: incompatible message 'set'
+  * coll:
+    . fixed descending order of 'sort' (a leaking sentinel bug)
+    . ignoring negative indices in 'min' and 'max'
+    . editor fixes (close by wm, dirty flag, title)
+  * Table: reading from file, reading from editor, editor fixes
+  * seq: editor fixes, editor bound to click (should bind to "open" too...)
+  * prob, capture, capture~: viewer fixes
+
+alpha52
+  * compatibility mode interface in maxmode object:
+    messages 'set', 'get' (reply through the second outlet)
+  * better handling of initial directory in open panels
+  * relative path handling in 'cd' (library objects, seq, more to come)
+  * remote reply to 'pwd' message of library objects (target argument required)
+  * instead, left outlet of library objects sends return code from import
+    (negative value indicates an error)
+  * new class: matrix~
+  * linedrive: more compatible in maxmode, bipolar otherwise
+  * seq:
+    . paused state fixes (state preserved in 'goto', proper delay in 'start')
+    . 'goto' fix (works in idlemode)
+    . more incompatible messages: 'scoretime', 'cd', 'pwd'
+
+alpha51
+  * dummies loaded by maxmode, not cyclone
+  * setting directory in creation argument replaced with 'cd' message
+    to library objects (cyclone, maxmode, hammer and sickle)
+  * 'pwd' message to library objects sends directory symbol to an outlet
+  * creating cyclone and maxmode library objects possible without
+    loading component libraries
+  * prepend and Append:
+    . bang handling, controlled by maxmode
+    . restored max-like 'set' handling as default for objects with arguments
+  * fix for parsing creation arguments in svf~
+  * incompatible additions to seq: 'pause', 'continue', 'goto'
+
+alpha50
+  * max-compatibility mode switch for cyclone
+    . turned on by loading cyclone libs through "-lib maxmode"
+    . affects max-compatibility of prepend and Append, controls
+      compatibility warnings

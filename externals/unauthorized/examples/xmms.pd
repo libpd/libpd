@@ -1,0 +1,146 @@
+#N canvas 146 29 756 589 10;
+#X declare -lib unauthorized;
+#X obj 411 164 mp3fileout~;
+#X floatatom 411 185 5 0 0 0 - - -;
+#X floatatom 456 185 5 0 0 0 - - -;
+#X msg 409 133 open \$1;
+#X msg 466 133 start;
+#X msg 511 134 stop;
+#X text 534 174 Number of frames emitted;
+#X text 396 204 Connection state;
+#X symbolatom 127 306 80 0 0 0 - - -;
+#X floatatom 520 83 5 0 0 0 - - -;
+#X obj 20 77 playlist mp3 300 200;
+#X msg 651 57 bang;
+#X text 23 37 Step 1 : point to your MP3s directory;
+#X obj 357 533 dac~;
+#X symbolatom 131 458 10 0 0 0 - - -;
+#X text 127 472 Incomer's address;
+#X obj 349 490 *~ 1;
+#X floatatom 461 533 5 0 0 0 - - -;
+#X obj 427 533 / 100;
+#X obj 390 490 *~ 1;
+#X text 501 535 Volume;
+#X msg 336 58 connect localhost 5672;
+#X obj 95 361 mp3streamin~ 5672 1;
+#X text 295 35 Step 2 : connect to the streamer;
+#X text 65 305 Playing :;
+#X msg 463 84 seek \$1;
+#X text 566 31 Step 3 :start random play;
+#X obj 657 430 loadbang;
+#X msg 656 454 \; pd dsp 1;
+#X msg 379 240 seek \$1;
+#X obj 437 239 hsl 128 15 0 1e+07 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 0;
+#X msg 547 134 disconnect;
+#X obj 573 57 random 1000;
+#X msg 620 93 seed \$1;
+#X floatatom 673 93 5 0 0 0 - - -;
+#X msg 634 240 bang;
+#X text 575 284 Step 3 bis :start seq play;
+#X obj 592 240 countn;
+#X obj 578 262 - 1;
+#X floatatom 531 263 5 0 0 0 - - -;
+#X obj 551 207 spigot;
+#X obj 599 206 tgl 15 0 empty empty empty 20 8 0 8 -262144 -1 -1 0
+1;
+#X msg 624 206 1;
+#X obj 618 115 spigot;
+#X obj 666 114 tgl 15 0 empty empty empty 20 8 0 8 -262144 -1 -1 0
+1;
+#X msg 691 114 1;
+#X obj 362 461 ekwalizer --------------------------;
+#X msg 544 335 100;
+#X obj 385 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 7900 1;
+#X obj 408 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 7900 1;
+#X obj 432 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 7900 1;
+#X obj 454 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 7900 1;
+#X obj 477 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 498 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 516 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 534 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 552 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 573 363 vsl 15 80 0 100 0 0 empty empty empty 20 8 0 8 -262144
+-1 -1 0 1;
+#X obj 579 335 loadbang;
+#X obj 494 559 loadbang;
+#X msg 463 559 50;
+#X obj 259 506 compressor~;
+#X floatatom 279 454 5 0 0 0 - - -;
+#X obj 241 529 env~;
+#X obj 266 483 / 100;
+#X obj 618 7 import unauthorized;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 40 0;
+#X connect 0 2 43 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 10 0 8 0;
+#X connect 10 0 3 0;
+#X connect 11 0 32 0;
+#X connect 11 0 45 0;
+#X connect 16 0 61 0;
+#X connect 17 0 18 0;
+#X connect 18 0 16 1;
+#X connect 18 0 19 1;
+#X connect 19 0 61 0;
+#X connect 21 0 0 0;
+#X connect 21 0 4 0;
+#X connect 22 0 46 0;
+#X connect 22 1 46 0;
+#X connect 22 2 14 0;
+#X connect 25 0 10 0;
+#X connect 27 0 28 0;
+#X connect 29 0 0 0;
+#X connect 30 0 29 0;
+#X connect 31 0 0 0;
+#X connect 32 0 9 0;
+#X connect 32 0 25 0;
+#X connect 33 0 32 0;
+#X connect 34 0 33 0;
+#X connect 35 0 37 0;
+#X connect 35 0 42 0;
+#X connect 37 0 38 0;
+#X connect 38 0 25 0;
+#X connect 38 0 39 0;
+#X connect 40 0 37 0;
+#X connect 41 0 40 1;
+#X connect 42 0 41 0;
+#X connect 43 0 32 0;
+#X connect 44 0 43 1;
+#X connect 45 0 44 0;
+#X connect 46 0 19 0;
+#X connect 46 0 16 0;
+#X connect 47 0 48 0;
+#X connect 47 0 49 0;
+#X connect 47 0 50 0;
+#X connect 47 0 51 0;
+#X connect 48 0 46 1;
+#X connect 49 0 46 2;
+#X connect 50 0 46 3;
+#X connect 51 0 46 4;
+#X connect 52 0 46 5;
+#X connect 53 0 46 6;
+#X connect 54 0 46 7;
+#X connect 55 0 46 8;
+#X connect 56 0 46 9;
+#X connect 57 0 46 10;
+#X connect 58 0 47 0;
+#X connect 59 0 60 0;
+#X connect 60 0 17 0;
+#X connect 61 0 13 0;
+#X connect 61 0 13 1;
+#X connect 61 0 63 0;
+#X connect 62 0 64 0;
+#X connect 64 0 61 1;

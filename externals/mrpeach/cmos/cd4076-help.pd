@@ -1,0 +1,59 @@
+#N canvas 581 224 661 399 12;
+#X obj 49 39 tgl 15 0 empty empty CP 17 7 0 10 -24198 -62784 -1 0 1
+;
+#X obj 68 54 tgl 15 0 empty empty CLEAR 17 7 0 10 -24198 -62784 -1
+0 1;
+#X obj 87 70 tgl 15 0 empty empty Input_Disable_1 17 7 0 10 -24198
+-62784 -1 0 1;
+#X obj 106 88 tgl 15 0 empty empty Input_Disable_2 17 7 0 10 -24198
+-62784 -1 0 1;
+#X obj 106 304 tgl 15 0 empty empty B 17 7 0 10 -143491 -241291 -1
+0 1;
+#X obj 49 304 tgl 15 0 empty empty A 17 7 0 10 -143491 -241291 -1 0
+1;
+#X obj 26 157 tgl 15 0 empty empty empty 17 7 0 10 -44926 -90881 -1
+0 1;
+#X text 89 36 A 0-1 transition or a bang clocks D to the outlets.;
+#X obj 26 221 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -241291
+-1;
+#X obj 26 187 metro 500;
+#X text 27 5 cd4076 emulates the CMOS quad D flipflop.;
+#X obj 220 304 tgl 15 0 empty empty D 17 7 0 10 -143491 -241291 -1
+0 1;
+#X obj 163 304 tgl 15 0 empty empty C 17 7 0 10 -143491 -241291 -1
+0 1;
+#X text 131 50 Sets outputs to 0 Overrides CP.;
+#X text 250 74 Prevents input from being clocked to output.;
+#X obj 125 106 tgl 15 0 empty empty Output_Disable_1 17 7 0 10 -24198
+-62784 -1 0 1;
+#X obj 144 124 tgl 15 0 empty empty Output_Disable_1 17 7 0 10 -24198
+-62784 -1 0 1;
+#X text 291 107 Inhibits output.;
+#X text 74 341 20070312_Martin_Peach;
+#X obj 163 141 tgl 15 0 empty empty InA 17 7 0 10 -260818 -143491 -1
+0 1;
+#X obj 182 158 tgl 15 0 empty empty InB 17 7 0 10 -260818 -143491 -1
+0 1;
+#X obj 201 177 tgl 15 0 empty empty InC 17 7 0 10 -260818 -143491 -1
+0 1;
+#X obj 220 194 tgl 15 0 empty empty InD 17 7 0 10 -260818 -143491 -1
+0 1;
+#X text 236 142 Data inputs;
+#X obj 49 263 cd4076 quad d flipflop;
+#X connect 0 0 24 0;
+#X connect 1 0 24 1;
+#X connect 2 0 24 2;
+#X connect 3 0 24 3;
+#X connect 6 0 9 0;
+#X connect 8 0 24 0;
+#X connect 9 0 8 0;
+#X connect 15 0 24 4;
+#X connect 16 0 24 5;
+#X connect 19 0 24 6;
+#X connect 20 0 24 7;
+#X connect 21 0 24 8;
+#X connect 22 0 24 9;
+#X connect 24 0 5 0;
+#X connect 24 1 4 0;
+#X connect 24 2 12 0;
+#X connect 24 3 11 0;

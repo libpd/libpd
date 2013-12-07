@@ -1,0 +1,48 @@
+just a sketchpad for me to remember which libraries we really need
+
+Multithreaded-Debug (/MTd)
+
+working configuration#1(+QuickTime)
+msvcrtD.lib
+msvcprtD.lib
+OLDNAMES.lib
+pd.lib
+opengl32.lib
+glu32.lib
+vfw32.lib
+QTMLClient.lib
+
+working configuration#2(#1+DirectShow)
+msvcrtD.lib	(C/C++)
+msvcprtD.lib	(C/C++)
+OLDNAMES.lib	(C/C++)
+pd.lib		(Pure data)
+opengl32.lib	(openGL)
+glu32.lib	(openGL)
+QTMLClient.lib	(QuickTime)
+vfw32.lib	(Video4Windows)
+ddraw.lib	(DirectShow)
+strmiids.lib	(DirectShow)
+strmbasD.lib	(DirectShow - part of DirectShow/BaseClasses sample)
+atlsD.lib	(DirectShow - ATLclasses)
+winmm.lib	(DirectShow - time)
+
+
+working configuration#3(#2+FTGL+jpeg/tiff)
+msvcrtD.lib	(C/C++)
+msvcprtD.lib	(C/C++)
+OLDNAMES.lib	(C/C++)
+pd.lib		(Pure data)
+opengl32.lib	(openGL)
+glu32.lib	(openGL)
+libjpeg.lib	(jpeg/tiff)
+libtiff.lib	(jpeg/tiff)
+FTGL_static_mtD.lib	(FTGL)
+freetype214mt_D.lib	(FTGL)
+QTMLClient.lib	(QuickTime)
+vfw32.lib	(video4windows)
+ddraw.lib	(DirectShow)
+strmiids.lib	(DirectShow)
+strmbasD.lib	(DirectShow - part of DirectShow/BaseClasses sample)
+atlsD.lib	(DirectShow - ATLclasses)
+winmm.lib	(DirectShow - time)

@@ -1,0 +1,50 @@
+#N canvas 0 26 574 419 10;
+#X obj 31 45 openpanel;
+#X obj 31 26 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 31 92 read \$1;
+#X obj 31 166 soundfile_info;
+#X obj 31 217 print;
+#X text 40 146 "read"-message needs a symbol (soundfile in wave format)
+;
+#X symbolatom 131 75 66 0 0 0 - - -;
+#X text 50 184 "list"-message output with 7 items;
+#X text 91 224 4.item: <float> header-size in bytes;
+#X text 91 194 1.item: <float> samplerate in Hz;
+#X text 91 204 2.item: <symbol> file-name;
+#X text 91 234 5.item: <float> number of channels;
+#X text 7 2 soundfile_info;
+#X text 130 2 show the header-data of a wav-file;
+#X text 91 254 7.item: <symbol> endianness ("l" for little);
+#X text 260 264 ("b" for big);
+#X text 214 279 (eg. little endian "wav" is natural format on Intel-machines)
+;
+#X text 214 304 (eg. big endian "aiff" is natural format on Macintosh-machines)
+;
+#X text 91 214 3.item: <float> sound-data-length in samples;
+#X text 91 244 6.item: <float> sample-resolution in bytes;
+#X text 75 388 IEM KUG;
+#X text 55 376 musil;
+#X text 89 376 @;
+#X text 97 376 iem.at;
+#X text 58 398 Graz \, Austria;
+#X text 10 365 (c) Thomas Musil 2000 - 2008;
+#X text 90 325 8.item: <float> format code (1 .. linear PCM);
+#X text 286 335 (3 .. IEEE-float);
+#X text 286 345 (6 .. 8 bit ALAW);
+#X text 286 355 (7 .. 8 bit MULAW);
+#N canvas 496 267 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION show the header-data of a wav-file;
+#X text 12 5 KEYWORDS control soundfile;
+#X text 12 65 INLET_0 read;
+#X text 12 85 OUTLET_0 list;
+#X restore 518 392 pd META;
+#X connect 0 0 2 0;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;

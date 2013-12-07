@@ -1,0 +1,28 @@
+#N canvas 1 53 651 338 10;
+#X obj 113 13 inlet;
+#X obj 363 13 inlet;
+#X obj 363 67 purepd/float_argument \$1 0.15;
+#X obj 374 40 loadbang;
+#X obj 189 311 outlet;
+#X obj 189 116 float;
+#X text 325 251 St = a*Yt1+(1-a)*St1;
+#X obj 114 40 trigger float bang;
+#X text 166 117 Yt1;
+#X obj 262 116 float;
+#X text 295 115 St1;
+#X obj 189 170 expr $f3*$f1+(1-$f3)*$f2;
+#X obj 242 282 pddp/pddplink http://www.itl.nist.gov/div898/handbook/pmc/section4/pmc431.htm
+;
+#X obj 363 103 clip 0 1;
+#X connect 0 0 7 0;
+#X connect 1 0 2 0;
+#X connect 2 0 13 0;
+#X connect 3 0 2 0;
+#X connect 5 0 11 0;
+#X connect 7 0 5 1;
+#X connect 7 1 5 0;
+#X connect 7 1 9 0;
+#X connect 9 0 11 1;
+#X connect 11 0 4 0;
+#X connect 11 0 9 1;
+#X connect 13 0 11 2;

@@ -1,0 +1,16 @@
+#N canvas 0 0 450 300 10;
+#X obj 130 55 bhip~;
+#X text 175 53 butterworth high pass filter;
+#N canvas 331 92 494 327 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 LIBRARY external creb;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 signal;
+#X text 12 5 KEYWORDS signal abstraction filter needs_work (example
+patch);
+#X text 12 55 DESCRIPTION butterworth high pass filter;
+#X text 12 75 INLET_0 signal;
+#X text 12 155 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 35 LICENSE GPL v2;
+#X restore 398 277 pd META;

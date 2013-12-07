@@ -1,0 +1,30 @@
+#N canvas 0 31 465 358 10;
+#X obj 5 2 cnv 15 450 20 empty empty amp~ 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 27 270 (C) Copyright 2004 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 244 284 released under the GNU GPL;
+#X floatatom 192 115 5 0 0 0 - - -;
+#X obj 195 95 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -225271
+-1 -1 0 1;
+#X obj 157 219 dac~;
+#X obj 127 139 osc~ 350;
+#X obj 169 178 amp~;
+#X text 28 43 Smooth amplitude control.;
+#N canvas 356 214 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 45 DESCRIPTION smooth amplitude control;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 signal;
+#X restore 407 328 pd META;
+#X connect 4 0 8 1;
+#X connect 5 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 8 0 6 1;

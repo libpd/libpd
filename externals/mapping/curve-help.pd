@@ -1,0 +1,83 @@
+#N canvas 1 53 472 470 10;
+#X obj 5 2 cnv 15 450 20 empty empty curve 2 11 1 18 -233017 -66577
+0;
+#X msg 422 3 pddp;
+#X text 27 390 (C) Copyright 2004 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 244 404 released under the GNU GPL;
+#X text 158 361 For more info:;
+#X floatatom 25 157 8 0 0 0 - - -;
+#X floatatom 25 228 8 0 0 0 - - -;
+#X obj 28 245 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 28 137 hsl 200 15 0 1 0 0 empty empty empty 22 8 1 12 -261681
+-1 -1 0 1;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-curve 200 float 0;
+#X coords 0 1 199 0 200 200 1;
+#X restore 254 92 graph;
+#N canvas 786 75 427 417 draw_array 0;
+#X msg 54 82 bang;
+#X obj 54 103 until;
+#X text 85 82 start;
+#X obj 54 125 f;
+#X obj 83 125 + 1;
+#X obj 54 43 loadbang;
+#X obj 54 180 trigger float float;
+#X obj 127 127 select 0;
+#X obj 53 313 tabwrite \$0-curve;
+#X obj 138 9 inlet;
+#X obj 153 32 send \$0-to-numbox;
+#X obj 139 53 trigger bang float;
+#X obj 83 147 mod 200;
+#X obj 54 257 / 200;
+#X text 96 257 mapping output range: 0 to 1;
+#X obj 53 283 mapping/curve;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 4 0 12 0;
+#X connect 5 0 0 0;
+#X connect 6 0 13 0;
+#X connect 6 1 8 1;
+#X connect 7 0 1 1;
+#X connect 9 0 10 0;
+#X connect 9 0 11 0;
+#X connect 11 0 0 0;
+#X connect 11 1 15 1;
+#X connect 12 0 3 1;
+#X connect 12 0 7 0;
+#X connect 13 0 15 0;
+#X connect 15 0 8 0;
+#X restore 127 207 pd draw_array;
+#X text 286 301 related objects:;
+#X obj 117 166 hsl 128 15 -1 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 0;
+#X floatatom 192 184 7 0 0 0 - #0-to-numbox -;
+#X obj 259 319 sinusoid;
+#X obj 25 207 mapping/curve;
+#X obj 262 359 pddp/open mapping-about;
+#X text 17 39 This object generates a curve based on a -1 to 1 argument
+range.;
+#X obj 342 320 curve_power;
+#X obj 342 338 curve_log;
+#X obj 259 338 curve_exp;
+#N canvas 464 140 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 95 INLET_1 float;
+#X text 12 115 OUTLET_0 float;
+#X text 12 135 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 75 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION generate a curve based on a -1 to 1 argument
+range.;
+#X restore 411 435 pd META;
+#X connect 5 0 15 0;
+#X connect 6 0 7 0;
+#X connect 8 0 5 0;
+#X connect 12 0 10 0;
+#X connect 12 0 15 1;
+#X connect 15 0 6 0;

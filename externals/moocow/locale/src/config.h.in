@@ -1,0 +1,95 @@
+/* src/config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define to 1 if you have the declaration of `LC_ADDRESS', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_ADDRESS
+
+/* Define to 1 if you have the declaration of `LC_ALL', and to 0 if you don't.
+   */
+#undef HAVE_DECL_LC_ALL
+
+/* Define to 1 if you have the declaration of `LC_COLLATE', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_COLLATE
+
+/* Define to 1 if you have the declaration of `LC_CTYPE', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_CTYPE
+
+/* Define to 1 if you have the declaration of `LC_IDENTIFICATION', and to 0 if
+   you don't. */
+#undef HAVE_DECL_LC_IDENTIFICATION
+
+/* Define to 1 if you have the declaration of `LC_MEASUREMENT', and to 0 if
+   you don't. */
+#undef HAVE_DECL_LC_MEASUREMENT
+
+/* Define to 1 if you have the declaration of `LC_MESSAGES', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_MESSAGES
+
+/* Define to 1 if you have the declaration of `LC_MONETARY', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_MONETARY
+
+/* Define to 1 if you have the declaration of `LC_NAME', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_NAME
+
+/* Define to 1 if you have the declaration of `LC_NUMERIC', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_NUMERIC
+
+/* Define to 1 if you have the declaration of `LC_PAPER', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_PAPER
+
+/* Define to 1 if you have the declaration of `LC_TELEPHONE', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_TELEPHONE
+
+/* Define to 1 if you have the declaration of `LC_TIME', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LC_TIME
+
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <wchar.h> header file. */
+#undef HAVE_WCHAR_H
+
+/* Define this to include debugging code for the 'locale' external. */
+#undef LOCALE_DEBUG
+
+/* Name of package */
+#undef PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Date this package was configured */
+#undef PACKAGE_BUILD_DATE
+
+/* User who configured this package */
+#undef PACKAGE_BUILD_USER
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Version number of package */
+#undef VERSION
+
+/* Define this if you are building single-object externals */
+#undef WANT_OBJECT_EXTERNALS

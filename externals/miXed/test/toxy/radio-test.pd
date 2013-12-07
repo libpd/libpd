@@ -1,0 +1,50 @@
+#N canvas 179 90 559 300 12;
+#X obj 20 158 widget radiobutton r -variable ::toxy::r -value 0 -command
+.<:common $::toxy::r.> -bg orange -activebackground magenta -width
+44 -height 44 -indicatoron off -image ::toxy::img::empty;
+#X obj 70 158 widget radiobutton r -variable ::toxy::r -value 1 -command
+.<:common $::toxy::r.> -bg orange -activebackground magenta -width
+44 -height 44 -indicatoron off -image ::toxy::img::empty;
+#X obj 120 158 widget radiobutton r -variable ::toxy::r -value 2 -command
+.<:common $::toxy::r.> -bg orange -activebackground magenta -width
+44 -height 44 -indicatoron off -image ::toxy::img::empty;
+#X obj 170 158 widget radiobutton r -variable ::toxy::r -value 3 -command
+.<:common $::toxy::r.> -bg orange -activebackground magenta -width
+44 -height 44 -indicatoron off -image ::toxy::img::empty;
+#X obj 20 221 r t0;
+#X obj 70 221 r t1;
+#X obj 120 221 r t2;
+#X obj 170 221 r t3;
+#X obj 261 260 hradio 15 1 0 4 empty empty empty 0 -6 0 8 -262144 -1
+-1 0;
+#X obj 20 127 t a;
+#X obj 20 260 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 70 260 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 120 260 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 170 260 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 261 222 r common;
+#X msg 20 15 -command .<:common $::toxy::r.>;
+#X msg 31 46 -command .<:[join [list t $::toxy::r] ""] $::toxy::r.>
+;
+#X obj 366 260 hradio 15 1 0 4 empty empty empty 0 -6 0 8 -262144 -1
+-1 0;
+#X connect 4 0 10 0;
+#X connect 4 0 8 0;
+#X connect 5 0 11 0;
+#X connect 5 0 8 0;
+#X connect 6 0 12 0;
+#X connect 6 0 8 0;
+#X connect 7 0 13 0;
+#X connect 7 0 8 0;
+#X connect 9 0 0 0;
+#X connect 9 0 1 0;
+#X connect 9 0 2 0;
+#X connect 9 0 3 0;
+#X connect 14 0 8 0;
+#X connect 14 0 17 0;
+#X connect 15 0 9 0;
+#X connect 16 0 9 0;

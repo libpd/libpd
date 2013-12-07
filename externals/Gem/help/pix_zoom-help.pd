@@ -1,0 +1,13 @@
+#N canvas 3 45 450 300 10;
+#X msg 164 99 gemList;
+#X msg 164 212 gemList;
+#X text 169 16 part of GEM;
+#X obj 164 167 pix_zoom;
+#X msg 216 122 zoomX zoomY;
+#X text 176 43 pix_zoom;
+#X text 151 73 zoom the pixels;
+#X text 56 239 pix_zoom uses glPixelZoom to magnify/minify the pixels.
+It is experimental.;
+#X connect 0 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 1;

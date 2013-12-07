@@ -1,0 +1,45 @@
+#N canvas 1 53 617 488 10;
+#X obj 41 41 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5700 1;
+#X obj 41 327 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 41 179 / 127;
+#X obj 41 303 * 127;
+#X obj 76 202 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 96 202 rec;
+#X obj 112 219 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X msg 148 238 write test;
+#X msg 161 258 read test;
+#X text 346 152 arg1 : number of sample to record;
+#X text 346 172 arg2 : time between sample (ms);
+#X text 190 16 record and play stream of float;
+#X text 141 45 Warning : the save fonctionality work only if data are
+:;
+#X text 478 69 -1 < data < 1;
+#X text 255 242 write and load in a wave file;
+#X text 168 280 10s recording \, 10ms between data;
+#X text 132 219 play (loop);
+#X obj 41 279 rec_play 1000 10;
+#N canvas 438 198 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 OUTLET_0 float;
+#X text 12 165 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION record and play stream of float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 write read;
+#X text 12 5 KEYWORDS control abstraction filesystem;
+#X restore 563 463 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 17 0;
+#X connect 3 0 1 0;
+#X connect 4 0 17 1;
+#X connect 6 0 17 2;
+#X connect 7 0 17 3;
+#X connect 8 0 17 3;
+#X connect 17 0 3 0;

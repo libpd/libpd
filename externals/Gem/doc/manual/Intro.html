@@ -1,0 +1,62 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mark Danks">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (WinNT; I) [Netscape]">
+   <title>GEM - Introduction</title>
+</head>
+<body>
+
+<center>
+<h2>
+<u>Introduction</u></h2></center>
+GEM is the Graphics Environment for Multimedia. It was originally written by
+<a href="http://www.danks.org/mark">Mark Danks</a> to generate real-time computer graphics,
+especially for audio-visual compositions.
+Because GEM is a visual programming environment, users do not need any experience
+in traditional computer languages.
+<p>GEM is a collection of externals which allow the user to create
+<a href="http://www.opengl.org">OpenGL</a>
+graphics within <a href="http://www.crca.ucsd.edu/~msp/software.html">Pd</a>,
+a program for real-time audio processing by <a href="http://www.crca.ucsd.edu/~msp">Miller
+Puckette</a> (of <a href="http://www.ircam.fr">Max</a> fame).
+<p>There are many different shapes and objects, including polygonal graphics,
+lighting, texture mapping, image processing, and camera motion. All of
+this is possible in real-time without any previous programming experience.
+Because GEM is an add-on library for <a href="http://www.crca.ucsd.edu/~msp/software.html">Pd</a>,
+users can combine audio and graphics, controlling one medium from another.
+<p>GEM is supported in part by a grant from the <a href="http://www.intel.com">Intel
+Research Council</a> for the <a href="http://www.gvm.com">The Global Visual
+Music</a> project of <a href="http://felix.usc.edu/vibeke.html">Vibeke
+Sorensen</a>, <a href="http://www.crca.ucsd.edu/~msp">Miller Puckette</a>
+and <a href="http://www.earunit.org/rand.htm">Rand Steiger</a>.
+<p>An important thing to remember is that GEM is NOT an application.&nbsp;
+It is a library that Pd loads at run-time.&nbsp; Make sure that you see
+the section on <a href="GemWPd.html">using GEM with Pd</a>.&nbsp; This
+manual assumes that you have Pd working correctly and can load up patches
+already.&nbsp; If you do not have that working yet, look at the Pd manual
+and the GEM FAQ.&nbsp; Also, it is assumed that you have a basic understanding
+of how to use Pd and the idea behind the data flow model.&nbsp; In other
+words, if I ask you to pass a message with 3 floats into an object, you
+would know what I mean.
+<p>The system requirements vary depending on your system and what you are
+trying to do.&nbsp; In general, you should have the most powerful computer
+available and the best graphics accelerator on the market.&nbsp; In reality,
+people have been doing some amazing work with a Pentium II and an <a href="http://www.nvidia.com">nVidia
+Riva TNT</a> or <a href="http://www.3dfx.com">3Dfx Voodoo2</a> card.&nbsp;
+If you are on an SGI, then everything from an O2 up seems to be okay.&nbsp;
+The biggest requirement is that you have some kind of OpenGL graphics accelerator.&nbsp;
+This means that a Matrox Millennium II will not run very quickly.
+<p>The other factor is what you are trying to do.&nbsp; Pushing real-time
+video around requires a fast bus, which really only exists on SGIs.&nbsp;
+Doing thousands of texture mapped polygons is great on a PC...if it is
+a constant texture.&nbsp; There are many issues which mean that there is
+no one answer to "Is this system good enough?".&nbsp; In general, you will
+have to try and see.
+<p>GEM is now maintained by <a href="http://www.iem.at/info/personal/jz.htm">IOhannes m zm&ouml;lnig</a>.
+So any bug-reports and donations should go to him instead of Mark...
+<p><a href="index.html">[return]</a>
+<br>&nbsp;
+</body>
+</html>

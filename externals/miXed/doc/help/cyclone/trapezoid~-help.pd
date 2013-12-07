@@ -1,0 +1,46 @@
+#N canvas 0 26 426 388 10;
+#X text 29 14 a trapezoidal wavetable;
+#X text 278 153 args: <up> <down>;
+#X floatatom 96 102 0 0 0 0 - - -;
+#X msg 96 123 hi \$1;
+#X floatatom 34 102 0 0 0 0 - - -;
+#X msg 34 123 lo \$1;
+#X text 262 107 down;
+#X floatatom 139 105 0 0 0 0 - - -;
+#X text 36 40 trapezoid~ is a trapezoidal wavetable with signal inputs
+to change ramp up/down phase position. The default lo/hi points are
+0 and 1 \, but may be changed using the lo/hi messages.;
+#X text 207 107 up;
+#X obj 148 228 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 174 181 Snapshot~ 100;
+#X floatatom 175 206 5 0 0 0 - - -;
+#X obj 149 150 trapezoid~ 0.1 0.9;
+#X obj 263 126 sig~ 0.9;
+#X obj 205 127 sig~ 0.1;
+#X obj 139 126 phasor~ 2;
+#N canvas 351 96 494 386 META 0;
+#X text 12 195 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 165 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION a trapezoidal wavetable;
+#X text 12 65 INLET_0 signal hi lo;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 145 AUTHOR Krzysztof Czaja;
+#X restore 376 364 pd META;
+#X connect 2 0 3 0;
+#X connect 3 0 13 0;
+#X connect 4 0 5 0;
+#X connect 5 0 13 0;
+#X connect 7 0 16 0;
+#X connect 11 0 12 0;
+#X connect 13 0 10 0;
+#X connect 13 0 11 0;
+#X connect 14 0 13 2;
+#X connect 15 0 13 1;
+#X connect 16 0 13 0;

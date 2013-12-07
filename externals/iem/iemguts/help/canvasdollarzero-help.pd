@@ -1,0 +1,32 @@
+#N canvas 251 447 635 427 10;
+#X obj 99 229 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 81 25 canvasdollarzero;
+#X text 207 25 get \$0 of the (parent) canvas;
+#X msg 88 128 bang;
+#X obj 88 148 canvasdollarzero;
+#X symbolatom 88 168 10 0 0 0 - - -;
+#X text 57 85 this object is a shameless clone of iemlib's [parentdollarzero]
+with an added feature.;
+#X text 53 194 the feature is \, that you can query the \$0 of _any_
+parent canvas;
+#N canvas 0 0 781 383 canvasdollarzero 0;
+#X obj 147 72 inlet;
+#X text 298 167 "1" indicates to read the parent patch's (depth:1)
+\$0;
+#X msg 147 126 bang;
+#X symbolatom 182 188 10 0 0 0 - - -;
+#X obj 147 213 outlet;
+#X obj 147 166 canvasdollarzero 1;
+#X text 125 275 ok \, this example is not very splendid \, as \$0 is
+the same for a patch and all it's subpatches anyhow \; nevertheless
+\, believe me that it also works with abstractions;
+#X connect 0 0 2 0;
+#X connect 2 0 5 0;
+#X connect 5 0 3 0;
+#X connect 5 0 4 0;
+#X restore 99 248 pd canvasdollarzero 1;
+#X text 58 308 (c) 2008 IOhannes m zmoelnig \, Thomas Musil;
+#X connect 0 0 8 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;

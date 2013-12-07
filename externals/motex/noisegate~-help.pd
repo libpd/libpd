@@ -1,0 +1,16 @@
+#N canvas 1 88 450 300 10;
+#X obj 131 140 noisegate~;
+#X obj 122 200 dac~;
+#X text 49 67 comment;
+#N canvas 359 227 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL;
+#X text 12 65 INLET_0 signal;
+#X text 12 105 AUTHOR Iain Mott (iain.mott@bigpond.com);
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS signal abstraction;
+#X restore 392 267 pd META;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;

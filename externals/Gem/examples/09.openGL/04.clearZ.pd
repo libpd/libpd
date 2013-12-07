@@ -1,0 +1,27 @@
+#N canvas 0 0 710 401 10;
+#X obj 111 162 loadbang;
+#X obj 44 209 GEMglClear;
+#X obj 111 186 GLdefine GL_DEPTH_BUFFER_BIT;
+#X obj 173 164 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 44 75 gemhead;
+#X obj 44 255 translateXYZ 0 0 -2;
+#X obj 339 129 gemwin;
+#X msg 352 101 create \, 1;
+#X obj 44 281 color 1 0 0;
+#X obj 44 126 circle 1;
+#X obj 44 310 circle 1;
+#X text 206 11 Clear Depth Buffer;
+#X text 205 352 this is related to the depth object that turn off depth
+buffer test \, but not quite the same...;
+#X text 176 213 <- clear Depth buffer \, so that you can draw anything
+even if it is behind something else;
+#X connect 0 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 1 1;
+#X connect 3 0 2 0;
+#X connect 4 0 9 0;
+#X connect 5 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 10 0;
+#X connect 9 0 1 0;

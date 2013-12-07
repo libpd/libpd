@@ -1,0 +1,22 @@
+#N canvas 1 53 474 347 10;
+#X obj 15 30 inlet;
+#X obj 16 264 outlet;
+#X obj 16 198 * 6.28318;
+#X obj 15 101 moses 0.5;
+#X obj 15 56 min 1;
+#X obj 15 74 max 0;
+#X obj 74 133 - 1;
+#X text 56 28 input range: 0 to 1;
+#X text 70 264 output range: -pi to pi;
+#X text 232 311 released under the GNU GPL;
+#X text 15 297 (C) Copyright 2005 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 60 63 this should be converted so it can handle out of range
+values \, using a mod and a div prolly.;
+#X connect 0 0 4 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 3 1 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 6 0 2 0;

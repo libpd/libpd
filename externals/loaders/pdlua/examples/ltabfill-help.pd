@@ -1,0 +1,27 @@
+#N canvas 0 0 453 328 10;
+#X obj 82 239 ltabfill \$0-table w -> sin(2*pi*w*x);
+#X obj 33 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 331 196 5 0 0 2 w - -;
+#X obj 82 159 symbol \$0-table-1;
+#X obj 94 205 symbol \$0-table-2;
+#X obj 94 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 82 136 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 254 134 table \$0-table-1 333;
+#X obj 254 157 table \$0-table-2 555;
+#X text 15 17 [ltabfill] is a clone of [lexpr] that writes a function
+to a table. The first argument and inlet is the name of the table \,
+then the usual [lexpr] stuff follows. There is an additional implicit
+parameter to the expression \, named 'x' \, which ranges from [0..1)
+no matter the size of the array. Note: you might have to close/reopen
+the table displays for them to refresh correctly.;
+#X text 14 280 See also:;
+#X obj 53 299 lexpr x -> x;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 3 0;

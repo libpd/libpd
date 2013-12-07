@@ -1,0 +1,60 @@
+#N canvas 235 77 559 441 10;
+#X obj 4 -17 cnv 15 550 40 empty \$0-pddp.cnv.header smc 3 12 0 18
+-241536 -1 0;
+#X obj 3 189 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlet 15 12 0 13
+-245500 -191407 0;
+#N canvas 779 22 494 344 META 0;
+#X text 12 25 KEYWORDS control number float store;
+#X text 12 45 LICENSE GPL;
+#X text 12 65 TEMPLATE template-help.pd v0.1;
+#X text 12 85 PLATFORM windows macosx gnulinux;
+#X text 12 105 DATATYPE float list;
+#X text 12 5 GENRE storage;
+#X text 12 125 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 165 RELEASE_DATE 2007-08-24;
+#X text 12 185 RELEASE_VERSION 0.40-test05;
+#X restore 504 400 pd META;
+#X obj 3 262 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 15 12 0
+13 -245500 -191407 0;
+#X obj 3 341 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 15
+12 0 13 -245500 -191407 0;
+#X msg 146 48 bang;
+#X obj 72 312 cnv 17 3 20 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X obj 72 286 cnv 17 3 20 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 489 -14 apple/smc;
+#X obj 146 111 apple/smc;
+#X obj 197 134 pddp/print;
+#X obj 439 4 pddp/pddplink http://wiki.puredata.info/en/apple/smc -text
+pdpedia: apple/smc;
+#X text 15 6 description: interface to Apple System Management Controller
+;
+#X obj 69 163 pddp/print;
+#X obj 78 363 pddp/pddplink http://en.wikipedia.org/wiki/System_Management_Controller
+;
+#X obj 143 142 print;
+#X msg 158 70 keys;
+#X msg 53 57 symbol TC0D;
+#X msg 167 90 info;
+#X obj 195 377 pddp/pddplink http://discussions.apple.com/thread.jspa?threadID=734247
+-text Apple Forum: Mac Pro Tempurature question;
+#X text 77 377 for a list of keys:;
+#X msg 55 89 TC0D;
+#X text 103 283 a message with the key symbol and its value;
+#X text 103 313 messages with meta info;
+#X text 102 208 BANG - output the value of the current key;
+#X text 102 225 info - outputs info about the sensor on the right outlet
+;
+#X text 102 241 keys - output all available keys in the right outlet
+;
+#X text 16 34 get data:;
+#X connect 5 0 9 0;
+#X connect 9 0 13 0;
+#X connect 9 0 15 0;
+#X connect 9 1 10 0;
+#X connect 16 0 9 0;
+#X connect 17 0 9 0;
+#X connect 18 0 9 0;
+#X connect 21 0 9 0;

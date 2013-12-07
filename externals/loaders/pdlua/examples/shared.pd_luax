@@ -1,0 +1,33 @@
+if sharedluaxstore == nil then
+  sharedluaxstore = { }  -- initialize store only once
+end
+
+return function (self, sel, atoms)
+  if type(atoms[1]) == "string" then
+    if sharedluaxstore[atoms[1]] == nil then
+      sharedluaxstore[atoms[1]] = { sel = "bang", msg = { }, count = 1 }
+    else
+      sharedluaxstore[atoms[1]].count = sharedluaxstore[atoms[1]].count + 1
+    end
+    self.name = atoms[1]
+    self.inlets = 2
+    self.outlets = 1
+    self.in_1_bang = function(self)
+      local s = sharedluaxstore[self.name]
+      self:outlet(1, s.sel, s.msg)
+    end
+    self.in_2 = function(self, s, m)
+      local c = sharedluaxstore[self.name].count
+      sharedluaxstore[self.name] = { sel = s, msg = m, count = c }
+    end
+    self.finalize = function (self)
+      sharedluaxstore[self.name].count = sharedluaxstore[self.name].count - 1
+      if sharedluaxstore[self.name].count == 0 then
+        sharedluaxstore[self.name] = nil
+      end
+    end
+    return true
+  else
+    return false
+  end
+end

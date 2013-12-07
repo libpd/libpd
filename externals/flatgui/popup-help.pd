@@ -1,0 +1,39 @@
+#N canvas 119 198 626 449 10;
+#X obj 106 340 popup 124 25 grey90 duh! one two three four five six
+seven eight nine ten eleven twelve thirteen i14 i15 i16 i17 i18 i19
+i20 i21 i22 i23 i24 i25 i26 i27 i28 i29 i30;
+#X obj 152 399 print index;
+#X msg 30 98 name popup;
+#X obj 239 399 print symbol;
+#X floatatom 163 292 5 0 0 0 - - -;
+#X text 14 43 Left outlet sends out a bang on load \, used to set default
+value. Using a loadbang to send a float will result in a crash.;
+#X msg 107 225 options;
+#X msg 100 176 options one two three four five six seven eight nine
+ten eleven twelve thirteen i14 i15 i16 i17 i18 i19 i20 i21 i22 i23
+i24 i25 i26 i27 i28 i29 i30;
+#X msg 118 251 append append-one append-two append-three;
+#X obj 106 372 route bang;
+#X msg 33 338 10;
+#X text 187 372 Choose 10 as the default value on load \, does send
+output.;
+#X msg 53 123 bgcolour #047992;
+#X msg 83 150 bgcolour grey90;
+#X symbolatom 223 315 10 0 0 0 - - -;
+#X text 209 289 Select by index;
+#X text 302 314 Select by symbol name;
+#X text 13 11 popup \, a popup menu for PD. Copyright Ben Bogart 2004
+\, 2005 Released under the GPL.;
+#X connect 0 0 9 0;
+#X connect 0 1 3 0;
+#X connect 2 0 0 0;
+#X connect 4 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 10 0;
+#X connect 9 1 1 0;
+#X connect 10 0 0 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 1;

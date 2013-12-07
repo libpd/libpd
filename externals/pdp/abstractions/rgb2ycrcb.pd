@@ -1,0 +1,7 @@
+#N canvas 318 162 450 300 10;
+#X obj 94 76 inlet;
+#X obj 144 76 inlet;
+#X obj 195 76 inlet;
+#X text 94 53 red;
+#X text 143 52 green;
+#X text 197 53 blue;

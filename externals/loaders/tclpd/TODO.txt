@@ -1,0 +1,6 @@
+TODO-list for tclpd (most important things first)
+=================================================
+- bitmap's help make pd crash only when opened via context menu Help -> investigate
+- slider2.tcl is broken
+- add (or check) GOP
+- signal externals? (really?)

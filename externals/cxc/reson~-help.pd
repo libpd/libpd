@@ -1,0 +1,16 @@
+#N canvas 0 4 454 304 10;
+#X obj 183 119 reson~;
+#X text 104 237 An interpolating reson filter;
+#N canvas 358 105 494 359 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Jonathan Wilkes revised the patch
+to conform to the PDDP template for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal filter needs_work (example patch);
+#X text 12 45 DESCRIPTION an interpolating reson filter;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 INLET_3 signal;
+#X text 12 145 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR jdl@xdv.org;
+#X restore 405 282 pd META;

@@ -1,0 +1,18 @@
+#N canvas 115 450 614 279 10;
+#X obj 41 53 pdp_trigger;
+#X obj 113 90 timer;
+#X obj 113 187 /;
+#X obj 113 125 t b f;
+#X msg 113 155 1000;
+#X obj 41 21 inlet;
+#X obj 113 219 outlet;
+#X text 151 36 pdp_pps uses pdp_trigger to measure the number of packets
+per second. you can use this as a performance monitor.;
+#X connect 0 1 1 1;
+#X connect 0 1 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 3 1 2 1;
+#X connect 4 0 2 0;
+#X connect 5 0 0 0;

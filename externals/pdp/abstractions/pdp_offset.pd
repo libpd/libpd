@@ -1,0 +1,17 @@
+#N canvas 515 434 450 300 10;
+#X obj 48 69 inlet;
+#X obj 48 243 outlet;
+#X obj 48 191 pdp_cheby;
+#X msg 173 93 coef 0 \$1;
+#X obj 103 69 loadbang;
+#X obj 173 68 inlet;
+#X obj 103 111 float \$1;
+#X text 45 21 add an offset to an image;
+#X msg 103 138 reset \, coef 1 1 \, coef 0 \$1;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 6 0;
+#X connect 5 0 3 0;
+#X connect 6 0 8 0;
+#X connect 8 0 2 0;

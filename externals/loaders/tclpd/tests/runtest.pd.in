@@ -1,0 +1,17 @@
+#N canvas 0 0 473 353 10;
+#X obj 188 235 textfile;
+#X obj 37 124 list prepend add;
+#X obj 37 150 list trim;
+#X msg 188 196 write %OUTPUT%;
+#X msg 161 274 \; pd quit;
+#X obj 37 37 loadbang;
+#X obj 37 63 %TESTCASE%;
+#X obj 161 124 t b b;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
+#X connect 6 1 7 0;
+#X connect 7 0 4 0;
+#X connect 7 1 3 0;

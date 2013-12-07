@@ -1,0 +1,9 @@
+#N canvas 10 10 200 200 10;
+#N canvas 20 20 420 300 META 0;
+#X text 10 10 META this is a prototype of a libdir meta file;
+#X text 10 30 NAME cyclone;
+#X text 10 50 AUTHOR Kzrysztof Czaja;
+#X text 10 70 LICENSE BSD;
+#X text 10 90 VERSION 0.1-alpha56;
+#X text 10 110 DESCRIPTION a library for porting and running Max/MSP patches in Pd;
+#X restore 10 10 pd META;

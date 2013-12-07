@@ -1,0 +1,18 @@
+#N canvas 487 324 440 275 10;
+#X obj 34 51 inlet;
+#X obj 34 236 outlet;
+#X obj 34 173 pdp_gain;
+#X obj 34 100 pdp_cheby 1;
+#X obj 153 24 loadbang;
+#X msg 141 146 chanmask 6;
+#X msg 153 58 chanmask 1 \, coef 0 1 \, coef 1 -1;
+#X msg 141 120 -1;
+#X connect 0 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 6 0;
+#X connect 5 0 2 0;
+#X connect 6 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 2 1;
+#X connect 7 0 5 0;

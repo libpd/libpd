@@ -1,0 +1,36 @@
+#N canvas 0 26 462 276 10;
+#X floatatom 253 143 5 0 0 0 - - -;
+#X obj 241 191 ascii2int;
+#X msg 305 168 bang;
+#X msg 192 168 bang;
+#X text 20 169 output current value -2;
+#X text 343 168 <-- reset;
+#X floatatom 241 220 0 0 0 0 - - -;
+#X obj 241 117 int;
+#X text 38 28 convert a stream of ASCII digits to a single int value
+;
+#X msg 242 63 49 52 57 32;
+#X msg 138 63 53 56 49 50 1;
+#X obj 241 240 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 241 95 zexy/drip 500;
+#N canvas 404 246 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X text 12 45 DESCRIPTION convert a stream of ASCII digits to a single
+int value;
+#X text 12 75 INLET_0 float;
+#X text 12 95 OUTLET_0 float;
+#X restore 412 256 pd META;
+#X connect 1 0 6 0;
+#X connect 2 0 1 1;
+#X connect 3 0 1 0;
+#X connect 6 0 11 0;
+#X connect 7 0 0 0;
+#X connect 7 0 1 0;
+#X connect 9 0 12 0;
+#X connect 10 0 12 0;
+#X connect 12 0 7 0;

@@ -1,0 +1,103 @@
+#N canvas 39 41 1031 669 10;
+#X declare -lib chaos;
+#X msg 471 344 show;
+#X msg 470 295 seed;
+#X msg 470 314 seed number;
+#X msg 469 234 elyapunov;
+#X msg 467 118 constrain;
+#X text 601 76 random search for an attractor;
+#X text 508 345 displays info on attractor to console;
+#X text 543 119 restores full param search area;
+#X text 632 138 based on current params \, limits to percentage of
+range;
+#X msg 465 76 search <var-inits>;
+#X msg 467 137 constrain <percentage>;
+#X msg 467 156 constrain <param-limits>;
+#X msg 468 200 lyapunov <low> <high> <failure>;
+#X msg 465 57 search;
+#X text 516 57 random search for an attractor \, variables use defaults
+;
+#X text 17 403 The search method implemented performs the following:
+;
+#X text 41 418 1 Set the params randomly based on allowed ranges;
+#X text 41 432 2 Calculate the Lyapunov Exponent;
+#X text 41 447 3 If the Lyapunov Exponent is within allowed range \,
+return the attractor set;
+#X text 19 39 Searching for an attractor set can be as simple as sending
+a 'search' message to a fractal. This will search the fractals allowable
+parameter limits for an attractor set.;
+#X text 39 183 arg[1] = Lyapunov Exponent;
+#X msg 469 265 classify <units>;
+#X text 591 266 Used to set the "granularity" of the classification
+;
+#X text 17 323 The Lyapunov Exponent for the attractor set will indicates
+one of three states \, (1) Convergence [a negative value] \, (2) Stability
+[0 \, of values close to 0] \, and (3) Chaos [a positive value]. Each
+class will have different ranges of Lyapunov Exponent.;
+#X text 39 196 arg[2] = Classification String ****;
+#X text 16 513 **** - The classification method was adopted from Julian
+Sprott's method of classification. While it is an arbitrary system
+\, and does not "uniquely" identify an attractor set \, it is used
+to show a relationship with other attractor sets with similar values.
+;
+#X text 558 313 seeds search random number generator with number *
+;
+#X text 507 296 seeds search random number generator with time *;
+#X text 543 235 calculates an extended Lyapunov Exponent **;
+#X text 648 157 params are limited to explicit ranges ***;
+#X text 473 419 * - all fractals of all classes currently share the
+same random number generator.;
+#X text 473 452 ** - this performs a Lyapunov Exponent calculation
+for each variable in the attractor. Ideally \, all results should be
+approximately the same. This is an experimental function.;
+#X text 473 502 *** - expects there to be a low and high range limit
+for each param in the fractal equation.;
+#X text 483 217 sets search limits and failure count for Lyapunov Exponent
+;
+#X text 37 15 Searching - the art of chaos.;
+#N canvas 0 22 464 316 simple_example 0;
+#X obj 166 106 latoocarfian;
+#X msg 173 38 search;
+#X text 32 238 This example creates a 'latoocarfian' fractal with the
+class defaults. When a search is performed \, the initial state for
+the variables are set to the class defaults.;
+#X obj 131 14 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 166 211 10 0 0 0 X - -;
+#X floatatom 185 194 10 0 0 1 Y - -;
+#X msg 166 16 reset;
+#X msg 183 61 show;
+#X obj 205 173 print results;
+#X obj 225 152 print vars;
+#X obj 245 132 print params;
+#X connect 0 0 4 0;
+#X connect 0 1 5 0;
+#X connect 0 2 8 0;
+#X connect 0 3 9 0;
+#X connect 0 4 10 0;
+#X connect 1 0 0 0;
+#X connect 3 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 286 18 pd simple_example;
+#X text 39 210 arg[3] = failure rate before solution *****;
+#X text 16 581 ***** - the failure rate is a percentage of the actual
+number of failures until a solution is found over the total number
+of times the search algorithm will be executed before giving up. This
+limit is set via the 'lyapunov' message. This number will also be influenced
+by the 'low' and 'high' ranges set.;
+#X text 19 93 The values returned from a 'search' message use the 'search'
+outlets. These three outlets encapsulate that three pieces of data
+of interest. The first of the 'search' outlets holds a list of the
+results. This includes:;
+#X text 39 170 arg[0] = 'show' \, 'search' \, or 'invalid';
+#X text 18 269 Most likely \, you won't see any failures ('invalid')
+\, unless you mess with the 'constrain' or 'lyapunov' messages. 'show'
+is returned when you use the 'show' message.;
+#X obj 153 376 readme-lyapunov;
+#X text 43 475 4 If the Limit Count has been exceeded \, return 'invalid'
+\, else goto 1;
+#X text 18 154 Search Outlet 0:;
+#X text 18 227 Search Outlet 1: list of current variables;
+#X text 18 243 Search Outlet 2: list of parameter set;
+#X obj 926 9 import chaos;

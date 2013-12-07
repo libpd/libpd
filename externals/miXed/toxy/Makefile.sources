@@ -1,0 +1,10 @@
+ifdef TCL_LIB
+TYPES = TOT TOW WIDGET PLUSTOT
+else
+TYPES = TOT TOW WIDGET
+endif
+
+TOT_SOURCES = tot.c
+TOW_SOURCES = tow.c
+WIDGET_SOURCES = widget.c
+PLUSTOT_SOURCES = plustot.c

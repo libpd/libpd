@@ -1,0 +1,57 @@
+#N canvas 0 26 680 381 10;
+#X text 14 3 Pulse-train generator and metronome;
+#X floatatom 304 203 0 0 0 0 - - -;
+#X obj 26 318 *~ 0.2;
+#X obj 26 356 dac~;
+#X obj 26 296 cycle~;
+#X obj 26 271 *~ 1000;
+#X msg 84 143 200 \, 100 5000 200 5000;
+#X obj 26 217 noise~;
+#X obj 26 247 sah~;
+#X obj 231 243 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 218 163 0 0 0 0 - - -;
+#X text 256 243 bang output when transition from 0 to 1 occurs;
+#X text 20 27 train~ generates a pulse signal whose period is specifiable
+in terms of milliseconds (see <~ for a method of making a pulse wave
+at a specified frequency). It also sends out a bang when going from
+0 to 1 \, so it can be used as a metronome with a floating-point interval.
+The signal output can be used as a control input for sah~ as shown
+in the example below \, or at very small intervals \, it is audible.
+;
+#X text 242 162 signal/float sets pulse width (0.01 to .99);
+#X text 239 138 signal/float sets pulse period (ms);
+#X text 182 275 Optional arguments set initial interval (default 1000)
+\, width (default .5) \, and phase (default 0).;
+#X text 335 201 signal/float sets phase of 0-1 transition within pulse
+period (0 to 1);
+#X text 83 128 modulate interval;
+#X obj 84 164 Line~ 200;
+#X obj 84 220 train~ 200 0.75;
+#N canvas 247 115 494 402 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible oscillator;
+#X text 12 45 DESCRIPTION pulse-train generator and metronome;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 signal;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 145 OUTLET_1 bang;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X restore 630 361 pd META;
+#X connect 1 0 19 2;
+#X connect 2 0 3 0;
+#X connect 2 0 3 1;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X connect 6 0 18 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;
+#X connect 10 0 19 1;
+#X connect 18 0 19 0;
+#X connect 19 0 8 1;
+#X connect 19 1 9 0;

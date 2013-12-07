@@ -1,0 +1,10 @@
+#> pop1 menubutton
+#. -menu .-.pop
+#. -bg purple -fg white -activebackground magenta -width 8 -text jeden
+#. @float if .(.#1 >= 1.) .(.-.pop invoke .#1.)
+
+::toxy::popup .- .| rpop1 \
+    [list {one jeden} {two dwa} {three trzy} \
+    {four cztery} {five piêæ} {six sze¶æ} {seven siedem} \
+    {eight osiem} {nine dziewiêæ} {ten dziesiêæ}] \
+    -bg purple -fg white -activebackground magenta

@@ -1,0 +1,64 @@
+#N canvas 0 26 547 392 10;
+#X text -82 28 Detect signal change and direction;
+#X obj 257 258 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 281 260 signal isn't the same;
+#X msg 148 73 0 \, 0 5000;
+#X obj 211 278 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 54 73 500 \, 0 5000;
+#X msg -39 73 0 \, 500 5000;
+#X text 87 316 detect when signal is increasing;
+#X obj 89 299 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 31 319 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj -22 111 line~;
+#X text 30 338 detect when signal is decreasing;
+#X text 213 296 signal is the same;
+#X text -39 57 245 increasing;
+#X text 54 57 245 decreasing;
+#X text 149 57 245 the same;
+#X obj -22 145 change~;
+#X obj 31 240 edge~;
+#X obj 89 240 edge~;
+#X obj 211 238 edge~;
+#X obj 211 204 expr~ $v1==0;
+#X obj 111 203 expr~ $v1==1;
+#X obj 13 203 expr~ $v1==-1;
+#X obj -88 199 Snapshot~ 100;
+#X obj -87 231 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj -125 143 Snapshot~ 100;
+#X obj -123 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0
+10 -262144 -1 -1 0 256;
+#N canvas 159 85 494 383 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION detect signal change and direction;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 370 372 pd META;
+#X connect 3 0 10 0;
+#X connect 5 0 10 0;
+#X connect 6 0 10 0;
+#X connect 10 0 16 0;
+#X connect 10 0 25 0;
+#X connect 16 0 20 0;
+#X connect 16 0 23 0;
+#X connect 16 0 22 0;
+#X connect 16 0 21 0;
+#X connect 17 0 9 0;
+#X connect 18 0 8 0;
+#X connect 19 0 4 0;
+#X connect 19 1 1 0;
+#X connect 20 0 19 0;
+#X connect 21 0 18 0;
+#X connect 22 0 17 0;
+#X connect 23 0 24 0;
+#X connect 25 0 26 0;

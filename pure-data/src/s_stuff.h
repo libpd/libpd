@@ -240,9 +240,11 @@ void sys_setalarm(int microsec);
 
 #define DEFAULTSRATE 44100
 #ifdef _WIN32
-#define DEFAULTADVANCE 70
+# define DEFAULTADVANCE 100
+#elif defined(__APPLE__)
+# define DEFAULTADVANCE 20
 #else
-#define DEFAULTADVANCE 25
+# define DEFAULTADVANCE 50
 #endif
 
 typedef void (*t_audiocallback)(void);
@@ -330,6 +332,7 @@ EXTERN void sys_set_midi_api(int whichapi);
 EXTERN void sys_set_audio_api(int whichapi);
 extern int sys_audioapi;
 EXTERN void sys_set_audio_state(int onoff);
+EXTERN int sys_get_audio_state(void);
 
 /* API dependent audio flags and settings */
 void oss_set32bit( void);

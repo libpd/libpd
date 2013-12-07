@@ -1,0 +1,12 @@
+FLAGS = -DPD -DUNIX -DIRIX -DN32 -O2 -w
+INCLUDE =  -I../pd/src -I /usr/local/include
+
+all: vbap_irix6 definels_irix6
+
+vbap_irix6:
+	cc $(FLAGS) $(INCLUDE) -o vbap.o -c vbap.c
+	ld -elf -shared -rdata_shared -o vbap.pd_irix6 vbap.o
+
+definels_irix6:
+	cc $(FLAGS) $(INCLUDE) -o define_loudspeakers.o -c define_loudspeakers.c
+	ld -elf -shared -rdata_shared -o define_loudspeakers.pd_irix6 define_loudspeakers.o

@@ -1,0 +1,54 @@
+#N canvas 1 88 600 590 10;
+#X text 124 68 GEM object;
+#X obj 123 298 print out1;
+#X text 138 23 counter;
+#X msg 123 97 bang;
+#X text 58 362 counter counts the number of bangs;
+#X obj 123 220 counter 0 5;
+#X msg 319 154 bang;
+#X text 58 394 The third argument is the direction 1 == up 2 == down
+3 == up and down;
+#X obj 319 297 print out2;
+#X obj 319 219 counter 0 5 3;
+#X obj 195 265 print done1;
+#X obj 405 267 print done2;
+#X text 58 439 The right outlet sends a bang when the counter rolls
+over. The bang occurs after the left inlet sends the value.;
+#X msg 147 129 direction;
+#X msg 171 154 low value;
+#X msg 195 182 high value;
+#X msg 71 176 reset;
+#X msg 26 177 clear;
+#X text 58 524 A reset message will set the counter back to the starting
+value and send the value out the left outlet.;
+#X text 58 486 A clear message will set the counter back to the starting
+value.;
+#X text 331 189 count from 0 to 5 and back down to 0;
+#N canvas 488 217 494 344 META 0;
+#X text 12 265 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 245 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 OUTLET_0 float;
+#X text 12 45 DESCRIPTION counter;
+#X text 12 65 INLET_0 bang clear reset;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 INLET_3 float;
+#X text 12 145 INLET_4;
+#X text 12 185 OUTLET_1;
+#X text 12 205 OUTLET_2;
+#X text 12 225 OUTLET_3;
+#X text 12 5 KEYWORDS control;
+#X restore 544 562 pd META;
+#X connect 3 0 5 0;
+#X connect 5 0 1 0;
+#X connect 5 1 10 0;
+#X connect 6 0 9 0;
+#X connect 9 0 8 0;
+#X connect 9 1 11 0;
+#X connect 13 0 5 1;
+#X connect 14 0 5 2;
+#X connect 15 0 5 3;
+#X connect 16 0 5 0;
+#X connect 17 0 5 0;

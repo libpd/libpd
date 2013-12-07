@@ -10,6 +10,7 @@ to be different but are now unified except for some fossilized names.) */
 #include "m_pd.h"
 #include "m_imp.h"
 #include "s_stuff.h"
+#include "g_magicglass.h"
 #include "g_canvas.h"
 #include <string.h>
 #include "g_all_guis.h"
@@ -314,6 +315,9 @@ t_canvas *canvas_new(void *dummy, t_symbol *sel, int argc, t_atom *argv)
     int xloc = 0, yloc = GLIST_DEFCANVASYLOC;
     int font = (owner ? owner->gl_font : sys_defaultfont);
     glist_init(x);
+    // jsarlo
+    x->gl_magic_glass = magicGlass_new(x);
+    // end jsarlo
     x->gl_obj.te_type = T_OBJECT;
     if (!owner)
         canvas_addtolist(x);
@@ -700,6 +704,10 @@ void canvas_free(t_canvas *x)
 {
     t_gobj *y;
     int dspstate = canvas_suspend_dsp();
+    // jsarlo
+    if (x->gl_magic_glass)
+      magicGlass_free(x->gl_magic_glass);
+    // end jsarlo
     canvas_noundo(x);
     if (canvas_editing == x)
         canvas_editing = 0;
@@ -735,14 +743,17 @@ static void canvas_drawlines(t_canvas *x)
 {
     t_linetraverser t;
     t_outconnect *oc;
-    {
+    int issignal;
+    
         linetraverser_start(&t, x);
         while (oc = linetraverser_next(&t))
-            sys_vgui(".x%lx.c create line %d %d %d %d -width %d -tags [list l%lx cord]\n",
-                    glist_getcanvas(x),
-                        t.tr_lx1, t.tr_ly1, t.tr_lx2, t.tr_ly2, 
-                            (outlet_getsymbol(t.tr_outlet) == &s_signal ? 2:1),
-                                oc);
+    {
+        issignal = (outlet_getsymbol(t.tr_outlet) == &s_signal ? 1 : 0);
+        sys_vgui(".x%lx.c create line %d %d %d %d -width %d -fill %s \
+-tags [list l%lx cord]\n",
+                 glist_getcanvas(x), t.tr_lx1, t.tr_ly1, t.tr_lx2, t.tr_ly2, 
+                 (issignal ? 2:1), (issignal ? "$signal_cord" : "$msg_cord"),
+                 oc);
     }
 }
 
@@ -920,16 +931,34 @@ void canvas_logerror(t_object *y)
 static void *subcanvas_new(t_symbol *s)
 {
     t_atom a[6];
-    t_canvas *x, *z = canvas_getcurrent();
+    t_canvas *x, *owner = canvas_getcurrent();
+    t_canvas *open_parent = owner;
     if (!*s->s_name) s = gensym("/SUBPATCH/");
-    SETFLOAT(a, 0);
-    SETFLOAT(a+1, GLIST_DEFCANVASYLOC);
+    /* find the first open parent patch and use its location */
+    while (open_parent->gl_owner && !open_parent->gl_editor)
+	open_parent = open_parent->gl_owner;
+    /* ideally we'd know the scroll position of the owner window and
+     * adjust these calculations accordingly.  That would make it so
+     * that the subpatch's window always pops up over where the [pd]
+     * object was created on the owner.  Currently only pd-gui knows
+     * the scrollbar position, so this placement logic should be
+     * really be handled there. */
+    if (open_parent->gl_editor)
+    {
+	SETFLOAT(a, open_parent->gl_screenx1 + open_parent->gl_editor->e_xwas);
+	SETFLOAT(a+1, open_parent->gl_screeny1 + open_parent->gl_editor->e_ywas);
+    }
+    else /* sometimes there is no gl_editor, like when the parent is vis 0 */
+    {
+	SETFLOAT(a, 0);
+	SETFLOAT(a+1, GLIST_DEFCANVASYLOC);
+    }
     SETFLOAT(a+2, GLIST_DEFCANVASWIDTH);
     SETFLOAT(a+3, GLIST_DEFCANVASHEIGHT);
     SETSYMBOL(a+4, s);
     SETFLOAT(a+5, 1);
     x = canvas_new(0, 0, 6, a);
-    x->gl_owner = z;
+    x->gl_owner = owner;
     canvas_pop(x, 1);
     return (x);
 }
@@ -1044,6 +1073,52 @@ t_canvas *canvas_getrootfor(t_canvas *x)
         return (x);
     else return (canvas_getrootfor(x->gl_owner));
 }
+/* JMZ:
+ * initbang is emitted after the canvas is done, but before the parent canvas is done
+ * therefore, initbangs cannot reach to the outlets
+ */
+void canvas_initbang(t_canvas *x)
+{
+    t_gobj *y;
+    t_symbol *s = gensym("initbang");
+    /* run "initbang" for all subpatches, but NOT for the child abstractions */
+    for (y = x->gl_list; y; y = y->g_next)
+      if (pd_class(&y->g_pd) == canvas_class)
+        {
+          if (!canvas_isabstraction((t_canvas *)y))
+            canvas_initbang((t_canvas *)y);
+        }
+
+    /* call the initbang()-method for objects that have one */
+    for (y = x->gl_list; y; y = y->g_next)
+      {
+        if ((pd_class(&y->g_pd) != canvas_class) && zgetfn(&y->g_pd, s))
+          {
+            pd_vmess(&y->g_pd, s, "");
+          }
+      }
+}
+/* JMZ:
+ * closebang is emitted before the canvas is destroyed
+ * and BEFORE subpatches/abstractions in this canvas are destroyed
+ */
+void canvas_closebang(t_canvas *x)
+{
+    t_gobj *y;
+    t_symbol *s = gensym("closebang");
+
+    /* call the closebang()-method for objects that have one 
+     * but NOT for subpatches/abstractions: these are called separately
+     * from g_graph:glist_delete()
+     */
+    for (y = x->gl_list; y; y = y->g_next)
+      {
+        if ((pd_class(&y->g_pd) != canvas_class) && zgetfn(&y->g_pd, s))
+          {
+            pd_vmess(&y->g_pd, s, "");
+          }
+      }
+}
 
 /* ------------------------- DSP chain handling ------------------------- */
 
@@ -1079,6 +1154,10 @@ static void canvas_dodsp(t_canvas *x, int toplevel, t_signal **sp)
     dc = ugen_start_graph(toplevel, sp,
         obj_nsiginlets(&x->gl_obj),
         obj_nsigoutlets(&x->gl_obj));
+
+    ob = &x->gl_magic_glass->x_obj;
+    if (ob && x->gl_magic_glass->x_connectedObj)
+		ugen_add(dc, ob);  // this t_canvas could be an array, hence no gl_magic_glass
 
         /* find all the "dsp" boxes and add them to the graph */
     
@@ -1148,6 +1227,17 @@ void canvas_update_dsp(void)
     if (canvas_dspstate) canvas_start_dsp();
 }
 
+/* the "dsp" message to pd starts and stops DSP somputation, and, if
+appropriate, also opens and closes the audio device.  On exclusive-access
+APIs such as ALSA, MMIO, and ASIO (I think) it\s appropriate to close the
+audio devices when not using them; but jack behaves better if audio I/O
+simply keeps running.  This is wasteful of CPU cycles but we do it anyway
+and can perhaps regard this is a design flaw in jack that we're working around
+here.  The function audio_shouldkeepopen() is provided by s_audio.c to tell
+us that we should elide the step of closing audio when DSP is turned off.*/
+
+int audio_shouldkeepopen( void);
+
 void glob_dsp(void *dummy, t_symbol *s, int argc, t_atom *argv)
 {
     int newstate;
@@ -1162,7 +1252,8 @@ void glob_dsp(void *dummy, t_symbol *s, int argc, t_atom *argv)
         else if (!newstate && canvas_dspstate)
         {
             canvas_stop_dsp();
-            sys_set_audio_state(0);
+            if (!audio_shouldkeepopen())
+                sys_set_audio_state(0);
         }
     }
     else post("dsp state %d", canvas_dspstate);
@@ -1257,6 +1348,8 @@ saved,  we throw early messages to the canvas to set the environment
 before any objects are created in it. */
 
 static t_class *declare_class;
+extern t_class *import_class;
+extern t_class *path_class;
 
 typedef struct _declare
 {
@@ -1290,6 +1383,36 @@ void canvas_savedeclarationsto(t_canvas *x, t_binbuf *b)
         {
             binbuf_addv(b, "s", gensym("#X"));
             binbuf_addbinbuf(b, ((t_declare *)y)->x_obj.te_binbuf);
+            binbuf_addv(b, ";");
+        }
+        else if (pd_class(&y->g_pd) == import_class)
+        {
+            int i, argc;
+            t_atom *argv;
+            binbuf_addv(b, "s", gensym("#X"));
+            binbuf_addv(b, "s", gensym("declare"));
+            argc = binbuf_getnatom(((t_object *)y)->te_binbuf) - 1;
+            argv = binbuf_getvec(((t_object *)y)->te_binbuf) + 1;
+            for(i = 0; i < argc; ++i)
+            {
+                binbuf_addv(b, "s", gensym("-lib"));
+                binbuf_add(b, 1, argv + i);
+            }
+            binbuf_addv(b, ";");
+        }
+        else if (pd_class(&y->g_pd) == path_class)
+        {
+            int i, argc;
+            t_atom *argv;
+            binbuf_addv(b, "s", gensym("#X"));
+            binbuf_addv(b, "s", gensym("declare"));
+            argc = binbuf_getnatom(((t_object *)y)->te_binbuf) - 1;
+            argv = binbuf_getvec(((t_object *)y)->te_binbuf) + 1;
+            for(i = 0; i < argc; ++i)
+            {
+                binbuf_addv(b, "s", gensym("-path"));
+                binbuf_add(b, 1, argv + i);
+            }
             binbuf_addv(b, ";");
         }
         else if (pd_class(&y->g_pd) == canvas_class)

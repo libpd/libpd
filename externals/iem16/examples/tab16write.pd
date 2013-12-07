@@ -1,0 +1,28 @@
+#N canvas 44 17 653 456 12;
+#X floatatom 39 96 0 0 0 0 - - -;
+#X floatatom 176 170 0 0 0 0 - - -;
+#X text 208 192 creation argument;
+#X text 210 210 is array name;
+#X text 76 87 set y value;
+#X text 74 152 right inlet selects x value;
+#X msg 55 117 set array99;
+#X text 163 116 change array name;
+#X obj 39 195 tab16write array99;
+#X obj 31 27 tab16write;
+#X text 388 378 updated for iem16 version1.0;
+#X obj 17 355 tab16write~;
+#X obj 17 374 tab16read4~;
+#X obj 121 374 tab16read;
+#X obj 121 355 tab16write;
+#X obj 216 355 tab16send~;
+#X obj 216 374 tab16receive~;
+#X obj 340 360 table16;
+#X text 29 334 see also:;
+#X obj 438 156 table16 array99;
+#X text 133 28 write numbers to a 16bit-table;
+#X text 20 256 since [table16] can only hold 16bit-values \, the stored
+numbers have to be integer (ok \, we take care of this!) values between
+-32768..+32767.;
+#X connect 0 0 8 0;
+#X connect 1 0 8 1;
+#X connect 6 0 8 0;

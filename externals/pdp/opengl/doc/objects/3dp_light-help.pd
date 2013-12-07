@@ -1,0 +1,157 @@
+#N canvas 150 78 695 334 10;
+#X obj 18 23 metro 40;
+#X obj 18 -1 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X floatatom 74 228 5 0 0 0 - - -;
+#X obj 17 249 3dp_draw sphere 5;
+#X obj 261 156 loadbang;
+#X obj 18 48 3dp_windowcontext;
+#X obj 17 191 3dp_view roty;
+#X floatatom 103 168 5 0 0 0 - - -;
+#X obj 14 278 3dp_draw cube 2;
+#N canvas 193 86 450 300 counter 0;
+#X obj 175 172 spigot;
+#X obj 157 142 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 213 143 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 119 171 spigot;
+#X obj 160 115 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 63 62 loadbang;
+#X floatatom 147 219 0 0 0 0 - - -;
+#X obj 270 201 float;
+#X obj 119 194 + 1;
+#X obj 176 195 - 1;
+#X obj 219 84 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 219 117 1;
+#X msg 250 116 0;
+#X obj 163 279 outlet;
+#X obj 92 26 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 161 251 / 10;
+#X obj 69 5 inlet;
+#X obj 131 21 metro 50;
+#X connect 0 0 9 0;
+#X connect 1 0 3 1;
+#X connect 2 0 0 1;
+#X connect 3 0 8 0;
+#X connect 4 0 1 0;
+#X connect 4 0 2 0;
+#X connect 5 0 1 0;
+#X connect 6 0 15 0;
+#X connect 7 0 0 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 1;
+#X connect 8 0 6 0;
+#X connect 9 0 7 1;
+#X connect 9 0 6 0;
+#X connect 10 0 11 0;
+#X connect 10 0 12 0;
+#X connect 10 0 7 0;
+#X connect 11 0 1 0;
+#X connect 12 0 2 0;
+#X connect 14 0 17 0;
+#X connect 15 0 13 0;
+#X connect 16 0 14 0;
+#X connect 17 0 10 0;
+#X restore 103 147 pd counter;
+#X obj 103 128 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 18 85 3dp_push;
+#X obj 405 133 3dp_view transz 5;
+#X obj 405 157 3dp_light;
+#X floatatom 549 101 5 0 0 0 - - -;
+#X floatatom 505 77 5 0 0 0 - - -;
+#X obj 405 108 3dp_view roty 5;
+#X obj 226 234 pdp_convert texture/*/*;
+#X obj 226 209 pdp_plasma;
+#X obj 228 126 bng 30 250 50 0 empty empty try_this 0 -6 1 8 -250685
+-1 -62784;
+#X obj 226 260 pdp_del 3;
+#X text 299 262 <- textures can be stored in a delay line;
+#X text 41 0 <-- start here;
+#X msg 261 177 dim 320 240;
+#X obj 483 26 loadbang;
+#X text 486 159 <-light source;
+#N canvas 193 86 450 300 counter 0;
+#X obj 175 172 spigot;
+#X obj 157 142 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 213 143 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 119 171 spigot;
+#X obj 160 115 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 63 62 loadbang;
+#X floatatom 147 219 0 0 0 0 - - -;
+#X obj 270 201 float;
+#X obj 119 194 + 1;
+#X obj 176 195 - 1;
+#X obj 219 84 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 219 117 1;
+#X msg 250 116 0;
+#X obj 163 279 outlet;
+#X obj 92 26 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 69 5 inlet;
+#X obj 131 21 metro 100;
+#X obj 162 252 / 3;
+#X connect 0 0 9 0;
+#X connect 1 0 3 1;
+#X connect 2 0 0 1;
+#X connect 3 0 8 0;
+#X connect 4 0 1 0;
+#X connect 4 0 2 0;
+#X connect 5 0 1 0;
+#X connect 6 0 17 0;
+#X connect 7 0 0 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 1;
+#X connect 8 0 6 0;
+#X connect 9 0 7 1;
+#X connect 9 0 6 0;
+#X connect 10 0 11 0;
+#X connect 10 0 12 0;
+#X connect 10 0 7 0;
+#X connect 11 0 1 0;
+#X connect 12 0 2 0;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;
+#X connect 16 0 10 0;
+#X connect 17 0 13 0;
+#X restore 495 51 pd counter;
+#X obj 663 27 vsl 35 128 -70 70 0 0 empty empty try_this 0 -8 1 8 -260818
+-1 -24198 6600 1;
+#X obj 615 24 vsl 35 128 -70 70 0 0 empty empty try_this 0 -8 1 8 -260818
+-1 -24198 4800 1;
+#X text 313 303 bitch made doc for PDP 0.12.4 - http://delcorp.org/abbadingo
+;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 2;
+#X connect 3 0 8 0;
+#X connect 4 0 23 0;
+#X connect 5 0 11 0;
+#X connect 6 0 3 0;
+#X connect 7 0 6 1;
+#X connect 9 0 7 0;
+#X connect 10 0 9 0;
+#X connect 11 0 6 0;
+#X connect 11 1 16 0;
+#X connect 12 0 13 0;
+#X connect 14 0 12 1;
+#X connect 15 0 16 1;
+#X connect 16 0 12 0;
+#X connect 17 0 20 0;
+#X connect 17 0 3 1;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X connect 20 0 8 1;
+#X connect 23 0 18 0;
+#X connect 24 0 26 0;
+#X connect 26 0 15 0;
+#X connect 27 0 14 0;
+#X connect 28 0 15 0;

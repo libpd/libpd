@@ -1,0 +1,42 @@
+#N canvas 4 2 827 363 10;
+#X text 72 260 see also:;
+#X obj 130 281 textfile;
+#X text 482 150 output one line as a list and move to the next;
+#X text 618 7 part of zexy;
+#X text 15 95 features are :;
+#X text 58 199 no random access!;
+#X text 9 183 drawbacks are :;
+#X msg 433 248 close;
+#X text 578 117 open a file in 'cr' mode;
+#X obj 73 9 fwriteln;
+#X text 127 9 write text-files line-by-line;
+#X text 18 57 The [fwriteln] object is a simplified version if [textfile].
+It only supports writing files.;
+#X text 60 108 the file is not cached in the object's buffer. instead
+the current line will be streamed directly into the file. this allows
+to write _large_ files (which need not fit into the main memory at
+all);
+#X obj 130 262 freadln;
+#X obj 406 271 fwriteln;
+#X msg 441 172 1 2 3.666;
+#X msg 441 194 foo bar;
+#X msg 443 216 list is a list is a list;
+#X msg 435 116 open /tmp/test.txt cr;
+#X text 489 249 close the file (ensure that it gets written);
+#X text 167 322 you can use the arguments "w" and "p" to set the width
+and precision of floating point numbers \, e.g.:;
+#X obj 602 331 fwriteln w 8 p 2;
+#N canvas 708 249 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control storage filesystem;
+#X text 12 45 DESCRIPTION write text files line by line;
+#X text 12 65 INLET_0 open close anything;
+#X restore 768 327 pd META;
+#X connect 7 0 14 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 17 0 14 0;
+#X connect 18 0 14 0;

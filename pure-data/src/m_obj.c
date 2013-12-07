@@ -15,6 +15,7 @@ union inletunion
     t_gpointer *iu_pointerslot;
     t_float *iu_floatslot;
     t_symbol **iu_symslot;
+    t_blob **iu_blobslot; /* MP 20061226 blob type */
     t_float iu_floatsignalvalue;
 };
 
@@ -32,9 +33,10 @@ struct _inlet
 #define i_pointerslot i_un.iu_pointerslot
 #define i_floatslot i_un.iu_floatslot
 #define i_symslot i_un.iu_symslot
+#define i_blobslot i_un.iu_blobslot /* MP 20061226 blob type */
 
 static t_class *inlet_class, *pointerinlet_class, *floatinlet_class,
-    *symbolinlet_class;
+    *symbolinlet_class, *blobinlet_class; /* MP 20061226 added blobinlet_class */
 
 #define ISINLET(pd) ((*(pd) == inlet_class) || \
     (*(pd) == pointerinlet_class) || \
@@ -133,6 +135,26 @@ static void inlet_symbol(t_inlet *x, t_symbol *s)
     else inlet_wrong(x, &s_symbol);
 }
 
+static void inlet_blob(t_inlet *x, t_blob *st) /* MP20061226 blob type */
+{
+    /*post("inlet_blob (%p): st %p", &inlet_blob, st);*/
+    if (x->i_symfrom == &s_blob)
+    {
+        /*post("inlet_blob calling pd_vmess");*/
+        pd_vmess(x->i_dest, x->i_symto, "t", st);
+    }
+    else if (!x->i_symfrom)
+    {
+        /*post("inlet_blob calling pd_blob");*/
+        pd_blob(x->i_dest, st);
+    }
+    else
+    {
+        /*post("inlet_blob calling inlet_wrong");*/
+        inlet_wrong(x, &s_blob);
+    }
+}
+
 static void inlet_list(t_inlet *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_atom at;
@@ -220,6 +242,23 @@ t_inlet *floatinlet_new(t_object *owner, t_float *fp)
     return (x);
 }
 
+t_inlet *blobinlet_new(t_object *owner, t_blob **stp) /* MP 20061226 blob type */
+{
+    t_inlet *x = (t_inlet *)pd_new(blobinlet_class), *y, *y2;
+    x->i_owner = owner;
+    x->i_dest = 0;
+    x->i_symfrom = &s_blob;
+    x->i_blobslot = stp;
+    x->i_next = 0;
+    if (y = owner->ob_inlet)
+    {
+        while (y2 = y->i_next) y = y2;
+        y->i_next = x;
+    }
+    else owner->ob_inlet = x;
+    return (x);
+}
+
 static void symbolinlet_symbol(t_inlet *x, t_symbol *s)
 {
     *(x->i_symslot) = s;
@@ -272,6 +311,7 @@ void obj_init(void)
     class_addpointer(inlet_class, inlet_pointer);
     class_addfloat(inlet_class, inlet_float);
     class_addsymbol(inlet_class, inlet_symbol);
+    class_addblob(inlet_class, inlet_blob); /* MP 20061226 blob type */
     class_addlist(inlet_class, inlet_list);
     class_addanything(inlet_class, inlet_anything);
 
@@ -397,6 +437,18 @@ void outlet_symbol(t_outlet *x, t_symbol *s)
     --stackcount;
 }
 
+void outlet_blob(t_outlet *x, t_blob *st) /* MP 20061226 blob type */
+{
+    /*post("outlet_blob %p %lu", st, st->s_length);*/
+    t_outconnect *oc;
+    if(++stackcount >= STACKITER)
+        outlet_stackerror(x);
+    else
+        for (oc = x->o_connections; oc; oc = oc->oc_next)
+            pd_blob(oc->oc_to, st);
+    --stackcount;
+}
+
 void outlet_list(t_outlet *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_outconnect *oc;
@@ -501,7 +553,7 @@ void obj_disconnect(t_object *source, int outno, t_object *sink, int inno)
     if (!i) return;
     to = &i->i_pd;
 doit:
-    if (!(oc = o->o_connections)) return;
+    if (!o || !(oc = o->o_connections)) return;
     if (oc->oc_to == to)
     {
         o->o_connections = oc->oc_next;

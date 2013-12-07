@@ -1,0 +1,7 @@
+#N canvas 182 530 318 148 10;
+#X obj 107 59 inlet;
+#X text 12 16 iem_r: alias for iem_receive;
+#X obj 107 85 iem_receive \$1;
+#X obj 107 111 outlet;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;

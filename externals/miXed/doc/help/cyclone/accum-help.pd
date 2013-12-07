@@ -1,0 +1,45 @@
+#N canvas 2 2 450 371 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 22 319 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 21 333 ___________________________________________________
+;
+#X text 98 24 store \, add to \, and multiply a number;
+#X obj 41 22 accum 4;
+#X obj 78 217 accum 4;
+#X text 143 218 arg sets initial value;
+#X floatatom 78 143 5 0 0 0 - - -;
+#X floatatom 78 248 5 0 0 0 - - -;
+#X text 126 144 set new value and output;
+#X floatatom 100 169 5 0 0 0 - - -;
+#X text 144 169 add to current value / no output;
+#X msg 50 116 bang;
+#X text 89 117 output current value;
+#X floatatom 122 194 5 0 0 0 - - -;
+#X text 172 194 multiply with current val / no output;
+#X msg 29 94 set \$1;
+#X floatatom 29 74 5 0 0 0 - - -;
+#X text 90 92 reset current value / no output;
+#N canvas 430 169 494 400 META 0;
+#X text 12 215 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 LIBRARY external cyclone;
+#X text 12 185 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS float storage max_compatible;
+#X text 12 45 DESCRIPTION store \, add to \, and multiply a number
+;
+#X text 12 65 INLET_0 float bang set;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 165 AUTHOR Krzysztof Czaja;
+#X text 12 25 LICENSE BSD;
+#X restore 399 348 pd META;
+#X connect 5 0 8 0;
+#X connect 7 0 5 0;
+#X connect 10 0 5 1;
+#X connect 12 0 5 0;
+#X connect 14 0 5 2;
+#X connect 16 0 5 0;
+#X connect 17 0 16 0;

@@ -1,0 +1,28 @@
+#N canvas 0 31 452 302 10;
+#X obj 119 132 metro 100;
+#X obj 119 155 random 10;
+#X floatatom 119 245 4 0 0 0 - - -;
+#X msg 120 107 1;
+#X msg 153 108 0;
+#X obj 119 212 mavg 4;
+#X floatatom 158 188 4 0 0 0 - - -;
+#X text 59 20 moving average filter;
+#X text 199 188 samples to average;
+#X text 277 47 part of zexy;
+#N canvas 515 193 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION moving average filter;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X restore 390 271 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 1;

@@ -1,0 +1,217 @@
+/*=============================================================================*\
+ * File: gfsmCompound.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library: compound states: inline definitions
+ *
+ * Copyright (c) 2004-2007 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+#include <gfsmMem.h>
+#include <stdlib.h>
+#include <gfsmUtils.h>
+
+
+/*======================================================================
+ * Label Pair: Methods
+ */
+
+//--------------------------------------------------------------
+// labelpair_new()
+GFSM_INLINE
+gfsmLabelPair gfsm_labelpair_new(guint32 lo, guint32 hi)
+{
+  return ((hi<<16)|lo);
+}
+
+//--------------------------------------------------------------
+// labelpair_lower()
+GFSM_INLINE
+gfsmLabelId gfsm_labelpair_lower(gfsmLabelPair lp)
+{ return (lp & 0xffff); }
+
+//--------------------------------------------------------------
+// labelpair_upper()
+GFSM_INLINE
+gfsmLabelId gfsm_labelpair_upper(gfsmLabelPair lp)
+{ return ((lp>>16) & 0xffff); }
+
+
+/*--------------------------------------------------------------
+ * labelpair_compare()
+ */
+GFSM_INLINE
+gint gfsm_labelpair_compare_inline(gfsmLabelPair lp1, gfsmLabelPair lp2)
+{
+  gfsmLabelId
+    lo1 = gfsm_labelpair_lower(lp1),
+    lo2 = gfsm_labelpair_lower(lp2),
+    hi1 = gfsm_labelpair_upper(lp1),
+    hi2 = gfsm_labelpair_upper(lp2);
+  return (lo1 < lo2          ? -1
+	  : (lo1 > lo2       ?  1
+	     : (hi1 < hi2    ? -1
+		: (hi1 > hi2 ?  1
+		   :            0))));
+}
+
+
+/*======================================================================
+ * Methods: gfsmStatePair
+ */
+
+/*--------------------------------------------------------------
+ * statepair_new()
+ */
+GFSM_INLINE
+gfsmStatePair *gfsm_statepair_new(gfsmStateId id1, gfsmStateId id2)
+{
+  gfsmStatePair *sp = g_new(gfsmStatePair,1);
+  sp->id1 = id1;
+  sp->id2 = id2;
+  return sp;
+}
+
+/*--------------------------------------------------------------
+ * statepair_clone()
+ */
+GFSM_INLINE
+gfsmStatePair *gfsm_statepair_clone(gfsmStatePair *sp)
+{
+  return (gfsmStatePair*)gfsm_mem_dup_n(sp, sizeof(gfsmStatePair));
+}
+
+/*--------------------------------------------------------------
+ * statepair_free()
+ */
+#if 0
+GFSM_INLINE
+void gfsm_statepair_free(gfsmStatePair *sp)
+{ g_free(sp); }
+#endif
+
+
+
+/*======================================================================
+ * Methods: gfsmComposeState
+ */
+
+/*--------------------------------------------------------------
+ * compose_state_new()
+ */
+GFSM_INLINE
+gfsmComposeState *gfsm_compose_state_new(gfsmStateId id1, gfsmStateId id2, gfsmComposeFilterState idf)
+{
+  gfsmComposeState *sp = g_new(gfsmComposeState,1);
+  sp->id1 = id1;
+  sp->id2 = id2;
+  sp->idf = idf;
+  return sp;
+}
+
+/*--------------------------------------------------------------
+ * compose_state_clone()
+ */
+GFSM_INLINE
+gfsmComposeState *gfsm_compose_state_clone(gfsmComposeState *sp)
+{
+  return (gfsmComposeState*)gfsm_mem_dup_n(sp, sizeof(gfsmComposeState));
+}
+
+/*--------------------------------------------------------------
+ * compose_state_free()
+ */
+#if 0
+GFSM_INLINE
+void gfsm_compose_state_free(gfsmComposeState *sp)
+{ g_free(sp); }
+#endif
+
+
+
+/*======================================================================
+ * Methods: gfsmStateWeightPair
+ */
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gfsmStateWeightPair *gfsm_state_weight_pair_new(gfsmStateId id, gfsmWeight w)
+{
+  gfsmStateWeightPair *swp = g_new(gfsmStateWeightPair,1);
+  swp->id = id;
+  swp->w  = w;
+  return swp;
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gfsmStateWeightPair *gfsm_state_weight_pair_clone(const gfsmStateWeightPair *swp)
+{
+  return gfsm_state_weight_pair_new(swp->id,swp->w);
+}
+
+//--------------------------------------------------------------
+#if 0
+GFSM_INLINE
+void gfsm_state_weight_pair_free(gfsmStateWeightPair *swp)
+{ g_free(swp); }
+#endif
+
+
+/*======================================================================
+ * Methods: gfsmStatePairEnum
+ */
+
+/*--------------------------------------------------------------
+ * statepair_enum_new()
+ */
+GFSM_INLINE
+gfsmStatePairEnum *gfsm_statepair_enum_new(void)
+{
+  return gfsm_enum_new_full((gfsmDupFunc)gfsm_statepair_clone,
+			    (GHashFunc)gfsm_statepair_hash,
+			    (GEqualFunc)gfsm_statepair_equal,
+			    (GDestroyNotify)g_free);
+}
+
+
+/*======================================================================
+ * Methods: gfsmComposeStateEnum
+ */
+
+/*--------------------------------------------------------------
+ * compose_state_enum_new()
+ */
+GFSM_INLINE
+gfsmComposeStateEnum *gfsm_compose_state_enum_new(void)
+{
+  return gfsm_enum_new_full((gfsmDupFunc)gfsm_compose_state_clone,
+			    (GHashFunc)gfsm_compose_state_hash,
+			    (GEqualFunc)gfsm_compose_state_equal,
+			    (GDestroyNotify)g_free);
+}
+
+/*======================================================================
+ * Methods: StatePair2WeightHash
+ */
+GFSM_INLINE
+gfsmStatePair2WeightHash *gfsm_statepair2weighthash_new(void)
+{
+  return gfsm_weighthash_new_full((gfsmDupFunc)gfsm_statepair_clone,
+				  (GHashFunc)gfsm_statepair_hash,
+				  (GEqualFunc)gfsm_statepair_equal,
+				  (GDestroyNotify)g_free);
+}

@@ -1,0 +1,26 @@
+# -*- Mode: Shell-Script -*-
+#
+# File: gfsm.pc
+# Description: pkg-config data, auto-generated
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+includedir=@includedir@
+libdir=@libdir@
+
+PACKAGE=@PACKAGE@
+datadir=@datadir@
+#docdir=@docdir@
+#pkgdocdir=@pkgdocdir@
+
+build_options=@CONFIG_OPTIONS@
+cflags=@CFLAGS@ @gfsm_CFLAGS@
+cppflags=-I@spkgincludedir@ @CPPFLAGS@
+ldadd=-lgfsm @gfsm_LIBS@
+
+
+Name: @PACKAGE@
+Description: abstract finite state machine library
+Version: @VERSION@
+Libs: -L${libdir} ${ldadd}
+Cflags: ${cppflags} ${cflags}

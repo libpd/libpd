@@ -1,0 +1,47 @@
+#N canvas 1 4 848 357 10;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array my_array66 5 float 0;
+#X array my_array77 8 float 0;
+#X coords 0 1 8 -1 200 140 1;
+#X restore 633 87 graph;
+#X obj 473 208 loadbang;
+#X msg 63 100 bang;
+#X msg 113 148 set my_array77;
+#X msg 473 234 \; my_array66 resize 5 \; my_array77 resize 8 \; my_array66
+0.1 0.3 0.2 0.5 0.2 -0.1 \; my_array77 0.1 0.1 0.2 0.3 0.5 0.8 0.13
+0.21 0.34;
+#X msg 112 126 set my_array66;
+#X text 628 24 part of zexy;
+#X obj 156 22 tabminmax;
+#X text 236 24 get the minimum and the maximum of a table;
+#X obj 63 168 tabminmax my_array66;
+#X obj 63 192 unpack;
+#X floatatom 63 217 0 0 0 0 minimum - -;
+#X floatatom 100 218 2 0 0 3 idx - -;
+#X obj 193 192 unpack;
+#X floatatom 193 217 0 0 0 0 maximum - -;
+#X floatatom 230 218 2 0 0 3 idx - -;
+#X text 129 81 additionally this object gets the indices of the maxima.
+;
+#N canvas 583 406 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control array;
+#X text 12 45 DESCRIPTION get the minimum and the maximum of a table
+;
+#X text 12 65 INLET_0 bang set;
+#X text 12 105 OUTLET_1 float;
+#X text 12 85 OUTLET_0 float;
+#X restore 791 327 pd META;
+#X connect 1 0 4 0;
+#X connect 2 0 9 0;
+#X connect 3 0 9 0;
+#X connect 5 0 9 0;
+#X connect 9 0 10 0;
+#X connect 9 1 13 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 13 0 14 0;
+#X connect 13 1 15 0;

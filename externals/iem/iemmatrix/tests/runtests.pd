@@ -1,0 +1,26 @@
+#N canvas 368 197 813 499 10;
+#X obj 177 463 testunit;
+#X obj 177 377 textfile;
+#X obj 177 183 t b b;
+#X msg 207 261 read runtests.txt \, rewind;
+#X obj 177 287 metro 10;
+#X msg 243 289 0;
+#X obj 177 126 bng 40 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 177 351 bang;
+#X symbolatom 177 430 0 0 0 0 - - -;
+#X obj 177 399 symbol;
+#X obj 138 260 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X connect 1 0 9 0;
+#X connect 1 1 5 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
+#X connect 7 0 1 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 0;
+#X connect 10 0 4 0;

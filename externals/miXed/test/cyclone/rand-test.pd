@@ -1,0 +1,37 @@
+#N canvas 224 159 762 415 12;
+#X obj 33 348 tabwrite~ t;
+#N canvas 0 0 450 300 graph1 0;
+#X array t 400 float 0;
+#X coords 0 1 399 -1 400 300 1;
+#X restore 330 44 graph;
+#X obj 35 54 osc~ 10;
+#X obj 35 89 *~ 1000;
+#X floatatom 35 19 5 0 0 0 - - -;
+#X obj 256 174 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X floatatom 114 54 5 0 0 0 - - -;
+#X msg 64 189 \$1 \; pd dsp \$1;
+#X obj 45 244 metro 300;
+#X obj 33 151 rand~ 1000;
+#X floatatom 168 114 5 0 0 0 - - -;
+#X obj 171 315 hsl 128 15 -1 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 168 151 rand~;
+#X obj 64 315 capture~ f;
+#X msg 64 278 clear;
+#X obj 177 204 sel 1;
+#X obj 168 278 Snapshot~ 20;
+#X connect 2 0 3 0;
+#X connect 4 0 2 0;
+#X connect 5 0 7 0;
+#X connect 5 0 15 0;
+#X connect 6 0 3 1;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 9 0 13 0;
+#X connect 10 0 12 0;
+#X connect 12 0 16 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 0;
+#X connect 16 0 11 0;

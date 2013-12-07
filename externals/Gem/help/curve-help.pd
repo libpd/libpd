@@ -1,0 +1,112 @@
+#N canvas 65 18 762 461 10;
+#X text 54 30 Class: geometric object;
+#X text 475 39 Example:;
+#X obj 7 65 cnv 15 450 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 216 cnv 15 450 180 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 9 221 Inlets:;
+#X obj 8 176 cnv 15 450 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X text 452 8 GEM object;
+#X text 27 233 Inlet 1: gemlist;
+#X text 9 358 Outlets:;
+#X text 21 371 Outlet 1: gemlist;
+#X obj 469 58 cnv 15 200 295 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 568 359 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy \, reset;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 573 398 pd gemwin;
+#X msg 573 379 create;
+#X text 569 358 Create window:;
+#X obj 474 112 cnv 15 190 200 empty empty empty 20 12 0 14 -85973 -66577
+0;
+#X obj 521 319 cnv 15 100 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 21 138 Each (additional) inlet will accept an X Y Z point which
+is where the control point will be.;
+#X text 28 323 Inlet 2: list: 3(XYZ) float values;
+#X text 28 344 Inlet N: list: 3(XYZ) float values;
+#X text 52 330 ...;
+#X text 33 14 Synopsis: [curve];
+#X text 7 69 Description: Renders a bezier-curve;
+#X text 63 187 number of control-points of the curve (mandatory);
+#X text 27 247 Inlet 1: message: draw [line|linestrip|fill|point|tri|tristrip|trifan|quad|quadstrip]
+;
+#X text 22 88 [curve] creates a bezier curve. The initial argument
+is the number of control-points of the curve. There is no maximum number
+of control-points.;
+#X text 27 306 Inlet 1: message: res <int> : interpolation-resolution(30)
+;
+#X text 27 293 Inlet 1: message: width <int> : line-width(1);
+#X obj 596 233 cnv 15 65 75 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X msg 479 163 draw line;
+#X msg 479 118 draw fill;
+#X msg 479 140 draw point;
+#X obj 537 64 gemhead;
+#X msg 585 115 1 1 0;
+#X msg 593 135 1 -1 0;
+#X floatatom 605 196 5 0 0 0 - - -;
+#X msg 603 175 -2 1 0;
+#X msg 599 155 -1 -1 -3;
+#X msg 479 183 draw linestrip;
+#X msg 479 203 draw tri;
+#X msg 479 225 draw tristrip;
+#X msg 478 248 draw trifan;
+#X msg 478 269 draw quad;
+#X msg 478 291 draw quadstrip;
+#X obj 537 88 rotateXYZ;
+#X floatatom 595 65 5 0 0 0 - - -;
+#X obj 537 326 curve 5;
+#X obj 608 89 loadbang;
+#X floatatom 599 237 5 0 10 0 - - -;
+#X msg 599 253 width \$1;
+#X floatatom 600 274 5 0 100 0 - - -;
+#X msg 600 291 res \$1;
+#X msg 605 213 \$1 \$1 \$1;
+#X connect 13 0 14 0;
+#X connect 14 0 13 0;
+#X connect 30 0 47 0;
+#X connect 31 0 47 0;
+#X connect 32 0 47 0;
+#X connect 33 0 45 0;
+#X connect 34 0 47 1;
+#X connect 35 0 47 2;
+#X connect 36 0 53 0;
+#X connect 37 0 47 4;
+#X connect 38 0 47 3;
+#X connect 39 0 47 0;
+#X connect 40 0 47 0;
+#X connect 41 0 47 0;
+#X connect 42 0 47 0;
+#X connect 43 0 47 0;
+#X connect 44 0 47 0;
+#X connect 45 0 47 0;
+#X connect 46 0 45 1;
+#X connect 46 0 45 3;
+#X connect 48 0 34 0;
+#X connect 49 0 50 0;
+#X connect 50 0 47 0;
+#X connect 51 0 52 0;
+#X connect 52 0 47 0;
+#X connect 53 0 47 5;

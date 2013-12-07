@@ -1,0 +1,4 @@
+This directory contains help patches for the individual pdp modules and abstractions.
+Use the pdp_help_input.pd and pdp_help_output.pd patches to setup your desired in/out for
+the help patches.
+

@@ -1,0 +1,98 @@
+#N canvas 318 0 654 480 10;
+#X text 452 8 GEM object;
+#X obj 8 245 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 248 Inlets:;
+#X text 38 335 Outlets:;
+#X obj 8 206 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 205 Arguments:;
+#X obj 7 76 cnv 15 430 125 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 261 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 300 pd gemwin;
+#X msg 519 281 create;
+#X text 515 260 Create window:;
+#X obj 450 133 cnv 15 160 100 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 216 <none>;
+#X text 56 348 Outlet 1: gemlist;
+#X text 63 262 Inlet 1: gemlist;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 50 13 Synopsis: [pix_halftone];
+#X text 71 31 Class: pix object (fx);
+#X obj 451 206 pix_halftone;
+#X obj 451 237 pix_texture;
+#X obj 451 261 square 3;
+#X floatatom 467 150 5 1 32 2 size - -;
+#X floatatom 515 150 5 0 0 2 angle - -;
+#X floatatom 560 150 5 0 1 2 smooth - -;
+#X obj 536 187 hradio 15 1 0 5 empty empty style 40 -6 0 8 -262144
+-1 -1 0;
+#X msg 539 205 style \$1;
+#X text 29 76 Description: make halftone-patterns;
+#X text 19 97 [pix_halftone] draws the input using the patterns of
+dots or diamonds that are found in newspaper photographs.;
+#X text 20 132 You can set the type of pattern \, the size and orientation
+of the patterns and how blurry they are on-screen.;
+#X text 63 275 Inlet 1: message: style [0|1|2|3|4]:: select a style
+;
+#X text 62 291 Inlet 2: float: pattern-size (1..32. default 8);
+#X text 62 306 Inlet 3: float: orientation in degree (0..360);
+#X text 62 321 Inlet 4: float: smoothness (0..1. default 0.5);
+#X text 55 379 Styles: 0...round dots;
+#X text 111 392 1...line dots;
+#X text 111 405 2...diamond dots;
+#X text 111 418 3...'euclidean' dots;
+#X text 111 431 4...postscript diamond dots;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 16 0;
+#X connect 15 0 16 1;
+#X connect 16 0 24 0;
+#X connect 24 0 25 0;
+#X connect 25 0 26 0;
+#X connect 27 0 24 1;
+#X connect 28 0 24 2;
+#X connect 29 0 24 3;
+#X connect 30 0 31 0;
+#X connect 31 0 24 0;

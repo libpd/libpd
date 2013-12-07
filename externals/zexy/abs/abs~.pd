@@ -1,0 +1,11 @@
+#N canvas 0 0 450 300 10;
+#X obj 30 88 inlet~;
+#X obj 30 136 outlet~;
+#X obj 31 113 expr~ abs($v1);
+#X text 36 44 [abs~];
+#X text 33 169 using [expr~] is slower than doing it in C...;
+#X text 319 21 part of zexy;
+#X text 250 261 updated for zexy-2.0;
+#X text 33 187 therefore we _also_ provide [abs~] as external.;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

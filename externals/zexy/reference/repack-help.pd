@@ -1,0 +1,37 @@
+#N canvas 0 31 684 547 10;
+#X obj 78 35 repack;
+#X obj 73 303 print;
+#X floatatom 73 120 0 0 0 0 - - -;
+#X msg 73 138 1 2 3 4 5 6 7 8 9 10;
+#X obj 73 265 repack 7;
+#X msg 73 157 hallo;
+#X text 149 33 (re)packs (packages of) floats/symbols/pointers/anythings
+to packages of a (given) size;
+#X msg 120 187 bang;
+#X floatatom 116 235 0 0 0 0 - - -;
+#X text 172 236 set the package-size;
+#X text 173 191 output the currently made package immediately;
+#X obj 56 501 repack 1;
+#X text 118 502 unfolds packages to atoms \; see also;
+#X obj 337 503 drip;
+#X text 72 407 creation:;
+#X text 140 408 "repack <n>" create packages of the length n;
+#X text 582 11 part of zexy;
+#N canvas 509 158 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR IOhannes m zmoelnig;
+#X text 12 95 INLET_0 anything;
+#X text 12 45 DESCRIPTION (re)packs (packages of) floats/symbols/pointers/anythings
+to packages of a (given) size;
+#X text 12 115 INLET_1 float;
+#X text 12 135 OUTLET_0 anything;
+#X text 12 5 KEYWORDS control anything_op;
+#X restore 625 517 pd META;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 1;

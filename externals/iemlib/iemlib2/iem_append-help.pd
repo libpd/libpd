@@ -1,0 +1,87 @@
+#N canvas 0 26 506 483 10;
+#X obj 117 346 print;
+#X msg 117 61 1;
+#X obj 238 41 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 117 40 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 117 149 11 22;
+#X msg 238 150 33 44;
+#X msg 238 63 3;
+#X msg 117 105 symbol foo;
+#X msg 238 107 symbol zyx;
+#X msg 117 83 float 1.1;
+#X msg 238 85 float 3.3;
+#X msg 117 127 set;
+#X msg 238 128 open;
+#X msg 117 172 list -55 -66;
+#X msg 238 172 list -77 -88;
+#X msg 238 195 list bbb 987;
+#X msg 117 195 list aaa 123;
+#X msg 117 218 jkl 555 uuu;
+#X msg 238 218 poi 777 ttt;
+#X obj 191 347 route bang float symbol list;
+#X obj 191 385 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 232 385 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 273 385 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 314 385 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 356 385 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 335 366 anything;
+#X text 262 39 bang clears message-buffer;
+#X text 218 302 initials-arguments:;
+#X text 109 7 merge the head-message in front of the tail-message;
+#X text 224 275 <- cold inlet;
+#X text 122 274 <- hot inlet;
+#X text 13 7 iem_append;
+#X text 34 284 head of output-message;
+#X text 226 285 tail of output-message;
+#X text 213 313 tail of output-message;
+#X obj 117 300 iem_append 0.5;
+#X text 136 445 IEM KUG;
+#X text 120 433 musil;
+#X text 150 433 @;
+#X text 156 433 iem.at;
+#X text 71 422 (c) Thomas Musil 2000 - 2005;
+#X text 119 455 Graz \, Austria;
+#N canvas 496 267 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 135 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 5 KEYWORDS control conversion anything_op;
+#X text 12 45 DESCRIPTION merge the head-message in front of the tail-message
+;
+#X text 12 95 INLET_1 anything;
+#X text 12 75 INLET_0 anything;
+#X text 12 115 OUTLET_0 anything;
+#X restore 456 461 pd META;
+#X connect 1 0 35 0;
+#X connect 2 0 35 1;
+#X connect 3 0 35 0;
+#X connect 4 0 35 0;
+#X connect 5 0 35 1;
+#X connect 6 0 35 1;
+#X connect 7 0 35 0;
+#X connect 8 0 35 1;
+#X connect 9 0 35 0;
+#X connect 10 0 35 1;
+#X connect 11 0 35 0;
+#X connect 12 0 35 1;
+#X connect 13 0 35 0;
+#X connect 14 0 35 1;
+#X connect 15 0 35 1;
+#X connect 16 0 35 0;
+#X connect 17 0 35 0;
+#X connect 18 0 35 1;
+#X connect 19 0 20 0;
+#X connect 19 1 21 0;
+#X connect 19 2 22 0;
+#X connect 19 3 23 0;
+#X connect 19 4 24 0;
+#X connect 35 0 0 0;
+#X connect 35 0 19 0;

@@ -1,0 +1,92 @@
+#N canvas 0 26 852 521 10;
+#X msg 10 143 0;
+#X msg 43 143 1;
+#X obj 45 168 sig~;
+#X floatatom 45 336 9 0 0 0 - - -;
+#X msg 155 125 reset;
+#X msg 81 144 10;
+#X text 51 188 ~signal_in~;
+#X text 42 39 dsp ON/OFF;
+#X obj 14 59 dsp;
+#X floatatom 14 80 3 0 0 0 - - -;
+#X text 41 81 % cpu;
+#X text 120 337 1.output: <sig> peak-envelope;
+#X obj 45 260 unsig~ 50;
+#X text 194 124 resets peak-envelope to 0;
+#X obj 14 41 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 126 388 IEM KUG;
+#X text 99 376 musil;
+#X text 137 376 @;
+#X text 146 376 iem.at;
+#X text 109 398 Graz \, Austria;
+#X text 9 7 peakenv_hold~;
+#X text 128 6 signal-peak-envelope with peak hold time in ms;
+#X obj 45 237 peakenv_hold~ 700 2000;
+#X msg 170 170 700;
+#X floatatom 170 191 5 0 0 0 - - -;
+#X floatatom 265 190 5 0 0 0 - - -;
+#X msg 265 169 2000;
+#X text 305 188 ms;
+#X text 211 191 ms;
+#X text 267 205 release time;
+#X text 169 208 hold time;
+#X text 237 294 (output_envelope decrements about 63% in this time)
+;
+#X text 585 280 (default: 0 ms);
+#X text 232 280 2.arg: <float> time-constant of release time [ms];
+#X text 234 240 1.arg: <float> peak hold time [ms] (default: 0 ms)
+;
+#X text 237 254 (output_envelope sustains constant during this time)
+;
+#X text 50 365 (c) Thomas Musil 2000 - 2008;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array input 50 float 1;
+#A 0 0 0 0 0 0.228571 0.0999998 -0.0285714 0 0.0714284 0.271428 0.442856
+0.699998 0.771427 0 0 0 0 0 0 0.0714284 0.114285 0.271428 0.299999
+0 0 0 0 0 -0.0142857 -0.0285714 -0.0285714 -0.0428571 -0.0428571 -0.0857141
+-0.0999998 -0.485713 -0.785713 -0.785713 -0.771427 -0.714284 -0.799998
+-0.957141 0 0 0 0 0 0 0 0;
+#X coords 0 1 49 -1 100 140 1;
+#X restore 726 46 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array output 200 float 0;
+#X coords 0 1 199 -1 400 140 1;
+#X restore 726 206 graph;
+#X obj 906 114 peakenv_hold~ 0.3 0.7;
+#X obj 905 92 tabplay~ input;
+#X obj 876 48 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 875 70 t b b;
+#X obj 891 160 tabwrite~ output;
+#N canvas 343 203 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 145 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION signal peak envelope with peak hold time
+in ms;
+#X restore 1073 483 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 22 0;
+#X connect 4 0 22 0;
+#X connect 5 0 2 0;
+#X connect 8 0 9 0;
+#X connect 12 0 3 0;
+#X connect 14 0 8 0;
+#X connect 22 0 12 0;
+#X connect 23 0 24 0;
+#X connect 24 0 22 1;
+#X connect 25 0 22 2;
+#X connect 26 0 25 0;
+#X connect 39 0 43 0;
+#X connect 40 0 39 0;
+#X connect 41 0 42 0;
+#X connect 42 0 43 0;
+#X connect 42 1 40 0;

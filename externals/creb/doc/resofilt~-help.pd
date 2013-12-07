@@ -1,0 +1,92 @@
+#N canvas 0 26 638 489 10;
+#X floatatom 50 203 5 0 0 0 - - -;
+#X obj 118 433 vol~;
+#X floatatom 157 409 5 0 0 0 - - -;
+#X obj 110 468 dac~;
+#X floatatom 291 252 5 0 0 0 - - -;
+#X floatatom 290 301 5 0 0 0 - - -;
+#X obj 119 341 vol~;
+#X floatatom 142 318 5 0 0 0 - - -;
+#X obj 295 232 hsl 128 15 20 20000 1 1 empty empty empty -2 -6 0 8
+-262144 -1 -1 7900 1;
+#X obj 294 282 hsl 128 15 0 1 0 1 empty empty empty -2 -6 0 8 -262144
+-1 -1 5600 1;
+#X obj 242 225 ead~;
+#X obj 243 268 *~;
+#X obj 235 203 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 259 203 5 0 0 0 - - -;
+#X floatatom 305 202 5 0 0 0 - - -;
+#X obj 19 170 ead~;
+#X obj 20 273 *~;
+#X obj 19 102 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 35 147 5 0 0 0 - - -;
+#X floatatom 76 147 5 0 0 0 - - -;
+#X obj 86 71 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 87 44 metro 125;
+#X obj 88 20 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 147 16 5 0 0 0 - - -;
+#X msg 34 126 10;
+#X msg 76 126 400;
+#X msg 268 180 20;
+#X obj 36 225 blosc~ saw;
+#X obj 37 248 -~;
+#X msg 141 297 70;
+#X text 281 96 all inputs are signal inlets. frequency and reso are
+interpolated from their average (rms) value.;
+#X msg 305 181 500;
+#X text 279 28 resofilt~: high-quality implementations of the moog
+4-pole and tb303 3-pole reso ladder filter. state-limited which means
+it distorts on high reso input \, and can go into self oscillation
+when reso > 1;
+#X msg 53 182 70;
+#X obj 119 377 resofilt~ 4;
+#X text 222 378 creation argument 4 = 4pole \, 3 = 3pole;
+#N canvas 379 254 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal filter;
+#X text 12 45 DESCRIPTION high-quality implementations of the moog
+4-pole and tb303 3-pole res ladder filter;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 INLET_2 signal;
+#X text 12 135 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 155 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 588 468 pd META;
+#X connect 0 0 27 0;
+#X connect 1 0 3 0;
+#X connect 1 0 3 1;
+#X connect 2 0 1 1;
+#X connect 4 0 11 1;
+#X connect 6 0 34 0;
+#X connect 7 0 6 1;
+#X connect 8 0 4 0;
+#X connect 9 0 5 0;
+#X connect 10 0 11 0;
+#X connect 12 0 10 0;
+#X connect 13 0 10 1;
+#X connect 14 0 10 2;
+#X connect 15 0 16 0;
+#X connect 16 0 6 0;
+#X connect 17 0 15 0;
+#X connect 18 0 15 1;
+#X connect 19 0 15 2;
+#X connect 20 0 12 0;
+#X connect 20 0 17 0;
+#X connect 21 0 20 0;
+#X connect 22 0 21 0;
+#X connect 23 0 21 1;
+#X connect 24 0 18 0;
+#X connect 25 0 19 0;
+#X connect 26 0 13 0;
+#X connect 27 0 28 0;
+#X connect 28 0 16 1;
+#X connect 29 0 7 0;
+#X connect 31 0 14 0;
+#X connect 33 0 0 0;
+#X connect 34 0 1 0;

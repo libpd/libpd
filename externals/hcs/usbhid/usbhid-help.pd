@@ -1,0 +1,345 @@
+#N canvas 210 31 710 649 10;
+#X obj 177 545 usbhid;
+#X msg 291 197 close;
+#X msg 298 217 reset;
+#X msg 311 255 print;
+#X text 367 62 Gravis/Destroyer Tiltpad;
+#N canvas 0 22 462 312 buttons 0;
+#X obj 99 36 inlet;
+#X obj 63 108 & 1;
+#X obj 63 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 93 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 2
+;
+#X obj 123 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+4;
+#X obj 153 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+8;
+#X obj 183 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+16;
+#X obj 223 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+32;
+#X obj 263 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+64;
+#X obj 303 130 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+128;
+#X obj 93 108 & 2;
+#X obj 123 108 & 4;
+#X obj 153 108 & 8;
+#X obj 183 108 & 16;
+#X obj 223 108 & 32;
+#X obj 263 108 & 64;
+#X obj 303 108 & 128;
+#X connect 0 0 1 0;
+#X connect 0 0 10 0;
+#X connect 0 0 11 0;
+#X connect 0 0 12 0;
+#X connect 0 0 13 0;
+#X connect 0 0 14 0;
+#X connect 0 0 15 0;
+#X connect 0 0 16 0;
+#X connect 1 0 2 0;
+#X connect 10 0 3 0;
+#X connect 11 0 4 0;
+#X connect 12 0 5 0;
+#X connect 13 0 6 0;
+#X connect 14 0 7 0;
+#X connect 15 0 8 0;
+#X connect 16 0 9 0;
+#X restore 115 655 pd buttons test;
+#X obj 177 613 unpack float float float float;
+#X obj 42 155 metro 400;
+#X obj 44 129 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 236 639 5 0 0 0 - - -;
+#X floatatom 306 640 5 0 0 0 - - -;
+#X floatatom 386 635 5 0 0 0 - - -;
+#X msg 49 17 open vendorId productId;
+#X floatatom 175 636 5 0 0 0 - - -;
+#X msg 336 371 debug \$1;
+#X obj 336 349 hradio 15 1 0 10 empty empty empty 0 -6 0 8 -262144
+-1 -1 0;
+#X obj 77 592 print data;
+#X text 58 222 how many bytes to read;
+#X msg 308 236 refresh;
+#X text 373 237 reinit and refresh device list;
+#X text 347 217 resets device (don't really know what that does tho)
+;
+#X obj 216 588 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 316 280 descriptor;
+#X text 395 280 get descriptor;
+#X text 322 298 for writing to the device:;
+#X msg 75 308 set 2;
+#X text 228 551 <- status outlet;
+#X text 66 552 data outlet ->;
+#X msg 213 39 open 0x046d 0xc01d;
+#X text 355 41 Logitech USB-PS/2 Optical Mouse;
+#X msg 206 15 open 0x1043 0x0015;
+#X text 363 132 Logitech RumblePad 2 USB;
+#X msg 241 132 open 0x046d 0xc218;
+#X obj 341 480 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X obj 281 585 print ELSE;
+#X obj 42 180 hradio 15 1 0 9 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X msg 94 204 get \$1;
+#X floatatom 44 204 5 0 0 0 - - -;
+#X text 373 152 CUI I/O test;
+#X msg 251 152 open 0x0925 0x1299;
+#X obj 216 566 route open;
+#X obj 338 499 int;
+#X msg 338 519 write 0x01 0x05 0x01 \$1 0;
+#X symbolatom 389 500 10 0 0 0 - - -;
+#X text 385 174 Logitech Inc. iFeel Mouse;
+#X msg 261 173 open 0x046d 0xc030;
+#X msg 23 306 get 24;
+#X msg 323 314 path 0x00010002 0x00000000 0xff000002;
+#X text 559 314 iFeel buzz;
+#N canvas 0 22 450 300 ifeel 1;
+#X obj 43 257 outlet;
+#X obj 30 41 hsl 128 15 0 255 0 0 empty empty amplitude 11 8 0 10 -262130
+-1 -1 0 0;
+#N canvas 0 22 450 300 pak 0;
+#X obj 45 15 inlet;
+#X obj 45 39 int;
+#X obj 48 265 outlet;
+#X obj 48 222 pack 0 0 0;
+#X obj 105 15 inlet;
+#X obj 105 39 int;
+#X obj 104 62 trigger bang 0;
+#X obj 205 15 inlet;
+#X obj 205 39 int;
+#X obj 204 62 trigger bang 0;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 6 1 3 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 0;
+#X connect 9 1 3 2;
+#X restore 60 84 pd pak;
+#X obj 169 41 hsl 128 15 255 1.8 1 0 empty empty pitch 11 8 0 10 -204786
+-1 -1 0 0;
+#X obj 310 41 hsl 128 15 1 255 1 0 empty empty how_many_pulses -2 -6
+0 10 -204800 -1 -1 0 0;
+#X msg 60 105 set 0x11 0x0a \$1 \$2 0x00 \$3 0x00;
+#X msg 79 142 set 0x13 0x00 0x00 0x00 0x00 0x00 0x00;
+#X text 266 103 buzz;
+#X text 321 142 abort buzz;
+#X msg 11 10 path 0x00010002 0x00000000 0xff000002;
+#X text 247 10 iFeel buzz;
+#X obj 202 185 receive buzz;
+#X floatatom 220 221 5 0 0 0 - - -;
+#X obj 178 217 abs;
+#X floatatom 172 265 5 0 0 0 - - -;
+#X obj 179 242 * 20;
+#X floatatom 310 72 5 0 0 0 - - -;
+#X floatatom 167 65 5 0 0 0 - - -;
+#X floatatom 56 61 5 0 0 0 - - -;
+#X connect 1 0 2 0;
+#X connect 1 0 18 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 1;
+#X connect 3 0 17 0;
+#X connect 4 0 2 2;
+#X connect 4 0 16 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 9 0 0 0;
+#X connect 11 0 12 0;
+#X connect 11 0 13 0;
+#X connect 13 0 15 0;
+#X connect 15 0 2 0;
+#X connect 15 0 14 0;
+#X restore 326 413 pd ifeel;
+#N canvas 50 159 735 546 CUI 0;
+#X obj 74 239 outlet;
+#X obj 122 46 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#N canvas 0 22 450 300 pak 0;
+#X obj 45 15 inlet;
+#X obj 45 39 int;
+#X obj 48 265 outlet;
+#X obj 48 222 pack 0 0 0;
+#X obj 105 15 inlet;
+#X obj 105 39 int;
+#X obj 104 62 trigger bang 0;
+#X obj 205 15 inlet;
+#X obj 205 39 int;
+#X obj 204 62 trigger bang 0;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 6 1 3 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 0;
+#X connect 9 1 3 2;
+#X restore 158 66 pd pak;
+#X obj 262 46 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X obj 402 46 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X msg 159 85 set 0x11 0x0a \$1 \$2 0x00 \$3 0x00;
+#X obj 154 151 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 153 176 set \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1
+\$1 \$1 \$1 \$1;
+#X msg 13 11 path 0x00010005 0x00010036;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 1;
+#X connect 4 0 2 2;
+#X connect 5 0 0 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X restore 335 437 pd CUI LED;
+#X text 344 16 CUI v1.0 LED;
+#X msg 226 61 open 0x1043 0x0015;
+#X msg 238 110 open 0x1043 0x0015;
+#X text 368 111 iCreate Technologies Corporation JxCore2;
+#N canvas 329 421 612 367 JxCore2 0;
+#X obj 74 239 outlet;
+#X obj 122 46 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#N canvas 0 22 450 300 pak 0;
+#X obj 45 15 inlet;
+#X obj 45 39 int;
+#X obj 48 265 outlet;
+#X obj 48 222 pack 0 0 0;
+#X obj 105 15 inlet;
+#X obj 105 39 int;
+#X obj 104 62 trigger bang 0;
+#X obj 205 15 inlet;
+#X obj 205 39 int;
+#X obj 204 62 trigger bang 0;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 6 1 3 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 0;
+#X connect 9 1 3 2;
+#X restore 158 66 pd pak;
+#X obj 262 46 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X obj 402 46 hsl 128 15 0 255 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X msg 159 85 set 0x11 0x0a \$1 \$2 0x00 \$3 0x00;
+#X obj 154 151 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 153 176 set \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1 \$1
+\$1 \$1 \$1 \$1;
+#X msg 13 11 path 0x00010005 0x00010001;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 1;
+#X connect 4 0 2 2;
+#X connect 5 0 0 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X restore 405 437 pd JxCore2;
+#X msg 231 86 open 0x1043 0x0015;
+#X text 361 87 STEIM JxCore2;
+#N canvas 0 22 450 300 keyboard 0;
+#X obj 170 265 outlet;
+#X msg 228 233 write 0x11 0x01 0 \$1;
+#X obj 228 212 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 0
+1;
+#X obj 213 171 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 0
+1;
+#X msg 213 192 write 0x11 0x00 0 \$1;
+#X text 344 190 numlock;
+#X text 359 231 capslock;
+#X msg 163 134 write 0x15 \$1 0 \$2;
+#X obj 161 97 pack symbol float;
+#X symbolatom 171 65 10 0 0 0 - - -;
+#X obj 151 40 makefilename 0x%d;
+#X obj 154 13 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X obj 260 68 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 10 -262144
+-1 -1 0 1;
+#X floatatom 277 89 5 0 0 0 - - -;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
+#X connect 10 0 9 0;
+#X connect 10 0 8 0;
+#X connect 11 0 10 0;
+#X connect 12 0 8 1;
+#X connect 12 0 13 0;
+#X restore 566 420 pd keyboard LED;
+#X msg 132 237 get 4;
+#X msg 114 157 bang;
+#N canvas 232 222 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control conversion abstraction;
+#X text 12 45 DESCRIPTION convert a stream of ASCII digits to a single
+int value;
+#X text 12 75 INLET_0 open close reset refresh print descriptor path
+debug write get set;
+#X text 12 105 OUTLET_0 list;
+#X text 12 125 OUTLET_1 anything;
+#X restore 639 640 pd META;
+#X connect 0 0 6 0;
+#X connect 0 0 16 0;
+#X connect 0 1 40 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 6 0 5 0;
+#X connect 6 0 13 0;
+#X connect 6 1 9 0;
+#X connect 6 2 10 0;
+#X connect 6 3 11 0;
+#X connect 7 0 35 0;
+#X connect 8 0 7 0;
+#X connect 14 0 0 0;
+#X connect 15 0 14 0;
+#X connect 18 0 0 0;
+#X connect 22 0 0 0;
+#X connect 25 0 0 0;
+#X connect 28 0 0 0;
+#X connect 30 0 0 0;
+#X connect 32 0 0 0;
+#X connect 33 0 41 0;
+#X connect 35 0 36 0;
+#X connect 35 0 37 0;
+#X connect 36 0 0 0;
+#X connect 39 0 0 0;
+#X connect 40 0 21 0;
+#X connect 40 1 34 0;
+#X connect 41 0 42 0;
+#X connect 42 0 0 0;
+#X connect 43 0 42 0;
+#X connect 45 0 0 0;
+#X connect 46 0 0 0;
+#X connect 47 0 0 0;
+#X connect 49 0 0 0;
+#X connect 50 0 0 0;
+#X connect 52 0 0 0;
+#X connect 53 0 0 0;
+#X connect 55 0 0 0;
+#X connect 56 0 0 0;
+#X connect 59 0 0 0;
+#X connect 60 0 35 0;

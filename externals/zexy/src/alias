@@ -1,0 +1,11 @@
+a2l	any2list
+demultiplex~	demux~
+demultiplex	demux
+drip	unfold
+list2int	l2i
+list2symbol	l2s
+lister	l
+lpt	lp
+multiplex~	mux~
+multiplex	mux
+symbol2list	s2l

@@ -1,0 +1,14 @@
+atomtype symbol;
+atomvalue binbuf_helper;
+atomtype dollar;
+atomvalue \$0;
+atomtype dollsym;
+atomvalue \$1.foo;
+atomtype symbol;
+atomvalue foo;
+atomtype float;
+atomvalue 123.0;
+atomtype comma;
+atomvalue \,;
+atomtype semi;
+atomvalue \;;

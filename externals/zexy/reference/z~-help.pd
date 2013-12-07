@@ -1,0 +1,44 @@
+#N canvas 0 31 547 376 10;
+#X obj 125 42 z~;
+#X text 177 41 samplewise delay;
+#X text 168 89 should make FIR-filter design possible;
+#X obj 35 182 osc~ 440;
+#X floatatom 35 151 0 0 0 0 - - -;
+#X obj 67 230 z~;
+#X obj 97 230 z~ 2;
+#X obj 35 270 +~;
+#X text 205 229 4th order moving average filter;
+#X text 163 258 creation argument : delay in samples (default is 1)
+;
+#X text 167 119 (note that you cannot do IIR-filters easily this way
+!);
+#X text 351 42 z;
+#X text 359 36 -N;
+#X obj 35 296 *~ 0.25;
+#X text 442 11 part of zexy;
+#X obj 137 230 z~ 3;
+#X obj 35 344 tabwrite~ \$0scope;
+#X msg 52 321 bang;
+#X obj 228 348 table \$0scope;
+#N canvas 498 241 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS signal;
+#X text 12 45 DESCRIPTION samplewise delay;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 signal;
+#X restore 493 347 pd META;
+#X connect 3 0 7 0;
+#X connect 3 0 5 0;
+#X connect 3 0 6 0;
+#X connect 3 0 15 0;
+#X connect 4 0 3 0;
+#X connect 5 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 13 0;
+#X connect 13 0 16 0;
+#X connect 15 0 7 0;
+#X connect 17 0 16 0;

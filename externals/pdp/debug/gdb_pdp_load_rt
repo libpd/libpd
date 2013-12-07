@@ -1,0 +1,10 @@
+cd /home/tom/pd/packet
+file /home/tom/pd/distro/pd/bin/pd.debug
+# file ~/pd/distro/pd/bin/pd
+set args -rt -r 44100 -alsa -frags 64 -lib pdp -nodac -noadc -nogui test/test_pdp_qt_read.pd
+dir modules
+dir system
+dir mmx
+dir scaf
+dir scaf/modules
+dir scaf/system

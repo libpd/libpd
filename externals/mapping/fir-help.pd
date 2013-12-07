@@ -1,0 +1,39 @@
+#N canvas 2 53 630 490 10;
+#X declare -lib iemmatrix;
+#X obj 174 76 loadbang;
+#X text 97 58 data;
+#X obj 93 161 t f f;
+#X msg 102 128 0;
+#X msg 185 127 0.2 0.2 0.2 0.2 0.2;
+#X msg 132 128 1;
+#X msg 174 98 0.4 0.3 0.1 0.1 0.1;
+#X obj 93 248 timeroll 10;
+#X obj 345 247 timeroll 10;
+#X obj 123 187 fir 5;
+#X obj 77 10 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 116 423 pddp/pddplink http://www.dspguru.com/info/faqs/firfaq.htm
+;
+#X text 67 407 For more info on FIR:;
+#X text 183 188 the argument is the number of co-efficients;
+#X text 328 112 these are a list of co-efficients;
+#N canvas 464 140 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X text 12 45 DESCRIPTION;
+#X text 12 85 INLET_1 list;
+#X restore 573 459 pd META;
+#X connect 0 0 6 0;
+#X connect 2 0 7 0;
+#X connect 2 1 9 0;
+#X connect 3 0 2 0;
+#X connect 4 0 9 1;
+#X connect 5 0 2 0;
+#X connect 6 0 9 1;
+#X connect 9 0 8 0;
+#X connect 10 0 2 0;

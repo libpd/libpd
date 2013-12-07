@@ -1,0 +1,30 @@
+#N canvas 1 53 442 175 10;
+#X text 354 107 j#|@2002;
+#X obj 376 87 SMLib-help;
+#X text 10 6 vfmod computes the modulo of each element in a vector
+;
+#X obj 15 127 print;
+#X floatatom 66 81 5 0 0 0 - - -;
+#X text 79 103 base;
+#X text 78 119 base zero becomes one;
+#X msg 15 33 0 0.5 1 1.5 2 2.5 3 3.5;
+#X msg 26 58 0 -0.5 -1 -1.5 -2 -2.5 -3 -3.5;
+#X obj 15 101 vfmod 2;
+#X text 78 134 default argument is 1;
+#N canvas 178 183 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Johannes Taelman (johannes.taelman@rug.ac.be)
+;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 65 INLET_0 list float;
+#X text 12 105 OUTLET_0 list float;
+#X text 12 45 DESCRIPTION compute the modulo of each element in a vector
+;
+#X text 12 85 INLET_1 float;
+#X restore 386 128 pd META;
+#X connect 4 0 9 1;
+#X connect 7 0 9 0;
+#X connect 8 0 9 0;
+#X connect 9 0 3 0;

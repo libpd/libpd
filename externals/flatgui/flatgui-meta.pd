@@ -1,0 +1,7 @@
+#N canvas 15 49 200 200 10;
+#N canvas 25 49 420 300 META 1;
+#X text 13 41 NAME flatgui;
+#X text 10 25 AUTHOR Ben Bogart \, Christoph Kummerer \, Frank Barknect \, Guenther Geiger \, Hans-Christoph Steiner \, Krzystof Czaja \, Miller Puckette \, Olaf Matthes \, Thomas Musil;
+#X text 10 10 VERSION 0.1;
+#X text 10 100 LICENSE GPLv3;
+#X restore 10 10 pd META;

@@ -1,0 +1,14 @@
+#N canvas 179 117 582 310 10;
+#X obj 91 117 inlet bang;
+#X obj 91 270 outlet result;
+#X obj 91 138 t b b b;
+#X obj 113 214 multiplex;
+#X obj 91 240 i 1;
+#X msg 113 183 help;
+#X text 37 51 tests whether [multiplex] crashes when a "help"-message is
+sent;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;

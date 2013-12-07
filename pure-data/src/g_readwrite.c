@@ -734,6 +734,21 @@ static void canvas_menusave(t_canvas *x)
     else canvas_menusaveas(x2);
 }
 
+#if defined(LIBPD)
+void *libpd_get_main_file(void);
+void libpd_file_is_saved(void);
+
+static void canvas_saveifmain(t_canvas *x)
+{
+  if (libpd_get_main_file() != (void*)(&x->gl_pd))
+    return;
+  else {
+    canvas_menusave(x);
+    libpd_file_is_saved();
+  }
+}
+#endif
+
 void g_readwrite_setup(void)
 {
     class_addmethod(canvas_class, (t_method)glist_write,
@@ -746,6 +761,10 @@ void g_readwrite_setup(void)
         gensym("savetofile"), A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(canvas_class, (t_method)canvas_saveto,
         gensym("saveto"), A_CANT, 0);
+#if defined(LIBPD)
+    class_addmethod(canvas_class, (t_method)canvas_saveifmain,
+        gensym("saveifmain"), 0);
+#endif
 /* ------------------ from the menu ------------------------- */
     class_addmethod(canvas_class, (t_method)canvas_menusave,
         gensym("menusave"), 0);

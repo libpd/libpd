@@ -1,0 +1,31 @@
+Version 0.3.0:
+	- Big rewrite, fixing typemaps
+	- Support for most binbuf atoms (COMMA, SEMI, DOLLAR, DOLLSYM, ...)
+
+Version 0.2.3:
+	- Big rewrite, using tcl namespaces (more tidy, more efficient)
+
+Version 0.2.2:
+	- Requires pd 0.43 (logpost, pdpost)
+	- Fixed "tclpd_get_instance_text cmd not found" bug
+	- Makefile for all platforms
+	- Replaced std::map with a minimal hashtable implementation
+	- Added support for te_binbuf retrieval (for savefn)
+
+Version 0.2.1:
+	- Added support for properties function.
+	- Added support for pd_bind/unbind.
+	- Added destructor call in pd_free.
+	- Added support for glist_grab (needed for mouse motion)
+	- Added support for loadbang
+	- Added iemgui-style general purpose property panel
+	- Introduced Tcl package logic (package name: Tclpd)
+
+Version 0.2:
+	- Added support for GUI externals (widgetbehavior).
+	- Added support for save function.
+	- Fixed memory leaks.
+
+Version 0.1.1:
+	- Basic support for atom conversion, pd classes, methods.
+	- Fixed issues with tcl obj reference counter (segfaults).

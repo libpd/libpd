@@ -1,0 +1,27 @@
+#N canvas 0 26 403 361 10;
+#X text 15 35 Pink noise generator;
+#X obj 80 337 dac~;
+#X obj 80 264 *~ 0.2;
+#X text 20 141 pink~ is pretty simple. just connect its outlet to something
+and you get noise. the signal input is ignored.;
+#X text 18 58 pink~ generates pink noise \, as distinguished from white
+noise (which the MSP object noise~ generates). White noise has constant
+spectral power per hertz of bandwidth \, while pink noise has constant
+power per octave. Subjectively \, pink noise sounds less hissy than
+white noise.;
+#X obj 80 228 pink~;
+#N canvas 247 115 494 373 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible random;
+#X text 12 45 DESCRIPTION pink noise generator;
+#X text 12 65 INLET_0;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 353 340 pd META;
+#X connect 2 0 1 0;
+#X connect 2 0 1 1;
+#X connect 5 0 2 0;

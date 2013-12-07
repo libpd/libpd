@@ -1,0 +1,43 @@
+#N canvas -35 125 814 290 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X text 198 15 [mtx_pivot];
+#X text 59 79 pivot-transform a matrix;
+#X obj 63 164 mtx_pivot;
+#N canvas 352 114 190 367 rand-matrix 0;
+#X obj 74 163 inlet;
+#X obj 74 270 outlet;
+#X obj 74 195 mtx_rand;
+#X obj 74 215 mtx_* 10;
+#X obj 74 237 mtx_int;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X restore 63 118 pd rand-matrix;
+#X msg 63 96 4 3;
+#X obj 112 185 mtx_print post;
+#X obj 87 205 mtx_print pre;
+#X obj 63 245 mtx_print pivot;
+#X text 290 184 the first outlet is the pivot-transformed matrix.;
+#X text 289 210 the other outlets are the 1/0-matrices that have to
+be pre-multiplied (row-tranform) and post-multiplied (column-tranform)
+to the original matrix to get the pivot-tranformation. this is useful
+for de-pivoting.;
+#X obj 63 141 t a a;
+#X obj 103 141 mtx_print original;
+#X msg 175 99 matrix 4 3 1 2 3 4 5 6 7 8 9 10 11 12;
+#X text 194 36 pivot-transform matrices;
+#X text 290 131 this will tranform the columns and rows \, so that
+the result will have "all" maximum values in the diagonale. the maximum
+of the matrix will be located at the upper-left corner.;
+#X connect 6 0 11 0;
+#X connect 6 1 10 0;
+#X connect 6 2 9 0;
+#X connect 7 0 14 0;
+#X connect 8 0 7 0;
+#X connect 14 0 6 0;
+#X connect 14 1 15 0;
+#X connect 16 0 14 0;

@@ -1,0 +1,51 @@
+#N canvas 0 26 713 302 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 16 264 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 15 278 ___________________________________________________
+;
+#X obj 28 22 offer;
+#X text 87 22 store x \, y pairs of values (x is int only);
+#X obj 111 169 offer;
+#X msg 243 121 clear;
+#X text 285 120 clear contents;
+#X msg 305 66 0 0 \, 1 1.1 \, 2 2.2 \, 3 3.3;
+#X floatatom 111 106 5 0 0 0 - - -;
+#X text 23 68 x(int) y(may be float) pairs are stored:;
+#X obj 111 199 print offer;
+#X text 23 91 read corresponding y value and;
+#X text 23 104 delete pair:;
+#X obj 593 184 offer;
+#X obj 593 206 print offer2;
+#X obj 593 116 t b b;
+#X msg 593 94 bang;
+#X msg 593 163 0;
+#X msg 623 141 0.23;
+#X text 574 165 x:;
+#X text 605 140 y:;
+#X text 519 57 hit bang and then the x value;
+#X text 518 69 again to output stored y:;
+#N canvas 247 115 494 425 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible storage;
+#X text 12 45 DESCRIPTION store x \, y pairs of values ( x is int only
+);
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 65 INLET_0 float list clear;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 663 281 pd META;
+#X connect 5 0 11 0;
+#X connect 6 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 14 0 15 0;
+#X connect 16 0 18 0;
+#X connect 16 1 19 0;
+#X connect 17 0 16 0;
+#X connect 18 0 14 0;
+#X connect 19 0 14 1;

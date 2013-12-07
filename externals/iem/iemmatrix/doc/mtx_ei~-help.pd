@@ -1,0 +1,92 @@
+#N struct pcolor-plot float x float y array pcolor-element-array pcolor-element
+;
+#N struct pcolor-element float x float y float c float dx;
+#N canvas 819 236 698 410 10;
+#X obj 540 85 dsp;
+#X floatatom 539 115 5 0 0 0 - - -;
+#X floatatom 586 117 5 0 0 0 - - -;
+#X obj 95 185 z~;
+#X obj 96 225 *~ 1;
+#X obj 361 39 block~ 8192;
+#X obj 228 179 hsl 128 15 0 1.5 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 248 224 sin;
+#X obj 209 223 cos;
+#X obj 175 79 hsl 100 15 -10 10 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 7100 1;
+#X obj 173 125 + 10;
+#X floatatom 174 149 5 0 0 0 - - -;
+#X obj 155 184 z~ 10;
+#X obj 174 98 i;
+#X obj 169 368 mtx_pcolor;
+#X obj 525 46 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 94 343 mtx;
+#X obj 95 366 mtx_print;
+#X obj 56 317 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 93 93 *~ 2;
+#X obj 81 59 noise~;
+#N canvas 0 0 450 300 computegains 0;
+#X obj 141 55 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 45 206 mtx_print;
+#X obj 45 152 mtx_rmstodb;
+#X obj 45 177 mtx_- 100;
+#X obj 142 93 mtx_logspace 1 0.17 10;
+#X obj 195 157 mtx_reverse;
+#X obj 167 180 mtx_+;
+#X obj 144 125 t a a a;
+#X obj 144 288 mtx_./;
+#X obj 167 203 t a a;
+#X msg 202 225 1 \$3;
+#X obj 242 225 /;
+#X obj 167 249 mtx_* 1;
+#X connect 0 0 4 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 7 0;
+#X connect 5 0 6 1;
+#X connect 6 0 9 0;
+#X connect 7 0 8 0;
+#X connect 7 1 6 0;
+#X connect 7 2 5 0;
+#X connect 8 0 2 0;
+#X connect 9 0 12 0;
+#X connect 9 1 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 1;
+#X connect 12 0 8 1;
+#X restore 489 325 pd computegains;
+#X obj 97 275 mtx_ei~ 23 0.909091 0.888184 0.863193 0.833662 0.79924
+0.759747 0.715253 0.666139 0.613137 0.557312 0.5 0.442688 0.386863
+0.333861 0.284747 0.240253 0.20076 0.166338 0.136807 0.111816 0.0909091
+;
+#X obj 156 224 *~ 0.5;
+#X obj 335 353 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X msg 332 378 vis \$1;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 3 0 4 0;
+#X connect 4 0 22 0;
+#X connect 6 0 8 0;
+#X connect 6 0 7 0;
+#X connect 7 0 23 1;
+#X connect 8 0 4 1;
+#X connect 9 0 13 0;
+#X connect 10 0 3 1;
+#X connect 10 0 11 0;
+#X connect 12 0 23 0;
+#X connect 13 0 10 0;
+#X connect 15 0 0 0;
+#X connect 16 0 17 0;
+#X connect 18 0 16 0;
+#X connect 19 0 3 0;
+#X connect 19 0 12 0;
+#X connect 20 0 19 0;
+#X connect 22 0 14 0;
+#X connect 22 0 16 1;
+#X connect 23 0 22 1;
+#X connect 24 0 25 0;
+#X connect 25 0 14 1;

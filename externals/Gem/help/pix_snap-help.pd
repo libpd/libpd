@@ -1,0 +1,123 @@
+#N canvas 17 223 935 395 10;
+#X text 452 8 GEM object;
+#X obj 8 216 cnv 15 430 160 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 218 Inlets:;
+#X text 39 347 Outlets:;
+#X obj 8 176 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X obj 8 66 cnv 15 430 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 67 cnv 15 250 300 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 50 Example:;
+#X obj 594 303 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 16 419 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 268 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 599 342 pd gemwin;
+#X msg 599 323 create;
+#X text 595 302 Create window:;
+#X obj 452 157 cnv 15 240 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 71 31 Class: pix object;
+#X text 27 360 Outlet 1: gemlist;
+#X text 33 232 Inlet 1: gemlist;
+#X obj 451 335 square 3;
+#X obj 714 193 sphere;
+#X obj 451 74 gemhead 50;
+#X obj 714 75 gemhead 49;
+#X obj 482 207 spigot;
+#X obj 484 161 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 570 233 256 256;
+#X text 50 12 Synopsis: [pix_snap];
+#X text 12 144 When grabbing \, be sure that something is in the rendering-buffer
+\, else you will get a black texture.;
+#X text 33 245 Inlet 1: bang: do grab!;
+#X text 33 275 Inlet 2: list: offsetX offsetY (in pixels \; default:
+0 0);
+#X text 33 301 Inlet 3: list: dimenX dimenY (in pixels \; default:
+window-size);
+#X text 63 186 list: [offsetX offsetY [dimX dimY]];
+#X floatatom 527 75 5 0 0 0 - - -;
+#X obj 451 114 rotate 0 1 0 0;
+#X obj 714 143 translate -1 0 1 0;
+#X obj 451 94 translate 1 0 1 0;
+#X obj 451 187 t a b;
+#X obj 714 124 rotate 0 1 1 1;
+#N canvas 5 103 297 145 count 0;
+#X obj 116 39 t b;
+#X obj 116 60 i;
+#X obj 143 61 + 1;
+#X obj 170 62 % 360;
+#X obj 116 17 inlet;
+#X obj 116 94 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X restore 754 104 pd count;
+#X text 624 233 dimension;
+#X text 623 211 offset;
+#X text 506 171 drawn but before the square;
+#X text 504 158 SNAP! after the sphere is;
+#X text 29 67 Description: take a screenshot and convert it to a Pix
+;
+#X text 13 81 When banged [pix_snap] will take a snapshot of the current
+frame buffer which can then be used as a pix. When a snap message (or
+a bang) is sent to [pix_snap] \, that is the moment that something
+is captured from the current frame buffer.;
+#X obj 451 281 pix_invert;
+#X obj 451 303 pix_texture;
+#X text 33 257 Inlet 1: snap: do grab!;
+#X obj 714 97 t a b;
+#X obj 714 165 color 1 0 0;
+#X obj 482 227 t b b;
+#X msg 518 227 0;
+#X obj 451 256 pix_snap 0 0 500 500;
+#X msg 570 209 100 100;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 19 0 33 0;
+#X connect 20 0 46 0;
+#X connect 21 0 48 0;
+#X connect 22 0 21 1;
+#X connect 23 0 50 2;
+#X connect 30 0 31 1;
+#X connect 31 0 34 0;
+#X connect 32 0 47 0;
+#X connect 33 0 31 0;
+#X connect 34 0 50 0;
+#X connect 34 1 21 0;
+#X connect 35 0 32 0;
+#X connect 36 0 35 1;
+#X connect 43 0 44 0;
+#X connect 44 0 17 0;
+#X connect 46 0 35 0;
+#X connect 46 1 36 0;
+#X connect 47 0 18 0;
+#X connect 48 0 50 0;
+#X connect 48 1 49 0;
+#X connect 49 0 22 0;
+#X connect 50 0 43 0;
+#X connect 51 0 50 1;

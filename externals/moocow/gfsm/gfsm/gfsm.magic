@@ -1,0 +1,17 @@
+## magic data for binary gfsm automata, for use with file(1).
+## Add the contents of this file to /etc/magic or equivalent.
+
+##--BEGIN gfsm.magic
+## - Bryan Jurish <moocow@ling.uni-potsdam.de>
+
+## stored binary gfsm automata
+0       string  gfsm_			gfsm
+>5	string	automaton\0		stored automaton
+>5	string	indexed\0		indexed automaton
+>5	string	cascade\0		automaton cascade
+>5	byte	x			data
+>16     ulong   x                       (libgfsm v%u
+>20     ulong   x                       \b.%u
+>24     ulong   x                       \b.%u)
+
+##--END gfsm.magic

@@ -1,0 +1,28 @@
+#N canvas 0 26 414 244 10;
+#X obj 75 99 ratio;
+#X obj 103 192 osc~;
+#X floatatom 131 122 5 0 0 0 - - -;
+#X obj 103 150 *;
+#X obj 103 223 dac~;
+#X floatatom 75 51 5 0 0 0 - - -;
+#X floatatom 35 135 5 0 0 0 - - -;
+#X text 189 32 ratio is an octave shifter.;
+#X text 188 46 output is between 1 and 2;
+#X text 189 62 it computes 2^(log2(x)-int(log2(x)));
+#N canvas 379 254 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS control;
+#X text 12 45 DESCRIPTION octave shifter;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 364 223 pd META;
+#X connect 0 0 3 0;
+#X connect 0 0 6 0;
+#X connect 1 0 4 0;
+#X connect 1 0 4 1;
+#X connect 2 0 3 1;
+#X connect 3 0 1 0;
+#X connect 5 0 0 0;

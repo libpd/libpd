@@ -1,0 +1,36 @@
+#N canvas 737 247 618 430 10;
+#X text 135 35 This object sould be used to test if a specific masse
+is inside a sphere;
+#X text 121 76 message to change parametter / default value / creation
+arg number / description;
+#X msg 80 207 setRmin 0;
+#X msg 81 230 setRmax 1;
+#X msg 80 132 setX 0;
+#X msg 79 157 setY 0;
+#X msg 79 180 setZ 0;
+#X text 203 247 minimal and maximal radius of the sphere. If the mass
+is outside or inside this sphere \, it will not interact with this
+link.;
+#X obj 16 302 tSphere3D;
+#X text 248 6 Spherical test;
+#X text 178 132 1 : X coordonate of the center of the sphere;
+#X text 178 159 2 : Y coordonate of the center of the sphere;
+#X text 178 183 3 : Z coordonate of the center of the sphere;
+#X text 177 208 4 : Minimum Radius;
+#X text 177 229 5 : Maximum Radius;
+#X floatatom 65 338 5 0 0 0 - - -;
+#X floatatom 40 360 5 0 0 0 - - -;
+#X floatatom 16 384 5 0 0 0 - - -;
+#X text 123 382 0/1 according to the position of the masse;
+#X text 122 360 distance of the mass from the center of the circle
+;
+#X text 122 336 speed of the mass regarding the center of the circle
+;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 8 0;
+#X connect 6 0 8 0;
+#X connect 8 0 17 0;
+#X connect 8 1 16 0;
+#X connect 8 2 15 0;

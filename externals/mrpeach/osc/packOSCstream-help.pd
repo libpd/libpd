@@ -1,0 +1,56 @@
+#N canvas 1 53 609 569 10;
+#X obj 69 119 packOSCstream;
+#X obj 69 451 tcpsend;
+#X text -24 496 check also:;
+#X obj -22 513 unpackOSCstream;
+#X obj 93 513 packOSC;
+#X msg 38 403 connect localhost 9995;
+#X obj 208 513 tcpreceive;
+#X obj 151 513 tcpsend;
+#X obj 286 513 tcpserver;
+#X obj 357 513 tcpclient;
+#X msg 58 423 disconnect;
+#X obj 69 473 tgl 15 0 empty empty empty 17 7 0 10 -4034 -257985 -1
+0 1;
+#X obj 181 403 cnv 15 380 30 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 196 408 <- First open unpackOSCstream-help \, then connect
+;
+#X text 440 501 Author: Roman Haefeli;
+#X text 440 517 Version: 2008-09-09;
+#X text 74 254 [packOSCstream] uses the same methods as [packOSC].
+Please consult packOSC-help.pd for the complete documentation.;
+#X text 75 189 [packOSstream] puts a frame length header (int32) in
+front of every OSC packet or bundle \, so that the receiving side knows
+\, how to split the incoming stream into OSC packets again.;
+#X msg -24 9 /first/message 1 \, /second/message 2;
+#X text 79 330 reference:;
+#X text 80 347 http://archive.cnmat.berkeley.edu/OpenSoundControl/OSC-spec.html
+: Section "OSC Packets";
+#X msg -4 29 send /test/one/two/three zz 88 T;
+#X msg 16 49 sendtyped /test/one/two/three sis zz 88 T;
+#X msg 36 69 prefix /test;
+#X msg 56 89 [ \, /previous/page 666 \, /next/page 999 \, ];
+#X text 72 142 [packOSCstream] is meant to be a replacement for [packOSC]
+\, when sending over a stream based protocol \, such as TCP.;
+#N canvas 499 120 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 115 AUTHOR Roman Haefeli;
+#X text 12 75 INLET_0 anything send sendtyped prefix connect disconnect
+;
+#X text 12 45 DESCRIPTION meant to be a replacement for [packOSC] \,
+when sending over a stream based protocol \, such as TCP;
+#X text 12 95 OUTLET_0 float;
+#X text 12 5 KEYWORDS control network abstraction;
+#X restore 532 544 pd META;
+#X connect 0 0 1 0;
+#X connect 1 0 11 0;
+#X connect 5 0 1 0;
+#X connect 10 0 1 0;
+#X connect 18 0 0 0;
+#X connect 21 0 0 0;
+#X connect 22 0 0 0;
+#X connect 23 0 0 0;
+#X connect 24 0 0 0;

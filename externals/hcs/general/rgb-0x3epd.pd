@@ -1,0 +1,41 @@
+#N canvas 642 48 565 527 10;
+#X obj 59 50 inlet;
+#X obj 243 50 inlet;
+#X obj 111 301 outlet;
+#X text 114 326 -pow(2 \, 16) * R - pow(2 \, 8) * G - pow(2 \, 0) *
+B - 1;
+#X obj 388 50 inlet;
+#X obj 112 97 float_argument \$1;
+#X obj 243 97 float_argument \$2;
+#X obj 388 97 float_argument \$3;
+#X text 267 372 released under the GNU GPL;
+#X text 50 357 (C) Copyright 2006 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X text 67 395 Based on ideas from Joao Miguel Pais/Frank Barknecht.
+;
+#X obj 59 72 route list float;
+#X obj 111 258 expr -65536 * $i1 - 256 * $i2 - $i3 - 1 \;;
+#X obj 52 159 unpack float float float;
+#X obj 248 230 * 255;
+#X obj 386 230 * 255;
+#X text 101 50 [math/list/clip];
+#X obj 243 73 clip 0 1;
+#X obj 388 73 clip 0 1;
+#X obj 111 229 * 255;
+#X connect 0 0 11 0;
+#X connect 1 0 17 0;
+#X connect 4 0 18 0;
+#X connect 5 0 19 0;
+#X connect 6 0 14 0;
+#X connect 7 0 15 0;
+#X connect 11 0 13 0;
+#X connect 11 1 5 0;
+#X connect 12 0 2 0;
+#X connect 13 0 19 0;
+#X connect 13 1 14 0;
+#X connect 13 2 15 0;
+#X connect 14 0 12 1;
+#X connect 15 0 12 2;
+#X connect 17 0 6 0;
+#X connect 18 0 7 0;
+#X connect 19 0 12 0;

@@ -1,0 +1,18 @@
+#N canvas 457 36 730 465 10;
+#X obj 40 153 testtools/unit-test-frame;
+#X obj 40 88 loadbang;
+#X obj 361 95 smlib/vmtof;
+#X msg 40 118 vmtof 0;
+#X obj 361 71 + 1;
+#X floatatom 362 26 5 0 0 0 - - -;
+#X obj 361 125 / 329;
+#X obj 361 49 & 63;
+#X text 41 49 midi to frequency on a vector;
+#X connect 0 2 7 0;
+#X connect 1 0 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 0 0;
+#X connect 4 0 2 0;
+#X connect 5 0 7 0;
+#X connect 6 0 0 1;
+#X connect 7 0 4 0;

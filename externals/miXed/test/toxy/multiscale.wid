@@ -1,0 +1,52 @@
+proc ::toxy::multiscale_command {target sel ndx v} {
+    pd [concat $target $sel $v $ndx \;]
+}
+
+proc ::toxy::multiscale_float {path target count ndx} {
+    if {$ndx >= 0 && $ndx < $count} {
+	pd [concat $target _cb [$path.s$ndx get] $ndx \;]
+    }
+}
+
+proc ::toxy::multiscale_list {path count ndx v} {
+    if {$ndx >= 0 && $ndx < $count} {
+	$path.s$ndx set $v
+    }
+}
+
+proc ::toxy::multiscale {path cvpath target remote count lo hi res dx dy bg} {
+    if {[winfo exists $path.s0]} {
+#	puts stderr [concat $path.s0 exists]
+    } else {
+	set width [expr {$count * $dx + 10}]
+	set height [expr {$dy + 10}]
+	$path config -width $width -height $height -bg $bg
+	set px 5
+	set py 5
+	for {set ndx 0} {$ndx < $count} {incr ndx} {
+	    scale $path.s$ndx -width $dx -length $dy \
+		-from $hi -to $lo -resolution $res \
+		-bg $bg -highlightthickness 0 \
+		-command [concat ::toxy::multiscale_command $target _cb $ndx]
+	    if {$dx < 50} {
+		$path.s$ndx config -showvalue 0 -relief flat
+	    } else {
+		$path.s$ndx config -digits 3 -relief sunken
+	    }
+	    set id [$path create window $px $py -width $dx -height $dy \
+		-anchor nw -window $path.s$ndx -tags $path.s$ndx]
+	    ::toxy::subwidget $path.s$ndx $path $cvpath $target
+	    incr px $dx
+	}
+    }
+}
+
+#> multiscale canvas
+# FIXME fractional resolution: scalePtr->value == value fails in TkScaleSetValue
+#. #n 3 #lo 0 #hi 100 #res 1
+#. #dx 60 #dy 90
+#. #bg yellow
+#. @float ::toxy::multiscale_float .- .| .#n .#1
+#. @list ::toxy::multiscale_list .- .#n .#2 .#1
+
+::toxy::multiscale .- .^.c .| . .#n .#lo .#hi .#res .#dx .#dy .#bg

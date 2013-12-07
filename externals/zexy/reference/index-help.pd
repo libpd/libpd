@@ -1,0 +1,139 @@
+#N canvas 4 50 929 598 10;
+#X msg 33 364 help;
+#X floatatom 682 190 0 0 128 0 - - -;
+#X msg 58 185 add alias;
+#X msg 58 203 add bind;
+#X msg 58 221 add break;
+#X msg 58 240 add built-in;
+#X msg 58 259 add case;
+#X msg 582 407 delete bind;
+#X msg 582 425 delete break;
+#X msg 582 444 delete built-in;
+#X msg 582 463 delete case;
+#X obj 514 287 symbol;
+#X msg 533 267 case;
+#X msg 533 248 built-in;
+#X msg 533 229 break;
+#X msg 533 211 bind;
+#X msg 533 193 alias;
+#X obj 514 305 send \$0-2index;
+#X obj 61 421 receive \$0-2index;
+#X obj 570 501 send \$0-2index;
+#X obj 44 297 send \$0-2index;
+#X text 522 156 get item index;
+#X text 516 170 (evt. add new item);
+#X text 33 154 add new item to map;
+#X text 580 350 delete item from map;
+#X text 128 39 creation : "index [<n> [<auto>]]";
+#X msg 582 389 delete alias;
+#X text 162 73 auto :: 1_sets auto ON \, 0_sets auto OFF (default off)
+;
+#X text 705 14 part of zexy;
+#X floatatom 61 563 0 0 0 0 - - -;
+#X symbolatom 121 562 0 0 0 0 - - -;
+#X obj 61 542 route float symbol;
+#X obj 196 542 print INDEX;
+#X obj 682 294 send \$0-2index;
+#X text 673 168 query an item at index #;
+#X text 61 9 index:: create a symbol->int map;
+#X text 164 59 n :: initial max. number of elements in list (default:
+128);
+#X obj 460 7 index;
+#N canvas 0 0 849 372 administrative 0;
+#X obj 61 268 outlet;
+#X msg 61 77 reset;
+#X text 50 58 clear map;
+#X msg 103 155 auto \$1;
+#X obj 103 134 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 156 205 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 156 226 resize \$1;
+#X text 174 116 in AUTO mode \, unknown symbols are automatically added
+to the map \;;
+#X text 175 143 in NON-AUTO mode (default) \, only ADDed symbols (eg.
+"add <symbol>") are added to the map;
+#X text 235 197 normally \, the map will resize automatically if it
+gets to small. you can prevent it from resizing by sending a "resize
+0" message.;
+#X connect 1 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X restore 187 440 pd administrative;
+#N canvas 0 0 673 455 advanced 0;
+#X obj 76 298 outlet;
+#X msg 90 109 dump;
+#X msg 111 251 sort;
+#X msg 76 56 bang;
+#X text 124 56 output the number of stored entries;
+#X text 128 109 dump each entry in the format "list <symbol> <index>"
+;
+#X msg 114 161 compact;
+#X text 173 161 compact the entries \, so there are no holes in the
+map;
+#X text 159 253 sort the elements alphabetically;
+#X text 172 198 this does not produce any immediate output!;
+#X text 177 179 (e.g. "1 ... foo \, 3 ... bar" --> "1 ... foo \, 2
+... bar");
+#X text 156 270 (e.g. "1 ... foo \, 2 ... bar" --> "1 ... bar \, 2
+... foo");
+#X text 161 288 this does not produce any immediate output!;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 6 0 0 0;
+#X restore 190 470 pd advanced;
+#X text 300 440 open subpatch for administrative messages;
+#X text 300 470 open subpatch for advanced messages;
+#X obj 61 497 index 10 1;
+#X obj 210 299 send \$0-2index;
+#X text 199 156 add new item to map at index#;
+#X msg 224 187 add foo 7;
+#X msg 231 221 add bar 2;
+#X text 205 168 (if that slot is still free);
+#X obj 724 504 send \$0-2index;
+#X text 734 353 delete item at index# from map;
+#X msg 724 392 delete 6;
+#X text 88 123 "0" indicates success \; "-1" indicates an error;
+#X text 45 105 NOTE: indices start counting from "1" !!!;
+#N canvas 607 221 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control conversion;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION create a symbol -> int map;
+#X text 12 65 INLET_0 add help reset auto resize bang dump compact
+sort;
+#X text 12 85 OUTLET_0 list;
+#X restore 875 572 pd META;
+#X connect 0 0 42 0;
+#X connect 1 0 33 0;
+#X connect 2 0 20 0;
+#X connect 3 0 20 0;
+#X connect 4 0 20 0;
+#X connect 5 0 20 0;
+#X connect 6 0 20 0;
+#X connect 7 0 19 0;
+#X connect 8 0 19 0;
+#X connect 9 0 19 0;
+#X connect 10 0 19 0;
+#X connect 11 0 17 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X connect 15 0 11 0;
+#X connect 16 0 11 0;
+#X connect 18 0 42 0;
+#X connect 26 0 19 0;
+#X connect 31 0 29 0;
+#X connect 31 1 30 0;
+#X connect 31 2 32 0;
+#X connect 38 0 42 0;
+#X connect 39 0 42 0;
+#X connect 42 0 31 0;
+#X connect 45 0 43 0;
+#X connect 46 0 43 0;
+#X connect 50 0 48 0;

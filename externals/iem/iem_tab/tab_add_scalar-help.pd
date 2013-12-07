@@ -1,0 +1,63 @@
+#N canvas 115 92 864 568 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array src 100 float 1;
+#A 0 -0.442858 -0.414287 -0.385715 -0.342858 -0.314287 -0.257144 -0.128572
+-0.0428573 0.128572 0.228572 0.285715 0.328572 0.400001 0.414287 0.457144
+0.457144 0.442858 0.385715 0.314287 0.257144 0.214286 0.1 0.0428572
+-0.0142858 -0.0428573 -0.114286 -0.142858 -0.200001 -0.242858 -0.285715
+-0.328572 -0.342858 -0.37143 -0.385715 -0.414287 -0.414287 -0.414287
+-0.414287 -0.400001 -0.357144 -0.314287 -0.257144 -0.185715 -0.0714288
+0.0142857 0.0571429 0.171429 0.328572 0.400001 0.442858 0.47143 0.485715
+0.485715 0.485715 0.485715 0.485715 0.442858 0.357144 0.242858 0.185715
+0.114286 0.0714285 -0.071429 -0.242858 -0.300001 -0.328573 -0.357144
+-0.37143 -0.385715 -0.400001 -0.442858 -0.457144 -0.47143 -0.457144
+-0.428573 -0.400001 -0.378573 -0.328572 -0.271429 -0.242858 -0.200001
+-0.128572 -0.0428574 -0.0285717 0.0142858 0.114286 0.128572 0.185715
+0.214286 0.257144 0.285715 0.314287 0.342858 0.357144 0.357144 0.357144
+0.357144 0.357144 0.342858 0.328572;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 527 46 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array dst 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 527 325 graph;
+#X obj 61 106 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 59 340 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 211 336 1.arg: <symbol> source-name;
+#X msg 197 270 dst dst;
+#X msg 47 36 0.5;
+#X msg 145 247 src src;
+#X msg 82 37 -0.5;
+#X obj 61 78 tab_add_scalar src dst;
+#X obj 59 301 tab_add_scalar src dst;
+#X msg 48 227 50 20 50 -0.8;
+#X text 211 349 2.arg: <symbol> destination-name;
+#X text 129 29 <float> add the src-array with this scalar to dst-array
+;
+#X text 31 163 list of 4 floats:;
+#X text 78 475 IEM KUG;
+#X text 58 463 musil;
+#X text 92 463 @;
+#X text 100 463 iem.at;
+#X text 61 485 Graz \, Austria;
+#X text 234 322 initial arguments:;
+#X text 71 322 <bang> output;
+#X text 250 271 <dst> xxx : change destination name;
+#X text 12 3 tab_add_scalar;
+#X text 218 86 the minimum of both array lengths);
+#X text 197 246 <src> xxx : change source name;
+#X text 42 179 1.) src onset;
+#X text 42 190 2.) dst onset;
+#X text 42 200 3.) n samples to add;
+#X text 42 210 4.) added scalar value;
+#X text 205 72 (the number of samples which were added are:;
+#X text 13 452 (c) Thomas Musil 2000 - 2009;
+#X connect 5 0 10 0;
+#X connect 6 0 9 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 2 0;
+#X connect 10 0 3 0;
+#X connect 11 0 10 0;

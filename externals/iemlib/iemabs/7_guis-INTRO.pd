@@ -1,0 +1,816 @@
+#N canvas 153 19 568 572 10;
+#X obj -4 -4 cnv 15 600 700 empty empty gui-INTRO 237 20 2 14 -261819
+-143491 0;
+#X text 101 4 bng;
+#X obj 456 313 vsl 15 128 0 127 0 0 empty empty default_15x128 8 -8
+0 8 -262144 -1 -1 0 1;
+#X obj 354 42 tgl 100 1 empty empty 100_pix 8 -8 0 8 -250685 -24198
+-42246 1 1;
+#X obj 57 251 hsl 128 15 0 127 0 0 empty empty default_128x15 8 -8
+0 8 -262144 -1 -1 0 1;
+#X obj 78 226 hsl 20 8 0 19 0 0 empty empty min_20x8 8 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 478 326 vsl 8 20 0 19 0 0 empty empty min_8x20 8 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 458 48 tgl 8 0 empty empty min_8 8 -8 0 8 -262144 -1 -1 0 1
+;
+#X obj 458 71 tgl 15 0 empty empty default_15 8 -8 0 8 -262144 -1 -1
+0 1;
+#X obj 459 109 tgl 30 0 empty empty 30_pix 8 -8 0 8 -262144 -1 -1 0
+1;
+#X obj 101 88 bng 30 250 50 0 empty empty 30_pix 8 -8 0 8 -262144 -1
+-1;
+#X obj 412 304 vsl 30 250 0 249 0 1 empty empty 30x250 8 -8 0 8 -184301
+-42886 -42246 21800 1;
+#X obj 7 271 hsl 251 30 0 250 0 1 empty empty 251x30 8 -8 0 8 -147456
+-1109 -66577 12500 1;
+#X obj 40 343 vu 25 200 empty empty 8 -8 0 8 -1 -99865 1 0;
+#X obj 13 24 bng 75 5000 25 1 empty empty 75pix+init 8 -8 0 8 -262131
+-261458 -123526;
+#X obj 100 376 vu 15 120 empty empty 8 -8 0 8 -66577 -1 1 0;
+#X obj 186 375 vu 10 80 empty empty 8 -8 0 8 -66577 -1 1 0;
+#X text 99 313 vu;
+#N canvas 438 180 374 414 animate_vu 0;
+#X obj 40 211 t f f;
+#X obj 65 233 + 6;
+#X obj 40 257 pack 0 0;
+#X obj 78 94 tgl 15 0 empty empty empty 8 -8 0 10 -262144 -1 -1 0 1
+;
+#X obj 78 115 sel 0 1;
+#X obj 78 74 metro 4000;
+#X msg 100 137 30 3000;
+#X msg 78 167 -130 3000;
+#X obj 40 189 line -130 50;
+#X obj 78 51 inlet;
+#X obj 40 316 outlet;
+#X obj 87 316 outlet;
+#X obj 134 316 outlet;
+#X connect 0 0 2 0;
+#X connect 0 1 1 0;
+#X connect 1 0 2 1;
+#X connect 2 0 10 0;
+#X connect 2 0 11 0;
+#X connect 2 0 12 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 1 6 0;
+#X connect 5 0 3 0;
+#X connect 6 0 8 0;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
+#X connect 9 0 5 0;
+#X restore 99 349 pd animate_vu;
+#X obj 99 331 tgl 15 1 empty empty empty 8 -8 0 10 -262144 -1 -1 1
+1;
+#X text 360 8 toggle = tgl;
+#X text 68 198 hslider = hsl;
+#X text 430 271 vslider = vsl;
+#X obj 13 160 print initial_bang;
+#X obj 21 118 bng 15 250 50 0 empty empty default_15 8 -8 0 8 -262144
+-1 -1;
+#X obj 104 48 bng 8 250 50 0 empty empty min_8 8 -8 0 10 -262144 -1
+-1;
+#X obj 21 137 print no_initial_bang;
+#X obj 283 324 cnv 15 100 30 empty empty empty 20 12 2 20 -225271 -66577
+0;
+#X obj 283 355 cnv 15 100 30 empty empty empty 20 12 2 20 -225280 -66577
+0;
+#X obj 283 386 cnv 15 100 30 empty empty empty 20 12 2 20 -261681 -66577
+0;
+#X obj 283 417 cnv 15 100 30 empty empty empty 20 12 2 20 -257472 -66577
+0;
+#X obj 172 375 vu 10 80 empty empty 8 -8 0 8 -66577 -1 0 0;
+#X obj 310 203 hradio 15 1 1 8 empty empty default_8*15 8 -8 0 8 -262144
+-1 -1 2;
+#X obj 254 223 hradio 25 1 1 12 empty empty 12*25 8 -8 0 8 -1433 -225280
+-355 1;
+#N canvas 179 78 690 573 nervous 0;
+#X obj 10 23 tgl 55 1 empty start_nervously1 start_it 8 -8 0 10 -260818
+-1 -250685 0 1;
+#X obj 131 141 bng 51 1200 50 0 empty nerv_bng bang 8 -8 0 10 -253378
+-137031 -222091;
+#X obj 120 418 hsl 22 12 0 127 0 0 empty nerv_hsl h-slider 8 -8 0 10
+-71033 -66198 -128091 0 1;
+#X obj 448 140 tgl 11 1 empty nerv_tgl toggle 8 -8 0 10 -141355 -82199
+-51488 0 1;
+#X obj 447 383 vsl 15 111 0 127 0 0 empty nerv_vsl v-slider 8 -8 0
+10 -150187 -73940 -248863 0 1;
+#N canvas 135 99 382 469 control 0;
+#X obj 19 21 inlet;
+#X obj 19 50 t b f;
+#X obj 19 153 del 900;
+#X obj 19 212 del 900;
+#X obj 19 93 del 100;
+#X obj 19 283 del 900;
+#X obj 33 125 f;
+#X obj 33 180 f;
+#X obj 33 245 f;
+#X obj 33 309 f;
+#N canvas 280 166 794 432 bng 0;
+#X obj 114 260 - 0;
+#X obj 148 258 f;
+#X obj 147 222 t f b;
+#X obj 79 122 random 56789;
+#X obj 150 165 random 9876;
+#X obj 47 236 - 0;
+#X obj 81 234 f;
+#X obj 80 198 t f b;
+#X obj 150 192 % 50;
+#X obj 79 145 % 50;
+#X obj 64 289 pack 0 0;
+#X obj 85 53 t b b b;
+#X obj 234 368 pack 0 0 0;
+#X obj 250 29 metro 2000;
+#X obj 445 122 random 555666;
+#X obj 445 168 + 8;
+#X obj 445 145 % 120;
+#X obj 84 32 metro 100;
+#X obj 234 261 random 1.67772e+007;
+#X obj 266 283 random 1.67772e+007;
+#X obj 299 315 random 1.67772e+007;
+#X obj 84 11 inlet;
+#X msg 64 312 \; nerv_bng delta \$1 \$2;
+#X msg 234 390 \; nerv_bng color \$1 \$2 \$3;
+#X msg 445 192 \; nerv_bng size \$1;
+#X msg 250 51 \; nerv_bng bang;
+#X obj 234 340 * -1;
+#X obj 266 316 * -1;
+#X obj 299 342 * -1;
+#X connect 0 0 10 1;
+#X connect 1 0 0 1;
+#X connect 2 0 1 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 9 0;
+#X connect 4 0 8 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 1;
+#X connect 7 0 6 1;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 8 0 2 0;
+#X connect 9 0 7 0;
+#X connect 10 0 22 0;
+#X connect 11 0 3 0;
+#X connect 11 0 14 0;
+#X connect 11 0 18 0;
+#X connect 11 1 4 0;
+#X connect 11 1 19 0;
+#X connect 11 2 20 0;
+#X connect 12 0 23 0;
+#X connect 13 0 25 0;
+#X connect 14 0 16 0;
+#X connect 15 0 24 0;
+#X connect 16 0 15 0;
+#X connect 17 0 11 0;
+#X connect 18 0 26 0;
+#X connect 19 0 27 0;
+#X connect 20 0 28 0;
+#X connect 21 0 17 0;
+#X connect 21 0 13 0;
+#X connect 26 0 12 0;
+#X connect 27 0 12 1;
+#X connect 28 0 12 2;
+#X restore 114 143 pd bng;
+#N canvas 139 89 794 432 tgl 0;
+#X obj 114 260 - 0;
+#X obj 148 258 f;
+#X obj 147 222 t f b;
+#X obj 79 122 random 56789;
+#X obj 150 165 random 9876;
+#X obj 47 236 - 0;
+#X obj 81 234 f;
+#X obj 80 198 t f b;
+#X obj 150 192 % 50;
+#X obj 79 145 % 50;
+#X obj 64 289 pack 0 0;
+#X obj 85 53 t b b b;
+#X obj 445 122 random 555666;
+#X obj 445 168 + 8;
+#X obj 445 144 % 120;
+#X obj 85 31 metro 100;
+#X obj 264 28 metro 1000;
+#X obj 85 10 inlet;
+#X msg 64 312 \; nerv_tgl delta \$1 \$2;
+#X msg 226 322 \; nerv_tgl color \$1 \$2 \$3;
+#X msg 445 192 \; nerv_tgl size \$1;
+#X msg 264 51 \; nerv_tgl bang;
+#X obj 226 298 pack 0 0 0;
+#X obj 226 191 random 1.67772e+007;
+#X obj 258 213 random 1.67772e+007;
+#X obj 291 245 random 1.67772e+007;
+#X obj 226 270 * -1;
+#X obj 258 246 * -1;
+#X obj 291 272 * -1;
+#X connect 0 0 10 1;
+#X connect 1 0 0 1;
+#X connect 2 0 1 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 9 0;
+#X connect 4 0 8 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 1;
+#X connect 7 0 6 1;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 8 0 2 0;
+#X connect 9 0 7 0;
+#X connect 10 0 18 0;
+#X connect 11 0 3 0;
+#X connect 11 0 12 0;
+#X connect 11 0 23 0;
+#X connect 11 1 4 0;
+#X connect 11 1 24 0;
+#X connect 11 2 25 0;
+#X connect 12 0 14 0;
+#X connect 13 0 20 0;
+#X connect 14 0 13 0;
+#X connect 15 0 11 0;
+#X connect 16 0 21 0;
+#X connect 17 0 15 0;
+#X connect 17 0 16 0;
+#X connect 22 0 19 0;
+#X connect 23 0 26 0;
+#X connect 24 0 27 0;
+#X connect 25 0 28 0;
+#X connect 26 0 22 0;
+#X connect 27 0 22 1;
+#X connect 28 0 22 2;
+#X restore 114 198 pd tgl;
+#N canvas 322 99 794 432 hsl 0;
+#X obj 114 260 - 0;
+#X obj 148 258 f;
+#X obj 147 222 t f b;
+#X obj 79 122 random 56789;
+#X obj 150 165 random 9876;
+#X obj 47 236 - 0;
+#X obj 81 234 f;
+#X obj 80 198 t f b;
+#X obj 150 192 % 50;
+#X obj 79 145 % 50;
+#X obj 64 289 pack 0 0;
+#X obj 85 53 t b b b;
+#X obj 445 122 random 555666;
+#X obj 560 188 + 8;
+#X obj 560 128 random 773322;
+#X obj 445 208 pack 0 0;
+#X obj 84 32 metro 100;
+#X obj 561 155 % 30;
+#X obj 445 183 + 20;
+#X obj 446 149 % 110;
+#X obj 254 305 metro 1000;
+#X obj 254 327 random 846352;
+#X obj 254 350 % 130;
+#X obj 84 11 inlet;
+#X msg 64 321 \; nerv_hsl delta \$1 \$2;
+#X msg 254 373 \; nerv_hsl set \$1;
+#X msg 445 231 \; nerv_hsl size \$1 \$2;
+#X obj 245 202 pack 0 0 0;
+#X obj 245 95 random 1.67772e+007;
+#X obj 277 117 random 1.67772e+007;
+#X obj 310 149 random 1.67772e+007;
+#X obj 245 174 * -1;
+#X obj 277 150 * -1;
+#X obj 310 176 * -1;
+#X msg 245 229 \; nerv_hsl color \$1 \$2 \$3;
+#X connect 0 0 10 1;
+#X connect 1 0 0 1;
+#X connect 2 0 1 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 9 0;
+#X connect 4 0 8 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 1;
+#X connect 7 0 6 1;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 8 0 2 0;
+#X connect 9 0 7 0;
+#X connect 10 0 24 0;
+#X connect 11 0 3 0;
+#X connect 11 0 12 0;
+#X connect 11 0 28 0;
+#X connect 11 1 4 0;
+#X connect 11 1 14 0;
+#X connect 11 1 29 0;
+#X connect 11 2 30 0;
+#X connect 12 0 19 0;
+#X connect 13 0 15 1;
+#X connect 14 0 17 0;
+#X connect 15 0 26 0;
+#X connect 16 0 11 0;
+#X connect 17 0 13 0;
+#X connect 18 0 15 0;
+#X connect 18 0 22 1;
+#X connect 19 0 18 0;
+#X connect 20 0 21 0;
+#X connect 21 0 22 0;
+#X connect 22 0 25 0;
+#X connect 23 0 16 0;
+#X connect 23 0 20 0;
+#X connect 27 0 34 0;
+#X connect 28 0 31 0;
+#X connect 29 0 32 0;
+#X connect 30 0 33 0;
+#X connect 31 0 27 0;
+#X connect 32 0 27 1;
+#X connect 33 0 27 2;
+#X restore 112 263 pd hsl;
+#N canvas 148 132 794 432 vsl 0;
+#X obj 114 260 - 0;
+#X obj 148 258 f;
+#X obj 147 222 t f b;
+#X obj 79 122 random 56789;
+#X obj 150 165 random 9876;
+#X obj 47 236 - 0;
+#X obj 81 234 f;
+#X obj 80 198 t f b;
+#X obj 150 192 % 50;
+#X obj 79 145 % 50;
+#X obj 64 289 pack 0 0;
+#X obj 85 53 t b b b;
+#X obj 445 122 random 555666;
+#X obj 560 128 random 773322;
+#X obj 445 208 pack 0 0;
+#X obj 84 32 metro 100;
+#X obj 241 299 metro 1000;
+#X obj 240 325 random 846352;
+#X obj 241 352 % 130;
+#X obj 561 155 % 110;
+#X obj 560 188 + 20;
+#X obj 446 149 % 30;
+#X obj 445 183 + 3;
+#X obj 84 11 inlet;
+#X msg 239 227 \; nerv_vsl color \$1 \$2 \$3;
+#X msg 445 231 \; nerv_vsl size \$1 \$2;
+#X msg 64 310 \; nerv_vsl delta \$1 \$2;
+#X msg 241 376 \; nerv_vsl set \$1;
+#X obj 239 203 pack 0 0 0;
+#X obj 239 96 random 1.67772e+007;
+#X obj 271 118 random 1.67772e+007;
+#X obj 304 150 random 1.67772e+007;
+#X obj 239 175 * -1;
+#X obj 271 151 * -1;
+#X obj 304 177 * -1;
+#X connect 0 0 10 1;
+#X connect 1 0 0 1;
+#X connect 2 0 1 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 9 0;
+#X connect 4 0 8 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 1;
+#X connect 7 0 6 1;
+#X connect 7 0 5 0;
+#X connect 7 1 6 0;
+#X connect 8 0 2 0;
+#X connect 9 0 7 0;
+#X connect 10 0 26 0;
+#X connect 11 0 3 0;
+#X connect 11 0 12 0;
+#X connect 11 0 29 0;
+#X connect 11 1 4 0;
+#X connect 11 1 13 0;
+#X connect 11 1 30 0;
+#X connect 11 2 31 0;
+#X connect 12 0 21 0;
+#X connect 13 0 19 0;
+#X connect 14 0 25 0;
+#X connect 15 0 11 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 27 0;
+#X connect 19 0 20 0;
+#X connect 20 0 14 1;
+#X connect 20 0 18 1;
+#X connect 21 0 22 0;
+#X connect 22 0 14 0;
+#X connect 23 0 15 0;
+#X connect 23 0 16 0;
+#X connect 28 0 24 0;
+#X connect 29 0 32 0;
+#X connect 30 0 33 0;
+#X connect 31 0 34 0;
+#X connect 32 0 28 0;
+#X connect 33 0 28 1;
+#X connect 34 0 28 2;
+#X restore 113 327 pd vsl;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 1 1 6 1;
+#X connect 1 1 7 1;
+#X connect 1 1 8 1;
+#X connect 1 1 9 1;
+#X connect 2 0 3 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 3 0 8 0;
+#X connect 4 0 2 0;
+#X connect 4 0 6 0;
+#X connect 5 0 9 0;
+#X connect 6 0 10 0;
+#X connect 7 0 11 0;
+#X connect 8 0 12 0;
+#X connect 9 0 13 0;
+#X restore 10 85 pd control;
+#X connect 0 0 5 0;
+#X restore 295 424 pd nervous;
+#X floatatom 239 84 4 0 0 0 - - -;
+#N canvas 226 38 811 519 properties 0;
+#X obj 2 1 cnv 8 870 590 empty empty about_gui_properties 290 20 2
+18 -225280 -1109 0;
+#X text 12 62 "selectable dimensions(pix): size:" = square-size of
+the;
+#X text 10 35 "dimensions(pix): size:" = square-size of the gui-objects
+;
+#X text 10 48 "dimensions(pix)(pix): width: height:" = width & height
+;
+#X text 11 177 "visible_rectangle(pix)(pix): width: height:" = width
+&;
+#X text 11 104 "flash-time(ms)(ms): intrrpt:" = flash-interrupt-time
+;
+#X text 411 62 selectable top-left corner of my_canvas in pixels.;
+#X text 415 35 in pixels.;
+#X text 11 76 "flash-time(ms)(ms): hold:" = flash-hold-time in msec
+=;
+#X text 405 76 duration of activity \, if a bang-object was activated
+;
+#X text 400 48 of the rectangular gui-object in pixels.;
+#X text 402 177 height of a visible \, deactivated rectangle in pixels.
+;
+#X text 14 224 "new&old" or "new-only" = the radiobutton-object changes
+its;
+#X text 441 224 state in 2 ways:;
+#X text 198 237 "new&old"-mode: output sends previous state off \,
+current;
+#X text 596 237 state on \;;
+#X text 197 250 "new-only"-mode: output sends only current state on.
+;
+#X text 14 280 "steady on click" or "jump on click" = the 2 slider-objects
+;
+#X text 481 322 immediately to new mouse-position \,;
+#X text 12 413 "label: font: fontsize:" = font-properties of label.
+;
+#X text 15 429 "colors:" = a click on radiobuttons "background:" \,
+;
+#X text 370 429 "front-color:" or "label-color:" activates the color-fields
+;
+#X text 174 193 if "init"-mode is selected \, the object displays and
+puts;
+#X text 15 266 "number:" = number of buttons of a radiobutton.;
+#X text 205 89 by any message-event or by a mouse-click.;
+#X text 388 104 in msec = duration of inactivity \, if an already;
+#X text 205 117 activated bang is activated once more.;
+#X text 11 132 "output-range: left: right:" = hslider-bounds;
+#X text 332 132 for input- as well as output-values.;
+#X text 332 146 for input- as well as output-values.;
+#X text 11 146 "output-range: bottom: top:" = vslider-bounds;
+#X text 12 193 "init" or "no init" =;
+#X text 571 193 out its previously saved value.;
+#X text 174 208 if "no init"-mode is selected \, nothing will happen.
+;
+#X text 433 280 react to mouse-click in 2 ways:;
+#X text 201 294 "steady on click"-mode: slider-knob stays in position
+\,;
+#X text 225 307 mouse and knob will move parallel \;;
+#X text 200 322 "jump on click"-mode: slider-knob jumps;
+#X text 224 338 positions of mouse and knob will be identical \;;
+#X text 402 353 receive-object with the same send-symbol-name.;
+#X text 11 368 "receive-symbol:" = a send-object with the same;
+#X text 11 353 "send-symbol:" = an output-message can be received by
+a;
+#X text 347 368 symbol-name can send an input-message to the gui-object.
+;
+#X text 13 383 "label: name:" = visible name of a gui-object \;;
+#X text 343 383 it will be moved together with the gui-object.;
+#X text 12 397 "label: x_off: y_off:" = coordinates of the label in
+;
+#X text 382 397 relation to top-left corner of gui-object.;
+#X text 207 444 on the right side which display the current color of
+the;
+#X text 605 444 item \;;
+#X text 11 161 "non-zero-value: value:" = toggle has 2;
+#X text 292 161 value-states: zero and this value.;
+#X text 208 460 to select a different color \, click on one of the
+30 small;
+#X text 614 459 preset-color-buttons \;;
+#X text 208 475 each color (background \, front \, label) can be tuned
+by its;
+#X text 235 490 RGB-values (0 .. 252 \, step 4) and a click on the
+set-button.;
+#X restore 287 361 pd properties;
+#N canvas 146 190 460 120 move 0;
+#X obj 0 0 cnv 8 460 120 empty empty how_to_move_gui_objects 100 18
+2 20 -225271 -42246 0;
+#X text 11 43 Select a gui-object \, then navigate the object by using
+the 4 direction-keys: UP \, DOWN \, LEFT or RIGHT.;
+#X text 12 70 If you press the SHIFT-Key too \, the object will move
+10 times faster.;
+#X restore 308 331 pd move;
+#N canvas 151 38 522 451 dollar 0;
+#X obj 0 0 cnv 8 560 160 empty empty the_dollar_thing 100 18 2 20 -261681
+-123526 0;
+#X text 10 39 if you want to send to \, or to receive from gui-objects
+;
+#X text 394 39 in abstractions \,;
+#X text 36 52 you have to write into the property-entry:;
+#X text 44 67 #1-label (instead of \$1-label).;
+#X text 25 103 type #0-uniquelabel (instead of \$0-uniquelabel).;
+#X text 9 88 if you want a unique send-receive-symbolname:;
+#X restore 299 391 pd dollar;
+#X obj 283 448 cnv 15 100 30 empty empty empty 20 12 2 20 -228992 -66577
+0;
+#N canvas 177 21 730 638 messages 0;
+#X obj 1 1 cnv 8 870 640 empty empty about_gui_messages 200 20 2 18
+-228992 -355 0;
+#X text 366 99 in pixels.;
+#X text 9 84 "size 15 128" = change width & height;
+#X text 9 159 "flashtime 50 600" = change flash-interrupt- and flash-hold
+;
+#X text 424 160 -time of bng-object.;
+#X text 9 174 "pos 150 170" = change the x-y-position of the top-left
+;
+#X text 400 173 corner of a gui-object in pixels \;;
+#X text 139 188 "pos 0 0" is the top-left corner of your window \;
+;
+#X text 143 204 the positive directions of x- and y-axes are right
+and down.;
+#X text 12 415 "receive togui" = change receive-name of object.;
+#X text 12 431 "label its_me" = change label-text of object.;
+#X text 12 446 "label_pos 20 8" = change offset-coordinates of label-text.
+;
+#X text 12 461 "label_font 0 10" = change font and fontsize of label-text.
+;
+#X text 12 340 "steady 1" change slider-knob-behaviour on mouse-click.
+;
+#X text 13 522 "lin" = change scale-mode of slider to linear.;
+#X text 14 537 "log" = change scale-mode of slider to logarithmical.
+;
+#X text 333 355 to output only the new state.;
+#X text 273 84 of sliders and vu in pixels.;
+#X text 12 477 "init 1" = change initial loadbang-mode of gui-objects
+;
+#X text 12 400 "send fromgui" = change send-name of gui-objects \,
+;
+#X text 12 325 "number 10" = change number of buttons of radio-button.
+;
+#X text 9 128 "range 0.1 10.0" = change slider-boundaries for;
+#X text 344 128 input- as well as output-values.;
+#X text 13 492 "set 64" = change only the inner state and display of
+gui-;
+#X text 11 33 all gui-objects (bng \, hsl \, vsl \, tgl \, rdb \, cnv
+and vu);
+#X text 9 113 "vis_size 800 600" = change width & height;
+#X text 309 113 of visual rectangle of my_canvas in pixels.;
+#X text 359 400 except vu and my_canvas.;
+#X text 395 477 except vu and cnv.;
+#X text 421 492 objects \, except bng and cnv \;;
+#X text 85 47 understand input-messages which change their properties.
+;
+#X text 11 222 "delta 15 17" = move the gui-object in relation to its
+;
+#X text 397 222 current position (in pixels).;
+#X text 333 371 to first release the previous button \,;
+#X text 144 385 then output the state of the new button.;
+#X text 12 371 "double_change" change radio-button-behaviour;
+#X text 12 355 "single_change" change radio-button-behaviour;
+#X text 147 507 no output will result.;
+#X text 9 99 "size 15" = change square-size of rdb \, bng and tgl;
+#X text 9 143 "nonzero 127.0" = change the nonzero-value of toggle.
+;
+#X text 15 552 "get_pos" = if my_canvas has a receive-name and a send-name
+;
+#X text 434 552 and you send the;
+#X text 272 237 front- and label-color of object with one of 30 presets.
+;
+#X text 277 252 label-color of vu and my_canvas with one of 30 presets.
+;
+#X text 504 282 (0 .. 255);
+#X text 558 568 coordinates.;
+#X text 149 568 message "get_pos" to it \, you receive the current
+x- and y-;
+#X text 85 59 except cnv has no inlet \, so you have to send messages
+;
+#X text 85 71 to its receive-label (edit properties).;
+#X text 11 237 "color 0 22 22" = change background- \,;
+#X text 11 252 "color 0 22" = change background- and;
+#X text 13 268 "color -1.67772e+007 (-1) -1" = change background- \,
+;
+#X text 364 267 (front-) and label-color of object with RGB-values.
+;
+#X text 149 283 the RGB-value will be calculated: -65536*RED-value
+;
+#X text 592 309 - 1;
+#X text 422 309 - BLUE-value (0 .. 255);
+#X text 394 296 - 256*GREEN-value (0 .. 255);
+#X restore 294 453 pd messages;
+#X obj 225 259 cnv 1 350 1 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 4 308 cnv 1 268 1 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 4 186 cnv 1 220 1 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 225 151 cnv 1 350 1 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 271 261 cnv 1 1 48 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 232 308 cnv 1 1 200 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 339 3 cnv 1 1 149 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 398 260 cnv 1 1 310 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X obj 225 3 cnv 1 1 255 empty empty empty 20 12 2 20 -258699 -66577
+0;
+#X floatatom 276 84 4 0 0 0 - - -;
+#X obj 239 43 tgl 15 0 empty dsp_tgl empty 20 8 0 10 -370 -262144 -1
+0 1;
+#N canvas 145 31 380 506 dsp 0;
+#X msg 31 88 \; pd dsp \$1;
+#X obj 20 199 cputime;
+#X obj 20 178 t b b;
+#X text 15 11 dsp;
+#X text 48 439 (c) musil@iem.kug.ac.at;
+#X text 90 452 IEM KUG;
+#X text 59 65 1/0 = ON/OFF;
+#X text 97 313 CPU-load;
+#X obj 62 126 loadbang;
+#X obj 20 126 sel 1;
+#X text 65 464 graz \, austria 2001;
+#X text 64 12 turn dsp-kernel on & off \,;
+#X obj 20 240 t f f;
+#X text 65 408 average;
+#X text 177 405 peak;
+#X obj 211 154 f;
+#X obj 146 179 > -1;
+#X obj 169 155 f -1;
+#X obj 179 91 t f b f;
+#X obj 146 204 sel 1;
+#X obj 192 132 f -1;
+#X obj 20 154 metro 500;
+#X obj 20 220 * 0.2;
+#X text 74 37 -dsp-load in %;
+#X text 65 24 measure average- and peak-;
+#X obj 20 315 * 100;
+#X obj 20 360 int;
+#X obj 20 338 + 0.499;
+#X obj 20 383 * 0.01;
+#X obj 246 207 r pd;
+#X obj 246 231 route dsp;
+#X text 245 318 to toggle input;
+#X msg 246 283 \; dsp_tgl set \$1;
+#X obj 247 341 r dsp_tgl;
+#X obj 246 257 route float;
+#X obj 146 227 del 3990;
+#N canvas 305 120 336 257 once 0;
+#X text 7 204 (c) musil@iem.kug.ac.at;
+#X text 49 214 IEM KUG;
+#X text 24 223 graz \, austria 2001;
+#X text 8 6 once;
+#X obj 19 150 bang;
+#X obj 56 65 f 0;
+#X text 59 7 only the first message passes through;
+#X obj 19 127 t b a;
+#X obj 19 100 spigot;
+#X obj 119 63 f 1;
+#X obj 119 41 loadbang;
+#X obj 19 40 inlet;
+#X obj 49 183 outlet;
+#X connect 4 0 5 0;
+#X connect 5 0 8 1;
+#X connect 7 0 4 0;
+#X connect 7 1 12 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 1;
+#X connect 10 0 9 0;
+#X connect 11 0 8 0;
+#X restore 111 264 pd once;
+#N canvas 297 130 530 376 1p1z 0;
+#X text 7 315 (c) musil@iem.kug.ac.at;
+#X text 52 325 IEM KUG;
+#X obj 22 231 +;
+#X text 8 6 1p1z;
+#X text 24 334 graz \, austria 2001;
+#X text 104 22 y[n] = a0*x[n] + a1*x[n-1] + b1*y[n-1];
+#X text 169 53 a0;
+#X text 25 34 x[n];
+#X text 24 280 y[n];
+#X text 209 53 a1;
+#X text 249 53 b1;
+#X obj 284 52 loadbang;
+#X text 64 102 x[n-1];
+#X obj 40 205 +;
+#X obj 22 133 *;
+#X obj 40 160 *;
+#X obj 59 182 *;
+#X text 82 143 y[n-1];
+#X obj 284 72 t b b b;
+#X obj 40 98 f;
+#X obj 59 138 f;
+#X obj 22 71 t f b b;
+#X text 350 63 x[n-1]init;
+#X text 429 102 y[n-1]init;
+#X text 147 202 1.arg: <float> a0;
+#X text 147 213 2.arg: <float> a1;
+#X text 147 224 3.arg: <float> b1;
+#X text 63 5 <float> control-IIR-filter 1.order;
+#X obj 162 115 f 0.1;
+#X obj 202 142 f 0;
+#X obj 242 164 f 0.9;
+#X obj 22 49 inlet;
+#X obj 162 71 inlet;
+#X obj 202 71 inlet;
+#X obj 242 71 inlet;
+#X obj 356 80 inlet;
+#X obj 431 120 inlet;
+#X obj 22 264 outlet;
+#X connect 2 0 20 1;
+#X connect 2 0 37 0;
+#X connect 11 0 18 0;
+#X connect 13 0 2 1;
+#X connect 14 0 2 0;
+#X connect 15 0 13 0;
+#X connect 16 0 13 1;
+#X connect 18 0 28 0;
+#X connect 18 1 29 0;
+#X connect 18 2 30 0;
+#X connect 19 0 15 0;
+#X connect 20 0 16 0;
+#X connect 21 0 14 0;
+#X connect 21 0 19 1;
+#X connect 21 1 19 0;
+#X connect 21 2 20 0;
+#X connect 28 0 14 1;
+#X connect 29 0 15 1;
+#X connect 30 0 16 1;
+#X connect 31 0 21 0;
+#X connect 32 0 28 0;
+#X connect 33 0 29 0;
+#X connect 34 0 30 0;
+#X connect 35 0 19 1;
+#X connect 36 0 20 1;
+#X restore 20 289 pd 1p1z 0.1 0 0.9;
+#X obj 20 65 inlet;
+#X obj 20 406 outlet;
+#X obj 211 405 outlet;
+#X connect 1 0 22 0;
+#X connect 2 0 1 0;
+#X connect 2 1 1 1;
+#X connect 8 0 21 0;
+#X connect 9 0 21 0;
+#X connect 12 0 37 0;
+#X connect 15 0 17 1;
+#X connect 15 0 40 0;
+#X connect 16 0 19 0;
+#X connect 17 0 16 1;
+#X connect 18 0 16 0;
+#X connect 18 1 17 0;
+#X connect 18 2 15 1;
+#X connect 19 0 15 0;
+#X connect 19 0 35 0;
+#X connect 20 0 17 1;
+#X connect 21 0 2 0;
+#X connect 22 0 12 0;
+#X connect 22 0 18 0;
+#X connect 25 0 27 0;
+#X connect 26 0 28 0;
+#X connect 27 0 26 0;
+#X connect 28 0 39 0;
+#X connect 29 0 30 0;
+#X connect 30 0 34 0;
+#X connect 34 0 32 0;
+#X connect 35 0 20 0;
+#X connect 37 0 25 0;
+#X connect 38 0 0 0;
+#X connect 38 0 9 0;
+#X restore 239 63 pd dsp;
+#X text 238 99 mean;
+#X text 279 100 peak;
+#X text 289 63 % cpu;
+#X text 283 305 my_canvas = cnv;
+#X text 312 172 radiobutton = rdb;
+#X text 271 350 R;
+#X text 270 370 E;
+#X text 270 389 A;
+#X text 270 409 D;
+#X text 270 428 M;
+#X text 269 447 E;
+#X text 216 535 IEM KUG;
+#X text 200 523 musil;
+#X text 230 523 @;
+#X text 236 523 iem.at;
+#X text 151 512 (c) Thomas Musil 2000 - 2005;
+#X text 199 545 Graz \, Austria;
+#X connect 14 0 23 0;
+#X connect 18 0 15 0;
+#X connect 18 0 13 0;
+#X connect 18 1 31 0;
+#X connect 18 2 16 0;
+#X connect 19 0 18 0;
+#X connect 24 0 26 0;
+#X connect 51 0 52 0;
+#X connect 52 0 35 0;
+#X connect 52 1 50 0;

@@ -1,0 +1,189 @@
+# 
+#
+# Makefile.win 
+# 
+# Microsoft Developer Studio Generated NMAKE File, Based on xmlrpc.dsp
+# created 30.8.2004
+# modified by Christopher Frauenberger [frauenberger@iem.at]#
+# 
+# 
+
+!IF "$(OS)" == "Windows_NT"
+NULL=
+!ELSE 
+NULL=nul
+!ENDIF 
+
+CPP=cl.exe
+RSC=rc.exe
+
+OUTDIR=.\obj
+INTDIR=.\obj
+
+ALL : ".\xmlrpc.lib" "$(OUTDIR)\xmlrpc.bsc"
+
+
+CLEAN :
+	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\XmlRpcClient.obj"
+	-@erase "$(INTDIR)\XmlRpcClient.sbr"
+	-@erase "$(INTDIR)\XmlRpcDispatch.obj"
+	-@erase "$(INTDIR)\XmlRpcDispatch.sbr"
+	-@erase "$(INTDIR)\XmlRpcServer.obj"
+	-@erase "$(INTDIR)\XmlRpcServer.sbr"
+	-@erase "$(INTDIR)\XmlRpcServerConnection.obj"
+	-@erase "$(INTDIR)\XmlRpcServerConnection.sbr"
+	-@erase "$(INTDIR)\XmlRpcServerMethod.obj"
+	-@erase "$(INTDIR)\XmlRpcServerMethod.sbr"
+	-@erase "$(INTDIR)\XmlRpcSocket.obj"
+	-@erase "$(INTDIR)\XmlRpcSocket.sbr"
+	-@erase "$(INTDIR)\XmlRpcSource.obj"
+	-@erase "$(INTDIR)\XmlRpcSource.sbr"
+	-@erase "$(INTDIR)\XmlRpcUtil.obj"
+	-@erase "$(INTDIR)\XmlRpcUtil.sbr"
+	-@erase "$(INTDIR)\XmlRpcValue.obj"
+	-@erase "$(INTDIR)\XmlRpcValue.sbr"
+	-@erase "$(OUTDIR)\xmlrpc.bsc"
+	-@erase ".\xmlrpc.lib"
+
+"$(OUTDIR)" :
+    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
+
+MTL=midl.exe
+CPP_PROJ=/nologo /MD /W3 /GX /Zd /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_LIB" /FR"$(INTDIR)\\" /Fp"$(INTDIR)\xmlrpc.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+BSC32=bscmake.exe
+BSC32_FLAGS=/nologo /o"$(OUTDIR)\xmlrpc.bsc" 
+BSC32_SBRS= \
+	"$(INTDIR)\XmlRpcClient.sbr" \
+	"$(INTDIR)\XmlRpcDispatch.sbr" \
+	"$(INTDIR)\XmlRpcServer.sbr" \
+	"$(INTDIR)\XmlRpcServerConnection.sbr" \
+	"$(INTDIR)\XmlRpcServerMethod.sbr" \
+	"$(INTDIR)\XmlRpcSocket.sbr" \
+	"$(INTDIR)\XmlRpcSource.sbr" \
+	"$(INTDIR)\XmlRpcUtil.sbr" \
+	"$(INTDIR)\XmlRpcValue.sbr"
+
+"$(OUTDIR)\xmlrpc.bsc" : "$(OUTDIR)" $(BSC32_SBRS)
+    $(BSC32) @<<
+  $(BSC32_FLAGS) $(BSC32_SBRS)
+<<
+
+LIB32=link.exe -lib
+LIB32_FLAGS=/nologo /out:"xmlrpc.lib" 
+LIB32_OBJS= \
+	"$(INTDIR)\XmlRpcClient.obj" \
+	"$(INTDIR)\XmlRpcDispatch.obj" \
+	"$(INTDIR)\XmlRpcServer.obj" \
+	"$(INTDIR)\XmlRpcServerConnection.obj" \
+	"$(INTDIR)\XmlRpcServerMethod.obj" \
+	"$(INTDIR)\XmlRpcSocket.obj" \
+	"$(INTDIR)\XmlRpcSource.obj" \
+	"$(INTDIR)\XmlRpcUtil.obj" \
+	"$(INTDIR)\XmlRpcValue.obj"
+
+".\xmlrpc.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+    $(LIB32) @<<
+  $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
+<<
+
+.c{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.c{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+
+!IF "$(NO_EXTERNAL_DEPS)" != "1"
+!IF EXISTS("xmlrpc.dep")
+!INCLUDE "xmlrpc.dep"
+!ELSE 
+!MESSAGE Warning: cannot find "xmlrpc.dep"
+!ENDIF 
+!ENDIF 
+
+
+SOURCE=.\src\XmlRpcClient.cpp
+
+"$(INTDIR)\XmlRpcClient.obj"	"$(INTDIR)\XmlRpcClient.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcDispatch.cpp
+
+"$(INTDIR)\XmlRpcDispatch.obj"	"$(INTDIR)\XmlRpcDispatch.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcServer.cpp
+
+"$(INTDIR)\XmlRpcServer.obj"	"$(INTDIR)\XmlRpcServer.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcServerConnection.cpp
+
+"$(INTDIR)\XmlRpcServerConnection.obj"	"$(INTDIR)\XmlRpcServerConnection.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcServerMethod.cpp
+
+"$(INTDIR)\XmlRpcServerMethod.obj"	"$(INTDIR)\XmlRpcServerMethod.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcSocket.cpp
+
+"$(INTDIR)\XmlRpcSocket.obj"	"$(INTDIR)\XmlRpcSocket.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcSource.cpp
+
+"$(INTDIR)\XmlRpcSource.obj"	"$(INTDIR)\XmlRpcSource.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcUtil.cpp
+
+"$(INTDIR)\XmlRpcUtil.obj"	"$(INTDIR)\XmlRpcUtil.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\src\XmlRpcValue.cpp
+
+"$(INTDIR)\XmlRpcValue.obj"	"$(INTDIR)\XmlRpcValue.sbr" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+
+
+
+
+
+

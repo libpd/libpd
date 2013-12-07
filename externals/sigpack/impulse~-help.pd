@@ -1,0 +1,17 @@
+#N canvas 344 491 402 206 10;
+#X msg 20 115 bang;
+#N canvas 0 0 474 324 (subpatch) 0;
+#X array imp 44100 float 0;
+#X coords 0 1 44099 -1 100 70 1;
+#X restore 265 76 graph;
+#X text 60 13 ---impulse~---;
+#X text 61 35 non-bandlimited single-sample impulses;
+#X obj 62 132 tabwrite~ imp;
+#X text 292 163 sIgpAck 0.04;
+#X obj 62 105 impulse~ 440;
+#X text 309 12 arg<freq>;
+#X floatatom 62 83 5 0 0 2 freq - -;
+#X text 220 176 2007 www.weiss-archiv.de;
+#X connect 0 0 4 0;
+#X connect 6 0 4 0;
+#X connect 8 0 6 0;

@@ -1,0 +1,17 @@
+#N canvas 0 22 705 451 10;
+#X obj 342 105 creb/permut~;
+#X obj 21 164 testtools/unit-test-frame~;
+#X msg 21 125 permute~ 0;
+#X obj 21 95 loadbang;
+#X obj 342 76 phasor~ 440;
+#X msg 405 45 0;
+#X text 29 10 permut~ performs a random permutation on a signal block
+;
+#X text 30 27 mainly intended for shuffling spectral data (dynwav)
+;
+#X connect 0 0 1 1;
+#X connect 1 2 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 1;

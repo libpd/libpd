@@ -1,0 +1,29 @@
+#N canvas 61 39 921 503 10;
+#X msg 96 97 matrix 2 1 0 0;
+#X obj 206 132 mtx_rand;
+#X msg 209 110 2 10;
+#X obj 96 197 mtx_print;
+#X text 537 377 Franz Zotter \, 2009;
+#X text 150 226 for -n<=m<=n:;
+#X text 188 258 Y_n^m(phi \, theta) = N_n^m * sin(m*phi) * P_n^m(cos(theta))
+;
+#X text 188 242 Y_n^m(phi \, theta) = N_n^m * cos(m*phi) * P_n^m(cos(theta))
+;
+#X text 641 241 for m>=0;
+#X text 640 257 for m< 0;
+#X text 147 291 The order of the harmonics in the output columns is
+specified by the linear index k=n^2+n+m+1.;
+#X text 95 54 [mtx_spherical_harmonics] spherical harmonics evaluated
+at a set of points given in phi and theta coordinates.;
+#X text 146 328 [mtx_spherical_harmonics] uses fully normalized Y_n^m
+with Condon-Shortley phase;
+#X text 305 160 for an L points 2xL input matrix \, [mtx_spherical_harmonics]
+evaluates the (nmax+2)^2 spherical harmonics at L points and delivers
+an Lx(nmax+2)^2 output matrix.;
+#X text 309 118 [mtx_spherical_harmonics] requires a numerical creation
+argument <nmax> specifyiing the maximum order 0<=n<=nmax.;
+#X obj 96 157 mtx_spherical_harmonics 2;
+#X connect 0 0 15 0;
+#X connect 1 0 15 0;
+#X connect 2 0 1 0;
+#X connect 15 0 3 0;

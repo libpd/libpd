@@ -1,0 +1,14 @@
+#N canvas 119 483 508 168 10;
+#X obj 29 17 inlet;
+#X obj 29 124 outlet;
+#X obj 29 99 pdp_bqt;
+#X obj 87 18 inlet;
+#X obj 87 42 pdp_ut_logmap_comp 0.005 0.4;
+#X msg 87 68 lpf \$1 0.25;
+#X text 97 108 pdp_motion_blur uses pdp_bqt (time biquad filter) configured
+as a lowpass filter to produce a motion blur effect.;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;

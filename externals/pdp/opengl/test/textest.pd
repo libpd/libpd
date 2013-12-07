@@ -1,0 +1,54 @@
+#N canvas 561 0 657 860 10;
+#X obj 106 106 3dp_windowcontext;
+#X obj 101 27 metro 20;
+#X obj 102 11 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 56 40 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 181 9 5 0 0 0 - - -;
+#X floatatom 106 663 5 0 0 0 - - -;
+#X obj 221 736 print;
+#X obj 229 541 pdp_v4l;
+#X obj 231 513 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 369 682 pdp_convert texture/*/*;
+#X obj 314 760 pdp_xv;
+#X obj 365 712 pdp_description;
+#X symbolatom 376 746 10 0 0 0 - - -;
+#X obj 369 657 pdp_convert bitmap/*/*;
+#X obj 164 523 metro 40;
+#X obj 164 500 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X floatatom 214 466 5 0 0 0 - - -;
+#X obj 363 235 pdp_control;
+#X msg 366 199 3dthread \$1;
+#X obj 374 167 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 109 135 3dp_mouserotate;
+#X obj 32 726 3dp_draw sphere 9;
+#X msg 167 417 open /dev/video1;
+#X obj 379 558 pdp_chrot;
+#X floatatom 429 519 5 0 0 0 - - -;
+#X connect 0 0 20 0;
+#X connect 0 1 20 1;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 1 1;
+#X connect 5 0 21 2;
+#X connect 7 0 23 0;
+#X connect 8 0 7 0;
+#X connect 9 0 11 0;
+#X connect 9 0 21 1;
+#X connect 11 0 12 0;
+#X connect 13 0 9 0;
+#X connect 14 0 7 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 1;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X connect 20 0 21 0;
+#X connect 22 0 7 0;
+#X connect 23 0 13 0;
+#X connect 23 0 10 0;
+#X connect 24 0 23 1;

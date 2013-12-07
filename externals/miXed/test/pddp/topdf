@@ -1,0 +1,23 @@
+#!/bin/bash
+
+usage () {
+  cat << EOF
+usage: topdf <pddpsource>.xml
+EOF
+}
+
+[ "$#" == 0 ] && { usage; exit 1; }
+
+SOURCE_NAME="$(basename $1)"
+SOURCE_STUB="$(basename $SOURCE_NAME .xml)"
+
+[ $SOURCE_STUB == $SOURCE_NAME ] && { usage; exit 1; }
+
+xmllint >/dev/null --xinclude --postvalid $1
+xsltproc --nonet --xinclude \
+ -o "$SOURCE_STUB.fo" \
+ /usr/share/xml/docbook/stylesheet/nwalsh/fo/docbook.xsl \
+ $1
+
+# FIXME need to run this twice, it should be check-wrapped too
+pdfxmltex "$SOURCE_STUB.fo"

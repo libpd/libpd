@@ -1,0 +1,24 @@
+============================================
+= things you might ask yourself frequently =
+============================================
+
+Q: what's this?
+A: please read the README.txt for an explanation
+
+Q: it doesn't work!
+A: try increasing the verbosity of Pd by adding the "-verbose" flag 
+   _multiple times_ to the startup flags; [hexloader] will become more
+   talkative at verbosity-level 2, which will help you (or us) to find the 
+   source of your problem
+
+Q: hexloading abstraction does not work
+A1: it is not enabled by default! you can enable it by setting the 
+    HEXLOADER_PATCHES preprocessor-define either via the Makefile or within
+    the source file.
+    the reason why it is disabled is:
+A2: hexloading abstractions (as opposed to "externals" written in other 
+    languages (anything that uses the loader-mechanism; e.g. C or lua or python
+    externals; but not Pd-abstractions)) is currently broken as it does not 
+    correctly resolve abstractions embedded within hexloaded abstractions.
+    that's a problem of Pd's abstraction-loading mechanism which i would rather
+    solve on the Pd-side

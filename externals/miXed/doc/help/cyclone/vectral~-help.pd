@@ -1,0 +1,96 @@
+#N canvas 0 26 631 535 10;
+#X text 15 35 a vector based envelope follower.;
+#X msg 243 350 2;
+#X obj 312 332 loadbang;
+#X msg 165 341 128;
+#X msg 339 369 range 0 10;
+#X obj 35 305 sqrt~;
+#X text 195 419 more information about the different modes may be gleaned
+from the rampsmooth~ \, deltaclip~ \, and slide~ helpfiles simply think
+of the changes happening between frames rather than between samples
+;
+#X text 298 235 - deltaclip <max> <min> \; limits the change in samples
+to be in the given range;
+#X floatatom 257 116 0 0 0 0 - - -;
+#X floatatom 210 116 0 0 0 0 - - -;
+#X obj 163 243 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 257 227 0 0 0 0 - - -;
+#X floatatom 210 227 0 0 0 0 - - -;
+#X obj 163 260 pack deltaclip 1 -1;
+#X obj 162 188 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 256 172 0 0 0 0 - - -;
+#X floatatom 209 172 0 0 0 0 - - -;
+#X obj 162 205 pack slide 1 1;
+#X text 298 179 - slide <up> <down> \; logarithmic movement to new
+value;
+#X obj 163 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 163 149 pack rampsmooth 1 1;
+#X obj 36 160 adc~;
+#X obj 36 234 +~;
+#X obj 69 209 *~;
+#X obj 36 209 *~;
+#X obj 36 184 fft~ 256 256 0;
+#X text 17 60 vectral~ is useful for filtering frame based signal data
+such as the output of fft~. It may operate in one of the following
+modes:;
+#X text 298 123 - rampsmooth <up> <down> \; linear ramp across up/down
+frames to the new value;
+#X text 125 282 argument is vector size(default 512). whichever mode's
+message is received last is the current mode of operation;
+#X obj 35 284 vectral~ 256;
+#X obj 39 396 Scope~ 130 130 2 3 128 0 10 0 0 0 0 102 255 51 135 135
+135 0;
+#N canvas 382 83 494 398 META 0;
+#X text 12 255 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 GENRE help;
+#X text 12 215 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 25 NAME vectral~;
+#X text 12 95 DESCRIPTION a vector based envelope follower;
+#X text 12 115 INLET_0 signal rampsmooth slide deltaclip;
+#X text 12 45 KEYWORDS signal max_compatible needs_work (pack is used
+incorrectly);
+#X text 12 135 INLET_1 signal;
+#X text 12 155 INLET_2 signal;
+#X text 12 175 OUTLET_0 signal;
+#X text 12 75 LICENSE SIBSD;
+#X text 12 195 AUTHOR Krzysztof Czaja;
+#X restore 580 513 pd META;
+#X connect 1 0 30 0;
+#X connect 2 0 3 0;
+#X connect 2 0 1 0;
+#X connect 2 0 4 0;
+#X connect 3 0 30 1;
+#X connect 4 0 30 0;
+#X connect 5 0 30 0;
+#X connect 8 0 19 0;
+#X connect 8 0 20 2;
+#X connect 9 0 19 0;
+#X connect 9 0 20 1;
+#X connect 10 0 13 0;
+#X connect 11 0 10 0;
+#X connect 11 0 13 2;
+#X connect 12 0 10 0;
+#X connect 12 0 13 1;
+#X connect 13 0 29 0;
+#X connect 14 0 17 0;
+#X connect 15 0 14 0;
+#X connect 15 0 17 2;
+#X connect 16 0 14 0;
+#X connect 16 0 17 1;
+#X connect 17 0 29 0;
+#X connect 19 0 20 0;
+#X connect 20 0 29 0;
+#X connect 21 0 25 0;
+#X connect 22 0 29 2;
+#X connect 23 0 22 1;
+#X connect 24 0 22 0;
+#X connect 25 0 24 0;
+#X connect 25 0 24 1;
+#X connect 25 1 23 0;
+#X connect 25 1 23 1;
+#X connect 29 0 5 0;

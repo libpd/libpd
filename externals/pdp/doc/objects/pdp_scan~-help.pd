@@ -1,0 +1,41 @@
+#N canvas 387 370 666 499 10;
+#X obj 73 140 pdp_scan~;
+#X obj 73 113 phasor~;
+#X floatatom 73 86 5 0 0;
+#X obj 73 353 dac~;
+#X obj 13 48 pdp_help_input;
+#X msg 13 19 start;
+#X obj 13 397 pdp_help_output;
+#X obj 73 311 *~;
+#X floatatom 89 282 5 0 0;
+#X obj 73 251 hip~ 20;
+#X floatatom 117 224 5 0 0;
+#X floatatom 131 171 5 0 0;
+#X obj 73 198 lop~ 1000;
+#X msg 217 102 interpolate \$1;
+#X obj 217 76 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 216 124 set interpolation between consecutive packets on/off
+;
+#X text 216 142 (the audio crossfade size is determined by the pd blocksize.
+so you can use a block~ object to set this);
+#X text 218 236 the waveform is scanned from the luma plane of an image.
+the path is an oval centered at the middle of the image with axes equal
+to 60% of the image width/height.;
+#X text 214 43 pdp_scan~: oval scanned synthesis with a phase input
+;
+#X connect 0 0 12 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 0;
+#X connect 7 0 3 0;
+#X connect 7 0 3 1;
+#X connect 8 0 7 1;
+#X connect 9 0 7 0;
+#X connect 10 0 9 1;
+#X connect 11 0 12 1;
+#X connect 12 0 9 0;
+#X connect 13 0 0 0;
+#X connect 14 0 13 0;

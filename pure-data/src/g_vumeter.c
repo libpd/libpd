@@ -508,8 +508,8 @@ static void vu_properties(t_gobj *z, t_glist *owner)
             --------dimensions(pix)(pix):-------- %d %d width: %d %d height: \
             empty 0.0 empty 0.0 empty %d \
             %d no_scale scale %d %d empty %d \
-            %s %s \
-            %s %d %d \
+            {%s} {%s} \
+            {%s} %d %d \
             %d %d \
             %d %d %d\n",
             x->x_gui.x_w, IEM_GUI_MINSIZE, x->x_gui.x_h, IEM_VU_STEPS*IEM_VU_MINSIZE,

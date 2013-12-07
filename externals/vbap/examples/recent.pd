@@ -1,0 +1,14 @@
+#N canvas 399 148 452 302 12;
+#X obj 56 55 inlet;
+#X msg 91 123 clear;
+#X obj 59 252 outlet;
+#X obj 166 54 inlet;
+#X text 8 5 output only most "recent" messages;
+#X obj 56 89 t a b;
+#X obj 59 202 pipe \$1;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 3 0 6 1;
+#X connect 5 0 6 0;
+#X connect 5 1 1 0;
+#X connect 6 0 2 0;

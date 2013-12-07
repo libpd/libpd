@@ -1,0 +1,17 @@
+#N canvas 194 211 575 337 10;
+#X floatatom 192 112 5 0 0;
+#X msg 76 156 bang;
+#X text 161 29 Count up to a limit and then down to zero;
+#X text 160 41 Bugs and comments @ ydegoyon@free.fr;
+#X text 194 88 Set upper limit;
+#X obj 121 143 countund 100;
+#X obj 118 113 metro 100;
+#X msg 115 82 bang;
+#X obj 121 179 print countund;
+#X floatatom 223 179 5 0 0;
+#X connect 0 0 5 1;
+#X connect 1 0 8 0;
+#X connect 5 0 8 0;
+#X connect 5 0 9 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;

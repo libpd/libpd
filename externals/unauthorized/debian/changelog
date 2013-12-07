@@ -1,0 +1,5 @@
+pd-unauthorized (0.1-1) UNRELEASED; urgency=low
+
+  * Initial release (Closes: #636273)
+
+ -- Hans-Christoph Steiner <hans@eds.org>  Mon, 01 Aug 2011 17:31:03 -0400

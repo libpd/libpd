@@ -1,0 +1,50 @@
+#N canvas 1 53 460 465 10;
+#X obj 36 291 tof/common~ patrick;
+#X obj 258 294 tof/common~ patrick;
+#X obj 35 255 sig~;
+#X floatatom 35 230 5 0 0 0 - - -;
+#X obj 257 260 sig~;
+#X floatatom 257 233 5 0 0 0 - - -;
+#X obj 9 12 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 14 60 author: mrtoftrash@gmail.com;
+#X text 13 38 tags: mix~ control~;
+#X text 14 81 version: 2009-10-22;
+#X text 14 12 description: "many to many" nonlocal signal connections.
+;
+#X text 15 118 All common~ objects of the same name share the same
+output.;
+#X text 15 141 The output is the sum of all the inputs from the previous
+dsp block.;
+#X text 15 182 common~ only works for the default block size (64) and
+delays the input by one block.;
+#X obj 176 291 metro 1000;
+#X obj 37 378 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 258 373 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 37 335 snapshot~;
+#X obj 258 336 snapshot~;
+#X obj 176 268 loadbang;
+#N canvas 119 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 DESCRIPTION "many to many" nonlocal signal connections
+;
+#X text 12 5 KEYWORDS signal nonlocal;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 105 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 45 LICENSE GPL v2;
+#X restore 406 413 pd META;
+#X connect 0 0 17 0;
+#X connect 1 0 18 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 14 0 17 0;
+#X connect 14 0 18 0;
+#X connect 17 0 15 0;
+#X connect 18 0 16 0;
+#X connect 19 0 14 0;

@@ -1,0 +1,91 @@
+#N canvas 107 0 656 544 10;
+#X obj 55 68 metro 40;
+#X obj 55 38 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 55 213 3dp_mouserotate;
+#X obj 55 179 3dp_push;
+#X obj 301 195 3dp_view transz 5;
+#X obj 55 110 3dp_windowcontext;
+#X obj 55 244 3dp_push;
+#X obj 55 344 3dp_push;
+#X obj 55 415 3dp_push;
+#X obj 198 273 3dp_draw dodeca 3;
+#X obj 55 143 3dp_blend;
+#X obj 123 453 3dp_color;
+#X floatatom 172 424 2 0 0 0 - - -;
+#X obj 172 387 vsl 15 29 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 2800 1;
+#X obj 127 272 3dp_color;
+#X floatatom 177 250 2 0 0 0 - - -;
+#X obj 177 209 vsl 15 29 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 1500 1;
+#X text 216 35 some simple objects can be drawn using the pdp_draw
+object. the first argument is the object: square \, cube \, sphere
+\, torus \, cone \, teapot \, dodeca \, icosa \, octa \, tetra. prepending
+the names with a w draws the wireframe version. (i.e. wcube is a wireframe
+cube). other inlets set some parameters like size \, nb of segments
+for sphere \, etc.. they can be specified by creation arguments too.
+;
+#X obj 181 491 3dp_draw wicosa 8;
+#X obj 301 225 3dp_light 0;
+#N canvas 0 0 450 300 texture 0;
+#X obj 99 200 pdp_convert texture/*/*;
+#X obj 85 91 pdp_plasma;
+#X obj 85 38 loadbang;
+#X obj 202 10 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 153 275 outlet;
+#X obj 203 37 metro 200;
+#X msg 86 63 dim 320 240 \, bang;
+#X floatatom 230 112 5 0 0 0 - - -;
+#X obj 128 140 pdp_gain 7;
+#X connect 2 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 5 0;
+#X restore 211 334 pd texture;
+#X obj 121 361 3dp_color;
+#X floatatom 172 342 2 0 0 0 - - -;
+#X obj 172 307 vsl 15 29 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 2200 1;
+#X floatatom 291 338 5 0 0 0 - - -;
+#X obj 196 355 3dp_draw sphere 3;
+#X msg 291 318 111;
+#X text 203 378 the first inlet of the object is a texture inlet. not
+all objects support this \, but cube \, square and sphere do.;
+#X text 47 528 bitch made doc for PDP 0.12.4 - http://delcorp.org/abbadingo
+;
+#X text 87 38 <-- start here;
+#X text 307 492 <---- wireframe icosaedro;
+#X text 132 146 <------- to render all objects with transparency!!!
+;
+#X text 327 356 <-- sphere;
+#X obj 291 298 loadbang;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 3 1 4 0;
+#X connect 4 0 19 0;
+#X connect 5 0 10 0;
+#X connect 5 1 2 1;
+#X connect 6 0 7 0;
+#X connect 6 1 14 0;
+#X connect 7 0 8 0;
+#X connect 7 1 21 0;
+#X connect 8 1 11 0;
+#X connect 10 0 3 0;
+#X connect 11 1 18 0;
+#X connect 12 0 11 4;
+#X connect 12 0 11 1;
+#X connect 13 0 12 0;
+#X connect 14 1 9 0;
+#X connect 15 0 14 4;
+#X connect 15 0 14 3;
+#X connect 16 0 15 0;
+#X connect 20 0 25 1;
+#X connect 21 1 25 0;
+#X connect 22 0 21 4;
+#X connect 23 0 22 0;
+#X connect 24 0 25 3;
+#X connect 26 0 24 0;
+#X connect 33 0 26 0;

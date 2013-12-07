@@ -1,0 +1,29 @@
+#N canvas 0 26 495 303 10;
+#X msg 124 135 range -1 1;
+#X obj 22 89 *~ 6.28319;
+#X obj 22 64 phasor~ 2;
+#X text 15 35 cos(x) for signals;
+#X text 101 62 this is a real cosine function whose input expects values
+between 0 and 2pi (unlike cos~ which is designed to work with phasor~'s
+output from 0 to 1);
+#X obj 125 110 loadbang;
+#X obj 22 121 cosx~;
+#X obj 22 161 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#N canvas 247 115 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION cos(x) for signals;
+#X text 12 5 KEYWORDS signal max_compatible trigonometry;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 445 282 pd META;
+#X connect 0 0 7 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 0;
+#X connect 5 0 0 0;
+#X connect 6 0 7 0;

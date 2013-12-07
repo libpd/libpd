@@ -1,0 +1,37 @@
+#N canvas 0 26 562 330 12;
+#X floatatom 24 114 5 0 0 0 - - -;
+#X obj 54 293 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 153 227 5 0 0 0 - - -;
+#X text 210 228 interval;
+#X text 39 20 tilt :: meassure 'tilt' of input;
+#X text 226 186 trip point :: alert when exceeding;
+#X text 339 203 this value;
+#X text 215 128 low limit :: reset 'start tilt' in case;
+#X text 319 143 value is below this for a;
+#X text 319 160 longer time;
+#X text 184 80 high limit :: ignore chnages higher than this;
+#X text 163 56 tilt :: maximum value change within one interval;
+#X obj 54 250 tilt 0.78 100;
+#X msg 126 81 hi 230;
+#X msg 139 127 low 17.3;
+#X msg 139 186 trip 173;
+#X msg 100 55 tilt 25;
+#N canvas 304 317 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION meassure 'tilt' of input;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float tilt hi low trip;
+#X text 12 105 OUTLET_0 bang;
+#X restore 501 299 pd META;
+#X connect 0 0 12 0;
+#X connect 2 0 12 1;
+#X connect 12 0 1 0;
+#X connect 13 0 12 0;
+#X connect 14 0 12 0;
+#X connect 15 0 12 0;
+#X connect 16 0 12 0;

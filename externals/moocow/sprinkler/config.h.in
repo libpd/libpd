@@ -1,0 +1,40 @@
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define this to use pd_forwardmess() for all messages */
+#undef ALL_FORWARDMESS
+
+/* Define this to enable MAX-incompatible "forward" alias */
+#undef NON_MAX_FORWARD
+
+/* Name of package */
+#undef PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Date this package was configured */
+#undef PACKAGE_BUILD_DATE
+
+/* User who configured this package */
+#undef PACKAGE_BUILD_USER
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Define this to include debugging code for the 'readdir' external. */
+#undef SPRINKLER_DEBUG
+
+/* Version number of package */
+#undef VERSION
+
+/* Define this if you are building single-object externals */
+#undef WANT_OBJECT_EXTERNALS

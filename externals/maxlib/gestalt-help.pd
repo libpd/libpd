@@ -1,0 +1,64 @@
+#N canvas 0 26 599 416 12;
+#X text 137 8 gestalt :: gestalt detection for monophonic melodies
+;
+#X floatatom 58 332 5 0 0 0 - - -;
+#X obj 58 176 makenote 100 100;
+#X obj 58 53 tgl 20 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 58 76 metro 100;
+#X obj 58 100 random 24;
+#X obj 58 124 + 60;
+#X obj 58 278 gestalt 100;
+#X obj 142 100 random 24;
+#X obj 142 124 select 0;
+#X msg 201 146 100;
+#X msg 142 146 400;
+#X floatatom 68 154 5 0 0 0 - - -;
+#X text 160 282 CREATION ARGUMENT: reference time;
+#X obj 219 220 beat;
+#X floatatom 232 245 5 0 0 0 - - -;
+#X text 87 54 click to play random melody;
+#X text 112 350 one could use 'tilt' to detect abrupt changes that
+;
+#X text 112 367 indicate the start of a new segment;
+#X text 111 332 the higher the output the more the gestalt changes
+\;;
+#X text 161 298 i.e. time in ms expected to be the duration of the
+;
+#X text 161 314 shortest note (also setable via rightmost inlet);
+#X text 281 200 use 'beat' (maxlib) to get the real;
+#X text 281 217 reference time from input \, especially;
+#X text 282 234 when using;
+#X obj 372 235 notein;
+#X text 225 26 written by <olaf.matthes@gmx.de>;
+#N canvas 288 227 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 125 OUTLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 5 KEYWORDS control analysis MIDI;
+#X text 12 45 DESCRIPTION gestalt detection for monophonic melodies
+;
+#X text 12 65 INLET_0 float;
+#X restore 535 386 pd META;
+#X connect 2 0 7 0;
+#X connect 2 0 14 0;
+#X connect 2 1 7 1;
+#X connect 2 1 14 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 8 0;
+#X connect 5 0 6 0;
+#X connect 6 0 2 0;
+#X connect 6 0 12 0;
+#X connect 7 0 1 0;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 9 1 10 0;
+#X connect 10 0 2 2;
+#X connect 11 0 2 2;
+#X connect 14 1 15 0;
+#X connect 14 1 7 2;

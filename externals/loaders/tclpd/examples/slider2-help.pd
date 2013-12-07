@@ -1,0 +1,51 @@
+#N canvas 79 235 731 505 10;
+#X obj 343 150 slider2 -width 15 -height 130 -headsz 3 -rangebottom
+0 -rangetop 127 -init 0 -initvalue 94 -jumponclick 0 -label norm -labelpos
+top -orient vertical -sendsymbol empty -receivesymbol empty -fgcolor
+#000000 -bgcolor #ffffff -lblcolor #000000;
+#X obj 401 150 slider2 -width 15 -height 130 -headsz 3 -rangebottom
+127 -rangetop 0 -init 0 -initvalue 63 -jumponclick 0 -label rev -labelpos
+top -orient vertical -sendsymbol empty -receivesymbol empty -fgcolor
+#000000 -bgcolor #ffffff -lblcolor #000000;
+#X obj 522 154 slider2 -width 130 -height 15 -headsz 3 -rangebottom
+0 -rangetop 127 -init 0 -initvalue 95 -jumponclick 0 -label norm -labelpos
+top -orient horizontal -sendsymbol empty -receivesymbol empty -fgcolor
+#000000 -bgcolor #ffffff -lblcolor #000000;
+#X obj 522 213 slider2 -width 130 -height 15 -headsz 3 -rangebottom
+127 -rangetop 0 -init 0 -initvalue 70 -jumponclick 0 -label rev -labelpos
+top -orient horizontal -sendsymbol empty -receivesymbol empty -fgcolor
+#000000 -bgcolor #ffffff -lblcolor #000000;
+#X floatatom 343 295 5 0 0 0 - - -;
+#X floatatom 401 295 5 0 0 0 - - -;
+#X floatatom 522 177 5 0 0 0 - - -;
+#X floatatom 522 236 5 0 0 0 - - -;
+#X text 324 109 -orient vertical;
+#X text 523 111 -orient horizontal;
+#X text 321 61 Output range test:;
+#X obj 46 174 slider2 -width 15 -height 130 -headsz 3 -rangebottom
+0 -rangetop 127 -init 0 -initvalue 10 -jumponclick 0 -label empty -labelpos
+top -orient vertical -sendsymbol empty -receivesymbol empty -fgcolor
+#000000 -bgcolor #ffffff -lblcolor #000000;
+#X msg 46 143 config -orient vertical;
+#X msg 46 113 config -orient horizontal;
+#X floatatom 46 321 5 0 0 0 - - -;
+#X obj 159 358 slider2 -width 130 -height 15 -headsz 3 -rangebottom
+0 -rangetop 255 -init 0 -initvalue 202.795 -jumponclick 0 -label empty
+-labelpos top -orient horizontal -sendsymbol \$0.sl-out -receivesymbol
+\$0.sl-in -fgcolor #000000 -bgcolor #20ca34 -lblcolor #000000;
+#X obj 45 358 r \$0.sl-out;
+#X obj 45 466 s \$0.sl-in;
+#X msg 45 439 config -bgcolor \$1;
+#X obj 45 412 makefilename #%6.6x;
+#X obj 45 385 expr (0x20 << 16) | ($f1 << 8) | (0xff - $f1);
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 2 0 6 0;
+#X connect 3 0 7 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 16 0 20 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X connect 20 0 19 0;

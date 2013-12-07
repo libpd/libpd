@@ -1,0 +1,13 @@
+#N canvas 554 145 570 225 10;
+#X obj 25 124 3dp_toggle depth_test 0;
+#X obj 181 159 3dp_toggle blend_add 1;
+#X obj 25 90 inlet;
+#X obj 330 199 outlet;
+#X text 38 11 use this object for quick and dirty blending effects.
+it has the depth test disabled and accumulated blending enabled.;
+#X text 128 60 NOTE: proper transparency is quite hard to do \, because
+it requires manual depth sorting. there is no real support for this
+in 3dp yet.;
+#X connect 0 1 1 0;
+#X connect 1 1 3 0;
+#X connect 2 0 0 0;

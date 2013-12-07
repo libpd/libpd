@@ -1,0 +1,112 @@
+#N canvas 331 134 656 710 10;
+#N canvas 85 7 622 478 physical 0;
+#X text 23 268 Generated force is the sum of 3 differents forces :
+;
+#X text 102 142 eL[t] = L[t] - L[0];
+#X text 78 166 -> Elongation-Speed of a link :;
+#X text 101 184 speedOf(eL[t]) = eL[t] - eL[t-1];
+#X text 78 106 -> Elongation of a link (eL) is equal to the length
+of the link minus its initial length :;
+#X text 78 46 -> Length of a link (L) is equal to the difference between
+positions of Masses (M1 \, M2) :;
+#X text 102 79 L[t] = positionOf(M1[t]) - positionOf(M2[t]);
+#X text 78 206 -> Speed of a mass :;
+#X text 77 346 -> Damping of a link (proportional to) :;
+#X text 77 385 -> Damping of a mass is proportional to :;
+#X text 102 224 speedOf(M[t]) = positionOf(M[t-1]) - positionOf(M[t])
+;
+#X text 77 306 -> Rigidity of a link (proportional to) :;
+#X text 100 403 Fdm :: D2 * speedOf(M[t]);
+#X text 100 364 Fdl :: D * speedOf(eL[t]);
+#X text 100 324 Frl :: K * eL[t];
+#X text 24 8 Notation (at time t) :;
+#X restore 239 679 pd physical equations;
+#X text 217 593 value range :;
+#X text 260 13 link between 2 masses;
+#X text 88 562 1 : force to apply to mass 1 (float);
+#X text 89 530 2 : force to apply to mass 2 (float);
+#X text 257 381 if the size of the link is < Lmin then force of the
+link will be null;
+#X text 263 432 if the size of the link is > Lmax then force of the
+link will be null;
+#X text 242 622 K \, D \, D2 are positive. Negative values make strange
+(non physical) things. High values can cause numerical instability.
+;
+#X obj 25 501 link;
+#X text 127 471 2 : position of mass 2 (float);
+#X floatatom 25 562 5 0 0 0 - - -;
+#X floatatom 44 529 5 0 0 0 - - -;
+#X text 225 68 1 : name;
+#X floatatom 93 471 5 0 0 0 - - -;
+#X msg 105 125 setL 0;
+#X msg 105 154 setK 0;
+#X msg 105 184 setD 0;
+#X msg 104 214 setD2 0;
+#X text 226 122 2 : Lenght;
+#X text 250 139 change Length of the link;
+#X text 226 153 3 : rigidity;
+#X text 249 168 change rigidity;
+#X text 230 238 change position of mass 1;
+#X msg 106 265 bang;
+#X text 228 258 compute and output forces \, according to the last
+masses positions;
+#X msg 107 291 reset;
+#X msg 109 316 resetF;
+#X msg 109 338 resetL;
+#X msg 110 366 setLmin 0;
+#X text 229 185 4 : Damping of the link deformation;
+#X text 231 214 5 : Damping of the masses speed;
+#X obj 105 240 0;
+#X text 227 288 reset position of masses and set speed of the link
+to zero;
+#X text 230 314 reset damping and inertial force of the link.;
+#X text 228 339 set the length of the liaison to it's curent lengh
+;
+#X text 234 363 set the minimum size of the link;
+#X text 233 416 set the maximum size of the link;
+#X msg 110 416 setLmax 10000;
+#X text 250 84 you can use it in pd to send messages / bang / etc to
+the lia. this is for simplifying connection.;
+#N canvas 292 12 556 402 Lmin 0;
+#X text 23 14 Lmin and Lmax are useful for non-linear links;
+#X text 24 42 If the length of the link is < Lmin then force of the
+link will be null;
+#X text 24 86 If the length of the link is > Lmax then force of the
+link will be null;
+#X text 13 137 Case Lmin = 0 and Lmax = 10 :;
+#X text 38 163 At L = 0 \, links can break (a bit like a magnet.);
+#X text 38 183 At L = 10 \, this is a repulsive-only link useful for
+interaction between two structures.;
+#X text 12 237 Case Lmin = 10 and Lmax = very positive :;
+#X text 38 262 At L = 10 \, this is an attractive link only;
+#X text 13 304 note : D2 is damping associated with the mass but not
+the link. So it's not affected by Lmin and Lmax;
+#X restore 477 456 pd Lmin Lmax exemple;
+#N canvas 0 0 231 186 name 0;
+#X obj 23 6 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1 -1
+;
+#X obj 23 27 s lia_foo;
+#X obj 116 102 lia lia_foo;
+#X obj 19 125 print lia1;
+#X obj 116 126 print lia2;
+#X obj 19 101 lia lia_foo;
+#X connect 0 0 1 0;
+#X connect 2 0 4 0;
+#X connect 5 0 3 0;
+#X restore 496 117 pd name example;
+#X text 138 33 link : get position of masses \, output forces to apply
+;
+#X connect 8 0 10 0;
+#X connect 8 1 11 0;
+#X connect 13 0 8 1;
+#X connect 14 0 8 0;
+#X connect 15 0 8 0;
+#X connect 16 0 8 0;
+#X connect 17 0 8 0;
+#X connect 23 0 8 0;
+#X connect 25 0 8 0;
+#X connect 26 0 8 0;
+#X connect 27 0 8 0;
+#X connect 28 0 8 0;
+#X connect 31 0 8 0;
+#X connect 37 0 8 0;

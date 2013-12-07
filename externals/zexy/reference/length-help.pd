@@ -1,0 +1,27 @@
+#N canvas 0 31 416 236 10;
+#X obj 77 40 length;
+#X text 141 43 get the length of a list;
+#X obj 72 186 length;
+#X floatatom 72 206 4 0 0 0 - - -;
+#X msg 72 109 list these are 4 elements;
+#X msg 83 128 1 2 3;
+#X msg 95 155 auralization by wave field synthesis;
+#X msg 25 113 bang;
+#X floatatom 14 146 4 0 0 0 - - -;
+#X text 324 19 part of zexy;
+#N canvas 607 221 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 65 INLET_0 anything;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION get the length of a list;
+#X restore 363 211 pd META;
+#X connect 2 0 3 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 2 0;

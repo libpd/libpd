@@ -1,0 +1,52 @@
+#N canvas 4 80 664 396 10;
+#X obj -104 176 cnv 15 100 60 empty empty empty 20 12 0 14 -4034 -66577
+0;
+#X obj -85 190 unpackOSC;
+#X floatatom 16 207 10 0 0 1 - - -;
+#X obj -85 257 pipelist;
+#X text -126 337 see:;
+#X text 21 337 for a way to send OSC over TCP or serial connections.
+;
+#X obj -91 338 unpackOSCstream;
+#X obj -92 214 print unpacked;
+#X text -29 253 If the OSC packet has a timetag \, [pipelist] will
+delay it until the time occurs;
+#N canvas 521 651 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 45 DESCRIPTION parses lists of floats (only integers on
+[0..255]) assuming they represent OSC packets.;
+#X text 12 75 INLET_0 list of floats on [0..255];
+#X text 12 95 OUTLET_0 OSC message;
+#X text 13 115 OUTLET_1 milliseconds until timetag time;
+#X text 12 135 AUTHOR Martin Peach;
+#X restore 449 362 pd META;
+#X obj -85 73 packOSC;
+#X obj -62 113 print bytes;
+#X msg -113 28 /some/path 1 2 3;
+#X msg -134 7 [ \, /another/one/ 4 \, ];
+#X obj -85 284 print delayed;
+#X msg -92 49 timetagoffset 1.1e+06;
+#X obj -46 93 print bundle_depth;
+#X text 354 317 2012/02/14 Martin Peach;
+#X text 107 15 [unpackOSC] processes lists of floats (only integers
+on [0..255]) as though they were OSC packets.;
+#X text -76 134 <- usually the bytes pass over the network with [udpsend]/[udpreceive]
+\, or serial port using [comport] with [slipenc] and [slipdec];
+#X text 48 49 timetag offset is in microseconds relative to sender's
+clock;
+#X text 83 201 second outlet is timetag offset in millieconds relative
+to receiver's clock;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 1 1 2 0;
+#X connect 1 1 3 1;
+#X connect 3 0 14 0;
+#X connect 10 0 11 0;
+#X connect 10 0 1 0;
+#X connect 10 1 16 0;
+#X connect 12 0 10 0;
+#X connect 13 0 10 0;
+#X connect 15 0 10 0;

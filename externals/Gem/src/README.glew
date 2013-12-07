@@ -1,0 +1,38 @@
+for runtime-checking of available openGL extensions,... Gem has
+now included GLEW (the OpenGL Extension Wrangler)
+ http://glew.sourceforge.net/
+
+Copyright
+   GLEW is originally derived from the EXTGL project by Lev Povalahev.
+   The source code is licensed under the modified BSD license, the SGI
+   Free Software License B, and the GLX Public License. The automatic
+   code generation scripts are released under the GPL.
+
+how Gem uses glew:
+ i directly include glew-files, which are
+ Base/glew.cpp
+ Base/glew.h
+ Base/glxew.h
+ Base/wglew.h
+
+how to update these files:
+ get the glew-sources from http://glew.sourceforge.net/
+ untar and chdir into the glew-folder
+ run "make extensions"
+ (this will fetch the openGL(-extension)-specs from the internet
+  and generate the following files: src/glew.c include/GL/glew.h 
+  include/GL/glxew.h include/GL/wglew.h)
+ copy these 4 files into Gem/src/Base
+ rename glew.c to glew.cpp (to get automatically compiled)
+ change all include-lines in these files from
+ from	'#include <GL/glew.h>'  --> to	'#include "Base/glew.h"'
+ from	'#include <GL/glxew.h>' --> to	'#include "Base/glxew.h"'
+ from	'#include <GL/wglew.h>' --> to	'#include "Base/wglew.h"'
+
+ once you have downloaded and extracted the glew-sources, you can simply
+ run the script ./importGLEW.sh which should do everything for you...
+
+case study:
+ ~/src/Gem/src$ svn co https://glew.svn.sourceforge.net/svnroot/glew/trunk/glew /tmp/glew
+ ~/src/Gem/src$ ./importGLEW.sh /tmp/glew/
+ 

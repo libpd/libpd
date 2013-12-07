@@ -1,0 +1,28 @@
+#N canvas 0 26 512 273 10;
+#X obj 221 152 setenv;
+#X msg 221 54 bang;
+#X symbolatom 221 199 0 0 0 0 - - -;
+#X msg 19 51 bang;
+#X msg 254 120 symbol SHELL;
+#X msg 341 120 symbol PATH;
+#X msg 421 120 symbol HOME;
+#X obj 19 134 unsetenv HOME;
+#X msg 94 107 symbol SHELL;
+#X text 67 51 bang unsets;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION unset env;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 symbol;
+#X restore 463 253 pd META;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 7 0;
+#X connect 4 0 0 1;
+#X connect 5 0 0 1;
+#X connect 6 0 0 1;
+#X connect 8 0 7 1;

@@ -1,0 +1,23 @@
+#N canvas 1 53 604 504 10;
+#X text 124 68 GEM object;
+#X msg 123 155 bang;
+#X text 138 23 randomF;
+#X obj 123 223 randomF 0.5;
+#X text 60 385 randomF is a floating point random number generator
+;
+#X floatatom 195 161 5 0 0 1 range - -;
+#X floatatom 123 289 5 0 0 0 - - -;
+#N canvas 497 111 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION floating point random number generator;
+#X text 12 5 KEYWORDS control random;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X restore 545 476 pd META;
+#X connect 1 0 3 0;
+#X connect 3 0 6 0;
+#X connect 5 0 3 1;

@@ -1,0 +1,88 @@
+#N canvas 344 47 655 397 10;
+#X text 452 8 GEM object;
+#X obj 8 216 cnv 15 430 70 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 218 Inlets:;
+#X text 39 250 Outlets:;
+#X obj 8 176 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X obj 8 76 cnv 15 430 90 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 186 cnv 15 80 40 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 22 591 370 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X obj 77 281 pix_buf;
+#X msg 103 257 auto 1;
+#X obj 103 236 loadbang;
+#X text 156 263 [pix_buf] with auto 1 is important if we want to recalculate
+our pix-effect each frame but don't want to reload the image all the
+time.;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X connect 0 0 9 0;
+#X connect 2 0 4 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 9 0 5 0;
+#X restore 451 113 pd image;
+#X text 63 186 <none>;
+#X text 57 263 Outlet 1: gemlist;
+#X text 63 232 Inlet 1: gemlist;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X obj 451 196 imageVert;
+#X text 10 135 This is still experimental...please report any problems
+or suggestions with it.;
+#X text 14 91 [imageVert] maps a pix to a series of polygons. The height
+of the polygons is the sum of the colors (so brighter pixels will be
+taller \, while darker pixels are shorter).;
+#X text 29 77 Description: map luminance to height;
+#X text 50 12 Synopsis: [imageVertp];
+#X text 71 31 Class: geometric object;
+#X obj 451 165 rotateXYZ;
+#X floatatom 476 144 5 0 0 0 - - -;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 16 0;
+#X connect 15 0 16 1;
+#X connect 16 0 28 0;
+#X connect 28 0 22 0;
+#X connect 29 0 28 1;
+#X connect 29 0 28 2;

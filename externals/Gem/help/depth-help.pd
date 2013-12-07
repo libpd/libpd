@@ -1,0 +1,21 @@
+#N canvas 52 90 600 500 10;
+#X obj 124 219 depth;
+#X msg 173 156 1;
+#X msg 173 184 0;
+#X text 92 291 depth turns on and off depth test (also known as Z-buffering).
+This is very useful if you are in single-buffer mode \, because then
+a painting effect can be achieved. In double-buffered mode \, you probably
+do not want to turn off the depth test \, unless you have taken control
+of the rendering order by setting the priority of each gemhead (see
+the gemhead example for explanation).;
+#X text 138 6 depth;
+#X msg 124 249 gemList;
+#X msg 124 123 gemList;
+#X text 124 61 GEM object;
+#X text 93 403 By default \, this object will turn OFF depth buffering
+for the objects "below".;
+#X text 94 438 You can set the initial state via an argument;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 6 0 0 0;

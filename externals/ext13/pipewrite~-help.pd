@@ -1,0 +1,40 @@
+#N canvas 0 31 437 368 10;
+#X msg 102 140 1;
+#X msg 81 90 0;
+#X obj 226 21 loadbang;
+#X msg 226 47 \; pd dsp 1;
+#X obj 63 67 osc~ 440;
+#X msg 94 117 open /usr/local/pd/ext13/doc/pipein.wav;
+#X obj 246 231 dac~;
+#X obj 63 179 pipewrite~ 2;
+#X obj 142 65 osc~ 480;
+#X obj 224 192 piperead~ 2;
+#X msg 165 140 open /usr/local/pd/ext13/doc/pipein.wav;
+#X msg 227 164 1;
+#X msg 261 166 0;
+#X text 26 256 pipewrite/read: argument: number of channels you can
+create a pipe/fifo from within a shell with mknod pipename p and use
+this construct to send signals to another program/process. useful if
+you run more than one pd or mpeg-players \, ...;
+#N canvas 447 167 494 344 META 0;
+#X text 12 125 RELEASE_DATE 2009-06-12;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR d13@klingt.org;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS signal filesystem;
+#X text 12 45 DESCRIPTION;
+#X text 12 65 INLET_0 signal float open;
+#X text 12 85 INLET_N signal;
+#X restore 380 339 pd META;
+#X connect 0 0 7 0;
+#X connect 1 0 7 0;
+#X connect 2 0 3 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 8 0 7 1;
+#X connect 9 0 6 0;
+#X connect 9 1 6 1;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;
+#X connect 12 0 9 0;

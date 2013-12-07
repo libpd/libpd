@@ -1,0 +1,18 @@
+#N canvas 1 53 661 510 10;
+#X obj 40 36 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 268 221 pipe 500;
+#X obj 138 260 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 268 263 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 40 176 resample 25;
+#X obj 138 219 delay_n 20;
+#X obj 40 262 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 4 0 1 0;
+#X connect 4 0 5 0;
+#X connect 4 0 6 0;
+#X connect 5 0 2 0;

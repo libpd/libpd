@@ -1,0 +1,14 @@
+#N canvas 52 29 470 263 10;
+#X text 120 53 no arg;
+#X text 83 169 IEM KUG;
+#X text 67 157 musil;
+#X text 97 157 @;
+#X text 103 157 iem.at;
+#X text 66 179 Graz \, Austria;
+#X text 18 146 (c) Thomas Musil 2000 - 2006;
+#X text 211 52 like;
+#X text 135 24 with (blocksize/2 + 1) bins;
+#X text 29 15 spec2_rmstodb~;
+#X text 132 13 convert rms value to db of a signal spectrum;
+#X obj 26 53 spec2_rmstodb~;
+#X obj 243 54 rmstodb~;

@@ -1,0 +1,15 @@
+#N canvas 0 26 418 289 10;
+#X text 175 90 floating point version of;
+#X text 361 91 [mod];
+#N canvas 45 93 494 329 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION floating point version of [mod];
+#X text 12 65 INLET_0 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 5 KEYWORDS control needs_work (example patch);
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 368 267 pd META;
+#X obj 67 87 fmod;

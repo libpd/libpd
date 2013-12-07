@@ -1,0 +1,21 @@
+#N canvas 294 76 635 406 10;
+#X obj 54 240 list_change;
+#X text 144 236 right inlet sets internal value without output anything
+;
+#X obj 71 271 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 54 309 print;
+#X text 33 21 Outputs its input (a list) only when it changes. You
+can set the current value using the right inlet \, or bang to force
+output;
+#X msg 117 201 list foo bar;
+#X msg 69 140 list foo bar;
+#X msg 77 163 list bar baz;
+#X msg 54 104 bang;
+#X text 98 103 output current value;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 5 0 0 1;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;

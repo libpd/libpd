@@ -1,0 +1,274 @@
+#N canvas 93 115 450 300 10;
+#N canvas 32 72 706 515 string 0;
+#X obj 88 454 print;
+#X obj 143 328 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 37 53 5 0 0 0 - - -;
+#X obj 88 387 str hello 32 there 10 no more;
+#X obj 16 7 str nono 32 pitek;
+#X obj 16 -15 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 88 429 str to_list;
+#X obj 67 123 symbol tikka;
+#X obj 67 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 117 218 str 2;
+#X text 174 430 str to_list outputs the string as a list of floats.
+;
+#X text 299 378 str string (the default) converts nearly anything to
+a string.;
+#X msg 100 190 set one 2;
+#X msg 82 155 list 1 2 3 alpha;
+#X text 80 51 Whole numbers from -127 through 255 are converted to
+single bytes. All others are formatted as floats using ASCII characters.
+;
+#X text 173 190 Set the string quietly;
+#X floatatom 130 29 5 0 0 0 - - -;
+#X text 165 0 The basic [str] or [str string] outputs a string on its
+left outlet and the length of the string at the reight outlet.;
+#X floatatom 286 410 5 0 0 0 - - -;
+#X msg 127 260 file_read test.txt;
+#X text 159 124 Symbols are interpreted as text strings.;
+#X text 210 156 List elements are converted to numbers or strings.
+;
+#X text 167 215 Messages other than [list ...( or [set ...( are transcribed
+directly.;
+#X msg 136 282 file_write test.txt;
+#X text 265 261 String data can be stored in and retrieved from files.
+;
+#X text 163 327 [Bang] generates output.;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 6 0;
+#X connect 3 1 18 0;
+#X connect 4 0 3 0;
+#X connect 4 1 16 0;
+#X connect 5 0 4 0;
+#X connect 6 0 0 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 0;
+#X connect 9 0 3 0;
+#X connect 12 0 3 0;
+#X connect 13 0 3 0;
+#X connect 19 0 3 0;
+#X connect 23 0 3 0;
+#X restore 3 31 pd string;
+#N canvas 259 148 678 300 split 0;
+#X obj 67 101 str to_list;
+#X obj 174 100 str to_list;
+#X obj 67 126 print left;
+#X obj 174 125 print right;
+#X obj 95 55 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 95 79 str nsplit 6;
+#X floatatom 174 55 5 0 0 0 - - -;
+#X text 192 79 [str nsplit] splits a string in two at the nth character.
+;
+#X msg 42 31 set microscope;
+#X obj 75 244 str to_list;
+#X obj 156 244 str to_list;
+#X obj 75 269 print left;
+#X obj 156 269 print right;
+#X obj 142 193 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 142 218 str csplit 32;
+#X msg 65 170 what 32 are 32 you 10 13;
+#X msg 176 193 set t 32;
+#X text 251 193 Set the target character(s);
+#X text 244 217 [str csplit] splits incoming strings in two at the
+first occurrence of any of the characters in its string. The second
+string begins with the first remaining non-target character.;
+#X text 153 31 Quietly set the string to be split;
+#X text 219 54 Split position: positive from start \, negative from
+end;
+#X text 252 11 Split this string;
+#X msg 6 10 10 11 12 13 14 15 16 17 18 19 20;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 0;
+#X connect 5 1 1 0;
+#X connect 6 0 5 1;
+#X connect 8 0 5 0;
+#X connect 9 0 11 0;
+#X connect 10 0 12 0;
+#X connect 13 0 14 0;
+#X connect 14 0 9 0;
+#X connect 14 1 10 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 22 0 5 0;
+#X restore 3 66 pd split;
+#N canvas 273 114 640 400 join 0;
+#X obj 48 60 str join pig;
+#X obj 48 108 str to_list;
+#X obj 206 -4 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 13 -32 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 198 15 str 32 the 32 end;
+#X obj 13 -13 str This 32 is;
+#X msg 10 31 set That 32 was;
+#X floatatom 198 -27 5 0 0 0 - - -;
+#X obj 48 130 print joined;
+#X obj 10 51 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 175 60 [str join]: Set the string to be appended either with
+a [set( message to the first inlet or by sending a string to the second
+inlet.;
+#X msg 43 -34 elephant;
+#X floatatom 106 7 5 0 0 0 - - -;
+#X floatatom 312 36 5 0 0 0 - - -;
+#X floatatom 127 82 5 0 0 0 - - -;
+#X obj 43 259 str add abc;
+#X floatatom 43 217 5 0 0 0 - - -;
+#X obj 17 233 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 43 303 str to_list;
+#X obj 115 200 str;
+#X floatatom 88 159 5 0 0 0 - - -;
+#X msg 115 176 whoa;
+#X msg 55 236 set;
+#X text 84 237 [set( message without arguments clears the string.;
+#X text 133 259 [str add] adds input to the end of the string until
+banged.;
+#X floatatom 129 221 5 0 0 0 - - -;
+#X floatatom 115 282 5 0 0 0 - - -;
+#X text 158 282 string length;
+#X obj 43 324 print added;
+#X connect 0 0 1 0;
+#X connect 0 1 14 0;
+#X connect 1 0 8 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 1;
+#X connect 4 1 13 0;
+#X connect 5 0 0 0;
+#X connect 5 1 12 0;
+#X connect 6 0 0 0;
+#X connect 7 0 4 0;
+#X connect 9 0 0 0;
+#X connect 11 0 0 0;
+#X connect 15 0 18 0;
+#X connect 15 1 26 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 28 0;
+#X connect 19 0 15 1;
+#X connect 19 1 25 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 0;
+#X connect 22 0 15 0;
+#X restore 3 99 pd join;
+#X text 61 98 join and add;
+#N canvas 0 0 771 248 compare 0;
+#X obj 16 130 str compare This 32 is 32 the 32 end;
+#X floatatom 16 153 5 0 0 0 - - -;
+#X text 276 131 [str compare]: Set the reference string either with
+a [set( message to the first inlet or by sending a string to the second
+inlet.;
+#X msg 67 102 set This 32 is That 32 was;
+#X obj 263 62 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 263 81 str 32 the 32 end;
+#X floatatom 377 102 5 0 0 0 - - -;
+#X text 19 179 Output is 1 only if the input string and the reference
+string are identical.;
+#X obj 30 37 str This 32 is 32 the 32 end;
+#X obj 30 15 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 37 64 32 the 32 end;
+#X obj 45 103 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 0 0 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 1;
+#X connect 5 1 6 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X restore 4 135 pd compare;
+#X text 84 134 compare two strings;
+#N canvas -4 -4 399 531 conversion 0;
+#X obj 19 16 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -250685
+-1;
+#X obj 19 80 print;
+#X obj 19 52 str to_symbol whichever 32 was it;
+#X floatatom 47 16 5 0 0 0 - - -;
+#X obj 22 152 str to_float 189.999;
+#X floatatom 22 181 15 0 0 0 - - -;
+#X obj 22 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -250685
+-1;
+#X floatatom 48 118 5 0 0 0 - - -;
+#X msg 90 16 whatever I thought32 at 32 the 10 32 time;
+#X msg 97 121 192.168.0.1;
+#X msg 110 89 all32were wolves;
+#X text 167 152 [str to_float] converts as much as possible of a string
+to a single float.;
+#X text 257 53 [str to_symbol] converts a string to a symbol as best
+it can.;
+#X obj 24 261 print;
+#X obj 24 236 str to_list;
+#X msg 24 212 tell 32 me 32 everything 10 13;
+#X text 112 235 [str to_list] outputs the string as a list of floats.
+;
+#X msg 30 299 One 32 at 32 a 32 time 10 13;
+#X obj 30 347 print;
+#X obj 30 323 str drip trip 10 13;
+#X obj -13 269 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -250685
+-1;
+#X floatatom 80 259 5 0 0 0 - - -;
+#X floatatom 83 349 5 0 0 0 - - -;
+#X obj 158 345 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -250685
+-1;
+#X obj 180 345 tgl 15 0 empty empty empty 17 7 0 10 -24198 -250685
+-1 0 1;
+#X floatatom 118 432 5 0 0 0 - - -;
+#X msg 29 377 The nth character of this string will be output as a
+float 10 13;
+#X obj 60 450 str nth 5;
+#X obj 22 422 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -250685
+-1;
+#X msg 98 410 set one;
+#X text 160 411 [set( quietly sets the string to be analyzed.;
+#X floatatom 118 490 5 0 0 0 - - -;
+#X text 161 489 string length;
+#X floatatom 60 491 5 0 0 0 - - -;
+#X text 128 451 [str nth] emits the nth character if it exists \, otherwise
+a bang will be emitted.;
+#X text 162 431 set n;
+#X text 202 322 [str drip] outputs the entire string one float at a
+time. Outlet 2 bangs when end is reached.;
+#X obj -12 289 until;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 2 0;
+#X connect 9 0 4 0;
+#X connect 10 0 4 0;
+#X connect 14 0 13 0;
+#X connect 14 0 21 0;
+#X connect 15 0 14 0;
+#X connect 17 0 19 0;
+#X connect 19 0 18 0;
+#X connect 19 0 22 0;
+#X connect 19 1 23 0;
+#X connect 19 1 37 1;
+#X connect 20 0 37 0;
+#X connect 23 0 24 0;
+#X connect 25 0 27 1;
+#X connect 26 0 27 0;
+#X connect 27 0 33 0;
+#X connect 27 1 31 0;
+#X connect 28 0 27 0;
+#X connect 29 0 27 0;
+#X connect 37 0 19 0;
+#X restore 4 172 pd conversion;
+#X text 105 171 convert strings to other pd types;
+#X text 75 30 the basic string;
+#X text 69 65 split strings by character or position;

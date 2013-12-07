@@ -1,0 +1,84 @@
+#N canvas 0 31 651 599 10;
+#X obj 85 569 gfsm;
+#X text 15 569 SEE ALSO:;
+#X text 41 6 gfsm_state : position "pointer" for finite-state automata
+;
+#X text 267 563 Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 17 79 INLETS:;
+#X text 35 93 1 - control messages;
+#X text 255 82 OUTLETS:;
+#X text 271 95 1 - value outlet;
+#X text 18 30 SYNTAX: gfsm_state [FSM_NAME [STATE_ID]];
+#X text 52 47 FSM_NAME - symbolic name of a gfsm_automaton;
+#X text 52 61 STATE_ID - numeric Id of the target state;
+#X obj 26 531 print gfsm-state-out;
+#X msg 44 168 id;
+#X text 164 171 "id" : get current state Id;
+#X text 135 185 "set ID" : set current state Id;
+#X msg 50 185 set 0;
+#X msg 26 127 automaton;
+#X msg 31 144 automaton fsm-help;
+#X text 197 128 "automaton" : use an object-local machine;
+#X text 163 146 "automaton NAME" : use a shared machine named NAME
+;
+#X msg 58 212 degree;
+#X text 245 213 "degree" : get number of outgoing arcs (linear time)
+;
+#X msg 57 347 arc_first;
+#X msg 57 364 arc_next;
+#X msg 61 434 arc_reset;
+#X text 71 280 arcs are output as a list:;
+#X text 261 280 NEXT_STATEID LO HI WEIGHT;
+#X text 302 414 (negative labels are ignored);
+#X msg 60 398 arc_seek 202 -1;
+#X text 204 348 "arc_first" : get first outgoing arc;
+#X text 211 364 "arc_next" : get next available outgoing arc (maybe
+first);
+#X text 169 399 "arc_seek LO HI" : get next arc with labels LO:HI;
+#X text 209 435 "arc_reset" : close internal arc iterator;
+#X msg 54 467 add_weight 1 -1 101 0.9;
+#X text 233 470 "add_weight ID LO HI W" : add W to 1st arc to state
+ID;
+#X text 416 483 with labels LO:HI;
+#X text 271 499 (implicitly resets arc iterator);
+#X msg 61 229 cyclic;
+#X text 245 229 "cyclic" : does this state lead to any cycles?;
+#X msg 60 381 arc_nth 0;
+#X text 204 382 "arc_nth N" : seek to n-th arc (counting from zero)
+;
+#X msg 57 300 arc_gen 42 1;
+#X text 182 303 "arc_gen W SR" : generate an arc;
+#X text 308 317 W - weight hint (0..sum(weights(state));
+#X text 300 331 SR - boolean - whether to use gfsmSemiring;
+#X text 181 247 "total_weight SR" : get total weight of outgoing arcs
+;
+#X text 323 261 SR - boolean: use gfsmSemiring?;
+#X msg 65 246 total_weight 1;
+#X obj 26 508 gfsm_state fsm-help 0;
+#N canvas 577 273 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Bryan Jurish <moocow@ling.uni-potsdam.de>;
+#X text 12 5 KEYWORDS control storage;
+#X text 12 45 DESCRIPTION position "pointer" for finite-state automata
+;
+#X text 12 65 INLET_0 automaton id set degree cyclic total_weight arc_gen
+arc_first arc_next arc_nth arc_seek arc_reset add_weight;
+#X text 12 95 OUTLET_0 anything;
+#X restore 589 566 pd META;
+#X connect 12 0 48 0;
+#X connect 15 0 48 0;
+#X connect 16 0 48 0;
+#X connect 17 0 48 0;
+#X connect 20 0 48 0;
+#X connect 22 0 48 0;
+#X connect 23 0 48 0;
+#X connect 24 0 48 0;
+#X connect 28 0 48 0;
+#X connect 33 0 48 0;
+#X connect 37 0 48 0;
+#X connect 39 0 48 0;
+#X connect 41 0 48 0;
+#X connect 47 0 48 0;
+#X connect 48 0 11 0;

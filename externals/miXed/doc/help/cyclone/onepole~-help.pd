@@ -1,0 +1,31 @@
+#N canvas 0 26 525 335 10;
+#X text 37 24 single-pole lowpass filter;
+#X text 56 272 onepole's advantages are efficiency and simplicity.
+it works well as a pre- or post-processing stage for other treatments
+\, such as waveshaping or filtering \, which can benefit from a gentle
+roll-off of high frequencies.;
+#X text 38 124 this filter is equivalent to a biquad~ object with the
+coefficients \, [ a0 = k \, b1 = k - 1 ] \, as demonstrated below.
+;
+#X text 38 83 where k represents the cutoff frequency in radians. this
+generates a single-pole lowpass filter with a 6dB/octave attenuation.
+;
+#X text 65 66 out = prev + k * (in - prev);
+#X text 38 50 onepole~ implements the minimal filter equation:;
+#X text 189 220 inlet 2: float or signal sets cutoff frequency (Hz)
+;
+#X obj 89 221 onepole~ 300;
+#X text 187 236 argument initializes frequency;
+#N canvas 247 115 494 398 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal filter max_compatible;
+#X text 12 45 DESCRIPTION single-pole lowpass filter;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 475 313 pd META;

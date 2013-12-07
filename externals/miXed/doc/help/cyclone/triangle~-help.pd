@@ -1,0 +1,46 @@
+#N canvas 0 26 426 450 10;
+#X floatatom 96 102 0 0 0 0 - - -;
+#X msg 96 123 hi \$1;
+#X floatatom 34 102 0 0 0 0 - - -;
+#X msg 34 123 lo \$1;
+#X floatatom 139 105 0 0 0 0 - - -;
+#X text 207 107 up;
+#X obj 148 228 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 174 181 Snapshot~ 100;
+#X floatatom 175 206 5 0 0 0 - - -;
+#X obj 205 127 sig~ 0.1;
+#X obj 139 126 phasor~ 2;
+#N canvas 315 96 494 378 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible oscillator;
+#X text 12 45 DESCRIPTION triangle / ramp wavetable;
+#X text 12 65 INLET_0 signal lo hi;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 376 430 pd META;
+#X text 29 14 triangle / ramp wavetable;
+#X text 36 40 triangle~ is a triangle/ramp wavetable with signal input
+to change phase offset of the peak value. The default lo/hi points
+are -1 and 1 \, but may be changed using the lo/hi messages.;
+#X obj 149 150 triangle~;
+#X text 24 372 arg (optional): peak-value-phase-offset (default 0.5)
+Peak value phase offset \, expressed as a fraction of a cycle \, from
+0 to 1.0. The default is 0.5. A value of 0 produces a ramp waveform
+when the triangle~ object is driven by a phasor~ \, and a value of
+1 produces a sawtooth waveform.;
+#X connect 0 0 1 0;
+#X connect 1 0 14 0;
+#X connect 2 0 3 0;
+#X connect 3 0 14 0;
+#X connect 4 0 10 0;
+#X connect 7 0 8 0;
+#X connect 9 0 14 1;
+#X connect 10 0 14 0;
+#X connect 14 0 6 0;
+#X connect 14 0 7 0;

@@ -1,0 +1,77 @@
+#N canvas 0 31 690 434 10;
+#X obj 502 26 sieve;
+#X obj 545 26 maskxor;
+#X obj 26 26 polymap;
+#X obj 438 26 polystat;
+#X text 82 26 two-dimensional polyphony-restricted map. see also;
+#X text 23 47 Poly map contains a 32x32 matrix in which values may
+be stored. However \, only a set number of these values may be stored
+as set by the right inlet \, and if this total is reached no more may
+be stored until one is set to 0 again.;
+#X floatatom 338 258 5 1 16 1 max_poly - -;
+#X obj 92 334 polymap 3;
+#X msg 45 199 note 4 2 1;
+#X msg 68 233 note 10 4 0.756;
+#X msg 77 250 note 11 4 1;
+#X msg 57 216 note 6 8 3;
+#X floatatom 116 364 5 0 0 3 new_y - -;
+#X msg 223 199 note 4 2 0;
+#X msg 230 216 note 6 8 0;
+#X msg 237 233 note 10 4 0;
+#X msg 244 250 note 11 4 0;
+#X floatatom 170 364 5 0 0 3 polyphony - -;
+#X floatatom 61 364 5 0 0 3 freed_x - -;
+#X obj 226 361 print overflow;
+#X text 24 149 noteons;
+#X msg 337 297 print;
+#X msg 337 317 print32;
+#X text 379 297 print first 16x16;
+#X text 392 317 print whole matrix;
+#X msg 337 277 clear;
+#X msg 18 165 note 1 1 1;
+#X msg 32 182 note 2 2 1;
+#X text 377 277 clear matrix;
+#X msg 337 235 note 1 0 1;
+#X msg 209 165 note 1 1 0;
+#X msg 216 182 note 2 2 0;
+#X text 416 235 voice_x and voice_y both start at 1;
+#X text 158 335 initialization argument sets maximum polyphony;
+#X text 23 100 Values are stored as messages in the form [note x y
+value( where value is either 0 or some other value.;
+#X text 217 147 noteoffs;
+#N canvas 346 235 494 344 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 185 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 5 KEYWORDS control MIDI;
+#X text 12 45 DESCRIPTION two-dimensional polypony-resetricted map
+;
+#X text 12 65 INLET_0 note clear print print32;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 float;
+#X text 12 145 OUTLET_2 float;
+#X text 12 165 OUTLET_3 list;
+#X restore 624 404 pd META;
+#X connect 6 0 7 1;
+#X connect 7 0 18 0;
+#X connect 7 1 12 0;
+#X connect 7 2 17 0;
+#X connect 7 3 19 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 0;
+#X connect 13 0 7 0;
+#X connect 14 0 7 0;
+#X connect 15 0 7 0;
+#X connect 16 0 7 0;
+#X connect 21 0 7 0;
+#X connect 22 0 7 0;
+#X connect 25 0 7 0;
+#X connect 26 0 7 0;
+#X connect 27 0 7 0;
+#X connect 29 0 7 0;
+#X connect 30 0 7 0;
+#X connect 31 0 7 0;

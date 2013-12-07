@@ -76,6 +76,11 @@ EXTERN_STRUCT _canvasenvironment;
 EXTERN_STRUCT _fielddesc;
 #define t_fielddesc struct _fielddesc
 
+// jsarlo
+EXTERN_STRUCT _magicGlass;
+#define t_magicGlass struct _magicGlass
+// end jsarlo
+
 typedef struct _selection
 {
     t_gobj *sel_what;
@@ -186,6 +191,9 @@ struct _glist
     unsigned int gl_goprect:1;      /* draw rectangle for graph-on-parent */
     unsigned int gl_isgraph:1;      /* show as graph on parent */
     unsigned int gl_hidetext:1;     /* hide object-name + args when doing graph on parent */
+    // jsarlo
+    t_magicGlass *gl_magic_glass;   /* magic glass object */
+    // end jsarlo
 };
 
 #define gl_gobj gl_obj.te_g

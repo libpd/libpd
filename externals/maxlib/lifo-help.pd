@@ -1,0 +1,27 @@
+#N canvas 0 26 386 286 12;
+#X obj 38 176 lifo 10;
+#X floatatom 38 231 5 0 0 0 - - -;
+#X floatatom 61 110 5 0 0 0 - - -;
+#X msg 38 76 bang;
+#X text 83 76 hit to get next number;
+#X text 111 176 lifo <size>;
+#X text 42 14 lifo :: last in first out buffer for floats;
+#X text 108 33 written for Max by St. Rainstick;
+#X msg 76 140 clear;
+#X text 127 139 clear buffer;
+#X text 92 233 output of buffer;
+#N canvas 396 26 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION last in first out buffer for floats;
+#X text 12 5 KEYWORDS control storage;
+#X text 12 65 INLET_0 bang float clear;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 AUTHOR written for Max by St. Rainstick \, ported to
+Pd by Olaf Matthes <olaf.matthes@gmx.de>;
+#X restore 322 254 pd META;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 8 0 0 0;

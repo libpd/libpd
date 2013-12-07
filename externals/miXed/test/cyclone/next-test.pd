@@ -1,0 +1,16 @@
+#N canvas 225 213 485 258 12;
+#X obj 91 143 next;
+#X msg 91 26 bang \, bang;
+#X msg 118 78 bang;
+#X obj 236 105 delay 0;
+#X msg 236 55 bang;
+#X obj 122 177 print same;
+#X obj 91 208 print new;
+#X text 286 49 this fails without geteventno;
+#X connect 0 0 6 0;
+#X connect 0 1 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 4 0 0 0;

@@ -1,0 +1,106 @@
+#N canvas 1 88 659 523 10;
+#X obj 388 293 pddp/pddplink http://tcl.tk/man/tcl8.5/TkCmd/cursors.htm
+;
+#X text 273 276 Here's a complete list of the available cursors:;
+#X msg 441 124 dot;
+#X msg 518 124 gumby;
+#X msg 561 124 gobbler;
+#X msg 370 124 coffee_mug;
+#X msg 471 124 pirate;
+#X msg 42 44 runmode_nothing;
+#N canvas 0 22 462 312 make 0;
+#X obj 95 9 inlet;
+#X obj 114 258 outlet;
+#X obj 116 168 pack symbol symbol;
+#X obj 221 147 symbol;
+#X obj 94 51 symbol;
+#X obj 227 16 inlet;
+#X msg 116 192 set \$1 \$2;
+#X obj 115 220 trigger bang anything;
+#X connect 0 0 4 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 1;
+#X connect 4 0 2 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 1 0;
+#X restore 169 205 pd make message;
+#X msg 59 63 runmode_clickme;
+#X msg 75 82 runmode_thicken;
+#X msg 92 101 runmode_addpoint;
+#X msg 110 120 editmode_nothing;
+#X obj 169 266 cursor;
+#X text 342 238 <-- this is the actual message to send;
+#X text 15 18 set your mouse cursors for this patch:;
+#X text 279 309 Here are some pictures of the cursors:;
+#X obj 387 325 pddp/pddplink http://www.lehigh.edu/~sol0/ptk/cursors.gif
+;
+#X msg 126 139 editmode_connect;
+#X msg 143 158 editmode_disconnect;
+#X msg 169 239 editmode_disconnect arrow;
+#X text 290 55 first pick a cursor:;
+#X text 189 80 <-- then choose your cursor mode;
+#X obj 46 390 cursor;
+#X msg 55 367 bang;
+#X obj 46 448 route x y;
+#X floatatom 33 472 5 0 0 0 x - -;
+#X floatatom 71 472 5 0 0 1 y - -;
+#X obj 46 342 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 135 488 5 0 0 1 mousewheel - -;
+#X obj 46 414 route motion mousewheel button;
+#X text 65 339 turn on to get mouse motion and buttons;
+#X obj 164 440 route 1 2 3;
+#X obj 164 460 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 185 460 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 206 460 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 227 459 <-- mouse buttons;
+#X text 86 366 or bang to get the current mouse position;
+#N canvas 583 22 481 747 image 0;
+#X obj 240 373 moonlib/image examples/cursor.gif 0;
+#X restore 509 309 pd image of all cursors;
+#X msg 328 124 clock;
+#X msg 288 124 arrow;
+#N canvas 413 246 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 135 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION set mouse cursors for patch;
+#X text 12 65 INLET_0 runmode_nothing runmod_clickme runmode_thicken
+runmode_addpoint editmode_nothing editmode_connect editmode_disconnect
+;
+#X text 12 115 OUTLET_0;
+#X text 12 5 KEYWORDS control canvas-op user_input;
+#X restore 600 498 pd META;
+#X connect 2 0 8 1;
+#X connect 3 0 8 1;
+#X connect 4 0 8 1;
+#X connect 5 0 8 1;
+#X connect 6 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 20 0;
+#X connect 9 0 8 0;
+#X connect 10 0 8 0;
+#X connect 11 0 8 0;
+#X connect 12 0 8 0;
+#X connect 18 0 8 0;
+#X connect 19 0 8 0;
+#X connect 20 0 13 0;
+#X connect 23 0 30 0;
+#X connect 24 0 23 0;
+#X connect 25 0 26 0;
+#X connect 25 1 27 0;
+#X connect 28 0 23 0;
+#X connect 30 0 25 0;
+#X connect 30 1 29 0;
+#X connect 30 2 32 0;
+#X connect 32 0 33 0;
+#X connect 32 1 34 0;
+#X connect 32 2 35 0;
+#X connect 39 0 8 1;
+#X connect 40 0 8 1;

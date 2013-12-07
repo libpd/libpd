@@ -1,0 +1,53 @@
+#N canvas 0 31 709 294 10;
+#X obj 51 171 demux 1 2 3 4;
+#X obj 51 91 metro 320;
+#X obj 51 111 t b b;
+#X obj 51 130 random 100;
+#X msg 51 69 1;
+#X msg 76 69 0;
+#X floatatom 135 147 0 0 0 0 - - -;
+#X obj 51 239 print output0;
+#X obj 135 129 random 4;
+#X obj 75 222 print outpu1;
+#X obj 99 205 print outp2;
+#X obj 124 188 print out3;
+#X msg 51 150 bet \$1;
+#X text 231 10 demultiplex the inlet to the specified output;
+#X obj 111 12 demultiplex;
+#X obj 315 236 demux;
+#X text 271 237 alias;
+#X text 303 159 the number of arguments defines the number of outlets
+;
+#X text 277 81 the right inlet specifies \, to which outlet the left
+inlet is routed;
+#X text 280 119 outlets number from 0..(n-1);
+#X text 549 33 part of zexy;
+#X text 263 174 even though this seems to be a bit weird \, this makes
+patches more readable (as the object becomes wider if it has more outlets)
+;
+#X text 268 140 creation: "demultiplex [<out1?> [<out2?> [<out3?> ...
+]]]";
+#N canvas 460 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 65 INLET_0 anything;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION demultiplex the inlet to the specified output
+;
+#X text 12 85 OUTLET_N anything;
+#X text 12 5 KEYWORDS control anything_op;
+#X restore 650 261 pd META;
+#X connect 0 0 7 0;
+#X connect 0 1 9 0;
+#X connect 0 2 10 0;
+#X connect 0 3 11 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 8 0;
+#X connect 3 0 12 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 1;
+#X connect 8 0 6 0;
+#X connect 12 0 0 0;

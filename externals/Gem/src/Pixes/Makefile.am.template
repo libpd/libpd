@@ -1,0 +1,15 @@
+
+AUTOMAKE_OPTIONS = foreign
+AM_CPPFLAGS = -I$(top_srcdir)
+
+noinst_LTLIBRARIES = libPixes.la
+
+libPixes_la_CXXFLAGS =
+libPixes_la_LIBADD   =
+
+# RTE flags
+libPixes_la_CXXFLAGS += @GEM_RTE_CFLAGS@
+libPixes_la_LIBADD   += @GEM_RTE_LIBS@
+
+libPixes_la_SOURCES= @SOURCES@
+

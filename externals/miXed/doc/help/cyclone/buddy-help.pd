@@ -1,0 +1,39 @@
+#N canvas 0 26 421 340 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 15 287 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 14 301 ___________________________________________________
+;
+#X text 100 171 arg sets number of in/outlets;
+#X obj 41 21 buddy 4;
+#X obj 28 168 buddy 3;
+#X floatatom 28 235 5 0 0 0 - - -;
+#X floatatom 50 213 5 0 0 0 - - -;
+#X floatatom 72 193 5 0 0 0 - - -;
+#X floatatom 28 102 5 0 0 0 - - -;
+#X floatatom 50 126 5 0 0 0 - - -;
+#X floatatom 72 146 5 0 0 0 - - -;
+#X msg 106 89 clear;
+#X text 162 89 clear all stored values;
+#X text 105 15 sync incoming data \, output when all;
+#X text 105 27 inlets received data;
+#N canvas 309 151 494 374 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control max_compatible;
+#X text 12 45 DESCRIPTION sync incoming data and output when all inlets
+have received data;
+#X text 12 75 INLET_N float;
+#X text 12 95 OUTLET_N float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 372 318 pd META;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 5 2 8 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 1;
+#X connect 11 0 5 2;
+#X connect 12 0 5 0;

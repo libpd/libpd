@@ -1,0 +1,63 @@
+#N canvas 0 26 768 482 10;
+#X text 24 -2 Take base to the exponent power using signals;
+#X obj 471 264 *~ 0.2;
+#X msg 471 143 -7 \, 1 1500 -1 1500 -7 300;
+#X obj 509 206 sig~ 2;
+#X obj 471 240 pow~;
+#X obj 47 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 47 355 dac~;
+#X obj 47 305 *~;
+#X obj 47 239 *~ 440;
+#X msg 47 125 -1 \, 1 3000;
+#X obj 47 276 cycle~;
+#X obj 47 196 pow~ 2;
+#X text 26 23 pow~ is useful for generating curves from line~. In the
+example below \, pow~ with an argument 2 (for 2 to the exponent specified
+by the input signal) is used to generate a pitch glissando.;
+#X text 101 193 optional argument determines the base of the power
+function. Default is 0;
+#X text 59 257 result goes from 220 to 880 Hz;
+#X text 119 126 pitch glissando;
+#X text 510 236 base can be a signal too;
+#X text 137 180 base in;
+#X text 320 89 amplitude envelope. 2 to the -7 doesn't completely shut
+off the signal...;
+#X text 57 180 exponent in;
+#X text 57 215 result out;
+#X obj 481 319 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X text 69 95 click to hear something;
+#X obj 107 327 Scope~ 130 130 256 3 128 -1 1 0 0 0 0 102 255 51 135
+135 135 0;
+#X obj 471 176 Line~ -7;
+#X obj 47 147 Line~ -1;
+#N canvas 247 115 494 366 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION take base to the exponent power using signals
+;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 716 462 pd META;
+#X connect 1 0 7 1;
+#X connect 1 0 21 0;
+#X connect 2 0 24 0;
+#X connect 3 0 4 1;
+#X connect 4 0 1 0;
+#X connect 5 0 9 0;
+#X connect 5 0 2 0;
+#X connect 7 0 6 0;
+#X connect 7 0 23 0;
+#X connect 8 0 10 0;
+#X connect 9 0 25 0;
+#X connect 10 0 7 0;
+#X connect 11 0 8 0;
+#X connect 24 0 4 0;
+#X connect 25 0 11 0;

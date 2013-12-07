@@ -1,0 +1,31 @@
+#N canvas 52 28 437 304 10;
+#X text 218 120 no arg;
+#X text 89 234 IEM KUG;
+#X text 73 222 musil;
+#X text 103 222 @;
+#X text 109 222 iem.at;
+#X text 72 244 Graz \, Austria;
+#X text 24 211 (c) Thomas Musil 2000 - 2006;
+#X text 327 115 like;
+#X text 109 25 with (blocksize/2 + 1) bins;
+#X text 17 13 spec2_sqrt~;
+#X obj 144 120 spec2_sqrt~;
+#X obj 359 116 sqrt~;
+#X obj 143 98 sig~ 16;
+#X obj 143 148 print~;
+#X obj 111 119 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 29 97 dsp;
+#X obj 29 71 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 143 79 5 0 0 0 - - -;
+#X floatatom 29 142 5 0 0 0 - - -;
+#X floatatom 42 122 5 0 0 0 - - -;
+#X text 106 14 take square root value of a signal spectrum;
+#X connect 10 0 13 0;
+#X connect 12 0 10 0;
+#X connect 14 0 13 0;
+#X connect 15 0 18 0;
+#X connect 15 1 19 0;
+#X connect 16 0 15 0;
+#X connect 17 0 12 0;

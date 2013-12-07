@@ -1,0 +1,33 @@
+#N canvas 0 26 533 299 10;
+#X obj 37 246 dac~;
+#X msg 81 132 butterLP \$1;
+#X msg 173 131 butterHP \$1;
+#X floatatom 81 105 5 0 0 0 - - -;
+#X floatatom 173 104 5 0 0 0 - - -;
+#X obj 48 78 *~;
+#X floatatom 82 55 5 0 0 0 - - -;
+#X obj 48 35 noise~;
+#X text 269 132 butterworth lowpass and highpass;
+#X text 181 178 creation argument: number of 2nd order sections;
+#X obj 48 178 biquadseries~ 4;
+#X text 173 22 biquadseries~ second order iir series section;
+#N canvas 379 254 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS signal block_oriented filter;
+#X text 12 45 DESCRIPTION biquadseries~ 2nd order iir series section
+;
+#X text 12 65 INLET_0 signal butterLP butterHP;
+#X text 12 85 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 482 277 pd META;
+#X connect 1 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 1 0;
+#X connect 4 0 2 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 1;
+#X connect 7 0 5 0;
+#X connect 10 0 0 0;
+#X connect 10 0 0 1;

@@ -1,0 +1,14 @@
+#N canvas 0 0 474 324 10;
+#X obj 64 64 inlet;
+#X obj 64 115 outlet;
+#X text 110 65 input: <bang>;
+#X text 121 107 output: <symbol> of parent unique number;
+#X text 106 195 IEM KUG;
+#X text 90 183 musil;
+#X text 120 183 @;
+#X text 126 183 iem.at;
+#X text 89 205 Graz \, Austria;
+#X obj 64 89 parentdollarzero;
+#X text 41 172 (c) Thomas Musil 2000 - 2006;
+#X connect 0 0 9 0;
+#X connect 9 0 1 0;

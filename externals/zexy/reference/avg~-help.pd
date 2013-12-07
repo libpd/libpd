@@ -1,0 +1,35 @@
+#N canvas 0 31 561 361 10;
+#X floatatom 59 148 0 0 0 0 - - -;
+#X floatatom 59 254 0 0 0 0 - - -;
+#X floatatom 129 255 0 0 0 0 - - -;
+#X obj 59 276 dbtorms;
+#X floatatom 59 299 0 0 0 0 - - -;
+#X text 272 269 see also:;
+#X obj 277 296 env~;
+#X obj 373 296 tavg~;
+#X obj 129 234 avg~;
+#X obj 59 233 env~;
+#X obj 315 296 envrms~;
+#X obj 59 173 osc~ 5512.5;
+#X text 456 11 part of zexy;
+#N canvas 515 193 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION calculate the arithmetic mean of one signal
+vector;
+#X text 12 5 KEYWORDS signal conversion;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 OUTLET_0 float;
+#X restore 511 340 pd META;
+#X obj 71 51 avg~;
+#X text 155 49 calculates the arithmetic mean of one signal vector
+;
+#X connect 0 0 11 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X connect 8 0 2 0;
+#X connect 9 0 1 0;
+#X connect 11 0 8 0;
+#X connect 11 0 9 0;

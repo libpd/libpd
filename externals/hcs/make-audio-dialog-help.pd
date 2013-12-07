@@ -1,0 +1,24 @@
+#N canvas 0 26 432 293 10;
+#X msg 59 115 bang;
+#X msg 59 203 \; pd audio-dialog 0 0 0 0 2 0 0 0 0 0 0 0 2 0 0 0 44100
+50 0;
+#X obj 59 176 make-audio-dialog;
+#X text 40 23 [make-audio-dialog] takes the audio-dialog message from
+[get-audio-dialog] and generates a clickable message box that will
+set the audio settings. This message box is also suitable for use with
+a [loadbang];
+#N canvas 280 175 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION take the audio-dialog message from [get-audio-dialog]
+and generate a clickable message box;
+#X text 12 75 INLET_0 anything;
+#X text 12 95 OUTLET_0 anything;
+#X restore 382 272 pd META;
+#X obj 59 147 get-audio-dialog;
+#X connect 0 0 5 0;
+#X connect 2 0 1 0;
+#X connect 5 0 2 0;

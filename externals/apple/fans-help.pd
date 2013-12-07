@@ -1,0 +1,68 @@
+#N canvas 273 22 560 421 10;
+#X obj 4 -17 cnv 15 550 40 empty \$0-pddp.cnv.header fans 3 12 0 18
+-241536 -1 0;
+#X obj 3 189 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlet 15 12 0 13
+-245500 -191407 0;
+#N canvas 779 22 494 344 META 0;
+#X text 12 25 KEYWORDS control number float store;
+#X text 12 45 LICENSE GPL;
+#X text 12 65 TEMPLATE template-help.pd v0.1;
+#X text 12 85 PLATFORM windows macosx gnulinux;
+#X text 12 105 DATATYPE float list;
+#X text 12 125 LIBRARY internal;
+#X text 12 145 WEBSITE http://crca.ucsd.edu/~msp/;
+#X text 12 165 RELEASE_DATE 2007-08-24;
+#X text 12 185 RELEASE_VERSION 0.40-test05;
+#X text 12 5 GENRE storage;
+#X restore 500 373 pd META;
+#X obj 3 262 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 15 12 0
+13 -245500 -191407 0;
+#X obj 3 338 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 15
+12 0 13 -245500 -191407 0;
+#X obj 470 6 pddp/pddplink http://wiki.puredata.info/en/apple/fans
+-text pdpedia: fans;
+#X msg 146 48 bang;
+#X obj 73 54 tgl 15 0 empty empty empty 0 -6 0 10 -204786 -1 -1 0 1
+;
+#X text 183 46 output sensor values;
+#X obj 72 283 cnv 17 3 20 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 146 101 apple/fans;
+#X text 15 6 description: query the system fans in Apples;
+#X text 94 201 bang - output all data about all fans;
+#X floatatom 146 147 5 0 0 0 - - -;
+#X floatatom 180 147 5 0 0 0 - - -;
+#X floatatom 215 147 5 0 0 0 - - -;
+#X obj 173 75 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -262144 -1
+-1 1;
+#X text 302 73 choose a specific fan;
+#X text 94 221 float - output all data about a specific fan;
+#X floatatom 249 147 5 0 0 0 - - -;
+#X floatatom 284 147 5 0 0 0 - - -;
+#X obj 72 309 cnv 17 3 20 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 103 280 messages with the values of the various data;
+#X text 104 306 messages with status information;
+#X text 94 241 symbol - output a specific data about a specific fan
+;
+#X floatatom 318 147 5 0 0 0 - - -;
+#X obj 146 125 route F0Ac F0Mn F0Mx F0Mt F0Sf F0Tg F0ID;
+#X obj 73 73 metro 2000;
+#X obj 485 -14 apple/fans;
+#X obj 356 147 moocow/string2any;
+#X obj 356 170 pddp/print;
+#X obj 83 139 print;
+#X connect 6 0 10 0;
+#X connect 7 0 27 0;
+#X connect 10 0 26 0;
+#X connect 10 0 31 0;
+#X connect 16 0 10 0;
+#X connect 26 0 13 0;
+#X connect 26 1 14 0;
+#X connect 26 2 15 0;
+#X connect 26 3 19 0;
+#X connect 26 4 20 0;
+#X connect 26 5 25 0;
+#X connect 26 6 29 0;
+#X connect 27 0 10 0;
+#X connect 29 0 30 0;

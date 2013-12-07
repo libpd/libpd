@@ -1,0 +1,88 @@
+current: all
+
+.SUFFIXES: .pd_darwin
+
+PD_INSTALL_PATH = "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+LIB = -ldl -lm -lpthread
+
+CFLAGS = -DPD -DUNIX -g -Wall -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O2 -fno-strict-aliasing \
+	$(INCLUDE) $(UCFLAGS) $(AFLAGS) \
+
+MACOSXLINKFLAGS = -bundle -bundle_loader $(PD_INSTALL_PATH)/bin/pd
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = tab_abs.c \
+	tab_add.c \
+	tab_add_scalar.c \
+	tab_carth2polar.c \
+	tab_complex_inv.c \
+	tab_complex_mul.c \
+	tab_const.c \
+	tab_conv.c \
+	tab_copy.c \
+	tab_counter.c \
+	tab_cross_corr.c \
+	tab_div.c \
+	tab_eq.c \
+	tab_eq_scalar.c \
+	tab_fft.c \
+	tab_find_exact_peaks.c \
+	tab_find_peaks.c \
+	tab_ge.c \
+	tab_ge_scalar.c \
+	tab_gt.c \
+	tab_gt_scalar.c \
+	tab_get_size.c \
+	tab_ifft.c \
+	tab_le.c \
+	tab_le_scalar.c \
+	tab_lt.c \
+	tab_lt_scalar.c \
+	tab_max_index.c \
+	tab_min_index.c \
+	tab_min_max.c \
+	tab_mul.c \
+	tab_mul_scalar.c \
+	tab_ne.c \
+	tab_ne_scalar.c \
+	tab_reverse.c \
+	tab_rfft.c \
+	tab_rifft.c \
+	tab_sqrt.c \
+	tab_sub.c \
+	tab_sum.c \
+	iem_tab.c
+
+TARGET = iem_tab.pd_darwin
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) $(MACOSXLINKFLAGS) -o $(TARGET) *.o $(LIB)
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) $(CFLAGS) -DPD $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

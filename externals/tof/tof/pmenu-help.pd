@@ -1,0 +1,78 @@
+#N canvas 1 53 756 631 10;
+#X obj 221 187 key;
+#X msg 124 222 clear;
+#X obj 221 213 sel 65;
+#X text 267 213 <- Shift+A will open the menu;
+#X msg 45 63 add a bb ccc dddd eeeee;
+#X msg 230 320 2;
+#X msg 261 321 3;
+#X text 201 62 add items;
+#X obj 265 417 r \$0pmenu;
+#X obj 332 422 bng 15 250 50 0 \$0pmenu empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 291 320 -1;
+#X msg 224 287 colors green purple grey;
+#X obj 45 459 tof/pmenu 1 1 black white red;
+#X text 298 536 3: background color (#000000 html or tk colors);
+#X text 296 551 4: foreground color (#000000 hmtl or tk colors);
+#X text 298 566 5: highlight color (#000000 html or tk colors);
+#X text 222 257 values can be tk colors(red \, blue \, etc) or html
+colors (#ffffff);
+#X text 221 241 colors: background foreground highlight;
+#X text 297 507 2: focus the item that was last selected when the menu
+pops. On (1) by default.;
+#X text 296 476 1: display the indicator (the little bullet next to
+item that was last selected). On (1) by default.;
+#X obj 37 18 cnv 15 400 30 empty empty empty 20 12 0 14 -261234 -66577
+0;
+#X obj 300 458 cnv 15 400 15 empty empty empty 20 12 0 14 -257985 -66577
+0;
+#X text 303 456 Creation arguments:;
+#X msg 85 153 add \$1;
+#X obj 85 130 cyclone/tosymbol;
+#X msg 85 107 with spaces;
+#X text 82 87 Adding items with spaces;
+#X obj 111 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 130 176 Pop the menu;
+#X text 249 179 You can assign any key to pop the menu (Shift+A) in
+this case.;
+#X text 322 319 Select and output a menu item by index;
+#X msg 276 349 set a;
+#X msg 290 371 symbol a;
+#X text 346 370 Select an item by name and output it;
+#X text 320 349 Select an item by name without outputing it;
+#X text 354 420 <- you can pop the menu from any gui by sending a bang
+to \$0pmenu (because a receive is associated to it);
+#X text 38 18 Description: pops a menu;
+#X text 40 31 Tags: ui;
+#N canvas 282 163 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control GUI user_input;
+#X text 12 25 DESCRIPTION pops a menu;
+#X text 12 65 INLET_0 bang add clear color;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 symbol float;
+#X restore 700 586 pd META;
+#X obj 45 498 print index;
+#X obj 144 498 print value;
+#X connect 0 0 2 0;
+#X connect 1 0 12 0;
+#X connect 2 0 12 0;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 6 0 12 0;
+#X connect 8 0 12 0;
+#X connect 10 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 39 0;
+#X connect 12 1 40 0;
+#X connect 23 0 12 0;
+#X connect 24 0 23 0;
+#X connect 25 0 24 0;
+#X connect 27 0 12 0;
+#X connect 31 0 12 0;
+#X connect 32 0 12 0;

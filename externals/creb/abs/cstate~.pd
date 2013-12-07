@@ -1,0 +1,7 @@
+#N canvas 441 639 416 164 10;
+#X obj 18 23 tabreceive~ \$1-real;
+#X obj 17 52 outlet~;
+#X obj 164 53 outlet~;
+#X obj 165 24 tabreceive~ \$1-imag;
+#X connect 0 0 1 0;
+#X connect 3 0 2 0;

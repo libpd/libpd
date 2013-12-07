@@ -1,0 +1,57 @@
+#N canvas 0 26 560 368 10;
+#X obj 64 200 iem_receive aaa;
+#X obj 224 200 iem_r bbb;
+#X floatatom 64 232 5 0 0 0 - - -;
+#X floatatom 224 232 5 0 0 0 - - -;
+#X msg 68 56 \; aaa 33 \; bbb 44;
+#X obj 110 228 print a;
+#X obj 273 227 print b;
+#X msg 64 168 set ccc;
+#X msg 224 169 set ddd;
+#X msg 403 57 \; ccc 55 \; ddd 66;
+#X msg 37 143 set aaa;
+#X msg 202 143 set bbb;
+#X msg 126 174 clear;
+#X msg 289 174 clear;
+#X text 13 8 iem_receive;
+#X text 108 8 receive-object with changeable receive-label;
+#X text 289 200 1.arg: <symbol> or <float> receive-label;
+#X floatatom 84 253 5 0 0 0 - - -;
+#X obj 56 256 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 238 257 5 0 0 0 - - -;
+#X obj 210 260 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 157 56 \; aaa set 11 \; bbb set 22;
+#X text 138 331 IEM KUG;
+#X text 122 319 musil;
+#X text 152 319 @;
+#X text 158 319 iem.at;
+#X text 73 308 (c) Thomas Musil 2000 - 2005;
+#X text 121 341 Graz \, Austria;
+#N canvas 387 261 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Thomas Musil;
+#X text 12 45 LICENSE LGPL v2.1;
+#X text 12 25 KEYWORDS control nonlocal;
+#X text 12 65 DESCRIPTION receive-object with changeable receive-label
+;
+#X text 12 85 INLET_0 set clear anything;
+#X text 12 105 OUTLET_0 anything;
+#X text 12 5 ALIAS iem_r;
+#X restore 500 342 pd META;
+#X connect 0 0 2 0;
+#X connect 0 0 5 0;
+#X connect 1 0 3 0;
+#X connect 1 0 6 0;
+#X connect 2 0 17 0;
+#X connect 2 0 18 0;
+#X connect 3 0 19 0;
+#X connect 3 0 20 0;
+#X connect 7 0 0 0;
+#X connect 8 0 1 0;
+#X connect 10 0 0 0;
+#X connect 11 0 1 0;
+#X connect 12 0 0 0;
+#X connect 13 0 1 0;

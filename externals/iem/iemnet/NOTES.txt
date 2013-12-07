@@ -1,0 +1,26 @@
+scratchpad for the development of iemnet
+========================================
+
+speed & syslocks
+================
+one bottleneck right now is the synchronisation with Pd's
+main thread to register a clock callback.
+doing a sys_lock() whenever a package arrives will slow down things immensely.
+
+alternatives:
+ no sys_lock(): will eventually crash Pd (no option)
+ use sys_trylock(): this might eventually fail to notify Pd of newly arrived
+                    packets (bad for throughput)
+ external polling: no syslock needed at all, but more complicated
+ keep track of clock_callback: "notified" flag tells us, whether we have already
+           sent a notification which has not yet been handled...no need to notify again
+
+ #4 looks most promising
+
+
+tests for tcpclient/server:
+	client disconnects -> server should get notified
+	server disconnects -> client should get notified
+	client crashes -> server should disconnect
+	server crashes -> client should disconnect
+

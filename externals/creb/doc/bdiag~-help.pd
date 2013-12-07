@@ -1,0 +1,108 @@
+#N canvas 0 26 650 407 10;
+#X obj 34 45 metro;
+#X msg 34 20 bang;
+#X floatatom 76 20 5 0 0 0 - - -;
+#X obj 34 327 dist~ 1;
+#X obj 24 359 dac~;
+#N canvas 11 6 262 403 systemparams 0;
+#X floatatom 81 47 5 0 0 0 - - -;
+#X floatatom 125 47 5 0 0 0 - - -;
+#X floatatom 81 74 5 0 0 0 - - -;
+#X floatatom 125 74 5 0 0 0 - - -;
+#X floatatom 81 102 5 0 0 0 - - -;
+#X floatatom 125 102 5 0 0 0 - - -;
+#X floatatom 81 129 5 0 0 0 - - -;
+#X floatatom 125 129 5 0 0 0 - - -;
+#X floatatom 81 157 5 0 0 0 - - -;
+#X floatatom 125 157 5 0 0 0 - - -;
+#X floatatom 81 184 5 0 0 0 - - -;
+#X floatatom 125 184 5 0 0 0 - - -;
+#X floatatom 81 212 5 0 0 0 - - -;
+#X floatatom 125 212 5 0 0 0 - - -;
+#X floatatom 81 239 5 0 0 0 - - -;
+#X floatatom 125 239 5 0 0 0 - - -;
+#X obj 28 65 bdft 1;
+#X obj 27 93 bdft 2;
+#X obj 28 120 bdft 3;
+#X obj 28 175 bdft 7;
+#X obj 28 202 bdft 11;
+#X obj 28 230 bdft 17;
+#X obj 28 257 bdft 30;
+#X obj 28 319 outlet;
+#X text 20 23 frequency detune and damping;
+#X text 49 283 bdft argument = harmonic;
+#X obj 28 147 bdft 5;
+#X connect 0 0 16 0;
+#X connect 1 0 16 1;
+#X connect 2 0 17 0;
+#X connect 3 0 17 1;
+#X connect 4 0 18 0;
+#X connect 5 0 18 1;
+#X connect 6 0 26 0;
+#X connect 7 0 26 1;
+#X connect 8 0 19 0;
+#X connect 9 0 19 1;
+#X connect 10 0 20 0;
+#X connect 11 0 20 1;
+#X connect 12 0 21 0;
+#X connect 13 0 21 1;
+#X connect 14 0 22 0;
+#X connect 15 0 22 1;
+#X connect 16 0 23 0;
+#X connect 17 0 23 0;
+#X connect 18 0 23 0;
+#X connect 19 0 23 0;
+#X connect 20 0 23 0;
+#X connect 21 0 23 0;
+#X connect 22 0 23 0;
+#X connect 26 0 23 0;
+#X restore 89 76 pd systemparams;
+#X obj 34 93 bdiag~;
+#X obj 34 232 dynwav~;
+#X obj 34 283 vol~;
+#X floatatom 57 257 5 0 0 0 - - -;
+#X floatatom 78 168 5 0 0 0 - - -;
+#X obj 78 196 phasor~;
+#X text 258 168 the [eig <index> <real> <imag>] message sets the eigenvalue
+for the corresponding block. there are n/2 blocks \, with n the dsp
+blocksize.;
+#X text 259 223 you can use [timefreq <index> <60dB time> <frequency>]
+for a more appropriate initialization of the eigenvalues using decay
+time in milliseconds and oscillation frequency in Hz.;
+#X text 256 18 bdiag~: parallel block diagonal state space model (parallel
+2d rotations) see bdiag.c for more info. the state equations for one
+block are:;
+#X text 300 70 state1 = real * state1 - imag * state2 + input1;
+#X text 300 85 state2 = real * state2 + imag * state1 + input2;
+#X text 258 121 this module is intended to "filter" spectral data produced
+by bfft or other short time spectral transforms like dwt.;
+#X text 256 279 [bang] or [random] set the state vector to a random
+value. [reset] sets it to 0;
+#X text 256 327 this patch uses of bdiag~ \, ibfft~ and dynwav~ to
+build a 32 voice harmonic modal synth \, with the state excited with
+white noise on bang.;
+#N canvas 379 254 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION parallel block diagonal state space model
+(parallel 2d rotations);
+#X text 12 75 INLET_0 bang signal random reset timefreq eig;
+#X text 12 95 OUTLET_0 signal;
+#X text 11 5 KEYWORDS signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 600 386 pd META;
+#X obj 34 129 ibfft~;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 4 0;
+#X connect 3 0 4 1;
+#X connect 5 0 6 0;
+#X connect 6 0 21 0;
+#X connect 7 0 8 0;
+#X connect 8 0 3 0;
+#X connect 9 0 8 1;
+#X connect 10 0 11 0;
+#X connect 11 0 7 1;
+#X connect 21 0 7 0;

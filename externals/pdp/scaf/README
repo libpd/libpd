@@ -1,0 +1,92 @@
+PDP_SCAF for pdp v0.7
+Cellular Automata modules for PDP
+
+Copyright (c) by Tom Schouten <tom@zwizwa.be>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+The GNU Public Licence can be found in the file COPYING
+
+
+------------------------------------------------------------------
+
+This is a pdp extension lib that contains modules for cellular
+automata built on a (very) minimal forth-like virtual system
+(scaf - simple cellular automaton forth) to define update rules. a 
+compiler is included to produce scafo object code that can be 
+dynamically loaded into the pdp_ca module. so it is possible to 
+add/change rules without restarting pd (note however you need to close 
+all lib files before the dynamic loader reloads the lib).  see 
+scaf/README for details.
+
+
+pdp_ca2image and pdp_image2ca are included for conversion between
+CA packets and image packets. (pdp_ca2image produces greyscale
+images)
+
+Have a look at the patches in test/ for some crude docs. The file
+README.scaf contains some more info on the internals.
+
+
+Requirements:
+
+* pd
+* pdp
+* linux
+* perl for the forth compiler
+* an intel/amd processor that supports MMX
+
+
+Building:
+
+./configure
+make
+make install
+
+If you don't have both libraries in the same dir and want to keep
+it that way, hardcode the paths in Makefile.config.in and run 
+configure. You need to do "make install" to install the scaf compiler 
+"scafc" and the default ruleset. This is to be able to load plain 
+(text) rule files and have the default rules loaded when you create
+a pdp_ca object.
+
+Using:
+
+add "-lib <SCAF_DIR>/pdp_scaf" to the pd command line after the 
+"-lib <PDP_DIR>/pdp" part.
+
+
+
+launch pd with the options -lib $PDP_DIR/pdp -path $PDP_DIR/abstractions
+
+Directory structure:
+
+include/	header files
+pdp/		pdp external code
+compiler/	forth system code
+test/		some test patches (cryptic doc)
+rules/		ca rule libraries
+
+
+
+Please let me know if you discover a bug or think something doesn't work 
+right. Code, documentation or example patches are more than welcome of 
+course.
+
+Have Fun,
+
+Tom
+
+last modified: 2003/01/12

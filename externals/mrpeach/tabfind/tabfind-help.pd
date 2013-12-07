@@ -1,0 +1,54 @@
+#N canvas 1 53 510 378 10;
+#X obj 0 299 table pig;
+#X obj 94 138 tabfind pig;
+#X obj -3 24 f;
+#X obj -3 7 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -257985
+-1;
+#X msg 89 116 set wig;
+#X obj 64 299 table wig;
+#X msg 70 97 set pig;
+#X msg 0 266 \; wig 0 88 89 88 83 22 0 11;
+#X msg 51 78 nth \$1;
+#X text 107 61 By default tabfind finds the first instance of the input.
+;
+#X text 98 77 The [nth( message sets which instance to fnd.;
+#X obj 55 194 loadbang;
+#X text 131 96 The [set( message sets which array to look in.;
+#X text 148 159 index \, or length of array if input not found.;
+#X msg 16 43 76 72 71;
+#X msg 45 221 \; pig 0 72 73 75 76 72 71 72 76 88 0 0 99 100 101 102
+76 72 71 99 98 97;
+#X text 281 297 2008_11_20 Martin Peach;
+#X obj 51 62 nbx 5 14 1 1e+37 0 1 empty empty empty 0 -8 0 10 -4034
+-16662 -1 1 256;
+#X obj 17 7 nbx 3 14 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10 -4034
+-16662 -1 99 256;
+#X obj 94 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-4032 -258113 -1 0 256;
+#X text -4 -30 [tabfind] searches an array and outputs the index at
+which the input float or list of floats is found.;
+#X text 166 137 argument is the name of the array to search in.;
+#X text 55 6 <--find this number.;
+#X text 71 43 <-- or find this sequence.;
+#N canvas 434 305 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 115 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control array;
+#X text 12 46 DESCRIPTION search an array and output the index at which
+the input float or list of floats is found;
+#X text 12 75 INLET_0 float list nth set;
+#X text 12 95 OUTLET_0 float;
+#X restore 444 310 pd META;
+#X connect 1 0 19 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 6 0 1 0;
+#X connect 8 0 1 0;
+#X connect 11 0 15 0;
+#X connect 11 0 7 0;
+#X connect 14 0 1 0;
+#X connect 17 0 8 0;
+#X connect 18 0 2 1;

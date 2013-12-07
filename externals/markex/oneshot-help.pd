@@ -1,0 +1,22 @@
+#N canvas 1 53 518 454 10;
+#X text 124 68 GEM object;
+#X obj 123 298 print out1;
+#X msg 123 155 bang;
+#X text 138 23 oneshot;
+#X obj 123 219 oneshot;
+#X msg 188 154 clear;
+#X text 61 385 oneshot blocks after the initial bang \, until a clear
+message is received.;
+#N canvas 496 82 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR Mark Danks;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control bang_op;
+#X text 12 45 DESCRIPTION let one bang pass;
+#X text 12 65 INLET_0 bang clear;
+#X text 12 85 OUTLET_0 bang;
+#X restore 448 421 pd META;
+#X connect 2 0 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;

@@ -1,0 +1,33 @@
+#N canvas 545 156 450 300 10;
+#X obj 46 81 logpost;
+#X obj 49 38 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X msg 47 120 symbol hello;
+#X obj 48 171 logpost 2 testing;
+#X msg 61 143 hello;
+#X text 22 7 post at different levels;
+#X obj 85 62 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -262144 -1
+-1 0;
+#X obj 224 137 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 2000 1;
+#X obj 221 157 logpost 3;
+#X obj 113 234 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 2800 1;
+#X obj 110 252 logpost 3 loasdf 23 sdkjh;
+#X obj 257 233 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X obj 234 37 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 1200 1;
+#X obj 231 57 logpost farg;
+#X obj 234 77 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 3500 1;
+#X obj 231 97 logpost three 2 asdf;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 4 0 3 0;
+#X connect 6 0 0 1;
+#X connect 7 0 8 0;
+#X connect 9 0 10 0;
+#X connect 11 0 10 1;
+#X connect 12 0 13 0;
+#X connect 14 0 15 0;

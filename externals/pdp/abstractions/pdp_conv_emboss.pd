@@ -1,0 +1,37 @@
+#N canvas 172 505 641 290 10;
+#X obj 30 55 inlet;
+#X obj 29 206 outlet;
+#X obj 29 93 pdp_conv;
+#X obj 29 126 pdp_add;
+#X obj 108 9 loadbang;
+#X obj 218 86 pdp_conv;
+#X obj 29 176 pdp_affine 1;
+#X msg 108 151 0.5;
+#X msg 108 37 hmask 1 0 0;
+#X msg 218 35 hmask 0 0 1;
+#X obj 145 151 inlet;
+#X text 142 178 this uses pdp_conv \, pdp_add and pdp_affine to produce
+an emboss effect using the convolution mask (-1 0 0 \; 0 0 0 \; 0 0
+1) the right inlet sets the chroma offset.;
+#X msg 218 60 vmask 0 0 1;
+#X msg 108 60 vmask -1 0 0;
+#X msg 108 128 chanmask 1;
+#X connect 0 0 2 0;
+#X connect 0 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 6 0;
+#X connect 4 0 8 0;
+#X connect 4 0 9 0;
+#X connect 5 0 3 1;
+#X connect 6 0 1 0;
+#X connect 7 0 6 2;
+#X connect 8 0 2 0;
+#X connect 8 0 13 0;
+#X connect 9 0 5 0;
+#X connect 9 0 12 0;
+#X connect 10 0 6 2;
+#X connect 12 0 5 0;
+#X connect 13 0 2 0;
+#X connect 13 0 14 0;
+#X connect 14 0 6 0;
+#X connect 14 0 7 0;

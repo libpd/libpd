@@ -1,0 +1,25 @@
+zexy (2.2.6) UNRELEASED; urgency=low
+
+  * Fixes NULL-pointer access and file handle leaks
+  * Fixes for autotools
+  * Allow to build both single-object and multiobject binaries in one go
+	(just use "--enable-library=both")
+
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Tue, 17 Jan 2012 10:12:13 +0100
+
+zexy (2.2.5) RELEASED; urgency=low
+
+  * switched to autotools
+  * generate ChangeLog with "dch -c ChangeLog"
+
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Thu, 29 Sep 2011 14:19:18 +0200
+
+zexy (2.2.4) RELEASED; urgency=low
+
+  * disable SIMD code by default (prevent crashes)
+  * [msgfile] does not crash with [add2( on an emtpy buffer
+  * [pack]/[unpack] now accept all messages (like their vanilla counterparts)
+  * [limiter~] on-the-fly oversampling parameters (higher precision)
+  * all code is now UTF-8
+
+ -- IOhannes m zmoelnig (gpg-key at iem) <zmoelnig@iem.at>  Wed, 26 Sep 2011 21:20:20 +0200

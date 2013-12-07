@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+          "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<sect1>
+  <title>first simple test</title>
+
+  <para>test patch is here: <ulink url="pddplink-test-01.pd"/></para>
+
+  <para>The above link works if you opened this page from Pd,
+    for example, by clicking on an object
+    <programlisting><command>pddplink</command> pddplink-test-01.html</programlisting>
+  </para>
+
+  <para>Pd links should also work in all pages opened through any other,
+    initiating, Pd-opened page.</para>
+
+  <para>Another simple test page is here: <ulink url="pddplink-test-02.html"/></para>
+</sect1>

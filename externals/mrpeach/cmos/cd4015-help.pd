@@ -1,0 +1,25 @@
+#N canvas 693 303 454 304 12;
+#X obj 125 135 cd4015 4bit shift register;
+#X obj 125 84 tgl 15 0 empty empty Clk 17 7 0 10 -44926 -258699 -1
+0 1;
+#X obj 226 84 tgl 15 0 empty empty D 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 328 84 tgl 15 0 empty empty R 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 125 183 tgl 15 0 empty empty Q1 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 192 183 tgl 15 0 empty empty Q2 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 260 183 tgl 15 0 empty empty Q3 17 7 0 10 -24198 -258699 -1
+0 1;
+#X obj 328 183 tgl 15 0 empty empty Q4 17 7 0 10 -24198 -258699 -1
+0 1;
+#X text 32 22 cd4016 emulates 1/2 of the CMOS shift register;
+#X text 165 239 20070319_MartinPeach;
+#X connect 0 0 4 0;
+#X connect 0 1 5 0;
+#X connect 0 2 6 0;
+#X connect 0 3 7 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 2;

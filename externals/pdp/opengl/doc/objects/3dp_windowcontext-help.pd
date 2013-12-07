@@ -1,0 +1,36 @@
+#N canvas 118 0 641 389 10;
+#X obj 55 68 metro 40;
+#X obj 55 38 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 55 166 3dp_mouserotate;
+#X obj 357 149 3dp_light 0;
+#X obj 55 140 3dp_push;
+#X obj 357 121 3dp_view transz 5;
+#X obj 55 110 3dp_windowcontext;
+#X obj 55 192 3dp_draw cube 7;
+#X msg 222 71 dim 1023 768;
+#X floatatom 485 87 5 0 0 0 - - -;
+#X msg 222 47 dim 320 240;
+#X text 203 185 the 3dp_windowcontext creates a window to draw in.
+the window packet will be the output to the left outlet when a bang
+is received. control flow for context is right to left \, this means
+if a 3dp object has 2 context outlets \, the rightmost will be propagated
+before the leftmost. there is no fanout. all operations are accumulative
+\, including the geometric transformations. if you need to branch use
+a 3dp_push object.;
+#X text 88 37 <-- start here;
+#X text 78 348 bitch made doc for PDP 0.12.4 - http://delcorp.org/abbadingo
+;
+#X text 440 151 <-- light source;
+#X text 335 54 <-- changes the window size;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 7 0;
+#X connect 4 0 2 0;
+#X connect 4 1 5 0;
+#X connect 5 0 3 0;
+#X connect 6 0 4 0;
+#X connect 6 1 2 1;
+#X connect 8 0 6 0;
+#X connect 9 0 5 1;
+#X connect 10 0 6 0;

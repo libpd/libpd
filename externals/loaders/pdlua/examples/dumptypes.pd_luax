@@ -1,0 +1,12 @@
+-- dump Lua types for atoms, just to see what we get for pointers
+return function(self, sel, atoms)
+  self.inlets = 1
+  function self:in_1(sel, atoms)
+    pd.post(sel .. "[")
+    for _,v in ipairs(atoms) do
+      pd.post(type(v))
+    end
+    pd.post("]")
+  end
+  return true
+end

@@ -1,0 +1,34 @@
+Change log for PD external 'sprinkler' (formerly 'forward')
+
+v0.06 Tue, 14 Sep 2004 18:50:03 +0200
+  + added --enable-all-forwardmess configure option to use pd_forwardmess()
+    for all messages (even those of length 1) : should fix 'bang' problem
+  + fixed gcc-3.3 warning re: (++argv) in sprinkler_list() thanks to
+    Erasmus Zipfel
+
+v0.05 Mon, 23 Feb 2004 01:14:08 +0100
+  + added pass-through outlet for unbound destination symbols
+  + added hack to prevent 'bang's being sprinkled as 'normal' symbols
+
+v0.04 Thu, 29 Jan 2004 16:26:00 +0100
+  + added error() call for missing destinations
+  + todo: add pass-through outlet for missing destinations
+
+v0.03 Sun Sep  8 00:56:33 CEST 2002
+   + renamed to 'sprinkler'
+   + added 'configure' option --enable-forward to allow
+     backwards-compatibility
+   + added 'configure option --enable-debug
+   + added help-file tweaking to 'configure.in'
+
+v0.02 Sun Sep  1 00:47:40 CEST 2002
+   + added black magic in 'forward_anything()' to generate
+     real selectors for single-element arglists (especially symbols)
+   + gutted 'configure.in'
+   + added check for MacOSX in 'configure.in'
+   + added 'OFLAGS' autoconf->makefile variable for
+     optimization flags: contents from pd-0.35-test16
+   + added 'autogen.sh' and 'README.cvs'
+
+v0.01 Sun Apr 21 15:21:42 CEST 2002
+   + initial distributed version

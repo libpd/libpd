@@ -1,0 +1,78 @@
+#N canvas 4 50 488 488 10;
+#X obj 76 35 urn;
+#X text 73 75 generates random numbers without repetition;
+#X floatatom 25 290 5 0 0 1 urn - -;
+#X obj 25 259 urn 10;
+#X text 97 257 generates integer numbers between 0..(n-1);
+#X text 57 110 do generate!;
+#X floatatom 92 223 5 0 0 0 - - -;
+#X text 132 221 set (n);
+#X msg 80 141 seed 10;
+#X text 134 142 set the seed \, so you can reproduce the random-numbers
+;
+#X msg 82 178 clear;
+#X text 126 177 put all the numbers back.;
+#X obj 62 333 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 106 35 a Unique Random Numbers generator;
+#X text 79 332 when all the numbers have been drawn from the pool \,
+the system is reset (the numbers are put back) and a bang is emitted
+via the second outlet;
+#N canvas 144 58 450 344 lotto 0;
+#X text 44 35 in austria \, lotto is 6-of-45;
+#X obj 88 133 urn 45;
+#X obj 88 161 + 1;
+#X obj 88 184 repack 6;
+#X obj 88 52 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 88 233 unpack 0 0 0 0 0 0;
+#X floatatom 88 253 2 0 0 0 - - -;
+#X floatatom 112 253 2 0 0 0 - - -;
+#X floatatom 136 253 2 0 0 0 - - -;
+#X floatatom 160 253 2 0 0 0 - - -;
+#X floatatom 184 253 2 0 0 0 - - -;
+#X floatatom 209 253 2 0 0 0 - - -;
+#X obj 88 207 sort;
+#X obj 88 112 until;
+#X msg 88 90 6;
+#X obj 88 71 t b b;
+#X msg 118 90 clear;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 12 0;
+#X connect 4 0 15 0;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 5 2 8 0;
+#X connect 5 3 9 0;
+#X connect 5 4 10 0;
+#X connect 5 5 11 0;
+#X connect 12 0 5 0;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 0;
+#X connect 15 1 16 0;
+#X connect 16 0 1 0;
+#X restore 74 440 pd lotto;
+#X obj 249 453 random;
+#X text 182 453 see also:;
+#X text 346 21 part of zexy;
+#N canvas 498 241 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION a Unique Random Numbers generator;
+#X text 12 5 KEYWORDS control random;
+#X text 12 65 INLET_0 bang seed clear;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 OUTLET_1 bang;
+#X restore 433 462 pd META;
+#X msg 25 109 bang;
+#X connect 3 0 2 0;
+#X connect 3 1 12 0;
+#X connect 6 0 3 1;
+#X connect 8 0 3 0;
+#X connect 10 0 3 0;
+#X connect 20 0 3 0;

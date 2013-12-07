@@ -1,0 +1,15 @@
+#N canvas 0 0 450 300 10;
+#X obj 68 60 inlet~;
+#X obj 68 133 outlet~;
+#X text 67 27 nop~ no-operation;
+#X text 125 56 this is how a nop really should behave.;
+#X text 128 81 prior versions delayed the signal by 1 block.;
+#X text 127 102 use something like;
+#X obj 265 102 z~ 64;
+#X obj 178 225 print warning;
+#X msg 178 204 nop~ does not delay any more!;
+#X obj 178 183 loadbang;
+#X text 272 20 part of zexy;
+#X connect 0 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;

@@ -1,0 +1,54 @@
+#N canvas 0 26 418 473 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 12 428 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 11 442 ___________________________________________________
+;
+#X obj 43 23 Peak;
+#X text 102 24 output only numbers greater than the previous;
+#X obj 67 269 Peak;
+#X floatatom 12 195 5 0 0 0 - - -;
+#X floatatom 67 350 5 0 0 0 - - -;
+#X msg 67 98 4 4;
+#X text 99 100 is treated like normal input.;
+#X msg 67 75 6 7;
+#X msg 67 118 3 2;
+#X msg 81 145 bang;
+#X text 124 145 sends current peak value out the left outlet;
+#X floatatom 90 204 5 0 0 0 - - -;
+#X text 141 203 set new peak value;
+#X obj 78 326 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 103 325 new peak value ?;
+#X obj 93 300 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X text 117 301 !new peak value ?;
+#X text 98 87 first number resets peaks value \, then second one;
+#N canvas 247 115 494 408 META 0;
+#X text 12 275 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 5 GENRE help;
+#X text 12 205 LIBRARY external cyclone;
+#X text 12 225 AUTHOR krzYszcz;
+#X text 12 245 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 KEYWORDS control filter max_compatible;
+#X text 12 25 NAME Peak;
+#X text 12 85 DESCRIPTION output only numbers greater than the previous
+;
+#X text 12 105 INLET_0 bang list float;
+#X text 12 125 INLET_1 float;
+#X text 12 145 OUTLET_0 float;
+#X text 12 165 OUTLET_1 float;
+#X text 12 185 OUTLET_2 float;
+#X text 12 65 LICENSE SIBSD;
+#X restore 369 453 pd META;
+#X connect 5 0 7 0;
+#X connect 5 1 16 0;
+#X connect 5 2 18 0;
+#X connect 6 0 5 0;
+#X connect 8 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 14 0 5 1;

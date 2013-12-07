@@ -1,0 +1,10 @@
+#N canvas 50 50 600 400 12;
+#X text 10 10 Line~ clone \, unlike the line~ built into Pd;
+#X text 10 30 .;
+#X text 30 30 accepts lists of unlimited size: schedules as many;
+#X text 30 50 segments as there are pairs of floats in the input \;;
+#X text 10 70 .;
+#X text 30 70 sample-accurately starts successive segments \;;
+#X text 10 90 .;
+#X text 30 90 when last target is reached \, sends a bang through;
+#X text 30 110 the right outlet.;

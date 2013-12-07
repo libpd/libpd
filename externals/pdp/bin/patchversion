@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# cat <<EOF | cat
+cat <<EOF | ed -s configure.ac
+,s/PDP_VERSION=.*/PDP_VERSION=$1/
+,wq
+EOF
+
+

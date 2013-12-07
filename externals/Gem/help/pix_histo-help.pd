@@ -1,0 +1,104 @@
+#N canvas 230 118 660 604 10;
+#X text 452 8 GEM object;
+#X obj 8 405 cnv 15 430 130 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 408 Inlets:;
+#X text 38 505 Outlets:;
+#X obj 8 336 cnv 15 430 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 335 Arguments:;
+#X obj 7 76 cnv 15 430 250 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 132 cnv 15 160 90 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 56 518 Outlet 1: gemlist;
+#X text 63 422 Inlet 1: gemlist;
+#X text 50 12 Synopsis: [pix_color];
+#X obj 451 233 pix_draw;
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X text 20 101 [pix_histo] will get the histogram (density function)
+of an image.;
+#X text 21 140 The histogram will be stored in tables. If you specify
+(via creation-arguments or via the "set"-command) only one table \,
+a histogram of the greyscaled-image will be made. If you provide 3
+tables \, the Alpha channel will be ignored.;
+#X text 21 200 The length of the used table does not matter. The first
+element of the table will always hold the density of the "0"(min) value
+\, the last element will hold the density of the "255"(max) value.
+;
+#X text 23 259 The histogram will be scaled \, so that all densities
+sum up to 1.0f;
+#X text 29 75 Description: excerpt histograms of an image;
+#X obj 158 543 table tab-1;
+#X obj 242 544 table tab-2;
+#X obj 325 545 table tab-3;
+#X msg 461 156 set tab-1 tab-2 tab-3;
+#N canvas 0 0 450 300 graph6 0;
+#X array tab-0 100 float 0;
+#X coords 0 1 99 -1 200 140 1;
+#X restore 445 333 graph;
+#X obj 451 196 pix_histo tab-0;
+#X msg 459 135 set tab-0;
+#X msg 457 177 set tab-1 tab-2 tab-3 tab-0;
+#X text 63 346 1 arg:: <tablename> to store grey-histogram;
+#X text 62 363 3 args: <tablename>s to store RGB-histograms;
+#X text 62 378 4 args: <tablename>s to store RGBA-histograms;
+#X text 63 435 Inlet 1: set <table> : table to store grey-histogram
+;
+#X text 63 449 Inlet 1: set <table1><table2><table3> : tables to store
+RGB-histograms;
+#X text 63 474 Inlet 1: set <table1><table2><table3><table4> : tables
+to store RGBA-histograms;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 34 0;
+#X connect 32 0 34 0;
+#X connect 34 0 21 0;
+#X connect 35 0 34 0;
+#X connect 36 0 34 0;

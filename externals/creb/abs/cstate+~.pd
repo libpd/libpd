@@ -1,0 +1,9 @@
+#N canvas 441 639 286 142 10;
+#X obj 23 12 table \$1-real \$2;
+#X obj 23 33 table \$1-imag \$2;
+#X obj 23 101 tabsend~ \$1-real;
+#X obj 143 101 tabsend~ \$1-imag;
+#X obj 22 70 inlet~;
+#X obj 143 69 inlet~;
+#X connect 4 0 2 0;
+#X connect 5 0 3 0;

@@ -1,0 +1,27 @@
+#N canvas 0 26 450 300 10;
+#N canvas 331 92 494 345 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 5 KEYWORDS control storage;
+#X text 12 45 DESCRIPTION modulo counter;
+#X text 12 85 INLET_1 float;
+#X text 12 65 INLET_0 bang reset;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X text 12 25 LICENSE GPL v2;
+#X restore 392 275 pd META;
+#X obj 164 162 count;
+#X text 157 32 modulo counter;
+#X floatatom 164 189 5 0 0 0 - - -;
+#X obj 106 85 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 191 136 5 0 0 0 - - -;
+#X obj 106 110 metro 275;
+#X floatatom 106 189 5 0 0 0 - - -;
+#X obj 106 162 count 5;
+#X connect 1 0 3 0;
+#X connect 4 0 6 0;
+#X connect 5 0 1 1;
+#X connect 6 0 1 0;
+#X connect 6 0 8 0;
+#X connect 8 0 7 0;

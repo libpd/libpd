@@ -1,0 +1,9 @@
+#
+#  venus.mtl
+#
+
+newmtl vskin
+Ka 0.6 0.6 0.45
+Kd 0.6 0.6 0.45
+Ks 0.2 0.1 0.1
+Ns 5.0

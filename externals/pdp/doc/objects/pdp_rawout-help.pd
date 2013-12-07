@@ -1,0 +1,28 @@
+#N canvas 254 556 687 380 10;
+#X msg 132 63 open /tmp/otherpipe;
+#X msg 177 145 open;
+#X text 216 145 open default pipe;
+#X obj 132 219 print done;
+#X text 117 266 connect to [open< to ensure pipe stays open;
+#X text 278 64 open any pipe for reading;
+#X msg 147 85 close;
+#X text 193 85 close pipe;
+#X obj 177 125 spigot;
+#X obj 230 124 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X text 134 15 pdp_rawout: write raw data to a pipe (or file);
+#X text 293 169 creation args: <pipe>;
+#X obj 132 169 pdp_rawout /tmp/pipe;
+#X obj 15 124 pdp_help_input;
+#X obj 15 98 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X text 116 250 outlet: bang if pipe is closed;
+#X connect 0 0 12 0;
+#X connect 1 0 12 0;
+#X connect 6 0 12 0;
+#X connect 8 0 1 0;
+#X connect 9 0 8 1;
+#X connect 12 0 3 0;
+#X connect 12 0 8 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;

@@ -1,0 +1,66 @@
+#N canvas 251 11 708 682 10;
+#X msg 132 223 dim 320 240;
+#X msg 132 246 dim 640 480;
+#X text 300 227 dim sets the window dimensions;
+#X msg 131 151 create;
+#X msg 131 172 destroy;
+#X text 229 159 use these messages to explicitly create/destroy the
+window;
+#X msg 133 463 cursor \$1;
+#X obj 133 443 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 298 464 enables/disables cursor in xv window;
+#X obj 29 61 pdp_help_input;
+#X msg 29 25 start;
+#X msg 78 24 stop;
+#X text 295 200 specify the x window display;
+#X msg 131 197 display :0;
+#X obj 29 609 print;
+#X text 133 584 the output channel sends mouse event messages (press/release/drag
+and individual p/r/d for each button);
+#X msg 132 273 pos 100 100;
+#X text 300 273 set window position;
+#X msg 132 336 fullscreen;
+#X text 298 340 resize to entire screen;
+#X text 299 305 set both at once;
+#X msg 132 303 posdim 100 300 320 240;
+#X msg 131 417 tile 5 5 \$1 \$2;
+#X text 297 418 take a part of the screen (for tiling multiple pdp_xv's)
+;
+#X obj 131 396 pack 0 0;
+#X obj 190 396 t b f;
+#X floatatom 131 377 5 0 0 0 - - -;
+#X floatatom 190 376 5 0 0 0 - - -;
+#X msg 134 489 movecursor 0.5 0.5;
+#X text 299 486 move the cursor inside the window;
+#X obj 29 573 pdp_glx;
+#X obj 134 512 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 134 532 interpol \$1;
+#X text 129 88 pdp_glx ouputs video in a window using the openGL extension
+on an X11 window system. if a pdp message is received and a window
+is not open \, one is created automaticly.;
+#X text 300 534 enable/disable interpolation;
+#X connect 0 0 30 0;
+#X connect 1 0 30 0;
+#X connect 3 0 30 0;
+#X connect 4 0 30 0;
+#X connect 6 0 30 0;
+#X connect 7 0 6 0;
+#X connect 9 0 30 0;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;
+#X connect 13 0 30 0;
+#X connect 16 0 30 0;
+#X connect 18 0 30 0;
+#X connect 21 0 30 0;
+#X connect 22 0 30 0;
+#X connect 24 0 22 0;
+#X connect 25 0 24 0;
+#X connect 25 1 24 1;
+#X connect 26 0 24 0;
+#X connect 27 0 25 0;
+#X connect 28 0 30 0;
+#X connect 30 0 14 0;
+#X connect 31 0 32 0;
+#X connect 32 0 30 0;

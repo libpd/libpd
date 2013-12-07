@@ -1,0 +1,21 @@
+#N canvas 83 338 841 379 10;
+#X obj 111 142 mtx_print A;
+#X msg 33 88 bang;
+#X text 482 28 part of iemmatrix;
+#X text 267 190 outleA: matrix containing row indices;
+#X text 269 209 outletB: matrix containing col indices;
+#X obj 33 132 t a a;
+#X obj 33 201 mtx_print row;
+#X obj 140 200 mtx_print col;
+#X obj 33 163 mtx_find_rowcol;
+#X text 265 149 inletA: matrix/vector;
+#X text 166 69 calculates the row/col indices of the nonzero elements
+in a matrix;
+#X msg 33 112 matrix 2 3 1 0 1 0 1 1;
+#X text 43 34 [mtx_find_rowcol];
+#X connect 1 0 11 0;
+#X connect 5 0 8 0;
+#X connect 5 1 0 0;
+#X connect 8 0 6 0;
+#X connect 8 1 7 0;
+#X connect 11 0 5 0;

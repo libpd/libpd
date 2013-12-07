@@ -1,0 +1,31 @@
+#N canvas 1 53 547 441 12;
+#X obj 104 320 n2m;
+#X obj 104 378 print;
+#X text 32 13 n2m - note to midi;
+#X text 32 36 by mark williamson (http://www.junklight.com);
+#X text 33 75 n2m converts note names in the form <note name><octave>
+to a midi number. It copes with single notes or chords.;
+#X msg 104 174 note C5 d#7 c3;
+#X msg 62 128 note c6;
+#X msg 141 220 note D;
+#X msg 177 270 note 7;
+#X text 169 129 output note C6;
+#X text 266 174 output a chord;
+#X text 239 218 Octave defaults to 4;
+#X text 261 268 note defaults to C;
+#X text 191 343 on Windows \, its not case sensitive;
+#N canvas 463 133 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 5 KEYWORDS control conversion MIDI;
+#X text 12 45 DESCRIPTION note to midi;
+#X text 12 65 INLET_0 note;
+#X text 12 105 AUTHOR Mark Williamson <mark@junklight.com>;
+#X text 12 85 OUTLET_0 float;
+#X restore 477 408 pd META;
+#X connect 0 0 1 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;

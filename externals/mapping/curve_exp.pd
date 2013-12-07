@@ -1,0 +1,24 @@
+#N canvas 1 53 511 337 10;
+#X obj 37 25 inlet;
+#X obj 37 262 outlet;
+#X obj 38 63 moses 0;
+#X obj 22 189 * -1;
+#X obj 22 168 dbtorms;
+#X obj 22 142 * 100;
+#X obj 83 142 * 100;
+#X obj 83 169 dbtorms;
+#X text 85 25 input range: -1 to 1;
+#X text 93 262 output range: -1 to 1;
+#X text 248 296 released under the GNU GPL;
+#X text 31 282 (C) Copyright 2006 Hans-Christoph Steiner <hans@at.or.at>
+;
+#X obj 22 116 * -1;
+#X connect 0 0 2 0;
+#X connect 2 0 12 0;
+#X connect 2 1 6 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 12 0 5 0;

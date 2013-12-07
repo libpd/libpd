@@ -1,0 +1,19 @@
+#N canvas 1 53 457 282 10;
+#X floatatom 22 86 5 0 0 0 - - -;
+#X floatatom 22 133 5 0 0 0 - - -;
+#X obj 22 109 local_max;
+#X text 49 27 give the value of every local maximum whenever there
+is a change in direction.;
+#N canvas 466 198 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 115 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 95 OUTLET_0 float;
+#X text 12 75 INLET_0 float;
+#X text 12 45 DESCRIPTION give the value of every local maximum whenever
+there is a change in direction;
+#X text 12 5 KEYWORDS control abstraction filter;
+#X restore 400 257 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

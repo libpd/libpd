@@ -1,0 +1,90 @@
+#N canvas 0 0 654 372 10;
+#X text 452 8 GEM object;
+#X obj 8 275 cnv 15 430 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 278 Inlets:;
+#X text 38 325 Outlets:;
+#X obj 8 236 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 235 Arguments:;
+#X obj 7 60 cnv 15 430 170 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 254 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 293 pd gemwin;
+#X msg 519 274 create;
+#X text 515 253 Create window:;
+#X obj 450 167 cnv 15 160 80 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 0 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 246 <none>;
+#X text 56 338 Outlet 1: gemlist;
+#X text 63 292 Inlet 1: gemlist;
+#X obj 451 263 pix_draw;
+#X text 516 105 open an image;
+#X text 50 12 Synopsis: [pix_a_2grey];
+#X text 29 66 Description: convert a pixel to greyscale based on alpha
+;
+#X text 39 87 Assuming that you have an image in the gemList (for instance
+\, loaded in with pix_image) \, pix_a_2grey will convert the image
+into a greyscale.;
+#X text 39 129 If alphaVal > 0 \, then it will convert to greyscale
+where ever the pixel alpha is greater than the alphaVal.;
+#X text 38 189 If alphaVal = 0 \, then nothing happens.;
+#X text 38 159 If alphaVal < 0 \, then it will convert to greyscale
+where ever the pixel alpha is less than the -alphaVal.;
+#X text 22 210 Obviously \, this will work for RGBA-images only.;
+#X obj 451 226 pix_a_2grey;
+#X floatatom 523 206 4 -1 1 2 alpha-thresh - -;
+#X text 63 305 Inlet 2: <float>: alpha-threshold (-1..0..+1);
+#X text 512 118 (TIFF \, ..);
+#X msg 523 171 0.5;
+#X msg 479 170 -0.5;
+#X obj 451 137 pix_coloralpha;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 36 0;
+#X connect 30 0 21 0;
+#X connect 31 0 30 1;
+#X connect 34 0 31 0;
+#X connect 35 0 31 0;
+#X connect 36 0 30 0;

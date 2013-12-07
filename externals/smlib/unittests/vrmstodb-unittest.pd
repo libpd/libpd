@@ -1,0 +1,13 @@
+#N canvas 288 72 718 503 10;
+#X obj 33 147 testtools/unit-test-frame;
+#X obj 33 82 loadbang;
+#X obj 354 86 smlib/vrmstodb;
+#X msg 33 113 vrmstodb 0;
+#X obj 354 56 / 512;
+#X obj 354 120 / 100;
+#X connect 0 2 4 0;
+#X connect 1 0 3 0;
+#X connect 2 0 5 0;
+#X connect 3 0 0 0;
+#X connect 4 0 2 0;
+#X connect 5 0 0 1;

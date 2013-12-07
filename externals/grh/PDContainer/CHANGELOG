@@ -1,0 +1,17 @@
+
+new:
+ - [getall( message to dump out all data sequentially
+ - [keys( + [values( to dump out all keys, values of map, multimap
+
+version 0.2
+ - possible to store pointers now as keys, values, ... (for pd graphical datastructures)
+ - h_map: IMPORTANT: [add ( has changed !!! now it resets the value,
+   if the key is already in the map !
+   (this should break no patches I hope !)
+ - compiles with gcc4 now (templates reworked)
+ - huge memory leak fixed
+ - some bug fixes
+ - some internal changes
+
+version 0.1
+ - basic functionality 

@@ -1,0 +1,31 @@
+#N canvas 0 26 423 338 10;
+#X declare -lib cyclone -lib zexy;
+#X msg 21 52 bang;
+#X symbolatom 32 170 0 0 0 0 - - -;
+#X obj 21 246 print;
+#X text 80 75 start at the top of the list again;
+#X msg 33 76 rewind;
+#X obj 21 129 ce_path;
+#X obj 61 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 81 148 done;
+#X text 68 51 get next item in list of canvas-local paths;
+#X text 29 269 Sending bangs to [ce_path] makes it output the loaded
+paths one at a time.;
+#N canvas 433 104 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control canvas_op;
+#X text 12 45 DESCRIPTION report canvas-local paths;
+#X text 12 65 INLET_0 bang rewind;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 105 OUTLET_1 bang;
+#X restore 372 316 pd META;
+#X obj 223 15 import cyclone zexy;
+#X connect 0 0 5 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X connect 5 0 2 0;
+#X connect 5 1 6 0;

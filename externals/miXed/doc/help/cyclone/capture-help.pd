@@ -1,0 +1,59 @@
+#N canvas 0 26 557 419 10;
+#X obj 4 4 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 15 382 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 14 396 ___________________________________________________
+;
+#X obj 41 21 capture;
+#X obj 51 290 capture 64 x;
+#X msg 110 154 open;
+#X text 160 152 open editing window;
+#X floatatom 51 85 5 0 0 0 - - -;
+#X msg 24 62 10 20 30 40;
+#X msg 110 133 dump;
+#X obj 51 315 print dump;
+#X text 160 135 send out all stored values sequentially;
+#X msg 110 112 clear;
+#X text 162 112 clear contents;
+#X text 122 63 list is stored from first to last;
+#X text 143 298 second arg is x - values are in hex;
+#X text 242 311 m - values < 128 decimal \, larger numbers are hex
+;
+#X msg 110 173 wclose;
+#X text 162 171 close editing window;
+#X text 98 85 numbers are stored sequentially;
+#X msg 109 196 count;
+#X text 166 194 print number of items to the console;
+#X msg 109 217 write;
+#X msg 109 241 write /tmp/test.txt;
+#X text 262 241 write to file (no dialog);
+#X text 163 216 save to textfile (dialog box asks for filename);
+#X text 142 286 first arg is number of values to store (default 512)
+;
+#X text 104 22 store and edit numbers;
+#X text 221 337 none - values are decimal \, supports float;
+#X text 242 325 d - decimal \, default max behaviour \, only ints;
+#N canvas 247 115 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 135 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 55 DESCRIPTION store and edit numbers;
+#X text 12 5 KEYWORDS control storage max_compatible filesystem GUI
+list_op;
+#X text 12 95 OUTLET_0 float;
+#X text 12 75 INLET_0 float list clear dump open wclose count write
+;
+#X text 12 35 LICENSE SIBSD;
+#X text 12 115 AUTHOR Krzysztof Czaja;
+#X restore 505 393 pd META;
+#X connect 4 0 10 0;
+#X connect 5 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 4 0;
+#X connect 12 0 4 0;
+#X connect 17 0 4 0;
+#X connect 20 0 4 0;
+#X connect 22 0 4 0;
+#X connect 23 0 4 0;

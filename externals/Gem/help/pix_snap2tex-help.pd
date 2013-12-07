@@ -1,0 +1,122 @@
+#N canvas 16 226 935 395 10;
+#X text 452 8 GEM object;
+#X obj 8 216 cnv 15 430 160 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 218 Inlets:;
+#X text 39 347 Outlets:;
+#X obj 8 176 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 175 Arguments:;
+#X obj 8 66 cnv 15 430 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 67 cnv 15 250 300 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 50 Example:;
+#X obj 514 303 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 15 422 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 268 112 destroy;
+#X msg 132 112 create \, 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 342 pd gemwin;
+#X msg 519 323 create;
+#X text 515 302 Create window:;
+#X obj 452 157 cnv 15 240 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X text 71 31 Class: pix object;
+#X text 27 360 Outlet 1: gemlist;
+#X text 33 232 Inlet 1: gemlist;
+#X obj 451 315 square 3;
+#X obj 451 256 pix_snap2tex;
+#X obj 574 133 sphere;
+#X obj 451 74 gemhead 50;
+#X obj 574 75 gemhead 49;
+#X obj 571 256 tgl 15 1 empty empty texture_on/off 20 7 0 8 -262144
+-1 -1 1 1;
+#X obj 482 217 spigot;
+#X obj 528 217 t b f;
+#X obj 514 198 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X msg 570 209 0 0;
+#X msg 570 233 256 256;
+#X text 50 12 Synopsis: [pix_snap2tex];
+#X text 29 67 Description: take a screenshot and texture it;
+#X text 13 81 When banged [pix_snap2tex] will take a snapshot of the
+current render buffer and immediately texture it to any geometric object
+attached. You can specify the close-up you want to be grabbed via offset/dimension-pairs.
+;
+#X text 12 135 When grabbing \, be sure that something is in the rendering-buffer
+\, else you will get a black texture.;
+#X text 33 245 Inlet 1: bang: do grab!;
+#X text 33 257 Inlet 1: [1|0]: turn texturing on(default)/off;
+#X text 33 269 Inlet 1: message: quality [0|1]: turn texture-resampling
+on(default)/off;
+#X text 33 295 Inlet 2: list: offsetX offsetY (in pixels \; default:
+0 0);
+#X text 33 321 Inlet 3: list: dimenX dimenY (in pixels \; default:
+window-size);
+#X text 63 186 list: [offsetX offsetY [dimX dimY]];
+#X floatatom 527 75 5 0 0 0 - - -;
+#X obj 451 114 rotate 0 1 0 0;
+#X obj 574 113 translate -1 0 1 0;
+#X obj 451 94 translate 1 0 1 0;
+#X obj 451 197 t a b;
+#X obj 451 281 color 0.7 0.7 0.7;
+#X obj 574 94 rotate 0 1 1 1;
+#N canvas 0 0 297 145 count 0;
+#X obj 116 39 t b;
+#X obj 116 60 i;
+#X obj 143 61 + 1;
+#X obj 170 62 % 360;
+#X obj 116 17 inlet;
+#X obj 124 94 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X restore 650 74 pd count;
+#X text 624 233 dimension;
+#X text 598 211 offset;
+#X text 506 171 drawn but before the square;
+#X obj 474 164 bng 25 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 504 158 SNAP! after the sphere is;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 18 0 43 0;
+#X connect 20 0 41 0;
+#X connect 21 0 44 0;
+#X connect 21 0 45 0;
+#X connect 22 0 18 0;
+#X connect 23 0 24 0;
+#X connect 24 0 18 0;
+#X connect 24 1 25 0;
+#X connect 25 0 23 1;
+#X connect 26 0 18 1;
+#X connect 27 0 18 2;
+#X connect 38 0 39 1;
+#X connect 39 0 42 0;
+#X connect 40 0 19 0;
+#X connect 41 0 39 0;
+#X connect 42 0 18 0;
+#X connect 42 1 23 0;
+#X connect 43 0 17 0;
+#X connect 44 0 40 0;
+#X connect 45 0 44 1;
+#X connect 49 0 25 0;

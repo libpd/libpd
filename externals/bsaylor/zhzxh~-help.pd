@@ -1,0 +1,51 @@
+#N canvas 1 88 418 347 10;
+#X floatatom 127 195 5 0 0 0 - - -;
+#X obj 76 307 dac~;
+#X obj 78 277 *~;
+#X obj 13 123 readsf~;
+#X msg 36 94 1;
+#X floatatom 99 46 5 0 0 0 - - -;
+#X obj 130 183 hsl 128 8 0 2500 0 1 empty empty tone -2 -6 0 8 -262144
+-1 -1 8200 1;
+#X obj 78 220 zhzxh~;
+#X msg 13 56 open \$1;
+#X obj 136 244 vsl 8 64 0 1 0 1 empty empty empty 0 -8 0 8 -262144
+-1 -1 4200 1;
+#X text 163 25 http://www.macalester.edu/~bsaylor;
+#X text 160 9 Ben Saylor <bsaylor@macalester.edu>;
+#X obj 13 31 openpanel;
+#X obj 13 8 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1 -1
+;
+#X obj 105 120 *~;
+#X obj 155 94 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 99 67 mtof;
+#X obj 99 93 osc~ 50;
+#N canvas 83 184 494 344 META 0;
+#X text 12 65 PLATFORM windows macosx gnulinux;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 85 INLET_0 signal;
+#X text 12 105 INLET_1 float;
+#X text 12 125 OUTLET_0 signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Benjamin R. Saylor <bensaylor@fastmail.fm>;
+#X text 12 45 DESCRIPTION needs a description;
+#X text 12 5 KEYWORDS signal;
+#X restore 356 305 pd META;
+#X connect 0 0 7 1;
+#X connect 2 0 1 0;
+#X connect 2 0 1 1;
+#X connect 3 0 7 0;
+#X connect 4 0 3 0;
+#X connect 5 0 16 0;
+#X connect 6 0 0 0;
+#X connect 7 0 2 0;
+#X connect 8 0 3 0;
+#X connect 9 0 2 1;
+#X connect 12 0 8 0;
+#X connect 13 0 12 0;
+#X connect 14 0 7 0;
+#X connect 15 0 14 1;
+#X connect 16 0 17 0;
+#X connect 17 0 14 0;

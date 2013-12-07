@@ -1,0 +1,44 @@
+#N canvas 0 31 618 378 10;
+#X text 511 26 part of zexy;
+#X text 68 98 an atom can be intialized as a number \, then become
+a symbol \, later become a number again \, ....;
+#X obj 121 268 zexy/unpack;
+#X msg 121 192 1 2;
+#X msg 158 243 bang;
+#X obj 48 34 unpack;
+#X text 102 38 - split a message to atoms;
+#X text 66 68 this object is quite the same as pd's built-in [unpack]
+\, but it does not have fixed types;
+#X obj 409 249 zexy/unpack 1 2 3;
+#X msg 140 215 list a list is a list;
+#X msg 409 175 1 2;
+#X msg 446 226 bang;
+#X msg 428 198 list a list is a list;
+#X text 129 144 creation arguments specify the _number_ of atoms expected
+(default 2);
+#X obj 141 297 print unpack2;
+#X obj 121 317 print unpack1;
+#X obj 409 268 print upack1;
+#X obj 506 268 print upack3;
+#X obj 457 289 print upack2;
+#N canvas 460 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION split a message to atoms;
+#X text 12 65 INLET_0 list bang float symbol pointer;
+#X text 12 85 OUTLET_N bang float symbol pointer;
+#X text 12 5 KEYWORDS control conversion list_op;
+#X restore 564 347 pd META;
+#X connect 2 0 15 0;
+#X connect 2 1 14 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 8 0 16 0;
+#X connect 8 1 18 0;
+#X connect 8 2 17 0;
+#X connect 9 0 2 0;
+#X connect 10 0 8 0;
+#X connect 11 0 8 0;
+#X connect 12 0 8 0;

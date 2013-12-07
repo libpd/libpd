@@ -1,0 +1,37 @@
+#N canvas 0 31 495 470 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_graph 2 11 1 18 -233017 -66577
+0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 410 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 424 released under the GNU GPL;
+#X text 98 381 For more info:;
+#X msg 19 150 reset;
+#X floatatom 115 163 5 0 0 0 - - -;
+#X floatatom 114 314 5 0 0 0 - - -;
+#X obj 98 341 hsl 250 15 0 1 0 0 empty empty empty 22 8 1 12 -262144
+-1 -1 0 1;
+#X obj 98 138 hsl 250 15 0 1 0 0 empty empty empty 22 8 1 12 -261681
+-1 -1 0 1;
+#X obj 95 187 hid/hid_graph;
+#X text 18 33 This object allows you to draw an arbitrary curve \,
+which is then applied to the input range. To change the curve \, click
+anywhere on the black diagonal line and start dragging.;
+#X text 19 86 There are 100 points in [hid_graph] \, each one pixel
+in size.;
+#N canvas 478 206 494 344 META 0;
+#X text 12 135 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 75 INLET_0 float;
+#X text 12 95 OUTLET_0 float;
+#X text 12 115 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION draw an arbitrary curve \, which is then
+applied to the input range;
+#X text 12 5 KEYWORDS control conversion GUI abstraction;
+#X restore 442 441 pd META;
+#X connect 9 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 7 0;
+#X connect 10 0 8 0;

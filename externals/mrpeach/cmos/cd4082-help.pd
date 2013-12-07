@@ -1,0 +1,19 @@
+#N canvas 670 174 466 220 12;
+#X obj 86 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 124 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 86 137 tgl 15 0 empty empty empty 17 7 0 10 -258699 -241291
+-1 1 1;
+#X obj 162 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 201 82 tgl 15 0 empty empty empty 17 7 0 10 -24198 -258699 -1
+1 1;
+#X obj 86 106 cd4082 quad and;
+#X text 18 47 cd4082 emulates 1/2 of the CMOS quad AND gate;
+#X text 210 170 20070312_Martin_Peach;
+#X connect 0 0 5 0;
+#X connect 1 0 5 1;
+#X connect 3 0 5 2;
+#X connect 4 0 5 3;
+#X connect 5 0 2 0;

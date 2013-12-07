@@ -1,0 +1,14 @@
+#N canvas 58 0 508 168 10;
+#X obj 29 17 inlet;
+#X obj 29 124 outlet;
+#X obj 29 99 pdp_bqt;
+#X obj 87 18 inlet;
+#X text 94 102 pdp_motion_blur uses pdp_bqt (time biquad filter) configured
+as an allpass filter to produce a motion phase shift effect.;
+#X obj 87 42 pdp_ut_logmap_comp 0.01 0.4;
+#X msg 87 68 apf \$1 0.25;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 2 0;

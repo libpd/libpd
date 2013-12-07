@@ -1,0 +1,24 @@
+#N canvas 314 353 584 288 10;
+#X obj 81 184 pdp_randmix;
+#X obj 117 132 pdp_reg;
+#X obj 200 87 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 200 155 5 0 0;
+#X obj 81 48 pdp_help_input;
+#X msg 81 18 start;
+#X msg 130 18 stop;
+#X obj 81 238 pdp_help_output;
+#X text 268 80 click here;
+#X text 268 159 random crossfade between 2 packets;
+#X text 268 175 0 = left \, 1 = right;
+#X obj 203 125 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 6100 1;
+#X connect 0 0 7 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 0;
+#X connect 3 0 0 2;
+#X connect 4 0 0 0;
+#X connect 4 0 1 1;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 11 0 3 0;

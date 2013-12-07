@@ -1,0 +1,100 @@
+#N canvas 23 75 787 476 10;
+#X text 452 8 GEM object;
+#X obj 9 317 cnv 15 430 100 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 40 319 Inlets:;
+#X text 39 364 Outlets:;
+#X obj 9 279 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 18 278 Arguments:;
+#X obj 8 56 cnv 15 430 200 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 37 cnv 15 320 380 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 20 Example:;
+#X obj 450 353 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X msg 67 70 set destroy;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X msg 156 71 set create;
+#X obj 67 41 route create;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 7 1 5 0;
+#X restore 455 392 pd gemwin;
+#X msg 455 373 create;
+#X text 451 352 Create window:;
+#X obj 451 133 cnv 15 315 120 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 43 gemhead;
+#X text 17 378 Outlet 1: gemlist;
+#X text 24 333 Inlet 1: gemlist;
+#X obj 451 260 pix_texture;
+#X text 71 31 Class: pix object (analysis);
+#X obj 451 282 square 4;
+#X floatatom 563 286 5 0 0 0 ID - -;
+#X floatatom 563 302 5 0 0 0 x - -;
+#X floatatom 563 318 5 0 0 0 y - -;
+#X floatatom 563 334 5 0 0 0 angle - -;
+#X obj 451 64 pix_video;
+#X msg 463 188 open \$1;
+#X obj 463 167 openpanel;
+#X obj 463 148 bng 15 250 50 0 empty empty TreeIdMap 20 7 0 12 -262144
+-1 -1;
+#X text 50 12 Synopsis: [pix_fiducialtrack];
+#X text 29 57 Description: fiducial (target) detector (and tracker)
+;
+#X text 17 73 [pix_fiducialtrack] is able to detect \, identify and
+track multiple fiducials (targets with a unique topology as expressed
+by the region adjacency graph) within an image.;
+#X text 19 115 the tracking system is the one used in the reacTable*
+(http://iua.upf.edu.es/mtg/reacTable) \, and is (c) by Ross Bencina
+and Martin Kaltenbrunner. for more information on how it works \, see
+the homepage of reacTable*.;
+#X text 15 175 [pix_fiducialtrack] needs a dictionary-file for the
+used fiducials \, which can be given either via an argument or with
+the "open"-message. The default file is "all.trees";
+#X text 64 289 symbol: dictionary-file for TreeIdMap;
+#X text 24 348 Inlet 1: open <symbol>: dictionary-file for TreeIdMap
+;
+#X text 17 393 Outlet 2: (n) lists: describing n detected fiducials
+;
+#X obj 541 261 unpack 0 0 0 0;
+#X obj 450 428 pix_threshold_bernsen;
+#X text 20 428 for good result you will need some intelligent thresholding:
+;
+#X obj 451 87 pix_grey;
+#X text 16 221 [pix_fiducialtrack] only works on b/w grayscale-images
+\, so you need some pre-processing (colorconversion \, thresholding)
+;
+#X obj 451 107 pix_threshold_bernsen 16 16;
+#X msg 520 64 dimen 256 256;
+#X obj 451 222 pix_fiducialtrack all.trees;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 24 0;
+#X connect 17 0 19 0;
+#X connect 24 0 39 0;
+#X connect 25 0 43 0;
+#X connect 26 0 25 0;
+#X connect 27 0 26 0;
+#X connect 36 0 20 0;
+#X connect 36 1 21 0;
+#X connect 36 2 22 0;
+#X connect 36 3 23 0;
+#X connect 39 0 41 0;
+#X connect 41 0 43 0;
+#X connect 42 0 24 0;
+#X connect 43 0 17 0;
+#X connect 43 1 36 0;

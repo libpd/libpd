@@ -1,0 +1,41 @@
+#N canvas 1 53 534 486 10;
+#X text 41 58 data;
+#X obj 40 155 t f f;
+#X msg 57 120 0;
+#X floatatom 271 249 5 0 0 0 - - -;
+#X floatatom 318 197 5 2 150 0 - - -;
+#X text 366 195 size: n (n>=2);
+#X text 51 32 min_n return the minimum from the last n (n>1) values
+;
+#X msg 85 120 1;
+#X msg 118 120 0.5;
+#X obj 40 271 timeroll;
+#X obj 246 271 timeroll;
+#X obj 43 75 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 10 -262130
+-1 -1 0 1;
+#X floatatom 48 96 5 0 0 0 - - -;
+#X obj 5 2 cnv 15 450 20 empty empty min_n 2 11 1 18 -233017 -66577
+0;
+#X obj 246 219 min_n 20;
+#N canvas 465 111 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 OUTLET_0 float;
+#X text 12 125 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction conversion;
+#X text 12 65 INLET_0 float;
+#X text 12 45 DESCRIPTION return the minimum from the last n (n>1)
+values;
+#X text 12 85 INLET_1 float;
+#X restore 478 457 pd META;
+#X connect 1 0 9 0;
+#X connect 1 1 14 0;
+#X connect 2 0 1 0;
+#X connect 4 0 14 1;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 11 0 12 0;
+#X connect 11 0 1 0;
+#X connect 14 0 3 0;
+#X connect 14 0 10 0;

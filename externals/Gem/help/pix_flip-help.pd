@@ -1,0 +1,85 @@
+#N canvas 477 283 654 372 10;
+#X text 452 8 GEM object;
+#X obj 8 245 cnv 15 430 80 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 248 Inlets:;
+#X text 38 295 Outlets:;
+#X obj 8 206 cnv 15 430 30 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 205 Arguments:;
+#X obj 7 76 cnv 15 430 125 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 284 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 22 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 323 pd gemwin;
+#X msg 519 304 destroy;
+#X text 515 283 Create window:;
+#X obj 450 138 cnv 15 160 110 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X text 71 31 Class: pix object;
+#X obj 510 85 bng 15 250 50 0 empty empty pix_load 20 8 0 8 -262144
+-1 -1;
+#N canvas 0 22 587 366 image 0;
+#X obj 77 48 inlet;
+#X obj 77 344 outlet;
+#X obj 77 205 pix_image examples/data/fractal.JPG;
+#X obj 223 55 inlet;
+#X msg 223 123 open \$1;
+#X obj 223 100 openpanel;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X restore 451 113 pd image;
+#X text 63 216 <none>;
+#X text 56 308 Outlet 1: gemlist;
+#X text 63 262 Inlet 1: gemlist;
+#X text 50 12 Synopsis: [pix_color];
+#X text 516 105 open an image;
+#X text 509 118 (JPEG \, TIFF \, ..);
+#X msg 514 146 none;
+#X msg 514 166 horizontal;
+#X msg 514 186 vertical;
+#X msg 514 206 both;
+#X text 29 76 Description: flips the image along an axis;
+#X text 19 117 pix_flip flips an image either horizontally \, vertically
+\, or both \, depending on the message that it receives.;
+#X text 20 153 It defaults to none;
+#X text 63 275 Inlet 1: none|horizontal|vertical|both;
+#X obj 451 226 pix_flip;
+#X obj 451 253 pix_texture;
+#X obj 451 274 square;
+#X connect 10 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 17 0;
+#X connect 16 0 17 1;
+#X connect 17 0 32 0;
+#X connect 24 0 32 0;
+#X connect 25 0 32 0;
+#X connect 26 0 32 0;
+#X connect 27 0 32 0;
+#X connect 32 0 33 0;
+#X connect 33 0 34 0;

@@ -1,0 +1,22 @@
+#N canvas 1 53 472 358 10;
+#X obj 116 147 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262131
+-1 -1 0 1;
+#X text 339 191 from 0 to 1;
+#X obj 21 188 resample 50;
+#X obj 133 133 timeroll;
+#X obj 21 211 clip 0 1;
+#X text 73 54 Display a changing value over time.;
+#X text 99 110 (move the slider to see it in action);
+#N canvas 467 227 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 5 KEYWORDS control abstraction GUI;
+#X text 12 45 DESCRIPTION display a changing value over time;
+#X restore 417 330 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;

@@ -1,0 +1,20 @@
+#N canvas 128 118 680 254 10;
+#X text 458 17 updated for;
+#X obj 546 17 iemmatrix 0.2;
+#X obj 595 43 matrix;
+#X text 465 42 see also help for;
+#X obj 595 63 int;
+#X obj 48 164 mtx_int;
+#X obj 48 192 mtx_print int;
+#X obj 48 131 t a a;
+#X obj 91 132 mtx_print org;
+#X text 136 10 integer value of matrix elements;
+#X text 45 42 compute the integer value of each element of a matrix
+;
+#X obj 48 100 mtx 3 2;
+#X msg 48 80 0 1 -2 0.9 -0.9 -999.1;
+#X connect 5 0 6 0;
+#X connect 7 0 5 0;
+#X connect 7 1 8 0;
+#X connect 11 0 7 0;
+#X connect 12 0 11 0;

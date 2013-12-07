@@ -1,0 +1,15 @@
+#N canvas 149 58 200 219 10;
+#X obj 23 126 bng 15 250 50 0 empty empty empty 8 -8 0 10 0 22 22;
+#X obj 78 127 toggle 15 0 empty empty empty 8 -8 0 10 0 22 22 0;
+#X obj 13 184 hslider 128 15 0 127 0 0 empty empty empty 8 -8 0 10 0 22 22 0;
+#X obj 115 25 vslider 15 128 0 127 0 0 empty empty empty 8 -8 0 10 0 22 22 0;
+#X obj 135 26 vu 15 120 empty empty 8 -8 0 10 2 22;
+#X obj 9 46 my_canvas 15 100 60 empty 20 12 2 20 10 2;
+#X obj 11 163 radiobut 15 1 0 8 empty empty empty 8 -8 0 10 0 22 22 0;
+#X text 134 161 rdb;
+#X text 147 183 hsl;
+#X text 113 5 vsl;
+#X text 140 5 vu;
+#X text 22 109 bng;
+#X text 76 109 tgl;
+#X text 11 26 my_canvas;

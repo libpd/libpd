@@ -1,0 +1,130 @@
+#N canvas 231 140 726 710 10;
+#X floatatom 19 52 5 0 0 0 - - -;
+#X floatatom 17 116 5 0 0 0 - - -;
+#X floatatom 238 54 5 0 0 0 - - -;
+#X floatatom 237 117 5 0 0 0 - - -;
+#X floatatom 419 50 5 0 0 0 - - -;
+#X floatatom 419 137 5 0 0 0 - - -;
+#X floatatom 30 216 5 0 0 0 - - -;
+#X floatatom 30 337 5 0 0 0 - - -;
+#X text 416 29 Sends out previous value.;
+#X text 235 33 Adds one.;
+#X floatatom 367 199 5 0 0 0 - - -;
+#X text 26 198 (Gliding average);
+#X floatatom 29 405 5 0 0 0 - - -;
+#X floatatom 29 502 20 0 0 0 - - -;
+#X text 32 356 Calculates the faculty.;
+#X text 139 707 Additional \, read the macros in k_cext.h;
+#X floatatom 373 394 5 0 0 0 - - -;
+#X floatatom 367 501 5 0 0 0 - - -;
+#X floatatom 515 397 5 0 0 0 - - -;
+#X floatatom 516 501 5 0 0 0 - - -;
+#X text 361 366 Divide two numbers.;
+#X text 361 379 Integer modulus in the second outlet.;
+#X floatatom 53 682 10 0 0 0 - - -;
+#X floatatom 176 587 5 0 0 0 - - -;
+#X msg 62 584 bang;
+#X text 16 31 Sends out the input.;
+#X text 10 149 ______________________________________________________
+;
+#X text 12 341 ______________________________________________________
+;
+#X text 226 516 ______________________________________________________
+;
+#X text 231 688 ______________________________________________________
+;
+#X text 20 -9 ______________________________________________________
+;
+#X text 102 -28 k_cext. The c external object for PD by K.Matheussen
+\;;
+#X text 230 -9 ______________________________________________________
+;
+#X text 221 149 ______________________________________________________
+;
+#X text 231 341 ______________________________________________________
+;
+#X text 11 516 ______________________________________________________
+;
+#X text 8 688 ______________________________________________________
+;
+#X obj 323 357 vsl 8 170 0 127 0 0 empty empty empty 0 -8 0 8 -1 -1
+-1 0 1;
+#X obj 334 165 vsl 8 185 0 127 0 0 empty empty empty 0 -8 0 8 -1 -1
+-1 0 1;
+#X obj 183 7 vsl 8 152 0 127 0 0 empty empty empty 0 -8 0 8 -1 -1 -1
+0 1;
+#X obj 381 8 vsl 8 152 0 127 0 0 empty empty empty 0 -8 0 8 -1 -1 -1
+0 1;
+#X text 201 9 2;
+#X text 398 10 3;
+#X text 16 9 1;
+#X text 12 166 4;
+#X text 352 165 5;
+#X text 13 356 6;
+#X text 338 357 7;
+#X text 22 535 8;
+#X obj 17 75 k_cext 1 1 \; O0(V(0)) \;;
+#X obj 237 76 k_cext 1 1 \; O0(V(0) + 1) \;;
+#X obj 422 72 k_cext 1 1 \; static t_float a=0 \; O0(a) \; a=V(0) \;
+;
+#X obj 30 240 k_cext 1 1 \; static FLOATARRAY(a \, 5) \; static int
+p=0 \; a[p%5]=V(0) \; p++ \; O0( (a[0]+a[1]+a[2]+a[3]+a[4])/5 ) \;
+;
+#X obj 133 681 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 199 683 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X obj 275 683 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -6 0 10
+-262144 -1 -1 0 256;
+#X floatatom 289 588 5 0 0 0 - - -;
+#X floatatom 359 338 5 0 0 0 - - -;
+#X floatatom 437 337 5 0 0 0 - - -;
+#X floatatom 530 337 5 0 0 0 - - -;
+#X text 371 174 Some modulo operations;
+#X obj 460 530 vsl 8 170 0 127 0 0 empty empty empty 0 -8 0 8 -1 -1
+-1 0 1;
+#X text 478 535 9 Start mozilla;
+#X msg 479 566 bang;
+#X text 43 534 Sends out four random numbers between the value of inlet
+1 and inlet 2 Default values for the inlets are set by argument 3 and
+4 (5 and 10).;
+#X text 28 183 Sends out the average of the 5 last values.;
+#X text 33 380 and the SC macro.;
+#X text 33 368 Also demonstrates the use of the FOR;
+#X obj 369 223 k_cext 1 3 \; int v=I(0) \; IF !(v%3) THEN DO \; . O0(v)
+\; ELIF !(v%2) THEN DO \; . O1(v) \; ELSE \; . O2(v) \;;
+#X obj 29 431 k_cext 1 1 \; int out=1 \, i \; FOR i=2 SC i<=I(0) SC
+i++ THEN DO \; . out*=i \; O0(out) \;;
+#X obj 62 608 k_cext 3 4 0 5 10 \; int i \; RANGE(i \, 0 \, 4) DO \;
+. O(i \, (int)BETWEEN(I(1) \, I(2))) \;;
+#X obj 377 426 k_cext 2 2 \; IF I(1)!=0 THEN DO \; . O1(I(0) % I(1))
+\; O0(V(0) / V(1)) \;;
+#X msg 446 198 print;
+#X obj 479 603 k_cext 1 0 \; system( s<mozilla&>s ) \;;
+#X connect 0 0 49 0;
+#X connect 2 0 50 0;
+#X connect 4 0 51 0;
+#X connect 6 0 52 0;
+#X connect 10 0 68 0;
+#X connect 12 0 69 0;
+#X connect 16 0 71 0;
+#X connect 18 0 71 1;
+#X connect 23 0 70 1;
+#X connect 24 0 70 0;
+#X connect 49 0 1 0;
+#X connect 50 0 3 0;
+#X connect 51 0 5 0;
+#X connect 52 0 7 0;
+#X connect 56 0 70 2;
+#X connect 63 0 73 0;
+#X connect 68 0 57 0;
+#X connect 68 1 58 0;
+#X connect 68 2 59 0;
+#X connect 69 0 13 0;
+#X connect 70 0 22 0;
+#X connect 70 1 53 0;
+#X connect 70 2 54 0;
+#X connect 70 3 55 0;
+#X connect 71 0 17 0;
+#X connect 71 1 19 0;
+#X connect 72 0 68 0;

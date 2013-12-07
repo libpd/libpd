@@ -1,0 +1,62 @@
+#N canvas 0 31 585 491 10;
+#X text 267 241 argument sets minimum magnitude to report;
+#X obj 150 161 *~;
+#X obj 166 139 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 132 138 adc~;
+#X obj 106 347 print;
+#X obj 269 346 print;
+#X obj 245 208 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X text 263 207 turn processing on or off;
+#X obj 220 161 *~;
+#X obj 236 139 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#N canvas 0 22 458 308 peakit~ 0;
+#X obj 59 69 inlet~;
+#X obj 309 94 switch~ 1024 1 1;
+#X obj 309 69 inlet;
+#X obj 135 126 rfft~;
+#X obj 133 158 peakit~ 0;
+#X obj 190 68 inlet;
+#X text 7 17 This is in a subpatch so that the block size can be changed
+with the [switch~] object. Its set to 1024 here.;
+#X obj 213 244 outlet;
+#X obj 50 245 outlet;
+#X connect 0 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 8 0;
+#X connect 4 1 7 0;
+#X connect 5 0 4 2;
+#X restore 168 262 pd peakit~;
+#X obj 202 138 osc~;
+#X obj 205 98 hsl 128 15 50 500 1 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 0;
+#X floatatom 211 118 5 0 0 0 - - -;
+#N canvas 379 254 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS Ed Kelly. Revised by Jonathan Wilkes
+for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 165 AUTHOR Ed Kelly <morph_2016@yahoo.co.uk>;
+#X text 12 5 KEYWORDS signal needs_work (description);
+#X text 12 45 DESCRIPTION needs a description;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 list;
+#X text 12 145 OUTLET_1 list;
+#X restore 528 459 pd META;
+#X connect 1 0 10 0;
+#X connect 2 0 1 1;
+#X connect 3 0 1 0;
+#X connect 3 1 1 0;
+#X connect 6 0 10 2;
+#X connect 8 0 10 0;
+#X connect 9 0 8 1;
+#X connect 10 0 4 0;
+#X connect 10 1 5 0;
+#X connect 11 0 8 0;
+#X connect 12 0 11 0;
+#X connect 12 0 13 0;

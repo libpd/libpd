@@ -1,0 +1,21 @@
+#N canvas 109 126 635 466 10;
+#X msg 110 93 gemList;
+#X text 121 50 GEM object;
+#X msg 170 151 x y z;
+#X text 131 16 [part_velsphere];
+#X obj 110 190 part_velsphere;
+#X msg 110 219 gemList;
+#X text 181 94 partList;
+#X text 180 222 partList;
+#X msg 231 152 radius;
+#X text 65 253 [part_velsphere] sets a sphere with a specified radius
+and midpoint to be the velocity-domain of newly emitted particles within
+the system.;
+#X text 41 361 this is obsolete \, use;
+#X obj 239 360 part_velocity sphere <x> <z> <z> <radius>;
+#X msg 465 326 x y z radius;
+#X connect 0 0 4 0;
+#X connect 2 0 4 1;
+#X connect 4 0 5 0;
+#X connect 8 0 4 2;
+#X connect 12 0 11 2;

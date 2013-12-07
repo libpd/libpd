@@ -1,0 +1,220 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>DESCRIPTION</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#dependencies">DEPENDENCIES</a></li>
+	<li><a href="#installation">INSTALLATION</a></li>
+	<ul>
+
+		<li><a href="#additional_installation_targets">Additional installation targets</a></li>
+	</ul>
+
+	<li><a href="#build_options">BUILD OPTIONS</a></li>
+	<li><a href="#acknowledgements">ACKNOWLEDGEMENTS</a></li>
+	<li><a href="#known_bugs">KNOWN BUGS</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>README for package gfsm</p>
+<p>Last updated for gfsm v0.0.8</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>The gfsm package consists of libgfsm, an abstract C library
+of tools for manipulation of finite state machines, and the
+gfsm utilities, a suite of command-line tools built on libgfsm.
+gfsm currently supports AT&amp;T style weighted transducer
+text input and label definition files, as well as a number
+of common algebraic operations on finite state machines.</p>
+<p>
+</p>
+<hr />
+<h1><a name="dependencies">DEPENDENCIES</a></h1>
+<dl>
+<dt><strong><a name="item_0">glib-2.0 (REQUIRED)</a></strong>
+
+<dd>
+<p>Available from:
+<a href="http://www.gtk.org/">http://www.gtk.org/</a></p>
+</dd>
+<dd>
+<p>C library for common data structures.
+Tested versions 2.4.6, 2.8.3.</p>
+</dd>
+</li>
+<dt><strong><a name="item_zlib">zlib (Optional)</a></strong>
+
+<dd>
+<p>Compression library by Jean-loup Gailly and Mark Adler
+which can be used for transparent (de)compression.
+Available from:
+<a href="http://www.gzip.org/zlib">http://www.gzip.org/zlib</a></p>
+</dd>
+<dd>
+<p>Tested version 1.2.1.</p>
+</dd>
+</li>
+<dt><strong><a name="item_pkg_2dconfig">pkg-config</a></strong>
+
+<dd>
+<p>Available from:
+<a href="http://www.freedesktop.org/software/pkgconfig/">http://www.freedesktop.org/software/pkgconfig/</a></p>
+</dd>
+<dd>
+<p>To build from CVS, you will also need the pkg-config
+autoconf macros which come with the source distribution
+of pkg-config.</p>
+</dd>
+</li>
+<dt><strong><a name="item_doxygen">doxygen (Optional)</a></strong>
+
+<dd>
+<p>Required for building library documentation.
+Available from:
+<a href="http://www.doxygen.org">http://www.doxygen.org</a></p>
+</dd>
+<dd>
+<p>Tested versions 1.2.15, 1.3.8, 1.4.4.</p>
+</dd>
+</li>
+<dt><strong><a name="item_perl">Perl (Optional)</a></strong>
+
+<dd>
+<p>Get it from <a href="http://www.cpan.org">http://www.cpan.org</a> or <a href="http://www.perl.com">http://www.perl.com</a></p>
+</dd>
+<dd>
+<p>Required for re-building command-line parsers
+and/or non-standard documentation formats.</p>
+</dd>
+</li>
+<dt><strong><a name="item_gen">Getopt::Gen (Optional)</a></strong>
+
+<dd>
+<p>A Perl module used to generate command-line option parsers.
+Should be available from the author of this package at:</p>
+</dd>
+<dd>
+<p><a href="http://www.ling.uni-potsdam.de/~moocow/projects/perl">http://www.ling.uni-potsdam.de/~moocow/projects/perl</a></p>
+</dd>
+<dd>
+<p>Tested versions 0.09, 0.10.</p>
+</dd>
+<dd>
+<p>Note that Getopt::Gen depends on several 3rd-party perl
+modules, including Text::Template and Parse::Lex,
+which are available from CPAN.</p>
+</dd>
+<dd>
+<p>Note additionally that Parse::Lex v2.15 is broken: if
+it gives you grief, use the hacked version available
+at:</p>
+</dd>
+<dd>
+<p><a href="http://www.ling.uni-potsdam.de/~moocow/projects/perl/ParseLex-2.15-hacked.tar.gz">http://www.ling.uni-potsdam.de/~moocow/projects/perl/ParseLex-2.15-hacked.tar.gz</a></p>
+</dd>
+</li>
+<dt><strong><a name="item_pod2latex">pod2man, pod2text, pod2html, pod2latex (Optional)</a></strong>
+
+<dd>
+<p>The Perl documentation converstion utilities, required
+for building the correspdonding program documentation
+formats, should have come with your Perl.  These are
+only required if you wish to build program documentation
+formats other than the defaults which come with the
+distribution.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="installation">INSTALLATION</a></h1>
+<p>Issue the following commands to the shell:</p>
+<pre>
+ cd gfsm-X.Y.Z  (or wherever you extracted the distribution)
+ sh ./configure
+ make
+ make install</pre>
+<p>
+</p>
+<h2><a name="additional_installation_targets">Additional installation targets</a></h2>
+<p>The build system supports the following optional installation targets;
+call them with:</p>
+<pre>
+ make SOME_TARGET</pre>
+<p>from the distribution root directory.</p>
+<dl>
+<dt><strong><a name="item_install_2dmagic">install-magic</a></strong>
+
+<dd>
+<p>Adds recognition support for stored binary gfsm files
+to the database for the <code>file(1)</code> utility.  If your <code>file(1)</code>
+database lives somewhere other than /etc/magic (see <code>magic(5)</code> for details),
+call this target as:</p>
+</dd>
+<dd>
+<pre>
+ make magic=/full/path/to/my/file/magic install-magic</pre>
+</dd>
+</li>
+<dt><strong><a name="item_uninstall_2dmagic">uninstall-magic</a></strong>
+
+<dd>
+<p>Removes gfsm recognition support (if present) from your
+/etc/magic database, or from whatever database you specified
+with the 'magic' variable.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="build_options">BUILD OPTIONS</a></h1>
+<p>The 'configure' script supports the following options, among others:</p>
+<dl>
+<dt><strong><a name="item__2d_2denable_2ddebug__2c__2d_2ddisable_2ddebug">--enable-debug , --disable-debug</a></strong>
+
+<dd>
+<p>Whether to enable verbose debugging messages.
+Default=no.</p>
+</dd>
+</li>
+</dl>
+<p>See the output of `./configure --help` for details on additional
+supported options.</p>
+<p>
+</p>
+<hr />
+<h1><a name="acknowledgements">ACKNOWLEDGEMENTS</a></h1>
+<p>Ideas and code adapted from the SFST package by Helmut Schmid.</p>
+<p>Many thanks to Thomas Hanneforth for useful advice.</p>
+<p>
+</p>
+<hr />
+<h1><a name="known_bugs">KNOWN BUGS</a></h1>
+<p>Many.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Bryan Jurish &lt;<a href="mailto:moocow@ling.uni-potsdam.de">moocow@ling.uni-potsdam.de</a>&gt;</p>
+
+</body>
+
+</html>

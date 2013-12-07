@@ -1,0 +1,29 @@
+#N canvas 0 0 450 300 10;
+#X obj 72 108 hsl 128 15 0 360 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 69 128 5 0 0 0 - - -;
+#X obj 69 145 *;
+#X obj 225 135 atan;
+#X msg 225 115 1;
+#X obj 225 95 loadbang;
+#X obj 225 154 / 45;
+#X msg 12 66 0;
+#X msg 43 66 90;
+#X msg 73 66 180;
+#X msg 105 66 270;
+#X text 58 23 3 dimensional cartesian rotation matrix \, rotating around
+y-axis;
+#X obj 69 165 mtx_roty;
+#X obj 69 203 mtx_print Ry;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 12 0;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 1;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 1 0;
+#X connect 10 0 1 0;
+#X connect 12 0 13 0;

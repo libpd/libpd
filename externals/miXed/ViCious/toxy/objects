@@ -1,0 +1,25 @@
+TOT_OBJECTS = $(SRCDIR)\tot.obj \
+	$(SHAREDDIR)\unstable\forky.obj \
+	$(SHAREDDIR)\common\loud.obj \
+	$(SHAREDDIR)\common\grow.obj \
+	$(SHAREDDIR)\common\os.obj \
+	$(SHAREDDIR)\hammer\file.obj \
+	$(SHAREDDIR)\hammer\gui.obj \
+	$(SHAREDDIR)\common\props.obj \
+	$(SHAREDDIR)\toxy\scriptlet.obj
+
+TOW_OBJECTS = $(SRCDIR)\tow.obj \
+	$(SHAREDDIR)\common\loud.obj \
+	$(SHAREDDIR)\unstable\loader.obj
+
+WIDGET_OBJECTS = $(SRCDIR)\widget.obj \
+	$(SRCDIR)\widgettype.obj \
+	$(SRCDIR)\widgethandlers.obj \
+	$(SHAREDDIR)\unstable\forky.obj \
+	$(SHAREDDIR)\common\loud.obj \
+	$(SHAREDDIR)\common\grow.obj \
+	$(SHAREDDIR)\common\dict.obj \
+	$(SHAREDDIR)\common\os.obj \
+	$(SHAREDDIR)\hammer\file.obj \
+	$(SHAREDDIR)\common\props.obj \
+	$(SHAREDDIR)\toxy\scriptlet.obj

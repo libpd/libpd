@@ -1,0 +1,34 @@
+#N canvas 1 53 488 503 10;
+#X msg 27 167 symbol list;
+#X msg 107 201 symbol until;
+#X obj -1 29 cnv 15 400 100 empty empty empty 20 12 0 14 -249661 -66577
+0;
+#X text 4 85 author: mrtoftrash@gmail.com;
+#X msg 128 252 symbol zexy/list2symbol;
+#X text 4 28 description: searches for an external's or an abstraction's
+help file and tries to open it.;
+#X text 4 106 version: 2009-09-25;
+#X text 3 65 tags: file patch;
+#X obj 27 294 tof/open_help;
+#X obj 39 392 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 39 414 tof/open_help tof/param;
+#X text 72 351 If you define the name of an external or abstraction
+as an argument \, open_help will open that abstraction's or external's
+help file when you send a bang to the inlet or when you CLICK open_help.
+;
+#X text 186 413 <- CLICK;
+#N canvas 429 138 494 344 META 0;
+#X text 12 115 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 95 AUTHOR Thomas Ouellet Fredericks;
+#X text 12 25 DESCRIPTION search for an external's or an abstraction's
+help file and tries to open it;
+#X text 12 5 KEYWORDS control filesystem patch_op;
+#X text 12 75 INLET_0 symbol;
+#X text 12 55 LICENSE GPL v2;
+#X restore 415 446 pd META;
+#X connect 0 0 8 0;
+#X connect 1 0 8 0;
+#X connect 4 0 8 0;
+#X connect 9 0 10 0;

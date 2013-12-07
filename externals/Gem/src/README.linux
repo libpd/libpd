@@ -1,0 +1,231 @@
+Build instructions for GEM Linux
+================================
+
+VERY SHORT INSTRUCTION:
+-----------------------
+
+#> ./autogen.sh && ./configure && make
+
+if you don't need any special flags for configure, you could even try just:
+#> make
+
+=============================================
+
+DETAILED INSTRUCTIONS:
+----------------------
+
+Prerequisites for compiling GEM (version >=0.90):
+
+openGL & GLU
+  e.g: 	Mesa       http://mesa3d.sourceforge.net
+  platforms: ALL
+
+tiff       ftp://ftp.sgi.com/graphics/tiff/tiff-v3.4beta037-tar.gz
+ platforms: linux, windows
+ level    : optional, suggested
+jpeg       ftp://ftp.uu.net/graphics/jpeg/
+ platforms: linux, windows
+ level    : optional, suggested
+
+for font rendering you need
+ FTGL      http://homepages.paradise.net.nz/henryj/code/
+    platforms: ALL
+    level    : optional, suggested
+  freetype2   http://freetype.sourceforge.net/index2.html
+    platforms: ALL
+    level    : needed for FTGL
+
+To enable movie-loading you might want to install one (or all) of the following:
+quicktime4linux	http://heroinewarrior.com/quicktime.php3
+avifile-0.7	http://avifile.sourceforge.net
+MPEG		ftp://ftp.bic.mni.mcgill.ca/pub/mpeg/mpeg_lib-1.3.1.tar.gz
+mpeg3		http://heroinewarrior.com/libmpeg3.php3
+ffmpeg		http://ffmpeg.sourceforge.net
+ platforms : linux
+ level     : optional
+
+note: sorry to say, but heroine doesn't seem to support neither quicktime4linux nor mpeg3 any more.
+try to find a developer-package for your distribution.
+
+
+
+Debian-users:
+=============
+On a Debian system (most of) these library are already in your distribution.
+Some packages, that are not in the official Debian-release (esp. libmpeg3(-dev)), can be found at
+ http://www.debian-multimedia.org
+you might have to put a line like
+ deb deb http://www.debian-multimedia.org stable main
+into your /etc/apt/sources.list
+
+#> aptitude install libgl-dev libglu-dev
+#> aptitude install libxxf86vm-dev
+#> aptitude install ftgl-dev 
+#> aptitude install libtiff3g-dev libjpeg62-dev libmagick++9-dev
+#> aptitude install libmpeg3-dev libavifile-0.7-dev libquicktime-dev libdv4-dev
+
+RedHat-users:
+=============
+at least Mesa should come with your distribution (either they are already installed, or you have to install the RPM's from the CD/DVD/whatever.
+
+For other distributions you may have a look which ones are there and download and install the other ones.
+
+Try using http://rpmfind.net for rpm-packages.
+
+Fedora-users:
+=============
+SuSe-users:
+===========
+  see RedHat-users
+
+
+
+================================
+Building Gem should work in 4 steps
+
+#.../Gem/src> aclocal
+
+followed by a
+
+#.../Gem/src> ./autogen.sh
+
+followed by a
+
+#.../Gem/src> ./configure
+
+followed by a 
+
+#.../Gem/src> make
+
+This should build Gem.{pd_linux,pd_darwin,...} in the Gem/src directory.
+
+The configure script tries to figure out several things. An important one is 
+the location of the pd header file "m_pd.h".
+
+------------------------------
+CONFIGURE
+~~~~~~~~~
+you can give various options to configure, try "./configure --help" to see them.
+
+configure tries to find which (needed) packages are installed on your system (in default places)
+you can turn off the usage of certain packages via the "--with"-options, even if they could be found on your system
+
+you can change turn on/off certain features of Gem via the "--enable"-options:
+  e.g. Gem normally compiles with the "-freg-struct-return" compiler-flag, to enable the use of FreeFrame-plugins;
+       if you do not want this, you can turn it off with "--disable-registerstruct"
+  e.g. you can turn off compilation of whole sub-modules of Gem:
+       e.g. "--enable-openGL=no" will build a version of Gem that comes without the openGL-wrapper objects
+
+configure tries using pkg-config for configuration of packages that support it: you can help this process by defining environment variables
+
+example: TODO...
+
+
+-------------------------------
+after compilation:
+
+To test Gem (you need to have pd installed) 
+
+#> pd -lib Gem
+
+
+==================================
+Other:
+
+"make clean" removes the object files
+"make distclean" removes all traces from a build.
+
+-----------------------------------------------------------------
+Advanced:
+
+layout:
+
+src/m4/*.m4-(aclocal -I m4)->src/aclocal.m4-+
+                                           |-(autoconf)-> src/configure
+src/configure.ac---------------------------+
+
+src/Make.config.in ---------------(./configure)-->src/Make.config
+
+src/Base/config${KERN}.h.in --(./configure)-->src/Base/config${KERN}.h
+
+with ${KERN} being $(uname -s) (Linux, Darwin,...)
+autoconf and aclocal are called by autogen.sh
+
+
+src/Makefile
+	includes src/Make.include
+		includes src/Make.config
+	master-makefile, cd's into subdirs and calls make there
+
+src/Makefile.subdir
+	includes src/Make.include
+		includes src/Make.config
+	makefile for subdirectories (called via "make -f ../Makefile.subdir")
+
+
+so after configuration, you run "make" (in Gem/src)
+this will call "make -C $@" for all subdirectories (that were not turned off by configure)
+this means, that make will first cd into the said subdirectory and will then call "make" which mainly uses src/Makefile.subdir as makefile
+this should compile all the objects in the subdirectories into .o-files which you can find in the ./Objects folder.
+then all the objects are linked together to form a Gem.pd_linux
+finally the Gem.pd_linux is stripped from unneeded symbols
+
+
+=============================================
+KNOWN ISSUES
+=============================================
+
+
+glUniform2i:
+	Gem is a bit optimistic about which openGL-version your system supports,
+	and tries to use the highest possible (currently up to openGL-2.0) openGL-version supported
+	by your openGL-headers(!); this need not reflect the highest possible openGL-version supported
+	by your hardware and/or driver.
+	unfortunately there _are_ still a lot (linux) drivers out there, that do not (fully)
+	support openGL-2.0 (users have reported problems with MesaGL, and proprietary ATI-drivers; 
+	there are no known problems with the latest proprietary nVidia-drivers)
+
+	if Pd fails to load Gem with an error like "undefined symbol: glUniform2i" you have hit this problem.
+	possible workarounds are:
+	+ tell Gem to expect a lower openGL-version; e.g. "./configure --with-glversion=1.5" should compile a version
+	  of Gem that only uses features up to openGL-1.5 (most commonly used options might be: 2.0, 1.5, 1.4, 1.3, 1.2)
+	+ delete the sources of the offending Gem-objects before recompilation
+	  files that are known to need openGL-2.0 are
+		src/Manips/glsl_*.cpp
+		src/openGL/GEMglUniform1fARB.cp
+
+	you will need to do a "make clean" before you do follow one the above advices. (make sure that there are no
+	".o" files in the src/Objects folder; if you still find .o-files in there after a "make clean", remove them manually)
+	once you have done a "make clean" and applied one the the 2 workarounds, run "make" to rebuild a (hopefully working)
+	version of Gem
+
+
+-fPIC:
+	on some architectures (namely x86_64) Gem MUST link against 
+	the PIC-versions of certain libraries (ffmpeg, ftgl);
+	on other architectures i think it doesn't hurt to do so either
+	(to be precise: it might hurt, since PIC-code is usually a bit slower)
+
+	unfortunately Gem's configure uses "pkg-config" which 
+	does not provide a mechanism (yet?) for getting the 
+	PIC-versions of libraries if needed.
+	however, you can always export PKG_<libname>_LIBS before 
+	running configure to override the detected values
+
+	something like the following should do the trick:
+	%>export PKG_FTGL_LIBS=`pkg-config --libs ftgl | sed 's/-lftgl/-lftgl_pic/g'`
+	%>./configure
+
+	btw, usually this is already handled by configure...
+
+make returns an error (but does not tell you, what went wrong):
+	this usually only occurs when there are still traces of old
+	builds lying around; try the followin:
+	1. try "make distclean" before "make"
+	2. delete all "*/*.d" files (in ...Gem/src)
+	3. delete all "*/*.o" files (in ...Gem/src)
+
+
+Report any failures to <zmoelnig [@] iem.at>
+
+IOhannes

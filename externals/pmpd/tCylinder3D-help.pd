@@ -1,0 +1,57 @@
+#N canvas 8 15 584 655 10;
+#X text 266 11 Cylinder test;
+#X text 168 39 This object sould be used for testing the relative position
+of a masse depending on a cylinder;
+#X text 166 583 0/1 according to the position of the masse;
+#X text 166 562 distance from the center of the cylinder;
+#X text 167 541 speed from the center of the cylinder;
+#X text 104 81 message to change parametter / default value / creation
+arg number / description;
+#X msg 88 289 setRmin 0;
+#X msg 89 312 setRmax 1;
+#X text 205 331 minimal and maximal radius of the circle. If the mass
+is outside or inside this circles \, it will not interact with this
+link.;
+#X text 214 194 normal vector of the circle;
+#X msg 92 212 setX 0;
+#X msg 91 237 setY 0;
+#X msg 91 260 setZ 0;
+#X msg 89 128 setVX 0;
+#X msg 90 153 setVY 0;
+#X msg 91 175 setVZ 0;
+#X text 204 275 center of the circle;
+#X msg 88 380 setPmin -10000;
+#X msg 90 409 setPmax 10000;
+#X obj 13 517 tCylinder3D;
+#X text 181 127 1 : X coordonate of the orientation vector of the circle
+;
+#X text 180 152 2 : Y coordonate of the orientation vector of the circle
+;
+#X text 181 176 3 : Z coordonate of the orientation vector of the circle
+;
+#X text 180 212 4 : center X;
+#X text 180 236 5 : center Y;
+#X text 179 261 6 : center Z;
+#X text 181 289 7 : Minimum Radius;
+#X text 181 312 8 : Maximum Radius;
+#X text 182 382 9 : minimum height of the cylinder interaction;
+#X text 178 411 10 : maximum height of the cylinder interaction;
+#X floatatom 13 584 5 0 0 0 - - -;
+#X floatatom 43 563 5 0 0 0 - - -;
+#X floatatom 74 543 5 0 0 0 - - -;
+#X text 188 464 position of the tested mass;
+#X msg 78 464 position3D 0 0 0;
+#X connect 6 0 19 0;
+#X connect 7 0 19 0;
+#X connect 10 0 19 0;
+#X connect 11 0 19 0;
+#X connect 12 0 19 0;
+#X connect 13 0 19 0;
+#X connect 14 0 19 0;
+#X connect 15 0 19 0;
+#X connect 17 0 19 0;
+#X connect 18 0 19 0;
+#X connect 19 0 30 0;
+#X connect 19 1 31 0;
+#X connect 19 2 32 0;
+#X connect 34 0 19 0;

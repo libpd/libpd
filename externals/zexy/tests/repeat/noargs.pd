@@ -1,0 +1,19 @@
+#N canvas 179 117 582 310 10;
+#X obj 91 117 inlet bang;
+#X obj 91 270 outlet result;
+#X obj 91 138 t b b b;
+#X obj 91 240 i;
+#X msg 107 213 1;
+#X msg 139 213 0;
+#X text 37 51 may people think that it is a bad idea to not create
+[repeat] if there is no argument. so this test fails when the object
+cannot instantiate;
+#X obj 107 184 repeat;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 7 0;
+#X connect 2 2 5 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 1;
+#X connect 5 0 3 1;
+#X connect 7 0 4 0;

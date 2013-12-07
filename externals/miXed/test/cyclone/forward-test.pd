@@ -1,0 +1,27 @@
+#N canvas 489 306 462 351 12;
+#X msg 197 169 send there;
+#X msg 197 205 send elsewhere;
+#X msg 197 240 send;
+#X obj 62 45 r there;
+#X obj 167 45 r elsewhere;
+#X obj 62 83 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 167 83 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 67 195 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 207 83 print;
+#X msg 100 124 any message;
+#X obj 100 279 forward here;
+#X obj 266 240 r here;
+#X obj 266 279 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X connect 0 0 10 0;
+#X connect 1 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 5 0;
+#X connect 4 0 6 0;
+#X connect 4 0 8 0;
+#X connect 7 0 10 0;
+#X connect 9 0 10 0;
+#X connect 11 0 12 0;

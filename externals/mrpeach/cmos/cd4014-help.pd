@@ -1,0 +1,50 @@
+#N canvas 633 293 527 277 12;
+#X obj 95 151 cd4014 shift register;
+#X obj 95 32 tgl 15 0 empty empty Clock 17 7 0 10 -44926 -258699 -1
+0 1;
+#X obj 40 48 bng 15 250 50 0 empty empty empty 17 7 0 10 -44926 -258699
+-1;
+#X obj 111 49 tgl 15 0 empty empty P1 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 127 65 tgl 15 0 empty empty P2 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 143 81 tgl 15 0 empty empty P3 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 160 98 tgl 15 0 empty empty P4 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 176 49 tgl 15 0 empty empty P5 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 192 65 tgl 15 0 empty empty P6 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 209 81 tgl 15 0 empty empty P7 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 225 98 tgl 15 0 empty empty P8 17 7 0 10 -44926 -258699 -1 0
+1;
+#X obj 241 49 tgl 15 0 empty empty ParallelSerial 17 7 0 10 -44926
+-258699 -1 0 1;
+#X obj 258 66 tgl 15 0 empty empty SerialIn 17 7 0 10 -44926 -258699
+-1 0 1;
+#X obj 95 181 tgl 15 0 empty empty Q6 17 7 0 10 -258699 -241291 -1
+0 1;
+#X obj 176 181 tgl 15 0 empty empty Q7 17 7 0 10 -258699 -241291 -1
+0 1;
+#X obj 258 181 tgl 15 0 empty empty Q8 17 7 0 10 -258699 -241291 -1
+0 1;
+#X text 18 0 cd4014 emulates the CMOS 8-stage static shift register
+;
+#X text 147 226 20070315_MartinPeach;
+#X connect 0 0 13 0;
+#X connect 0 1 14 0;
+#X connect 0 2 15 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 2;
+#X connect 5 0 0 3;
+#X connect 6 0 0 4;
+#X connect 7 0 0 5;
+#X connect 8 0 0 6;
+#X connect 9 0 0 7;
+#X connect 10 0 0 8;
+#X connect 11 0 0 9;
+#X connect 12 0 0 10;

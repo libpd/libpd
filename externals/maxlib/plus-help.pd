@@ -1,0 +1,30 @@
+#N canvas 0 26 464 316 12;
+#X floatatom 54 217 5 0 0 0 - - -;
+#X floatatom 54 127 5 0 0 0 - - -;
+#X floatatom 107 127 5 0 0 0 - - -;
+#X text 133 204 use creation arguments to set initial;
+#X text 133 220 values for inlets;
+#X text 26 20 plus :: like '+' but calculates result;
+#X msg 23 83 bang;
+#X text 69 82 calculate and output result now;
+#X obj 54 172 plus 8 6 2;
+#X floatatom 161 127 5 0 0 0 - - -;
+#X text 91 40 whenever leftmost or second inlet is changed;
+#N canvas 295 203 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 165 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 105 INLET_1 float;
+#X text 12 45 DESCRIPTION like + but calculates result whenever leftmost
+or second inlet is changed;
+#X text 12 85 INLET_0 float bang;
+#X text 12 125 INLET_2 float;
+#X text 12 145 OUTLET_0 float;
+#X text 12 5 KEYWORDS control;
+#X restore 395 283 pd META;
+#X connect 1 0 8 0;
+#X connect 2 0 8 1;
+#X connect 6 0 8 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 2;

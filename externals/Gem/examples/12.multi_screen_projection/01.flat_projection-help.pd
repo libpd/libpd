@@ -1,0 +1,21 @@
+#N canvas 369 166 691 494 10;
+#X obj 39 277 r render;
+#X obj 39 407 pix_texture;
+#X obj 110 323 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 110 343 openpanel;
+#X msg 110 364 open \$1;
+#X obj 39 428 square 25;
+#X text 99 277 <- this object must be present in your patch to start
+the gemchain like in this example.;
+#X floatatom 109 432 5 0 0 0 - - -;
+#X obj 39 19 flat_projection 20;
+#X text 299 124 <- abstraction [flat_projection];
+#X obj 39 386 pix_image ../data/fractal.JPG;
+#X connect 0 0 10 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 10 0;
+#X connect 7 0 5 1;
+#X connect 10 0 1 0;

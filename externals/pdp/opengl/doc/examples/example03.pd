@@ -1,0 +1,65 @@
+#N canvas 382 102 480 535 10;
+#X obj 102 73 3dp_windowcontext;
+#X obj 102 36 metro 20;
+#X obj 102 139 3dp_push;
+#X obj 261 185 3dp_light;
+#X obj 102 11 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 56 40 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 253 32 cursor \$1;
+#X obj 253 12 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 102 209 3dp_mouserotate;
+#X obj 261 163 3dp_view transxyz -4 3 4;
+#X obj 102 427 arm 3;
+#X obj 371 230 loadbang;
+#X obj 102 333 pdp_t p p p p;
+#X obj 102 304 pdp_t p p p p;
+#X floatatom 199 386 5 0 0;
+#X obj 318 378 s roty;
+#X floatatom 318 327 5 0 0;
+#X obj 371 378 s drawtorus;
+#X obj 371 355 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 102 256 pdp_t p b;
+#X obj 212 273 f 0;
+#X obj 302 352 *;
+#X obj 183 409 *;
+#X obj 212 307 + 0.1;
+#X obj 102 105 3dp_view transz -5;
+#X text 41 471 it is possible to send the rendercontext to the same
+rendering/transforming chain multiple times. (in other words: 3dp objects
+do not support fanout \, but they do support fanin.);
+#X connect 0 0 24 0;
+#X connect 0 1 8 1;
+#X connect 1 0 0 0;
+#X connect 2 0 8 0;
+#X connect 2 1 9 0;
+#X connect 4 0 1 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;
+#X connect 8 0 19 0;
+#X connect 9 0 3 0;
+#X connect 11 0 18 0;
+#X connect 12 0 10 0;
+#X connect 12 1 10 0;
+#X connect 12 2 10 0;
+#X connect 12 3 10 0;
+#X connect 13 0 12 0;
+#X connect 13 1 12 0;
+#X connect 13 2 12 0;
+#X connect 13 3 12 0;
+#X connect 14 0 22 1;
+#X connect 16 0 21 1;
+#X connect 18 0 17 0;
+#X connect 19 0 13 0;
+#X connect 19 1 20 0;
+#X connect 20 0 23 0;
+#X connect 21 0 15 0;
+#X connect 22 0 10 1;
+#X connect 23 0 20 1;
+#X connect 23 0 22 0;
+#X connect 23 0 21 0;
+#X connect 24 0 2 0;

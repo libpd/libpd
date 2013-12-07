@@ -1,0 +1,58 @@
+#N canvas 4 50 648 517 10;
+#X symbolatom 35 487 22 0 0 0 - - -;
+#X symbolatom 107 363 10 0 0 0 - - -;
+#X obj 95 18 symbol2list;
+#X text 179 18 convert a symbol into a list;
+#X obj 418 20 s2l;
+#X symbolatom 66 470 16 0 0 0 - - -;
+#X symbolatom 97 453 10 0 0 0 - - -;
+#X msg 35 67 symbol a_dash_separated_list;
+#X msg 107 328 symbol -;
+#X msg 130 176 symbol _i;
+#X obj 130 196 t b s;
+#X obj 35 418 unpack s s s s;
+#X symbolatom 128 437 10 0 0 0 - - -;
+#X msg 119 88 symbol what_is-the_de-limiter_i-ask-(_i) ?;
+#X text 296 447 see also:;
+#X obj 407 447 list2symbol;
+#X text 213 159 by default \, list-elements are separated by spaces.
+You can set the separator to any symbol either with an argument or
+by setting the second inlet;
+#X text 210 210 using a zero-symbol as delimiter will break the symbol
+up into its characters.;
+#X msg 216 247 symbol;
+#X obj 216 266 t b s;
+#X text 181 363 delimiter;
+#X text 335 370 banging the object will re-parse the list-symbol;
+#X text 492 448 which does the inverse;
+#X obj 35 398 symbol2list _;
+#X text 560 14 part of zexy;
+#N canvas 515 193 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 145 AUTHOR IOhannes m zmoelnig;
+#X text 12 65 DESCRIPTION convert a symbol into a list;
+#X text 12 25 KEYWORDS control conversion list_op symbol_op;
+#X text 12 5 ALIAS s2l;
+#X text 12 85 INLET_0 symbol;
+#X text 12 105 INLET_1 symbol;
+#X text 12 125 OUTLET_0 list;
+#X restore 598 496 pd META;
+#X msg 301 369 bang;
+#X connect 1 0 23 1;
+#X connect 7 0 23 0;
+#X connect 8 0 1 0;
+#X connect 9 0 10 0;
+#X connect 10 0 23 0;
+#X connect 10 1 1 0;
+#X connect 11 0 0 0;
+#X connect 11 1 5 0;
+#X connect 11 2 6 0;
+#X connect 11 3 12 0;
+#X connect 13 0 23 0;
+#X connect 18 0 19 0;
+#X connect 19 0 23 0;
+#X connect 19 1 1 0;
+#X connect 23 0 11 0;
+#X connect 26 0 23 0;

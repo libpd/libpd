@@ -6,7 +6,7 @@
  * this file implements a mechanism for storing and retrieving preferences.
  * Should later be renamed "preferences.c" or something.
  *
- * In unix this is handled by the "~/.pdsettings" file, in windows by
+ * In unix this is handled by the "~/.pdextended" file, in windows by
  * the registry, and in MacOS by the Preferences system.
  */
 
@@ -36,7 +36,7 @@ int sys_defeatrt;
 t_symbol *sys_flags = &s_;
 void sys_doflags( void);
 
-#if defined(__linux__) || defined(__CYGWIN__) || defined(__FreeBSD_kernel__) || defined(__GNU__) || defined(ANDROID)
+#if defined(__linux__) || defined(__CYGWIN__) || defined(__FreeBSD_kernel__) || defined(__GNU__) || defined(__ANDROID__)
 
 static char *sys_prefbuf;
 static int sys_prefbufsize;
@@ -50,10 +50,10 @@ static void sys_initloadpreferences( void)
     char default_prefs_file[MAXPDSTRING];
     struct stat statbuf;
 
-    snprintf(default_prefs_file, MAXPDSTRING, "%s/default.pdsettings", 
+    snprintf(default_prefs_file, MAXPDSTRING, "%s/default.pdextended", 
         sys_libdir->s_name);
     if (homedir)
-        snprintf(user_prefs_file, MAXPDSTRING, "%s/.pdsettings", homedir);
+        snprintf(user_prefs_file, MAXPDSTRING, "%s/.pdextended", homedir);
     if (stat(user_prefs_file, &statbuf) == 0) 
         strncpy(filenamebuf, user_prefs_file, MAXPDSTRING);
     else if (stat(default_prefs_file, &statbuf) == 0)
@@ -134,7 +134,7 @@ static void sys_initsavepreferences( void)
 
     if (!homedir)
         return;
-    snprintf(filenamebuf, MAXPDSTRING, "%s/.pdsettings", homedir);
+    snprintf(filenamebuf, MAXPDSTRING, "%s/.pdextended", homedir);
     filenamebuf[MAXPDSTRING-1] = 0;
     if ((sys_prefsavefp = fopen(filenamebuf, "w")) == NULL)
     {
@@ -145,9 +145,14 @@ static void sys_initsavepreferences( void)
 
 static void sys_putpreference(const char *key, const char *value)
 {
-    if (sys_prefsavefp)
-        fprintf(sys_prefsavefp, "%s: %s\n",
-            key, value);
+    /* don't save if the path is inside the standard install since its
+     * probably set by the libdir loader */
+    if (! (strncmp(key, "path", 4) == 0 && 
+           strncmp(value, sys_libdir->s_name, 
+                   strlen(sys_libdir->s_name)) == 0))
+        if (sys_prefsavefp)
+            fprintf(sys_prefsavefp, "%s: %s\n",
+                    key, value);
 }
 
 static void sys_donesavepreferences( void)
@@ -172,7 +177,7 @@ static int sys_getpreference(const char *key, char *value, int size)
     HKEY hkey;
     DWORD bigsize = size;
     LONG err = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-        "Software\\Pd", 0,  KEY_QUERY_VALUE, &hkey);
+        "Software\\Pd-extended", 0,  KEY_QUERY_VALUE, &hkey);
     if (err != ERROR_SUCCESS)
     {
         return (0);
@@ -197,19 +202,30 @@ static void sys_initsavepreferences( void)
 
 static void sys_putpreference(const char *key, const char *value)
 {
-    HKEY hkey;
-    LONG err = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
-        "Software\\Pd", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE,
-        NULL, &hkey, NULL);
-    if (err != ERROR_SUCCESS)
+    /* don't save if the path is inside the standard install since its
+     * probably set by the libdir loader */
+    if (! (strncmp(key, "path", 4) == 0 && 
+           strncmp(value, sys_libdir->s_name, 
+                   strlen(sys_libdir->s_name)) == 0))
     {
-        error("unable to create registry entry: %s\n", key);
-        return;
+        HKEY hkey;
+        LONG err = RegCreateKeyEx(HKEY_LOCAL_MACHINE,
+                                  "Software\\Pd-extended", 
+                                  0,
+                                  NULL, 
+                                  REG_OPTION_NON_VOLATILE,
+                                  KEY_SET_VALUE,
+                                  NULL, &hkey, NULL);
+        if (err != ERROR_SUCCESS)
+        {
+            error("unable to create registry entry: %s\n", key);
+            return;
+        }
+        err = RegSetValueEx(hkey, key, 0, REG_EXPAND_SZ, value, strlen(value)+1);
+        if (err != ERROR_SUCCESS)
+            error("unable to set registry entry: %s\n", key);
+        RegCloseKey(hkey);
     }
-    err = RegSetValueEx(hkey, key, 0, REG_EXPAND_SZ, value, strlen(value)+1);
-    if (err != ERROR_SUCCESS)
-        error("unable to set registry entry: %s\n", key);
-    RegCloseKey(hkey);
 }
 
 static void sys_donesavepreferences( void)
@@ -220,29 +236,49 @@ static void sys_donesavepreferences( void)
 
 #ifdef __APPLE__
 
+// prefs file that is currently the one to save to
+static char current_prefs[MAXPDSTRING] = "org.puredata.pdextended"; 
+
 static void sys_initloadpreferences( void)
 {
 }
 
 static int sys_getpreference(const char *key, char *value, int size)
 {
-    char cmdbuf[256];
+    char cmdbuf[MAXPDSTRING];
     int nread = 0, nleft = size;
-    char embedded_prefs[MAXPDSTRING];
-    char user_prefs[MAXPDSTRING];
-    char *homedir = getenv("HOME");
+	char default_prefs[MAXPDSTRING]; // default prefs embedded in the package
+	char embedded_prefs[MAXPDSTRING]; // overrides others for standalone app
+	char embedded_prefs_file[MAXPDSTRING];
+	char user_prefs_file[MAXPDSTRING];
+	char *homedir = getenv("HOME");
     struct stat statbuf;
-   /* the 'defaults' command expects the filename without .plist at the
-        end */
-    snprintf(embedded_prefs, MAXPDSTRING, "%s/../org.puredata.pd",
-        sys_libdir->s_name);
-    snprintf(user_prefs, MAXPDSTRING,
-        "%s/Library/Preferences/org.puredata.pd.plist", homedir);
-    if (stat(user_prefs, &statbuf) == 0)
-        snprintf(cmdbuf, 256, "defaults read org.puredata.pd %s 2> /dev/null\n",
-            key);
-    else snprintf(cmdbuf, 256, "defaults read %s %s 2> /dev/null\n",
-            embedded_prefs, key);
+	/* the 'defaults' command expects the filename without .plist at the end */
+	snprintf(default_prefs, MAXPDSTRING, "%s/../org.puredata.pdextended.default", 
+			 sys_libdir->s_name);
+	snprintf(embedded_prefs, MAXPDSTRING, "%s/../org.puredata.pdextended", 
+			 sys_libdir->s_name);
+	snprintf(embedded_prefs_file, MAXPDSTRING, "%s.plist", embedded_prefs);
+	snprintf(user_prefs_file, MAXPDSTRING, 
+			 "%s/Library/Preferences/org.puredata.pdextended.plist", homedir);
+	if (stat(embedded_prefs_file, &statbuf) == 0) 
+	{
+		snprintf(cmdbuf, MAXPDSTRING,
+				 "defaults read '%s' %s 2> /dev/null\n", embedded_prefs, key);
+        strncpy(current_prefs, embedded_prefs, MAXPDSTRING);
+	}
+	else if (stat(user_prefs_file, &statbuf) == 0) 
+	{
+		snprintf(cmdbuf, MAXPDSTRING,
+				 "defaults read org.puredata.pdextended %s 2> /dev/null\n", key);
+        strcpy(current_prefs, "org.puredata.pdextended");
+	}
+	else 
+	{
+		snprintf(cmdbuf, MAXPDSTRING,
+				 "defaults read '%s' %s 2> /dev/null\n", default_prefs, key);
+        strcpy(current_prefs, "org.puredata.pdextended");
+	}
     FILE *fp = popen(cmdbuf, "r");
     while (nread < size)
     {
@@ -272,10 +308,18 @@ static void sys_initsavepreferences( void)
 
 static void sys_putpreference(const char *key, const char *value)
 {
-    char cmdbuf[MAXPDSTRING];
-    snprintf(cmdbuf, MAXPDSTRING, 
-        "defaults write org.puredata.pd %s \"%s\" 2> /dev/null\n", key, value);
-    system(cmdbuf);
+    /* don't save if the path is inside the standard install since its
+     * probably set by the libdir loader */
+    if (! (strncmp(key, "path", 4) == 0 && 
+           strncmp(value, sys_libdir->s_name, 
+                   strlen(sys_libdir->s_name)) == 0))
+    {
+        char cmdbuf[MAXPDSTRING];
+        snprintf(cmdbuf, MAXPDSTRING, 
+                 "defaults write '%s' %s \"%s\" 2> /dev/null\n",
+                 current_prefs, key, value);
+        system(cmdbuf);
+    }
 }
 
 static void sys_donesavepreferences( void)
@@ -420,12 +464,17 @@ void sys_loadpreferences( void)
 #if defined(__linux__) || defined(__CYGWIN__)
         sys_hipriority = 1;
 #else
-#if defined(_WIN32) || defined(ANDROID)
+#if defined(_WIN32) || defined(__ANDROID__)
         sys_hipriority = 0;
 #else
         sys_hipriority = 1;
 #endif
 #endif
+}
+
+void glob_loadpreferences(t_pd *dummy)
+{
+    sys_loadpreferences();
 }
 
 void glob_savepreferences(t_pd *dummy)

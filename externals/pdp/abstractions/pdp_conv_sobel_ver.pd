@@ -1,0 +1,16 @@
+#N canvas 222 642 591 202 10;
+#X obj 29 55 inlet;
+#X obj 29 131 outlet;
+#X obj 29 93 pdp_conv;
+#X obj 108 9 loadbang;
+#X msg 108 37 hmask 0.5 1 0.5;
+#X msg 108 60 vmask 1 0 -1;
+#X text 108 101 this uses pdp_conv to produce the horizontal sobel
+edge detector with convolution mask (-.5 -1 -0.5 \; 0 0 0 \; 0.5 1
+.5);
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;

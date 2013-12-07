@@ -1,0 +1,33 @@
+#N canvas 91 491 841 379 10;
+#X obj 75 133 mtx_print A;
+#X msg 33 59 bang;
+#X text 482 28 part of iemmatrix;
+#X obj 33 132 t a a;
+#X text 384 169 inletA: matrix/vector;
+#X obj 33 232 mtx_print output;
+#X obj 33 83 t b b b;
+#X obj 305 136 mtx_print B_row;
+#X msg 304 111 matrix 1 2 3 1;
+#X text 43 34 [mtx_index_rowcol_grid];
+#X text 166 69 finds the values to the row and col grid indices in
+a given matrix.;
+#X text 383 195 inletB: col matrix/vector;
+#X text 384 181 inletB: row matrix/vector;
+#X msg 33 112 matrix 3 3 11 12 13 21 22 23 31 32 33;
+#X obj 33 194 mtx_index_rowcol_grid;
+#X msg 416 111 matrix 1 2 2 1;
+#X obj 417 137 mtx_print B_col;
+#X text 382 216 outleA: matrix containing the grid-indexed rows and
+cols;
+#X connect 1 0 6 0;
+#X connect 3 0 14 0;
+#X connect 3 1 0 0;
+#X connect 6 0 13 0;
+#X connect 6 1 8 0;
+#X connect 6 2 15 0;
+#X connect 8 0 7 0;
+#X connect 8 0 14 1;
+#X connect 13 0 3 0;
+#X connect 14 0 5 0;
+#X connect 15 0 14 2;
+#X connect 15 0 16 0;

@@ -1,0 +1,14 @@
+246a247,253
+> static void receive_set(t_receive *x, t_symbol *s)
+> {
+>   pd_unbind(&x->x_obj.ob_pd, x->x_sym);
+>   x->x_sym = s;
+>   pd_bind(&x->x_obj.ob_pd, s);
+> }
+> 
+294c301
+<     	(t_method)receive_free, sizeof(t_receive), CLASS_NOINLET, A_DEFSYM, 0);
+---
+>     	(t_method)receive_free, sizeof(t_receive), 0, A_DEFSYM, 0);
+301a309
+>     class_addmethod(receive_class, (t_method)receive_set, gensym("set"), A_SYMBOL, 0);

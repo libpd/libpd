@@ -1,0 +1,127 @@
+#N canvas 0 26 659 650 10;
+#X obj 116 111 scrollgrid1D~;
+#X msg 36 87 reset;
+#X floatatom 111 82 5 0 0 0 - - -;
+#X floatatom 187 82 5 0 0 0 - - -;
+#X floatatom 237 81 5 0 0 0 - - -;
+#X floatatom 290 80 5 0 0 0 - - -;
+#X obj 401 190 tabwrite~ t;
+#X obj 401 142 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 504 196 table t 10000;
+#X obj 123 217 vol~;
+#X floatatom 146 191 5 0 0 0 - - -;
+#X text 103 42 frequency;
+#X text 197 40 T1;
+#X text 249 40 T2;
+#X text 301 41 N;
+#X msg 111 61 350;
+#X msg 235 61 1;
+#X msg 291 60 3;
+#X msg 188 60 12;
+#X obj 379 212 tabwrite~ t;
+#X obj 379 142 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 353 233 tabwrite~ t;
+#X obj 353 143 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X text 253 255 parameters:;
+#X text 286 322 N = number of scrolls or unstable rotation centers
+in attractor;
+#X text 253 357 outputs:;
+#X text 250 407 some remarks;
+#X text 286 375 the first output is alongside the scoll centers \,
+the other two are orthogonal to this line.;
+#X text 368 125 X Y Z;
+#X obj 178 217 vol~;
+#X floatatom 201 191 5 0 0 0 - - -;
+#X obj 64 218 vol~;
+#X floatatom 87 192 5 0 0 0 - - -;
+#X obj 63 277 hip~ 10;
+#X floatatom 133 281 5 0 0 0 - - -;
+#X obj 63 300 blop~ 4;
+#X msg 132 258 500;
+#X msg 163 258 5000;
+#X text 285 288 T1 = unstable time constant in ms ("attack" time);
+#X text 285 305 T2 = stable time constant in ms ("release" time);
+#X text 285 572 the entire circuit is clipped \, which means that for
+some parameter values that would normally cause a blowup \, its behaviour
+is limited to that of an oscillator.;
+#X obj 4 278 hip~ 10;
+#X obj 4 301 blop~ 4;
+#X floatatom 180 165 5 0 0 0 - - -;
+#X obj 4 397 tabwrite~ t;
+#X obj 21 375 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 142 61 5000;
+#X text 284 272 freq = spiral frequency in Hz;
+#X text 45 11 stabilized scroll grid chaotic oscillator with scroll
+centers located on a line.;
+#X msg 204 257 17000;
+#X text 285 427 this chaotic system is a switched unstable linear system.
+it consists of N scrolls (outward spirals). when the amplitude of the
+spiral has reached a certain threshold \, it is switched to be attracted
+by a neighbouring scroll. the freq parameter determines the frequency
+of the outward spiralling motion on a scroll. T1 is the outward spiralling
+time constant. T1 large means slow buildup or mild chaotic motion \,
+T1 small means fast buildup or turbulent chaotic motion. T2 is the
+time constant with which a trajectory is attracted to the plane of
+a scroll. T2 small means fast attraction \, T2 large means slow attraction.
+;
+#X obj 94 373 dac~ 4;
+#N canvas 375 235 494 405 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 DESCRIPTION stabilized scroll grid chaotic oscillator
+with scroll centers located on a line;
+#X text 12 75 INLET_0 signal reset;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 INLET_2 signal;
+#X text 12 135 INLET_3 signal;
+#X text 12 155 OUTLET_0 signal;
+#X text 12 175 OUTLET_1 signal;
+#X text 12 195 OUTLET_2 signal;
+#X text 12 5 KEYWORDS signal;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 215 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 589 623 pd META;
+#X connect 0 0 21 0;
+#X connect 0 0 31 0;
+#X connect 0 1 9 0;
+#X connect 0 1 19 0;
+#X connect 0 2 6 0;
+#X connect 0 2 29 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 0 2;
+#X connect 5 0 0 3;
+#X connect 7 0 6 0;
+#X connect 9 0 41 0;
+#X connect 10 0 9 1;
+#X connect 15 0 2 0;
+#X connect 16 0 4 0;
+#X connect 17 0 5 0;
+#X connect 18 0 3 0;
+#X connect 20 0 19 0;
+#X connect 22 0 21 0;
+#X connect 29 0 33 0;
+#X connect 30 0 29 1;
+#X connect 31 0 33 0;
+#X connect 31 0 41 0;
+#X connect 32 0 31 1;
+#X connect 33 0 35 0;
+#X connect 34 0 35 1;
+#X connect 34 0 42 1;
+#X connect 35 0 44 0;
+#X connect 35 0 51 0;
+#X connect 36 0 34 0;
+#X connect 37 0 34 0;
+#X connect 41 0 42 0;
+#X connect 42 0 44 0;
+#X connect 42 0 51 0;
+#X connect 43 0 10 0;
+#X connect 43 0 30 0;
+#X connect 45 0 44 0;
+#X connect 46 0 2 0;
+#X connect 49 0 34 0;

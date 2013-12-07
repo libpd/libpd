@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+
+LIBRARY_NAME = extra
+PACKAGE = pd-$(LIBRARY_NAME)
+pkglibdir = /usr/lib/pd/extra
+
+%:
+	dh $@ --buildsystem=makefile
+
+override_dh_auto_install:
+	dh_auto_install -- prefix=/usr pkglibdir=$(pkglibdir)
+
+override_dh_shlibdeps:
+	dpkg-shlibdeps $(CURDIR)/debian/$(PACKAGE)$(pkglibdir)/$(LIBRARY_NAME)/*.pd_linux \
+		-T$(CURDIR)/debian/$(PACKAGE).substvars

@@ -1,0 +1,30 @@
+#N canvas 0 26 445 258 10;
+#X msg 49 57 bang;
+#X text 40 12 Get the version of the currently running Pd.;
+#X obj 49 119 version;
+#X floatatom 49 168 5 0 0 3 major - -;
+#X floatatom 102 168 5 0 0 3 minor - -;
+#X floatatom 155 168 5 0 0 3 bugfix - -;
+#X symbolatom 209 168 0 0 0 3 test - -;
+#X obj 49 144 unpack float float float symbol symbol symbol;
+#X symbolatom 262 173 0 0 0 3 date - -;
+#X symbolatom 316 171 0 0 0 3 time - -;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control pd_op;
+#X text 12 45 DESCRIPTION get the version of the currently running
+Pd;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 list;
+#X restore 394 234 pd META;
+#X connect 0 0 2 0;
+#X connect 2 0 7 0;
+#X connect 7 0 3 0;
+#X connect 7 1 4 0;
+#X connect 7 2 5 0;
+#X connect 7 3 6 0;
+#X connect 7 4 8 0;
+#X connect 7 5 9 0;

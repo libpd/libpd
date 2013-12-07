@@ -1,0 +1,37 @@
+#N canvas 0 26 450 300 10;
+#X text 96 6 dynwav~: dynamic wavetable oscillator;
+#X obj 61 98 osc~;
+#X floatatom 60 56 5 0 0 0 - - -;
+#X obj 60 151 dynwav~;
+#X obj 60 214 vol~;
+#X floatatom 85 190 5 0 0 0 - - -;
+#X obj 50 256 dac~;
+#X obj 172 105 phasor~;
+#X floatatom 172 80 5 0 0 0 - - -;
+#X obj 107 54 bang~;
+#X text 171 22 (scanned synthesis);
+#X text 165 143 left inlet's dsp block = wavetable;
+#X msg 107 78 0.25;
+#X text 242 157 right inlet = phase (0-1);
+#N canvas 379 254 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 75 INLET_0 signal;
+#X text 12 95 INLET_1 signal;
+#X text 12 115 OUTLET_0 signal;
+#X text 12 45 DESCRIPTION dynamic wavetable oscillator ( scanned synthesis
+);
+#X text 12 5 KEYWORDS signal oscillator;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR Tom Schouten <tom@zwizwa.be>;
+#X restore 400 279 pd META;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 1;
+#X connect 4 0 6 0;
+#X connect 5 0 4 1;
+#X connect 7 0 3 1;
+#X connect 8 0 7 0;
+#X connect 9 0 12 0;
+#X connect 12 0 1 1;

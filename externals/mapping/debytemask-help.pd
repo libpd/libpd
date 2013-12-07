@@ -1,0 +1,77 @@
+#N canvas 1 53 481 306 10;
+#X declare -lib mapping;
+#X obj 368 8 import mapping;
+#X obj 243 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 260 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 277 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 294 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 311 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 328 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 345 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X obj 362 44 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0 1
+;
+#X floatatom 283 121 5 0 0 0 - - -;
+#X text 11 84 generate a bitmask byte from 8 inlets;
+#X obj 282 85 bytemask;
+#X obj 283 159 debytemask;
+#X obj 253 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 270 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+1;
+#X obj 287 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+4;
+#X obj 304 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+8;
+#X obj 321 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+16;
+#X obj 338 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+32;
+#X obj 355 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+64;
+#X obj 372 204 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 0
+128;
+#X text 17 160 decode a bitmask bask into 8 outlets;
+#X text 42 251 these objects do not output unless there is a change
+;
+#N canvas 465 169 494 344 META 0;
+#X text 12 265 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 245 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION decode a bitmask bask into 8 outlets;
+#X text 12 65 INLET_0 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 145 OUTLET_3 float;
+#X text 12 165 OUTLET_4 float;
+#X text 12 185 OUTLET_5 float;
+#X text 12 205 OUTLET_6 float;
+#X text 12 225 OUTLET_7 float;
+#X restore 421 277 pd META;
+#X connect 1 0 11 0;
+#X connect 2 0 11 1;
+#X connect 3 0 11 2;
+#X connect 4 0 11 3;
+#X connect 5 0 11 4;
+#X connect 6 0 11 5;
+#X connect 7 0 11 6;
+#X connect 8 0 11 7;
+#X connect 9 0 12 0;
+#X connect 11 0 9 0;
+#X connect 12 0 13 0;
+#X connect 12 1 14 0;
+#X connect 12 2 15 0;
+#X connect 12 3 16 0;
+#X connect 12 4 17 0;
+#X connect 12 5 18 0;
+#X connect 12 6 19 0;
+#X connect 12 7 20 0;

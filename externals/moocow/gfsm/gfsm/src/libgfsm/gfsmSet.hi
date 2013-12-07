@@ -1,0 +1,136 @@
+/*=============================================================================*\
+ * File: gfsmSet.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library
+ *
+ * Copyright (c) 2004-2007 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+/*======================================================================
+ * Converters
+ */
+
+/*--------------------------------------------------------------
+ * to_slist()
+ */
+GFSM_INLINE
+GSList *gfsm_set_to_slist(gfsmSet *set)
+{
+  GSList *l = NULL;
+  gfsm_set_foreach(set,(GTraverseFunc)gfsm_set_to_slist_foreach_func, &l);
+  return l;
+}
+
+/*--------------------------------------------------------------
+ * to_ptr_array()
+ */
+GFSM_INLINE
+void gfsm_set_to_ptr_array(gfsmSet *set, GPtrArray *array)
+{
+  gfsm_set_foreach(set,(GTraverseFunc)gfsm_set_to_ptr_array_foreach_func, array);
+}
+
+
+/*======================================================================
+ * Constructors etc.
+ */
+
+/*--------------------------------------------------------------
+ * new_full()
+ */
+GFSM_INLINE
+gfsmSet *gfsm_set_new_full(GCompareDataFunc key_cmp_func, gpointer key_cmp_data, GDestroyNotify key_free_func)
+{
+  return g_tree_new_full(key_cmp_func, key_cmp_data, key_free_func, NULL);
+}
+
+/*--------------------------------------------------------------
+ * new()
+ */
+GFSM_INLINE
+gfsmSet *gfsm_set_new(GCompareFunc key_cmp_func)
+{
+  return g_tree_new(key_cmp_func);
+}
+
+/*--------------------------------------------------------------
+ * copy()
+ */
+GFSM_INLINE
+gfsmSet *gfsm_set_copy(gfsmSet *dst, gfsmSet *src)
+{
+  gfsm_set_clear(dst);
+  g_tree_foreach(src, (GTraverseFunc)gfsm_set_copy_foreach_func, dst);
+  return dst;
+}
+
+
+/*--------------------------------------------------------------
+ * clear()
+ */
+//-- extern
+
+/*--------------------------------------------------------------
+ * free()
+ */
+#if 0
+GFSM_INLINE
+void gfsm_set_free(gfsmSet *set)
+{
+  g_tree_destroy(set);
+}
+#endif
+
+
+/*======================================================================
+ * Set Algebra
+ */
+
+/*--------------------------------------------------------------
+ * union(): data
+ */
+typedef struct {
+  gfsmSet      *dst;
+  gfsmDupFunc   dupfunc;
+} gfsmSetUnionData;
+
+
+/*--------------------------------------------------------------
+ * union()
+ */
+gboolean gfsm_set_union_func(gpointer key, gpointer value, gfsmSetUnionData *data);
+
+GFSM_INLINE
+gfsmSet *gfsm_set_union(gfsmSet *set1, gfsmSet *set2, gfsmDupFunc dupfunc)
+{
+  gfsmSetUnionData data = { set1, dupfunc };
+  g_tree_foreach(set2, (GTraverseFunc)gfsm_set_union_func, &data);
+  return set1;
+}
+
+/*--------------------------------------------------------------
+ * difference()
+ */
+gboolean gfsm_set_difference_func(gpointer key, gpointer value, gfsmSet *set1);
+
+GFSM_INLINE
+gfsmSet *gfsm_set_difference(gfsmSet *set1, gfsmSet *set2)
+{
+  g_tree_foreach(set2, (GTraverseFunc)gfsm_set_difference_func, set1);
+  return set1;
+}
+

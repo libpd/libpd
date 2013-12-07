@@ -1,0 +1,64 @@
+=pod
+
+README for pd external package 'gfsm'
+
+Last updated for pd-gfsm v0.05
+
+=head1 DESCRIPTION
+
+pd-gfsm provides Pd bindings for the GFSM  finite-state machine library.
+
+=head1 PREREQUISITES
+
+=over 4
+
+=item Pd
+
+Available from http://crca.ucsd.edu/~msp/software.html
+
+=item libgfsm >= v0.0.8-pre6 (optional)
+
+A local copy of the libgfsm source tree is included with this distribution,
+and should be built and used by default.
+
+Newer versions should be
+available from http://www.ling.uni-potsdam.de/~moocow/projects/gfsm
+
+=back
+
+=head1 INSTALLATION
+
+Issue the following commands to the shell:
+
+   cd DISTNAME-X.YY  (or wherever you extracted the distribution)
+   ./configure
+   make
+   make install
+
+=head1 BUILD OPTIONS
+
+The 'configure' script supports the following options, among others:
+
+=over 4
+
+=item * --enable-debug , --disable-debug
+
+Whether to enable verbose debugging messages.
+Default=no.
+
+=back
+
+=head1 ACKNOWLEDGEMENTS
+
+PD by Miller Puckette and others.
+
+Ideas, black magic, and other nuggets of information drawn
+from code by Guenter Geiger, Larry Troxler, and iohannes m zmoelnig.
+
+=head1 KNOWN BUGS
+
+None known.
+
+=head1 AUTHOR
+
+Bryan Jurish E<lt>moocow@ling.uni-potsdam.deE<gt>

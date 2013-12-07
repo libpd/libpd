@@ -1,0 +1,59 @@
+#N canvas 369 22 790 417 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array src 100 float 1;
+#A 0 0.0214324 0.0214324 0.0214324 0.0214324 0.0214324 0.0214324 0.0357179
+0.0357179 0.0428607 0.0428607 0.0428607 0.0500035 0.0642891 0.0714318
+0.0785746 0.0857174 0.0857174 0.100003 0.100003 0.107146 0.107146 0.114289
+0.114289 0.121431 0.121431 0.128574 0.128574 0.135717 0.14286 0.14286
+0.14286 0.150002 0.157145 0.157145 0.171431 0.178574 0.185716 0.192859
+0.200002 0.214287 0.214287 0.22143 0.228573 0.242859 0.242859 0.257144
+0.257144 0.264287 0.278573 0.292858 0.300001 0.314286 0.335715 0.35
+0.357143 0.364286 0.378571 0.392857 0.407143 0.414285 0.435714 0.442857
+0.449999 0.457142 0.471428 0.485713 0.492856 0.499999 0.521427 0.52857
+0.542856 0.542856 0.564284 0.578569 0.599998 0.621426 0.635712 0.642854
+0.649997 0.671426 0.685711 0.699997 0.707139 0.714282 0.735711 0.757139
+0.764282 0.771425 0.778567 0.799996 0.807138 0.821424 0.83571 0.864281
+0.885709 0.885709 0.899995 0.935709 0.949994 0.957137;
+#X coords 0 1 99 0 200 140 1;
+#X restore 534 10 graph;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array dst 100 float 0;
+#X coords 0 100 99 0 200 140 1;
+#X restore 534 166 graph;
+#X obj 61 31 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 106 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 59 301 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X msg 59 211 50 20 50;
+#X text 44 154 list of 3 floats:;
+#X text 222 273 1.arg: <symbol> source-name;
+#X text 222 286 2.arg: <symbol> destination-name;
+#X msg 154 213 src src;
+#X msg 185 234 dst dst;
+#X text 78 365 IEM KUG;
+#X text 57 353 musil;
+#X text 92 353 @;
+#X text 100 353 iem.at;
+#X text 61 375 Graz \, Austria;
+#X text 56 165 1.) src onset;
+#X text 56 175 2.) dst onset;
+#X text 231 261 initial arguments:;
+#X text 68 283 <bang> output;
+#X text 208 213 <src> xxx : change source name;
+#X text 240 233 <dst> xxx : change destination name;
+#X text 205 69 (the number of samples which are copied are:;
+#X text 218 83 the minimum of both array lengths);
+#X text 13 342 (c) Thomas Musil 2000 - 2010;
+#X text 90 29 <bang> calculates the powtodb-value from src to dst;
+#X obj 61 78 tab_powtodb src dst;
+#X obj 59 264 tab_powtodb src dst;
+#X text 57 185 3.) n samples of powtodb;
+#X text 12 4 tab_powtodb;
+#X connect 2 0 26 0;
+#X connect 5 0 27 0;
+#X connect 9 0 27 0;
+#X connect 10 0 27 0;
+#X connect 26 0 3 0;
+#X connect 27 0 4 0;

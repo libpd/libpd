@@ -1,0 +1,15 @@
+#N canvas 0 22 746 470 10;
+#X obj 378 128 creb/blocknorm~;
+#X obj 57 174 testtools/unit-test-frame~;
+#X obj 378 69 phasor~ 440;
+#X obj 378 97 -~ 0.5;
+#X msg 441 39 0;
+#X obj 57 100 loadbang;
+#X msg 57 134 blocknorm~ 0;
+#X connect 0 0 1 1;
+#X connect 1 2 4 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 2 1;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;

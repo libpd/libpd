@@ -1,0 +1,35 @@
+#N canvas 0 26 510 321 12;
+#X floatatom 33 229 5 0 0 0 - - -;
+#X text 72 7 step :: output sequence of numbers (similar to 'line')
+;
+#X text 138 25 written by Olaf Matthes (olaf.matthes@gmx.de);
+#X text 222 250 stepsize :: step between two numbers;
+#X msg 33 76 23 6000 2;
+#X msg 62 119 230;
+#X obj 101 282 line;
+#X text 98 117 send a single number to jump;
+#X text 121 77 send a triplet to step to a new value;
+#X text 22 282 see also:;
+#X msg 80 146 stop;
+#X text 127 147 "stop" message to stop output;
+#X text 121 92 <new value> <time> <step>;
+#X text 123 196 step <value> <stepsize>;
+#X text 221 234 value :: value to start with;
+#X obj 33 195 step 100 3;
+#N canvas 292 198 494 344 META 0;
+#X text 12 170 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 150 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 90 INLET_1 float;
+#X text 12 110 INLET_2 float;
+#X text 12 130 OUTLET_0 float;
+#X text 12 45 DESCRIPTION output sequence of numbers ( similar to line
+);
+#X text 12 5 KEYWORDS control ramp;
+#X text 12 70 INLET_0 float list stop;
+#X restore 448 292 pd META;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 10 0 15 0;
+#X connect 15 0 0 0;

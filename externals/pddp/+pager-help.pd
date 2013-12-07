@@ -1,0 +1,9 @@
+#N canvas 368 122 488 350 10;
+#X obj 144 178 pddp/open +pager;
+#X text 20 60 +pager.pd is an object that allows you to navigate through
+a folder of files with "previous" and "next" buttons.;
+#X text 24 97 To use it \, copy to the folder where the files that
+you want to browser thru are. The filenames need to start with a number
+in order to be controlled by +pager.pd.;
+#X text 36 241 +pager.pd should be the first file in the list in order
+for things to work properly.;

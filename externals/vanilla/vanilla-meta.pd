@@ -1,0 +1,6 @@
+#N canvas 230 230 450 300 10;
+#X text 44 30 NAME vanilla;
+#X text 44 50 DESCRIPTION Pure Data internals broken out into a standalone
+library;
+#X text 44 70 VERSION 0.43.4.pd-extended;
+#X text 44 90 LICENSE SIBSD;

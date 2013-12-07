@@ -1,0 +1,21 @@
+#N canvas 24 279 928 367 10;
+#X obj 107 178 loadbang;
+#X obj 107 250 print error;
+#X msg 107 207 [gemtablet] is no longer available! \, use [hid] or
+similar for interfacing a graph-tablet;
+#X obj 127 312 outlet X-pos;
+#X obj 137 331 outlet Y-pos;
+#X obj 287 282 outlet Pressure;
+#X obj 297 302 outlet Azimuth;
+#X obj 307 322 outlet Altitude;
+#X obj 317 342 outlet Twist;
+#X obj 537 302 outlet Middle-Buttoh;
+#X obj 547 322 outlet Right-Button;
+#X obj 527 282 outlet Left-Button;
+#X text 54 36 this is a fake replacement of Gem's [gemtablet].;
+#X text 53 56 the object has been taken out of Gem \, since Gem is
+a graphics library \, and not a hardware-interfacing library.;
+#X text 51 98 you should be able to build a functional replacement
+using the [hid] external.;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;

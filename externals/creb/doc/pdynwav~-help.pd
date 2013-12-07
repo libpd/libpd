@@ -1,0 +1,14 @@
+#N canvas 0 26 194 151 10;
+#X obj 35 15 pdynwav~;
+#N canvas 80 80 494 326 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Tom Shouten;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 65 INLET_0 signal;
+#X text 12 5 KEYWORDS signal abstraction needs_work (example patch)
+;
+#X text 12 85 INLET_1 float;
+#X text 12 45 DESCRIPTION phasor~ + dynwav~;
+#X text 12 25 LICENSE GPL v2;
+#X restore 143 129 pd META;

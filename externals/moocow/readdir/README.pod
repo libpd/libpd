@@ -1,0 +1,46 @@
+=pod
+
+README for pd external 'readdir'
+
+Last updated for readdir v0.02
+
+=head1 DESCRIPTION
+
+The 'readdir' object lets you read the contents of a directory.
+
+=head1 INSTALLATION
+
+Issue the following commands to the shell:
+
+   cd readdir-X.YY  (or wherever you extracted the distribution)
+   ./configure
+   make
+   make install
+
+=head1 BUILD OPTIONS
+
+The 'configure' script supports the following options, among others:
+
+=over 4
+
+=item * --enable-debug , --disable-debug
+
+Whether to enable verbose debugging messages.
+Default=no.
+
+=back
+
+=head1 ACKNOWLEDGEMENTS
+
+PD by Miller Puckette and others.
+
+Ideas, black magic, and other nuggets of information drawn
+from code by Guenter Geiger, Larry Troxler, and iohannes m zmoelnig.
+
+=head1 KNOWN BUGS
+
+None known.
+
+=head1 AUTHOR
+
+Bryan Jurish E<lt>moocow@ling.uni-potsdam.deE<gt>

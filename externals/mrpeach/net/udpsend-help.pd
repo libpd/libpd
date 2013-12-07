@@ -1,0 +1,72 @@
+#N canvas 1 53 898 550 12;
+#X msg 198 118 disconnect;
+#X msg 17 -63 connect 127.0.0.1 9997;
+#X obj 455 418 tgl 15 0 empty empty connected 20 7 0 8 -24198 -241291
+-1 0 1;
+#X msg 39 -41 send 0 1 2 3;
+#X text 150 395 udpsend sends bytes over a udp connection.;
+#X text 227 445 Used in conjunction with packOSC will send OSC over
+udp;
+#X obj 455 395 udpsend;
+#X msg 61 -19 send examples/test.txt;
+#X obj 131 27 openpanel;
+#X msg 131 51 send \$1;
+#X obj 131 8 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -241291
+-1;
+#X text -28 -18 send a file;
+#X text 137 -42 send raw data;
+#X text 151 7 ...any file;
+#X msg 164 84 99 98 97;
+#X text 229 84 'send' prefix is optional;
+#X msg 301 221 multicast_interface 192.168.0.88;
+#X msg 276 196 multicast_interface eth1;
+#X msg 228 148 connect 239.200.200.200 9977;
+#X text 181 -64 <--first connect to a host and port;
+#X text 279 117 <--disconnect before connecting to another address
+;
+#X text 439 147 send to a multicast address;
+#X text 411 172 specify an interface to use with multicast;
+#X msg 253 173 multicast_interface 1;
+#X text 461 195 by index \, name or address;
+#X floatatom 393 246 5 0 256 0 - - -;
+#X obj 375 269 f 1;
+#X obj 375 249 bng 15 250 50 0 empty empty empty 17 7 0 10 -4034 -1
+-1;
+#X text 240 270 set multicast ttl:;
+#X msg 375 295 multicast_ttl \$1;
+#X text 645 408 Martin Peach 2010/08/02;
+#X msg 425 345 multicast_loopback \$1;
+#X obj 425 323 tgl 15 0 empty empty empty 20 7 0 8 -24198 -241291 -1
+0 1;
+#X text 236 321 enable multicast loopback:;
+#N canvas 529 111 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 135 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control network;
+#X text 12 115 OUTLET_0 float;
+#X text 12 45 DESCRIPTION used in conjunction with packOSC - will send
+OSC over udp;
+#X text 12 75 INLET_0 connect send list disconnect multicast_interface
+multicast_ttl multicast_loopback;
+#X restore 798 452 pd META;
+#X connect 0 0 6 0;
+#X connect 1 0 6 0;
+#X connect 3 0 6 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 0;
+#X connect 8 0 9 0;
+#X connect 9 0 6 0;
+#X connect 10 0 8 0;
+#X connect 14 0 6 0;
+#X connect 16 0 6 0;
+#X connect 17 0 6 0;
+#X connect 18 0 6 0;
+#X connect 23 0 6 0;
+#X connect 25 0 26 1;
+#X connect 26 0 29 0;
+#X connect 27 0 26 0;
+#X connect 29 0 6 0;
+#X connect 31 0 6 0;
+#X connect 32 0 31 0;

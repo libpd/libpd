@@ -1,0 +1,39 @@
+#N canvas 356 9 338 241 12;
+#X obj 38 104 r rpop;
+#X floatatom 38 142 5 0 0 0 - - -;
+#X floatatom 120 142 5 0 0 0 - - -;
+#X obj 120 104 r rpop1;
+#X floatatom 210 142 5 0 0 0 - - -;
+#X obj 210 104 r rpop2;
+#N canvas 12 11 293 279 blackpanel 1;
+#X obj 23 111 widget menubutton mb -menu .-.pop -bg green -activebackground
+yellow -width 5 -text one @float if .(.#1 >= 1.) .(.-.pop invoke .#1.)
+;
+#X obj 23 12 loadbang;
+#X obj 96 110 widget pop1 p1;
+#X obj 188 110 widget pop2 p2;
+#X msg 23 41 set @vis ::toxy::popup .- .| rpop [list one two three four five]
+-bg green -activebackground yellow .: destroy .^.m .: .^.scrollvert
+configure -width 0 .: .^.scrollhort configure -width 0 .: .^.c configure
+-bg black;
+#X obj 23 150 r topop;
+#X obj 96 150 r topop1;
+#X obj 188 150 r topop2;
+#X connect 1 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 2 0;
+#X connect 7 0 3 0;
+#X restore 95 198 pd blackpanel;
+#X floatatom 38 24 5 0 0 0 - - -;
+#X floatatom 120 24 5 0 0 0 - - -;
+#X floatatom 210 24 5 0 0 0 - - -;
+#X obj 38 58 s topop;
+#X obj 120 58 s topop1;
+#X obj 210 58 s topop2;
+#X connect 0 0 1 0;
+#X connect 3 0 2 0;
+#X connect 5 0 4 0;
+#X connect 7 0 10 0;
+#X connect 8 0 11 0;
+#X connect 9 0 12 0;

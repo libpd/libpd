@@ -1,0 +1,44 @@
+#N canvas 0 26 526 445 10;
+#X text 16 20 Collect samples from a signal and examine them in a text
+window;
+#X msg 285 141 write;
+#X msg 100 141 clear;
+#X obj 28 128 cycle~ 440;
+#X text 133 141 Clear capture buffer;
+#X text 22 46 capture~ is similar to the capture object \, except that
+it collects signal values rather than incoming integers. capture~ is
+designed for signal debugging or investigation321for recording \, use
+record~ or sfrecord~;
+#X text 326 139 Write as text file;
+#X text 160 207 Arguments: - optional "f" or "first" to put capture~
+into "first" mode where it stops collecting data after it has received
+the specified number of values \; - number of values to capture \;
+- the print precision (number of decimal places shown) \; - a list
+of up to 10 indices within a signal vector. If no indices present \,
+capture~ records the entire vector.;
+#X text 160 301 Default values: - "last" mode \, where capture~ continues
+to collect data \, throwing away old values if it has received more
+than its specified number \; - 4100 values \; - print precision of
+4 decimal places \; - record the entire signal vector \;;
+#X text 30 107 (look at values from a sine wave...);
+#X text 43 387 Note that capture~'s text window only holds a limited
+amount of data \, so it's easy to capture more data than you can see.
+If you want to see all the data \, write it to a text file and open
+the file with another text editor.;
+#X text 159 172 double-click to see text of captured values;
+#X obj 28 181 capture~ f 1000 2 0;
+#N canvas 247 115 494 409 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 115 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal GUI max_compatible;
+#X text 12 75 INLET_0 signal clear write;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 45 DESCRIPTION collect samples from a signal and examine
+them in a text window;
+#X text 12 95 AUTHOR Krzysztof Czaja;
+#X restore 475 423 pd META;
+#X connect 1 0 12 0;
+#X connect 2 0 12 0;
+#X connect 3 0 12 0;

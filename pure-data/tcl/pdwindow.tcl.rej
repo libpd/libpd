@@ -1,0 +1,20 @@
+--- /home/kjetil/temp/pd-0.43-3/tcl/pdwindow.tcl	2012-06-23 00:45:59.000000000 +0200
++++ pure-data/tcl/pdwindow.tcl	2013-08-25 20:29:10.016367710 +0200
+@@ -388,8 +396,13 @@
+     # set some layout variables
+     ::pdwindow::set_layout
+ 
+-    # wait until .pdwindow.tcl.entry is visible before opening files so that
+-    # the loading logic can grab it and put up the busy cursor
+-    tkwait visibility .pdwindow.text
+-#    create_tcl_entry
++
++    if {$::LIBPD eq 0} {
++        # wait until .pdwindow.tcl.entry is visible before opening files so that
++        # the loading logic can grab it and put up the busy cursor
++        tkwait visibility .pdwindow.text
++        #    create_tcl_entry
++    } else {
++        wm withdraw .pdwindow
++    }
+ }

@@ -1,0 +1,35 @@
+TARGET = iem_delay
+
+all: ..\$(TARGET).dll
+
+VIS_CPP_PATH = "C:\Programme\Microsoft Visual Studio .NET 2003\Vc7"
+VIS_SDK_PATH = "C:\Programme\Microsoft Visual Studio .NET 2003\Vc7\PlatformSDK"
+PD_INST_PATH = "C:\Programme\pd-0.42-5"
+PD_WIN_INCLUDE_PATH = /I. /I$(PD_INST_PATH)\src /I$(VIS_CPP_PATH)\include
+PD_WIN_C_FLAGS = /nologo /W3 /WX /DMSW /DNT /DPD /DWIN32 /DWINDOWS /Ox -D_CRT_SECURE_NO_WARNINGS
+PD_WIN_L_FLAGS = /nologo
+
+PD_WIN_LIB = /NODEFAULTLIB:libcmt /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel32 \
+	$(VIS_CPP_PATH)\lib\libcmt.lib \
+	$(VIS_CPP_PATH)\lib\oldnames.lib \
+	$(VIS_SDK_PATH)\lib\kernel32.lib \
+	$(PD_INST_PATH)\bin\pd.lib
+
+SRC =	n_delay1p_line~.c \
+	n_delay2p_line~.c \
+	nz~.c \
+	block_delay~.c \
+	iem_delay.c
+
+
+OBJ = $(SRC:.c=.obj)
+
+.c.obj:
+	cl $(PD_WIN_C_FLAGS) $(PD_WIN_INCLUDE_PATH) /c $*.c
+
+..\$(TARGET).dll: $(OBJ)
+	link $(PD_WIN_L_FLAGS) /dll /export:$(TARGET)_setup \
+	/out:..\$(TARGET).dll $(OBJ) $(PD_WIN_LIB)
+
+clean:
+	del *.obj

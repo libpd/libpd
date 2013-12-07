@@ -1,0 +1,25 @@
+#N canvas 274 257 513 356 10;
+#X text 360 325 updated for zexy-2.0;
+#X floatatom 175 198 5 0 0 1 theta - -;
+#X floatatom 134 156 5 0 0 1 phi - -;
+#X obj 134 174 t b f;
+#X floatatom 124 138 5 0 0 1 R - -;
+#X floatatom 175 268 0 0 0 0 z - -;
+#X floatatom 149 288 0 0 0 0 y - -;
+#X floatatom 124 308 0 0 0 0 x - -;
+#X msg 32 204 1 2 3;
+#X text 21 76 all angles are in rad.;
+#X obj 124 246 sph2cart;
+#X text 24 31 [sph2cart]: convert spherical coordinates to cartesian
+coordinates;
+#X text 77 204 R phi theta;
+#X text 394 14 part of zexy;
+#X connect 1 0 10 2;
+#X connect 2 0 3 0;
+#X connect 3 0 10 0;
+#X connect 3 1 10 1;
+#X connect 4 0 10 0;
+#X connect 8 0 10 0;
+#X connect 10 0 7 0;
+#X connect 10 1 6 0;
+#X connect 10 2 5 0;

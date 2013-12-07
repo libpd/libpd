@@ -1,0 +1,68 @@
+#N canvas 0 26 803 641 10;
+#X msg 470 359 triglevel 0.01;
+#X msg 421 358 4 64;
+#X text 51 -9 Distort the output of a phasor~;
+#X obj 199 211 - 1;
+#X obj 182 257 +~;
+#X msg 286 201 1 \, 10 180 10 120 1 700;
+#X obj 286 230 line~ 1;
+#X obj 52 449 dac~;
+#X obj 52 390 *~ 0.05;
+#X obj 52 361 cycle~;
+#X floatatom 199 188 0 0 0 0 - - -;
+#X obj 80 249 phasor~ 440;
+#X text 52 16 kink~ takes phasor~ values and distorts them according
+to a slope factor. If the input times the slope is less than 0.5 \,
+that value is output. Otherwise \, a complentary slope is used \, equal
+to 0.5 at the same input value but equal to 1 when the input is 1 This
+creates a bend or "kink" in the phase waveform when the slope is not
+equal to 1 If you feed the output of kink~ into a cycle~ \, the result
+is that the first part (before the kink) of the wavetable is scanned
+much more quickly than the second part (after the kink). Can you say
+CZ-101? Sure you can.;
+#X text 168 285 slope input (float or signal);
+#X text 10 279 phase input;
+#X text 89 317 distorted phase output;
+#X text 89 345 use as table lookup;
+#X text 195 300 argument sets initial slope value (default 1.0);
+#X obj 80 297 kink~ 1.3;
+#X obj 218 489 Scope~ 130 130 4 3 128 -1 1 0 0 0 0 102 255 51 135 135
+135 0;
+#X obj 215 350 Scope~ 130 130 4 3 128 -1 1 0 0 0 0.01 102 255 51 135
+135 135 0;
+#X obj 426 335 loadbang;
+#X text 440 197 This ramps the slope from 1 to 10 and then back to
+1 Combine with an amplitude envelope to achieve BRASS ENS. 1 bliss.
+;
+#X text 74 150 try different slope values (approx 1-20). Reset to 1
+to use the envelope at right.;
+#N canvas 448 210 494 384 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal max_compatible;
+#X text 12 45 DESCRIPTION distort the output of a phasor~;
+#X text 12 65 INLET_0 signal;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 753 616 pd META;
+#X connect 0 0 20 0;
+#X connect 1 0 19 0;
+#X connect 1 0 20 0;
+#X connect 3 0 4 1;
+#X connect 4 0 18 1;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 8 0 7 0;
+#X connect 8 0 7 1;
+#X connect 9 0 8 0;
+#X connect 9 0 19 0;
+#X connect 10 0 3 0;
+#X connect 11 0 18 0;
+#X connect 18 0 9 1;
+#X connect 18 0 20 0;
+#X connect 21 0 1 0;
+#X connect 21 0 0 0;

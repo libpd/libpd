@@ -1,0 +1,112 @@
+#N canvas 156 138 996 758 12;
+#X declare -lib mrpeach;
+#X obj -34 554 cnv 15 820 130 empty empty empty 20 12 0 14 -261207
+-66577 0;
+#X obj -76 40 udpreceive 9997;
+#X floatatom 91 111 3 0 0 0 - - -;
+#X floatatom 118 111 3 0 0 0 - - -;
+#X floatatom 145 111 3 0 0 0 - - -;
+#X floatatom 172 111 3 0 0 0 - - -;
+#X text 51 110 from;
+#X obj -76 164 unpackOSC;
+#X text 324 108 see also:;
+#X obj 396 109 packOSC;
+#X floatatom 483 184 10 0 0 1 millisecond_delay - -;
+#X obj -76 191 pipelist;
+#X text 484 559 arguments are OSC addresses to be routed;
+#X text 43 707 see:;
+#X text 190 708 for a way to send OSC over TCP or serial connections.
+;
+#X obj 78 708 unpackOSCstream;
+#X obj -110 218 print unpacked;
+#X obj 91 87 unpack 0 0 0 0 0;
+#X floatatom 200 111 8 0 0 0 - - -;
+#X obj 26 64 route received from;
+#X floatatom 26 132 5 0 0 0 - - -;
+#X text 66 132 bytes;
+#X text 43 40 Open [packOSC-help] to send packets to this patch.;
+#X text -6 186 If the OSC packet has a timetag \, [pipelist] will delay
+it until the time occurs;
+#X obj 272 653 print match_1;
+#X obj 338 631 print match_2;
+#X obj 472 587 print no_match;
+#N canvas 500 255 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 5 KEYWORDS control list_op;
+#X text 12 75 INLET_0 list verbosity paths set;
+#X text 12 95 OUTLET_N list;
+#X text 12 115 OUTLET_R list;
+#X text 12 135 AUTHOR Martin Peach;
+#X text 12 45 DESCRIPTION routes lists as OSC packets.;
+#X restore 788 685 pd META;
+#X obj -7 8 import mrpeach;
+#X text 612 657 2012/03/13 Martin Peach;
+#X text -5 149 [unpackOSC] parses lists of floats (only integers on
+[0..255]) as OSC packets.;
+#X obj -34 249 cnv 15 600 160 empty empty empty 20 12 0 14 -204786
+-66577 0;
+#X obj 127 412 cnv 15 600 140 empty empty empty 20 12 0 14 -261234
+-66577 0;
+#X msg 76 343 set /left;
+#X msg 53 320 set /left /right;
+#X text 181 341 (but new outlets can't be created);
+#X msg 27 294 paths;
+#X msg 4 271 verbosity \$1;
+#X obj 4 253 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+;
+#X text 22 249 set to 1 for debugging;
+#X text 233 365 routeOSC will match deep paths;
+#X text 177 319 [set( reassigns outputs from left to right;
+#X text 81 294 [paths( will print the current OSC addresses to Pd console
+;
+#X msg 145 412 /test any2 4 5;
+#X msg 257 524 1 2 3;
+#X msg 99 366 set /one/two/three;
+#X msg 122 389 set /*;
+#X text 175 388 this will match any OSC message;
+#X msg 212 479 /* zap!;
+#X msg 235 502 zorro trope;
+#X text 323 502 not a valid OSC message;
+#X text 301 523 not a valid OSC message;
+#X text 260 412 input is a message whose selector is an OSC path;
+#X text 352 434 or a list whose first element is an OSC path;
+#X obj 405 609 print match_3;
+#X obj 272 559 routeOSC /test /west /one/two;
+#X msg 189 456 /one/two/three yikes!;
+#X msg 167 434 list /west/rate any1 2 3;
+#X text -34 586 [routeOSC] routes Open Sound Control* messages \, or
+lists of anything beginning with a /path;
+#X text -32 629 *See http://opensoundcontrol.org/spec-1_0;
+#X connect 1 0 7 0;
+#X connect 1 1 19 0;
+#X connect 7 0 11 0;
+#X connect 7 0 16 0;
+#X connect 7 1 10 0;
+#X connect 7 1 11 1;
+#X connect 11 0 55 0;
+#X connect 17 0 2 0;
+#X connect 17 1 3 0;
+#X connect 17 2 4 0;
+#X connect 17 3 5 0;
+#X connect 17 4 18 0;
+#X connect 19 0 20 0;
+#X connect 19 1 17 0;
+#X connect 33 0 55 0;
+#X connect 34 0 55 0;
+#X connect 36 0 55 0;
+#X connect 37 0 55 0;
+#X connect 38 0 37 0;
+#X connect 43 0 55 0;
+#X connect 44 0 55 0;
+#X connect 45 0 55 0;
+#X connect 46 0 55 0;
+#X connect 48 0 55 0;
+#X connect 49 0 55 0;
+#X connect 55 0 24 0;
+#X connect 55 1 25 0;
+#X connect 55 2 54 0;
+#X connect 55 3 26 0;
+#X connect 56 0 55 0;
+#X connect 57 0 55 0;

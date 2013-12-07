@@ -31,12 +31,12 @@ void glob_start_path_dialog(t_pd *dummy, t_floatarg flongform);
 void glob_path_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv);
 void glob_start_startup_dialog(t_pd *dummy, t_floatarg flongform);
 void glob_startup_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv);
+void glob_startup_flags(t_pd *dummy, t_symbol *s);
+void glob_realtime(t_pd *dummy, t_floatarg f);
 void glob_ping(t_pd *dummy);
 void glob_watchdog(t_pd *dummy);
+void glob_loadpreferences(t_pd *dummy);
 void glob_savepreferences(t_pd *dummy);
-
-void alsa_resync( void);
-
 
 #ifdef _WIN32
 void glob_audio(void *dummy, t_floatarg adc, t_floatarg dac);
@@ -61,6 +61,12 @@ static void glob_version(t_pd *dummy, float f)
 static void glob_perf(t_pd *dummy, float f)
 {
     sys_perf = (f != 0);
+}
+
+extern int sys_autopatch;
+static void glob_autopatch(t_pd *dummy, float f)
+{
+    sys_autopatch = (f != 0);
 }
 
 void max_default(t_pd *x, t_symbol *s, int argc, t_atom *argv)
@@ -126,13 +132,21 @@ void glob_init(void)
         gensym("start-startup-dialog"), 0);
     class_addmethod(glob_pdobject, (t_method)glob_startup_dialog,
         gensym("startup-dialog"), A_GIMME, 0);
+    class_addmethod(glob_pdobject, (t_method)glob_startup_flags,
+        gensym("startup-flags"), A_SYMBOL, 0);
+    class_addmethod(glob_pdobject, (t_method)glob_realtime,
+        gensym("realtime"), A_FLOAT, 0);
     class_addmethod(glob_pdobject, (t_method)glob_ping, gensym("ping"), 0);
+    class_addmethod(glob_pdobject, (t_method)glob_loadpreferences,
+        gensym("load-preferences"), 0);
     class_addmethod(glob_pdobject, (t_method)glob_savepreferences,
         gensym("save-preferences"), 0);
     class_addmethod(glob_pdobject, (t_method)glob_version,
         gensym("version"), A_FLOAT, 0);
     class_addmethod(glob_pdobject, (t_method)glob_perf,
         gensym("perf"), A_FLOAT, 0);
+    class_addmethod(glob_pdobject, (t_method)glob_autopatch,
+        gensym("autopatch"), A_FLOAT, 0);
 #if defined(__linux__) || defined(IRIX) || defined(__FreeBSD_kernel__)
     class_addmethod(glob_pdobject, (t_method)glob_watchdog,
         gensym("watchdog"), 0);

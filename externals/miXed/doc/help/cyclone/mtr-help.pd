@@ -1,0 +1,69 @@
+#N canvas 0 26 609 421 10;
+#X text -24 41 Multi-track recorder for any kind of message;
+#X text -17 322 The leftmost inlet of mtr is a control inlet for all
+tracks. You can send the same messages to individual tracks as well.
+Each track records what comes into its inlet \, and plays it back through
+the outlet directly below the inlet.;
+#X text 142 162 argument: int specifies number of tracks (default 1)
+up to 32;
+#X text -22 283 mtr sends out list with track # and duration when it
+receives a "next" message;
+#X text -24 66 Choose record to begin recording sliders \, play to
+play back;
+#X msg 1 99 record;
+#X msg 50 100 play;
+#X text 151 93 Control messages sent to an individual track affect
+that track only.;
+#X obj 155 200 vsl 18 47 0 128 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 129 200 vsl 18 47 0 128 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 103 200 vsl 18 47 0 128 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X msg 1 191 next;
+#X msg 1 168 rewind;
+#X obj 61 171 mtr 3;
+#X text 351 222 other messages (copied from source):;
+#X msg 75 119 stop;
+#X text 409 250 mute;
+#X text 410 266 unmute;
+#X text 411 282 clear;
+#X text 410 296 delay ms;
+#X text 412 310 write;
+#X text 412 324 read;
+#X text 412 339 tempo float;
+#X obj -2 263 print;
+#X text 32 262 track# duration;
+#X text 389 381 see also:;
+#X obj 453 382 qlist;
+#N canvas 247 115 494 392 META 0;
+#X text 12 205 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 175 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS control storage max_compatible;
+#X text 12 45 DESCRIPTION multi-track recorder for any kind of message
+;
+#X text 12 65 INLET_0 clear record play stop next rewind mute unmute
+delay write read tempo first;
+#X text 12 95 INLET_N anything;
+#X text 12 115 OUTLET_0 list;
+#X text 12 135 OUTLET_N anything;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 155 AUTHOR Krzysztof Czaja;
+#X restore 536 399 pd META;
+#X msg -6 139 clear;
+#X text 415 354 first;
+#X connect 5 0 13 0;
+#X connect 6 0 13 0;
+#X connect 8 0 13 3;
+#X connect 9 0 13 2;
+#X connect 10 0 13 1;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 23 0;
+#X connect 13 1 10 0;
+#X connect 13 2 9 0;
+#X connect 13 3 8 0;
+#X connect 15 0 13 0;
+#X connect 28 0 13 0;

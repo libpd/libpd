@@ -1,0 +1,21 @@
+#N canvas 0 26 466 232 10;
+#X obj 5 2 cnv 15 450 20 empty empty pi 2 11 1 18 -233017 -66577 0
+;
+#X msg 422 3 pddp;
+#X obj 142 149 pi;
+#X floatatom 142 192 11 0 0 0 - - -;
+#X msg 142 106 bang;
+#X text 32 51 The value of pi as accurate as Pd can manage:;
+#N canvas 280 175 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 105 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control trigonometry;
+#X text 12 45 DESCRIPTION value of pi as accurately as Pd can manage
+;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 float;
+#X restore 417 211 pd META;
+#X connect 2 0 3 0;
+#X connect 4 0 2 0;

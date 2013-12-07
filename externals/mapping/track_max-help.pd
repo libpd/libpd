@@ -1,0 +1,44 @@
+#N canvas 1 53 478 344 10;
+#X obj 2 -8 cnv 15 450 20 empty empty track_max 2 11 1 18 -233017 -66577
+0;
+#X floatatom 97 79 5 0 0 0 - - -;
+#X msg 148 61 bang;
+#X floatatom 97 142 5 0 0 0 - - -;
+#X text 183 62 <-- bang to reset;
+#X obj 159 86 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X text 179 86 <-- stop/start tracking;
+#X text 7 26 Track maximum value:;
+#X floatatom 97 229 5 0 0 0 - - -;
+#X msg 176 211 bang;
+#X floatatom 97 292 5 0 0 0 - - -;
+#X text 211 212 <-- bang to reset;
+#X obj 187 236 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X text 207 236 <-- stop/start tracking;
+#X text 14 173 The argument and/or the second inlet set the initial
+minimum value.;
+#X floatatom 136 229 5 0 0 0 - - -;
+#X obj 97 262 track_max 72;
+#N canvas 371 158 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 145 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 45 DESCRIPTION track maximum value;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float bang;
+#X text 12 125 OUTLET_0 float;
+#X restore 424 305 pd META;
+#X obj 97 112 track_max;
+#X connect 1 0 18 0;
+#X connect 2 0 18 2;
+#X connect 5 0 18 2;
+#X connect 8 0 16 0;
+#X connect 9 0 16 2;
+#X connect 12 0 16 2;
+#X connect 15 0 16 1;
+#X connect 16 0 10 0;
+#X connect 18 0 3 0;

@@ -1,0 +1,23 @@
+#N canvas 0 26 467 278 12;
+#X obj 70 95 bng 20 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X floatatom 70 192 5 0 0 0 - - -;
+#X floatatom 193 112 5 0 0 0 - - -;
+#X text 39 21 poisson :: Poisson distributed random numbers;
+#X obj 70 145 poisson 2.2;
+#X text 246 113 lambda - value that is most;
+#X text 317 132 likely to appear;
+#N canvas 295 203 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 125 AUTHOR Olaf Matthes <olaf.matthes@gmx.de>;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X text 12 45 DESCRIPTION Poisson distributed random numbers;
+#X text 12 65 INLET_0 bang;
+#X text 12 5 KEYWORDS control random;
+#X restore 404 248 pd META;
+#X connect 0 0 4 0;
+#X connect 2 0 4 1;
+#X connect 4 0 1 0;

@@ -1,0 +1,39 @@
+#N canvas 0 31 473 316 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_one2two 2 11 1 18 -233017
+-66577 0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 270 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 284 released under the GNU GPL;
+#X floatatom 153 110 5 0 0 0 - - -;
+#X floatatom 83 176 5 0 0 0 - - -;
+#X obj 156 91 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 86 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 98 243 For more info:;
+#X floatatom 263 176 5 0 0 0 - - -;
+#X obj 266 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 18 28 Simple one-to-two mapping object. The first inlet is
+passed thru \, the range of the output data on the second inlet starts
+at the point in the input range specified as an arugment.;
+#X obj 153 145 hid/hid_one2two 0.3;
+#N canvas 483 31 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 125 AUTHOR Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 45 DESCRIPTION simple one-to-two mapping object;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 419 270 pd META;
+#X connect 4 0 12 0;
+#X connect 5 0 7 0;
+#X connect 6 0 4 0;
+#X connect 9 0 10 0;
+#X connect 12 0 5 0;
+#X connect 12 1 9 0;

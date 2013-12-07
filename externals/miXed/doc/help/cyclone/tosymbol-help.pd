@@ -1,0 +1,64 @@
+#N canvas 0 26 539 593 10;
+#X obj 53 251 fromsymbol;
+#X obj 4 14 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 17 559 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 17 570 ___________________________________________________
+;
+#X obj 94 190 tosymbol;
+#X text 35 72 since pd lacks a quoting mechanism (like `foo bar`) there
+is;
+#X text 36 84 no support for spaces in symbols \, so the original max
+way of;
+#X text 35 96 using from/tosymbol won't work. One has to construct
+symbols;
+#X text 34 109 with other tools like;
+#X obj 185 113 tosymbol;
+#X obj 267 113 makesymbol;
+#X text 248 109 or;
+#X text 342 110 from zexy;
+#X msg 94 164 this is a list of symbols;
+#X text 275 216 becomes a symbol with spaces;
+#X text 200 278 and can be transformed back into a list;
+#X text 31 164 so this:;
+#X obj 90 421 tosymbol;
+#X text 50 365 1;
+#X text 57 394 2;
+#X obj 55 329 tosymbol;
+#X msg 90 391 lets place a _ instead of a space inside;
+#X msg 67 366 separator _;
+#X text 117 333 can also be used to generate non space symbols from
+lists:;
+#X symbolatom 90 446 0 0 0 0 - - -;
+#X symbolatom 94 216 25 0 0 0 - - -;
+#X obj 53 278 print THIS_IS_A_LIST;
+#X text 1 486 For more info:;
+#X obj 148 504 pddp/pddplink ../all_about_lists_vs_anythings.pd -text
+all_about_lists_vs_anythings;
+#X obj 348 504 pddp/pddplink ../all_about_symbol_construction.pd -text
+all_about_symbol_construction;
+#X obj 4 504 pddp/pddplink ../all_about_data_types.pd -text all_about_data_types
+;
+#X obj 29 16 fromsymbol;
+#X obj 29 37 tosymbol;
+#X text 121 22 transform symbol to numbers or messages and vice versa
+;
+#N canvas 247 115 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 125 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 45 DESCRIPTION transform symbol to numbers or messages;
+#X text 12 5 KEYWORDS control conversion max_compatible symbol_op;
+#X text 12 85 OUTLET_0 symbol;
+#X text 12 65 INLET_0 float list separator;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 105 AUTHOR Krzysztof Czaja;
+#X restore 488 573 pd META;
+#X connect 0 0 26 0;
+#X connect 4 0 0 0;
+#X connect 4 0 25 0;
+#X connect 13 0 4 0;
+#X connect 17 0 24 0;
+#X connect 21 0 17 0;
+#X connect 22 0 17 0;

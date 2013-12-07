@@ -1,0 +1,8 @@
+#N canvas 306 0 450 300 10;
+#X text 39 169 this code adds an external "loader" to Miller S. Puckette's
+"pure data" \, * which allows the on-the-fly creation of abstractions
+by just creating an * object which is of a yet unknown file and for
+which no abstraction-file exists * * the new abstraction should be
+minimal and eventually be loaded from a template;
+#X text 134 91 FIXME;
+#X text 58 41 THIS IS ONLY A STUB;

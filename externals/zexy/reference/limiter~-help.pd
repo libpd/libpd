@@ -1,0 +1,308 @@
+#N canvas 4 50 762 443 10;
+#X text 189 15 limiter;
+#X text 187 25 ========;
+#X msg 398 249 print;
+#X obj 445 319 *~;
+#X obj 476 319 *~;
+#X floatatom 476 199 0 0 0 2 left - -;
+#X floatatom 562 200 0 0 0 2 right - -;
+#X floatatom 520 181 0 0 0 2 both - -;
+#X obj 476 266 limiter~ 50 1;
+#N canvas 0 153 455 493 tabwrite 0;
+#N canvas 0 0 450 300 (subpatch) 0;
+#X array array1 32768 float 0;
+#X coords 0 1 32767 -1 200 140 1;
+#X restore 130 196 graph;
+#X obj 111 63 inlet~;
+#X msg 214 78 \; array1 resize 32768;
+#X obj 111 85 tabwrite~ array1;
+#X obj 151 64 bang~;
+#X obj 214 59 loadbang;
+#X obj 337 88 block~ 32768 8;
+#X connect 1 0 3 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X restore 372 408 pd tabwrite;
+#X obj 382 341 env~;
+#X floatatom 382 359 4 0 0 0 - - -;
+#X text 30 299 to learn more about this object \, try these;
+#X text 48 371 http://iem.kug.ac.at/~zmoelnig;
+#N canvas 59 76 600 400 generator~ 0;
+#X obj 86 49 inlet;
+#X obj 252 54 inlet;
+#X obj 112 229 outlet~;
+#X obj 112 185 *~;
+#X obj 151 185 *~;
+#X obj 122 128 osc~ 440;
+#X obj 151 145 osc~ 689.062;
+#X obj 112 163 line~;
+#X obj 167 162 line~;
+#X msg 167 128 \$1 100;
+#X msg 112 111 \$1 100;
+#X obj 86 97 f;
+#X obj 252 98 f;
+#X obj 154 229 outlet~;
+#X obj 86 72 dbtorms;
+#X obj 252 78 dbtorms;
+#X connect 0 0 14 0;
+#X connect 1 0 15 0;
+#X connect 3 0 2 0;
+#X connect 4 0 13 0;
+#X connect 5 0 3 1;
+#X connect 6 0 4 0;
+#X connect 7 0 3 0;
+#X connect 8 0 4 1;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 10 0;
+#X connect 12 0 9 0;
+#X connect 14 0 11 0;
+#X connect 15 0 12 0;
+#X restore 476 221 pd generator~;
+#X text 37 99 it is quite important to delay the original signals before
+the limiter-amplification is applied to prevent clicks !!!;
+#X text 52 353 1906:forum::für::umläute:2001;
+#X text 585 170 level of the inlets;
+#X text 511 148 (give some 190dB and notice no clipping);
+#X obj 493 298 z~ 64;
+#X obj 445 299 z~ 64;
+#X text 539 17 part of zexy;
+#X floatatom 492 354 0 0 100 0 - - -;
+#N canvas 159 26 532 285 output 0;
+#X obj 348 160 t b;
+#X obj 348 110 f;
+#X obj 348 60 inlet;
+#X text 354 29 mute;
+#X obj 348 185 f;
+#X msg 436 180 0;
+#X msg 348 85 bang;
+#X obj 348 135 moses 1;
+#X obj 407 110 moses 1;
+#X obj 133 148 dbtorms;
+#X obj 20 155 inlet~;
+#X obj 239 41 inlet;
+#X text 239 18 level;
+#X msg 146 65 set \$1;
+#X obj 146 90 outlet;
+#X msg 254 65 \; pd dsp 1;
+#X obj 133 198 line~;
+#X obj 20 207 *~;
+#X obj 20 232 dac~;
+#X obj 133 173 pack 0 50;
+#X text 20 132 audio;
+#X text 146 114 show level;
+#X obj 436 155 t b;
+#X obj 20 181 hip~ 1;
+#X obj 133 42 r \$0master-lvl;
+#X obj 80 155 inlet~;
+#X obj 80 207 *~;
+#X obj 80 181 hip~ 1;
+#X obj 239 105 s \$0master-lvl;
+#X obj 407 85 r \$0master-lvl;
+#X obj 348 210 s \$0master-lvl;
+#X connect 0 0 4 0;
+#X connect 1 0 7 0;
+#X connect 2 0 6 0;
+#X connect 4 0 30 0;
+#X connect 5 0 30 0;
+#X connect 6 0 1 0;
+#X connect 7 0 0 0;
+#X connect 7 1 22 0;
+#X connect 8 1 4 1;
+#X connect 9 0 19 0;
+#X connect 10 0 23 0;
+#X connect 11 0 15 0;
+#X connect 11 0 28 0;
+#X connect 13 0 14 0;
+#X connect 16 0 17 1;
+#X connect 16 0 26 1;
+#X connect 17 0 18 0;
+#X connect 19 0 16 0;
+#X connect 22 0 5 0;
+#X connect 23 0 17 0;
+#X connect 24 0 9 0;
+#X connect 24 0 13 0;
+#X connect 25 0 27 0;
+#X connect 26 0 18 1;
+#X connect 27 0 26 0;
+#X connect 29 0 1 1;
+#X connect 29 0 8 0;
+#X restore 458 382 pd output;
+#X msg 520 354 MUTE;
+#X text 532 300 just a small delay of 64 samples;
+#X text 531 44 updated for zexy-2.0;
+#X text 37 132 this is because the limiter algorithm needs some time
+(e.g. the outgoing signal is delayed by some samples) \; directly multiplying
+would therefore be a bit too late \, in case a spike appears. Adding
+a small delay takes care of this psychoacoustically (you won't hear
+the click);
+#N canvas 603 395 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 135 AUTHOR IOhannes m zmoelnig;
+#X text 12 45 DESCRIPTION limiter;
+#X text 12 5 KEYWORDS signal filter analysis;
+#X text 12 65 INLET_0 signal print mode LIMIT CRACK COMPRESS help limit
+set limits set2 treshold compress;
+#X text 12 95 INLET_N signal;
+#X text 12 115 OUTLET_0 signal;
+#X restore 711 417 pd META;
+#X text 36 41 limiter will output the amplification-factor that has
+to be applied on all inlet~s to get a beautiful limited multichannel-signal
+that preserves the balance between the channels;
+#N canvas 4 50 951 819 modes 0;
+#X text 81 189 MODE 0 : 1-treshold-limiter;
+#X text 79 384 MODE 1 : 2-tresholds-limiter;
+#X msg 502 255 print;
+#X obj 456 316 limiter~;
+#X obj 479 141 limiter~;
+#X msg 543 123 help;
+#X msg 542 104 print;
+#X msg 479 32 mode 0;
+#X msg 542 31 LIMIT;
+#X msg 479 50 mode 1;
+#X msg 542 49 CRACK;
+#X msg 479 67 mode 2;
+#X msg 542 66 COMPRESS;
+#X text 612 48 crack limiter (2 tresholds);
+#X text 612 66 compressor (1 treshold);
+#X text 621 102 context status;
+#X text 522 30 ==;
+#X text 521 49 ==;
+#X text 520 68 ==;
+#X msg 517 302 LIMIT;
+#X obj 517 286 loadbang;
+#X text 611 30 normal limiter (1 treshold) [default];
+#X msg 501 459 print;
+#X obj 453 522 limiter~;
+#X obj 514 492 loadbang;
+#X msg 514 508 CRACK;
+#X msg 487 716 print;
+#X obj 500 760 loadbang;
+#X text 85 590 MODE 2 : compressor;
+#X msg 500 776 COMPRESS;
+#X msg 492 629 ratio 0.5;
+#X text 599 628 set compress-ratio (0.5 == 1:2);
+#X text 599 605 set the treshold \, where the compressor should start
+to compress;
+#X text 622 677 set the compressor (limit/treshold/ratio);
+#X text 601 655 set limit/holdtime/releasetime at once;
+#X text 603 717 view actual settings;
+#X text 607 459 view actual settings;
+#X msg 504 188 limit 90;
+#X msg 504 211 set 105 40 150;
+#X msg 502 404 set 105 40 150;
+#X msg 505 426 set2 120 1 10;
+#X msg 491 654 set 110 40 150;
+#X msg 491 611 treshold 10;
+#X msg 490 677 compress 96 88 0.5;
+#X text 598 591 set the output-limit;
+#X msg 491 593 limit 98;
+#X text 608 254 view actual settings;
+#X text 609 212 set limit/holdtime/releasetime at once;
+#X text 609 185 set output limit;
+#X obj 439 790 limiter~;
+#X text 605 404 set limiter1 (output-limit/hold-time/release-time)
+;
+#X text 10 621 the output signal will never become louder than the
+specified output-limit.;
+#X text 10 653 if the input-signal becomes loader than the input-treshold
+\, a compressor will start working \, compressing the dynamic range
+by the specified ratio. Signals lesser than the treshold will pass
+through uncompressed.;
+#X text 39 59 set the limiter~ to one of the 3 modes;
+#X text 604 380 set both limits;
+#X text 11 210 this is simple : the output will not become bigger than
+the specified limit. When the input becomes small enough again so that
+this condition is matched even without (positive) amplification (this
+is \, when the input signal level falls below the limit) \, the amplification
+will increase gradually (depending on hold- & release-time) towards
+1;
+#X text 604 427 set limiter2 (input-treshold/hold-time/release-time)
+;
+#X msg 502 381 limits 100 108;
+#X text 10 414 this limiter can be used to handle disgusting things
+like cracks \, which are much louder than the "normal" musical signal.
+Typically hold- and release-times for the second limiter are far smaller
+than those for the first \, to ensure that the disturbance will pass
+quite fast (since the crack would disturb the sensation anyhow \, we
+do not care much about the distortion caused by a fast limiter). The
+treshold for the 2nd limiter must be greater than the ouput-limit (if
+not \, the limiter will be reset to MODE 0);
+#X text 13 298 all levels (limts/tresholds) should be given in dB to
+produce satisfying results (following pd's agreement on the deziBel-scale
+\, 100dB are equal to 1 \, 0dB equals 0 \, ...);
+#X text 624 123 context(!) help;
+#X connect 2 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 4 0;
+#X connect 10 0 4 0;
+#X connect 11 0 4 0;
+#X connect 12 0 4 0;
+#X connect 19 0 3 0;
+#X connect 20 0 19 0;
+#X connect 22 0 23 0;
+#X connect 24 0 25 0;
+#X connect 25 0 23 0;
+#X connect 26 0 49 0;
+#X connect 27 0 29 0;
+#X connect 29 0 49 0;
+#X connect 30 0 49 0;
+#X connect 37 0 3 0;
+#X connect 38 0 3 0;
+#X connect 39 0 23 0;
+#X connect 40 0 23 0;
+#X connect 41 0 49 0;
+#X connect 42 0 49 0;
+#X connect 43 0 49 0;
+#X connect 45 0 49 0;
+#X connect 57 0 23 0;
+#X restore 189 322 pd modes;
+#N canvas 4 50 565 362 creation 0;
+#X text 211 152 creates a default limiter (MONO \, 9-samples-buffer)
+;
+#X text 213 189 creates a limiter(MONO \, 10ms-buffer);
+#X text 213 223 creates a limiter (multichannel \, 9-samples-buffer)
+;
+#X text 216 256 creates a limiter (multichannel \, 1ms-buffer !!);
+#X text 82 17 "limiter [<bufsize>] [<in1> [<in2> [...]]]";
+#X text 148 70 creating inlets depends ONLY on the number of arguments
+\, not on the arguments themselves... !;
+#X text 218 313 creates a limiter (multichannel \, 9-samples-buffer)
+;
+#X text 113 187 ______________;
+#X text 89 150 _________________;
+#X text 145 220 _________;
+#X text 114 254 ______________;
+#X text 199 311 __;
+#X obj 23 151 limiter~;
+#X obj 23 185 limiter~ 10;
+#X obj 22 219 limiter~ 0 1 2 3;
+#X obj 22 253 limiter~ 1 2;
+#X obj 18 310 limiter~ We need 4 inlets;
+#X restore 39 322 pd creation;
+#X connect 2 0 8 0;
+#X connect 3 0 23 0;
+#X connect 3 0 10 0;
+#X connect 4 0 9 0;
+#X connect 4 0 23 1;
+#X connect 5 0 14 0;
+#X connect 6 0 14 1;
+#X connect 7 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 4 0;
+#X connect 8 0 3 1;
+#X connect 10 0 11 0;
+#X connect 14 0 8 0;
+#X connect 14 0 20 0;
+#X connect 14 1 8 1;
+#X connect 14 1 19 0;
+#X connect 19 0 4 1;
+#X connect 20 0 3 0;
+#X connect 22 0 23 2;
+#X connect 23 0 22 0;
+#X connect 24 0 23 3;

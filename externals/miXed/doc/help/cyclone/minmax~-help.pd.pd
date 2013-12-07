@@ -1,0 +1,50 @@
+#N canvas 0 26 440 469 10;
+#X obj 6 5 cnv 15 400 40 empty empty empty 20 12 0 14 -262130 -66577
+0;
+#X text 16 428 docs based on the MAX/MSP reference (c) cycling'74;
+#X text 15 442 ___________________________________________________
+;
+#X floatatom 109 295 5 0 0 1 min - -;
+#X msg 21 124 bang;
+#N canvas 247 115 494 397 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 205 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 55 DESCRIPTION compute the minimu and maximum values of
+a signal;
+#X text 12 85 INLET_0 bang signal reset;
+#X text 12 105 OUTLET_0 signal;
+#X text 12 125 OUTLET_1 signal;
+#X text 12 145 OUTLET_2 float;
+#X text 12 165 OUTLET_3 float;
+#X text 12 5 KEYWORDS control max_compatible needs_work ([minmax~]
+"Help" doesn't find this help patch);
+#X text 12 35 LICENSE SIBSD;
+#X text 12 185 AUTHOR Krzysztof Czaja;
+#X restore 390 448 pd META;
+#X obj 24 36 minmax~;
+#X text 99 35 compute the minimum and maximum values of a signal;
+#X obj 83 251 minmax~;
+#X obj 84 212 osc~ 440;
+#X floatatom 122 274 5 0 0 1 max - -;
+#X msg 59 169 reset;
+#X text 55 125 send values corresponding to the minimum and maximum
+signal values out the two rightmost outlets.;
+#X text 103 169 reset the current min and max values to the default
+(0);
+#X obj 96 332 snapshot~;
+#X obj 82 374 snapshot~;
+#X floatatom 96 355 5 0 0 1 max - -;
+#X floatatom 82 397 5 0 0 1 min - -;
+#X text 153 353 (since startup or last reset message);
+#X text 142 397 (since startup or last reset message);
+#X connect 4 0 8 0;
+#X connect 8 0 15 0;
+#X connect 8 1 14 0;
+#X connect 8 2 3 0;
+#X connect 8 3 10 0;
+#X connect 9 0 8 0;
+#X connect 11 0 8 0;
+#X connect 14 0 16 0;
+#X connect 15 0 17 0;

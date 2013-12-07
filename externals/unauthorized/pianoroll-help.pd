@@ -1,0 +1,80 @@
+#N canvas 90 41 827 643 10;
+#X floatatom 71 402 5 0 0;
+#X floatatom 258 400 5 0 0;
+#X text 523 112 (invoke with <right mouse>Properties );
+#X text 524 101 You can set the following properties :;
+#X text 548 141 * Width : graphical x size;
+#X text 548 152 * Height : graphical y size;
+#X text 488 548 bugs and comments @ ydegoyon@free.fr;
+#X msg 587 271 \; pd dsp 0;
+#X msg 653 271 \; pd dsp 1;
+#X text 548 129 * Name;
+#X text 119 401 Pitch;
+#X text 304 399 Volume ( scaled to [0 \, 1] );
+#X text 547 164 * Pitch min : minimum value delivered by left outlet
+;
+#X text 547 176 * Pitch max : maximum value delivered by left outlet
+;
+#X text 547 200 * Step number : number of steps;
+#X text 524 79 ( pitch & volume originally but \, really \, anything
+you like );
+#X msg 238 87 transpose \$1;
+#X floatatom 334 89 5 0 0;
+#X text 240 104 You can transpose the melody ( ?? );
+#X text 241 115 with a float value;
+#X text 548 211 * Default value : must be in [min \, max];
+#X obj 65 165 pianoroll pianoroll1 400 192 -15 15 32 16 0 0 1 -12.0968
+0.741935 -3.3871 0.16129 5.32258 0.16129 -4.35484 0.354839 6.29032
+0.322581 6.29032 1 5.32258 1 -12.0968 0.290323 -10.1613 0.290323 -8.22581
+0.580645 -5.32258 1 7.25807 1 -10.1613 0.580645 -15 0.612903 -15 0.580645
+-15 1;
+#X msg 47 18 bang;
+#X obj 46 80 f;
+#X obj 76 80 + 1;
+#X floatatom 9 104 5 0 0;
+#X obj 47 44 metro 500;
+#X text 527 65 Pianoroll controls two parameters for a sequencer;
+#X text 548 188 * Pitch grades : number of grades for the pitch;
+#X msg 82 18 stop;
+#X floatatom 13 140 5 0 0;
+#X text 57 1 forward;
+#X text 144 0 backward;
+#X msg 136 15 bang;
+#X obj 135 77 f;
+#X obj 136 41 metro 500;
+#X msg 171 16 stop;
+#X obj 165 77 - 1;
+#X msg 239 59 init;
+#X text 279 60 init to default values;
+#X msg 241 33 load pattern#1;
+#X text 352 19 load and save the patterns;
+#X text 352 31 ( values as well as steps number .... );
+#X msg 241 10 save pattern#1;
+#X text 544 383 you can set the pitch and;
+#X text 544 397 the volume with messages;
+#X text 544 409 ( positions start at zero );
+#X msg 541 358 volume 3 0.345;
+#X msg 542 334 pitch 3 -5;
+#X connect 16 0 21 0;
+#X connect 17 0 16 0;
+#X connect 21 0 0 0;
+#X connect 21 1 1 0;
+#X connect 22 0 26 0;
+#X connect 23 0 21 0;
+#X connect 23 0 24 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 1;
+#X connect 26 0 23 0;
+#X connect 29 0 26 0;
+#X connect 30 0 21 0;
+#X connect 33 0 35 0;
+#X connect 34 0 37 0;
+#X connect 34 0 21 0;
+#X connect 35 0 34 0;
+#X connect 36 0 35 0;
+#X connect 37 0 34 1;
+#X connect 38 0 21 0;
+#X connect 40 0 21 0;
+#X connect 43 0 21 0;
+#X connect 47 0 21 0;
+#X connect 48 0 21 0;

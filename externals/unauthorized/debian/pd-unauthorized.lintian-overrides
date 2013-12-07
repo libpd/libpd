@@ -1,0 +1,7 @@
+# the upstream library format includes an 'examples' directory where example
+# scripts are kept.  This directory needs to be part of the library itself so
+# that the documentation browser, aka the "Help Browser" can find and display
+# the examples.  Sometimes the example scripts include image files to
+# manipulate.
+pd-unauthorized: image-file-in-usr-lib usr/lib/pd/extra/unauthorized/examples/speaker.gif
+pd-unauthorized: image-file-in-usr-lib usr/lib/pd/extra/unauthorized/examples/wanderer.gif

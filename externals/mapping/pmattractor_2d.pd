@@ -1,0 +1,52 @@
+#N canvas 1 53 871 573 10;
+#X obj 46 21 inlet;
+#X obj 174 278 loadbang;
+#X obj 46 495 outlet;
+#X obj 174 304 pack \$1 \$2;
+#X obj 526 16 inlet;
+#X msg 526 115 setK lnk \$1;
+#X obj 619 17 inlet;
+#X msg 619 115 setD lnk \$1;
+#X msg 194 110 bang \, get massesPos out \, get massesForces out;
+#X obj 46 467 route out;
+#X obj 155 496 outlet;
+#X obj 155 467 route out;
+#X obj 46 443 route massesPosId massesForcesId;
+#X obj 46 421 msd2D;
+#X msg 145 89 forceX out \$1 \, forceY out \$2;
+#X obj 254 273 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 174 330 reset \, mass border 0 1 -1 0 \, mass border 0 1 1 0
+\, mass border 0 1 0 -1 \, mass border 0 1 0 1 \, mass out 1 1 0 0
+\, link lnk border out \$1 \$2 \, mass grab 0 1 0 0 \, link lgrab out
+grab 0 0;
+#X obj 46 89 unpack f f;
+#X msg 46 113 posX grab \$1;
+#X msg 95 166 setK lgrab \$1;
+#X msg 111 135 posY grab \$1;
+#X obj 46 56 route grab grab_on force bang;
+#X connect 0 0 21 0;
+#X connect 1 0 3 0;
+#X connect 3 0 16 0;
+#X connect 4 0 5 0;
+#X connect 5 0 13 0;
+#X connect 6 0 7 0;
+#X connect 7 0 13 0;
+#X connect 8 0 13 0;
+#X connect 9 0 2 0;
+#X connect 11 0 10 0;
+#X connect 12 0 9 0;
+#X connect 12 1 11 0;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 15 0 3 0;
+#X connect 16 0 13 0;
+#X connect 17 0 18 0;
+#X connect 17 1 20 0;
+#X connect 18 0 13 0;
+#X connect 19 0 13 0;
+#X connect 20 0 13 0;
+#X connect 21 0 17 0;
+#X connect 21 1 19 0;
+#X connect 21 2 14 0;
+#X connect 21 3 8 0;

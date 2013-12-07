@@ -24,6 +24,7 @@
 
 static t_symbol *class_loadsym;     /* name under which an extern is invoked */
 static void pd_defaultfloat(t_pd *x, t_float f);
+static void pd_defaultblob(t_pd *x, t_blob *st); /* MP20061226 blob type */
 static void pd_defaultlist(t_pd *x, t_symbol *s, int argc, t_atom *argv);
 t_pd pd_objectmaker;    /* factory for creating "object" boxes */
 t_pd pd_canvasmaker;    /* factory for creating canvases */
@@ -40,6 +41,11 @@ static void pd_defaultbang(t_pd *x)
     if (*(*x)->c_listmethod != pd_defaultlist)
         (*(*x)->c_listmethod)(x, 0, 0, 0);
     else (*(*x)->c_anymethod)(x, &s_bang, 0, 0);
+}
+
+static void pd_defaultblob(t_pd *x, t_blob *st) /* MP 20061226 blob type */
+{ /* for now just reject it, later convert to symbol/float/list */
+    pd_error(x, "%s: no method for blob so far...", (*x)->c_name->s_name);
 }
 
 static void pd_defaultpointer(t_pd *x, t_gpointer *gp)
@@ -208,6 +214,7 @@ t_class *class_new(t_symbol *s, t_newmethod newmethod, t_method freemethod,
     c->c_pointermethod = pd_defaultpointer;
     c->c_floatmethod = pd_defaultfloat;
     c->c_symbolmethod = pd_defaultsymbol;
+    c->c_blobmethod = pd_defaultblob; /* MP 20061226 blob type */
     c->c_listmethod = pd_defaultlist;
     c->c_anymethod = pd_defaultanything;
     c->c_wb = (typeflag == CLASS_PATCHABLE ? &text_widgetbehavior : 0);
@@ -291,6 +298,12 @@ void class_addmethod(t_class *c, t_method fn, t_symbol *sel,
         if (argtype != A_SYMBOL || va_arg(ap, t_atomtype)) goto phooey;
         class_addsymbol(c, fn);
     }
+    else if (sel == &s_blob) /* MP 20070106 blob type */
+    {
+        post("class_addmethod: %p", fn);
+        if (argtype != A_BLOB || va_arg(ap, t_atomtype)) goto phooey;
+        class_addblob(c, fn);
+    }
     else if (sel == &s_list)
     {
         if (argtype != A_GIMME) goto phooey;
@@ -303,6 +316,7 @@ void class_addmethod(t_class *c, t_method fn, t_symbol *sel,
     }
     else
     {
+        /* Pd-extended doesn't use the aliasing automagic
         int i;
         for (i = 0; i < c->c_nmethod; i++)
             if (c->c_methods[i].me_name == sel)
@@ -316,6 +330,7 @@ void class_addmethod(t_class *c, t_method fn, t_symbol *sel,
             else post("warning: old method '%s' for class '%s' renamed '%s'",
                 sel->s_name, c->c_name->s_name, nbuf);
         }
+        */
         c->c_methods = t_resizebytes(c->c_methods,
             c->c_nmethod * sizeof(*c->c_methods),
             (c->c_nmethod + 1) * sizeof(*c->c_methods));
@@ -360,6 +375,11 @@ void class_doaddfloat(t_class *c, t_method fn)
 void class_addsymbol(t_class *c, t_method fn)
 {
     c->c_symbolmethod = (t_symbolmethod)fn;
+}
+
+void class_addblob(t_class *c, t_method fn) /* MP 20061226 blob type */
+{
+    c->c_blobmethod = (t_blobmethod)fn;
 }
 
 void class_addlist(t_class *c, t_method fn)
@@ -526,6 +546,7 @@ static t_symbol *addfileextent(t_symbol *s)
 static int tryingalready;
 
 void canvas_popabstraction(t_canvas *x);
+void canvas_initbang(t_canvas *x);
 extern t_pd *newest;
 
 t_symbol* pathsearch(t_symbol *s,char* ext);
@@ -537,7 +558,7 @@ void new_anything(void *dummy, t_symbol *s, int argc, t_atom *argv)
 {
     t_pd *current;
     int fd;
-    char dirbuf[MAXPDSTRING], *nameptr;
+    char dirbuf[MAXPDSTRING], classslashclass[MAXPDSTRING], *nameptr;
     if (tryingalready>MAXOBJDEPTH){
       error("maximum object loading depth %d reached", MAXOBJDEPTH);
       return;
@@ -553,16 +574,21 @@ void new_anything(void *dummy, t_symbol *s, int argc, t_atom *argv)
     }
     class_loadsym = 0;
     current = s__X.s_thing;
+    /* for class/class.pd support, to match class/class.pd_linux  */
+    snprintf(classslashclass, MAXPDSTRING, "%s/%s", s->s_name, s->s_name);
     if ((fd = canvas_open(canvas_getcurrent(), s->s_name, ".pd",
         dirbuf, &nameptr, MAXPDSTRING, 0)) >= 0 ||
             (fd = canvas_open(canvas_getcurrent(), s->s_name, ".pat",
-                dirbuf, &nameptr, MAXPDSTRING, 0)) >= 0)
+                dirbuf, &nameptr, MAXPDSTRING, 0)) >= 0 ||
+               (fd = canvas_open(canvas_getcurrent(), classslashclass, ".pd",
+                    dirbuf, &nameptr, MAXPDSTRING, 0)) >= 0)
     {
         close (fd);
         if (!pd_setloadingabstraction(s))
         {
             canvas_setargs(argc, argv);
             binbuf_evalfile(gensym(nameptr), gensym(dirbuf));
+            canvas_initbang((t_canvas *)(s__X.s_thing));/* JMZ*/
             if (s__X.s_thing != current)
                 canvas_popabstraction((t_canvas *)(s__X.s_thing));
             canvas_setargs(0, 0);
@@ -584,9 +610,10 @@ t_symbol  s__X =        {"#X", 0, 0};
 t_symbol  s_x =         {"x", 0, 0};
 t_symbol  s_y =         {"y", 0, 0};
 t_symbol  s_ =          {"", 0, 0};
+t_symbol  s_blob =    {"blob", 0, 0}; /* MP 20061223 blob type */
 
 static t_symbol *symlist[] = { &s_pointer, &s_float, &s_symbol, &s_bang,
-    &s_list, &s_anything, &s_signal, &s__N, &s__X, &s_x, &s_y, &s_};
+    &s_list, &s_anything, &s_signal, &s__N, &s__X, &s_x, &s_y, &s_, &s_blob}; /* MP 20061223 added s_blob */
 
 void mess_init(void)
 {
@@ -674,6 +701,13 @@ void pd_typedmess(t_pd *x, t_symbol *s, int argc, t_atom *argv)
             (*c->c_symbolmethod)(x, &s_);
         return;
     }
+    if (s == &s_blob) /* MP 20061226 blob type */
+    {
+        /*post("pd_typedmess argc = %d\n", argc);*//* MP 20061226 debug */
+        if (argc == 1) (*c->c_blobmethod)(x, argv->a_w.w_blob);
+        else goto badarg;
+        return;
+    }
     for (i = c->c_nmethod, m = c->c_methods; i--; m++)
         if (m->me_name == s)
     {
@@ -717,6 +751,19 @@ void pd_typedmess(t_pd *x, t_symbol *s, int argc, t_atom *argv)
                     argv++;
                 }
                 dp++;
+                break;
+            case A_BLOB:/* MP 20070106 blob type */
+                /*post("pd_typedmess A_BLOB");*/
+                if (!argc) goto badarg;
+                if (argv->a_type == A_BLOB)
+                {
+                    /*post("argv->a_type == A_BLOB, argc = %d, narg= %d", argc, narg);*/
+                    *ap = (t_int)(argv->a_w.w_blob);
+                }
+                argc--;
+                argv++;
+                narg++;
+                ap++;
                 break;
             case A_SYMBOL:
                 if (!argc) goto badarg;
@@ -795,6 +842,10 @@ void pd_vmess(t_pd *x, t_symbol *sel, char *fmt, ...)
         {
         case 'f': SETFLOAT(at, va_arg(ap, double)); break;
         case 's': SETSYMBOL(at, va_arg(ap, t_symbol *)); break;
+        case 't':
+            SETBLOB(at, va_arg(ap, t_blob *));
+            /*post("pd_vmess: arg[0].a_w.w_blob = %p", arg[0].a_w.w_blob);*/
+            break; /* MP 20061226 blob type */
         case 'i': SETFLOAT(at, va_arg(ap, t_int)); break;       
         case 'p': SETPOINTER(at, va_arg(ap, t_gpointer *)); break;
         default: goto done;

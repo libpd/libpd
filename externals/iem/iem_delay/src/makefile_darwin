@@ -1,0 +1,52 @@
+current: all
+
+.SUFFIXES: .pd_darwin
+
+PD_INSTALL_PATH = "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+LIB = -ldl -lm -lpthread
+
+CFLAGS = -DPD -DUNIX -g -Wall -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O2 -fno-strict-aliasing \
+	$(INCLUDE) $(UCFLAGS) $(AFLAGS) \
+
+MACOSXLINKFLAGS = -bundle -bundle_loader $(PD_INSTALL_PATH)/bin/pd
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = n_delay1p_line~.c \
+	n_delay2p_line~.c \
+	nz~.c \
+	block_delay~.c \
+	iem_delay.c
+
+TARGET = iem_delay.pd_darwin
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) $(MACOSXLINKFLAGS) -o $(TARGET) *.o $(LIB)
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) $(CFLAGS) -DPD $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

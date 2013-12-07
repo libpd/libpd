@@ -1,0 +1,10 @@
+base			pdp base pd object
+image_base		image processing base pd object
+dpd_base		bucket base pd object
+comm			pdp communication protocol in pd
+compat			legacy pdp stuff
+control			control pdp from within pd
+fp			object interface to the forth system
+forthconsole		console interface to the forth system
+queue			processing queue and synchro stuff
+ut			some utility pd objects

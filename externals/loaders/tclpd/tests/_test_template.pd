@@ -1,0 +1,22 @@
+#N canvas 237 169 450 300 10;
+#X obj 46 102 inlet;
+#X obj 46 236 outlet;
+#X obj 115 170 outlet;
+#X text 31 22 this is the template for a test;
+#X text 31 63 inlet 0 receives bang on load;
+#X text 160 119 send output to outlet 0 \; bang outlet 1 when test
+is complete;
+#N canvas 0 0 450 300 bang_swap 0;
+#X obj 63 58 inlet;
+#X obj 63 112 t b b;
+#X obj 112 172 outlet;
+#X obj 63 172 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X restore 46 139 pd bang_swap;
+#X msg 46 202 first output \, second output;
+#X connect 0 0 6 0;
+#X connect 6 0 7 0;
+#X connect 6 1 2 0;
+#X connect 7 0 1 0;

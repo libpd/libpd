@@ -1,0 +1,38 @@
+#N canvas 0 0 519 368 10;
+#X msg 160 166 set \$1;
+#X obj 160 141 makefilename \$0-%s;
+#X msg 160 79 symbol one;
+#X msg 176 109 symbol two;
+#X text 336 204 Seems to work with;
+#X text 72 19 or;
+#N canvas 463 219 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 105 AUTHOR d13@klingt.org;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 25 KEYWORDS control nonlocal;
+#X text 12 5 ALIAS s13~;
+#X text 12 65 DESCRIPTION nonlocal send with set message;
+#X text 12 85 INLET_0 set anything;
+#X restore 463 334 pd META;
+#X obj 22 19 send13;
+#X obj 103 20 s13;
+#X text 162 19 - like [send] \, but using a 'set' message to change
+the send-name;
+#X obj 160 195 send13 \$0-one;
+#X obj 55 251 receive13 \$0-one;
+#X obj 175 251 receive13 \$0-two;
+#X floatatom 55 278 5 0 0 0 - - -;
+#X floatatom 175 278 5 0 0 0 - - -;
+#X floatatom 100 80 5 0 0 0 - - -;
+#X text 336 224 [receive] too:;
+#X obj 345 251 receive \$0-one;
+#X floatatom 345 276 5 0 0 0 - - -;
+#X connect 0 0 10 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 11 0 13 0;
+#X connect 12 0 14 0;
+#X connect 15 0 10 0;
+#X connect 17 0 18 0;

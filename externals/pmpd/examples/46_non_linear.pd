@@ -1,0 +1,191 @@
+#N canvas 42 51 885 658 12;
+#X obj 144 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6988 1;
+#X obj 162 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7419 1;
+#X obj 180 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7655 1;
+#X obj 198 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7806 1;
+#X obj 216 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7830 1;
+#X obj 234 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7834 1;
+#X obj 19 148 metro 10;
+#X obj 252 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7746 1;
+#X obj 19 175 t b b;
+#X obj 54 200 s \$0-link;
+#X obj 19 226 s \$0-mass;
+#X obj 19 401 link \$0-link 0 1 1;
+#X obj 167 401 link \$0-link 0 1 1;
+#X obj 316 401 link \$0-link 0 1 1;
+#X obj 480 403 link \$0-link 0 1 1;
+#X obj 630 403 link \$0-link 0 1 1;
+#X obj 778 403 link \$0-link 0 1 1;
+#X obj 927 403 link \$0-link 0 1 1;
+#X obj 1073 402 link \$0-link 0 1 1;
+#X msg 19 376 64;
+#X obj 19 349 loadbang;
+#X obj 568 213 moses 0;
+#X obj 568 139 link \$0-link 0 0 1;
+#X obj 568 238 * -1;
+#X obj 17 460 link \$0-link 0 1 1;
+#X obj 166 460 link \$0-link 0 1 1;
+#X obj 315 460 link \$0-link 0 1 1;
+#X obj 472 459 link \$0-link 0 1 1;
+#X obj 620 459 link \$0-link 0 1 1;
+#X obj 769 459 link \$0-link 0 1 1;
+#X msg 928 458 64;
+#X obj 927 436 loadbang;
+#X obj 271 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7562 1;
+#X obj 289 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7336 1;
+#X obj 307 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 7115 1;
+#X obj 325 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6917 1;
+#X obj 343 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6738 1;
+#X obj 361 508 vsl 15 128 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 6567 1;
+#X obj 19 120 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
+;
+#X obj 568 163 * 40;
+#X obj 568 188 + 35;
+#X obj 568 292 * -16;
+#X obj 619 317 * 16;
+#X obj 162 377 mass \$0-mass 30 64;
+#X obj 313 378 mass \$0-mass 30 64;
+#X obj 475 379 mass \$0-mass 30 64;
+#X obj 626 379 mass \$0-mass 30 64;
+#X obj 774 378 mass \$0-mass 30 64;
+#X obj 925 378 mass \$0-mass 30 64;
+#X obj 1069 377 mass \$0-mass 30 64;
+#X obj 12 434 mass \$0-mass 30 64;
+#X obj 163 437 mass \$0-mass 30 64;
+#X obj 310 436 mass \$0-mass 30 64;
+#X obj 468 435 mass \$0-mass 30 64;
+#X obj 616 434 mass \$0-mass 30 64;
+#X obj 767 434 mass \$0-mass 30 64;
+#N canvas 0 0 450 300 graph2 0;
+#X array force_speed 127 float 1;
+#A 0 -0.0133335 0.126668 0.413337 0.740006 0.993341 0.886674 0.83334
+0.780006 0.746673 0.700005 0.686672 0.640005 0.600005 0.573338 0.546671
+0.520004 0.48667 0.460004 0.453337 0.42667 0.420003 0.400003 0.38667
+0.380003 0.366669 0.353336 0.340003 0.320002 0.320002 0.306669 0.293336
+0.286669 0.273335 0.260002 0.253335 0.253335 0.240002 0.226668 0.226668
+0.220002 0.213335 0.206668 0.200001 0.193335 0.186668 0.186668 0.186668
+0.180001 0.180001 0.173335 0.160001 0.160001 0.153334 0.140001 0.133334
+0.126668 0.120001 0.120001 0.113334 0.113334 0.106667 0.100001 0.093334
+0.0866672 0.0866672 0.0800005 0.0733338 0.0666671 0.0666671 0.0600004
+0.0600004 0.0533336 0.0533336 0.0533336 0.0533336 0.0466669 0.0466669
+0.0466669 0.0466669 0.0466669 0.0466669 0.0466669 0.0466669 0.0466669
+0.0466669 0.0466669 0.0466669 0.0400002 0.0400002 0.0400002 0.0400002
+0.0400002 0.0400002 0.0400002 0.0400002 0.0333335 0.0333335 0.0266668
+0.0266668 0.0266668 0.0266668 0.0266668 0.0266668 0.0266668 0.0266668
+0.0266668 0.0266668 0.0266668 0.0266668 0.0266668 0.0266668 0.0266668
+0.0266668 0.0266668 0.0266668 0.0266668 0.0200001 0.0200001 0.0200001
+0.0200001 0.0266668 0.0266668 0.0266668 0.0266668 0.0266668 0.0266668
+0.0200001;
+#X coords 0 1 126 -1 200 100 1;
+#X restore 214 142 graph;
+#X obj 568 265 tabread4 force_speed;
+#X obj 619 292 tabread4 force_speed;
+#X text 105 5 This is an exemple of non linear link;
+#X text 105 26 a table is used to store the relation between deformation
+speed and force;
+#X text 611 188 bow speed;
+#X text 610 164 adjust curve size;
+#X text 463 338 use the same curve for positive or negative force;
+#X text 520 120 non linear exitation of a sigle mass;
+#X text 27 273 the speed / force relation is like a bow on a string
+interaction;
+#X text 103 65 this simulation provide a continus exitation \, like
+in a violon string exited with a bow.;
+#X text 49 117 <- 1;
+#X connect 6 0 8 0;
+#X connect 8 0 10 0;
+#X connect 8 1 9 0;
+#X connect 11 1 43 0;
+#X connect 12 0 43 0;
+#X connect 12 1 44 0;
+#X connect 13 0 44 0;
+#X connect 13 1 45 0;
+#X connect 14 0 45 0;
+#X connect 14 1 46 0;
+#X connect 15 0 46 0;
+#X connect 15 1 47 0;
+#X connect 16 0 47 0;
+#X connect 16 1 48 0;
+#X connect 17 0 48 0;
+#X connect 17 1 49 0;
+#X connect 18 0 49 0;
+#X connect 18 1 50 0;
+#X connect 19 0 11 0;
+#X connect 20 0 19 0;
+#X connect 21 0 23 0;
+#X connect 21 1 58 0;
+#X connect 22 0 39 0;
+#X connect 23 0 57 0;
+#X connect 24 0 50 0;
+#X connect 24 1 51 0;
+#X connect 25 0 51 0;
+#X connect 25 1 52 0;
+#X connect 26 0 52 0;
+#X connect 26 1 53 0;
+#X connect 27 0 53 0;
+#X connect 27 1 54 0;
+#X connect 28 0 54 0;
+#X connect 28 1 55 0;
+#X connect 29 0 55 0;
+#X connect 30 0 29 1;
+#X connect 31 0 30 0;
+#X connect 38 0 6 0;
+#X connect 39 0 40 0;
+#X connect 40 0 21 0;
+#X connect 41 0 46 0;
+#X connect 42 0 46 0;
+#X connect 43 0 0 0;
+#X connect 43 0 11 1;
+#X connect 43 0 12 0;
+#X connect 44 0 1 0;
+#X connect 44 0 12 1;
+#X connect 44 0 13 0;
+#X connect 45 0 2 0;
+#X connect 45 0 13 1;
+#X connect 45 0 14 0;
+#X connect 46 0 3 0;
+#X connect 46 0 14 1;
+#X connect 46 0 15 0;
+#X connect 46 0 22 0;
+#X connect 47 0 4 0;
+#X connect 47 0 15 1;
+#X connect 47 0 16 0;
+#X connect 48 0 5 0;
+#X connect 48 0 16 1;
+#X connect 48 0 17 0;
+#X connect 49 0 7 0;
+#X connect 49 0 17 1;
+#X connect 49 0 18 0;
+#X connect 50 0 24 0;
+#X connect 50 0 18 1;
+#X connect 50 0 32 0;
+#X connect 51 0 24 1;
+#X connect 51 0 25 0;
+#X connect 51 0 33 0;
+#X connect 52 0 25 1;
+#X connect 52 0 26 0;
+#X connect 52 0 34 0;
+#X connect 53 0 26 1;
+#X connect 53 0 27 0;
+#X connect 53 0 35 0;
+#X connect 54 0 27 1;
+#X connect 54 0 28 0;
+#X connect 54 0 36 0;
+#X connect 55 0 28 1;
+#X connect 55 0 29 0;
+#X connect 55 0 37 0;
+#X connect 57 0 41 0;
+#X connect 58 0 42 0;

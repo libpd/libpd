@@ -1,0 +1,29 @@
+#N canvas 0 31 450 300 10;
+#X obj 71 226 itunes;
+#X msg 86 80 next;
+#X msg 95 105 play;
+#X msg 99 128 pause;
+#X msg 71 58 previous;
+#X obj 104 159 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X msg 101 177 set sound volume to \$1;
+#X msg 100 203 set EQ enabled to true;
+#X obj 55 270 pddp/pddplink http://dougscripts.com/itunes/itinfo/info01.php
+;
+#X text 34 20 On Mac OS X \, control iTunes;
+#N canvas 404 246 494 344 META 0;
+#X text 12 105 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 85 AUTHOR Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION On Mac OS X \, control iTunes;
+#X text 12 65 INLET_0 previous next play pause set;
+#X restore 392 266 pd META;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;

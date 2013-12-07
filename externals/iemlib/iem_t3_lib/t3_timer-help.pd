@@ -1,0 +1,38 @@
+#N canvas 0 26 342 292 10;
+#X obj 73 119 t3_del 11.11;
+#X msg 22 79 0.55;
+#X obj 22 48 bng 25 250 50 0 empty empty empty 8 -8 0 10 -262144 -1
+-1;
+#X obj 22 145 t3_timer;
+#X floatatom 22 170 6 0 0 0 - - -;
+#X text 88 22 measure time-difference;
+#X text 87 37 between 2 t3_bang-events;
+#X text 6 4 t3_timer;
+#X floatatom 152 93 6 0 0 0 - - -;
+#X text 203 93 ms;
+#X text 72 170 ms;
+#X text 84 5 time-tagged trigger timer;
+#X text 125 248 IEM KUG;
+#X text 109 236 musil;
+#X text 139 236 @;
+#X text 145 236 iem.at;
+#X text 60 225 (c) Thomas Musil 2000 - 2005;
+#X text 108 258 Graz \, Austria;
+#X text 60 213 (c) Gerhard Eckel;
+#N canvas 352 26 494 344 META 0;
+#X text 12 145 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 125 AUTHOR Thomas Musil;
+#X text 12 25 LICENSE LGPL v2.1;
+#X text 12 45 DESCRIPTION time-tagged trigger sig~;
+#X text 12 5 KEYWORDS control;
+#X text 12 65 INLET_0 float;
+#X text 12 85 INLET_1 float;
+#X text 12 105 OUTLET_0 float;
+#X restore 291 267 pd META;
+#X connect 0 0 3 1;
+#X connect 1 0 0 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 8 0 0 1;

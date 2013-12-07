@@ -1,0 +1,60 @@
+#N canvas 572 117 613 725 10;
+#X obj 16 652 iAmbient2D;
+#X text 272 20 ambient interaction;
+#X text 178 41 This object sould be used for the simulation of interaction
+between a collection of masse and a commun environement;
+#X text 179 143 1 : name;
+#X text 176 71 This object should receive a bang to be active (act
+like the link object);
+#X text 196 155 this is the name of the mass interacting with this
+object. you can also conect the output of this object to a mass \,
+to allow an interaction with this mass.;
+#X text 201 552 if a mass is outside of this rectangle \, the mass
+will not interact with this object.;
+#X text 196 404 value of the damping forces. this force is oposite
+from the velocity of the mass. It is proportional to the velocity of
+the masse.;
+#X text 195 356 Maximum amplitude of a random force aplyed to masses
+(X and Y amplitude).;
+#X text 196 270 this is constant force apply to all masses interacting
+this this object. Gravity is a constant negative force on Y axes.;
+#X msg 73 225 setFX 0;
+#X msg 73 249 setFY 0;
+#X msg 76 304 setRndFX 0;
+#X msg 77 333 setRndFY 0;
+#X msg 79 385 setD 0;
+#X msg 76 451 setXmin -100000;
+#X msg 76 495 setYmin -100000;
+#X msg 76 473 setXmax 100000;
+#X msg 76 518 setYmax 100000;
+#X text 173 517 10 : Y maximum;
+#X text 179 495 9 : Y minimum;
+#X text 179 473 8 : X maximum;
+#X text 179 452 7 : X minimum;
+#X text 202 537 minimum and maximum position of the interactor.;
+#X msg 78 593 setdX 0;
+#X msg 78 616 setdY 0;
+#X text 77 112 message to change parametter / default value / creation
+arg number / description;
+#X text 175 225 2 : X constant force field;
+#X text 174 249 3 : Y constant force field;
+#X text 177 306 4 : rnd X force field;
+#X text 175 334 5 : rnd Y force field;
+#X text 176 389 6 : damping;
+#X text 174 593 11 : X displacement field;
+#X text 173 617 12 : y displacement field;
+#X text 205 640 X and Y displacement field. displace the mass if it's
+inside the interactor field;
+#X msg 72 202 setFXY 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X connect 24 0 0 0;
+#X connect 25 0 0 0;
+#X connect 35 0 0 0;

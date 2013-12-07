@@ -1,0 +1,16 @@
+#N canvas 309 237 664 366 10;
+#X msg 180 86 gemList;
+#X text 176 62 GEM object;
+#X msg 180 195 gemList;
+#X text 260 196 partList;
+#X obj 180 152 part_size;
+#X msg 256 128 size;
+#X text 254 89 partList;
+#X text 184 25 [part_size];
+#X obj 466 148 part_size 2;
+#X text 52 254 change the size of the particles of a particle-system.
+You can also give an initial value.;
+#X text 52 295 the particle-size defaults to 1.0f;
+#X connect 0 0 4 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 1;

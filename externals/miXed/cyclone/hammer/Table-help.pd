@@ -1,0 +1,11 @@
+#N canvas 50 50 600 400 12;
+#X text 10 10 Table clone's main purpose is sucking data from tables;
+#X text 10 30 embedded in Max patches.;
+#X text 10 90 Nevertheless \, most table features are supported: changing;
+#X text 10 110 size and contents \, traversal \, file i/o \, all queries;
+#X text 10 130 (including 'quantile' and 'bang') and dumping.;
+#X text 10 160 Tables with the same name share the same contents.;
+#X text 10 220 Table elements are 32-bit integers \, although some operations;
+#X text 10 240 (like embedding and editing) lose precision due to the;
+#X text 10 260 unavoidable int-to-float conversion.;
+#X text 10 290 Editing is textual \, not graphical.;

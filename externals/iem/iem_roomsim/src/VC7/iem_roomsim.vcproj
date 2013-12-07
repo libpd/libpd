@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="iem_roomsim"
+	ProjectGUID="{6A44952F-0D55-44EE-9032-928368583BEC}"
+	SccProjectName=""
+	SccLocalPath=""
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="NMAKE /f makefile_vc7proj"
+				ReBuildCommandLine="NMAKE /f makefile_vc7proj /a"
+				Output="iem_roomsim.exe"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="NMAKE /f makefile_vc7proj"
+				ReBuildCommandLine="NMAKE /f makefile_vc7proj /a"
+				Output="iem_roomsim.exe"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath="iem_roomsim.bsc">
+		</File>
+		<File
+			RelativePath="makefile_vc7proj">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,224 @@
+::toxy::console show
+::toxy::package_require BLT "e:/Tcl/bin/BLT24.dll"
+
+namespace eval ::toxy::bpf {}
+
+proc ::toxy::bpf::ondrag {path ndx} {
+    set ${path}::idrag $ndx
+    if {$ndx > 0} {
+	incr ndx -1
+	set ${path}::mindrag [${path}::xvec range $ndx $ndx]
+	incr ndx
+    } else {
+	set ${path}::mindrag 0
+    }
+    incr ndx
+    if {$ndx < [${path}::xvec length]} {
+	set ${path}::maxdrag [${path}::xvec range $ndx $ndx]
+    } else {
+	set ${path}::maxdrag [set ${path}::xmax]
+    }
+}
+
+proc ::toxy::bpf::atData {path args} {
+    set cmd [lindex $args 0]
+    switch -- $cmd {
+	set {
+	    set idrag [lindex $args 1]
+	    set gx [lindex $args 2]
+	    set gy [lindex $args 3]
+	    if {[string is double -strict $idrag] &&
+		[string is double -strict $gx] &&
+		[string is double -strict $gy]} {
+
+		${path}::xvec variable xvec
+		${path}::yvec variable yvec
+		array set xvec [list $idrag $gx]
+		array set yvec [list $idrag $gy]
+		${path}::xvec sort ${path}::yvec ${path}::zvec
+	    }
+	}
+	add {
+	    set gx [lindex $args 1]
+	    set gy [lindex $args 2]
+	    if {[string is double -strict $gx] &&
+		[string is double -strict $gy]} {
+
+		${path}::xvec append $gx
+		${path}::yvec append $gy
+		${path}::zvec append 0
+		${path}::xvec sort ${path}::yvec ${path}::zvec
+		set ndx [${path}::xvec search $gx]
+		if {[llength $ndx] > 1} {
+		    set ndx [lindex $ndx 0]
+		} elseif {[llength $ndx] < 1} {
+		    set ${path}::idrag -1
+		    return
+		}
+		::toxy::bpf::ondrag $path $ndx
+	    }
+	}
+    }
+}
+
+proc ::toxy::bpf::motion {path x y} {
+    if {[set ${path}::locked]} { return }
+    if {[$path element closest $x $y cl -halo 10 el]} {
+	$path config -cursor arrow
+    } else {
+	$path config -cursor crosshair
+    }
+}
+
+proc ::toxy::bpf::b1motion {path x y} {
+    if {[set ${path}::locked]} { return }
+    variable ${path}::idrag
+    if {$idrag >= 0 && [$path inside $x $y]} {
+	variable ${path}::mindrag
+	variable ${path}::maxdrag
+	set gxy [$path invtransform $x $y]
+	set gx [lindex $gxy 0]
+	if {$gx < $mindrag} {
+	    set gx $mindrag
+	} elseif {$gx > $maxdrag} {
+	    set gx $maxdrag
+	}
+	${path}::xvec variable xvec
+	${path}::yvec variable yvec
+	array set xvec [list $idrag $gx]
+	array set yvec [list $idrag [lindex $gxy 1]]
+    }
+}
+
+proc ::toxy::bpf::b1release {path x y} {
+    if {[set ${path}::locked]} { return }
+    variable ${path}::idrag
+    if {$idrag >= 0 && [$path inside $x $y]} {
+	variable ${path}::mindrag
+	variable ${path}::maxdrag
+	set gxy [$path invtransform $x $y]
+	set gx [lindex $gxy 0]
+	set gy [lindex $gxy 1]
+	if {$gx < $mindrag} {
+	    set gx $mindrag
+	} elseif {$gx > $maxdrag} {
+	    set gx $maxdrag
+	}
+
+	variable ${path}::target
+	pd $target.rp _data set $idrag $gx $gy \;
+    }
+    set ${path}::idrag -1
+    set ${path}::mindrag 0
+    set ${path}::maxdrag ${path}::xmax
+}
+
+proc ::toxy::bpf::b1click {path x y} {
+    if {[set ${path}::locked]} { return }
+    if {[$path element closest $x $y cl -halo 10 el]} {
+	set gxy [$path invtransform $x $y]
+	set ${path}::xdrag [lindex $gxy 0]
+	set ${path}::ydrag [lindex $gxy 1]
+	::toxy::bpf::ondrag $path $cl(index)
+    } elseif {[$path inside $x $y]} {
+	set gxy [$path invtransform $x $y]
+	set ${path}::xdrag [lindex $gxy 0]
+	set ${path}::ydrag [lindex $gxy 1]
+	variable ${path}::xdrag
+	variable ${path}::ydrag
+
+	variable ${path}::target
+	pd $target.rp _data add $xdrag $ydrag \;
+    } else {
+	set ${path}::idrag -1
+    }
+}
+
+proc ::toxy::bpf::shiftb1click {path x y} {
+    if {[set ${path}::locked]} { return }
+    if {[$path element closest $x $y cl -halo 10 el]} {
+	set ndx $cl(index)
+	${path}::xvec delete $ndx
+	${path}::yvec delete $ndx
+	${path}::zvec delete $ndx
+    }
+    set ${path}::idrag -1
+}
+
+proc ::toxy::bpf::lock {path v} {
+    set ${path}::locked $v
+    if {$v} {
+	$path config -cursor hand2
+    } else {
+	$path config -cursor crosshair
+    }
+}
+
+proc ::toxy::bpf::atVis {path} {
+    bind $path <Motion> +[concat ::toxy::bpf::motion %W %x %y]
+    bind $path <1> +[concat ::toxy::bpf::b1click %W %x %y]
+    bind $path <B1-Motion> +[concat ::toxy::bpf::b1motion %W %x %y]
+    bind $path <ButtonRelease> +[concat ::toxy::bpf::b1release %W %x %y]
+    bind $path <<disable>> +[concat ::toxy::bpf::lock %W 1]
+    bind $path <<enable>> +[concat ::toxy::bpf::lock %W 0]
+    $path element bind el <Shift-1> "::toxy::bpf::shiftb1click %W %x %y"
+}
+
+proc ::toxy::bpf::atNew {path} {
+    variable ${path}::xmax
+    variable ${path}::ymin
+    variable ${path}::ymax
+    $path axis configure x -min 0.0 -max $xmax
+    $path axis configure y -min $ymin -max $ymax
+    $path element create el -x ${path}::xvec -y ${path}::yvec \
+	-symbol "circle" -pixels 2 -linewidth 2 -color darkgreen -hide 0
+    $path legend config -hide yes
+}
+
+proc ::toxy::bpf::atFree {path} {
+    blt::vector destroy ${path}::xvec
+    blt::vector destroy ${path}::yvec
+    blt::vector destroy ${path}::zvec
+}
+
+#> bpf blt::graph
+#. -width 300 -height 200 -bg lightblue -plotbackground lightgrey -halo 10
+#. #domain 1000.
+
+#@ vis
+
+# LATER reconsider calling standard procs implicitly, followed by scripts
+::toxy::bpf::atVis .-
+
+#@ new
+
+# LATER reconsider replacing this with global .- (using ::${path} in procs)
+namespace eval ::toxy::bpf::.- {
+# this might be implicit
+    set target .|
+
+# array interface seems broken inside namespaces
+# (cf sf.net/projects/blt bug 651993)
+    blt::vector create xvec -variable ""
+    blt::vector create yvec -variable ""
+    blt::vector create zvec -variable ""
+    set locked 0
+    set xmax .#domain
+    set ymin 0.0
+    set ymax 1.0
+    set idrag -1
+    set mindrag 0
+    set maxdrag $xmax
+    set xdrag 0
+    set ydrag 0
+}
+
+::toxy::bpf::atNew .-
+
+#@ free
+
+::toxy::bpf::atFree .-
+
+#@ data
+
+::toxy::bpf::atData .- .#args

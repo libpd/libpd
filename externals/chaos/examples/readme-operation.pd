@@ -1,0 +1,34 @@
+#N canvas 159 133 675 651 10;
+#X msg 56 219 reset <var-init>;
+#X msg 56 240 param <param-data>;
+#X text 36 280 As to the exact variable and parameter ranges to use
+\, you will have to consult each fractals help file. You can also use
+the "Searching" functions to randomly find a new attractor set \, and
+then use those values in either a set of messages to the fractal \,
+or in its creation arguments.;
+#X msg 56 198 reset;
+#X text 98 199 sets the variables back to their initial state **;
+#X text 181 221 sets the variables to an explicit state ***;
+#X text 195 242 sets parameters to explicit state ****;
+#X text 34 26 Create a fractal with or without a set of variables and
+parameters \, passed as creation arguments. Without the creation arguments
+\, the class defaults will be used for the fractal. With the arguments
+\, a new fractal is created using the arguments as the defaults.;
+#X text 35 104 To use a fractal \, create the instance \, and optionally
+pass it an initial state of variables and a set of parameters. Then
+repeatedly 'bang' on the input to iterate thru the fractals variable
+states. Using a 'reset' message will return the variables to their
+initial state \, or to the explicit values passed.;
+#X text 38 369 ** - The initial state can be explicitly set by passing
+the arguments at creation time for the fractal \, or (without creation
+arguments) the class default value will be used.;
+#X text 37 414 *** - When setting the variables to an arbitrary state
+\, the stream may not be in a "stable" state. You may need to iterate
+the fractal several hundred (or thousand) times to obtain a "stable"
+state. If you pass a set of variables that were taken from the 'search'
+(or 'show') results \, the values most likely will be in a "stable"
+condition.;
+#X text 38 500 **** - Do remember that not all combinations of parameters
+result in an attractor set.;
+#X text 234 577 chaos \, version 2 by Ben Bogart and Michael McGonagle.
+Copyright 2003;

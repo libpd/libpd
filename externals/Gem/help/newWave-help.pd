@@ -1,0 +1,158 @@
+#N canvas 402 236 760 620 10;
+#X text 54 27 Class: geometric object;
+#X obj 479 47 cnv 15 250 550 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X obj 484 533 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 454 304 gemwin 0;
+#X obj 131 164 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 198 112 destroy;
+#X msg 131 140 create \, 1 \, lighting 1;
+#X obj 298 149 world_light;
+#X obj 298 122 gemhead;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 9 0 8 0;
+#X restore 489 571 pd gemwin;
+#X msg 489 552 create;
+#X text 485 532 Create window:;
+#X text 485 29 Example:;
+#X obj 7 47 cnv 15 450 90 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 8 199 cnv 15 450 260 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 19 198 Inlets:;
+#X obj 8 143 cnv 15 450 50 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 142 Arguments:;
+#X text 26 347 Inlet 1: message: draw [line|fill|point];
+#X text 452 8 GEM object;
+#X text 27 210 Inlet 1: gemlist;
+#X text 9 420 Outlets:;
+#X text 20 433 Outlet 1: gemlist;
+#X obj 484 141 cnv 15 240 380 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 494 54 gemhead;
+#X floatatom 592 446 5 0 0 2 size - -;
+#X floatatom 593 475 5 0 0 2 height - -;
+#X floatatom 526 96 5 0 0 0 - - -;
+#X msg 523 172 draw line;
+#X msg 523 192 draw fill;
+#X msg 523 212 draw point;
+#X text 33 11 Synopsis: [newWave];
+#X text 26 377 Inlet 2: float: size (dimX & dimY);
+#X text 26 391 Inlet 3: float: height (dimZ);
+#X text 26 405 Inlet 4: int: action;
+#X obj 565 254 vradio 11 1 0 11 empty empty action -10 -6 0 8 -262144
+-1 -1 0;
+#X floatatom 626 158 5 0 100 0 - - -;
+#X obj 626 176 / 100;
+#X msg 626 195 K1 \$1;
+#X text 16 68 The newWaves object renders a number of waving square
+at the current position with current color. The size of the square
+can be changed via the inlet2 \, the height of the wave can be set
+via the 3rd inlet. You can also set the wave-form (inlet4);
+#X text 26 223 Inlet 1: bang: trigger waving;
+#X obj 494 459 t a b;
+#X floatatom 626 218 5 0 100 0 - - -;
+#X obj 626 236 / 100;
+#X floatatom 626 278 5 0 100 0 - - -;
+#X obj 626 296 / 100;
+#X floatatom 676 158 5 0 100 0 - - -;
+#X obj 676 176 / 100;
+#X floatatom 676 218 5 0 100 0 - - -;
+#X obj 676 236 / 100;
+#X floatatom 676 278 5 0 100 0 - - -;
+#X obj 676 296 / 100;
+#X msg 676 195 D1 \$1;
+#X msg 676 255 D2 \$1;
+#X msg 676 315 D3 \$1;
+#X msg 626 315 K3 \$1;
+#X msg 626 255 K2 \$1;
+#X obj 595 272 t a;
+#X obj 595 212 t a;
+#X obj 595 332 t a;
+#X text 27 237 Inlet 1: K1 \, D1 \, K2 \, D2 \, K3 \, D3: weight/damping
+factors (defaults: K1=0.05 D1=0.1 K2=K3=D2=D3=0);
+#X msg 590 364 position 1 1 10;
+#X text 25 265 Inlet 1: message: position (X Y Z): clamp the node at
+(X Y) to a certain height and release it;
+#X text 7 51 Description: Renders a waving square (mass-spring-system)
+;
+#X msg 592 414 noise 1;
+#X obj 8 465 cnv 15 450 130 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 13 465 actions:;
+#X text 84 471 00..retrigger current action;
+#X text 84 482 01..flat;
+#X text 84 493 02..spike;
+#X text 84 503 03..diagonal wall;
+#X text 84 514 04..sidewall;
+#X text 84 525 05..hole;
+#X text 84 536 06..middleblock;
+#X text 84 547 07..diagonalblock;
+#X text 84 558 08..cornerblock;
+#X text 84 568 09..hill;
+#X text 83 579 10..hill4 (default);
+#X text 27 318 Inlet 1: message: noise (val) : add a random force;
+#X text 42 331 ( -val < force < +val) to all node;
+#X obj 493 494 newWave 30 10;
+#X msg 502 146 texture 0;
+#X msg 591 389 force 15 5 -0.5;
+#X obj 494 115 rotateXYZ 135 0 0;
+#X text 24 290 Inlet 1: message: force (X Y val): aply a force of value
+"val" onto the wave at position (X Y);
+#X text 63 159 1 : X grid-resolution \, default : 3;
+#X text 63 171 2 : Y grid resolution \, default : X value;
+#X text 26 362 Inlet 1 : message texture [1|2] : change texturing mode
+;
+#X connect 3 0 4 0;
+#X connect 4 0 3 0;
+#X connect 18 0 77 0;
+#X connect 19 0 74 1;
+#X connect 20 0 74 2;
+#X connect 21 0 77 1;
+#X connect 22 0 74 0;
+#X connect 23 0 74 0;
+#X connect 24 0 74 0;
+#X connect 29 0 74 3;
+#X connect 30 0 31 0;
+#X connect 31 0 32 0;
+#X connect 32 0 52 0;
+#X connect 35 0 74 0;
+#X connect 35 1 74 0;
+#X connect 36 0 37 0;
+#X connect 37 0 50 0;
+#X connect 38 0 39 0;
+#X connect 39 0 49 0;
+#X connect 40 0 41 0;
+#X connect 41 0 46 0;
+#X connect 42 0 43 0;
+#X connect 43 0 47 0;
+#X connect 44 0 45 0;
+#X connect 45 0 48 0;
+#X connect 46 0 52 0;
+#X connect 47 0 51 0;
+#X connect 48 0 53 0;
+#X connect 49 0 53 0;
+#X connect 50 0 51 0;
+#X connect 51 0 53 0;
+#X connect 52 0 51 0;
+#X connect 53 0 74 0;
+#X connect 55 0 74 0;
+#X connect 58 0 74 0;
+#X connect 75 0 74 0;
+#X connect 76 0 74 0;
+#X connect 77 0 35 0;

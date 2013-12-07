@@ -1,0 +1,45 @@
+#N canvas 0 31 473 313 10;
+#X obj 5 2 cnv 15 450 20 empty empty hid_one2three 2 11 1 18 -233017
+-66577 0;
+#X obj 422 3 pddp/pddplink http://puredata.info/dev/pddp -text pddp
+;
+#X text 27 270 (C) Copyright 2004 Hans-Christoph Steiner <hans@eds.org>
+;
+#X text 244 284 released under the GNU GPL;
+#X floatatom 153 110 5 0 0 0 - - -;
+#X floatatom 23 176 5 0 0 0 - - -;
+#X obj 156 91 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 26 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 98 243 For more info:;
+#X floatatom 173 176 5 0 0 0 - - -;
+#X obj 176 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 153 145 hid/hid_one2three 0.3 0.7;
+#X floatatom 323 176 5 0 0 0 - - -;
+#X obj 326 203 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X text 18 28 Simple one-to-three mapping object. The first inlet is
+passed thru \, the range of the output data on the other inlet starts
+at the points in the input range specified as arugments.;
+#N canvas 483 31 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION simple one-to-three mapping object;
+#X text 12 65 INLET_0 float;
+#X text 12 125 OUTLET_2 float;
+#X text 12 105 OUTLET_1 float;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 420 280 pd META;
+#X connect 4 0 11 0;
+#X connect 5 0 7 0;
+#X connect 6 0 4 0;
+#X connect 9 0 10 0;
+#X connect 11 0 5 0;
+#X connect 11 1 9 0;
+#X connect 11 2 12 0;
+#X connect 12 0 13 0;

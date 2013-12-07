@@ -1,0 +1,41 @@
+#N canvas 1 53 559 320 12;
+#X msg 85 175 disconnect;
+#X msg 13 59 connect 127.0.0.1 9997;
+#X obj 60 253 tgl 15 0 empty empty connected 20 7 0 8 -24198 -241291
+-1 0 1;
+#X obj 60 230 tcpsend;
+#X text 217 60 <--first;
+#X msg 32 83 send 0 1 2 3;
+#X text 8 7 tcpsend sends bytes over a tcp connection.;
+#X text 8 30 Used in conjunction with packOSC will send OSC over tcp
+;
+#X msg 50 106 send examples/test.txt;
+#X obj 385 144 openpanel;
+#X msg 385 168 send \$1;
+#X obj 385 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -24198 -241291
+-1;
+#X text 344 105 send a file;
+#X text 407 124 ...any file;
+#X text 148 84 send raw data;
+#X text 137 134 'send' prefix is optional;
+#X msg 61 133 99 98 97;
+#X text 291 260 Martin Peach 2007/06/20;
+#N canvas 507 340 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 105 AUTHOR Martin Peach;
+#X text 12 45 DESCRIPTION send bytes over a tcp connection;
+#X text 12 65 INLET_0 connect send list disconnect;
+#X text 12 85 OUTLET_0 float;
+#X text 12 5 KEYWORDS control network;
+#X restore 490 290 pd META;
+#X connect 0 0 3 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 5 0 3 0;
+#X connect 8 0 3 0;
+#X connect 9 0 10 0;
+#X connect 10 0 3 0;
+#X connect 11 0 9 0;
+#X connect 16 0 3 0;

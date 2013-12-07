@@ -1,0 +1,25 @@
+#N canvas 200 209 457 355 10;
+#X text 297 321 updated for zexy-2.0;
+#X floatatom 168 198 5 0 0 1 theta - -;
+#X floatatom 134 156 5 0 0 1 phi - -;
+#X obj 134 174 t b f;
+#X floatatom 124 138 5 0 0 1 R - -;
+#X floatatom 168 268 0 0 0 0 z - -;
+#X floatatom 146 288 0 0 0 0 phi - -;
+#X floatatom 124 308 0 0 0 0 r - -;
+#X msg 22 210 1 2 3;
+#X text 21 76 all angles are in rad.;
+#X text 24 31 [sph2pol]: convert spherical coordinates to polar coordinates
+;
+#X obj 124 246 sph2pol;
+#X text 19 192 R phi theta;
+#X text 321 15 part of zexy;
+#X connect 1 0 11 2;
+#X connect 2 0 3 0;
+#X connect 3 0 11 0;
+#X connect 3 1 11 1;
+#X connect 4 0 11 0;
+#X connect 8 0 11 0;
+#X connect 11 0 7 0;
+#X connect 11 1 6 0;
+#X connect 11 2 5 0;

@@ -1,0 +1,30 @@
+#N canvas 6 6 450 223 10;
+#X obj 77 40 operating_system;
+#X text 200 40 which OS are we running;
+#X symbolatom 75 140 10 0 0 0 - - -;
+#X msg 75 72 bang;
+#X obj 75 164 select linux windows macos;
+#X obj 75 190 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 134 190 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 193 191 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 75 108 operating_system;
+#X text 293 8 part of zexy;
+#N canvas 460 154 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 105 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 KEYWORDS control filesystem;
+#X text 12 45 DESCRIPTION which OS are we running;
+#X text 12 65 INLET_0 bang;
+#X text 12 85 OUTLET_0 symbol;
+#X restore 395 196 pd META;
+#X connect 2 0 4 0;
+#X connect 3 0 8 0;
+#X connect 4 0 5 0;
+#X connect 4 1 6 0;
+#X connect 4 2 7 0;
+#X connect 8 0 2 0;

@@ -1,0 +1,30 @@
+#N canvas 0 26 317 260 10;
+#X obj 26 15 osc~ 270;
+#X obj 19 222 dac~;
+#X obj 179 14 pddp/dsp;
+#X obj 69 65 hsl 128 17 0 1 0 0 empty empty amount 6 9 0 10 -262144
+-1 -1 0 1;
+#X floatatom 77 84 5 0 0 0 - - -;
+#X obj 110 112 hsl 128 17 0.01 10 1 0 empty empty frequency 6 9 0 10
+-262144 -1 -1 0 1;
+#X floatatom 118 131 5 0 0 0 - - -;
+#X obj 26 141 tremolo~ 0.5 7;
+#N canvas 280 175 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v3;
+#X text 12 145 AUTHOR Hans-Christoph Steiner;
+#X text 12 45 DESCRIPTION tremolo;
+#X text 12 65 INLET_0 signal;
+#X text 12 5 KEYWORDS signal abstraction;
+#X text 12 85 INLET_1 float;
+#X text 12 105 INLET_2 float;
+#X text 12 125 OUTLET_0 signal;
+#X restore 267 238 pd META;
+#X connect 0 0 7 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 1;
+#X connect 5 0 6 0;
+#X connect 5 0 7 2;
+#X connect 7 0 1 0;
+#X connect 7 0 1 1;

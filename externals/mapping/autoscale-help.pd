@@ -1,0 +1,93 @@
+#N canvas 1 53 458 627 10;
+#X floatatom 26 63 5 0 0 0 - - -;
+#X floatatom 26 127 0 0 0 0 - - -;
+#X obj 2 -10 cnv 15 450 20 empty empty autoscale 2 11 1 18 -233017
+-66577 0;
+#X text 18 15 [autoscale] scales a stream of numbers based on an output
+range set as arguments \, and an input range which is set dynamically.
+;
+#X floatatom 150 127 0 0 0 0 - - -;
+#X floatatom 297 127 0 0 0 0 - - -;
+#X obj 213 58 hsl 128 15 0 127 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X floatatom 136 349 5 0 0 0 - - -;
+#X obj 161 402 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X msg 186 347 reset;
+#X text 13 162 If you use [autoscale] with no arguments \, then the
+output range defaults to 0-1.;
+#X msg 239 347 bang;
+#X text 14 192 You can also set the output min and max using the 2nd
+and 3rd inlets:;
+#X obj 295 347 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X text 14 308 The [reset( message or banging the 4th inlet resets
+the stored max and min to zero. 0 disables the auto-tracking \, 1 re-enables
+it:;
+#X floatatom 81 476 5 0 0 0 - - -;
+#X obj 130 593 hsl 128 15 0 1 0 0 empty empty empty -2 -6 0 8 -262144
+-1 -1 0 1;
+#X obj 300 503 tgl 15 1 empty empty empty 0 -6 0 8 -262144 -1 -1 1
+1;
+#X obj 215 550 pack float float;
+#X msg 148 471 save;
+#X msg 215 571 set load \$1 \$2;
+#X msg 150 494 load 1 11;
+#X msg 323 502 bang;
+#X floatatom 158 287 7 0 0 0 - - -;
+#X obj 135 215 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 297 97 autoscale -4095 4095;
+#X obj 150 97 autoscale -0.01 0.01;
+#X obj 158 265 autoscale;
+#X obj 158 379 autoscale;
+#X obj 26 97 autoscale;
+#X obj 127 527 autoscale 0 1 ______________;
+#X obj 231 234 nbx 3 16 -1e+37 1e+37 0 1 empty empty max 40 8 0 10
+-228856 -1 -1 1 256;
+#X obj 171 234 nbx 3 16 -1e+37 1e+37 0 1 empty empty min 40 8 0 10
+-228856 -1 -1 0 256;
+#N canvas 462 82 494 344 META 0;
+#X text 12 235 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 45 DESCRIPTION scale a stream of numbers based on an output
+range set as arguments \, and an input range set dynamically;
+#X text 12 75 INLET_0 float reset save load;
+#X text 12 95 INLET_1 float;
+#X text 12 115 INLET_2 float;
+#X text 12 135 INLET_3 float bang;
+#X text 12 155 OUTLET_0 float;
+#X text 12 175 OUTLET_1 float;
+#X text 12 195 OUTLET_2 float;
+#X text 12 215 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X restore 402 587 pd META;
+#X text 16 424 The dump message allows "autoscale" to output the min
+and max of the input data. this allow user to save this data in order
+to load the same callibration with a loadbang :;
+#X connect 0 0 29 0;
+#X connect 6 0 25 0;
+#X connect 6 0 26 0;
+#X connect 7 0 28 0;
+#X connect 9 0 28 0;
+#X connect 11 0 28 3;
+#X connect 13 0 28 3;
+#X connect 15 0 30 0;
+#X connect 17 0 30 3;
+#X connect 18 0 20 0;
+#X connect 19 0 30 0;
+#X connect 20 0 21 0;
+#X connect 21 0 30 0;
+#X connect 22 0 30 3;
+#X connect 24 0 27 0;
+#X connect 25 0 5 0;
+#X connect 26 0 4 0;
+#X connect 27 0 23 0;
+#X connect 28 0 8 0;
+#X connect 29 0 1 0;
+#X connect 30 0 16 0;
+#X connect 30 1 18 0;
+#X connect 30 2 18 1;
+#X connect 31 0 27 2;
+#X connect 32 0 27 1;

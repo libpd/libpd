@@ -1,0 +1,69 @@
+#N canvas 207 28 639 433 10;
+#X text 452 8 GEM object;
+#X obj 8 226 cnv 15 430 120 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 39 229 Inlets:;
+#X text 63 242 Inlet 1: gemlist;
+#X text 39 313 Outlets:;
+#X text 57 326 Outlet 1: gemlist;
+#X obj 8 164 cnv 15 430 50 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#X text 17 163 Arguments:;
+#X obj 8 76 cnv 15 440 70 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 449 77 cnv 15 170 250 empty empty empty 20 12 0 14 -228992 -66577
+0;
+#X text 453 60 Example:;
+#X obj 514 262 cnv 15 100 60 empty empty empty 20 12 0 14 -195568 -66577
+0;
+#N canvas 0 0 450 300 gemwin 0;
+#X obj 132 136 gemwin;
+#X obj 67 89 outlet;
+#X obj 67 10 inlet;
+#X obj 67 41 route create;
+#X msg 67 70 set destroy;
+#X msg 142 68 set create;
+#X msg 132 112 create \, 1;
+#X msg 198 112 destroy;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 3 1 5 0;
+#X connect 3 1 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X restore 519 301 pd gemwin;
+#X msg 519 282 create;
+#X text 515 261 Create window:;
+#X text 71 31 Class: manipulation object;
+#X obj 450 106 cnv 15 160 90 empty empty empty 20 12 0 14 -24198 -66577
+0;
+#X obj 451 84 gemhead;
+#X floatatom 491 110 5 0 0 1 X-scale - -;
+#X obj 451 263 cube;
+#X obj 459 222 loadbang;
+#X msg 459 239 draw line;
+#X text 50 12 Synopsis: [scaleXYZ];
+#X text 29 77 Description: scale along the X- \, Y- and Z-axis;
+#X obj 451 176 scaleXYZ 1 0.5 0.7;
+#X floatatom 506 131 5 0 0 1 Y-scale - -;
+#X floatatom 527 150 5 0 0 1 Z-scale - -;
+#X text 54 183 <X> <Y> <Z> : scaling factors along the axes.;
+#X text 63 258 Inlet 2: float: scaling amount along the X-axis;
+#X text 63 290 Inlet 4: float: scaling amount along the Z-axis;
+#X text 63 274 Inlet 3: float: scaling amount along the Y-axis;
+#X obj 451 200 rotate 45 1 1 1;
+#X text 39 97 [scaleXYZ] accepts a gemList and changes the current
+transformation matrix by the specified scale;
+#X connect 12 0 13 0;
+#X connect 13 0 12 0;
+#X connect 17 0 24 0;
+#X connect 18 0 24 1;
+#X connect 20 0 21 0;
+#X connect 21 0 19 0;
+#X connect 24 0 31 0;
+#X connect 25 0 24 2;
+#X connect 26 0 24 3;
+#X connect 31 0 19 0;

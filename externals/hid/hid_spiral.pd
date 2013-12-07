@@ -1,0 +1,47 @@
+#N canvas 492 167 669 441 10;
+#X obj 30 58 inlet;
+#X obj 25 363 outlet;
+#X text 73 363 output range: 0 to 1;
+#X text 72 57 input range: 0 to 1;
+#X obj 232 362 outlet;
+#X obj 222 58 inlet;
+#X text 264 57 input range: 0 to 1;
+#X text 29 29 x-axis value;
+#X text 221 26 y-axis value;
+#X text 11 5 [hid_spiral];
+#X text 254 411 released under the GNU GPL;
+#X text 40 396 (C) Copyright 2005 Hans-Christoph Steiner <hans@eds.org>
+;
+#X obj 268 258 +;
+#X obj 299 258 f;
+#X msg 219 227 1;
+#X msg 315 227 -1;
+#X obj 232 327 +;
+#X obj 164 140 t f f;
+#X obj 194 161 delta;
+#X obj 105 109 hid_polar;
+#X obj 269 291 * 1;
+#X obj 221 185 moses -0.4;
+#X obj 271 205 moses 0.4;
+#X text 260 110 changes over 0.4 mean one rotation. I can't move fast
+enough on my joystick to get near a change of 0.4 This might not work
+on other devices \, like tablets \, but we'll cross that bridge when
+we get to it (i.e. when I get a tablet);
+#X text 280 362 output range: infinite \, one rotation = 1;
+#X connect 0 0 19 0;
+#X connect 5 0 19 1;
+#X connect 12 0 13 0;
+#X connect 12 0 20 0;
+#X connect 13 0 12 1;
+#X connect 14 0 12 0;
+#X connect 15 0 12 0;
+#X connect 16 0 4 0;
+#X connect 17 0 16 0;
+#X connect 17 1 18 0;
+#X connect 18 0 21 0;
+#X connect 19 0 1 0;
+#X connect 19 1 17 0;
+#X connect 20 0 16 1;
+#X connect 21 0 14 0;
+#X connect 21 1 22 0;
+#X connect 22 1 15 0;

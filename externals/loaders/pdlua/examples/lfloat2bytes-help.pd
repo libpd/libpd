@@ -1,0 +1,28 @@
+#N canvas 494 466 616 332 10;
+#X declare -lib pdlua;
+#X obj 23 8 import pdlua;
+#X obj 86 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 161 278 print bytes;
+#X text 390 282 by Martin Peach 2012_04_20;
+#X msg 39 54 3.14159;
+#X floatatom 101 59 5 0 0 0 - - -;
+#X obj 86 101 f;
+#X obj 126 114 atan;
+#X msg 126 90 1;
+#X obj 126 140 * 4;
+#X floatatom 158 157 12 0 0 0 - - -;
+#X text 173 242 The optional argument sets the number of significant
+digits (default = 6).;
+#X text 173 212 [lfloat2bytes] spits out the characters of a string
+representation of a float as bytes.;
+#X obj 161 193 lfloat2bytes 12;
+#X connect 1 0 6 0;
+#X connect 4 0 13 0;
+#X connect 5 0 6 1;
+#X connect 6 0 13 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 9 0 13 0;
+#X connect 13 0 2 0;

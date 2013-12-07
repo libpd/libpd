@@ -1,0 +1,79 @@
+#N canvas 218 0 631 489 10;
+#X obj 46 40 pdp_help_input;
+#X msg 46 10 start;
+#X msg 95 10 stop;
+#X obj 46 179 pdp_help_output;
+#X obj 46 102 pdp_trigger;
+#X text 163 98 default behaviour is to outputs bang on the right output
+before sending packet to the left output;
+#X obj 118 146 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 45 269 pdp_noise;
+#X obj 45 245 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 45 294 pdp_trigger bang pdp bang bang pdp;
+#X obj 45 460 print o1;
+#X obj 278 326 print o5;
+#X obj 161 388 print o3;
+#X obj 103 429 print o2;
+#X obj 219 354 print o4;
+#X text 163 57 pdp_trigger behaves very much like the pd trigger object
+;
+#X text 162 243 you can give it pdp (p) or bang (b) arguments to send
+out packets or bangs from right to left;
+#X obj 365 406 pdp_t b p b b p;
+#X text 325 386 there is also a short version:;
+#X text 142 565 confusing note:;
+#X obj 46 575 pdp_noise;
+#X obj 46 551 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 46 604 pdp_add;
+#X obj 61 746 pdp_noise;
+#X obj 61 722 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 61 806 pdp_add;
+#X obj 105 776 pdp_gain;
+#X text 142 584 you don't need a trigger object if you connect a pdp
+object's outlet to only one active inlet.;
+#X text 139 657 if an outlet is connected to more than one active inlet
+\, you need a trigger object like you would do with standard pd message
+objects;
+#X obj 285 725 pdp_noise;
+#X obj 285 701 bng 15 250 50 0 empty empty empty 0 -6 0 8 -262144 -1
+-1;
+#X obj 285 806 pdp_add;
+#X obj 343 778 pdp_gain;
+#X obj 285 751 pdp_t p p;
+#X floatatom 156 750 5 0 0;
+#X floatatom 394 750 5 0 0;
+#X text 287 829 correct;
+#X text 139 852 (even more confusing note: this is because pdp uses
+a 3 phase communication protocol.);
+#X text 452 459 (scroll down for more);
+#X text 48 829 unpredictable;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 4 0 3 0;
+#X connect 4 1 6 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 9 1 13 0;
+#X connect 9 2 12 0;
+#X connect 9 3 14 0;
+#X connect 9 4 11 0;
+#X connect 20 0 22 0;
+#X connect 20 0 22 1;
+#X connect 21 0 20 0;
+#X connect 23 0 25 0;
+#X connect 23 0 26 0;
+#X connect 24 0 23 0;
+#X connect 26 0 25 1;
+#X connect 29 0 33 0;
+#X connect 30 0 29 0;
+#X connect 32 0 31 1;
+#X connect 33 0 31 0;
+#X connect 33 1 32 0;
+#X connect 34 0 26 1;
+#X connect 35 0 32 1;

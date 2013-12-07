@@ -1,0 +1,59 @@
+#N canvas 0 0 636 570 10;
+#X obj 144 423 t b b;
+#X obj 144 449 timer;
+#X floatatom 144 474 5 0 0 0 - - -;
+#X obj 144 319 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 95 311 stop;
+#X msg 96 288 bang;
+#X obj 169 395 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 293 335 5 0 0 0 - - -;
+#X msg 293 312 1000;
+#X msg 332 311 500;
+#X msg 367 420 1000 a 2000;
+#X msg 365 399 list error bug;
+#X msg 366 334 750 250 500 250;
+#X obj 144 498 print;
+#X text 369 377 Only floats allowed in period list;
+#X text 43 14 lmetro;
+#X msg 96 333 start;
+#X text 294 290 lists or floats set new periods;
+#X obj 307 457 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 174 320 mode alea;
+#X msg 173 293 mode junk;
+#X obj 144 360 luametro 500 125 500 250;
+#X msg 176 339 mode 2;
+#X text 89 34 Like [metro] in Pd \, but allows more than one period.
+The periods will be evaluated in sequence from left to right as default.
+Min. period length is 0.01 msec.;
+#X text 86 90 With "mode" you can set the mode the metro uses to select
+delay periods. Four modes are available:;
+#X text 115 128 1: alea - select randomly;
+#X text 114 148 2: series - select randomly without repetitions;
+#X text 113 167 3: sequence - select in sequence from left to right
+(default mode);
+#X text 113 197 4: rota - go left to right \, then turn around and
+select right to left.;
+#X text 94 244 "mode 2" or "mode series" work both.;
+#X connect 0 0 1 0;
+#X connect 0 1 1 1;
+#X connect 1 0 2 0;
+#X connect 2 0 13 0;
+#X connect 3 0 21 0;
+#X connect 4 0 21 0;
+#X connect 5 0 21 0;
+#X connect 7 0 21 1;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 21 1;
+#X connect 11 0 21 1;
+#X connect 12 0 21 1;
+#X connect 16 0 21 0;
+#X connect 19 0 21 0;
+#X connect 20 0 21 0;
+#X connect 21 0 6 0;
+#X connect 21 0 0 0;
+#X connect 21 1 18 0;
+#X connect 22 0 21 0;

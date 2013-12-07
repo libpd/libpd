@@ -1,0 +1,34 @@
+#N canvas 83 338 841 379 10;
+#X obj 152 214 mtx_print A;
+#X msg 33 88 bang;
+#X text 482 28 part of iemmatrix;
+#X text 43 34 [mtx_index2rowcol];
+#X text 166 69 calculate the row and column indices w.r.t. the linear
+matrix indices used by the standard objects (e.g. mtx_find \, mtx_index
+\, mtx_fill \, ...);
+#X text 268 138 inletA: matrix/vector containing linear indices of
+a matrix;
+#X text 268 158 inletB: integer describing the number of columns of
+the indexed matrix;
+#X text 267 190 outleA: matrix containing row indices;
+#X text 269 209 outletB: matrix containing col indices;
+#X obj 33 242 mtx_index2rowcol;
+#X msg 33 112 matrix 2 3 1 1 1 1 1 1;
+#X obj 33 163 mtx_find;
+#X obj 156 160 print B;
+#X obj 90 133 mtx_size;
+#X obj 33 132 t a a;
+#X obj 33 184 t a a;
+#X obj 33 267 mtx_print row;
+#X obj 140 266 mtx_print col;
+#X connect 1 0 10 0;
+#X connect 9 0 16 0;
+#X connect 9 1 17 0;
+#X connect 10 0 14 0;
+#X connect 11 0 15 0;
+#X connect 13 1 12 0;
+#X connect 13 1 9 1;
+#X connect 14 0 11 0;
+#X connect 14 1 13 0;
+#X connect 15 0 9 0;
+#X connect 15 1 0 0;

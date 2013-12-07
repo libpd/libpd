@@ -1,0 +1,73 @@
+current: all
+
+.SUFFIXES: .pd_darwin
+
+PD_INSTALL_PATH = "/Applications/Pd.app/Contents/Resources"
+
+INCLUDE = -I. -I$(PD_INSTALL_PATH)/src
+
+LIB = -ldl -lm -lpthread
+
+CFLAGS = -DPD -DUNIX -g -Wall -W -Werror -Wno-unused \
+	-Wno-parentheses -Wno-switch -O2 -fno-strict-aliasing \
+	$(INCLUDE) $(UCFLAGS) $(AFLAGS) \
+
+MACOSXLINKFLAGS = -bundle -bundle_loader $(PD_INSTALL_PATH)/bin/pd
+
+SYSTEM = $(shell uname -m)
+
+# the sources
+
+SRC = biquad_freq_resp.c \
+	db2v.c \
+	f2note.c \
+	filter~.c \
+	FIR~.c \
+	for++.c \
+	gate.c \
+	hml_shelf~.c \
+	iem_cot4~.c \
+	iem_delay~.c \
+	iem_pow4~.c \
+	iem_sqrt4~.c \
+	lp1_t~.c \
+	mov_avrg_kern~.c \
+	para_bp2~.c \
+	peakenv~.c \
+	peakenv_hold~.c \
+	prvu~.c \
+	pvu~.c \
+	rvu~.c \
+	sin_phase~.c \
+	soundfile_info.c \
+	split.c \
+	v2db.c \
+	vcf_filter~.c \
+	iemlib1.c
+
+TARGET = iemlib1.pd_darwin
+
+
+OBJ = $(SRC:.c=.o) 
+
+#
+#  ------------------ targets ------------------------------------
+#
+
+clean:
+	rm ../$(TARGET)
+	rm *.o
+
+all: $(OBJ)
+	@echo :: $(OBJ)
+	$(CC) $(MACOSXLINKFLAGS) -o $(TARGET) *.o $(LIB)
+	strip -S -x $(TARGET)
+	mv $(TARGET) ..
+
+$(OBJ) : %.o : %.c
+	touch $*.c
+	$(CC) $(CFLAGS) -DPD $(INCLUDE) -c -o $*.o $*.c
+
+
+
+

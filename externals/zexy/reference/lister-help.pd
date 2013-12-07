@@ -1,0 +1,58 @@
+#N canvas 0 31 627 499 10;
+#X obj 110 16 lister;
+#X text 160 17 - store a list;
+#X msg 41 132 bang;
+#X text 76 133 outputs a list;
+#X text 288 180 sets and outputs a list;
+#X text 243 336 creation argument initializes a list;
+#X obj 18 381 print;
+#X text 291 16 alias;
+#X obj 331 16 l;
+#X msg 232 315 2 3 5 7 11 prime;
+#X obj 41 336 lister 1 2 3 4 5 6 7 ordinal;
+#X msg 62 180 1 1 2 3 5 8 13 21 44 fibonacchi;
+#X text 64 77 of course \, this is similar to the "pack" object \,
+but here we handle list-lenghts dynamically and do not care about type
+checking !!!;
+#X obj 67 381 list2symbol;
+#X symbolatom 67 403 0 0 0 0 output: - -;
+#X msg 91 260 one 2 3 four;
+#X msg 96 283 list one 2 3 four;
+#X text 228 283 works;
+#X text 193 260 does NOT work (check console for error);
+#X text 353 315 right inlet sets a list without outputting;
+#X text 94 222 lists of mixed-type work but if any list starts with
+a symbol \, you need to cast it as a list:;
+#X msg 77 199 1 two three 4;
+#X msg 51 161 7 8 9;
+#X text 64 53 similar to:;
+#X obj 154 52 float;
+#X obj 202 52 int;
+#X obj 237 52 symbol;
+#X text 497 29 part of zexy;
+#X obj 202 470 list;
+#X text 35 448 this object has been deprecated by the advent of [list]
+in Pd-0.40 \; use that one instead!;
+#N canvas 460 154 494 344 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 45 LICENSE GPL v2;
+#X text 12 135 OUTLET_0 list;
+#X text 12 155 AUTHOR IOhannes m zmoelnig;
+#X text 12 5 ALIAS l;
+#X text 12 25 KEYWORDS control storage list_op deprecated;
+#X text 12 65 DESCRIPTION store a list and/or append a list to another
+list;
+#X text 12 115 INLET_1 list;
+#X text 12 95 INLET_0 list;
+#X restore 571 470 pd META;
+#X connect 2 0 10 0;
+#X connect 9 0 10 1;
+#X connect 10 0 6 0;
+#X connect 10 0 13 0;
+#X connect 11 0 10 0;
+#X connect 13 0 14 0;
+#X connect 15 0 10 0;
+#X connect 16 0 10 0;
+#X connect 21 0 10 0;
+#X connect 22 0 10 0;

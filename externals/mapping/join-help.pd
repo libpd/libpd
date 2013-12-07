@@ -1,0 +1,31 @@
+#N canvas 1 53 435 566 10;
+#X obj 82 37 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 82 208 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 161 208 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X obj 82 399 vsl 15 128 0 1 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X floatatom 197 342 5 0 0 0 - - -;
+#X obj 82 175 disjoin 0.3;
+#X obj 82 368 join 0.3;
+#N canvas 467 227 494 344 META 0;
+#X text 12 165 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 125 OUTLET_0 float;
+#X text 12 145 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 5 KEYWORDS control abstraction;
+#X text 12 65 INLET_0 float reset;
+#X text 12 105 INLET_2 float;
+#X text 12 45 DESCRIPTION;
+#X restore 371 529 pd META;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 6 1;
+#X connect 4 0 6 2;
+#X connect 5 0 1 0;
+#X connect 5 1 2 0;
+#X connect 6 0 3 0;

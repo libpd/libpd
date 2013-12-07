@@ -1,0 +1,36 @@
+#N canvas 0 26 462 397 10;
+#X obj 265 274 image logo100.gif;
+#X text 19 18 Incorporate images. This is instantiated with;
+#X text 19 34 [image logo100.gif];
+#X text 17 57 [image] works with .gif \, .ppm \, and .pgm image formats
+only.;
+#X msg 86 132 open \$1;
+#X obj 86 88 bng 15 250 50 0 empty empty empty 0 -6 0 10 -4034 -1 -1
+;
+#X obj 86 109 openpanel;
+#X obj 265 357 bng 15 250 50 0 empty empty empty 0 -6 0 10 -262144
+-1 -1;
+#X msg 265 152 size \$1 \$2;
+#X obj 265 129 pack 0 0;
+#X obj 313 106 hsl 128 15 0 127 0 0 empty empty y 7 7 0 10 -203904
+-1 -1 0 1;
+#X obj 263 88 hsl 128 15 0 127 0 0 empty empty x 7 7 0 10 -204800 -1
+-1 0 1;
+#N canvas 369 218 494 344 META 0;
+#X text 12 125 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE Tcl/Tk;
+#X text 12 105 AUTHOR Guenter Geiger;
+#X text 12 5 KEYWORDS control GUI;
+#X text 12 45 DESCRIPTION display an image;
+#X text 12 65 INLET_0 open size;
+#X text 12 85 OUTLET_0 bang;
+#X restore 412 375 pd META;
+#X connect 0 0 7 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 1;
+#X connect 11 0 9 0;

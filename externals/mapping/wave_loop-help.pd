@@ -1,0 +1,28 @@
+#N canvas 1 53 392 386 10;
+#X floatatom 23 11 5 0 0 0 - - -;
+#X floatatom 71 46 5 0 0 0 - - -;
+#X floatatom 106 72 5 0 0 0 - - -;
+#X text 107 50 size of the output vector;
+#X text 152 71 largeur de la loop;
+#X floatatom 150 89 5 0 0 0 - - -;
+#X obj 23 107 wave_loop 25 0.4;
+#X obj 24 156 multi_slider 25;
+#N canvas 465 169 494 344 META 0;
+#X text 12 185 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2;
+#X text 12 85 INLET_1 float;
+#X text 12 165 AUTHOR Cyrille Henry and Hans-Christoph Steiner;
+#X text 12 65 INLET_0 float;
+#X text 12 105 INLET_2 float;
+#X text 12 145 OUTLET_0 list;
+#X text 12 45 DESCRIPTION;
+#X text 12 5 KEYWORDS control abstraction needs_work (DESCRIPTION?)
+;
+#X text 12 125 INLET_3 float;
+#X restore 332 353 pd META;
+#X connect 0 0 6 0;
+#X connect 1 0 6 1;
+#X connect 2 0 6 2;
+#X connect 5 0 6 3;
+#X connect 6 0 7 0;

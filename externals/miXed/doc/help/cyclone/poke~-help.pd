@@ -1,0 +1,57 @@
+#N canvas 0 26 767 365 10;
+#X msg 278 155 0;
+#X floatatom 342 154 0 0 0 0 - - -;
+#X obj 182 204 sig~ -1;
+#X text -5 280 value;
+#X obj 37 263 cycle~ 440;
+#X text 120 276 index;
+#X text 103 303 channel;
+#X text 298 198 a source of an increasing index \, also consider fft~
+;
+#X text 6 41 poke~ allows you to write samples into a buffer~ at sample
+locations specified by a signal. Typically \, the signal will increase
+in value by 1 with each sample to write successive values into successive
+samples (like record~). If the index signal is negative or larger than
+the size of the buffer~ \, no data is recorded.;
+#X text 392 157 count maximum sets the number of samples recorded (think
+of it as the loop size);
+#X text 12 23 Write into a table using a signal sample index;
+#X obj 443 256 table foo 1000;
+#X obj 38 309 poke~ foo;
+#X text 37 330 arguments are name of table (required) and initial channel
+to write (optional \, default 1);
+#X obj 146 249 multiplex~ 0 1;
+#X msg -8 168 0;
+#X msg -8 145 1;
+#X text 23 146 start writing;
+#X text 23 167 stop writing by sending -1 signal;
+#X floatatom 279 261 5 0 0 0 - - -;
+#X obj 278 177 count~ 0 2048;
+#X obj 279 235 Snapshot~ 100;
+#N canvas 247 115 494 397 META 0;
+#X text 12 175 HELP_PATCH_AUTHORS Christoph Kummerer. Revised by Jonathan
+Wilkes for Pd-extended 0.42 to conform to the PDDP template.;
+#X text 12 145 WEBSITE http://suita.chopin.edu.pl/~czaja/miXed/externs/cyclone.html
+;
+#X text 12 5 KEYWORDS signal array max_compatible;
+#X text 12 45 DESCRIPTION write into a table using a signal sample
+index;
+#X text 12 65 INLET_0 signal set;
+#X text 12 85 INLET_1 signal;
+#X text 12 105 INLET_2 float;
+#X text 12 25 LICENSE SIBSD;
+#X text 12 125 AUTHOR Krzysztof Czaja;
+#X restore 706 342 pd META;
+#X obj 443 282 table bar 1000;
+#X msg 12 230 set bar;
+#X connect 0 0 20 0;
+#X connect 1 0 20 1;
+#X connect 2 0 14 0;
+#X connect 4 0 12 0;
+#X connect 14 0 12 1;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 20 0 14 1;
+#X connect 20 0 21 0;
+#X connect 21 0 19 0;
+#X connect 24 0 12 0;

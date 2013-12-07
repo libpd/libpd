@@ -1,0 +1,9 @@
+PKGVERSION_MAJOR=0
+PKGVERSION_MINOR=93
+PKGVERSION_BUGFIX=3
+
+## by default, pkgversion.sh will try to find out bugfix-version and codename 
+## based on the versioning system used.
+### e.g.
+#PKGVERSION_BUGFIX=SVN
+#PKGVERSION_CODENAME=diamond

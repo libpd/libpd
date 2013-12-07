@@ -1,0 +1,262 @@
+
+/*=============================================================================*\
+ * File: gfsmArc.hi
+ * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
+ * Description: finite state machine library: arcs: inline definitions
+ *
+ * Copyright (c) 2004-2008 Bryan Jurish.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *=============================================================================*/
+
+#include <stdlib.h>
+
+/*======================================================================
+ * Methods: Arcs: Constructors etc.
+ */
+
+/*--------------------------------------------------------------
+ * arc_new()
+ */
+GFSM_INLINE
+gfsmArc *gfsm_arc_new(void)
+{
+  return g_new0(gfsmArc,1);
+}
+
+/*--------------------------------------------------------------
+ * arc_init()
+ */
+GFSM_INLINE
+gfsmArc *gfsm_arc_init(gfsmArc *a,
+		       gfsmStateId src,
+		       gfsmStateId dst,
+		       gfsmLabelId lo,
+		       gfsmLabelId hi,
+		       gfsmWeight wt)
+{
+  if (a) {
+    a->source = src;
+    a->target = dst;
+    a->lower  = lo;
+    a->upper  = hi;
+    a->weight = wt;
+  }
+  return a;
+}
+
+/*--------------------------------------------------------------
+ * arc_new_full()
+ */
+GFSM_INLINE
+gfsmArc *gfsm_arc_new_full(gfsmStateId src, gfsmStateId dst, gfsmLabelVal lo, gfsmLabelVal hi, gfsmWeight wt)
+{
+  return gfsm_arc_init(g_new(gfsmArc,1),src,dst,lo,hi,wt);
+}
+
+/*--------------------------------------------------------------
+ * arc_clone()
+ */
+GFSM_INLINE
+gfsmArc *gfsm_arc_clone(gfsmArc *src)
+{
+  gfsmArc *dst = g_new(gfsmArc,1);
+  *dst = *src;
+  return dst;
+}
+
+/*--------------------------------------------------------------
+ * arc_free()
+ */
+GFSM_INLINE
+void gfsm_arc_free(gfsmArc *a)
+{ g_free(a); }
+
+
+/*======================================================================
+ * Methods: Arc Comparison (backwards-compatible)
+ */
+//-- none
+
+/*======================================================================
+ * Methods: arc comparison mask utilties
+ */
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gfsmArcCompMask gfsm_acmask_new(gfsmArcComp cmp, gint nth)
+{
+  return
+#ifdef __cplusplus
+    //-- this kind of crap is the reason i hate c++ --moo
+    static_cast<gfsmArcCompMask>
+#endif
+    ( (cmp&gfsmACAll)<<(nth*gfsmACShift) );
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gfsmArcComp gfsm_acmask_nth(gfsmArcCompMask m, gint nth)
+{
+  return
+#ifdef __cplusplus
+    //-- this kind of crap is the reason i hate c++ --moo
+    static_cast<gfsmArcComp>
+#endif
+    ( (m>>(nth*gfsmACShift))&gfsmACAll );
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gfsmArcComp gfsm_acmask_nth_comp(gfsmArcCompMask m, gint nth)
+{
+  return
+#ifdef __cplusplus
+    //-- this kind of crap is the reason i hate c++ --moo
+    static_cast<gfsmArcComp>(
+			     static_cast<gfsmArcCompMask>(gfsm_acmask_nth(m,nth))
+			     &
+			     ~static_cast<gfsmArcCompMask>(gfsmACReverse)
+			     )
+#else
+    gfsm_acmask_nth(m,nth) & (~gfsmACReverse)
+#endif
+    ;
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gboolean gfsm_acmask_nth_reverse(gfsmArcCompMask m, gint nth)
+{ return (gfsm_acmask_nth(m,nth)&gfsmACReverse) ? TRUE : FALSE; }
+
+
+/*======================================================================
+ * Methods: Arc comparison: prioritized
+ */
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gint gfsm_arc_compare_bymask_1_(gfsmArc *a1, gfsmArc *a2, gfsmArcComp cmp, gfsmArcCompData *acdata)
+{
+  switch (cmp) { 
+    //
+    //-- forward (ascending)
+  case gfsmACLower:
+    if (a1->lower < a2->lower)   return -1;
+    if (a1->lower > a2->lower)   return  1;
+    return 0;
+  case gfsmACUpper:
+    if (a1->upper < a2->upper)   return -1;
+    if (a1->upper > a2->upper)   return  1;
+    return 0;
+  case gfsmACWeight:
+    return acdata->sr ? gfsm_sr_compare(acdata->sr, a1->weight, a2->weight) : 0;
+  case gfsmACSource:
+    if (a1->source < a2->source) return -1;
+    if (a1->source > a2->source) return  1;
+    return 0;
+  case gfsmACTarget:
+    if (a1->target < a2->target) return -1;
+    if (a1->target > a2->target) return  1;
+    return 0;
+    //
+    //-- reverse (descending)
+   case gfsmACLowerR:
+    if (a1->lower < a2->lower)   return  1;
+    if (a1->lower > a2->lower)   return -1;
+    return 0;
+  case gfsmACUpperR:
+    if (a1->upper < a2->upper)   return  1;
+    if (a1->upper > a2->upper)   return -1;
+    return 0;
+  case gfsmACWeightR:
+    return acdata->sr ? gfsm_sr_compare(acdata->sr, a2->weight, a1->weight) : 0;
+  case gfsmACSourceR:
+    if (a1->source < a2->source) return  1;
+    if (a1->source > a2->source) return -1;
+    return 0;
+  case gfsmACTargetR:
+    if (a1->target < a2->target) return  1;
+    if (a1->target > a2->target) return -1;
+    return 0;
+    //
+    //-- user
+  case gfsmACUser:
+    if (acdata->user_compare_func) {
+      return (*(acdata->user_compare_func))(a1,a2,acdata->user_data);
+    }
+    //
+    //-- default
+  case gfsmACNone:
+  default:
+    return 0;
+  }
+  return 0;
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gint gfsm_arc_compare_bymask_inline(gfsmArc *a1, gfsmArc *a2, gfsmArcCompData *acdata)
+{
+  gint rc=0;
+  //-- NULL check
+  if (!a1) {
+    if (!a2) return 0;
+    return 1;
+  }
+  if (!a2) return -1;
+  //
+  if ( (rc=gfsm_arc_compare_bymask_1_(a1,a2,gfsm_acmask_nth(acdata->mask,0),acdata)) ) return rc;
+  if ( (rc=gfsm_arc_compare_bymask_1_(a1,a2,gfsm_acmask_nth(acdata->mask,1),acdata)) ) return rc;
+  if ( (rc=gfsm_arc_compare_bymask_1_(a1,a2,gfsm_acmask_nth(acdata->mask,2),acdata)) ) return rc;
+  if ( (rc=gfsm_arc_compare_bymask_1_(a1,a2,gfsm_acmask_nth(acdata->mask,3),acdata)) ) return rc;
+  if ( (rc=gfsm_arc_compare_bymask_1_(a1,a2,gfsm_acmask_nth(acdata->mask,4),acdata)) ) return rc;
+  if ( (rc=gfsm_arc_compare_bymask_1_(a1,a2,gfsm_acmask_nth(acdata->mask,5),acdata)) ) return rc;
+  return 0;
+}
+
+
+/*======================================================================
+ * Methods: String utilities
+ */
+
+//--------------------------------------------------------------
+GFSM_INLINE
+gchar gfsm_acmask_nth_char(gfsmArcCompMask m, gint nth)
+{
+  switch (gfsm_acmask_nth(m,nth)) {
+  case gfsmACLower:  return 'l';
+  case gfsmACUpper:  return 'u';
+  case gfsmACWeight: return 'w';
+  case gfsmACSource: return 's';
+  case gfsmACTarget: return 't';
+    //
+  case gfsmACLowerR:  return 'L';
+  case gfsmACUpperR:  return 'U';
+  case gfsmACWeightR: return 'W';
+  case gfsmACSourceR: return 'S';
+  case gfsmACTargetR: return 'T';
+    //
+  case gfsmACUser:    return 'x';
+  case gfsmACNone:    return '_';
+  default:            return '?';
+  }
+  return '?';
+}
+
+//--------------------------------------------------------------
+GFSM_INLINE
+const gchar *gfsm_arc_sortmode_to_name(gfsmArcCompMask m)
+{ return gfsm_acmask_nth_string(m,0); }
