@@ -15,6 +15,10 @@ t_libpd_printhook libpd_concatenated_printhook = NULL;
 
 #define PRINT_LINE_SIZE 2048
 
+void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
+  libpd_concatenated_printhook = hook;
+}
+
 void libpd_print_concatenator(const char *s) {
   if (!libpd_concatenated_printhook) return;
 

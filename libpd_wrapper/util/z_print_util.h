@@ -22,17 +22,17 @@ extern "C"
 // For comparison, the default behavior returns individual words and spaces.
 // ie "hello 123" is sent in 3 parts -> "hello", " ", "123"
 
-// Assign the pointer to your print handler to this variable.
-EXTERN t_libpd_printhook libpd_concatenated_printhook;
+// Assign the pointer to your print handler.
+EXTERN void libpd_set_concatenated_printhook(const t_libpd_printhook hook);
 
 // Assign this function pointer to libpd_printhook or libpd_queued_printhook,
 // depending on whether you're using queued messages, to intercept and
 // concatenate print messages:
 //
-// libpd_printhook = (t_libpd_printhook) libpd_print_concatenator;
-// libpd_concatenated_printhook = (t_libpd_printhook) yourPrintHandler;
+// libpd_set_printhook(libpd_print_concatenator);
+// libpd_set_concatenated_printhook(your_print_handler);
 //
-// Note: The pointer argument is only good for the duration of the print 
+// Note: The char pointer argument is only good for the duration of the print 
 //       callback; if you intend to use the argument after the callback has 
 //       returned, you need to make a defensive copy.
 //

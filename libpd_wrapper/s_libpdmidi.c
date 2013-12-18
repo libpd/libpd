@@ -5,6 +5,7 @@
 #include "m_pd.h"
 #include "s_stuff.h"
 #include "z_libpd.h"
+#include "z_hooks.h"
 
 #define CLAMP(x, low, high) ((x > high) ? high : ((x < low) ? low : x))
 #define CLAMP4BIT(x) CLAMP(x, 0, 0x0f)

@@ -69,7 +69,7 @@ PD_FILES = \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
 	pure-data/src/x_qlist.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_libpd.c 
+	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c 
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \

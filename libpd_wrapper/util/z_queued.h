@@ -15,20 +15,20 @@ extern "C"
 {
 #endif
 
-EXTERN t_libpd_printhook libpd_queued_printhook;
-EXTERN t_libpd_banghook libpd_queued_banghook;
-EXTERN t_libpd_floathook libpd_queued_floathook;
-EXTERN t_libpd_symbolhook libpd_queued_symbolhook;
-EXTERN t_libpd_listhook libpd_queued_listhook;
-EXTERN t_libpd_messagehook libpd_queued_messagehook;
+EXTERN void libpd_set_queued_printhook(const t_libpd_printhook hook);
+EXTERN void libpd_set_queued_banghook(const t_libpd_banghook hook);
+EXTERN void libpd_set_queued_floathook(const t_libpd_floathook hook);
+EXTERN void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook);
+EXTERN void libpd_set_queued_listhook(const t_libpd_listhook hook);
+EXTERN void libpd_set_queued_messagehook(const t_libpd_messagehook hook);
 
-EXTERN t_libpd_noteonhook libpd_queued_noteonhook;
-EXTERN t_libpd_controlchangehook libpd_queued_controlchangehook;
-EXTERN t_libpd_programchangehook libpd_queued_programchangehook;
-EXTERN t_libpd_pitchbendhook libpd_queued_pitchbendhook;
-EXTERN t_libpd_aftertouchhook libpd_queued_aftertouchhook;
-EXTERN t_libpd_polyaftertouchhook libpd_queued_polyaftertouchhook;
-EXTERN t_libpd_midibytehook libpd_queued_midibytehook;
+EXTERN void libpd_set_queued_noteonhook(const t_libpd_noteonhook hook);
+EXTERN void libpd_set_queued_controlchangehook(const t_libpd_controlchangehook hook);
+EXTERN void libpd_set_queued_programchangehook(const t_libpd_programchangehook hook);
+EXTERN void libpd_set_queued_pitchbendhook(const t_libpd_pitchbendhook hook);
+EXTERN void libpd_set_queued_aftertouchhook(const t_libpd_aftertouchhook hook);
+EXTERN void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
+EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
 
 int libpd_queued_init();
 void libpd_queued_release();

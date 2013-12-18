@@ -9,6 +9,7 @@
 #include "m_pd.h"
 #include "x_libpdreceive.h"
 #include "z_libpd.h"
+#include "z_hooks.h"
 
 static t_class *libpdrec_class;
 
