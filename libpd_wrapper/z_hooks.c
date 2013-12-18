@@ -10,19 +10,17 @@
  
 #include "z_hooks.h"
 
-void libpd_clear_hooks(void) {
-	libpd_printhook = NULL;
-	libpd_banghook = NULL;
-	libpd_floathook = NULL;
-	libpd_symbolhook = NULL;
-	libpd_listhook = NULL;
-	libpd_messagehook = NULL;
+t_libpd_printhook libpd_printhook = NULL;
+t_libpd_banghook libpd_banghook = NULL;
+t_libpd_floathook libpd_floathook = NULL;
+t_libpd_symbolhook libpd_symbolhook = NULL;
+t_libpd_listhook libpd_listhook = NULL;
+t_libpd_messagehook libpd_messagehook = NULL;
 
-	libpd_noteonhook = NULL;
-	libpd_controlchangehook = NULL;
-	libpd_programchangehook = NULL;
-	libpd_pitchbendhook = NULL;
-	libpd_aftertouchhook = NULL;
-	libpd_polyaftertouchhook = NULL;
-	libpd_midibytehook = NULL;
-}
+t_libpd_noteonhook libpd_noteonhook = NULL;
+t_libpd_controlchangehook libpd_controlchangehook = NULL;
+t_libpd_programchangehook libpd_programchangehook = NULL;
+t_libpd_pitchbendhook libpd_pitchbendhook = NULL;
+t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
+t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
+t_libpd_midibytehook libpd_midibytehook = NULL;

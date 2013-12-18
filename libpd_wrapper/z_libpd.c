@@ -35,7 +35,6 @@ int libpd_init(void) {
   static int initialized = 0;
   if (initialized) return 0; // only allow init once (for now)
   initialized = 1;
-	libpd_clear_hooks();
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
