@@ -33,7 +33,7 @@ static void *get_object(const char *s) {
 /* this is called instead of sys_main() to start things */
 int libpd_init(void) {
   static int initialized = 0;
-  if (initialized) return 0; // only allow init once (for now)
+  if (initialized) return -1; // only allow init once (for now)
   initialized = 1;
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
@@ -58,7 +58,7 @@ int libpd_init(void) {
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
 	
-	return 1;
+	return 0;
 }
 
 void libpd_clear_search_path(void) {
