@@ -757,23 +757,23 @@ void PdBase::PdContext::removeBase() {
 bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 
     // attach callbacks
-	libpd_printhook = (t_libpd_printhook) libpd_print_concatenator;
-    libpd_concatenated_printhook = (t_libpd_printhook) _print;
+	libpd_set_printhook(libpd_print_concatenator);
+    libpd_set_concatenated_printhook(_print);
 
-    libpd_banghook = (t_libpd_banghook) _bang;
-    libpd_floathook = (t_libpd_floathook) _float;
-    libpd_symbolhook = (t_libpd_symbolhook) _symbol;
-    libpd_listhook = (t_libpd_listhook) _list;
-    libpd_messagehook = (t_libpd_messagehook) _message;
+    libpd_set_banghook(_bang);
+    libpd_set_floathook(_float);
+    libpd_set_symbolhook(_symbol);
+    libpd_set_listhook(_list);
+    libpd_set_messagehook(_message);
 
-    libpd_noteonhook = (t_libpd_noteonhook) _noteon;
-    libpd_controlchangehook = (t_libpd_controlchangehook) _controlchange;
-    libpd_programchangehook = (t_libpd_programchangehook) _programchange;
-    libpd_pitchbendhook = (t_libpd_pitchbendhook) _pitchbend;
-    libpd_aftertouchhook = (t_libpd_aftertouchhook) _aftertouch;
-    libpd_polyaftertouchhook = (t_libpd_polyaftertouchhook) _polyaftertouch;
+    libpd_set_noteonhook(_noteon);
+    libpd_set_controlchangehook(_controlchange);
+    libpd_set_programchangehook(_programchange);
+    libpd_set_pitchbendhook(_pitchbend);
+    libpd_set_aftertouchhook(_aftertouch);
+    libpd_set_polyaftertouchhook(_polyaftertouch);
 
-    libpd_midibytehook = (t_libpd_midibytehook) _midibyte;
+    libpd_set_midibytehook(_midibyte);
 
     // init libpd, should only be called once!
 	if(!bLibPDInited) {
@@ -798,22 +798,22 @@ void PdBase::PdContext::clear() {
 
         computeAudio(false);
 
-        libpd_concatenated_printhook = (t_libpd_printhook) NULL;
+        libpd_set_concatenated_printhook(NULL);
 
-        libpd_banghook = (t_libpd_banghook) NULL;
-        libpd_floathook = (t_libpd_floathook) NULL;
-        libpd_symbolhook = (t_libpd_symbolhook) NULL;
-        libpd_listhook = (t_libpd_listhook) NULL;
-        libpd_messagehook = (t_libpd_messagehook) NULL;
+        libpd_set_banghook(NULL);
+        libpd_set_floathook(NULL);
+        libpd_set_symbolhook(NULL);
+        libpd_set_listhook(NULL);
+        libpd_set_messagehook(NULL);
 
-        libpd_noteonhook = (t_libpd_noteonhook) NULL;
-        libpd_controlchangehook = (t_libpd_controlchangehook) NULL;
-        libpd_programchangehook = (t_libpd_programchangehook) NULL;
-        libpd_pitchbendhook = (t_libpd_pitchbendhook) NULL;
-        libpd_aftertouchhook = (t_libpd_aftertouchhook) NULL;
-        libpd_polyaftertouchhook = (t_libpd_polyaftertouchhook) NULL;
+        libpd_set_noteonhook(NULL);
+        libpd_set_controlchangehook(NULL);
+        libpd_set_programchangehook(NULL);
+        libpd_set_pitchbendhook(NULL);
+        libpd_set_aftertouchhook(NULL);
+        libpd_set_polyaftertouchhook(NULL);
 
-        libpd_midibytehook = (t_libpd_midibytehook) NULL;
+        libpd_set_midibytehook(NULL);
     }
 
     messages.clear();
