@@ -15,8 +15,8 @@ DEST=../pure-data
 cd $WD
 
 # get latest source
-curl -LO http://crca.ucsd.edu/~msp/Software/pd-$VER.src.tar.gz
-tar -zxf pd-$VER.src.tar.gz
+curl -LO http://crca.ucsd.edu/~msp/Software/$SRC.src.tar.gz
+tar -zxf $SRC.src.tar.gz
 
 # remove uneeded makefiles, etc in src
 find $SRC/src -name "makefile.*" -delete
@@ -43,6 +43,10 @@ rm $SRC/src/s_midi_oss.c
 rm $SRC/src/s_midi_pm.c
 rm $SRC/src/s_midi.c
 
+# remove uneeded fft library interfaces
+rm $SRC/src/d_fft_fftsg.c
+rm $SRC/src/d_fft_fftw.c
+
 # remove some other stuff we don't need ...
 rm $SRC/src/s_entry.c
 rm $SRC/src/s_watchdog.c
@@ -58,5 +62,4 @@ cp -Rv $SRC/src/* $DEST/src
 cp -Rv $SRC/extra/* $DEST/extra
 
 # cleanup
-rm -rf $SRC
-
+rm -rf $SRC $SRC.src.tar.gz
