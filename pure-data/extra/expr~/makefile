@@ -1,4 +1,3 @@
-
 current: expr.pd_linux expr~.pd_linux fexpr~.pd_linux \
      ../expr.pd_linux ../expr~.pd_linux ../fexpr~.pd_linux
 
@@ -8,70 +7,39 @@ clean: clean_linux
 
 PDEXTERN=/usr/local/lib/pd/extra
 
-# ----------------------- NT -----------------------
+# ----------------------- Microsoft Visual C -----------------------
+
+MSCC = cl
+MSLN = link
+COPY = copy
+DELETE = del
+.SUFFIXES:.obj
 
 pd_nt: expr.dll
 
 NTOBJ =  vexp.obj vexp_fun.obj vexp_if.obj
 
 PDNTCFLAGS = /W3 /DNT /DPD /nologo
-VC = "C:\Program Files\Microsoft Visual Studio 9.0\VC"
-VSTK = "C:\Program Files\Microsoft SDKs\Windows\v6.0A"
+VC = "C:\\Program Files\\Microsoft Visual Studio 9.0\\VC"
+VSTK = "C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A"
 
-PDNTINCLUDE = /I. /I..\..\src /I$(VC)\include
+PDNTINCLUDE = /I. /I..\\..\\src /I$(VC)\\include
 
-PDNTLDIR = $(VC)\lib
+PDNTLDIR = $(VC)\\lib
 PDNTLIB = /NODEFAULTLIB:libcmt /NODEFAULTLIB:oldnames /NODEFAULTLIB:kernel32 \
-	$(PDNTLDIR)\libcmt.lib $(PDNTLDIR)\oldnames.lib \
-        $(VSTK)\lib\kernel32.lib \
-	 ..\..\bin\pd.lib 
+	$(PDNTLDIR)\\libcmt.lib $(PDNTLDIR)\\oldnames.lib \
+        $(VSTK)\\lib\\kernel32.lib \
+	 ..\\..\\bin\\pd.lib 
 
 .c.obj:
-	cl $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
+	$(MSCC) $(PDNTCFLAGS) $(PDNTINCLUDE) /c $*.c
 
 expr.dll: $(NTOBJ)
-	link /dll /export:expr_setup /export:expr_tilde_setup \
-	    /export:fexpr_tilde_setup $(NTOBJ) $(PDNTLIB)
-	ren vexp.dll expr.dll
-	copy expr.dll ..\expr.dll
-	copy expr.dll ..\expr~.dll
-	copy expr.dll ..\fexpr~.dll
-	copy help-expr.pd ..\help-expr.pd
-
-# ----------------------- IRIX 5.x -----------------------
-
-pd_irix5: 
-
-.SUFFIXES: .pd_irix5
-
-SGICFLAGS5 = -o32 -DPD -DSGI -O2
-
-
-SGIINCLUDE =  -I/usr/people/msp/pd/pd/src
-
-.c.pd_irix5:
-	$(CC) $(SGICFLAGS5) $(SGIINCLUDE) -o $*.o -c $*.c
-	ld -elf -shared -rdata_shared -o $*.pd_irix5 $*.o
-	rm $*.o
-
-# ----------------------- IRIX 6.x -----------------------
-
-pd_irix6: 
-
-.SUFFIXES: .pd_irix6
-
-SGICFLAGS6 = -DPD -DSGI -n32 \
-	-OPT:roundoff=3 -OPT:IEEE_arithmetic=3 -OPT:cray_ivdep=true \
-	-Ofast=ip32
-
-SGICFLAGS5 = -DPD -O2 -DSGI
-
-SGIINCLUDE =  -I/usr/people/msp/pd/pd/src
-
-.c.pd_irix6:
-	$(CC) $(SGICFLAGS6) $(SGIINCLUDE) -o $*.o -c $*.c
-	ld -elf -shared -rdata_shared -o $*.pd_irix6 $*.o
-	rm $*.o
+	$(MSLN) /dll /export:expr_setup /export:expr_tilde_setup \
+	    /export:fexpr_tilde_setup /OUT:expr.dll $(NTOBJ) $(PDNTLIB)
+	$(COPY) expr.dll ..\expr.dll
+	$(COPY) expr.dll ..\expr~.dll
+	$(COPY) expr.dll ..\fexpr~.dll
 
 # ----------------------- LINUX i386 -----------------------
 
@@ -126,6 +94,7 @@ MACOSXCFLAGS = -DMACOSX -DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
     -Wno-unused -Wno-parentheses -Wno-switch 
 
 MACOSXINCLUDE =  -I../../src
+MACOSXARCH= -arch i386 -arch x86_64 -arch ppc 
 
 d_ppc: expr.d_ppc expr~.d_ppc fexpr~.d_ppc
 .c.d_ppc_o:
@@ -157,11 +126,11 @@ install_d_fat:
 
 d_fat: expr.d_fat expr~.d_fat fexpr~.d_fat
 .c.d_fat_o:
-	$(CC) -g $(MACOSXCFLAGS) $(MACOSXINCLUDE)  -arch i386 -arch ppc \
+	$(CC) -g $(MACOSXCFLAGS) $(MACOSXINCLUDE) $(MACOSXARCH) \
 	-o $*.d_fat_o -c $*.c
 
 expr.d_fat: $(MACOSXOBJ)
-	$(CC) -arch i386 -arch ppc -bundle -undefined suppress  -flat_namespace \
+	$(CC) $(MACOSXARCH) -bundle -undefined suppress  -flat_namespace \
 		-o expr.d_fat $(MACOSXOBJ)  -lm
 	rm -f ../expr.d_fat
 	-ln -s expr~/expr.d_fat ..

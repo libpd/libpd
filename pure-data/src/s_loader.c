@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #endif
 #ifdef _WIN32
 #include <io.h>
@@ -22,8 +21,10 @@
 #include "m_pd.h"
 #include "s_stuff.h"
 #include <stdio.h>
+#include <sys/stat.h>
 #ifdef _MSC_VER  /* This is only for Microsoft's compiler, not cygwin, e.g. */
 #define snprintf sprintf_s
+#define stat _stat
 #endif
 
 typedef void (*t_xxx)(void);
@@ -39,10 +40,15 @@ a fat binary or an indication of the instruction set. */
 #ifdef __FreeBSD__
 static char sys_dllextent[] = ".b_i386", sys_dllextent2[] = ".pd_freebsd";
 #elif defined(__linux__) || defined(__FreeBSD_kernel__) || defined(__GNU__)
+static char sys_dllextent2[] = ".pd_linux";
 # ifdef __x86_64__
-static char sys_dllextent[] = ".l_ia64", sys_dllextent2[] = ".pd_linux";
+static char sys_dllextent[] = ".l_ia64"; // this should be .l_x86_64 or .l_amd64
+# elif defined(__i386__) || defined(_M_IX86)
+static char sys_dllextent[] = ".l_i386";
+# elif defined(__arm__)
+static char sys_dllextent[] = ".l_arm";
 # else
-static char sys_dllextent[] = ".l_i386", sys_dllextent2[] = ".pd_linux";
+static char sys_dllextent[] = ".so";
 # endif
 #elif defined(__APPLE__)
 # ifndef MACOSX3
@@ -52,8 +58,8 @@ static char sys_dllextent[] = ".d_ppc", sys_dllextent2[] = ".pd_darwin";
 # endif
 #elif defined(_WIN32) || defined(__CYGWIN__)
 static char sys_dllextent[] = ".m_i386", sys_dllextent2[] = ".dll";
-#elif defined(ANDROID)
-static char sys_dllextent[] = ".l_arm", sys_dllextent2[] = ".pd_linux";
+#else
+static char sys_dllextent[] = ".so", sys_dllextent2[] = ".so";
 #endif
 
     /* maintain list of loaded modules to avoid repeating loads */
@@ -283,31 +289,35 @@ int sys_run_scheduler(const char *externalschedlibname,
     typedef int (*t_externalschedlibmain)(const char *);
     t_externalschedlibmain externalmainfunc;
     char filename[MAXPDSTRING];
+    struct stat statbuf;
     snprintf(filename, sizeof(filename), "%s%s", externalschedlibname,
         sys_dllextent);
     sys_bashfilename(filename, filename);
+        /* if first-choice file extent can't 'stat', go for second */
+    if (stat(filename, &statbuf) < 0)
+    {
+        snprintf(filename, sizeof(filename), "%s%s", externalschedlibname,
+            sys_dllextent2);
+        sys_bashfilename(filename, filename);
+    }       
 #ifdef _WIN32
     {
         HINSTANCE ntdll = LoadLibrary(filename);
         if (!ntdll)
         {
-            post("%s: couldn't load external scheduler lib ", filename);
+            fprintf(stderr, "%s: couldn't load external scheduler\n", filename);
+            post("%s: couldn't load external scheduler", filename);
             return (1);
         }
         externalmainfunc =
-            (t_externalschedlibmain)GetProcAddress(ntdll, "main");
+            (t_externalschedlibmain)GetProcAddress(ntdll, "pd_extern_sched");
+        if (!externalmainfunc)
+            externalmainfunc =
+                (t_externalschedlibmain)GetProcAddress(ntdll, "main");
     }
 #elif defined HAVE_LIBDL
     {
         void *dlobj;
-        struct stat statbuf;
-            /* if first-choice file extent can't 'stat', go for second */
-        if (stat(filename, &statbuf) < 0)
-        {
-            snprintf(filename, sizeof(filename), "%s%s", externalschedlibname,
-                sys_dllextent2);
-            sys_bashfilename(filename, filename);
-        }       
         dlobj = dlopen(filename, RTLD_NOW | RTLD_GLOBAL);
         if (!dlobj)
         {
@@ -321,5 +331,12 @@ int sys_run_scheduler(const char *externalschedlibname,
 #else
     return (0);
 #endif
-    return((*externalmainfunc)(sys_extraflagsstring));
+    if (externalmainfunc)
+        return((*externalmainfunc)(sys_extraflagsstring));
+    else
+    {
+        fprintf(stderr, "%s: couldn't find pd_extern_sched() or main()\n",
+            filename);
+        return (0);
+    }
 }

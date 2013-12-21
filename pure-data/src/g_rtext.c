@@ -159,7 +159,7 @@ static int lastone(char *s, int c, int n)
         SEND_FIRST - draw the box  for the first time
         SEND_UPDATE - redraw the updated box
         otherwise - don't draw, just calculate.
-    Called with *widthp and *heightpas coordinates of
+    Called with *widthp and *heightp as coordinates of
     a test point, the routine reports the index of the character found
     there in *indexp.  *widthp and *heightp are set to the width and height
     of the entire text in pixels.
@@ -180,11 +180,6 @@ static int lastone(char *s, int c, int n)
         a limit of 1950 characters, imposed by sys_vgui(). */
 #define UPBUFSIZE 4000
 #define BOXWIDTH 60
-
-/* Older (pre-8.3.4) TCL versions handle text selection differently; this
-flag is set from the GUI if this happens.  LATER take this out: early 2006? */
-
-extern int sys_oldtclversion;           
 
 static void rtext_senditup(t_rtext *x, int action, int *widthp, int *heightp,
     int *indexp)
@@ -226,9 +221,13 @@ static void rtext_senditup(t_rtext *x, int action, int *widthp, int *heightp,
         int foundit_c;
         if (foundit_b < 0)
         {
+                /* too much text to fit in one line? */
             if (inchars_c > widthlimit_c)
             {
-                foundit_b = lastone(x->x_buf + inindex_b, ' ', maxindex_b);
+                    /* is there a space to break the line at?  OK if it's even
+                    one byte past the end since in this context we know there's
+                    more text */
+                foundit_b = lastone(x->x_buf + inindex_b, ' ', maxindex_b + 1);
                 if (foundit_b < 0)
                 {
                     foundit_b = maxindex_b;
@@ -278,7 +277,7 @@ static void rtext_senditup(t_rtext *x, int action, int *widthp, int *heightp,
     if (nlines < 1) nlines = 1;
     if (!widthspec_c)
     {
-        while (ncolumns < 3)
+        while (ncolumns < (x->x_text->te_type == T_TEXT ? 1 : 3))
         {
             tempbuf[outchars_b++] = ' ';
             ncolumns++;
@@ -288,13 +287,29 @@ static void rtext_senditup(t_rtext *x, int action, int *widthp, int *heightp,
     pixwide = ncolumns * fontwidth + (LMARGIN + RMARGIN);
     pixhigh = nlines * fontheight + (TMARGIN + BMARGIN);
 
+    if (action && x->x_text->te_width && x->x_text->te_type != T_ATOM)
+    {
+            /* if our width is specified but the "natural" width is the
+            same as the specified width, set specified width to zero
+            so future text editing will automatically change width.
+            Except atoms whose content changes at runtime. */
+        int widthwas = x->x_text->te_width, newwidth = 0, newheight = 0,
+            newindex = 0;
+        x->x_text->te_width = 0;
+        rtext_senditup(x, 0, &newwidth, &newheight, &newindex);
+        if (newwidth/fontwidth != widthwas)
+            x->x_text->te_width = widthwas;
+        else x->x_text->te_width = 0;
+    }
     if (action == SEND_FIRST)
+    {
         sys_vgui("pdtk_text_new .x%lx.c {%s %s text} %f %f {%.*s} %d %s\n",
             canvas, x->x_tag, rtext_gettype(x)->s_name,
             dispx + LMARGIN, dispy + TMARGIN,
             outchars_b, tempbuf, sys_hostfontsize(font),
             (glist_isselected(x->x_glist,
                 &x->x_glist->gl_gobj)? "blue" : "black"));
+    }
     else if (action == SEND_UPDATE)
     {
         sys_vgui("pdtk_text_set .x%lx.c %s {%.*s}\n",
@@ -309,8 +324,7 @@ static void rtext_senditup(t_rtext *x, int action, int *widthp, int *heightp,
                 sys_vgui(".x%lx.c select from %s %d\n", canvas, 
                     x->x_tag, u8_charnum(x->x_buf, selstart_b));
                 sys_vgui(".x%lx.c select to %s %d\n", canvas, 
-                    x->x_tag, u8_charnum(x->x_buf, selend_b)
-                              + (sys_oldtclversion ? 0 : -1));
+                    x->x_tag, u8_charnum(x->x_buf, selend_b) - 1);
                 sys_vgui(".x%lx.c focus \"\"\n", canvas);        
             }
             else
@@ -435,7 +449,6 @@ void rtext_select(t_rtext *x, int state)
     t_canvas *canvas = glist_getcanvas(glist);
     sys_vgui(".x%lx.c itemconfigure %s -fill %s\n", canvas, 
         x->x_tag, (state? "blue" : "black"));
-    canvas_editing = canvas;
 }
 
 void rtext_activate(t_rtext *x, int state)
