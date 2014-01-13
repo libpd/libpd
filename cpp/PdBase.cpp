@@ -13,6 +13,7 @@
  */
 #include "PdBase.hpp"
 #include "z_libpd.h"
+#include "z_queued.h"
 #include "z_print_util.h"
 
 #include <iostream>
@@ -154,6 +155,15 @@ void PdBase::unsubscribeAll(){
     for(iter = sources.begin(); iter != sources.end(); ++iter)
         libpd_unbind(iter->second);
     sources.clear();
+}
+
+//--------------------------------------------------------------------
+void PdBase::receiveMessages() {
+	libpd_queued_receive_pd_messages();
+}
+
+void PdBase::receiveMidi() {
+	libpd_queued_receive_midi_messages();
 }
 
 //--------------------------------------------------------------------
@@ -757,27 +767,26 @@ void PdBase::PdContext::removeBase() {
 bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 
     // attach callbacks
-	libpd_set_printhook(libpd_print_concatenator);
+	libpd_set_queued_printhook(libpd_print_concatenator);
     libpd_set_concatenated_printhook(_print);
 
-    libpd_set_banghook(_bang);
-    libpd_set_floathook(_float);
-    libpd_set_symbolhook(_symbol);
-    libpd_set_listhook(_list);
-    libpd_set_messagehook(_message);
+    libpd_set_queued_banghook(_bang);
+    libpd_set_queued_floathook(_float);
+    libpd_set_queued_symbolhook(_symbol);
+    libpd_set_queued_listhook(_list);
+    libpd_set_queued_messagehook(_message);
 
-    libpd_set_noteonhook(_noteon);
-    libpd_set_controlchangehook(_controlchange);
-    libpd_set_programchangehook(_programchange);
-    libpd_set_pitchbendhook(_pitchbend);
-    libpd_set_aftertouchhook(_aftertouch);
-    libpd_set_polyaftertouchhook(_polyaftertouch);
-
-    libpd_set_midibytehook(_midibyte);
-
+    libpd_set_queued_noteonhook(_noteon);
+    libpd_set_queued_controlchangehook(_controlchange);
+    libpd_set_queued_programchangehook(_programchange);
+    libpd_set_queued_pitchbendhook(_pitchbend);
+    libpd_set_queued_aftertouchhook(_aftertouch);
+    libpd_set_queued_polyaftertouchhook(_polyaftertouch);
+    libpd_set_queued_midibytehook(_midibyte);
+	
     // init libpd, should only be called once!
 	if(!bLibPDInited) {
-		libpd_init();
+		libpd_queued_init();
 		bLibPDInited = true;
 	}
 	// init audio
@@ -798,23 +807,25 @@ void PdBase::PdContext::clear() {
 
         computeAudio(false);
 
+		libpd_set_queued_printhook(NULL);
         libpd_set_concatenated_printhook(NULL);
 
-        libpd_set_banghook(NULL);
-        libpd_set_floathook(NULL);
-        libpd_set_symbolhook(NULL);
-        libpd_set_listhook(NULL);
-        libpd_set_messagehook(NULL);
+        libpd_set_queued_banghook(NULL);
+        libpd_set_queued_floathook(NULL);
+        libpd_set_queued_symbolhook(NULL);
+        libpd_set_queued_listhook(NULL);
+        libpd_set_queued_messagehook(NULL);
 
-        libpd_set_noteonhook(NULL);
-        libpd_set_controlchangehook(NULL);
-        libpd_set_programchangehook(NULL);
-        libpd_set_pitchbendhook(NULL);
-        libpd_set_aftertouchhook(NULL);
-        libpd_set_polyaftertouchhook(NULL);
-
-        libpd_set_midibytehook(NULL);
-    }
+        libpd_set_queued_noteonhook(NULL);
+        libpd_set_queued_controlchangehook(NULL);
+        libpd_set_queued_programchangehook(NULL);
+        libpd_set_queued_pitchbendhook(NULL);
+        libpd_set_queued_aftertouchhook(NULL);
+        libpd_set_queued_polyaftertouchhook(NULL);
+        libpd_set_queued_midibytehook(NULL);
+    
+		libpd_queued_release();
+	}
 
     messages.clear();
 
@@ -846,13 +857,13 @@ void PdBase::PdContext::addMessage(pd::Message& msg) {
 
 //----------------------------------------------------------
 PdBase::PdContext::PdContext() {
+	bInited = false;
     receiver = NULL;
     midiReceiver = NULL;
     clear();
     maxMsgLen = 32;
 
 	bLibPDInited = false;
-    bInited = false;
     numBases = false;
 
     maxQueueLen = 1000;

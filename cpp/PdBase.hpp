@@ -174,6 +174,18 @@ class PdBase {
         virtual bool exists(const std::string& source); ///< is a receiver subscribed?
         virtual void unsubscribeAll(); ///< receivers will be unsubscribed from *all* sources
 
+		/// process the interal message queue
+		///
+		/// internall, libpd is using a ringbuffer to pass messages & midi without
+		/// needing to require locking (mutexes)
+		///
+		/// call these in a loop somewhere in order to receive waiting messages
+		/// or midi data which are then sent to the appropriate
+		/// PdReceivers & PdMidiReceivers
+		///
+		void receiveMessages();
+		void receiveMidi();
+
         /// poll for messages
         ///
         /// by default, PdBase receieves print, event, and midi messages into a FIFO

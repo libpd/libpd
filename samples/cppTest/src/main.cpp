@@ -77,6 +77,12 @@ int main(int argc, char **argv) {
 	patch = pd.openPatch(patch);
 	cout << patch << endl;
 	
+	// process any recieved messages
+	//
+	// in a normal case (not a test like this), you would call this in
+	// your application main loop
+	pd.receiveMessages();
+	
 	cout << "FINISH Patch Test" << endl;
 	
 	
@@ -114,6 +120,9 @@ int main(int argc, char **argv) {
 	// stream interface for list
 	pd << StartMessage() << 1.23 << "sent from a streamed list" << FinishList("fromCPP");
     
+	// process any recieved messages
+	pd.receiveMessages();
+	
 	cout << "FINISH Message Test" << endl;
 	
 	
@@ -139,6 +148,9 @@ int main(int argc, char **argv) {
 		<< StartSysex(0) << 239 << Finish()
 		<< StartSysRealTime(0) << 239 << Finish();
     
+	// process any recieved midi messages, simialr to receiveMessages()
+	pd.receiveMidi();
+	
 	cout << "FINISH MIDI Test" << endl;
 	
 	
@@ -176,16 +188,20 @@ int main(int argc, char **argv) {
 	for(int i = 0; i < array1.size(); ++i)
 		cout << array1[i] << " ";
 	cout << endl;
+	
+	// process any recieved messages
+	pd.receiveMessages();
 
-	cout << "FINISH Array Test" << endl;
+	cout << "FINISH Array Test" << endl << endl;
 
 	
-	cout << endl << "BEGIN PD Test" << endl;
+	cout << "BEGIN PD Test" << endl;
 	pd.sendSymbol("fromCPP", "test");
+	pd.receiveMessages();
 	cout << "FINISH PD Test" << endl << endl;
 	
 	
-	cout << endl << "BEGIN Event Polling Test" << endl;
+	cout << "BEGIN Event Polling Test" << endl;
 	
 	// disable receivers, enable polling
 	pd.setReceiver(NULL);
@@ -214,6 +230,8 @@ int main(int argc, char **argv) {
 	for(int i = 0; i < 10 * srate / 64; i++) {
 		// fill inbuf here
 		pd.processFloat(1, inbuf, outbuf);
+		pd.receiveMessages();
+		pd.receiveMidi();
 		// use outbuf here
 	}
 	
@@ -226,6 +244,10 @@ int main(int argc, char **argv) {
 
 // process the message queue manually using pd::Message objects
 void testEventPolling(PdBase& pd) {
+	
+	// process any queued messages
+	pd.receiveMessages();
+	pd.receiveMidi();
 	
 	cout << "Number of waiting messages: " << pd.numMessages() << endl;
 	
