@@ -37,6 +37,13 @@
 	self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
 	self.window.rootViewController = self.viewController;
 	
+	// simple check to see which mode the app is running in, useful when trying to debug 64 bit issues
+	if (sizeof(void*) == 4) {
+		NSLog(@"32-bit App");
+	} else if (sizeof(void*) == 8) {
+		NSLog(@"64-bit App");
+	}
+	
 	[self setupPd];
 	[self testPd];
 	
