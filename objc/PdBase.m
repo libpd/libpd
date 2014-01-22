@@ -312,7 +312,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    if (libpd_start_message([list count])) return -100;
+    if (libpd_start_message((int) [list count])) return -100;
     encodeList(list);
     return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
@@ -320,7 +320,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    if (libpd_start_message([list count])) return -100;
+    if (libpd_start_message((int) [list count])) return -100;
     encodeList(list);
     return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
                                 [message cStringUsingEncoding:NSASCIIStringEncoding]);

@@ -158,7 +158,7 @@ List& List::operator<<(const std::string& var) {
 
 //----------------------------------------------------------
 const unsigned int List::len() const {
-    return objects.size();
+    return (unsigned int) objects.size();
 }
 
 const std::string& List::types() const {

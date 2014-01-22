@@ -26,7 +26,7 @@ void libpd_print_concatenator(const char *s) {
   static int len_line = 0;
   concatenated_print_line[len_line] = '\0';
 
-  int len = strlen(s);
+  int len = (int) strlen(s);
   while (len_line + len >= PRINT_LINE_SIZE) {
     int d = PRINT_LINE_SIZE - 1 - len_line;
     strncat(concatenated_print_line, s, d);
