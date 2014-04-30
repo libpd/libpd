@@ -38,7 +38,7 @@ static int canvas_scanbinbuf(int natoms, t_atom *vec, int *p_indexout,
     return (i - indexwas);
 }
 
-int glist_readscalar(t_glist *x, int natoms, t_atom *vec,
+int canvas_readscalar(t_glist *x, int natoms, t_atom *vec,
     int *p_nextmsg, int selectit);
 
 static void canvas_readerror(int natoms, t_atom *vec, int message, 
@@ -95,19 +95,23 @@ static void glist_readatoms(t_glist *x, int natoms, t_atom *vec,
                 nitems++;
             }
         }
-        else if (template->t_vec[i].ds_type == DT_LIST)
+        else if (template->t_vec[i].ds_type == DT_TEXT)
         {
-            while (1)
-            {
-                if (!glist_readscalar(w->w_list, natoms, vec,
-                    p_nextmsg, 0))
-                        break;
-            }
+            t_binbuf *z = binbuf_new();
+            int first = *p_nextmsg, last;
+            for (last = first; last < natoms && vec[last].a_type != A_SEMI;
+                last++);
+            binbuf_restore(z, last-first, vec+first);
+            binbuf_add(w[i].w_binbuf, binbuf_getnatom(z), binbuf_getvec(z));
+            binbuf_free(z);
+            last++;
+            if (last > natoms) last = natoms;
+            *p_nextmsg = last;
         }
     }
 }
 
-int glist_readscalar(t_glist *x, int natoms, t_atom *vec,
+int canvas_readscalar(t_glist *x, int natoms, t_atom *vec,
     int *p_nextmsg, int selectit)
 {
     int message, i, j, nline;
@@ -240,7 +244,7 @@ void glist_readfrombinbuf(t_glist *x, t_binbuf *b, char *filename, int selectem)
     }
     while (nextmsg < natoms)
     {
-        glist_readscalar(x, natoms, vec, &nextmsg, selectem);
+        canvas_readscalar(x, natoms, vec, &nextmsg, selectem);
     }
 }
 
@@ -362,6 +366,8 @@ void canvas_doaddtemplate(t_symbol *templatesym,
 
 static void glist_writelist(t_gobj *y, t_binbuf *b);
 
+void binbuf_savetext(t_binbuf *bfrom, t_binbuf *bto);
+
 void canvas_writescalar(t_symbol *templatesym, t_word *w, t_binbuf *b,
     int amarrayelement)
 {
@@ -410,11 +416,8 @@ void canvas_writescalar(t_symbol *templatesym, t_word *w, t_binbuf *b,
                     (t_word *)(((char *)a->a_vec) + elemsize * j), b, 1);
             binbuf_addsemi(b);
         }
-        else if (template->t_vec[i].ds_type == DT_LIST)
-        {
-            glist_writelist(w->w_list->gl_list, b);
-            binbuf_addsemi(b);
-        }
+        else if (template->t_vec[i].ds_type == DT_TEXT)
+            binbuf_savetext(w[i].w_binbuf, b);
     }
 }
 
@@ -458,9 +461,6 @@ static void canvas_addtemplatesforscalar(t_symbol *templatesym,
                     (t_word *)(((char *)a->a_vec) + elemsize * j), 
                         p_ntemplates, p_templatevec);
         }
-        else if (ds->ds_type == DT_LIST)
-            canvas_addtemplatesforlist(w->w_list->gl_list,
-                p_ntemplates, p_templatevec);
     }
 }
 
@@ -511,7 +511,7 @@ t_binbuf *glist_writetobinbuf(t_glist *x, int wholething)
                 case DT_FLOAT: type = &s_float; break;
                 case DT_SYMBOL: type = &s_symbol; break;
                 case DT_ARRAY: type = gensym("array"); break;
-                case DT_LIST: type = &s_list; break;
+                case DT_TEXT: type = &s_list; break;
                 default: type = &s_float; bug("canvas_write");
             }
             if (template->t_vec[j].ds_type == DT_ARRAY)
@@ -678,7 +678,7 @@ static void canvas_savetemplatesto(t_canvas *x, t_binbuf *b, int wholething)
                 case DT_FLOAT: type = &s_float; break;
                 case DT_SYMBOL: type = &s_symbol; break;
                 case DT_ARRAY: type = gensym("array"); break;
-                case DT_LIST: type = &s_list; break;
+                case DT_TEXT: type = gensym("text"); break;
                 default: type = &s_float; bug("canvas_write");
             }
             if (template->t_vec[j].ds_type == DT_ARRAY)
@@ -694,7 +694,8 @@ void canvas_reload(t_symbol *name, t_symbol *dir, t_gobj *except);
 
     /* save a "root" canvas to a file; cf. canvas_saveto() which saves the
     body (and which is called recursively.) */
-static void canvas_savetofile(t_canvas *x, t_symbol *filename, t_symbol *dir)
+static void canvas_savetofile(t_canvas *x, t_symbol *filename, t_symbol *dir,
+    float fdestroy)
 {
     t_binbuf *b = binbuf_new();
     canvas_savetemplatesto(x, b, 1);
@@ -712,26 +713,30 @@ static void canvas_savetofile(t_canvas *x, t_symbol *filename, t_symbol *dir)
         post("saved to: %s/%s", dir->s_name, filename->s_name);
         canvas_dirty(x, 0);
         canvas_reload(filename, dir, &x->gl_gobj);
+        if (fdestroy != 0)
+            vmess(&x->gl_pd, gensym("menuclose"), "f", 1.);
     }
     binbuf_free(b);
 }
 
-static void canvas_menusaveas(t_canvas *x)
+static void canvas_menusaveas(t_canvas *x, float fdestroy)
 {
     t_canvas *x2 = canvas_getrootfor(x);
-    sys_vgui("pdtk_canvas_saveas .x%lx {%s} {%s}\n", x2,
-        x2->gl_name->s_name, canvas_getdir(x2)->s_name);
+    sys_vgui("pdtk_canvas_saveas .x%lx {%s} {%s} %d\n", x2,
+        x2->gl_name->s_name, canvas_getdir(x2)->s_name, (fdestroy != 0));
 }
 
-static void canvas_menusave(t_canvas *x)
+static void canvas_menusave(t_canvas *x, float fdestroy)
 {
     t_canvas *x2 = canvas_getrootfor(x);
     char *name = x2->gl_name->s_name;
     if (*name && strncmp(name, "Untitled", 8)
             && (strlen(name) < 4 || strcmp(name + strlen(name)-4, ".pat")
                 || strcmp(name + strlen(name)-4, ".mxt")))
-            canvas_savetofile(x2, x2->gl_name, canvas_getdir(x2));
-    else canvas_menusaveas(x2);
+    {
+        canvas_savetofile(x2, x2->gl_name, canvas_getdir(x2), fdestroy);
+    }
+    else canvas_menusaveas(x2, fdestroy);
 }
 
 void g_readwrite_setup(void)
@@ -743,12 +748,20 @@ void g_readwrite_setup(void)
     class_addmethod(canvas_class, (t_method)glist_mergefile,
         gensym("mergefile"), A_SYMBOL, A_DEFSYM, A_NULL);
     class_addmethod(canvas_class, (t_method)canvas_savetofile,
-        gensym("savetofile"), A_SYMBOL, A_SYMBOL, 0);
+        gensym("savetofile"), A_SYMBOL, A_SYMBOL, A_DEFFLOAT, 0);
     class_addmethod(canvas_class, (t_method)canvas_saveto,
         gensym("saveto"), A_CANT, 0);
 /* ------------------ from the menu ------------------------- */
     class_addmethod(canvas_class, (t_method)canvas_menusave,
-        gensym("menusave"), 0);
+        gensym("menusave"), A_DEFFLOAT, 0);
     class_addmethod(canvas_class, (t_method)canvas_menusaveas,
+        gensym("menusaveas"), A_DEFFLOAT, 0);
+}
+
+void canvas_readwrite_for_class(t_class *c)
+{
+    class_addmethod(c, (t_method)canvas_menusave,
+        gensym("menusave"), 0);
+    class_addmethod(c, (t_method)canvas_menusaveas,
         gensym("menusaveas"), 0);
 }

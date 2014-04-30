@@ -28,7 +28,6 @@ static void text_getrect(t_gobj *z, t_glist *glist,
     int *xp1, int *yp1, int *xp2, int *yp2);
 
 void canvas_startmotion(t_canvas *x);
-t_widgetbehavior text_widgetbehavior;
 
 /* ----------------- the "text" object.  ------------------ */
 
@@ -84,8 +83,8 @@ void glist_text(t_glist *gl, t_symbol *s, int argc, t_atom *argv)
 extern t_pd *newest;
 void canvas_getargs(int *argcp, t_atom **argvp);
 
-static void canvas_objtext(t_glist *gl, int xpix, int ypix, int selected,
-    t_binbuf *b)
+static void canvas_objtext(t_glist *gl, int xpix, int ypix, int width,
+    int selected, t_binbuf *b)
 {
     t_text *x;
     int argc;
@@ -117,7 +116,7 @@ static void canvas_objtext(t_glist *gl, int xpix, int ypix, int selected,
     x->te_binbuf = b;
     x->te_xpix = xpix;
     x->te_ypix = ypix;
-    x->te_width = 0;
+    x->te_width = width;
     x->te_type = T_OBJECT;
     glist_add(gl, &x->te_g);
     if (selected)
@@ -191,7 +190,7 @@ void canvas_obj(t_glist *gl, t_symbol *s, int argc, t_atom *argv)
         t_binbuf *b = binbuf_new();
         binbuf_restore(b, argc-2, argv+2);
         canvas_objtext(gl, atom_getintarg(0, argc, argv),
-            atom_getintarg(1, argc, argv), 0, b);
+            atom_getintarg(1, argc, argv), 0, 0, b);
     }
         /* JMZ: don't go into interactive mode in a closed canvas */
     else if (!glist_isvisible(gl))
@@ -203,7 +202,7 @@ void canvas_obj(t_glist *gl, t_symbol *s, int argc, t_atom *argv)
         int connectme, xpix, ypix, indx, nobj;
         canvas_howputnew(gl, &connectme, &xpix, &ypix, &indx, &nobj);
         pd_vmess(&gl->gl_pd, gensym("editmode"), "i", 1);
-        canvas_objtext(gl, xpix, ypix, 1, b);
+        canvas_objtext(gl, xpix, ypix, 0, 1, b);
         if (connectme)
             canvas_connect(gl, indx, 0, nobj, 0);
         else canvas_startmotion(glist_getcanvas(gl));
@@ -224,7 +223,7 @@ void canvas_iemguis(t_glist *gl, t_symbol *guiobjname)
     SETSYMBOL(&at, guiobjname);
     binbuf_restore(b, 1, &at);
     glist_getnextxy(gl, &xpix, &ypix);
-    canvas_objtext(gl, xpix, ypix, 1, b);
+    canvas_objtext(gl, xpix, ypix, 0, 1, b);
     canvas_startmotion(glist_getcanvas(gl));
 }
 
@@ -1153,14 +1152,12 @@ void text_save(t_gobj *z, t_binbuf *b)
                 (int)x->te_xpix, (int)x->te_ypix);
         }
         binbuf_addbinbuf(b, x->te_binbuf);
-        binbuf_addv(b, ";");
     }
     else if (x->te_type == T_MESSAGE)
     {
         binbuf_addv(b, "ssii", gensym("#X"), gensym("msg"),
             (int)x->te_xpix, (int)x->te_ypix);
         binbuf_addbinbuf(b, x->te_binbuf);
-        binbuf_addv(b, ";");
     }
     else if (x->te_type == T_ATOM)
     {
@@ -1176,15 +1173,16 @@ void text_save(t_gobj *z, t_binbuf *b)
             (double)((t_gatom *)x)->a_draghi,
             (double)((t_gatom *)x)->a_wherelabel,
             label, symfrom, symto);
-        binbuf_addv(b, ";");
     }           
     else        
     {
         binbuf_addv(b, "ssii", gensym("#X"), gensym("text"),
             (int)x->te_xpix, (int)x->te_ypix);
         binbuf_addbinbuf(b, x->te_binbuf);
-        binbuf_addv(b, ";");
-    }           
+    }
+    if (x->te_width)
+        binbuf_addv(b, ",si", gensym("f"), (int)x->te_width);
+    binbuf_addv(b, ";");
 }
 
     /* this one is for everyone but "gatoms"; it's imposed in m_class.c */
@@ -1316,6 +1314,20 @@ void text_drawborder(t_text *x, t_glist *glist,
                 glist_getcanvas(glist), tag,
                 x1, y1,  x2-4, y1,  x2, y1+4,  x2, y2,  x1, y2,  x1, y1);
     }
+        /* for comments, just draw a bar on RHS if unlocked; when a visible
+        canvas is unlocked we have to call this anew on all comments, and when
+        locked we erase them all via the annoying "commentbar" tag. */
+    else if (x->te_type == T_TEXT && glist->gl_edit)
+    {
+        if (firsttime)
+            sys_vgui(".x%lx.c create line\
+ %d %d %d %d -tags [list %sR commentbar]\n",
+                glist_getcanvas(glist),
+                x2, y1,  x2, y2, tag);
+        else
+            sys_vgui(".x%lx.c coords %sR %d %d %d %d\n",
+                glist_getcanvas(glist), tag, x2, y1,  x2, y2);
+    }
         /* draw inlets/outlets */
     
     if (ob = pd_checkobject(&x->te_pd))
@@ -1337,21 +1349,19 @@ void glist_eraseiofor(t_glist *glist, t_object *ob, char *tag)
 
 void text_eraseborder(t_text *x, t_glist *glist, char *tag)
 {
-    if (x->te_type == T_TEXT) return;
+    if (x->te_type == T_TEXT && !glist->gl_edit) return;
     sys_vgui(".x%lx.c delete %sR\n",
         glist_getcanvas(glist), tag);
     glist_eraseiofor(glist, x, tag);
 }
 
-    /* change text; if T_OBJECT, remake it.  LATER we'll have an undo buffer
-    which should be filled in here before making the change. */
-
+    /* change text; if T_OBJECT, remake it.  */
 void text_setto(t_text *x, t_glist *glist, char *buf, int bufsize)
 {
     if (x->te_type == T_OBJECT)
     {
         t_binbuf *b = binbuf_new();
-        int natom1, natom2;
+        int natom1, natom2, widthwas = x->te_width;
         t_atom *vec1, *vec2;
         binbuf_text(b, buf, bufsize);
         natom1 = binbuf_getnatom(x->te_binbuf);
@@ -1372,7 +1382,7 @@ void text_setto(t_text *x, t_glist *glist, char *buf, int bufsize)
         {
             int xwas = x->te_xpix, ywas = x->te_ypix;
             glist_delete(glist, &x->te_g);
-            canvas_objtext(glist, xwas, ywas, 0, b);
+            canvas_objtext(glist, xwas, ywas, widthwas, 0, b);
             canvas_restoreconnections(glist_getcanvas(glist));
                 /* if it's an abstraction loadbang it here */
             if (newest && pd_class(newest) == canvas_class)
@@ -1387,7 +1397,7 @@ void text_setto(t_text *x, t_glist *glist, char *buf, int bufsize)
     else binbuf_text(x->te_binbuf, buf, bufsize);
 }
 
-    /* this gets called when amessage gets sent to an object whose creation
+    /* this gets called when a message gets sent to an object whose creation
     failed, presumably because of loading a patch with a missing extern or
     abstraction */
 static void text_anything(t_text *x, t_symbol *s, int argc, t_atom *argv)

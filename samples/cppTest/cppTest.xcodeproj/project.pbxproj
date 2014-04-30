@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30562D0318620FAF006C6949 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 30562D0218620FAF006C6949 /* libc++.dylib */; };
 		307912C415032CE600FF881A /* PdObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 307912C215032CE600FF881A /* PdObject.cpp */; };
 		309212E414F4689100194CAF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309212E314F4689100194CAF /* Cocoa.framework */; };
 		3092130914F4693E00194CAF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3092130814F4693E00194CAF /* main.cpp */; };
 		3092131614F46CE400194CAF /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3092131514F4694F00194CAF /* libpd-osx.a */; };
 		3092133514F4785000194CAF /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3092133414F4785000194CAF /* Project.xcconfig */; };
-		3092133714F4785B00194CAF /* cppTest-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3092133614F4785B00194CAF /* cppTest-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		30562D0218620FAF006C6949 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		307912C215032CE600FF881A /* PdObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdObject.cpp; sourceTree = "<group>"; };
 		307912C315032CE600FF881A /* PdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdObject.h; sourceTree = "<group>"; };
 		309212DF14F4689100194CAF /* cppTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cppTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30562D0318620FAF006C6949 /* libc++.dylib in Frameworks */,
 				3092131614F46CE400194CAF /* libpd-osx.a in Frameworks */,
 				309212E414F4689100194CAF /* Cocoa.framework in Frameworks */,
 			);
@@ -80,6 +82,7 @@
 		309212E214F4689100194CAF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				30562D0218620FAF006C6949 /* libc++.dylib */,
 				309212E314F4689100194CAF /* Cocoa.framework */,
 				309212E514F4689100194CAF /* Other Frameworks */,
 			);
@@ -207,7 +210,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3092133514F4785000194CAF /* Project.xcconfig in Resources */,
-				3092133714F4785B00194CAF /* cppTest-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +234,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -250,7 +253,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -260,6 +263,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -271,7 +275,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};

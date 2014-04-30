@@ -13,34 +13,32 @@
 
     /* LATER consider making this variable.  It's now the LCM of all sample
     rates we expect to see: 32000, 44100, 48000, 88200, 96000. */
-#define TIMEUNITPERSEC (32.*441000.)
+#define TIMEUNITPERMSEC (32. * 441.)
+#define TIMEUNITPERSECOND (TIMEUNITPERMSEC * 1000.)
 
-#define THREAD_LOCKING  
+#define THREAD_LOCKING 1
+#if THREAD_LOCKING
 #include "pthread.h"
+#endif
 
 #define SYS_QUIT_QUIT 1
 #define SYS_QUIT_RESTART 2
 static int sys_quit;
 double sys_time;
-static double sys_time_per_msec = TIMEUNITPERSEC / 1000.;
 
 int sys_schedblocksize = DEFDACBLKSIZE;
 int sys_usecsincelastsleep(void);
 int sys_sleepgrain;
 
-void sched_reopenmeplease(void)   /* request from s_audio for deferred reopen */
-{
-    sys_quit = SYS_QUIT_RESTART;
-}
-
 typedef void (*t_clockmethod)(void *client);
 
 struct _clock
 {
-    double c_settime;
+    double c_settime;       /* in TIMEUNITS; <0 if unset */
     void *c_owner;
     t_clockmethod c_fn;
     struct _clock *c_next;
+    t_float c_unit;         /* >0 if in TIMEUNITS; <0 if in samples */
 };
 
 t_clock *clock_setlist;
@@ -56,6 +54,7 @@ t_clock *clock_new(void *owner, t_method fn)
     x->c_owner = owner;
     x->c_fn = (t_clockmethod)fn;
     x->c_next = 0;
+    x->c_unit = TIMEUNITPERMSEC;
     return (x);
 }
 
@@ -100,30 +99,69 @@ void clock_set(t_clock *x, double setticks)
     /* set the clock to call back after a delay in msec */
 void clock_delay(t_clock *x, double delaytime)
 {
-    clock_set(x, sys_time + sys_time_per_msec * delaytime);
+    clock_set(x, (x->c_unit > 0 ?
+        sys_time + x->c_unit * delaytime : 
+            sys_time - (x->c_unit*(TIMEUNITPERSECOND/sys_dacsr)) * delaytime));
+}
+
+    /* set the time unit in msec or (if 'samps' is set) in samples.  This
+    is flagged by setting c_unit negative.  If the clock is currently set,
+    recalculate the delay based on the new unit and reschedule */
+void clock_setunit(t_clock *x, double timeunit, int sampflag)
+{
+    double timeleft;
+    if (timeunit <= 0)
+        timeunit = 1;
+    /* if no change, return to avoid truncation errors recalculating delay */
+    if ((sampflag && (timeunit == -x->c_unit)) ||
+        (!sampflag && (timeunit == x->c_unit * TIMEUNITPERMSEC)))
+            return;
+    
+        /* figure out time left in the units we were in */
+    timeleft = (x->c_settime < 0 ? -1 :
+        (x->c_settime - sys_time)/((x->c_unit > 0)? x->c_unit :
+            (x->c_unit*(TIMEUNITPERSECOND/sys_dacsr))));
+    if (sampflag)
+        x->c_unit = -timeunit;  /* negate to flag sample-based */
+    else x->c_unit = timeunit * TIMEUNITPERMSEC;
+    if (timeleft >= 0)  /* reschedule if already set */
+        clock_delay(x, timeleft);
 }
 
     /* get current logical time.  We don't specify what units this is in;
-    use clock_gettimesince() to measure intervals from time of this call. 
-    This was previously, incorrectly named "clock_getsystime"; the old
-    name is aliased to the new one in m_pd.h. */
+    use clock_gettimesince() to measure intervals from time of this call. */
 double clock_getlogicaltime( void)
 {
     return (sys_time);
 }
-    /* OBSOLETE NAME */
+
+    /* OBSOLETE (misleading) function name kept for compatibility */
 double clock_getsystime( void) { return (sys_time); }
 
     /* elapsed time in milliseconds since the given system time */
 double clock_gettimesince(double prevsystime)
 {
-    return ((sys_time - prevsystime)/sys_time_per_msec);
+    return ((sys_time - prevsystime)/TIMEUNITPERMSEC);
+}
+
+    /* elapsed time in units, ala clock_setunit(), since given system time */
+double clock_gettimesincewithunits(double prevsystime,
+    double units, int sampflag)
+{
+            /* If in samples, divide TIMEUNITPERSECOND/sys_dacsr first (at
+            cost of an extra division) since it's probably an integer and if
+            units == 1 and (sys_time - prevsystime) is an integer number of
+            DSP ticks, the result will be exact. */
+    if (sampflag)
+        return ((sys_time - prevsystime)/
+            ((TIMEUNITPERSECOND/sys_dacsr)*units));
+    else return ((sys_time - prevsystime)/(TIMEUNITPERMSEC*units));
 }
 
     /* what value the system clock will have after a delay */
 double clock_getsystimeafter(double delaytime)
 {
-    return (sys_time + sys_time_per_msec * delaytime);
+    return (sys_time + TIMEUNITPERMSEC * delaytime);
 }
 
 void clock_free(t_clock *x)
@@ -335,9 +373,14 @@ void glob_foo(void *dummy, t_symbol *s, int argc, t_atom *argv)
 
 void dsp_tick(void);
 
-static int sched_useaudio = SCHED_AUDIO_POLL;
+static int sched_useaudio = SCHED_AUDIO_NONE;
 static double sched_referencerealtime, sched_referencelogicaltime;
 double sys_time_per_dsp_tick;
+
+void sched_reopenmeplease(void)   /* request from s_audio for deferred reopen */
+{
+    sys_quit = SYS_QUIT_RESTART;
+}
 
 void sched_set_using_audio(int flag)
 {
@@ -355,8 +398,9 @@ void sched_set_using_audio(int flag)
                 post("sorry, can't turn off callbacks yet; restart Pd");
                     /* not right yet! */
         
-    sys_time_per_dsp_tick = (TIMEUNITPERSEC) *
+    sys_time_per_dsp_tick = (TIMEUNITPERSECOND) *
         ((double)sys_schedblocksize) / sys_dacsr;
+    sys_vgui("pdtk_pd_audio %s\n", flag ? "on" : "off");
 }
 
     /* take the scheduler forward one DSP tick, also handling clock timeouts */
@@ -405,10 +449,10 @@ int (*sys_idlehook)(void);
 static void m_pollingscheduler( void)
 {
     int idlecount = 0;
-    sys_time_per_dsp_tick = (TIMEUNITPERSEC) *
+    sys_time_per_dsp_tick = (TIMEUNITPERSECOND) *
         ((double)sys_schedblocksize) / sys_dacsr;
 
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
         sys_lock();
 #endif
 
@@ -429,7 +473,7 @@ static void m_pollingscheduler( void)
     waitfortick:
         if (sched_useaudio != SCHED_AUDIO_NONE)
         {
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
             /* T.Grill - send_dacs may sleep -> 
                 unlock thread lock make that time available 
                 - could messaging do any harm while sys_send_dacs is running?
@@ -437,7 +481,7 @@ static void m_pollingscheduler( void)
             sys_unlock();
 #endif
             timeforward = sys_send_dacs();
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
             /* T.Grill - done */
             sys_lock();
 #endif
@@ -497,7 +541,7 @@ static void m_pollingscheduler( void)
         {
             sched_pollformeters();
             sys_reportidle();
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
             sys_unlock();   /* unlock while we idle */
 #endif
                 /* call externally installed idle function if any. */
@@ -507,7 +551,7 @@ static void m_pollingscheduler( void)
                 if (timeforward != SENDDACS_SLEPT)
                     sys_microsleep(sys_sleepgrain);
             }
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
             sys_lock();
 #endif
             sys_addhist(5);
@@ -515,7 +559,7 @@ static void m_pollingscheduler( void)
         }
     }
 
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
     sys_unlock();
 #endif
 }
@@ -569,8 +613,11 @@ int m_mainloop(void)
         if (sys_quit == SYS_QUIT_RESTART)
         {
             sys_quit = 0;
-            sys_close_audio();
-            sys_reopen_audio();
+            if (audio_isopen())
+            {
+                sys_close_audio();
+                sys_reopen_audio();
+            }
         }
     }
     return (0);
@@ -578,7 +625,7 @@ int m_mainloop(void)
 
 int m_batchmain(void)
 {
-    sys_time_per_dsp_tick = (TIMEUNITPERSEC) *
+    sys_time_per_dsp_tick = (TIMEUNITPERSECOND) *
         ((double)sys_schedblocksize) / sys_dacsr;
     while (sys_quit != SYS_QUIT_QUIT)
         sched_tick(sys_time + sys_time_per_dsp_tick);
@@ -587,7 +634,7 @@ int m_batchmain(void)
 
 /* ------------ thread locking ------------------- */
 
-#ifdef THREAD_LOCKING
+#if THREAD_LOCKING
 static pthread_mutex_t sys_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void sys_lock(void)
@@ -609,7 +656,7 @@ int sys_trylock(void)
 
 void sys_lock(void) {}
 void sys_unlock(void) {}
-int sys_trylock(void) {}
+int sys_trylock(void) {return (1);}
 
 #endif
 

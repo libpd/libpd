@@ -36,7 +36,9 @@ int sys_defeatrt;
 t_symbol *sys_flags = &s_;
 void sys_doflags( void);
 
-#if defined(__linux__) || defined(__CYGWIN__) || defined(__FreeBSD_kernel__) || defined(__GNU__) || defined(ANDROID)
+    /* Hmm... maybe better would be to #if on not-apple-or-windows  */
+#if defined(__linux__) || defined(__CYGWIN__) || defined(__FreeBSD_kernel__) \
+|| defined(__GNU__) || defined(ANDROID)
 
 static char *sys_prefbuf;
 static int sys_prefbufsize;
@@ -128,7 +130,7 @@ static FILE *sys_prefsavefp;
 
 static void sys_initsavepreferences( void)
 {
-    char filenamebuf[MAXPDSTRING], errbuf[MAXPDSTRING],
+    char filenamebuf[MAXPDSTRING],
         *homedir = getenv("HOME");
     FILE *fp;
 
@@ -138,8 +140,7 @@ static void sys_initsavepreferences( void)
     filenamebuf[MAXPDSTRING-1] = 0;
     if ((sys_prefsavefp = fopen(filenamebuf, "w")) == NULL)
     {
-        snprintf(errbuf, MAXPDSTRING, "%s: %s",filenamebuf, strerror(errno));
-        pd_error(0, errbuf);
+        pd_error(0, "%s: %s", filenamebuf, strerror(errno));
     }
 }
 

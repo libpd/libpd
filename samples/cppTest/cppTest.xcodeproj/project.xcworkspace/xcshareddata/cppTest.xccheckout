@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B09A645B-4DDC-4730-88FD-286F3D43094E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>cppTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>405DA2C6-B568-4403-BCB2-D15A745F3042</key>
+		<string>ssh://github.com/libpd/libpd.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>samples/cppTest/cppTest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>405DA2C6-B568-4403-BCB2-D15A745F3042</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/libpd/libpd.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>405DA2C6-B568-4403-BCB2-D15A745F3042</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>405DA2C6-B568-4403-BCB2-D15A745F3042</string>
+			<key>IDESourceControlWCCName</key>
+			<string>libpd</string>
+		</dict>
+	</array>
+</dict>
+</plist>

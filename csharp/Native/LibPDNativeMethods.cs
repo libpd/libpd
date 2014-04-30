@@ -85,7 +85,7 @@ namespace LibPDBinding
 		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
 		
 		/// Init PD
-		[DllImport("libpdcsharp.dll", EntryPoint="libpd_safe_init")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_init")]
 		private static extern void libpd_init() ;
 
 				

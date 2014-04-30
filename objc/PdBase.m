@@ -49,13 +49,13 @@ static NSArray *decodeList(int argc, t_atom *argv) {
   NSMutableArray *list = [[NSMutableArray alloc] initWithCapacity:argc];
   for (int i = 0; i < argc; i++) {
     t_atom *a = &argv[i];
-    if (libpd_is_float(*a)) {
-      float x = libpd_get_float(*a);
+    if (libpd_is_float(a)) {
+      float x = libpd_get_float(a);
       NSNumber *num = [[NSNumber alloc] initWithFloat:x];
       [list addObject:num];
       [num release];
-    } else if (libpd_is_symbol(*a)) {
-      const char *s = libpd_get_symbol(*a);
+    } else if (libpd_is_symbol(a)) {
+      const char *s = libpd_get_symbol(a);
       NSString *str = [[NSString alloc] initWithCString:s encoding:NSASCIIStringEncoding];
       [list addObject:str];
       [str release];
@@ -195,22 +195,22 @@ static NSTimer *midiPollTimer;
 @implementation PdBase
 
 + (void)initialize {
-  libpd_queued_printhook = (t_libpd_printhook) libpd_print_concatenator;
-  libpd_concatenated_printhook = (t_libpd_printhook) printHook;
+	libpd_set_queued_printhook(libpd_print_concatenator);
+  libpd_set_concatenated_printhook(printHook);
 
-  libpd_queued_banghook = (t_libpd_banghook) bangHook;
-  libpd_queued_floathook = (t_libpd_floathook) floatHook;
-  libpd_queued_symbolhook = (t_libpd_symbolhook) symbolHook;
-  libpd_queued_listhook = (t_libpd_listhook) listHook;
-  libpd_queued_messagehook = (t_libpd_messagehook) messageHook;
+  libpd_set_queued_banghook(bangHook);
+  libpd_set_queued_floathook(floatHook);
+  libpd_set_queued_symbolhook(symbolHook);
+  libpd_set_queued_listhook(listHook);
+  libpd_set_queued_messagehook(messageHook);
 
-  libpd_queued_noteonhook = (t_libpd_noteonhook) noteonHook;
-  libpd_queued_controlchangehook = (t_libpd_controlchangehook) controlChangeHook;
-  libpd_queued_programchangehook = (t_libpd_programchangehook) programChangeHook;
-  libpd_queued_pitchbendhook = (t_libpd_pitchbendhook) pitchBendHook;
-  libpd_queued_aftertouchhook = (t_libpd_aftertouchhook) aftertouchHook;
-  libpd_queued_polyaftertouchhook = (t_libpd_polyaftertouchhook) polyAftertouchHook;
-  libpd_queued_midibytehook = (t_libpd_midibytehook) midiByteHook;
+  libpd_set_queued_noteonhook(noteonHook);
+  libpd_set_queued_controlchangehook(controlChangeHook);
+  libpd_set_queued_programchangehook(programChangeHook);
+  libpd_set_queued_pitchbendhook(pitchBendHook);
+  libpd_set_queued_aftertouchhook(aftertouchHook);
+  libpd_set_queued_polyaftertouchhook(polyAftertouchHook);
+  libpd_set_queued_midibytehook(midiByteHook);
 
   libpd_queued_init();
 }
@@ -312,7 +312,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    if (libpd_start_message([list count])) return -100;
+    if (libpd_start_message((int) [list count])) return -100;
     encodeList(list);
     return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
   }
@@ -320,7 +320,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
   @synchronized(self) {
-    if (libpd_start_message([list count])) return -100;
+    if (libpd_start_message((int) [list count])) return -100;
     encodeList(list);
     return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
                                 [message cStringUsingEncoding:NSASCIIStringEncoding]);

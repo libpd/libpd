@@ -24,7 +24,7 @@ static char* strnescape(char *dest, const char *src, size_t len)
     for(; ptout < len; ptin++, ptout++)
     {
         int c = src[ptin];
-        if (c == '\\' || c == '{' || c == '}' || c == ';')
+        if (c == '\\' || c == '{' || c == '}')
             dest[ptout++] = '\\';
         dest[ptout] = src[ptin];
         if (c==0) break;
@@ -51,7 +51,11 @@ static void dopost(const char *s)
     if (sys_printhook)
         (*sys_printhook)(s);
     else if (sys_printtostderr)
+#ifdef _WIN32
+        fwprintf(stderr, L"%S", s);
+#else
         fprintf(stderr, "%s", s);
+#endif
     else
     {
         char upbuf[MAXPDSTRING];
@@ -102,26 +106,6 @@ static void dologpost(const void *object, const int level, const char *s)
         sys_vgui("::pdwindow::logpost {%s} %d {%s}\n", 
                  strnpointerid(obuf, object, MAXPDSTRING), 
                  level, strnescape(upbuf, s, MAXPDSTRING));
-    }
-}
-
-static void dobug(const char *s)
-{
-    char upbuf[MAXPDSTRING];
-    upbuf[MAXPDSTRING-1]=0;
-
-    // what about sys_printhook_bug ?
-    if (sys_printhook) 
-    {
-        snprintf(upbuf, MAXPDSTRING-1, "consistency check failed: %s", s);
-        (*sys_printhook)(upbuf);
-    }
-    else if (sys_printtostderr)
-        fprintf(stderr, "consistency check failed: %s", s);
-    else
-    {
-        char upbuf[MAXPDSTRING];
-        sys_vgui("::pdwindow::bug {%s}\n", strnescape(upbuf, s, MAXPDSTRING));
     }
 }
 
@@ -212,9 +196,9 @@ void error(const char *fmt, ...)
     va_start(ap, fmt);
     vsnprintf(buf, MAXPDSTRING-1, fmt, ap);
     va_end(ap);
+    strcat(buf, "\n");
 
     doerror(NULL, buf);
-    endpost();
 }
 
 void verbose(int level, const char *fmt, ...)
@@ -223,15 +207,16 @@ void verbose(int level, const char *fmt, ...)
     va_list ap;
     t_int arg[8];
     int i;
+    int loglevel=level+3;
 
     if(level>sys_verbose)return;
 
     va_start(ap, fmt);
     vsnprintf(buf, MAXPDSTRING-1, fmt, ap);
     va_end(ap);
-    dologpost(NULL, level+4, buf);
+    strcat(buf, "\n");
 
-    endpost();
+    dologpost(NULL, loglevel, buf);
 }
 
     /* here's the good way to log errors -- keep a pointer to the
@@ -253,9 +238,9 @@ void pd_error(void *object, const char *fmt, ...)
     va_start(ap, fmt);
     vsnprintf(buf, MAXPDSTRING-1, fmt, ap);
     va_end(ap);
+    strcat(buf, "\n");
 
     doerror(object, buf);
-    endpost();  
 
     error_object = object;
     if (!saidit)
@@ -301,8 +286,7 @@ void bug(const char *fmt, ...)
     vsnprintf(buf, MAXPDSTRING-1, fmt, ap);
     va_end(ap);
 
-    dobug(buf);
-    endpost();
+    error("consistency check failed: %s", buf);
 }
 
     /* this isn't worked out yet. */

@@ -64,12 +64,12 @@ PD_FILES = \
 	pure-data/src/s_file.c pure-data/src/s_inter.c \
 	pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
 	pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
-	pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
+	pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
 	pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
-	pure-data/src/x_qlist.c pure-data/src/x_time.c \
+	pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_libpd.c 
+	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c 
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
@@ -86,7 +86,6 @@ JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
 	jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/util/z_hook_util.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
@@ -122,11 +121,11 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o} ${HOOK_SET:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o} ${HOOK_SET:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)

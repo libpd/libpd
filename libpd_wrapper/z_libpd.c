@@ -15,26 +15,12 @@
 #include <limits.h>
 #include "z_libpd.h"
 #include "x_libpdreceive.h"
+#include "z_hooks.h"
 #include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
 
 void pd_init(void);
-
-t_libpd_printhook libpd_printhook = NULL;
-t_libpd_banghook libpd_banghook = NULL;
-t_libpd_floathook libpd_floathook = NULL;
-t_libpd_symbolhook libpd_symbolhook = NULL;
-t_libpd_listhook libpd_listhook = NULL;
-t_libpd_messagehook libpd_messagehook = NULL;
-
-t_libpd_noteonhook libpd_noteonhook = NULL;
-t_libpd_controlchangehook libpd_controlchangehook = NULL;
-t_libpd_programchangehook libpd_programchangehook = NULL;
-t_libpd_pitchbendhook libpd_pitchbendhook = NULL;
-t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
-t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
-t_libpd_midibytehook libpd_midibytehook = NULL;
 
 static t_atom *argv = NULL, *curr;
 static int argm = 0, argc;
@@ -45,7 +31,10 @@ static void *get_object(const char *s) {
 }
 
 /* this is called instead of sys_main() to start things */
-void libpd_init(void) {
+int libpd_init(void) {
+  static int initialized = 0;
+  if (initialized) return -1; // only allow init once (for now)
+  initialized = 1;
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
@@ -68,6 +57,8 @@ void libpd_init(void) {
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
+	
+	return 0;
 }
 
 void libpd_clear_search_path(void) {
@@ -77,6 +68,21 @@ void libpd_clear_search_path(void) {
 
 void libpd_add_to_search_path(const char *s) {
   sys_searchpath = namelist_append(sys_searchpath, s, 0);
+}
+
+void *libpd_openfile(const char *basename, const char *dirname) {
+  return (void *)glob_evalfile(NULL, gensym(basename), gensym(dirname));
+}
+
+void libpd_closefile(void *x) {
+  pd_free((t_pd *)x);
+}
+
+int libpd_getdollarzero(void *x) {
+  pd_pushsym((t_pd *)x);
+  int dzero = canvas_getdollarzero();
+  pd_popsym((t_pd *)x);
+  return dzero;
 }
 
 int libpd_init_audio(int inChans, int outChans, int sampleRate) {
@@ -232,6 +238,50 @@ void libpd_unbind(void *p) {
   pd_free((t_pd *)p);
 }
 
+int libpd_is_float(t_atom *a) {
+	return (a)->a_type == A_FLOAT;
+}
+
+int libpd_is_symbol(t_atom *a) {
+	return (a)->a_type == A_SYMBOL;
+}
+
+float libpd_get_float(t_atom *a) {
+	return (a)->a_w.w_float;
+}
+
+char *libpd_get_symbol(t_atom *a) {
+	return (a)->a_w.w_symbol->s_name;
+}
+
+t_atom *libpd_next_atom(t_atom *a) {
+	return a + 1;
+}
+
+void libpd_set_printhook(const t_libpd_printhook hook) {
+  libpd_printhook = hook;
+}
+
+void libpd_set_banghook(const t_libpd_banghook hook) {
+  libpd_banghook = hook;
+}
+
+void libpd_set_floathook(const t_libpd_floathook hook) {
+  libpd_floathook = hook;
+}
+
+void libpd_set_symbolhook(const t_libpd_symbolhook hook) {
+  libpd_symbolhook = hook;
+}
+
+void libpd_set_listhook(const t_libpd_listhook hook) {
+  libpd_listhook = hook;
+}
+
+void libpd_set_messagehook(const t_libpd_messagehook hook) {
+  libpd_messagehook = hook;
+}
+
 int libpd_symbol(const char *recv, const char *sym) {
   void *obj = get_object(recv);
   if (obj == NULL) return -1;
@@ -336,17 +386,30 @@ int libpd_sysrealtime(int port, int byte) {
   return 0;
 }
 
-void *libpd_openfile(const char *basename, const char *dirname) {
-  return (void *)glob_evalfile(NULL, gensym(basename), gensym(dirname));
+void libpd_set_noteonhook(const t_libpd_noteonhook hook) {
+  libpd_noteonhook = hook;
 }
 
-void libpd_closefile(void *x) {
-  pd_free((t_pd *)x);
+void libpd_set_controlchangehook(const t_libpd_controlchangehook hook) {
+  libpd_controlchangehook = hook;
 }
 
-int libpd_getdollarzero(void *x) {
-  pd_pushsym((t_pd *)x);
-  int dzero = canvas_getdollarzero();
-  pd_popsym((t_pd *)x);
-  return dzero;
+void libpd_set_programchangehook(const t_libpd_programchangehook hook) {
+  libpd_programchangehook = hook;
+}
+
+void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook) {
+  libpd_pitchbendhook = hook;
+}
+
+void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook) {
+  libpd_aftertouchhook = hook;
+}
+
+void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
+  libpd_polyaftertouchhook = hook;
+}
+
+void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
+  libpd_midibytehook = hook;
 }

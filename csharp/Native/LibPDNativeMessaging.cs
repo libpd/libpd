@@ -183,16 +183,16 @@ namespace LibPDBinding
 			Symbol(recv, e);
 		}
 		
-		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_is_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_is_float")]
 		private static extern int atom_is_float(IntPtr a) ;
 
-		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_is_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_is_symbol")]
 		private static extern int atom_is_symbol(IntPtr a) ;
 
-		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_get_float")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_get_float")]
 		private static extern float atom_get_float(IntPtr a) ;
 
-		[DllImport("libpdcsharp.dll", EntryPoint="libpd_atom_get_symbol")]
+		[DllImport("libpdcsharp.dll", EntryPoint="libpd_get_symbol")]
 		private static extern IntPtr atom_get_symbol(IntPtr a);
 		
 		[DllImport("libpdcsharp.dll", EntryPoint="libpd_next_atom")]
