@@ -86,7 +86,6 @@ JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
 	jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/util/z_hook_util.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
@@ -122,11 +121,11 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o} ${HOOK_SET:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o} ${HOOK_SET:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
