@@ -71,6 +71,12 @@ PD_FILES = \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
 	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c 
 
+# object files which are somehow generated but not from sources listed above,
+# there is probably a better fix but this works for now
+PD_EXTRA_OBJS = \
+	pure-data/src/d_fft_fftsg.o pure-data/src/d_fft_fftw.o \
+	pure-data/src/d_fftsg_h.o pure-data/src/x_qlist.o
+
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
 	java/org/puredata/core/NativeLoader.java \
@@ -81,7 +87,6 @@ PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/utils/IoUtils.java \
 	java/org/puredata/core/utils/PdDispatcher.java
 
-	
 JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
 	jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
@@ -125,7 +130,7 @@ $(PDCSHARP): ${PD_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
