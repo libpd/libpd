@@ -823,6 +823,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-DPD",
+					"-DUSEAPI_DUMMY",
+					"-DHAVE_LIBDL",
+					"-DHAVE_UNISTD_H",
+					"-DHAVE_ALLOCA_H",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
 			};
@@ -839,6 +847,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-DPD",
+					"-DUSEAPI_DUMMY",
+					"-DHAVE_LIBDL",
+					"-DHAVE_UNISTD_H",
+					"-DHAVE_ALLOCA_H",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
 			};
