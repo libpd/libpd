@@ -62,15 +62,18 @@
 	return self;
 }
 
-// using Audio Session C API because the AVAudioSession only provides the
-// 'preferred' buffer duration, not what is actually set
 - (int)ticksPerBuffer {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+    NSTimeInterval asBufferDuration = [[AVAudioSession sharedInstance] IOBufferDuration];
+	AU_LOGV(@"IOBufferDuration: %f seconds", asBufferDuration);
+#else
 	Float32 asBufferDuration = 0;
 	UInt32 size = sizeof(asBufferDuration);
 	
 	OSStatus status = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareIOBufferDuration, &size, &asBufferDuration);
 	AU_LOG_IF_ERROR(status, @"error getting audio session buffer duration (status = %ld)", status);
 	AU_LOGV(@"kAudioSessionProperty_CurrentHardwareIOBufferDuration: %f seconds", asBufferDuration);
+#endif
 	
 	ticksPerBuffer_ = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
 	return ticksPerBuffer_;
