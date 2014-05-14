@@ -36,6 +36,7 @@ else
       -I"$(JAVA_HOME)/include/linux" -O3
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
+    CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
@@ -77,6 +78,12 @@ PD_EXTRA_OBJS = \
 	pure-data/src/d_fft_fftsg.o pure-data/src/d_fft_fftw.o \
 	pure-data/src/d_fftsg_h.o pure-data/src/x_qlist.o
 
+LIBPD_UTIL_FILES = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c libpd_wrapper/util/z_print_util.c
+
+CPP_FILES = \
+   cpp/PdBase.cpp \
+   cpp/PdTypes.cpp
+
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
 	java/org/puredata/core/NativeLoader.java \
@@ -93,6 +100,7 @@ JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
+PDCPP = libs/libpdcpp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
 PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
@@ -102,7 +110,9 @@ PDJAVA_JAR = libs/libpd.jar
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
 
-.PHONY: libpd csharplib javalib clean clobber
+CPPFLAGS = $(CFLAGS)
+
+.PHONY: libpd csharplib cpplib javalib clean clobber
 
 libpd: $(LIBPD)
 
@@ -129,8 +139,13 @@ csharplib: $(PDCSHARP)
 $(PDCSHARP): ${PD_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
+cpplib: $(PDCPP)
+
+$(PDCPP): ${LIBPD_UTIL_FILES:.c=.o} ${PD_FILES:.c=.o} ${CPP_FILES:.cpp=.o}
+	gcc -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
+
 clean:
-	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o} ${CPP_FILES:.cpp=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
