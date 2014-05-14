@@ -24,6 +24,11 @@
 	#define HAVE_UNISTD_H
 #endif
 
+// define this to use C++11 std::mutex for locking
+#ifdef USE_STD_MUTEX
+	#include <mutex>
+#endif
+
 typedef struct _atom t_atom;
 
 namespace pd {
@@ -444,6 +449,12 @@ class PdBase {
 			SYSEX,
 			SYSRT
 		};
+		
+		#ifdef USE_STD_MUTEX
+			std::mutex mutex; //< locks libpd C function calls,
+			                  //< enable by defining USE_STD_MUTEX
+		#endif
+		bool processRet; //< process function return
 
 		/// a singleton libpd instance wrapper
 		class PdContext {

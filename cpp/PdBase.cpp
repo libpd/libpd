@@ -17,6 +17,15 @@
 
 #include <iostream>
 
+#ifdef USE_STD_MUTEX
+	#define _LOCK() mutex.lock()
+	#define _UNLOCK() mutex.unlock()
+#else
+	// no ops
+	#define _LOCK()
+	#define _UNLOCK()
+#endif
+
 // needed for libpd audio passing
 #ifndef USEAPI_DUMMY
 	#define USEAPI_DUMMY
@@ -40,31 +49,42 @@ PdBase::~PdBase() {
 //--------------------------------------------------------------------
 bool PdBase::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
 	clear();
-	return PdContext::instance().init(numInChannels, numOutChannels, sampleRate);
+	_LOCK();
+	bool ret = PdContext::instance().init(numInChannels, numOutChannels, sampleRate);
+	_UNLOCK();
+	return ret;
 }
 
 void PdBase::clear() {
+	_LOCK();
 	PdContext::instance().clear();
+	_UNLOCK();
 	unsubscribeAll();
 }
 
 //--------------------------------------------------------------------
 void PdBase::addToSearchPath(const std::string& path) {
+	_LOCK();
 	libpd_add_to_search_path(path.c_str());
+	_UNLOCK();
 }
 
 void PdBase::clearSearchPath() {
+	_LOCK();
 	libpd_clear_search_path();
+	_UNLOCK();
 }
 
 //--------------------------------------------------------------------
 Patch PdBase::openPatch(const std::string& patch, const std::string& path) {
+	_LOCK();
 	// [; pd open file folder(
 	void* handle = libpd_openfile(patch.c_str(), path.c_str());
 	if(handle == NULL) {
 		return Patch(); // return empty Patch
 	}
 	int dollarZero = libpd_getdollarzero(handle);
+	_UNLOCK();
 	return Patch(handle, dollarZero, patch, path);
 }
 
@@ -75,40 +95,58 @@ Patch PdBase::openPatch(pd::Patch& patch) {
 void PdBase::closePatch(const std::string& patch) {
 	// [; pd-name menuclose 1(
 	string patchname = (string) "pd-"+patch;
+	_LOCK();
 	libpd_start_message(PdContext::instance().maxMsgLen);
 	libpd_add_float(1.0f);
 	libpd_finish_message(patchname.c_str(), "menuclose");
+	_UNLOCK();
 }
 
 void PdBase::closePatch(Patch& patch) {
 	if(!patch.isValid()) {
 		return;
 	}
+	_LOCK();
 	libpd_closefile(patch.handle());
+	_UNLOCK();
 	patch.clear();
 }
 
 //--------------------------------------------------------------------
 bool PdBase::processRaw(const float* inBuffer, float* outBuffer) {
-	return libpd_process_raw(inBuffer, outBuffer) == 0;
+	_LOCK();
+	processRet = libpd_process_raw(inBuffer, outBuffer) == 0;
+	_UNLOCK();
+	return processRet;
 }
 
 bool PdBase::processShort(int ticks, const short* inBuffer, short* outBuffer) {
-	return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
+	_LOCK();
+	processRet = libpd_process_short(ticks, inBuffer, outBuffer) == 0;
+	_UNLOCK();
+	return processRet;
 }
 
 bool PdBase::processFloat(int ticks, const float* inBuffer, float* outBuffer) {
-	return libpd_process_float(ticks, inBuffer, outBuffer) == 0;
+	_LOCK();
+	processRet = libpd_process_float(ticks, inBuffer, outBuffer) == 0;
+	_UNLOCK();
+	return processRet;
 }
 
 bool PdBase::processDouble(int ticks, const double* inBuffer, double* outBuffer) {
-	return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
+	_LOCK();
+	processRet = libpd_process_double(ticks, inBuffer, outBuffer) == 0;
+	_UNLOCK();
+	return processRet;
 }
 
 
 //--------------------------------------------------------------------
 void PdBase::computeAudio(bool state) {
+	_LOCK();
 	PdContext::instance().computeAudio(state);
+	_UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -119,7 +157,9 @@ void PdBase::subscribe(const std::string& source) {
 		return;
 	}
 
+	_LOCK();
 	void* pointer = libpd_bind(source.c_str());
+	_UNLOCK();
 	if(pointer != NULL) {
 		map<string,void*>& sources = PdContext::instance().sources;
 		sources.insert(pair<string,void*>(source, pointer));
@@ -137,22 +177,28 @@ void PdBase::unsubscribe(const std::string& source) {
 		return;
 	}
 
+	_LOCK();
 	libpd_unbind(iter->second);
+	_UNLOCK();
 	sources.erase(iter);
 }
 
 bool PdBase::exists(const std::string& source) {
 	map<string,void*>& sources = PdContext::instance().sources;
-	if(sources.find(source) != sources.end())
+	if(sources.find(source) != sources.end()) {
 		return true;
+	}
 	return false;
 }
 
 void PdBase::unsubscribeAll(){
 	map<string,void*>& sources = PdContext::instance().sources;
 	map<string,void*>::iterator iter;
-	for(iter = sources.begin(); iter != sources.end(); ++iter)
+	_LOCK();
+	for(iter = sources.begin(); iter != sources.end(); ++iter) {
 		libpd_unbind(iter->second);
+	}
+	_UNLOCK();
 	sources.clear();
 }
 
@@ -184,24 +230,34 @@ void PdBase::clearMessages() {
 
 //--------------------------------------------------------------------
 void PdBase::setReceiver(PdReceiver* receiver) {
+	_LOCK();
 	PdContext::instance().receiver = receiver;
+	_UNLOCK();
 }
 
 void PdBase::setMidiReceiver(PdMidiReceiver* midiReceiver) {
+	_LOCK();
 	PdContext::instance().midiReceiver = midiReceiver;
+	_UNLOCK();
 }
 
 //----------------------------------------------------------
 void PdBase::sendBang(const std::string& dest) {
+	_LOCK();
 	libpd_bang(dest.c_str());
+	_UNLOCK();
 }
 
 void PdBase::sendFloat(const std::string& dest, float value) {
+	_LOCK();
 	libpd_float(dest.c_str(), value);
+	_UNLOCK();
 }
 
 void PdBase::sendSymbol(const std::string& dest, const std::string& symbol) {
+	_LOCK();
 	libpd_symbol(dest.c_str(), symbol.c_str());
+	_UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -214,10 +270,12 @@ void PdBase::startMessage() {
 		return;
 	}
 
+	_LOCK();
 	if(libpd_start_message(context.maxMsgLen) == 0) {
 		context.bMsgInProgress = true;
 		context.msgType = MSG;
 	}
+	_UNLOCK();
 }
 
 void PdBase::addFloat(const float num) {
@@ -239,7 +297,10 @@ void PdBase::addFloat(const float num) {
 		return;
 	}
 
+	_LOCK();
 	libpd_add_float(num);
+	_UNLOCK();
+	
 	context.curMsgLen++;
 }
 
@@ -262,7 +323,10 @@ void PdBase::addSymbol(const std::string& symbol) {
 		return;
 	}
 
+	_LOCK();
 	libpd_add_symbol(symbol.c_str());
+	_UNLOCK();
+	
 	context.curMsgLen++;
 }
 
@@ -280,8 +344,10 @@ void PdBase::finishList(const std::string& dest) {
 		return;
 	}
 
+	_LOCK();
 	libpd_finish_list(dest.c_str());
-
+	_UNLOCK();
+	
 	context.bMsgInProgress = false;
 	context.curMsgLen = 0;
 }
@@ -300,8 +366,10 @@ void PdBase::finishMessage(const std::string& dest, const std::string& msg) {
 		return;
 	}
 
+	_LOCK();
 	libpd_finish_message(dest.c_str(), msg.c_str());
-
+	_UNLOCK();
+	
 	context.bMsgInProgress = false;
 	context.curMsgLen = 0;
 }
@@ -316,7 +384,9 @@ void PdBase::sendList(const std::string& dest, const List& list) {
 		return;
 	}
 
+	_LOCK();
 	libpd_start_message(list.len());
+	_UNLOCK();
 
 	context.bMsgInProgress = true;
 
@@ -340,8 +410,10 @@ void PdBase::sendMessage(const std::string& dest, const std::string& msg, const 
 		return;
 	}
 
+	_LOCK();
 	libpd_start_message(list.len());
-
+	_UNLOCK();
+	
 	context.bMsgInProgress = true;
 
 	// step through list
@@ -357,40 +429,58 @@ void PdBase::sendMessage(const std::string& dest, const std::string& msg, const 
 
 //----------------------------------------------------------
 void PdBase::sendNoteOn(const int channel, const int pitch, const int velocity) {
+	_LOCK();
 	libpd_noteon(channel, pitch, velocity);
+	_UNLOCK();
 }
 
 void PdBase::sendControlChange(const int channel, const int controller, const int value) {
+	_LOCK();
 	libpd_controlchange(channel, controller, value);
+	_UNLOCK();
 }
 
 void PdBase::sendProgramChange(const int channel, int program) {
+	_LOCK();
 	libpd_programchange(channel, program);
+	_UNLOCK();
 }
 
 void PdBase::sendPitchBend(const int channel, const int value) {
+	_LOCK();
 	libpd_pitchbend(channel, value);
+	_UNLOCK();
 }
 
 void PdBase::sendAftertouch(const int channel, const int value) {
+	_LOCK();
 	libpd_aftertouch(channel, value);
+	_UNLOCK();
 }
 
 void PdBase::sendPolyAftertouch(const int channel, int pitch, int value) {
+	_LOCK();
 	libpd_polyaftertouch(channel, pitch, value);
+	_UNLOCK();
 }
 
 //----------------------------------------------------------
 void PdBase::sendMidiByte(const int port, const int value) {
+	_LOCK();
 	libpd_midibyte(port, value);
+	_UNLOCK();
 }
 
 void PdBase::sendSysex(const int port, const int value) {
+	_LOCK();
 	libpd_sysex(port, value);
+	_UNLOCK();
 }
 
 void PdBase::sendSysRealTime(const int port, const int value) {
+	_LOCK();
 	libpd_sysrealtime(port, value);
+	_UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -611,7 +701,9 @@ bool PdBase::isMessageInProgress() {
 
 //----------------------------------------------------------
 int PdBase::arraySize(const std::string& arrayName) {
+	_LOCK();
 	int len = libpd_arraysize(arrayName.c_str());;
+	_UNLOCK();
 	if(len < 0) {
 		cerr << "Pd: Cannot get size of unknown array \"" << arrayName << "\"" << endl;
 		return 0;
@@ -621,7 +713,9 @@ int PdBase::arraySize(const std::string& arrayName) {
 
 bool PdBase::readArray(const std::string& arrayName, std::vector<float>& dest, int readLen, int offset) {
 
+	_LOCK();
 	int arrayLen = libpd_arraysize(arrayName.c_str());
+	_UNLOCK();
 	if(arrayLen < 0) {
 		cerr << "Pd: Cannot read unknown array \"" << arrayName << "\"" << endl;
 		return false;
@@ -650,17 +744,22 @@ bool PdBase::readArray(const std::string& arrayName, std::vector<float>& dest, i
 		dest.resize(readLen, 0);
 	}
 
+	_LOCK();
 	if(libpd_read_array(&dest[0], arrayName.c_str(), offset, readLen) < 0) {
 		cerr << "Pd: libpd_read_array failed for array \""
 			 << arrayName << "\"" << endl;
+		_UNLOCK();
 		return false;
 	}
+	_UNLOCK();
 	return true;
 }
 
 bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source, int writeLen, int offset) {
 
+	_LOCK();
 	int arrayLen = libpd_arraysize(arrayName.c_str());
+	_UNLOCK();
 	if(arrayLen < 0) {
 		cerr << "Pd: Cannot write to unknown array \"" << arrayName << "\"" << endl;
 		return false;
@@ -684,16 +783,21 @@ bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source
 		return false;
 	}
 
+	_LOCK();
 	if(libpd_write_array(arrayName.c_str(), offset, &source[0], writeLen) < 0) {
 		cerr << "Pd: libpd_write_array failed for array \"" << arrayName << "\"" << endl;
+		_UNLOCK();
 		return false;
 	}
+	_UNLOCK();
 	return true;
 }
 
 void PdBase::clearArray(const std::string& arrayName, int value) {
 
+	_LOCK();
 	int arrayLen = libpd_arraysize(arrayName.c_str());
+	_UNLOCK();
 	if(arrayLen < 0) {
 		cerr << "Pd: Cannot clear unknown array \"" << arrayName << "\"" << endl;
 		return;
@@ -702,10 +806,12 @@ void PdBase::clearArray(const std::string& arrayName, int value) {
 	std::vector<float> array;
 	array.resize(arrayLen, value);
 
+	_LOCK();
 	if(libpd_write_array(arrayName.c_str(), 0, &array[0], arrayLen) < 0) {
 		cerr << "Pd: libpd_write_array failed while clearing array \""
 			 << arrayName << "\"" << endl;
 	}
+	_UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -714,6 +820,7 @@ bool PdBase::isInited() {
 }
 
 int PdBase::blockSize() {
+	// shouldn't need to lock this for now, it's always 64
 	return libpd_blocksize();
 }
 
