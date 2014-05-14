@@ -11,6 +11,7 @@
  * https://github.com/danomatika/ofxPd
  *
  */
+#include <stdlib.h>
 #include <iostream>
 #include "PdBase.hpp"
 #include "PdObject.h"
