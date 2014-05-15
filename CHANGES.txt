@@ -1,0 +1,55 @@
+0.7.0: 2014 May
+
+* merged with vanilla 0.45-4
+* added upstream fix for iOS 64-bit function pointer crash
+* replaced exposed hook function pointers with setter functions
+* fixed iOS 6 deprecated AVAudioSession warnings
+* expr~ licensing now definitively LGPL
+* now using OpenSL for audio on Android
+* added isValid method to ObjC PdFile
+
+0.6.0: 2013 Mar
+
+* ObjC API refactoring: added midi message passing & manual polling
+* added z_queued ringbuffer message layer
+* added z_util concatenated print message layer
+* ring buffer now uses gcc atomics
+
+0.5.0: 2013 Jan
+
+* added C# wrapper & minigw build support
+* added support for including native libraries in libpd.jar
+* cross platform compilation improved
+* fixed backward compatibility with Android 1.5
+* Processing support has moved to a separate repository
+* fixed midi port numbering inconsistency
+
+0.4.0: 2012 Mar
+
+* added C++ wrapper
+* refactored JavaSound sample for easier reuse
+* merge with vanilla 0.43-1
+* revised Java PdListener
+
+0.3.0: 2012 Jan
+
+* major updates to the ObjC wrapper
+* ignoring SIGFPE to fix crash on Android 4 (ICS)
+* make sure the default audio routing is the speaker in iOS
+* 64 bit fix, added support for arbitrary length lists
+* removed mem allocation in ObjC audio thread
+* message buffer size now settable
+* added AudioUnit to ObjC wrapper
+
+0.2.0: 2011 Apr
+
+* added C++ compiler support
+* merge with vanilla 0.43
+* added array access functions
+* added Python wrapper
+* added midi functions
+* iOS examples have moved to a separate repository
+
+0.1.0: 2010 Nov
+
+* initial libpd

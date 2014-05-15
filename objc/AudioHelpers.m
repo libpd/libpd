@@ -91,7 +91,7 @@ BOOL floatsAreEqual(Float64 f1, Float64 f2) {
 	return ((fabs(f1 - f2) < 0.0001) ? YES : NO);
 }
 
-//http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious
+// http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious
 int log2int(int x) {
 	int y = 0;
 	while (x >>= 1) {

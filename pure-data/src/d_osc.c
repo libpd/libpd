@@ -11,15 +11,13 @@
 #define UNITBIT32 1572864.  /* 3*2^19; bit 32 has place value 1 */
 
 
-#ifdef IRIX
-#include <sys/endian.h>
-#endif
-
-#if defined(__FreeBSD__) || defined(__APPLE__) || defined(__FreeBSD_kernel__)
+#if defined(__FreeBSD__) || defined(__APPLE__) || defined(__FreeBSD_kernel__) \
+    || defined(__OpenBSD__)
 #include <machine/endian.h>
 #endif
 
-#if defined(__linux__) || defined(__CYGWIN__) || defined(__GNU__) || defined(ANDROID)
+#if defined(__linux__) || defined(__CYGWIN__) || defined(__GNU__) || \
+    defined(ANDROID)
 #include <endian.h>
 #endif
 
@@ -33,7 +31,7 @@
 #define BYTE_ORDER LITTLE_ENDIAN
 #endif
 
-#if !defined(BYTE_ORDER) || !defined(LITTLE_ENDIAN)                         
+#if !defined(BYTE_ORDER) || !defined(LITTLE_ENDIAN) 
 #error No byte order defined                                                    
 #endif
 
@@ -41,16 +39,8 @@
 # define HIOFFSET 1                                                              
 # define LOWOFFSET 0                                                             
 #else                                                                           
-# define HIOFFSET 0    /* word offset to find MSB */                             
-# define LOWOFFSET 1    /* word offset to find LSB */                            
-#endif
-
-#ifdef _MSC_VER
- typedef __int32 int32_t; /* use MSVC's internal type */
-#elif defined(IRIX)
- typedef long int32_t;  /* a data type that has 32 bits */
-#else
-# include <stdint.h>  /* this is where int32_t is defined in C99 */
+# define HIOFFSET 0    /* word offset to find MSB */
+# define LOWOFFSET 1    /* word offset to find LSB */
 #endif
 
 union tabfudge

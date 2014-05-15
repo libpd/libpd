@@ -73,7 +73,7 @@ static int audio_nextinchans, audio_nextoutchans;
 void sched_audio_callbackfn(void);
 void sched_reopenmeplease(void);
 
-static int audio_isopen(void)
+int audio_isopen(void)
 {
     return (audio_state &&
         ((audio_naudioindev > 0 && audio_audiochindev[0] > 0) 
@@ -328,6 +328,7 @@ void sys_set_audio_settings(int naudioindev, int *audioindev, int nchindev,
     sys_log_error(ERR_NOTHING);
     audio_nextinchans = inchans;
     audio_nextoutchans = outchans;
+    sys_setchsr(audio_nextinchans, audio_nextoutchans, rate);
     sys_save_audio_params(nrealindev, realindev, realinchans,
         nrealoutdev, realoutdev, realoutchans, rate, advance, callback,
             blocksize);
@@ -424,7 +425,7 @@ void sys_reopen_audio( void)
 #ifdef USEAPI_JACK
     if (sys_audioapi == API_JACK) 
         outcome = jack_open_audio((naudioindev > 0 ? chindev[0] : 0),
-            (naudioindev > 0 ? choutdev[0] : 0), rate,
+            (naudiooutdev > 0 ? choutdev[0] : 0), rate,
                 (callback ? sched_audio_callbackfn : 0));
 
     else
@@ -589,6 +590,13 @@ void sys_getmeters(t_sample *inmax, t_sample *outmax)
 
 void sys_reportidle(void)
 {
+}
+
+/* this could later be set by a preference but for now it seems OK to just
+keep jack audio open but close unused audio devices for any other API */
+int audio_shouldkeepopen( void)
+{
+    return (sys_audioapi == API_JACK);
 }
 
 static void audio_getdevs(char *indevlist, int *nindevs,
@@ -909,9 +917,40 @@ void sys_get_audio_devs(char *indevlist, int *nindevs,
 
 void sys_set_audio_api(int which)
 {
-     sys_audioapi = which;
-     if (sys_verbose)
-        post("sys_audioapi %d", sys_audioapi);
+    int ok = 0;    /* check if the API is actually compiled in */
+#ifdef USEAPI_PORTAUDIO
+    ok += (which == API_PORTAUDIO);
+#endif
+#ifdef USEAPI_JACK
+    ok += (which == API_JACK);
+#endif
+#ifdef USEAPI_OSS
+    ok += (which == API_OSS);
+#endif
+#ifdef USEAPI_ALSA
+    ok += (which == API_ALSA);
+#endif
+#ifdef USEAPI_MMIO
+    ok += (which == API_MMIO);
+#endif
+#ifdef USEAPI_AUDIOUNIT
+    ok += (which == API_AUDIOUNIT);
+#endif
+#ifdef USEAPI_ESD
+    ok += (which == API_ESD);
+#endif
+#ifdef USEAPI_DUMMY
+    ok += (which == API_DUMMY);
+#endif
+    if (!ok)
+    {
+        post("API %d not supported, reverting to %d (%s)",
+            which, API_DEFAULT, API_DEFSTRING);
+        which = API_DEFAULT;
+    }
+    sys_audioapi = which;
+    if (sys_verbose && ok)
+        post("sys_audioapi set to %d", sys_audioapi);
 }
 
 void glob_audio_setapi(void *dummy, t_floatarg f)
@@ -921,7 +960,7 @@ void glob_audio_setapi(void *dummy, t_floatarg f)
     {
         if (newapi == sys_audioapi)
         {
-            if (!audio_isopen())
+            if (!audio_isopen() && audio_shouldkeepopen())
                 sys_reopen_audio();
         }
         else
@@ -1009,7 +1048,7 @@ void alsa_printstate( void);
 #endif
 
     /* debugging */
-void glob_foo(void *dummy, t_symbol *s, int argc, t_atom *argv)
+/* void glob_foo(void *dummy, t_symbol *s, int argc, t_atom *argv)
 {
     t_symbol *arg = atom_getsymbolarg(0, argc, argv);
     if (arg == gensym("restart"))
@@ -1030,4 +1069,4 @@ void glob_foo(void *dummy, t_symbol *s, int argc, t_atom *argv)
         alsa_printstate();
     }
 #endif
-}
+} */

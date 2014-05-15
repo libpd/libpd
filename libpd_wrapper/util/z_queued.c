@@ -99,7 +99,7 @@ static void receive_message(pd_params *p, char **buffer) {
 
 static void internal_printhook(const char *s) {
   static char padding[LIBPD_WORD_ALIGN];
-  int len = strlen(s) + 1; // remember terminating null char
+  int len = (int) strlen(s) + 1; // remember terminating null char
   int rest = len % LIBPD_WORD_ALIGN;
   if (rest) rest = LIBPD_WORD_ALIGN - rest;
   int total = len + rest;
@@ -328,7 +328,7 @@ void libpd_queued_receive_pd_messages() {
   size_t available = rb_available_to_read(pd_receive_buffer);
   if (!available) return;
   static char temp_buffer[BUFFER_SIZE];
-  rb_read_from_buffer(pd_receive_buffer, temp_buffer, available);
+  rb_read_from_buffer(pd_receive_buffer, temp_buffer, (int) available);
   char *end = temp_buffer + available;
   char *buffer = temp_buffer;
   while (buffer < end) {
@@ -369,7 +369,7 @@ void libpd_queued_receive_midi_messages() {
   size_t available = rb_available_to_read(midi_receive_buffer);
   if (!available) return;
   static char temp_buffer[BUFFER_SIZE];
-  rb_read_from_buffer(midi_receive_buffer, temp_buffer, available);
+  rb_read_from_buffer(midi_receive_buffer, temp_buffer, (int) available);
   char *end = temp_buffer + available;
   char *buffer = temp_buffer;
   while (buffer < end) {

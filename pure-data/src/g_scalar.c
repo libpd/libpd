@@ -28,14 +28,9 @@ void word_init(t_word *wp, t_template *template, t_gpointer *gp)
         else if (type == DT_SYMBOL)
             wp->w_symbol = &s_symbol;
         else if (type == DT_ARRAY)
-        {
             wp->w_array = array_new(datatypes->ds_arraytemplate, gp);
-        }
-        else if (type == DT_LIST)
-        {
-                /* LATER test this and get it to work */
-            wp->w_list = canvas_new(0, 0, 0, 0);
-        }
+        else if (type == DT_TEXT)
+            wp->w_binbuf = binbuf_new();
     }
 }
 
@@ -82,9 +77,25 @@ void word_free(t_word *wp, t_template *template)
     {
         if (dt->ds_type == DT_ARRAY)
             array_free(wp[i].w_array);
-        else if (dt->ds_type == DT_LIST)
-            canvas_free(wp[i].w_list);
+        else if (dt->ds_type == DT_TEXT)
+            binbuf_free(wp[i].w_binbuf);
     }
+}
+
+static int template_cancreate(t_template *template)
+{
+    int i, type, nitems = template->t_n;
+    t_dataslot *datatypes = template->t_vec;
+    t_template *elemtemplate;
+    for (i = 0; i < nitems; i++, datatypes++)
+        if (datatypes->ds_type == DT_ARRAY &&
+            (!(elemtemplate = template_findbyname(datatypes->ds_arraytemplate))
+                || !template_cancreate(elemtemplate)))
+    {
+        error("%s: no such template", datatypes->ds_arraytemplate->s_name);
+        return (0);
+    }
+    return (1);
 }
 
     /* make a new scalar and add to the glist.  We create a "gp" here which
@@ -105,6 +116,8 @@ t_scalar *scalar_new(t_glist *owner, t_symbol *templatesym)
         error("scalar: couldn't find template %s", templatesym->s_name);
         return (0);
     }
+    if (!template_cancreate(template))
+        return (0);
     x = (t_scalar *)getbytes(sizeof(t_scalar) +
         (template->t_n - 1) * sizeof(*x->sc_vec));
     x->sc_gobj.g_pd = scalar_class;
@@ -116,9 +129,6 @@ t_scalar *scalar_new(t_glist *owner, t_symbol *templatesym)
 
     /* Pd method to create a new scalar, add it to a glist, and initialize
     it from the message arguments. */
-
-int glist_readscalar(t_glist *x, int natoms, t_atom *vec,
-    int *p_nextmsg, int selectit);
 
 void glist_scalar(t_glist *glist,
     t_symbol *classname, t_int argc, t_atom *argv)
@@ -139,8 +149,7 @@ void glist_scalar(t_glist *glist,
     binbuf_restore(b, argc, argv);
     natoms = binbuf_getnatom(b);
     vec = binbuf_getvec(b);
-    
-    glist_readscalar(glist, natoms, vec, &nextmsg, 0);
+    canvas_readscalar(glist, natoms, vec, &nextmsg, 0);
     binbuf_free(b);
 }
 
@@ -364,9 +373,6 @@ static int scalar_click(t_gobj *z, struct _glist *owner,
     return (scalar_doclick(x->sc_vec, template, x, 0,
         owner, 0, 0, xpix, ypix, shift, alt, dbl, doit));
 }
-
-void canvas_writescalar(t_symbol *templatesym, t_word *w, t_binbuf *b,
-    int amarrayelement);
 
 static void scalar_save(t_gobj *z, t_binbuf *b)
 {

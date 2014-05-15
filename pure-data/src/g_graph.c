@@ -87,7 +87,7 @@ void glist_delete(t_glist *x, t_gobj *y)
         if (pd_class(&y->g_pd) == canvas_class)
         {
             t_glist *gl = (t_glist *)y;
-            if (gl->gl_isgraph)
+            if (gl->gl_isgraph && glist_isvisible(x))
             {
                 char tag[80];
                 sprintf(tag, "graph%lx", (t_int)gl);
@@ -715,6 +715,11 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
         t_gobj *g;
         t_symbol *arrayname;
         t_garray *ga;
+        char *ylabelanchor =
+            (x->gl_ylabelx > 0.5*(x->gl_x1 + x->gl_x2) ? "w" : "e");
+        char *xlabelanchor =
+            (x->gl_xlabely > 0.5*(x->gl_y1 + x->gl_y2) ? "s" : "n");
+            
             /* draw a rectangle around the graph */
         sys_vgui(".x%lx.c create line\
             %d %d %d %d %d %d %d %d %d %d -tags [list %s graph]\n",
@@ -811,22 +816,22 @@ static void graph_vis(t_gobj *gr, t_glist *parent_glist, int vis)
             /* draw x labels */
         for (i = 0; i < x->gl_nxlabels; i++)
             sys_vgui(".x%lx.c create text\
-        %d %d -text {%s} -font {{%s} -%d %s} -tags [list %s label graph]\n",
+ %d %d -text {%s} -font {{%s} -%d %s} -anchor %s -tags [list %s label graph]\n",
                 glist_getcanvas(x),
                 (int)glist_xtopixels(x, atof(x->gl_xlabel[i]->s_name)),
                 (int)glist_ytopixels(x, x->gl_xlabely),
-                x->gl_xlabel[i]->s_name, sys_font, 
-                     glist_getfont(x), sys_fontweight, tag);
+                x->gl_xlabel[i]->s_name, sys_font,
+                     glist_getfont(x), sys_fontweight, xlabelanchor, tag);
 
             /* draw y labels */
         for (i = 0; i < x->gl_nylabels; i++)
             sys_vgui(".x%lx.c create text\
-        %d %d -text {%s} -font {{%s} -%d %s} -tags [list %s label graph]\n",
+ %d %d -text {%s} -font {{%s} -%d %s} -anchor %s -tags [list %s label graph]\n",
                 glist_getcanvas(x),
                 (int)glist_xtopixels(x, x->gl_ylabelx),
                 (int)glist_ytopixels(x, atof(x->gl_ylabel[i]->s_name)),
                 x->gl_ylabel[i]->s_name, sys_font,
-                glist_getfont(x), sys_fontweight, tag);
+                glist_getfont(x), sys_fontweight, ylabelanchor, tag);
 
             /* draw contents of graph as glist */
         for (g = x->gl_list; g; g = g->g_next)
@@ -952,24 +957,6 @@ static void graph_activate(t_gobj *z, t_glist *glist, int state)
         text_widgetbehavior.w_activatefn(z, glist, state);
 }
 
-#if 0
-static void graph_delete(t_gobj *z, t_glist *glist)
-{
-    t_glist *x = (t_glist *)z;
-    if (!x->gl_isgraph)
-        text_widgetbehavior.w_deletefn(z, glist);
-    else
-    {
-        t_gobj *y;
-        while (y = x->gl_list) glist_delete(x, y);
-#if 0       /* I think this was just wrong. */
-        if (glist_isvisible(x))
-            sys_vgui(".x%lx.c delete graph%lx\n", glist_getcanvas(glist), x);
-#endif
-    }
-}
-#endif
-
 static void graph_delete(t_gobj *z, t_glist *glist)
 {
     t_glist *x = (t_glist *)z;
@@ -977,9 +964,12 @@ static void graph_delete(t_gobj *z, t_glist *glist)
     while (y = x->gl_list)
         glist_delete(x, y);
     if (glist_isvisible(x))
-    {
         text_widgetbehavior.w_deletefn(z, glist);
-    }
+            /* if we have connections to the actual 'canvas' object, zap
+            them as well (e.g., array or scalar objects that are implemented
+            as canvases with "real" inlets).  Connections to ordinary canvas
+            in/outlets already got zapped when we cleared the contents above */
+    canvas_deletelinesfor(glist, &x->gl_obj);
 }
 
 static t_float graph_lastxpix, graph_lastypix;
@@ -1081,23 +1071,29 @@ t_glist *glist_findgraph(t_glist *x)
 
 extern void canvas_menuarray(t_glist *canvas);
 
-void g_graph_setup(void)
+void g_graph_setup_class(t_class *c)
 {
-    class_setwidget(canvas_class, &graph_widgetbehavior);
-    class_addmethod(canvas_class, (t_method)graph_bounds, gensym("bounds"),
+    class_setwidget(c, &graph_widgetbehavior);
+    class_addmethod(c, (t_method)graph_bounds, gensym("bounds"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(canvas_class, (t_method)graph_xticks, gensym("xticks"),
+    class_addmethod(c, (t_method)graph_xticks, gensym("xticks"),
         A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(canvas_class, (t_method)graph_xlabel, gensym("xlabel"),
+    class_addmethod(c, (t_method)graph_xlabel, gensym("xlabel"),
         A_GIMME, 0);
-    class_addmethod(canvas_class, (t_method)graph_yticks, gensym("yticks"),
+    class_addmethod(c, (t_method)graph_yticks, gensym("yticks"),
         A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(canvas_class, (t_method)graph_ylabel, gensym("ylabel"),
+    class_addmethod(c, (t_method)graph_ylabel, gensym("ylabel"),
         A_GIMME, 0);
-    class_addmethod(canvas_class, (t_method)graph_array, gensym("array"),
+    class_addmethod(c, (t_method)graph_array, gensym("array"),
         A_SYMBOL, A_FLOAT, A_SYMBOL, A_DEFFLOAT, A_NULL);
-    class_addmethod(canvas_class, (t_method)canvas_menuarray,
+    class_addmethod(c, (t_method)canvas_menuarray,
         gensym("menuarray"), A_NULL);
-    class_addmethod(canvas_class, (t_method)glist_sort,
+    class_addmethod(c, (t_method)glist_sort,
         gensym("sort"), A_NULL);
 }
+
+void g_graph_setup( void)
+{
+    g_graph_setup_class(canvas_class);
+}
+

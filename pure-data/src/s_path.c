@@ -16,20 +16,26 @@
 #include <stdlib.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#include <sys/stat.h>
 #endif
+#include <sys/stat.h>
 #ifdef _WIN32
 #include <io.h>
 #include <windows.h>
 #endif
-#ifdef _WIN32
-#include <malloc.h>
-#endif
+
+#ifdef HAVE_ALLOCA_H        /* ifdef nonsense to find include for alloca() */
+# include <alloca.h>        /* linux, mac, mingw, cygwin */
+#elif defined _MSC_VER
+# include <malloc.h>        /* MSVC */
+#else
+# include <stddef.h>        /* BSDs for example */
+#endif                      /* end alloca() ifdef nonsense */
 
 #include <string.h>
 #include "m_pd.h"
 #include "m_imp.h"
 #include "s_stuff.h"
+#include "s_utf8.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <ctype.h>
@@ -254,12 +260,6 @@ void sys_setextrapath(const char *p)
     sys_staticpath = namelist_append(sys_staticpath, p, 0);
 }
 
-#ifdef _WIN32
-#define MSWOPENFLAG(bin) (bin ? _O_BINARY : _O_TEXT)
-#else
-#define MSWOPENFLAG(bin) 0
-#endif
-
     /* try to open a file in the directory "dir", named "name""ext",
     for reading.  "Name" may have slashes.  The directory is copied to
     "dirresult" which must be at least "size" bytes.  "nameresult" is set
@@ -280,11 +280,10 @@ int sys_trytoopenone(const char *dir, const char *name, const char* ext,
         strcat(dirresult, "/");
     strcat(dirresult, name);
     strcat(dirresult, ext);
-    sys_bashfilename(dirresult, dirresult);
 
     DEBUG(post("looking for %s",dirresult));
         /* see if we can open the file for reading */
-    if ((fd=open(dirresult,O_RDONLY | MSWOPENFLAG(bin))) >= 0)
+    if ((fd=sys_open(dirresult, O_RDONLY)) >= 0)
     {
             /* in unix, further check that it's not a directory */
 #ifdef HAVE_UNISTD_H
@@ -398,12 +397,92 @@ int open_via_path(const char *dir, const char *name, const char *ext,
         size, bin, sys_searchpath));
 }
 
-   /* close a previsouly opened file
-   this is needed on platforms where you cannot open/close ressources 
-   across dll-boundaries */
+    /* open a file with a UTF-8 filename
+    This is needed because WIN32 does not support UTF-8 filenames, only UCS2.
+    Having this function prevents lots of #ifdefs all over the place.
+    */
+#ifdef _WIN32
+int sys_open(const char *path, int oflag, ...)
+{
+    int i, fd;
+    char pathbuf[MAXPDSTRING];
+    wchar_t ucs2path[MAXPDSTRING];
+    sys_bashfilename(path, pathbuf);
+    u8_utf8toucs2(ucs2path, MAXPDSTRING, pathbuf, MAXPDSTRING-1);
+    /* For the create mode, Win32 does not have the same possibilities,
+     * so we ignore the argument and just hard-code read/write. */
+    if (oflag & O_CREAT)
+        fd = _wopen(ucs2path, oflag, _S_IREAD | _S_IWRITE);
+    else
+        fd = _wopen(ucs2path, oflag);
+    return fd;
+}
+
+FILE *sys_fopen(const char *filename, const char *mode)
+{
+    char namebuf[MAXPDSTRING];
+    wchar_t ucs2buf[MAXPDSTRING];
+    wchar_t ucs2mode[MAXPDSTRING];
+    sys_bashfilename(filename, namebuf);
+    u8_utf8toucs2(ucs2buf, MAXPDSTRING, namebuf, MAXPDSTRING-1);
+    /* mode only uses ASCII, so no need for a full conversion, just copy it */
+    mbstowcs(ucs2mode, mode, MAXPDSTRING);
+    return (_wfopen(ucs2buf, ucs2mode));
+}
+#else
+#include <stdarg.h>
+int sys_open(const char *path, int oflag, ...)
+{
+    int i, fd;
+    char pathbuf[MAXPDSTRING];
+    sys_bashfilename(path, pathbuf);
+    if (oflag & O_CREAT)
+    {
+        mode_t mode;
+        int imode;
+        va_list ap;
+        va_start(ap, oflag);
+
+        /* Mac compiler complains if we just set mode = va_arg ... so, even
+        though we all know it's just an int, we explicitly va_arg to an int
+        and then convert.
+           -> http://www.mail-archive.com/bug-gnulib@gnu.org/msg14212.html
+           -> http://bugs.debian.org/647345
+        */
+        
+        imode = va_arg (ap, int);
+        mode = (mode_t)imode;
+        va_end(ap);
+        fd = open(pathbuf, oflag, mode);
+    }
+    else
+        fd = open(pathbuf, oflag);
+    return fd;
+}
+
+FILE *sys_fopen(const char *filename, const char *mode)
+{
+  char namebuf[MAXPDSTRING];
+  sys_bashfilename(filename, namebuf);
+  return fopen(namebuf, mode);
+}
+#endif /* _WIN32 */
+
+   /* close a previously opened file
+   this is needed on platforms where you cannot open/close resources
+   across dll-boundaries, but we provide it for other platforms as well */
 int sys_close(int fd)
 {
+#ifdef _WIN32
+    return _close(fd);  /* Bill Gates is a big fat hen */
+#else
     return close(fd);
+#endif
+}
+
+int sys_fclose(FILE *stream)
+{
+    return fclose(stream);
 }
 
 
@@ -423,7 +502,7 @@ void open_via_helppath(const char *name, const char *dir)
     if (strlen(realname) > 3 && !strcmp(realname+strlen(realname)-3, ".pd"))
         realname[strlen(realname)-3] = 0;
     strcat(realname, "-help.pd");
-    if ((fd = do_open_via_path(dir, realname, "", dirbuf, &basename, 
+    if ((fd = do_open_via_path(usedir, realname, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
             goto gotone;
 
@@ -431,12 +510,12 @@ void open_via_helppath(const char *name, const char *dir)
     strcpy(realname, "help-");
     strncat(realname, name, MAXPDSTRING-10);
     realname[MAXPDSTRING-1] = 0;
-    if ((fd = do_open_via_path(dir, realname, "", dirbuf, &basename, 
+    if ((fd = do_open_via_path(usedir, realname, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
             goto gotone;
 
         /* 3. "objectname.pd" */
-    if ((fd = do_open_via_path(dir, name, "", dirbuf, &basename, 
+    if ((fd = do_open_via_path(usedir, name, "", dirbuf, &basename, 
         MAXPDSTRING, 0, sys_helppath)) >= 0)
             goto gotone;
     post("sorry, couldn't find help patch for \"%s\"", name);

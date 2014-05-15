@@ -91,7 +91,7 @@ void inmidi_byte(int portno, int byte)
     if (midiin_sym->s_thing)
     {
         SETFLOAT(at, byte);
-        SETFLOAT(at+1, portno + 1);
+        SETFLOAT(at+1, portno);
         pd_list(midiin_sym->s_thing, 0, 2, at);
     }
 }
@@ -102,7 +102,7 @@ void inmidi_sysex(int portno, int byte)
     if (sysexin_sym->s_thing)
     {
         SETFLOAT(at, byte);
-        SETFLOAT(at+1, portno + 1);
+        SETFLOAT(at+1, portno);
         pd_list(sysexin_sym->s_thing, 0, 2, at);
     }
 }
@@ -612,9 +612,6 @@ static void *midirealtimein_new( void)
     x->x_outlet1 = outlet_new(&x->x_obj, &s_float);
     x->x_outlet2 = outlet_new(&x->x_obj, &s_float);
     pd_bind(&x->x_obj.ob_pd, midirealtimein_sym);
-#ifndef _WIN32
-    pd_error(x, "midirealtimein: works under MSW only");
-#endif
     return (x);
 }
 
@@ -672,9 +669,6 @@ static void *midiout_new(t_floatarg portno)
     if (portno <= 0) portno = 1;
     x->x_portno = portno;
     floatinlet_new(&x->x_obj, &x->x_portno);
-#ifdef __irix__
-    post("midiout: unimplemented in IRIX");
-#endif
     return (x);
 }
 

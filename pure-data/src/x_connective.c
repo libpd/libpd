@@ -38,11 +38,20 @@ static void pdint_float(t_pdint *x, t_float f)
     outlet_float(x->x_obj.ob_outlet, (t_float)(int)(x->x_f = f));
 }
 
+static void pdint_send(t_pdint *x, t_symbol *s)
+{
+    if (s->s_thing)
+        pd_float(s->s_thing, (t_float)(int)x->x_f);
+    else pd_error(x, "%s: no such object", s->s_name);
+}
+
 void pdint_setup(void)
 {
     pdint_class = class_new(gensym("int"), (t_newmethod)pdint_new, 0,
         sizeof(t_pdint), 0, A_DEFFLOAT, 0);
     class_addcreator((t_newmethod)pdint_new, gensym("i"), A_DEFFLOAT, 0);
+    class_addmethod(pdint_class, (t_method)pdint_send, gensym("send"),
+        A_SYMBOL, 0);
     class_addbang(pdint_class, pdint_bang);
     class_addfloat(pdint_class, pdint_float);
 }
@@ -85,11 +94,20 @@ static void pdfloat_float(t_pdfloat *x, t_float f)
     outlet_float(x->x_obj.ob_outlet, x->x_f = f);
 }
 
+static void pdfloat_send(t_pdfloat *x, t_symbol *s)
+{
+    if (s->s_thing)
+        pd_float(s->s_thing, x->x_f);
+    else pd_error(x, "%s: no such object", s->s_name);
+}
+
 void pdfloat_setup(void)
 {
     pdfloat_class = class_new(gensym("float"), (t_newmethod)pdfloat_new, 0,
         sizeof(t_pdfloat), 0, A_FLOAT, 0);
     class_addcreator((t_newmethod)pdfloat_new2, gensym("f"), A_DEFFLOAT, 0);
+    class_addmethod(pdfloat_class, (t_method)pdfloat_send, gensym("send"),
+        A_SYMBOL, 0);
     class_addbang(pdfloat_class, pdfloat_bang);
     class_addfloat(pdfloat_class, (t_method)pdfloat_float);
 }
@@ -764,7 +782,12 @@ static void pack_symbol(t_pack *x, t_symbol *s)
 
 static void pack_list(t_pack *x, t_symbol *s, int ac, t_atom *av)
 {
-    obj_list(&x->x_obj, 0, ac, av);
+        /* this is a hasty bugfix for 0.45 - in 0.46 I'll try to fix this in
+        obj_list() instead. */
+    if(!ac)
+      pack_bang(x);
+    else
+      obj_list(&x->x_obj, 0, ac, av);
 }
 
 static void pack_anything(t_pack *x, t_symbol *s, int ac, t_atom *av)
@@ -1476,6 +1499,11 @@ value_setfloat(t_symbol *s, t_float f)
     return (0); 
 }
 
+static void vcommon_float(t_vcommon *x, t_float f)
+{
+    x->c_f = f;
+}
+
 static void *value_new(t_symbol *s)
 {
     t_value *x = (t_value *)pd_new(value_class);
@@ -1510,6 +1538,7 @@ static void value_setup(void)
     class_addfloat(value_class, value_float);
     vcommon_class = class_new(gensym("value"), 0, 0,
         sizeof(t_vcommon), CLASS_PD, 0);
+    class_addfloat(vcommon_class, vcommon_float);
 }
 
 /* -------------- overall setup routine for this file ----------------- */
