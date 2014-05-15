@@ -1,8 +1,8 @@
-SRC_FILES = src/PdObject.cpp src/main.cpp
-LIBPD = ../../libs/libpdcpp.so
+SRC_FILES = src/PdObject.cpp src/main.cpp ../../cpp/PdBase.cpp ../../cpp/PdTypes.cpp
+LIBPD = ../../libs/libpd.so
 TARGET = pdtest
 
-CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper -I../../cpp -O3
+CXXFLAGS = -std=c++11 -DUSE_STD_MUTEX -I../../pure-data/src -I../../libpd_wrapper/util -I../../libpd_wrapper -I../../cpp -O3
 
 .PHONY: clean clobber
 
@@ -13,10 +13,11 @@ src/%.o: src/%.cpp
 	g++ $(CXXFLAGS) -c src/$*.cpp -o src/$*.o
 
 $(LIBPD):
-	cd ../.. && make cpplib
+	cd ../.. && make
 
 clean:
 	rm -f src/*.o
+	rm -f ../../cpp/*.o
 
 clobber: clean
 	rm -f $(TARGET)
