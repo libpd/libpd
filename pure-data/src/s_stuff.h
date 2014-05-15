@@ -48,7 +48,7 @@ EXTERN int sys_nearestfontsize(int fontsize);
 EXTERN int sys_hostfontsize(int fontsize);
 
 extern int sys_defaultfont;
-extern t_symbol *sys_libdir;    /* library directory for auxilliary files */
+EXTERN t_symbol *sys_libdir;    /* library directory for auxilliary files */
 extern t_symbol *sys_guidir;    /* directory holding pd_gui, u_pdsend, etc */
 
 /* s_loader.c */
@@ -66,8 +66,8 @@ EXTERN void sys_register_loader(loader_t loader);
 #define DEFDACBLKSIZE 64
 extern int sys_schedblocksize;  /* audio block size for scheduler */
 extern int sys_hipriority;      /* real-time flag, true if priority boosted */
-extern t_sample *sys_soundout;
-extern t_sample *sys_soundin;
+EXTERN t_sample *sys_soundout;
+EXTERN t_sample *sys_soundin;
 extern int sys_inchannels;
 extern int sys_outchannels;
 extern int sys_advance_samples; /* scheduler advance in samples */
@@ -86,7 +86,9 @@ EXTERN void sys_set_audio_settings_reopen(int naudioindev, int *audioindev,
     int srate, int advance, int callback, int blocksize);
 EXTERN void sys_reopen_audio( void);
 EXTERN void sys_close_audio(void);
-
+    /* return true if the interface prefers always being open (ala jack) : */
+EXTERN int audio_shouldkeepopen( void);
+EXTERN int audio_isopen( void);     /* true if audio interface is open */
 
 int sys_send_dacs(void);
 void sys_reportidle(void);
@@ -173,7 +175,7 @@ EXTERN int sys_pollgui(void);
 EXTERN_STRUCT _socketreceiver;
 #define t_socketreceiver struct _socketreceiver
 
-typedef void (*t_socketnotifier)(void *x);
+typedef void (*t_socketnotifier)(void *x, int n);
 typedef void (*t_socketreceivefn)(void *x, t_binbuf *b);
 
 EXTERN t_socketreceiver *socketreceiver_new(void *owner,
@@ -195,41 +197,45 @@ void sys_setalarm(int microsec);
 #define API_MMIO 3
 #define API_PORTAUDIO 4
 #define API_JACK 5
-#define API_SGI 6
+#define API_SGI 6           /* gone */
 #define API_AUDIOUNIT 7
-#define API_ESD 8
+#define API_ESD 8           /* no idea what this was, probably gone now */
 #define API_DUMMY 9
 
-#ifdef USEAPI_DUMMY
-#define API_DEFAULT API_DUMMY
-#define API_DEFSTRING "dummy audio"
-#else
-#if defined(__linux__) || defined(__FreeBSD_kernel__)
-# define API_DEFAULT API_OSS
-# define API_DEFSTRING "OSS"
-#endif
-#if defined(_WIN32) || defined(__CYGWIN__)
+    /* figure out which API should be the default.  The one we judge most
+    likely to offer a working device takes precedence so that if you
+    start up Pd for the first time there's a reasonable chance you'll have
+    sound.  (You'd think portaudio would be best but it seems to default
+    to jack on linux, and and on Windows we only use it for ASIO). 
+    If nobody shows up, define DUMMY and make it the default.*/
+#if defined(USEAPI_MMIO)
 # define API_DEFAULT API_MMIO
 # define API_DEFSTRING "MMIO"
-#endif
-#ifdef __APPLE__
-# ifdef __arm__
-#  define API_DEFAULT API_AUDIOUNIT
-#  define API_DEFSTRING "AudioUnit"
-# else
+#elif defined(USEAPI_ALSA)
+# define API_DEFAULT API_ALSA
+# define API_DEFSTRING "ALSA"
+#elif defined(USEAPI_OSS)
+# define API_DEFAULT API_OSS
+# define API_DEFSTRING "OSS"
+#elif defined(USEAPI_AUDIOUNIT)
+# define API_DEFAULT API_AUDIOUNIT
+# define API_DEFSTRING "AudioUnit"
+#elif defined(USEAPI_ESD)
+# define API_DEFAULT API_ESD
+# define API_DEFSTRING "ESD (?)"
+#elif defined(USEAPI_PORTAUDIO)
 # define API_DEFAULT API_PORTAUDIO
 # define API_DEFSTRING "portaudio"
-# endif /* __arm__ */
-#endif
-#ifdef IRIX
-# define API_DEFAULT API_SGI
-# define API_DEFSTRING "SGI Digital Media"
-#endif
-#ifdef __GNU__
+#elif defined(USEAPI_JACK)
 # define API_DEFAULT API_JACK
 # define API_DEFSTRING "Jack audio connection kit"
-#endif
-#endif
+#else 
+# ifndef USEAPI_DUMMY   /* we need at least one so bring in the dummy */
+# define USEAPI_DUMMY
+# endif /* USEAPI_DUMMY */
+# define API_DEFAULT API_DUMMY
+# define API_DEFSTRING "dummy audio"
+#endif 
 
 #define DEFAULTAUDIODEV 0
 
@@ -240,9 +246,13 @@ void sys_setalarm(int microsec);
 
 #define DEFAULTSRATE 44100
 #ifdef _WIN32
-#define DEFAULTADVANCE 70
+#define DEFAULTADVANCE 80
+#else
+#ifdef __APPLE__
+#define DEFAULTADVANCE 5    /* this is in addition to their own delay */
 #else
 #define DEFAULTADVANCE 25
+#endif
 #endif
 
 typedef void (*t_audiocallback)(void);
@@ -328,7 +338,7 @@ void dummy_listdevs( void);
 void sys_listmididevs(void);
 EXTERN void sys_set_midi_api(int whichapi);
 EXTERN void sys_set_audio_api(int whichapi);
-extern int sys_audioapi;
+EXTERN int sys_audioapi;
 EXTERN void sys_set_audio_state(int onoff);
 
 /* API dependent audio flags and settings */

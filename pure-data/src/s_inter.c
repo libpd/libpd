@@ -31,9 +31,6 @@ that didn't really belong anywhere. */
 #include <process.h>
 #include <winsock.h>
 #include <windows.h>
-# ifdef _MSC_VER
-typedef int pid_t;
-# endif
 typedef int socklen_t;
 #define EADDRINUSE WSAEADDRINUSE
 #endif
@@ -315,35 +312,6 @@ void sys_set_priority(int higher)
 
 #endif /* __linux__ */
 
-#ifdef IRIX             /* hack by <olaf.matthes@gmx.de> at 2003/09/21 */
-
-#if defined(_POSIX_PRIORITY_SCHEDULING) || defined(_POSIX_MEMLOCK)
-#include <sched.h>
-#endif
-
-void sys_set_priority(int higher)
-{
-#ifdef _POSIX_PRIORITY_SCHEDULING
-    struct sched_param par;
-        /* Bearing the table found in 'man realtime' in mind, I found it a */
-        /* good idea to use 192 as the priority setting for Pd. Any thoughts? */
-    if (higher)
-                par.sched_priority = 250;       /* priority for watchdog */
-    else
-                par.sched_priority = 192;       /* priority for pd (DSP) */
-
-    if (sched_setscheduler(0, SCHED_FIFO, &par) != -1)
-        fprintf(stderr, "priority %d scheduling enabled.\n", par.sched_priority);
-#endif
-
-#ifdef _POSIX_MEMLOCK
-    if (mlockall(MCL_FUTURE) != -1) 
-        fprintf(stderr, "memory locking enabled.\n");
-#endif
-}
-/* end of hack */
-#endif /* IRIX */
-
 /* ------------------ receiving incoming messages over sockets ------------- */
 
 void sys_sockerror(char *s)
@@ -360,7 +328,7 @@ void sys_sockerror(char *s)
 #else
     int err = errno;
 #endif
-    fprintf(stderr, "%s: %s (%d)\n", s, strerror(err), err);
+    post("%s: %s (%d)\n", s, strerror(err), err);
 }
 
 void sys_addpollfn(int fd, t_fdpollfn fn, void *ptr)
@@ -520,7 +488,8 @@ void socketreceiver_read(t_socketreceiver *x, int fd)
                 if (x == sys_socketreceiver) sys_bail(1);
                 else
                 {
-                    if (x->sr_notifier) (*x->sr_notifier)(x->sr_owner);
+                    if (x->sr_notifier)
+                        (*x->sr_notifier)(x->sr_owner, fd);
                     sys_rmpollfn(fd);
                     sys_closesocket(fd);
                 }
@@ -536,7 +505,7 @@ void socketreceiver_read(t_socketreceiver *x, int fd)
                 else
                 {
                     post("EOF on socket %d\n", fd);
-                    if (x->sr_notifier) (*x->sr_notifier)(x->sr_owner);
+                    if (x->sr_notifier) (*x->sr_notifier)(x->sr_owner, fd);
                     sys_rmpollfn(fd);
                     sys_closesocket(fd);
                 }
@@ -771,10 +740,8 @@ static int sys_poll_togui(void) /* returns 1 if did anything */
 {
     if (sys_nogui)
         return (0);
-        /* see if there is stuff still in the buffer, if so we
-            must have fallen behind, so just try to clear that. */
-    if (sys_flushtogui())
-        return (1);
+        /* in case there is stuff still in the buffer, try to flush it. */
+    sys_flushtogui();
         /* if the flush wasn't complete, wait. */
     if (sys_guibufhead > sys_guibuftail)
         return (0);
@@ -867,19 +834,19 @@ static int defaultfontshit[MAXFONTS] = {
 
 int sys_startgui(const char *libdir)
 {
-    pid_t childpid;
     char cmdbuf[4*MAXPDSTRING];
     struct sockaddr_in server;
     int msgsock;
     char buf[15];
     int len = sizeof(server);
     int ntry = 0, portno = FIRSTPORTNUM;
-    int xsock = -1;
+    int xsock = -1, dumbo = -1;
 #ifdef _WIN32
     short version = MAKEWORD(2, 0);
     WSADATA nobby;
 #else
     int stdinpipe[2];
+    pid_t childpid;
 #endif /* _WIN32 */
     /* create an empty FD poll list */
     sys_fdpoll = (t_fdpoll *)t_getbytes(0);
@@ -933,11 +900,26 @@ int sys_startgui(const char *libdir)
     {
         struct sockaddr_in server;
         struct hostent *hp;
+#ifdef __APPLE__
+            /* sys_guisock might be 1 or 2, which will have offensive results
+            if somebody writes to stdout or stderr - so we just open a few
+            files to try to fill fds 0 through 2.  (I tried using dup()
+            instead, which would seem the logical way to do this, but couldn't
+            get it to work.) */
+        int burnfd1 = open("/dev/null", 0), burnfd2 = open("/dev/null", 0),
+            burnfd3 = open("/dev/null", 0);
+        if (burnfd1 > 2)
+            close(burnfd1);
+        if (burnfd2 > 2)
+            close(burnfd2);
+        if (burnfd3 > 2)
+            close(burnfd3);
+#endif
         /* create a socket */
         sys_guisock = socket(AF_INET, SOCK_STREAM, 0);
         if (sys_guisock < 0)
             sys_sockerror("socket");
-
+        
         /* connect socket using hostname provided in command line */
         server.sin_family = AF_INET;
 
@@ -1116,6 +1098,7 @@ int sys_startgui(const char *libdir)
 #endif /* NOT __APPLE__ */
             execl("/bin/sh", "sh", "-c", sys_guicmd, (char*)0);
             perror("pd: exec");
+            fprintf(stderr, "Perhaps tcl and tk aren't yet installed?\n");
             _exit(1);
        }
 #else /* NOT _WIN32 */
@@ -1126,7 +1109,7 @@ int sys_startgui(const char *libdir)
         strcat(scriptbuf, "/" PDGUIDIR "pd-gui.tcl\"");
         sys_bashfilename(scriptbuf, scriptbuf);
         
-                sprintf(portbuf, "%d", portno);
+        sprintf(portbuf, "%d", portno);
 
         strcpy(wishbuf, libdir);
         strcat(wishbuf, "/" PDBINDIR WISHAPP);
@@ -1143,7 +1126,7 @@ int sys_startgui(const char *libdir)
 #endif /* NOT _WIN32 */
     }
 
-#if defined(__linux__) || defined(IRIX) || defined(__FreeBSD_kernel__)
+#if defined(__linux__) || defined(__FreeBSD_kernel__)
         /* now that we've spun off the child process we can promote
         our process's priority, if we can and want to.  If not specfied
         (-1), we assume real-time was wanted.  Afterward, just in case
@@ -1160,13 +1143,14 @@ int sys_startgui(const char *libdir)
     sprintf(cmdbuf, "%s/bin/pd-watchdog", libdir);
     if (sys_hipriority)
     {
-      struct stat statbuf;
-      {
-        if (sys_verbose) fprintf(stderr,
-           "disabling real-time priority due to missing pd-watchdog (%s)\n",
-              cmdbuf);
-        sys_hipriority = 0;
-      }
+        struct stat statbuf;
+        if (stat(cmdbuf, &statbuf) < 0)
+        {
+            fprintf(stderr,
+              "disabling real-time priority due to missing pd-watchdog (%s)\n",
+                cmdbuf);
+            sys_hipriority = 0;
+        }
     }
 
     if (sys_hipriority)
@@ -1218,6 +1202,11 @@ int sys_startgui(const char *libdir)
             sys_set_priority(0);
             setuid(getuid());      /* lose setuid priveliges */
             close(pipe9[0]);
+                /* set close-on-exec so that watchdog will see an EOF when we
+                close our copy - otherwise it might hang waiting for some
+                stupid child process (as seems to happen if jackd auto-starts
+                for us.) */
+            fcntl(pipe9[1], F_SETFD, FD_CLOEXEC);
             sys_watchfd = pipe9[1];
                 /* We also have to start the ping loop in the GUI;
                 this is done later when the socket is open. */
@@ -1262,29 +1251,29 @@ int sys_startgui(const char *libdir)
     }
     if (!sys_nogui)
     {
-      char buf[256], buf2[256];
-         sys_socketreceiver = socketreceiver_new(0, 0, 0, 0);
-         sys_addpollfn(sys_guisock, (t_fdpollfn)socketreceiver_read,
-             sys_socketreceiver);
+        char buf[256], buf2[256];
+        sys_socketreceiver = socketreceiver_new(0, 0, 0, 0);
+        sys_addpollfn(sys_guisock, (t_fdpollfn)socketreceiver_read,
+            sys_socketreceiver);
 
             /* here is where we start the pinging. */
-#if defined(__linux__) || defined(IRIX) || defined(__FreeBSD_kernel__)
-         if (sys_hipriority)
-             sys_gui("pdtk_watchdog\n");
+#if defined(__linux__) || defined(__FreeBSD_kernel__)
+        if (sys_hipriority)
+            sys_gui("pdtk_watchdog\n");
 #endif
-         sys_get_audio_apis(buf);
-         sys_get_midi_apis(buf2);
-         sys_set_searchpath();     /* tell GUI about path and startup flags */
-         sys_set_extrapath();
-         sys_set_startup();
-                            /* ... and about font, medio APIS, etc */
-         sys_vgui("pdtk_pd_startup %d %d %d {%s} %s %s {%s} %s\n",
-                  PD_MAJOR_VERSION, PD_MINOR_VERSION, 
-                  PD_BUGFIX_VERSION, PD_TEST_VERSION,
-                  buf, buf2, sys_font, sys_fontweight); 
+        sys_get_audio_apis(buf);
+        sys_get_midi_apis(buf2);
+        sys_set_searchpath();     /* tell GUI about path and startup flags */
+        sys_set_extrapath();
+        sys_set_startup();
+                           /* ... and about font, medio APIS, etc */
+        sys_vgui("pdtk_pd_startup %d %d %d {%s} %s %s {%s} %s\n",
+                 PD_MAJOR_VERSION, PD_MINOR_VERSION, 
+                 PD_BUGFIX_VERSION, PD_TEST_VERSION,
+                 buf, buf2, sys_font, sys_fontweight); 
+        sys_vgui("set pd_whichapi %d\n", sys_audioapi);
     }
     return (0);
-
 }
 
 extern void sys_exit(void);
@@ -1299,6 +1288,7 @@ void sys_bail(int n)
     {
         reentered = 1;
 #if !defined(__linux__) && !defined(__FreeBSD_kernel__) && !defined(__GNU__) /* sys_close_audio() hangs if you're in a signal? */
+        fprintf(stderr ,"sys_guisock %d - ", sys_guisock);
         fprintf(stderr, "closing audio...\n");
         sys_close_audio();
         fprintf(stderr, "closing MIDI...\n");
@@ -1312,12 +1302,13 @@ void sys_bail(int n)
 
 void glob_quit(void *dummy)
 {
-    sys_vgui("exit\n");
+    sys_close_audio();
+    sys_close_midi();
     if (!sys_nogui)
     {
         sys_closesocket(sys_guisock);
         sys_rmpollfn(sys_guisock);
     }
-    sys_bail(0); 
+    exit(0); 
 }
 

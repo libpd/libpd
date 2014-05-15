@@ -24,21 +24,24 @@
     #define HAVE_UNISTD_H
 #endif
 
+// define this to use C++11 std::mutex for locking
+#ifdef USE_STD_MUTEX
+	#include <mutex>
+#endif
+
 typedef struct _atom t_atom;
 
 namespace pd {
 
-///
 ///    a Pure Data instance
 ///
 /// use this class directly or extend it and any of its virtual functions
-///
 ///
 /// note: this object is not thread safe! use your own mutexes ...
 ///
 ///          see https://github.com/danomatika/ofxPd/tree/master/src for an example
 ///
-///    note: if you need to grab events in your main thread (aka working with a gui),
+/// if you need to grab events in your main thread (aka working with a gui),
 ///          you may find the message polling interface useful, see nextMessage()
 ///
 /// note: libpd currently does not support multiple states and it is
@@ -458,6 +461,12 @@ class PdBase {
             SYSEX,
             SYSRT
         };
+
+		#ifdef USE_STD_MUTEX
+			std::mutex mutex; //< locks libpd C function calls,
+			                  //< enable by defining USE_STD_MUTEX
+		#endif
+		bool processRet; //< process function return
 
         /// a singleton libpd instance wrapper
         class PdContext {

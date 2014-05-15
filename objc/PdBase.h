@@ -37,8 +37,7 @@
 
 #import <Foundation/Foundation.h>
 
-
-// Listener interface for messages from Pd.
+/// Listener interface for messages from Pd.
 @protocol PdListener<NSObject>
 @optional
 - (void)receiveBangFromSource:(NSString *)source;
@@ -48,14 +47,14 @@
 - (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source;
 @end
 
-// Receiver interface for printing and receiving messages from Pd.
+/// Receiver interface for printing and receiving messages from Pd.
 @protocol PdReceiverDelegate<PdListener>
 @optional
 - (void)receivePrint:(NSString *)message;
 @end
 
 
-// Listener interface for MIDI from Pd.
+/// Listener interface for MIDI from Pd.
 @protocol PdMidiListener<NSObject>
 @optional
 - (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity forChannel:(int)channel;
@@ -67,7 +66,7 @@
 @end
 
 
-// Receiver interface for MIDI messages from Pd.
+/// Receiver interface for MIDI messages from Pd.
 @protocol PdMidiReceiverDelegate<PdMidiListener>
 @optional
 - (void)receiveMidiByte:(int)byte forPort:(int)port;
@@ -80,13 +79,13 @@
 
 + (void)initialize;
 
-// Set the delegates to receive messages and midi. Only to be called from main thread.
-// An NSTimer is used to poll for messages be default. However, the input queues can be processed
-// manually when setting the respective delegate using pollingEnabled:NO.
-//
-// Setting the delegate to nil disconnects the existing delegate and turns off message polling if it's running.
-//
-// Note: PdBase retains the delegates: call setDelegate or setMidiDelegate with nil in order to release delegate.
+/// Set the delegates to receive messages and midi. Only to be called from main thread.
+/// An NSTimer is used to poll for messages be default. However, the input queues can be processed
+/// manually when setting the respective delegate using pollingEnabled:NO.
+///
+/// Setting the delegate to nil disconnects the existing delegate and turns off message polling if it's running.
+///
+/// Note: PdBase retains the delegates: call setDelegate or setMidiDelegate with nil in order to release delegate.
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled;
 + (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled;
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate;         // Starts with polling enabled.
@@ -95,8 +94,8 @@
 + (NSObject<PdReceiverDelegate> *)delegate;
 + (NSObject<PdMidiReceiverDelegate> *)midiDelegate;
 
-// Process the message and midi input queues manually.
-// Only required if the respective delegate was set with pollingEnabled:NO.
+/// Process the message and midi input queues manually.
+/// Only required if the respective delegate was set with pollingEnabled:NO.
 + (void)receiveMessages;
 + (void)receiveMidi;
 
@@ -108,15 +107,10 @@
 + (int)dollarZeroForFile:(void *)x;
 
 + (int)getBlockSize;
-+ (int)openAudioWithSampleRate:(int)samplerate
-    inputChannels:(int)inputChannels
-    outputChannels:(int)outputchannels;
-+ (int)processFloatWithInputBuffer:(const float *)inputBuffer
-    outputBuffer:(float *)outputBuffer ticks:(int)ticks;
-+ (int)processDoubleWithInputBuffer:(const double *)inputBuffer
-    outputBuffer:(double *)outputBuffer ticks:(int)ticks;
-+ (int)processShortWithInputBuffer:(const short *)inputBuffer
-    outputBuffer:(short *)outputBuffer ticks:(int)ticks;
++ (int)openAudioWithSampleRate:(int)samplerate inputChannels:(int)inputChannels outputChannels:(int)outputchannels;
++ (int)processFloatWithInputBuffer:(const float *)inputBuffer outputBuffer:(float *)outputBuffer ticks:(int)ticks;
++ (int)processDoubleWithInputBuffer:(const double *)inputBuffer outputBuffer:(double *)outputBuffer ticks:(int)ticks;
++ (int)processShortWithInputBuffer:(const short *)inputBuffer outputBuffer:(short *)outputBuffer ticks:(int)ticks;
 + (void)computeAudio:(BOOL)enable;
 + (void *)subscribe:(NSString *)symbol;
 + (void)unsubscribe:(void *)subscription;

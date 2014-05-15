@@ -7,6 +7,7 @@
 #include "m_pd.h"
 #include "s_stuff.h"
 #include <stdio.h>
+#include <errno.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -145,6 +146,11 @@ void binbuf_text(t_binbuf *x, char *text, size_t size)
                     textp[0] >= '0' && textp[0] <= '9'))
                         dollar = 1;
                 if (!slash) bufp++;
+                else if (lastslash)
+                {
+                    bufp++;
+                    slash = 0;
+                }
             }
             while (textp != etext && bufp != ebuf && 
                 (slash || (*textp != ' ' && *textp != '\n' && *textp != '\r'
@@ -284,17 +290,18 @@ done:
 }
 
 /* add a binbuf to another one for saving.  Semicolons and commas go to
-symbols ";", "'",; the symbol ";" goes to "\;", etc. */
+symbols ";", "'",; and inside symbols, characters ';', ',' and '$' get
+escaped.  LATER also figure out about escaping white space */
 
 void binbuf_addbinbuf(t_binbuf *x, t_binbuf *y)
 {
     t_binbuf *z = binbuf_new();
-    int i;
+    int i, fixit;
     t_atom *ap;
     binbuf_add(z, y->b_n, y->b_vec);
     for (i = 0, ap = z->b_vec; i < z->b_n; i++, ap++)
     {
-        char tbuf[MAXPDSTRING];
+        char tbuf[MAXPDSTRING], *s;
         switch (ap->a_type)
         {
         case A_FLOAT:
@@ -314,11 +321,14 @@ void binbuf_addbinbuf(t_binbuf *x, t_binbuf *y)
             SETSYMBOL(ap, gensym(tbuf));
             break;
         case A_SYMBOL:
-                /* FIXME make this general */
-            if (!strcmp(ap->a_w.w_symbol->s_name, ";"))
-                SETSYMBOL(ap, gensym(";"));
-            else if (!strcmp(ap->a_w.w_symbol->s_name, ","))
-                SETSYMBOL(ap, gensym(","));
+            for (s = ap->a_w.w_symbol->s_name, fixit = 0; *s; s++)
+                if (*s == ';' || *s == ',' || *s == '$')
+                    fixit = 1;
+            if (fixit)
+            {
+                atom_string(ap, tbuf, MAXPDSTRING);
+                SETSYMBOL(ap, gensym(tbuf));
+            }
             break;
         default:
             bug("binbuf_addbinbuf");
@@ -379,6 +389,23 @@ void binbuf_restore(t_binbuf *x, int argc, t_atom *argv)
                     SETDOLLAR(ap, dollar);
                 }
             }
+            else if (strchr(argv->a_w.w_symbol->s_name, '\\'))
+            {
+                char buf[MAXPDSTRING], *sp1, *sp2;
+                int slashed = 0;
+                for (sp1 = buf, sp2 = argv->a_w.w_symbol->s_name;
+                    *sp2 && sp1 < buf + (MAXPDSTRING-1);
+                        sp2++)
+                {
+                    if (slashed)
+                        *sp1++ = *sp2;
+                    else if (*sp2 == '\\')
+                        slashed = 1;
+                    else *sp1++ = *sp2, slashed = 0;
+                }
+                *sp1 = 0;
+                SETSYMBOL(ap, gensym(buf));
+            }
             else *ap = *argv;
             argv++;
         }
@@ -414,6 +441,15 @@ int binbuf_getnatom(t_binbuf *x)
 t_atom *binbuf_getvec(t_binbuf *x)
 {
     return (x->b_vec);
+}
+
+int binbuf_resize(t_binbuf *x, int newsize)
+{
+    t_atom *new = t_resizebytes(x->b_vec,
+        x->b_n * sizeof(*x->b_vec), newsize * sizeof(*x->b_vec));
+    if (new)
+        x->b_vec = new, x->b_n = newsize;
+    return (new != 0);
 }
 
 int canvas_getdollarzero( void);
@@ -530,12 +566,21 @@ done:
 
 #define SMALLMSG 5
 #define HUGEMSG 1000
-#ifdef _WIN32
-#include <malloc.h>
-#else
-#include <alloca.h>
+
+#ifndef HAVE_ALLOCA     /* can work without alloca() but we never need it */
+#define HAVE_ALLOCA 1
 #endif
-#if HAVE_ALLOCA
+
+#ifdef HAVE_ALLOCA
+
+#ifdef HAVE_ALLOCA_H        /* ifdef nonsense to find include for alloca() */
+# include <alloca.h>        /* linux, mac, mingw, cygwin */
+#elif defined _MSC_VER
+# include <malloc.h>        /* MSVC */
+#else
+# include <stddef.h>        /* BSDs for example */
+#endif                      /* end alloca() ifdef nonsense */
+
 #define ATOMS_ALLOCA(x, n) ((x) = (t_atom *)((n) < HUGEMSG ?  \
         alloca((n) * sizeof(t_atom)) : getbytes((n) * sizeof(t_atom))))
 #define ATOMS_FREEA(x, n) ( \
@@ -738,23 +783,6 @@ broken:
          ATOMS_FREEA(mstack, maxnargs);
 }
 
-static int binbuf_doopen(char *s, int mode)
-{
-    char namebuf[MAXPDSTRING];
-#ifdef _WIN32
-    mode |= O_BINARY;
-#endif
-    sys_bashfilename(s, namebuf);
-    return (open(namebuf, mode));
-}
-
-static FILE *binbuf_dofopen(char *s, char *mode)
-{
-    char namebuf[MAXPDSTRING];
-    sys_bashfilename(s, namebuf);
-    return (fopen(namebuf, mode));
-}
-
 int binbuf_read(t_binbuf *b, char *filename, char *dirname, int crflag)
 {
     long length;
@@ -768,7 +796,7 @@ int binbuf_read(t_binbuf *b, char *filename, char *dirname, int crflag)
         strcat(namebuf, dirname), strcat(namebuf, "/");
     strcat(namebuf, filename);
     
-    if ((fd = binbuf_doopen(namebuf, 0)) < 0)
+    if ((fd = sys_open(namebuf, 0)) < 0)
     {
         fprintf(stderr, "open: ");
         perror(namebuf);
@@ -869,7 +897,7 @@ int binbuf_write(t_binbuf *x, char *filename, char *dir, int crflag)
         deleteit = 1;
     }
     
-    if (!(f = binbuf_dofopen(fbuf, "w")))
+    if (!(f = sys_fopen(fbuf, "w")))
     {
         fprintf(stderr, "open: ");
         sys_unixerror(fbuf);
@@ -1417,42 +1445,6 @@ static t_binbuf *binbuf_convert(t_binbuf *oldb, int maxtopd)
     return (newb);
 }
 
-    /* function to support searching */
-int binbuf_match(t_binbuf *inbuf, t_binbuf *searchbuf, int wholeword)
-{
-    int indexin, nmatched;
-    for (indexin = 0; indexin <= inbuf->b_n - searchbuf->b_n; indexin++)
-    {
-        for (nmatched = 0; nmatched < searchbuf->b_n; nmatched++)
-        {
-            t_atom *a1 = &inbuf->b_vec[indexin + nmatched], 
-                *a2 = &searchbuf->b_vec[nmatched];
-            if (a1->a_type == A_SEMI || a1->a_type == A_COMMA)
-            {
-                if (a2->a_type != a1->a_type)
-                    goto nomatch;
-            }
-            else if (a1->a_type == A_FLOAT || a1->a_type == A_DOLLAR)
-            {
-                if (a2->a_type != a1->a_type || 
-                    a1->a_w.w_float != a2->a_w.w_float)
-                        goto nomatch;
-            }
-            else if (a1->a_type == A_SYMBOL || a1->a_type == A_DOLLSYM)
-            {
-                if ((a2->a_type != A_SYMBOL && a2->a_type != A_DOLLSYM)
-                    || (wholeword && a1->a_w.w_symbol != a2->a_w.w_symbol)
-                    || (!wholeword &&  !strstr(a1->a_w.w_symbol->s_name,
-                                        a2->a_w.w_symbol->s_name)))
-                        goto nomatch;
-            }           
-        }
-        return (1);
-    nomatch: ;
-    }
-    return (0);
-}
-
 void pd_doloadbang(void);
 
 /* LATER make this evaluate the file on-the-fly. */
@@ -1462,15 +1454,17 @@ void binbuf_evalfile(t_symbol *name, t_symbol *dir)
     t_binbuf *b = binbuf_new();
     int import = !strcmp(name->s_name + strlen(name->s_name) - 4, ".pat") ||
         !strcmp(name->s_name + strlen(name->s_name) - 4, ".mxt");
-        /* set filename so that new canvases can pick them up */
     int dspstate = canvas_suspend_dsp();
+        /* set filename so that new canvases can pick them up */
     glob_setfilename(0, name, dir);
     if (binbuf_read(b, name->s_name, dir->s_name, 0))
-    {
-        perror(name->s_name);
-    }
+        error("%s: read failed; %s", name->s_name, strerror(errno));
     else
     {
+            /* save bindings of symbols #N, #A (and restore afterward) */
+        t_pd *bounda = gensym("#A")->s_thing, *boundn = s__N.s_thing;
+        gensym("#A")->s_thing = 0;
+        s__N.s_thing = &pd_canvasmaker;
         if (import)
         {
             t_binbuf *newb = binbuf_convert(b, 1);
@@ -1478,6 +1472,8 @@ void binbuf_evalfile(t_symbol *name, t_symbol *dir)
             b = newb;
         }
         binbuf_eval(b, 0, 0, 0);
+        gensym("#A")->s_thing = bounda;
+        s__N.s_thing = boundn;
     }
     glob_setfilename(0, &s_, &s_);
     binbuf_free(b);
@@ -1493,6 +1489,9 @@ t_pd *glob_evalfile(t_pd *ignore, t_symbol *name, t_symbol *dir)
         is still necessary -- probably not. */
 
     int dspstate = canvas_suspend_dsp();
+    t_pd *boundx = s__X.s_thing;
+        s__X.s_thing = 0;       /* don't save #X; we'll need to leave it bound
+                                for the caller to grab it. */
     binbuf_evalfile(name, dir);
     while ((x != s__X.s_thing) && s__X.s_thing) 
     {
@@ -1501,5 +1500,31 @@ t_pd *glob_evalfile(t_pd *ignore, t_symbol *name, t_symbol *dir)
     }
     pd_doloadbang();
     canvas_resume_dsp(dspstate);
+    s__X.s_thing = boundx;
     return x;
 }
+
+    /* save a text object to a binbuf for a file or copy buf */
+void binbuf_savetext(t_binbuf *bfrom, t_binbuf *bto)
+{
+    int k, n = binbuf_getnatom(bfrom);
+    t_atom *ap = binbuf_getvec(bfrom), at;
+    for (k = 0; k < n; k++)
+    {
+        if (ap[k].a_type == A_FLOAT ||
+            ap[k].a_type == A_SYMBOL &&
+                !strchr(ap[k].a_w.w_symbol->s_name, ';') &&
+                !strchr(ap[k].a_w.w_symbol->s_name, ',') &&
+                !strchr(ap[k].a_w.w_symbol->s_name, '$'))
+                    binbuf_add(bto, 1, &ap[k]);
+        else
+        {
+            char buf[MAXPDSTRING+1];
+            atom_string(&ap[k], buf, MAXPDSTRING);
+            SETSYMBOL(&at, gensym(buf));
+            binbuf_add(bto, 1, &at);
+        }
+    }
+    binbuf_addsemi(bto);
+}
+

@@ -268,6 +268,18 @@ int sys_main(int argc, char **argv)
 #ifdef PD_DEBUG
     fprintf(stderr, "Pd: COMPILED FOR DEBUGGING\n");
 #endif
+    /* use Win32 "binary" mode by default since we don't want the
+     * translation that Win32 does by default */
+#ifdef _WIN32
+# ifdef _MSC_VER /* MS Visual Studio */
+    _set_fmode( _O_BINARY );
+# else  /* MinGW */
+    {
+        extern int _fmode;
+        _fmode = _O_BINARY;
+    }
+# endif /* _MSC_VER */
+#endif  /* WIN32 */
     pd_init();                                  /* start the message system */
     sys_findprogdir(argv[0]);                   /* set sys_progname, guipath */
     for (i = noprefs = 0; i < argc; i++)        /* prescan args for noprefs */
@@ -297,7 +309,8 @@ int sys_main(int argc, char **argv)
     {
             /* open audio and MIDI */
         sys_reopen_midi();
-        sys_reopen_audio();
+        if (audio_shouldkeepopen())
+            sys_reopen_audio();
             /* run scheduler until it quits */
         return (m_mainloop());
     }
@@ -398,6 +411,7 @@ static char *(usagemessage[]) = {
 "-extraflags <s>  -- string argument to send schedlib\n",
 "-batch           -- run off-line as a batch process\n",
 "-noautopatch     -- defeat auto-patching new from selected objects\n",
+"-compatibility <f> -- set back-compatibility to version <f>\n",
 };
 
 static void sys_parsedevlist(int *np, int *vecp, int max, char *str)
@@ -798,6 +812,10 @@ int sys_argparse(int argc, char **argv)
         {
             sys_printtostderr = 1;
             argc--; argv++;
+#ifdef _WIN32
+            /* we need to tell Windows to output UTF-8 */
+            SetConsoleOutputCP(CP_UTF8);
+#endif
         }
         else if (!strcmp(*argv, "-guicmd") && argc > 1)
         {
@@ -840,6 +858,15 @@ int sys_argparse(int argc, char **argv)
         {
             sys_noautopatch = 1;
             argc--; argv++;
+        }
+        else if (!strcmp(*argv, "-compatibility") && argc > 1)
+        {
+            float f;
+            if (sscanf(argv[1], "%f", &f) < 1)
+                goto usage;
+            pd_compatibilitylevel = 0.5 + 100. * f; /* e.g., 2.44 --> 244 */
+            argv += 2;
+            argc -= 2;
         }
 #ifdef HAVE_UNISTD_H
         else if (!strcmp(*argv, "-rt") || !strcmp(*argv, "-realtime"))

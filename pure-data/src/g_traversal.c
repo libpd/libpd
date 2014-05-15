@@ -91,7 +91,7 @@ int gpointer_check(const t_gpointer *gp, int headok)
 }
 
 /* get the template for the object pointer to.  Assumes we've already checked
-freshness.  Returns 0 if head of list. */
+freshness. */
 
 static t_symbol *gpointer_gettemplatesym(const t_gpointer *gp)
 {
@@ -159,6 +159,47 @@ void gpointer_init(t_gpointer *gp)
     gp->gp_valid = 0;
     gp->gp_un.gp_scalar = 0;
 }
+
+/*********  random utility function to find a binbuf in a datum */
+
+t_binbuf *pointertobinbuf(t_pd *x, t_gpointer *gp, t_symbol *s,
+    const char *fname)
+{
+    t_symbol *templatesym = gpointer_gettemplatesym(gp), *arraytype;
+    t_template *template;
+    int onset, type;
+    t_binbuf *b;
+    t_gstub *gs = gp->gp_stub;
+    t_word *vec;
+    if (!templatesym)
+    {
+        pd_error(x, "%s: bad pointer", fname);
+        return (0);
+    }
+    if (!(template = template_findbyname(templatesym)))
+    {
+        pd_error(x, "%s: couldn't find template %s", fname,
+            templatesym->s_name);
+        return (0);
+    }
+    if (!template_find_field(template, s, &onset, &type, &arraytype))
+    {
+        pd_error(x, "%s: %s.%s: no such field", fname,
+            templatesym->s_name, s->s_name);
+        return (0);
+    }
+    if (type != DT_TEXT)
+    {
+        pd_error(x, "%s: %s.%s: not a list", fname,
+            templatesym->s_name, s->s_name);
+        return (0);
+    }
+    if (gs->gs_which == GP_ARRAY)
+        vec = gp->gp_un.gp_w;
+    else vec = gp->gp_un.gp_scalar->sc_vec;
+    return (vec[onset].w_binbuf);
+}
+
 
 /* ---------------------- pointers ----------------------------- */
 
@@ -273,6 +314,8 @@ static void ptrobj_next(t_ptrobj *x)
 {
     ptrobj_vnext(x, 0);
 }
+
+    /* send a message to the window containing the object pointed to */
 static void ptrobj_sendwindow(t_ptrobj *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_scalar *sc;
@@ -284,7 +327,7 @@ static void ptrobj_sendwindow(t_ptrobj *x, t_symbol *s, int argc, t_atom *argv)
     t_gstub *gs;
     if (!gpointer_check(&x->x_gp, 1))
     {
-        pd_error(x, "ptrobj_bang: empty pointer");
+        pd_error(x, "send-window: empty pointer");
         return;
     }
     gs = x->x_gp.gp_stub;
@@ -303,6 +346,17 @@ static void ptrobj_sendwindow(t_ptrobj *x, t_symbol *s, int argc, t_atom *argv)
     else pd_error(x, "send-window: no message?");
 }
 
+
+    /* send the pointer to the named object */
+static void ptrobj_send(t_ptrobj *x, t_symbol *s)
+{
+    if (!s->s_thing)
+        pd_error(x, "%s: no such object", s->s_name);
+    else if (!gpointer_check(&x->x_gp, 1))
+        pd_error(x, "pointer_send: empty pointer");
+    else pd_pointer(s->s_thing, &x->x_gp);
+}
+
 static void ptrobj_bang(t_ptrobj *x)
 {
     t_symbol *templatesym;
@@ -310,7 +364,7 @@ static void ptrobj_bang(t_ptrobj *x)
     t_typedout *to;
     if (!gpointer_check(&x->x_gp, 1))
     {
-        pd_error(x, "ptrobj_bang: empty pointer");
+        pd_error(x, "pointer_bang: empty pointer");
         return;
     }
     templatesym = gpointer_gettemplatesym(&x->x_gp);
@@ -369,9 +423,11 @@ static void ptrobj_setup(void)
 {
     ptrobj_class = class_new(gensym("pointer"), (t_newmethod)ptrobj_new,
         (t_method)ptrobj_free, sizeof(t_ptrobj), 0, A_GIMME, 0);
+    class_addmethod(ptrobj_class, (t_method)ptrobj_next, gensym("next"), 0); 
+    class_addmethod(ptrobj_class, (t_method)ptrobj_send, gensym("send"), 
+        A_SYMBOL, 0); 
     class_addmethod(ptrobj_class, (t_method)ptrobj_traverse, gensym("traverse"),
         A_SYMBOL, 0); 
-    class_addmethod(ptrobj_class, (t_method)ptrobj_next, gensym("next"), 0); 
     class_addmethod(ptrobj_class, (t_method)ptrobj_vnext, gensym("vnext"), 
         A_DEFFLOAT, 0); 
     class_addmethod(ptrobj_class, (t_method)ptrobj_sendwindow,
@@ -1065,79 +1121,6 @@ static void append_setup(void)
     class_addfloat(append_class, append_float); 
 }
 
-/* ---------------------- sublist ----------------------------- */
-
-static t_class *sublist_class;
-
-typedef struct _sublist
-{
-    t_object x_obj;
-    t_symbol *x_templatesym;
-    t_symbol *x_fieldsym;
-    t_gpointer x_gp;
-} t_sublist;
-
-static void *sublist_new(t_symbol *templatesym, t_symbol *fieldsym)
-{
-    t_sublist *x = (t_sublist *)pd_new(sublist_class);
-    x->x_templatesym = canvas_makebindsym(templatesym);
-    x->x_fieldsym = fieldsym;
-    gpointer_init(&x->x_gp);
-    outlet_new(&x->x_obj, &s_pointer);
-    return (x);
-}
-
-static void sublist_pointer(t_sublist *x, t_gpointer *gp)
-{
-    t_symbol *templatesym = x->x_templatesym, *dummy;
-    t_template *template = template_findbyname(templatesym);
-    t_gstub *gs = gp->gp_stub;
-    t_word *vec; 
-    t_getvariable *vp;
-    int onset, type;
-    t_word *w;
-
-    if (!template)
-    {
-        pd_error(x, "sublist: couldn't find template %s", templatesym->s_name);
-        return;
-    }
-    if (!gpointer_check(gp, 0))
-    {
-        pd_error(x, "get: stale or empty pointer");
-        return;
-    }
-    if (!template_find_field(template, x->x_fieldsym,
-        &onset, &type, &dummy))
-    {
-        pd_error(x, "sublist: couldn't find field %s", x->x_fieldsym->s_name);
-        return;
-    }
-    if (type != DT_LIST)
-    {
-        pd_error(x, "sublist: field %s not of type list", x->x_fieldsym->s_name);
-        return;
-    }
-    if (gs->gs_which == GP_ARRAY) w = gp->gp_un.gp_w;
-    else w = gp->gp_un.gp_scalar->sc_vec;
-    
-    gpointer_setglist(&x->x_gp, *(t_glist **)(((char *)w) + onset), 0);
-
-    outlet_pointer(x->x_obj.ob_outlet, &x->x_gp);
-}
-
-static void sublist_free(t_sublist *x, t_gpointer *gp)
-{
-    gpointer_unset(&x->x_gp);
-}
-
-static void sublist_setup(void)
-{
-    sublist_class = class_new(gensym("sublist"), (t_newmethod)sublist_new,
-        (t_method)sublist_free, sizeof(t_sublist), 0, A_DEFSYM, A_DEFSYM, 0);
-    class_addpointer(sublist_class, sublist_pointer); 
-}
-
 /* ----------------- setup function ------------------- */
 
 void g_traversal_setup(void)
@@ -1149,5 +1132,4 @@ void g_traversal_setup(void)
     getsize_setup();
     setsize_setup();
     append_setup();
-    sublist_setup();
 }

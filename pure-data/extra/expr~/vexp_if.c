@@ -3,7 +3,7 @@
  * Copyright (C) 1994, 1995, 1998, 1999 by IRCAM-Centre Georges Pompidou, Paris, France.
  * 
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License
+ * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * 
@@ -12,9 +12,9 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
+ * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * 
@@ -426,7 +426,7 @@ expr_perform(t_int *w)
         if (x->exp_flags & EF_STOP) {
                 for (i = 0; i < x->exp_nexpr; i++)
                         memset(x->exp_res[i].ex_vec, 0,
-                                        x->exp_vsize * sizeof (float));
+                                        x->exp_vsize * sizeof (t_float));
                 return (w + 2);
         }
 
@@ -726,11 +726,11 @@ fexpr_tilde_clear(t_expr *x, t_symbol *s, int argc, t_atom *argv)
          */
         if (!argc) {
                 for (i = 0; i < x->exp_nexpr; i++)
-                        memset(x->exp_p_res[i], 0, x->exp_vsize*sizeof(float));
+                        memset(x->exp_p_res[i], 0, x->exp_vsize*sizeof(t_float));
                 for (i = 0; i < MAX_VARS; i++)
                         if (x->exp_var[i].ex_type == ET_XI)
                                 memset(x->exp_p_var[i], 0,
-                                                x->exp_vsize*sizeof(float));
+                                                x->exp_vsize*sizeof(t_float));
                 return;
         }
         if (argc > 1) {
@@ -760,7 +760,7 @@ fexpr_tilde_clear(t_expr *x, t_symbol *s, int argc, t_atom *argv)
                         post("fexpr~-clear: no signal at inlet %d", vecno + 1);
                         return;
                 }
-                memset(x->exp_p_var[vecno], 0, x->exp_vsize*sizeof(float));
+                memset(x->exp_p_var[vecno], 0, x->exp_vsize*sizeof(t_float));
                 return;
         case 'y':
                 if (!sx->s_name[1])
@@ -777,7 +777,7 @@ fexpr_tilde_clear(t_expr *x, t_symbol *s, int argc, t_atom *argv)
                         post("fexpr~.clear: only %d outlets", x->exp_nexpr);
                         return;
                 }
-                memset(x->exp_p_res[vecno], 0, x->exp_vsize*sizeof(float));
+                memset(x->exp_p_res[vecno], 0, x->exp_vsize*sizeof(t_float));
                 return;
                 return;
         default:
@@ -997,7 +997,7 @@ ex_sum(t_expr *e, long int argc, struct ex_ex *argv, struct ex_ex *optr)
         t_garray *garray;
         int size;
         t_word *wvec;
-        float sum;
+        t_float sum;
         int indx;
 
         if (argv->ex_type != ET_SYM)
