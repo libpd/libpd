@@ -2,7 +2,7 @@ SRC_FILES = src/main.cpp src/PdObject.cpp ../../cpp/PdBase.cpp ../../cpp/PdTypes
 LIBPD = ../../libs/libpd.so
 TARGET = pd-test
 
-CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper/util -I../../libpd_wrapper -I../../cpp -std=c++11 -DUSE_STD_MUTEX -O3
+CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper/util -I../../libpd_wrapper -I../../cpp -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
 
 .PHONY: clean clobber
 

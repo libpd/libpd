@@ -18,7 +18,7 @@
 
 #include <iostream>
 
-#ifdef USE_STD_MUTEX
+#ifdef LIBPD_USE_STD_MUTEX
 	#define _LOCK() mutex.lock()
 	#define _UNLOCK() mutex.unlock()
 #else

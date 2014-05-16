@@ -25,7 +25,7 @@
 #endif
 
 // define this to use C++11 std::mutex for locking
-#ifdef USE_STD_MUTEX
+#ifdef LIBPD_USE_STD_MUTEX
 	#include <mutex>
 #endif
 
@@ -464,9 +464,9 @@ class PdBase {
             SYSRT
         };
 
-		#ifdef USE_STD_MUTEX
+		#ifdef LIBPD_USE_STD_MUTEX
 			std::mutex mutex; //< locks libpd C function calls,
-			                  //< enable by defining USE_STD_MUTEX
+			                  //< enable by defining LIBPD_USE_STD_MUTEX
 		#endif
 		bool processRet; //< process function return
 
