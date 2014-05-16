@@ -36,6 +36,7 @@ else
       -I"$(JAVA_HOME)/include/linux" -O3
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
+    CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
@@ -69,7 +70,16 @@ PD_FILES = \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
 	pure-data/src/x_qlist.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c 
+	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
+
+LIBPD_UTILS = \
+	libpd_wrapper/util/z_print_util.c \
+	libpd_wrapper/util/z_queued.c \
+	libpd_wrapper/util/ringbuffer.c
+
+CPP_FILES = \
+	cpp/PdBase.cpp \
+	cpp/PdTypes.cpp
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
@@ -86,9 +96,9 @@ JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
 	jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/util/z_hook_util.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
+PDCPP = libs/libpdcpp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
 PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
@@ -98,7 +108,9 @@ PDJAVA_JAR = libs/libpd.jar
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
 
-.PHONY: libpd csharplib javalib clean clobber
+CXXFLAGS = $(CFLAGS) -std=c++11 -DLIBPD_USE_STD_MUTEX
+
+.PHONY: libpd csharplib cpplib javalib clean clobber
 
 libpd: $(LIBPD)
 
@@ -122,13 +134,18 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o} ${HOOK_SET:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
+cpplib: $(PDCPP)
+
+$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${CPP_FILES:.cpp=.o}
+	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
+
 clean:
-	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o} ${HOOK_SET:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${JNI_FILE:.c=.o} ${CPP_FILES:.cpp=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
+	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
 	rm -f libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD)
