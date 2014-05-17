@@ -78,7 +78,10 @@ PD_EXTRA_OBJS = \
 	pure-data/src/d_fft_fftsg.o pure-data/src/d_fft_fftw.o \
 	pure-data/src/d_fftsg_h.o pure-data/src/x_qlist.o
 
-LIBPD_UTIL_FILES = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c libpd_wrapper/util/z_print_util.c
+LIBPD_UTILS = \
+	libpd_wrapper/util/z_print_util.c \
+	libpd_wrapper/util/z_queued.c \
+	libpd_wrapper/util/ringbuffer.c
 
 CPP_FILES = \
    cpp/PdBase.cpp \
@@ -110,7 +113,7 @@ PDJAVA_JAR = libs/libpd.jar
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
 
-CPPFLAGS = $(CFLAGS)
+CXXFLAGS = $(CFLAGS)
 
 .PHONY: libpd csharplib cpplib javalib clean clobber
 
@@ -141,13 +144,13 @@ $(PDCSHARP): ${PD_FILES:.c=.o}
 
 cpplib: $(PDCPP)
 
-$(PDCPP): ${LIBPD_UTIL_FILES:.c=.o} ${PD_FILES:.c=.o} ${CPP_FILES:.cpp=.o}
-	gcc -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
+$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${CPP_FILES:.cpp=.o}
+	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o} ${CPP_FILES:.cpp=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o} ${CPP_FILES:.cpp=.o} ${LIBPD_UTILS:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
+	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
 	rm -f libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD)
