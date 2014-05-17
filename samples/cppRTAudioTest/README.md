@@ -1,6 +1,9 @@
-# C++ JACK Example.
+# C++ RtAudio Example.
 
-This is a basic c++ sample application that uses the JACK library for audio output.  It has only been tested on Linux. See the JACK documentation for details.
+This is a basic c++ sample application that uses the RtAudio library for audio output.
+
+It has only been tested on Linux with ALSA and JACK. In other systems, you'll have
+to add preprocessor defines such as __MACOSX_CORE__ in the Makefile. See the RtAudio documentation for details.
 
 ## License
 
