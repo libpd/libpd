@@ -1,3 +1,13 @@
+#
+# Copyright (c) 2014 Rafael Vega <rvega@elsoftwarehamuerto.org>
+# 
+# BSD Simplified License.
+# For information on usage and redistribution, and for a DISCLAIMER OF ALL
+# WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+# 
+# See https://github.com/libpd/libpd for documentation
+#
+
 SRC_FILES = src/PdObject.cpp src/main.cpp src/RtAudio.cpp
 LIBPD = ../../libs/libpdcpp.so
 TARGET = pdtest
