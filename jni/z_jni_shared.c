@@ -60,12 +60,12 @@ static jobjectArray makeJavaArray(JNIEnv *env, int argc, t_atom *argv) {
   jobjectArray jarray = (*env)->NewObjectArray(env, argc, objClass, NULL);
   int i;
   for (i = 0; i < argc; i++) {
-    t_atom a = argv[i];
+    t_atom *a = &argv[i];
     jobject obj = NULL;
-    if (libpd_is_float(*a)) {
-      obj = (*env)->NewObject(env, floatClass, floatInit, libpd_get_float(*a));
-    } else if (libpd_is_symbol(*a)) {
-      obj = (*env)->NewStringUTF(env, libpd_get_symbol(*a));
+    if (libpd_is_float(a)) {
+      obj = (*env)->NewObject(env, floatClass, floatInit, libpd_get_float(a));
+    } else if (libpd_is_symbol(a)) {
+      obj = (*env)->NewStringUTF(env, libpd_get_symbol(a));
     }
     (*env)->SetObjectArrayElement(env, jarray, i, obj);
     if (obj != NULL) {
