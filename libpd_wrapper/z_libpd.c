@@ -53,6 +53,7 @@ int libpd_init(void) {
   sys_nmidiin = 0;
   sys_nmidiout = 0;
   sys_time = 0;
+  sys_init_fdpoll();
   pd_init();
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
@@ -103,6 +104,7 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   size_t n_out = sys_outchannels * DEFDACBLKSIZE;
   t_sample *p;
   size_t i;
+  sys_microsleep(0);
   for (p = sys_soundin, i = 0; i < n_in; i++) {
     *p++ = *inBuffer++;
   }
@@ -120,6 +122,7 @@ static const t_sample sample_to_short = SHRT_MAX,
 #define PROCESS(_x, _y) \
   int i, j, k; \
   t_sample *p0, *p1; \
+  sys_microsleep(0); \
   for (i = 0; i < ticks; i++) { \
     for (j = 0, p0 = sys_soundin; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < sys_inchannels; k++, p1 += DEFDACBLKSIZE) { \
