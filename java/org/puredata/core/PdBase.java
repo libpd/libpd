@@ -1,8 +1,8 @@
 /**
- * 
+ *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL WARRANTIES, see the
  * file, "LICENSE.txt," in this distribution.
- * 
+ *
  */
 
 package org.puredata.core;
@@ -18,32 +18,32 @@ import java.util.Map;
 
 
 /**
- * 
+ *
  * PdBase provides basic Java bindings for Pd.
- * 
+ *
  * Some random notes:
- * 
+ *
  * - This is a low-level library that aims to leave most design decisions to higher-level code. In
  * particular, it will throw no exceptions (except for the methods for opening files, which use
  * instances of {@link File} and may throw {@link IOException} when appropriate). At the same time,
  * it is designed to be fairly robust in that it is thread-safe and does as much error checking as I
  * find reasonable at this level. Client code is still responsible for proper dimensioning of
  * buffers and such, though.
- * 
+ *
  * - The MIDI methods choose sanity over consistency with Pd or the MIDI standard. To wit, channel
  * numbers always start at 0, and pitch bend values are centered at 0, i.e., they range from -8192
  * to 8191.
- * 
+ *
  * - The basic idea is to turn Pd into a library that essentially offers a rendering callback
  * (process) mimicking the design of JACK, the JACK Audio Connection Kit.
- * 
+ *
  * - The release method is mostly there as a reminder that some sort of cleanup might be necessary;
  * for the time being, it only releases the resources held by the print handler, closes all patches,
  * and cancels all subscriptions. Shutting down Pd itself wouldn't make sense because it might be
  * needed in the future, at which point the native library may not be reloaded.
- * 
+ *
  * @author Peter Brinkmann (peter.brinkmann@gmail.com)
- * 
+ *
  */
 public final class PdBase {
 
@@ -142,7 +142,7 @@ public final class PdBase {
 
   /**
    * Sets up Pd audio; must be called before rendering audio with process or startAudio.
-   * 
+   *
    * @return error code, 0 on success
    */
   public static int openAudio(int inputChannels, int outputChannels, int sampleRate) {
@@ -151,7 +151,7 @@ public final class PdBase {
 
   /**
    * Sets up Pd audio; must be called before rendering audio with process or startAudio.
-   * 
+   *
    * @return error code, 0 on success
    */
   public native static int openAudio(int inputChannels, int outputChannels, int sampleRate,
@@ -208,7 +208,7 @@ public final class PdBase {
 
   /**
    * Reads a patch from a file.
-   * 
+   *
    * @param file
    * @return an integer handle that identifies this patch; this handle is the $0 value of the patch
    * @throws IOException thrown if the file doesn't exist or can't be opened
@@ -230,7 +230,7 @@ public final class PdBase {
 
   /**
    * Reads a patch from a file.
-   * 
+   *
    * @param path to the file
    * @return an integer handle that identifies this patch; this handle is the $0 value of the patch
    * @throws IOException thrown if the file doesn't exist or can't be opened
@@ -241,7 +241,7 @@ public final class PdBase {
 
   /**
    * Closes a patch; will do nothing if the handle is invalid.
-   * 
+   *
    * @param handle representing the patch, as returned by openPatch
    */
   public synchronized static void closePatch(int handle) {
@@ -253,7 +253,7 @@ public final class PdBase {
 
   /**
    * Same as "compute audio" checkbox in Pd GUI, or [;pd dsp 0/1(
-   * 
+   *
    * Note: Maintaining a DSP state that's separate from the state of the audio rendering thread
    * doesn't make much sense in libpd. In most applications, you probably just want to call
    * {@code computeAudio(true)} at the beginning and then forget that this method exists.
@@ -264,7 +264,7 @@ public final class PdBase {
 
   /**
    * Sends a bang to the object associated with the given symbol.
-   * 
+   *
    * @param recv symbol associated with receiver
    * @return error code, 0 on success
    */
@@ -272,7 +272,7 @@ public final class PdBase {
 
   /**
    * Sends a float to the object associated with the given symbol.
-   * 
+   *
    * @param recv symbol associated with receiver
    * @param x float value to send to receiver
    * @return error code, 0 on success
@@ -281,7 +281,7 @@ public final class PdBase {
 
   /**
    * Sends a symbol to the object associated with the given symbol.
-   * 
+   *
    * @param recv symbol associated with receiver
    * @param sym symbol to send to receiver
    * @return error code, 0 on success
@@ -290,7 +290,7 @@ public final class PdBase {
 
   /**
    * Sends a list to an object in Pd.
-   * 
+   *
    * @param recv symbol associated with receiver
    * @param args list of arguments of type Integer, Float, or String
    * @return error code, 0 on success
@@ -302,7 +302,7 @@ public final class PdBase {
 
   /**
    * Sends a typed message to an object in Pd.
-   * 
+   *
    * @param recv symbol associated with receiver
    * @param msg first symbol of message
    * @param args list of arguments of type Integer, Float, or String
@@ -335,7 +335,7 @@ public final class PdBase {
 
   /**
    * Checks whether a symbol represents a Pd object.
-   * 
+   *
    * @param s String representing Pd symbol
    * @return true if and only if the symbol given by s is associated with something in Pd
    */
@@ -343,7 +343,7 @@ public final class PdBase {
 
   /**
    * Subscribes to Pd messages sent to the given symbol.
-   * 
+   *
    * @param symbol to subscribe to
    * @return error code, 0 on success
    */
@@ -362,7 +362,7 @@ public final class PdBase {
   /**
    * Unsubscribes from Pd messages sent to the given symbol; will do nothing if there is no
    * subscription to this symbol.
-   * 
+   *
    * @param symbol to unsubscribe from
    */
   public synchronized static void unsubscribe(String symbol) {
@@ -374,7 +374,7 @@ public final class PdBase {
 
   /**
    * Returns the size of an array in Pd.
-   * 
+   *
    * @param name of the array in Pd
    * @return size of the array, or a negative error code if the array does not exist
    */
@@ -382,7 +382,7 @@ public final class PdBase {
 
   /**
    * Reads values from an array in Pd.
-   * 
+   *
    * @param destination float array to write to
    * @param destOffset index at which to start writing
    * @param source array in Pd to read from
@@ -400,7 +400,7 @@ public final class PdBase {
 
   /**
    * Writes values to an array in Pd.
-   * 
+   *
    * @param destination name of the array in Pd to write to
    * @param destOffset index at which to start writing
    * @param source float array to read from
@@ -448,7 +448,7 @@ public final class PdBase {
 
   /**
    * Sends a note on event to Pd.
-   * 
+   *
    * @param channel starting at 0
    * @param pitch 0..0x7f
    * @param velocity 0..0x7f
@@ -458,7 +458,7 @@ public final class PdBase {
 
   /**
    * Sends a control change event to Pd.
-   * 
+   *
    * @param channel starting at 0
    * @param controller 0..0x7f
    * @param value 0..0x7f
@@ -468,7 +468,7 @@ public final class PdBase {
 
   /**
    * Sends a program change event to Pd.
-   * 
+   *
    * @param channel starting at 0
    * @param value 0..0x7f
    * @return error code, 0 on success
@@ -477,7 +477,7 @@ public final class PdBase {
 
   /**
    * Sends a pitch bend event to Pd.
-   * 
+   *
    * @param channel starting at 0
    * @param value -8192..8191 (note that Pd has some offset bug in its pitch bend objects, but libpd
    *        corrects for this)
@@ -487,7 +487,7 @@ public final class PdBase {
 
   /**
    * Sends an aftertouch event to Pd.
-   * 
+   *
    * @param channel starting at 0
    * @param value 0..0x7f
    * @return error code, 0 on success
@@ -496,7 +496,7 @@ public final class PdBase {
 
   /**
    * Sends a polyphonic aftertouch event to Pd.
-   * 
+   *
    * @param channel starting at 0
    * @param pitch 0..0x7f
    * @param value 0..0x7f
@@ -506,7 +506,7 @@ public final class PdBase {
 
   /**
    * Sends one raw MIDI byte to Pd.
-   * 
+   *
    * @param port 0..0x0fff
    * @param value 0..0xff
    * @return error code, 0 on success
@@ -515,7 +515,7 @@ public final class PdBase {
 
   /**
    * Sends one byte of a sysex message to Pd.
-   * 
+   *
    * @param port 0..0x0fff
    * @param value 0..0x7f
    * @return error code, 0 on success
@@ -524,7 +524,7 @@ public final class PdBase {
 
   /**
    * Sends one byte to the realtimein object of Pd.
-   * 
+   *
    * @param port 0..0x0fff
    * @param value 0..0xff
    * @return error code, 0 on success
@@ -556,7 +556,7 @@ public final class PdBase {
 
   /**
    * Raw process callback, processes one Pd tick, writes raw data to buffers without interlacing.
-   * 
+   *
    * @param inBuffer must be an array of the right size, never null; use inBuffer = new short[0] if
    *        no input is desired
    * @param outBuffer must be an array of size outBufferSize from openAudio call
@@ -567,7 +567,7 @@ public final class PdBase {
   /**
    * Main process callback; reads samples from inBuffer and writes samples to outBuffer, using
    * arrays of type short.
-   * 
+   *
    * @param ticks the number of Pd ticks (i.e., blocks of 64 frames) to compute
    * @param inBuffer must be an array of the right size, never null; use inBuffer = new short[0] if
    *        no input is desired
@@ -579,7 +579,7 @@ public final class PdBase {
   /**
    * Main process callback; reads samples from inBuffer and writes samples to outBuffer, using
    * arrays of type float.
-   * 
+   *
    * @param ticks the number of Pd ticks (i.e., blocks of 64 frames) to compute
    * @param inBuffer must be an array of the right size, never null; use inBuffer = new short[0] if
    *        no input is desired
@@ -591,7 +591,7 @@ public final class PdBase {
   /**
    * Main process callback; reads samples from inBuffer and writes samples to outBuffer, using
    * arrays of type double.
-   * 
+   *
    * @param ticks the number of Pd ticks (i.e., blocks of 64 frames) to compute
    * @param inBuffer must be an array of the right size, never null; use inBuffer = new short[0] if
    *        no input is desired
