@@ -641,6 +641,16 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
   return err;
 }
 
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_lockNative
+(JNIEnv *env, jclass cls) {
+  pthread_mutex_lock(&mutex);
+}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unlockNative
+(JNIEnv *env, jclass cls) {
+  pthread_mutex_unlock(&mutex);
+}
+
 // -----------------------------------------------------------------------------
 // Audio glue needs to be supplied in another file.
 // -----------------------------------------------------------------------------

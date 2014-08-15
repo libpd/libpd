@@ -105,6 +105,17 @@ public final class PdBase {
   }
 
   /**
+   * Executes a <code>Runnable</code> in a thread-safe manner.
+   *
+   * @param r the Runnable to execute
+   */
+  public static void executeSynchronizedRunnable(Runnable r) {
+    lockNative();
+    r.run();
+    unlockNative();
+  }
+
+  /**
    * Clears the search path for Pd externals.
    */
   public native static void clearSearchPath();
@@ -620,5 +631,9 @@ public final class PdBase {
   private native static long bindSymbol(String s);
 
   private native static void unbindSymbol(long p);
+
+  private native static void lockNative();
+
+  private native static void unlockNative();
 
 }
