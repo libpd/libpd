@@ -542,6 +542,33 @@ jfloatArray jsrc, jint srcOffset, jint n) {
   return result;
 }
 
+JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_resizeArrayNative
+(JNIEnv *env, jclass cls, jstring jdest, jint newSize) {
+  const char *cdest = (*env)->GetStringUTFChars(env, jdest, NULL);
+  t_garray *table = (t_garray *) pd_findbyclass(gensym(cdest), garray_class);
+  (*env)->ReleaseStringUTFChars(env, jdest, cdest);
+  if (table != NULL) {
+    pthread_mutex_lock(&mutex);
+    garray_resize_long(table, newSize);
+    pthread_mutex_unlock(&mutex);
+    return 0;
+  } else {
+    return -1;
+  }
+}
+
+JNIEXPORT jobject JNICALL Java_org_puredata_core_PdBase_getArrayAsBufferNative
+(JNIEnv *env, jclass cls, jstring jdest) {
+  const char *cdest = (*env)->GetStringUTFChars(env, jdest, NULL);
+  t_garray *table = (t_garray *) pd_findbyclass(gensym(cdest), garray_class);
+  (*env)->ReleaseStringUTFChars(env, jdest, cdest);
+  if (table != NULL) {
+    return (*env)->NewDirectByteBuffer(env, garray_vec(table), garray_npoints(table)*sizeof(t_sample));
+  } else {
+    return NULL;
+  }
+}
+
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendNoteOn
 (JNIEnv *env, jclass cls, jint channel, jint pitch, jint velocity) {
   pthread_mutex_lock(&mutex);

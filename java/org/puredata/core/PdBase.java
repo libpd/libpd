@@ -10,6 +10,9 @@ package org.puredata.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -403,6 +406,36 @@ public final class PdBase {
   }
 
   /**
+   * Resizes array to the new length. Existing values are not necessarily maintained.
+   *
+   * @param desintation name of the array in Pd to resize
+   * @param newSize the number of samples to resize the array to
+   * @return 0 on success, or a negative error code on failure
+   */
+  public static int resizeArray(String desintation, int newSize) {
+    if (newSize <= 0) {
+      return -2;
+    }
+    return resizeArrayNative(desintation, newSize);
+  }
+
+  /**
+   * Returns the named table as a FloatBuffer. Returns <code>null</code> is the named table
+   * does not exist.
+   *
+   * @param desintation name of the array in Pd retrieve as a buffer
+   * @return the FloatBuffer
+   */
+  public static FloatBuffer getArrayAsBuffer(String desintation) {
+    ByteBuffer buffer = getArrayAsBufferNative(desintation);
+    if (buffer != null) {
+      return buffer.order(ByteOrder.nativeOrder()).asFloatBuffer();
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * Sends a note on event to Pd.
    * 
    * @param channel starting at 0
@@ -579,6 +612,10 @@ public final class PdBase {
 
   private native static int writeArrayNative(String destination, int destOffset, float[] source,
       int srcOffset, int n);
+
+  private native static ByteBuffer getArrayAsBufferNative(String desintation);
+
+  private native static int resizeArrayNative(String destination, int newSize);
 
   private native static long bindSymbol(String s);
 
