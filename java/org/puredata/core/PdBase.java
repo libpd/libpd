@@ -111,8 +111,11 @@ public final class PdBase {
    */
   public static void executeSynchronizedRunnable(Runnable r) {
     lockNative();
-    r.run();
-    unlockNative();
+    try {
+      r.run();
+    } finally {
+      unlockNative();
+    }
   }
 
   /**
