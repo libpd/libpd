@@ -5,7 +5,7 @@ LOCAL_PATH := $(call my-dir)
 PD_SRC_FILES := \
   pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
   pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
-  pure-data/src/d_fft_mayer.c pure-data/src/d_fftroutine.c \
+  pure-data/src/d_fft_fftsg.c \
   pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
   pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
   pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
