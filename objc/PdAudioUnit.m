@@ -102,6 +102,11 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	return noErr;
 }
 
+
+- (AURenderCallback)renderCallback {
+	return AudioRenderCallback;
+}
+
 #pragma mark - Private
 
 - (void)destroyAudioUnit {
@@ -147,7 +152,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
                                                   sizeof(streamDescription)));
 	
 	AURenderCallbackStruct callbackStruct;
-	callbackStruct.inputProc = AudioRenderCallback;
+	callbackStruct.inputProc = self.renderCallback;
 	callbackStruct.inputProcRefCon = self;
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
                                                   kAudioUnitProperty_SetRenderCallback,
