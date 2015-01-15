@@ -58,4 +58,8 @@
 /// Print info on the audio unit settings to the console
 - (void)print;
 
+/// Called by configureWithSampleRate when setting up the internal audio unit.
+/// Default format: 32 bit, floating point, linear PCM, interleaved
+- (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numChannels;
+
 @end
