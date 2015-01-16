@@ -52,7 +52,6 @@ int libpd_init(void) {
   sys_hipriority = 0;
   sys_nmidiin = 0;
   sys_nmidiout = 0;
-  sys_time = 0;
   sys_init_fdpoll();
   pd_init();
   libpdreceive_setup();
@@ -109,7 +108,7 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
     *p++ = *inBuffer++;
   }
   memset(sys_soundout, 0, n_out * sizeof(t_sample));
-  sched_tick(sys_time + sys_time_per_dsp_tick);
+  sched_tick();
   for (p = sys_soundout, i = 0; i < n_out; i++) {
     *outBuffer++ = *p++;
   }
@@ -130,7 +129,7 @@ static const t_sample sample_to_short = SHRT_MAX,
       } \
     } \
     memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_sample)); \
-    sched_tick(sys_time + sys_time_per_dsp_tick); \
+    sched_tick(); \
     for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < sys_outchannels; k++, p1 += DEFDACBLKSIZE) { \
         *outBuffer++ = *p1 _y; \

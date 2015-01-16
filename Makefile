@@ -46,7 +46,7 @@ PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 PD_FILES = \
 	pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
 	pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
-	pure-data/src/d_fft_mayer.c pure-data/src/d_fftroutine.c \
+	pure-data/src/d_fft_fftsg.c \
 	pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
 	pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
 	pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
@@ -75,8 +75,8 @@ PD_FILES = \
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
-	pure-data/src/d_fft_fftsg.o pure-data/src/d_fft_fftw.o \
-	pure-data/src/d_fftsg_h.o pure-data/src/x_qlist.o
+	pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
+	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
 
 LIBPD_UTILS = \
 	libpd_wrapper/util/z_print_util.c \
