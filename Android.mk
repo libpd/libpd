@@ -27,10 +27,11 @@ PD_SRC_FILES := \
   pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
   pure-data/src/x_gui.c pure-data/src/x_list.c pure-data/src/x_midi.c \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_array.c \
-  pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c pure-data/src/x_text.c \
-  libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-  libpd_wrapper/z_libpd.c libpd_wrapper/util/ringbuffer.c \
-  libpd_wrapper/util/z_queued.c libpd_wrapper/z_hooks.c
+  pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c \
+  pure-data/src/x_text.c libpd_wrapper/s_libpdmidi.c \
+  libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
+  libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
+  libpd_wrapper/z_hooks.c
 PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
   $(LOCAL_PATH)/libpd_wrapper/util
 PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w

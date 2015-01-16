@@ -13,8 +13,6 @@
 		0E82A04112EEFDEE0053280E /* d_dac.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF712EEFDED0053280E /* d_dac.c */; };
 		0E82A04212EEFDEE0053280E /* d_delay.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF812EEFDED0053280E /* d_delay.c */; };
 		0E82A04312EEFDEE0053280E /* d_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF912EEFDED0053280E /* d_fft.c */; };
-		0E82A04412EEFDEE0053280E /* d_fft_mayer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFA12EEFDED0053280E /* d_fft_mayer.c */; };
-		0E82A04512EEFDEE0053280E /* d_fftroutine.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFB12EEFDED0053280E /* d_fftroutine.c */; };
 		0E82A04612EEFDEE0053280E /* d_filter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFC12EEFDED0053280E /* d_filter.c */; };
 		0E82A04712EEFDEE0053280E /* d_global.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFD12EEFDED0053280E /* d_global.c */; };
 		0E82A04812EEFDEE0053280E /* d_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFE12EEFDED0053280E /* d_math.c */; };
@@ -95,8 +93,6 @@
 		1190135B1486450C00086F19 /* d_dac.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF712EEFDED0053280E /* d_dac.c */; };
 		1190135C1486450C00086F19 /* d_delay.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF812EEFDED0053280E /* d_delay.c */; };
 		1190135D1486450C00086F19 /* d_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF912EEFDED0053280E /* d_fft.c */; };
-		1190135E1486450C00086F19 /* d_fft_mayer.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFA12EEFDED0053280E /* d_fft_mayer.c */; };
-		1190135F1486450C00086F19 /* d_fftroutine.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFB12EEFDED0053280E /* d_fftroutine.c */; };
 		119013601486450C00086F19 /* d_filter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFC12EEFDED0053280E /* d_filter.c */; };
 		119013611486450C00086F19 /* d_global.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFD12EEFDED0053280E /* d_global.c */; };
 		119013621486450C00086F19 /* d_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFE12EEFDED0053280E /* d_math.c */; };
@@ -184,6 +180,8 @@
 		3088883316BCB4A400781682 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		3088883416BCB4A400781682 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
 		3088883516BCB4A400781682 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
+		30DDEC331A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */ = {isa = PBXBuildFile; fileRef = 30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */; };
+		30DDEC341A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */ = {isa = PBXBuildFile; fileRef = 30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */; };
 		30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
 		30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
 		30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
@@ -200,8 +198,6 @@
 		0E829FF712EEFDED0053280E /* d_dac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_dac.c; sourceTree = "<group>"; };
 		0E829FF812EEFDED0053280E /* d_delay.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_delay.c; sourceTree = "<group>"; };
 		0E829FF912EEFDED0053280E /* d_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fft.c; sourceTree = "<group>"; };
-		0E829FFA12EEFDED0053280E /* d_fft_mayer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fft_mayer.c; sourceTree = "<group>"; };
-		0E829FFB12EEFDED0053280E /* d_fftroutine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fftroutine.c; sourceTree = "<group>"; };
 		0E829FFC12EEFDED0053280E /* d_filter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_filter.c; sourceTree = "<group>"; };
 		0E829FFD12EEFDED0053280E /* d_global.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_global.c; sourceTree = "<group>"; };
 		0E829FFE12EEFDED0053280E /* d_math.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_math.c; sourceTree = "<group>"; };
@@ -293,6 +289,7 @@
 		306DBE5516BC6710007CF226 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
 		3088882C16BCB4A400781682 /* z_print_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_print_util.c; sourceTree = "<group>"; };
 		3088882D16BCB4A400781682 /* z_print_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_print_util.h; sourceTree = "<group>"; };
+		30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fft_fftsg.c; sourceTree = "<group>"; };
 		30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdMidiDispatcher.h; sourceTree = "<group>"; };
 		30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdMidiDispatcher.m; sourceTree = "<group>"; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
@@ -359,8 +356,7 @@
 				0E829FF712EEFDED0053280E /* d_dac.c */,
 				0E829FF812EEFDED0053280E /* d_delay.c */,
 				0E829FF912EEFDED0053280E /* d_fft.c */,
-				0E829FFA12EEFDED0053280E /* d_fft_mayer.c */,
-				0E829FFB12EEFDED0053280E /* d_fftroutine.c */,
+				30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */,
 				0E829FFC12EEFDED0053280E /* d_filter.c */,
 				0E829FFD12EEFDED0053280E /* d_global.c */,
 				0E829FFE12EEFDED0053280E /* d_math.c */,
@@ -611,8 +607,6 @@
 				1190135B1486450C00086F19 /* d_dac.c in Sources */,
 				1190135C1486450C00086F19 /* d_delay.c in Sources */,
 				1190135D1486450C00086F19 /* d_fft.c in Sources */,
-				1190135E1486450C00086F19 /* d_fft_mayer.c in Sources */,
-				1190135F1486450C00086F19 /* d_fftroutine.c in Sources */,
 				119013601486450C00086F19 /* d_filter.c in Sources */,
 				119013611486450C00086F19 /* d_global.c in Sources */,
 				119013621486450C00086F19 /* d_math.c in Sources */,
@@ -675,6 +669,7 @@
 				1190139A1486450C00086F19 /* x_time.c in Sources */,
 				1190139B1486450C00086F19 /* s_libpdmidi.c in Sources */,
 				1190139C1486450C00086F19 /* x_libpdreceive.c in Sources */,
+				30DDEC341A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */,
 				1190139D1486450C00086F19 /* z_libpd.c in Sources */,
 				30377F4A1866680A0026ED3E /* x_text.c in Sources */,
 				1190139F1486450C00086F19 /* PdBase.m in Sources */,
@@ -698,8 +693,6 @@
 				0E82A04112EEFDEE0053280E /* d_dac.c in Sources */,
 				0E82A04212EEFDEE0053280E /* d_delay.c in Sources */,
 				0E82A04312EEFDEE0053280E /* d_fft.c in Sources */,
-				0E82A04412EEFDEE0053280E /* d_fft_mayer.c in Sources */,
-				0E82A04512EEFDEE0053280E /* d_fftroutine.c in Sources */,
 				30377F451866680A0026ED3E /* x_array.c in Sources */,
 				0E82A04612EEFDEE0053280E /* d_filter.c in Sources */,
 				0E82A04712EEFDEE0053280E /* d_global.c in Sources */,
@@ -762,6 +755,7 @@
 				0E82A08712EEFDEE0053280E /* x_time.c in Sources */,
 				30377F491866680A0026ED3E /* x_text.c in Sources */,
 				0E82A09712EEFE060053280E /* s_libpdmidi.c in Sources */,
+				30DDEC331A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */,
 				0E82A09812EEFE060053280E /* x_libpdreceive.c in Sources */,
 				0E82A09C12EEFE060053280E /* z_libpd.c in Sources */,
 				0E82A0AF12EEFE5E0053280E /* PdBase.m in Sources */,
@@ -795,6 +789,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-DPD",
+					"-DUSEAPI_DUMMY",
+					"-DHAVE_LIBDL",
+					"-DHAVE_UNISTD_H",
+					"-DHAVE_ALLOCA_H",
+				);
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
 			};
@@ -811,6 +812,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-DPD",
+					"-DUSEAPI_DUMMY",
+					"-DHAVE_LIBDL",
+					"-DHAVE_UNISTD_H",
+					"-DHAVE_ALLOCA_H",
+				);
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
 			};

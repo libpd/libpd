@@ -24,7 +24,7 @@ setup(name='pypdlib',
                     'dl',
                     'pthread',
                   ],
-                  sources=[
+                  sources = [
                     'pylibpd.i',
                     '../libpd_wrapper/s_libpdmidi.c',
                     '../libpd_wrapper/x_libpdreceive.c',
