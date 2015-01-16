@@ -11,7 +11,9 @@
  * https://github.com/danomatika/ofxPd
  *
  */
+#include <stdlib.h>
 #include <iostream>
+#include "PdBase.hpp"
 #include "PdObject.h"
 
 using namespace std;
@@ -19,6 +21,14 @@ using namespace pd;
 
 void testEventPolling(PdBase& pd);
 
+// Howdy gentle libpd user,
+//
+// This is just a simple test to make sure message passing in the libpd c++ layer
+// is working. Like the C test, this simulates 10 seconds of logical audio time
+// by calling processFloat in a for loop. Running this app will not produce any
+// sound as it is not using an audio api. You need to add that yourself using
+// something like PortAudio, Jack, etc as C++ does not have a default audio library.
+//
 int main(int argc, char **argv) {
 
 	// our pd engine
@@ -28,7 +38,7 @@ int main(int argc, char **argv) {
 	// block size 64, one tick per buffer
 	float inbuf[64], outbuf[128];
 	
-	// receives messages and midi
+	// custom receiver object for messages and midi
 	PdObject pdObject;
 
 	// init pd
@@ -46,7 +56,7 @@ int main(int argc, char **argv) {
 
 	// set receivers
 	pd.setReceiver(&pdObject);
-    pd.setMidiReceiver(&pdObject);
+	pd.setMidiReceiver(&pdObject);
 
 	// add the data/pd folder to the search path
 	pd.addToSearchPath("pd");
@@ -78,11 +88,11 @@ int main(int argc, char **argv) {
 	pd.sendBang("fromCPP");
 	pd.sendFloat("fromCPP", 100);
 	pd.sendSymbol("fromCPP", "test string");
-    
-    // stream interface
-    pd << Bang("fromCPP")
-       << Float("fromCPP", 100)
-       << Symbol("fromCPP", "test string");
+    	
+	// stream interface
+	pd << Bang("fromCPP")
+		<< Float("fromCPP", 100)
+		<< Symbol("fromCPP", "test string");
 	
 	// send a list
 	pd.startMessage();
@@ -96,15 +106,15 @@ int main(int argc, char **argv) {
 		pd.addSymbol("a symbol");
 	pd.finishList(patch.dollarZeroStr()+"-fromCPP");
 	
-    // send a list using the List object
-    List testList;
-    testList.addFloat(1.23);
-    testList.addSymbol("sent from a List object");
-    pd.sendList("fromCPP", testList);
-    pd.sendMessage("fromCPP", "msg", testList);
-    
-    // stream interface for list
-    pd << StartMessage() << 1.23 << "sent from a streamed list" << FinishList("fromCPP");
+	// send a list using the List object
+	List testList;
+	testList.addFloat(1.23);
+	testList.addSymbol("sent from a List object");
+	pd.sendList("fromCPP", testList);
+	pd.sendMessage("fromCPP", "msg", testList);
+
+	// stream interface for list
+	pd << StartMessage() << 1.23 << "sent from a streamed list" << FinishList("fromCPP");
     
 	cout << "FINISH Message Test" << endl;
 	
@@ -125,11 +135,11 @@ int main(int argc, char **argv) {
 	
 	// stream
 	pd << NoteOn(midiChan, 60) << ControlChange(midiChan, 100, 64)
-       << ProgramChange(midiChan, 100) << PitchBend(midiChan, 2000)
-       << Aftertouch(midiChan, 100) << PolyAftertouch(midiChan, 64, 100)
-	   << StartMidi(0) << 239 << Finish()
-	   << StartSysex(0) << 239 << Finish()
-	   << StartSysRealTime(0) << 239 << Finish();
+		<< ProgramChange(midiChan, 100) << PitchBend(midiChan, 2000)
+		<< Aftertouch(midiChan, 100) << PolyAftertouch(midiChan, 64, 100)
+		<< StartMidi(0) << 239 << Finish()
+		<< StartSysex(0) << 239 << Finish()
+		<< StartSysRealTime(0) << 239 << Finish();
     
 	cout << "FINISH MIDI Test" << endl;
 	
@@ -181,14 +191,14 @@ int main(int argc, char **argv) {
 	
 	// disable receivers, enable polling
 	pd.setReceiver(NULL);
-    pd.setMidiReceiver(NULL);
-	
+	pd.setMidiReceiver(NULL);
+
 	pd.sendSymbol("fromCPP", "test");
 	testEventPolling(pd);
-	
+
 	// reenable receivers, disable polling
 	pd.setReceiver(&pdObject);
-    pd.setMidiReceiver(&pdObject);
+	pd.setMidiReceiver(&pdObject);
 	
 	cout << "FINISH Event Polling Test" << endl << endl;
 	
@@ -216,6 +226,7 @@ int main(int argc, char **argv) {
   return 0;
 }
 
+// process the message queue manually using pd::Message objects
 void testEventPolling(PdBase& pd) {
 	
 	cout << "Number of waiting messages: " << pd.numMessages() << endl;

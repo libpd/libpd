@@ -20,7 +20,7 @@
 @property (nonatomic, copy) NSString *baseName;
 @property (nonatomic, copy) NSString *pathName;
 
-- (void)openFile:(NSString *)baseName path:(NSString *)pathName;	// open a file with base and path names
+- (void)openFile:(NSString *)baseName path:(NSString *)pathName;  // open a file with base and path names
 
 @end
 
@@ -49,11 +49,11 @@
 #pragma mark - Dealloc
 
 - (void)dealloc {
-	[self closeFile]; 
+	[self closeFile];
 	self.pathName = nil;
 	self.baseName = nil;
 	self.fileReference = nil;
-	
+
 	[super dealloc];
 }
 
@@ -67,19 +67,35 @@
 	self.baseName = baseName;
 	self.pathName = pathName;
 
-    void *x = [PdBase openFile:baseName path:pathName];
-    if (x) {
-        self.fileReference = [NSValue valueWithPointer:x];
-        self.dollarZero = [PdBase dollarZeroForFile:x];
-    }
+	void *x = [PdBase openFile:baseName path:pathName];
+	if (x) {
+		self.fileReference = [NSValue valueWithPointer:x];
+		self.dollarZero = [PdBase dollarZeroForFile:x];
+	}
+}
+
+- (PdFile *)openNewInstance {
+	return [PdFile openFileNamed:self.baseName path:self.pathName];
+}
+
+- (bool)isValid {
+	return (bool) self.fileReference;
 }
 
 - (void)closeFile {
-    void *x = [self.fileReference pointerValue];
-    if (x) {
-        [PdBase closeFile:x];
-        self.fileReference = nil;
-    }
+	void *x = [self.fileReference pointerValue];
+	if (x) {
+		[PdBase closeFile:x];
+		self.fileReference = nil;
+	}
+}
+
+#pragma mark -
+#pragma mark - Util
+
+- (NSString *)description {
+	return [NSString stringWithFormat: @"Patch: \"%@\" $0: %d valid: %d",
+	self.baseName, self.dollarZero, [self isValid]];
 }
 
 @end

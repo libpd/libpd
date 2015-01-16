@@ -36,6 +36,7 @@ else
       -I"$(JAVA_HOME)/include/linux" -O3
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
+    CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
@@ -45,7 +46,7 @@ PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 PD_FILES = \
 	pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
 	pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
-	pure-data/src/d_fft_mayer.c pure-data/src/d_fftroutine.c \
+	pure-data/src/d_fft_fftsg.c \
 	pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
 	pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
 	pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
@@ -64,29 +65,45 @@ PD_FILES = \
 	pure-data/src/s_file.c pure-data/src/s_inter.c \
 	pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
 	pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
-	pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
+	pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
 	pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
-	pure-data/src/x_qlist.c pure-data/src/x_time.c \
+	pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_libpd.c 
+	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c 
+
+# object files which are somehow generated but not from sources listed above,
+# there is probably a better fix but this works for now
+PD_EXTRA_OBJS = \
+	pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
+	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
+
+LIBPD_UTILS = \
+	libpd_wrapper/util/z_print_util.c \
+	libpd_wrapper/util/z_queued.c \
+	libpd_wrapper/util/ringbuffer.c
+
+CPP_FILES = \
+   cpp/PdBase.cpp \
+   cpp/PdTypes.cpp
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
 	java/org/puredata/core/NativeLoader.java \
 	java/org/puredata/core/PdListener.java \
+	java/org/puredata/core/PdMidiListener.java \
 	java/org/puredata/core/PdMidiReceiver.java \
 	java/org/puredata/core/PdReceiver.java \
 	java/org/puredata/core/utils/IoUtils.java \
 	java/org/puredata/core/utils/PdDispatcher.java
 
-	
-JNI_FILE = libpd_wrapper/z_jni.c
-JNIH_FILE = libpd_wrapper/z_jni.h
+JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
+	jni/z_jni_plain.c
+JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-HOOK_SET = libpd_wrapper/z_csharp_helper.c
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
+PDCPP = libs/libpdcpp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
 PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
@@ -94,16 +111,18 @@ PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
-         -I./libpd_wrapper $(PLATFORM_CFLAGS)
+         -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
 
-.PHONY: libpd csharplib javalib clean clobber
+CXXFLAGS = $(CFLAGS)
+
+.PHONY: libpd csharplib cpplib javalib clean clobber
 
 libpd: $(LIBPD)
 
 $(LIBPD): ${PD_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
-javalib: $(PDJAVA_JAR)
+javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
 $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^
@@ -120,13 +139,18 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o} ${HOOK_SET:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
+cpplib: $(PDCPP)
+
+$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${CPP_FILES:.cpp=.o}
+	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
+
 clean:
-	rm -f ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o} ${HOOK_SET:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o} ${CPP_FILES:.cpp=.o} ${LIBPD_UTILS:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
+	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
 	rm -f libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD)

@@ -15,6 +15,7 @@
 
 #include "PdBase.hpp"
 
+// custom receiver class
 class PdObject : public pd::PdReceiver, public pd::PdMidiReceiver {
 
 	public:
@@ -28,7 +29,7 @@ class PdObject : public pd::PdReceiver, public pd::PdMidiReceiver {
 		void receiveList(const std::string& dest, const pd::List& list);
 		void receiveMessage(const std::string& dest, const std::string& msg, const pd::List& list);
 		
-        // pd midi receiver callbacks
+		// pd midi receiver callbacks
 		void receiveNoteOn(const int channel, const int pitch, const int velocity);
 		void receiveControlChange(const int channel, const int controller, const int value);
 		void receiveProgramChange(const int channel, const int value);

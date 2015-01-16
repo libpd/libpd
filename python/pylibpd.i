@@ -2,6 +2,7 @@
  * Basic Python bindings for libpd
  *
  * Copyright (c) 2010 Peter Brinkmann (peter.brinkmann@gmail.com)
+ * Updated 2013 Dan Wilcox (danomatika@gmail.com)
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF
  * ALL WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -161,6 +162,7 @@ class PdManager:
 
 %{
 #include "z_libpd.h"
+#include "util/z_print_util.h"
 
 static PyObject *convertArgs(const char *dest, const char* sym,
                               int n, t_atom *args) {
@@ -173,7 +175,7 @@ static PyObject *convertArgs(const char *dest, const char* sym,
   }
   int j;
   for (j = 0; i < n; i++, j++) {
-    t_atom a = args[j];
+    t_atom *a = &args[j];
     PyObject *x;
     if (libpd_is_float(a)) {
       x = PyFloat_FromDouble(libpd_get_float(a));
@@ -236,7 +238,7 @@ MAKE_CALLBACK(midibyte, (int p, int b),
 %}
 
 %init %{
-#define ASSIGN_CALLBACK(s) libpd_##s##hook = pylibpd_##s;
+#define ASSIGN_CALLBACK(s) libpd_set_##s##hook(pylibpd_##s);
 
 ASSIGN_CALLBACK(print)
 ASSIGN_CALLBACK(bang)
