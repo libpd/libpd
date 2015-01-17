@@ -5,7 +5,7 @@ LOCAL_PATH := $(call my-dir)
 PD_SRC_FILES := \
   pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
   pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
-  pure-data/src/d_fft_mayer.c pure-data/src/d_fftroutine.c \
+  pure-data/src/d_fft_fftsg.c \
   pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
   pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
   pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
@@ -26,11 +26,12 @@ PD_SRC_FILES := \
   pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
   pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
   pure-data/src/x_gui.c pure-data/src/x_list.c pure-data/src/x_midi.c \
-  pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_qlist.c \
-  pure-data/src/x_time.c pure-data/src/x_interface.c \
-  libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-  libpd_wrapper/z_libpd.c libpd_wrapper/util/ringbuffer.c \
-  libpd_wrapper/util/z_queued.c
+  pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_array.c \
+  pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c \
+  pure-data/src/x_text.c libpd_wrapper/s_libpdmidi.c \
+  libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
+  libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
+  libpd_wrapper/z_hooks.c
 PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
   $(LOCAL_PATH)/libpd_wrapper/util
 PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w

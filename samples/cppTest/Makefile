@@ -1,13 +1,13 @@
-SRC_FILES = src/main.cpp src/PdObject.cpp
+SRC_FILES = src/PdObject.cpp src/main.cpp
 LIBPD = ../../libs/libpdcpp.so
 TARGET = pd-test
 
-CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper/util -I../../libpd_wrapper -I../../cpp -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
+CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper -I../../cpp -O3
 
 .PHONY: clean clobber
 
 $(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD)
-	g++ $^ -o $(TARGET) -ljack $(LIBPD)
+	g++ $^ $(LIBPD) -o $(TARGET)
 
 src/%.o: src/%.cpp 
 	g++ $(CXXFLAGS) -c src/$*.cpp -o src/$*.o

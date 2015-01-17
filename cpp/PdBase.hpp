@@ -33,18 +33,17 @@ typedef struct _atom t_atom;
 
 namespace pd {
 
-///
-///    a Pure Data instance
+/// a Pure Data instance
 ///
 /// use this class directly or extend it and any of its virtual functions
 ///
 ///
 /// note: this object is not thread safe! use your own mutexes ...
 ///
-///          see https://github.com/danomatika/ofxPd/tree/master/src for an example
+/// see https://github.com/danomatika/ofxPd/tree/master/src for an example
 ///
-///    note: if you need to grab events in your main thread (aka working with a gui),
-///          you may find the message polling interface useful, see nextMessage()
+/// note: if you need to grab events in your main thread (aka working with a gui),
+///       you may find the message polling interface useful, see nextMessage()
 ///
 /// note: libpd currently does not support multiple states and it is
 ///       suggested that you use only one PdBase-derived object at a time

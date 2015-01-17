@@ -32,17 +32,24 @@
 #pragma mark - Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	// Override point for customization after application launch.
 	self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
 	self.window.rootViewController = self.viewController;
+	
+	// simple check to see which mode the app is running in, useful when trying to debug 64 bit issues
+	if (sizeof(void*) == 4) {
+		NSLog(@"32-bit App");
+	} else if (sizeof(void*) == 8) {
+		NSLog(@"64-bit App");
+	}
 	
 	[self setupPd];
 	[self testPd];
 	
 	[self.window makeKeyAndVisible];
 	
-    return YES;
+	return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -70,7 +77,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	
 	UITouch *touch = [touches anyObject];
-    CGPoint pos = [touch locationInView:self.viewController.view];
+	CGPoint pos = [touch locationInView:self.viewController.view];
 	int pitch = (-1 * (pos.y/CGRectGetHeight(self.viewController.view.frame)) + 1) * 127;
 	
 	[PdBase sendList:[NSArray arrayWithObjects:@"pitch", [NSNumber numberWithInt:pitch], nil] toReceiver:@"tone"];
@@ -100,7 +107,7 @@
 	[self.audioController print];
 
 	// set AppDelegate as PdRecieverDelegate to receive messages from pd
-    [PdBase setDelegate:self];
+	[PdBase setDelegate:self];
 	[PdBase setMidiDelegate:self]; // for midi too
 	
 	// recieve messages to fromPD: [r fromPD]
@@ -150,9 +157,9 @@
 	// send a list to the $0 receiver ie $0-toOF
 	[PdBase sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", self.patch.dollarZero]];
 	
-    // send a message
+	// send a message
 	[PdBase sendMessage:@"msg" withArguments:list toReceiver:@"toPD"];
-    
+	
 
 	NSLog(@"-- FINISH Message Test");
 	
@@ -170,7 +177,7 @@
 	[PdBase sendMidiByte:0 byte:239];
 	[PdBase sendSysex:0 byte:239];
 	[PdBase sendSysRealTime:0 byte:239];
-    
+	
 	NSLog(@"-- FINISH MIDI Test");
 	
 	
