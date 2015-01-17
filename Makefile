@@ -72,20 +72,20 @@ PD_FILES = \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
 	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
 
-# object files which are somehow generated but not from sources listed above,
-# there is probably a better fix but this works for now
-PD_EXTRA_OBJS = \
-	pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
-	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
+PD_EXTRA_FILES = \
+	pure-data/extra/bonk~/bonk~.c pure-data/extra/choice/choice.c \
+	pure-data/extra/expr~/vexp_fun.c pure-data/extra/expr~/vexp_if.c \
+	pure-data/extra/expr~/vexp.c pure-data/extra/fiddle~/fiddle~.c \
+	pure-data/extra/loop~/loop~.c pure-data/extra/lrshift~/lrshift~.c \
+	pure-data/extra/pique/pique.c pure-data/extra/sigmund~/sigmund~.c \
+	pure-data/extra/stdout/stdout.c
 
 LIBPD_UTILS = \
 	libpd_wrapper/util/z_print_util.c \
 	libpd_wrapper/util/z_queued.c \
 	libpd_wrapper/util/ringbuffer.c
 
-CPP_FILES = \
-   cpp/PdBase.cpp \
-   cpp/PdTypes.cpp
+CPP_FILES = cpp/PdBase.cpp cpp/PdTypes.cpp
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
@@ -97,8 +97,25 @@ PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/utils/IoUtils.java \
 	java/org/puredata/core/utils/PdDispatcher.java
 
-JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
-	jni/z_jni_plain.c
+# conditional libpd_wrapper/util compilation
+ifeq ($(UTIL), true)
+	UTIL_FILES = $(LIBPD_UTILS)
+	UTIL_CFLAGS = -I./libpd_wrapper/util
+endif
+
+# conditional pure-data/extra externals compilation
+ifeq ($(EXTRA), true)
+	EXTRA_FILES = $(PD_EXTRA_FILES)
+	EXTRA_CFLAGS = -I./pure-data/extra/expr~ -DLIBPD_EXTRA
+endif
+
+# object files which are somehow generated but not from sources listed above,
+# there is probably a better fix but this works for now
+PD_EXTRA_OBJS = \
+	pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
+	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
+
+JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libs/libpd.$(SOLIB_EXT)
@@ -110,8 +127,8 @@ PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PD
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -DHAVE_LIBDL -I./pure-data/src \
-         -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
+CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
+         $(UTIL_CFLAGS) $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS)
 
 CXXFLAGS = $(CFLAGS)
 
@@ -119,7 +136,7 @@ CXXFLAGS = $(CFLAGS)
 
 libpd: $(LIBPD)
 
-$(LIBPD): ${PD_FILES:.c=.o}
+$(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
@@ -139,16 +156,17 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 cpplib: $(PDCPP)
 
-$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${CPP_FILES:.cpp=.o}
+$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${CPP_FILES:.cpp=.o} ${EXTRA_FILES:.c=.o}
 	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o} ${CPP_FILES:.cpp=.o} ${LIBPD_UTILS:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
+	rm -f ${CPP_FILES:.cpp=.o} ${LIBPD_UTILS:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
