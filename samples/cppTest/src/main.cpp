@@ -19,8 +19,6 @@
 using namespace std;
 using namespace pd;
 
-void testEventPolling(PdBase& pd);
-
 // Howdy gentle libpd user,
 //
 // This is just a simple test to make sure message passing in the libpd c++ layer
@@ -42,8 +40,15 @@ int main(int argc, char **argv) {
 	PdObject pdObject;
 
 	// init pd
+	//
+	// set 4th arg to true for queued message passing using an internal ringbuffer
+	//
+	// in this test, messages should return immediately when not queued otherwise
+	// they should all return at once when pd is processing at the end of this
+	// function
+	//
 	int srate = 44100;
-	if(!pd.init(1, 2, srate)) {
+	if(!pd.init(1, 2, srate, true)) {
 		cerr << "Could not init pd" << endl;
 		exit(1);
 	}
@@ -79,10 +84,11 @@ int main(int argc, char **argv) {
 	patch = pd.openPatch(patch);
 	cout << patch << endl;
 	
-	// process any recieved messages
+	// process any received messages
 	//
 	// in a normal case (not a test like this), you would call this in
 	// your application main loop
+	pd.processFloat(1, inbuf, outbuf);
 	pd.receiveMessages();
 	
 	cout << "FINISH Patch Test" << endl;
@@ -121,9 +127,6 @@ int main(int argc, char **argv) {
 
 	// stream interface for list
 	pd << StartMessage() << 1.23 << "sent from a streamed list" << FinishList("fromCPP");
-    
-	// process any recieved messages
-	pd.receiveMessages();
 	
 	cout << "FINISH Message Test" << endl;
 	
@@ -149,9 +152,6 @@ int main(int argc, char **argv) {
 		<< StartMidi(0) << 239 << Finish()
 		<< StartSysex(0) << 239 << Finish()
 		<< StartSysRealTime(0) << 239 << Finish();
-    
-	// process any recieved midi messages, simialr to receiveMessages()
-	pd.receiveMidi();
 	
 	cout << "FINISH MIDI Test" << endl;
 	
@@ -190,33 +190,13 @@ int main(int argc, char **argv) {
 	for(int i = 0; i < array1.size(); ++i)
 		cout << array1[i] << " ";
 	cout << endl;
-	
-	// process any recieved messages
-	pd.receiveMessages();
 
 	cout << "FINISH Array Test" << endl << endl;
 
 	
 	cout << "BEGIN PD Test" << endl;
 	pd.sendSymbol("fromCPP", "test");
-	pd.receiveMessages();
 	cout << "FINISH PD Test" << endl << endl;
-	
-	
-	cout << "BEGIN Event Polling Test" << endl;
-	
-	// disable receivers, enable polling
-	pd.setReceiver(NULL);
-	pd.setMidiReceiver(NULL);
-
-	pd.sendSymbol("fromCPP", "test");
-	testEventPolling(pd);
-
-	// reenable receivers, disable polling
-	pd.setReceiver(&pdObject);
-	pd.setMidiReceiver(&pdObject);
-	
-	cout << "FINISH Event Polling Test" << endl << endl;
 	
 	
 	// play a tone by sending a list
@@ -227,8 +207,11 @@ int main(int argc, char **argv) {
 	pd.finishList("tone");
 	pd.sendBang("tone");
 	
-	
 	// now run pd for ten seconds (logical time)
+	// you should see all the messages from pd print now
+	// since processFloat actually runs the pd dsp engine and the recieve
+	// functions pass messages to our PdObject
+	cout << "Processing PD" << endl;
 	for(int i = 0; i < 10 * srate / 64; i++) {
 		// fill inbuf here
 		pd.processFloat(1, inbuf, outbuf);
@@ -242,77 +225,4 @@ int main(int argc, char **argv) {
 	pd.computeAudio(false);
 	
   return 0;
-}
-
-// process the message queue manually using pd::Message objects
-void testEventPolling(PdBase& pd) {
-	
-	// process any queued messages
-	pd.receiveMessages();
-	pd.receiveMidi();
-	
-	cout << "Number of waiting messages: " << pd.numMessages() << endl;
-	
-	while(pd.numMessages() > 0) {
-		Message& msg = pd.nextMessage();
-
-		switch(msg.type) {
-			
-			case PRINT:
-				cout << "CPP: " << msg.symbol << endl;
-				break;
-			
-			// events
-			case BANG:
-				cout << "CPP: bang " << msg.dest << endl;
-				break;
-			case FLOAT:
-				cout << "CPP: float " << msg.dest << ": " << msg.num << endl;
-				break;
-			case SYMBOL:
-				cout << "CPP: symbol " << msg.dest << ": " << msg.symbol << endl;
-				break;
-			case LIST:
-				cout << "CPP: list " << msg.list << msg.list.types() << endl;
-				break;
-			case MESSAGE:
-				cout << "CPP: message " << msg.dest << ": " << msg.symbol << " " 
-					 << msg.list << msg.list.types() << endl;
-				break;
-			
-			// midi
-			case NOTE_ON:
-				cout << "CPP MIDI: note on: " << msg.channel << " "
-					 << msg.pitch << " " << msg.velocity << endl;
-				break;
-			case CONTROL_CHANGE:
-				cout << "CPP MIDI: control change: " << msg.channel
-					 << " " << msg.controller << " " << msg.value << endl;
-				break;
-			case PROGRAM_CHANGE:
-				cout << "CPP MIDI: program change: " << msg.channel << " "
-					 << msg.value << endl;
-				break;
-			case PITCH_BEND:
-				cout << "CPP MIDI: pitch bend: " << msg.channel << " "
-					 << msg.value << endl;
-				break;
-			case AFTERTOUCH:
-				cout << "CPP MIDI: aftertouch: " << msg.channel << " "
-					 << msg.value << endl;
-				break;
-			case POLY_AFTERTOUCH:
-				cout << "CPP MIDI: poly aftertouch: " << msg.channel << " "
-					 << msg.pitch << " " << msg.value << endl;
-				break;
-			case BYTE:
-				cout << "CPP MIDI: midi byte: " << msg.port << " 0x"
-					 << hex << (int) msg.byte << dec << endl;
-				break;
-		
-			case NONE:
-				cout << "CPP: NONE ... empty message" << endl;
-				break;
-		}
-	}
 }
