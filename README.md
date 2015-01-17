@@ -69,6 +69,6 @@ Contains a small sample program in C built on top of libpd, a sample project in 
 Java Builds
 -----------
 
-Ready-made binaries for Java are available at
-<https://github.com/airbaggins/libpd-java-build/raw/master/libpd.jar>
+Ready-made binaries for Java are available at [libpd-java-build](https://github.com/wivlaro/libpd-java-build): 
+<https://github.com/wivlaro/libpd-java-build/blob/master/libpd.jar> (may not be up to date)
 
