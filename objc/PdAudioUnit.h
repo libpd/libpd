@@ -23,6 +23,29 @@
 /// A reference to the audio unit, which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
 
+/// A reference to the audio unit callback function. Override the getter method if you
+/// want to subclass PdAudioUnit and implement your own custom sample rendering:
+///
+/// In your custom PdAudioUnit subclass .m:
+///
+/// // your custom render callback
+/// static OSStatus MyRenderCallback(void *inRefCon,
+///                                  AudioUnitRenderActionFlags *ioActionFlags,
+///                                  const AudioTimeStamp *inTimeStamp,
+///                                  UInt32 inBusNumber,
+///                                  UInt32 inNumberFrames,
+///                                  AudioBufferList *ioData) {
+///     // do something with the samples, see AudioRenderCallback in PdAudioUnit.m
+///     return noErr;
+/// }
+///
+/// // return method
+/// - (AURenderCallback)renderCallback {
+///		return MyRenderCallback;
+/// }
+///
+@property (nonatomic, readonly) AURenderCallback renderCallback;
+
 /// Check or set the active status of the audio unit
 @property (nonatomic, getter = isActive) BOOL active;
 
@@ -34,5 +57,9 @@
 
 /// Print info on the audio unit settings to the console
 - (void)print;
+
+/// Called by configureWithSampleRate when setting up the internal audio unit.
+/// Default format: 32 bit, floating point, linear PCM, interleaved
+- (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numChannels;
 
 @end
