@@ -840,7 +840,6 @@
 				OTHER_CFLAGS = (
 					"-DPD",
 					"-DUSEAPI_DUMMY",
-					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_ALLOCA_H",
 				);
@@ -863,7 +862,6 @@
 				OTHER_CFLAGS = (
 					"-DPD",
 					"-DUSEAPI_DUMMY",
-					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_ALLOCA_H",
 				);
@@ -890,7 +888,6 @@
 				OTHER_CFLAGS = (
 					"-DPD",
 					"-DUSEAPI_DUMMY",
-					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -913,7 +910,6 @@
 				OTHER_CFLAGS = (
 					"-DPD",
 					"-DUSEAPI_DUMMY",
-					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
 				);
 				OTHER_LDFLAGS = "-ObjC";
