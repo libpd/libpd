@@ -17,7 +17,7 @@
 
 @interface PdAudioController ()
 
-@property (nonatomic, retain) PdAudioUnit *audioUnit;	// out private PdAudioUnit
+@property (nonatomic, retain, readwrite) PdAudioUnit *audioUnit;	// our PdAudioUnit
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;  // Not all inputs make sense, but that's okay in the private interface.
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
@@ -42,6 +42,11 @@
 @synthesize audioUnit = audioUnit_;
 
 - (id)init {
+	self = [self initWithAudioUnit:[[[PdAudioUnit alloc] init] autorelease]];
+	return self;
+}
+
+- (id)initWithAudioUnit:(PdAudioUnit *)audioUnit {
 	self = [super init];
 	if (self) {
 		AVAudioSession *globalSession = [AVAudioSession sharedInstance];
@@ -57,7 +62,7 @@
 		[globalSession setActive:YES error:&error];
 		AU_LOG_IF_ERROR(error, @"Audio Session activation failed");
 		AU_LOGV(@"Audio Session initialized");
-		self.audioUnit = [[[PdAudioUnit alloc] init] autorelease];
+		self.audioUnit = audioUnit;
 	}
 	return self;
 }

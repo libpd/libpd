@@ -38,8 +38,15 @@ typedef enum PdAudioStatus {
 @property (nonatomic, readonly) BOOL mixingEnabled;
 @property (nonatomic, readonly) int ticksPerBuffer;
 
+/// Read only access to the underlying pd audio unit
+@property (nonatomic, retain, readonly) PdAudioUnit *audioUnit;
+
 /// Check or set the active status of the audio unit
 @property (nonatomic, getter=isActive) BOOL active;
+
+/// Init with a custom pd audio unit. Derive PdAudioUnit when you need to access
+/// to the raw samples when using, for instance, AudioBus, and call this method after init.
+- (id)initWithAudioUnit:(PdAudioUnit *)audioUnit;
 
 /// Configure the audio with the specified samplerate, as well as number of output channels (which will also be the number of
 /// input channels if input is enable).  Note that this method has three possible outcomes: success, failure, or conditional

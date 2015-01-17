@@ -110,7 +110,7 @@
 	[PdBase setDelegate:self];
 	[PdBase setMidiDelegate:self]; // for midi too
 	
-	// recieve messages to fromPD: [r fromPD]
+	// receive messages to fromPD: [r fromPD]
 	[PdBase subscribe:@"fromPD"];
 	
 	// add search path

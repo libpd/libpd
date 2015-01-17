@@ -1,3 +1,13 @@
+0.8.0: TBD
+
+* ObjC PdAudioUnit can now be subclassed
+* added missing -DHAVE_ALLOCA_H to OSX target in libpd xcode project
+* [netsend] & [netreceive] now workin in libpd
+* fixed Android makefile for 0.45-4 source changes
+* added cpptest Makefile (currently Linux only)
+* added "cpplib" Makefile target to build libpd + C++ wrapper
+* ObjC deprecation fix: use AVAudioSession IOBufferDuration if available
+
 0.7.0: 2014 May
 
 * merged with vanilla 0.45-4
