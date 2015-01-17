@@ -2,7 +2,11 @@
 
 * tracking vanilla 0.46-4
 * pure-data source folder is now a submodule from the pd Sourceforge git
-* added missing -DHAVE_ALLOCA_H to OSX target in libpd xcode project
+* added LIBPD_EXTRA define to call pure-data/extra extern setup functions
+  in libpd_init()
+* added UTIL and EXTRA Makefile vars to for conditional compilation of
+  libpd_wrapper/utils and pure-data/extra extern sources into libpd
+* added -DHAVE_ALLOCA_H, _DHAVE_LIBDL, and -ldl on OSX in libpd.xcodeproj
 * [netsend] & [netreceive] now working in libpd (thanks Chris!)
 * Android: fixed makefile for 0.45-4+ source changes
 * C++: added optional ringbuffer usage to init(), removed messaging queue
