@@ -107,7 +107,7 @@ class List {
 
 		List();
 
-		/// \section Read
+	/// \section Read
 
 		/// check type
 		bool isFloat(const unsigned int index) const;
@@ -117,7 +117,7 @@ class List {
 		float getFloat(const unsigned int index) const;
 		std::string getSymbol(const unsigned int index) const;
 
-		/// \section Write
+	/// \section Write
 
 		/// add elements to the list
 		///
@@ -128,7 +128,7 @@ class List {
 		void addFloat(const float num);
 		void addSymbol(const std::string& symbol);
 
-		/// \section Write Stream Interface
+	/// \section Write Stream Interface
 
 		/// list << "hello" << 1.23;
 
@@ -143,7 +143,7 @@ class List {
 		List& operator<<(const char* var);
 		List& operator<<(const std::string& var);
 
-		/// \section Util
+	/// \section Util
 
 		const unsigned int len() const;   ///< number of items
 		const std::string& types() const; ///< OSC style type string ie "fsfs"
@@ -301,90 +301,6 @@ struct StartSysRealTime {
 /// finish a midi byte stream
 struct Finish {
 	explicit Finish() {}
-};
-
-/// \section pd message polling objects
-
-enum MessageType {
-	NONE,
-
-	PRINT,
-
-	// events
-	BANG,
-	FLOAT,
-	SYMBOL,
-	LIST,
-	MESSAGE,
-
-	// midi
-	NOTE_ON,
-	CONTROL_CHANGE,
-	PROGRAM_CHANGE,
-	PITCH_BEND,
-	AFTERTOUCH,
-	POLY_AFTERTOUCH,
-	BYTE
-};
-
-/// a general message for polling
-///
-/// check message type and grab data:
-///
-/// while(pd.numMessages() > 0) {
-///        pd::Message& msg = pd.nextMessage(&msg);
-///
-///        switch(msg.type) {
-///            case PRINT:
-///                cout << got print: " << msg.symbol << endl;
-///                break;
-///            case BANG:
-///                cout << "go a bang to " << msg.dest << endl;
-///                break;
-///            case NOTE_ON:
-///                cout << "got a note on " << msg.channel
-///                     << msg.pitch << " " << msg.velocity << endl;
-///                break;
-///            ...
-///        }
-///    }
-///
-/// the message-specific types are only set for the appropriate
-/// message types ie pitch is only set for NOTE_ON & POLY_AFTERTOUCH messages etc
-///
-struct Message {
-
-		Message();
-		explicit Message(MessageType type);
-
-		MessageType type;      ///< the type of message
-
-		// events
-		std::string dest;      ///< dest receiver name
-
-		float num;             ///< FLOAT value
-		std::string symbol;    ///< SYMBOL value
-		                       ///< PRINT message & message name for MESSAGE
-
-		pd::List list;         ///< LIST & MESSAGE
-
-		// midi
-		int channel;           ///< channel (0 - 15 * dev#)
-		int pitch;             ///< pitch (0 - 127) for NOTE_ON & POLY_AFTERTOUCH
-		int velocity;          ///< velocity (0 - 127) for NOTE_ON
-		int controller;        ///< controller (0 - 127) for CONTROL_CHANGE
-
-		int value;             ///< value (0 - 127) for CONTROL_CHANGE,
-		                       ///< PROGRAM_CHANGE, & POLY_AFTERTOUCH
-		                       ///< value (-8192 - 8192) for PITCH_BEND
-
-		// raw midi byte
-		int port;              ///< raw portmidi port
-		                       ///< see http://en.wikipedia.org/wiki/PortMidi
-		unsigned char byte;    ///< the raw midi byte value
-
-		// clear the message contents, sets the type to NONE
-		void clear();
 };
 
 } // namespace

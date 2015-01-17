@@ -66,6 +66,6 @@ void sys_setmiditimediff(double inbuftime, double outbuftime) {}
 void glob_midi_setapi(void *dummy, t_floatarg f) {}
 void glob_midi_properties(t_pd *dummy, t_floatarg flongform) {}
 void glob_midi_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv) {}
-int sys_mididevnametonumber(int output, const char *name) {}
+int sys_mididevnametonumber(int output, const char *name) { return 0; }
 void sys_mididevnumbertoname(int output, int devno, char *name, int namesize) {}
 

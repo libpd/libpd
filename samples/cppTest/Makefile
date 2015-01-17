@@ -1,6 +1,6 @@
 SRC_FILES = src/PdObject.cpp src/main.cpp
 LIBPD = ../../libs/libpdcpp.so
-TARGET = pdtest
+TARGET = pd-test
 
 CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper -I../../cpp -O3
 

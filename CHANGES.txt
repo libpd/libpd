@@ -1,12 +1,20 @@
-0.8.0: TBD
+0.8.0: In Development
 
-* ObjC PdAudioUnit can now be subclassed
-* added missing -DHAVE_ALLOCA_H to OSX target in libpd xcode project
-* [netsend] & [netreceive] now workin in libpd
-* fixed Android makefile for 0.45-4 source changes
-* added cpptest Makefile (currently Linux only)
-* added "cpplib" Makefile target to build libpd + C++ wrapper
-* ObjC deprecation fix: use AVAudioSession IOBufferDuration if available
+* tracking vanilla 0.46-4
+* pure-data source folder is now a submodule from the pd Sourceforge git
+* added LIBPD_EXTRA define to call pure-data/extra extern setup functions
+  in libpd_init()
+* added UTIL and EXTRA Makefile vars to for conditional compilation of
+  libpd_wrapper/utils and pure-data/extra extern sources into libpd
+* added -DHAVE_ALLOCA_H, _DHAVE_LIBDL, and -ldl on OSX in libpd.xcodeproj
+* [netsend] & [netreceive] now working in libpd (thanks Chris!)
+* Android: fixed makefile for 0.45-4+ source changes
+* C++: added optional ringbuffer usage to init(), removed messaging queue
+* C++: added C++11 std::mutex locking, compile with LIBPD_USE_STD_MUTEX
+* C++: added cppTest Makefile (currently Linux only)
+* C++: added"cpplib" Makefile target to build libpd + C++ wrapper
+* ObjC: PdAudioUnit can now be subclassed
+* ObjC: deprecation fix, use AVAudioSession IOBufferDuration if available
 
 0.7.0: 2014 May
 
