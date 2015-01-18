@@ -20,8 +20,16 @@
 ///
 @interface PdAudioUnit : NSObject
 
-/// A reference to the audio unit, which can be used to query or set other properties
+/// A reference to the output audio unit, which can be used to query or set other properties.
+/// This is the only audio unit used on iOS and handles both input and output. On OSX, this is
+/// uses the default system audio output.
 @property (nonatomic, readonly) AudioUnit audioUnit;
+
+/// A reference to the input audio unit, which can be used to query or set other properties.
+/// This is only only used on OSX and is connected to the default system input since we need
+/// to use two audio units in order to connect to two separate devices (aka built in mic and
+/// speakers). It is nil on iOS or if the input is disabled.
+@property (nonatomic, readonly) AudioUnit inputAudioUnit;
 
 /// A reference to the audio unit callback function. Override the getter method if you
 /// want to subclass PdAudioUnit and implement your own custom sample rendering:

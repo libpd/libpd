@@ -206,6 +206,12 @@
 		30CEFE501A6A5EDC000E3BAE /* sigmund~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE361A6A5EDB000E3BAE /* sigmund~.c */; };
 		30CEFE511A6A5EDC000E3BAE /* stdout.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE381A6A5EDB000E3BAE /* stdout.c */; };
 		30CEFE521A6A5EDC000E3BAE /* stdout.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE381A6A5EDB000E3BAE /* stdout.c */; };
+		30CEFE571A6A7320000E3BAE /* PdAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD3147B838F00282ABC /* PdAudioUnit.m */; };
+		30CEFE581A6A7320000E3BAE /* PdAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD1147B838F00282ABC /* PdAudioController.m */; };
+		30CEFE591A6A7320000E3BAE /* AudioHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DCF147B838E00282ABC /* AudioHelpers.m */; };
+		30CEFE5A1A6A732F000E3BAE /* PdAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD2147B838F00282ABC /* PdAudioUnit.h */; };
+		30CEFE5B1A6A732F000E3BAE /* PdAudioController.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD0147B838F00282ABC /* PdAudioController.h */; };
+		30CEFE5C1A6A732F000E3BAE /* AudioHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DCE147B838E00282ABC /* AudioHelpers.h */; };
 		30DDEC331A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */ = {isa = PBXBuildFile; fileRef = 30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */; };
 		30DDEC341A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */ = {isa = PBXBuildFile; fileRef = 30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */; };
 		30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
@@ -328,6 +334,7 @@
 		30CEFE341A6A5EDB000E3BAE /* pique.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pique.c; sourceTree = "<group>"; };
 		30CEFE361A6A5EDB000E3BAE /* sigmund~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "sigmund~.c"; sourceTree = "<group>"; };
 		30CEFE381A6A5EDB000E3BAE /* stdout.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stdout.c; sourceTree = "<group>"; };
+		30CEFE5D1A6B38BF000E3BAE /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fft_fftsg.c; sourceTree = "<group>"; };
 		30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdMidiDispatcher.h; sourceTree = "<group>"; };
 		30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdMidiDispatcher.m; sourceTree = "<group>"; };
@@ -381,6 +388,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				30CEFE5D1A6B38BF000E3BAE /* AudioToolbox.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -653,6 +661,9 @@
 				119013511486450C00086F19 /* PdBase.h in Headers */,
 				119013521486450C00086F19 /* PdDispatcher.h in Headers */,
 				119013531486450C00086F19 /* PdFile.h in Headers */,
+				30CEFE5A1A6A732F000E3BAE /* PdAudioUnit.h in Headers */,
+				30CEFE5B1A6A732F000E3BAE /* PdAudioController.h in Headers */,
+				30CEFE5C1A6A732F000E3BAE /* AudioHelpers.h in Headers */,
 				30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 				306DBE5B16BC6710007CF226 /* ringbuffer.h in Headers */,
 				30CEFE421A6A5EDC000E3BAE /* vexp.h in Headers */,
@@ -754,6 +765,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30CEFE571A6A7320000E3BAE /* PdAudioUnit.m in Sources */,
+				30CEFE581A6A7320000E3BAE /* PdAudioController.m in Sources */,
+				30CEFE591A6A7320000E3BAE /* AudioHelpers.m in Sources */,
 				30CEFE4A1A6A5EDC000E3BAE /* loop~.c in Sources */,
 				30CEFE3A1A6A5EDC000E3BAE /* bonk~.c in Sources */,
 				119013581486450C00086F19 /* d_arithmetic.c in Sources */,
@@ -1061,7 +1075,7 @@
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1086,7 +1100,7 @@
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;

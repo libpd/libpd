@@ -18,6 +18,7 @@
 		1184091F16803D57007ACD8F /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1184091C16803D43007ACD8F /* libpd-osx.a */; };
 		1184092216804082007ACD8F /* tone.pd in Resources */ = {isa = PBXBuildFile; fileRef = 1184092116804082007ACD8F /* tone.pd */; };
 		1184092416804210007ACD8F /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1184092316804210007ACD8F /* AudioUnit.framework */; };
+		30CEFE601A6B38D2000E3BAE /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30CEFE5F1A6B38D2000E3BAE /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		1184091416803D43007ACD8F /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../libpd.xcodeproj; sourceTree = "<group>"; };
 		1184092116804082007ACD8F /* tone.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tone.pd; path = Resources/tone.pd; sourceTree = SOURCE_ROOT; };
 		1184092316804210007ACD8F /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		30CEFE5F1A6B38D2000E3BAE /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30CEFE601A6B38D2000E3BAE /* AudioToolbox.framework in Frameworks */,
 				114677AE168A1B8100687E25 /* CoreAudio.framework in Frameworks */,
 				1184092416804210007ACD8F /* AudioUnit.framework in Frameworks */,
 				1184091F16803D57007ACD8F /* libpd-osx.a in Frameworks */,
@@ -100,6 +103,7 @@
 		118408F616803D13007ACD8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				30CEFE5F1A6B38D2000E3BAE /* AudioToolbox.framework */,
 				114677AD168A1B8100687E25 /* CoreAudio.framework */,
 				1184092316804210007ACD8F /* AudioUnit.framework */,
 				118408F716803D13007ACD8F /* Cocoa.framework */,
@@ -354,6 +358,7 @@
 		1184091216803D13007ACD8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CocoaPdBasic/CocoaPdBasic-Prefix.pch";
@@ -366,6 +371,7 @@
 		1184091316803D13007ACD8F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CocoaPdBasic/CocoaPdBasic-Prefix.pch";

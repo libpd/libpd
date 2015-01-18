@@ -9,7 +9,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
+//#import <AVFoundation/AVFoundation.h>
 #import "PdAudioUnit.h"
 
 typedef enum PdAudioStatus {
@@ -24,7 +24,7 @@ typedef enum PdAudioStatus {
 /// The returned PdAudioStatus is used to indicate success, failure, or
 /// that parameters had to be adjusted in order to work.
 ///
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+#if defined(TARGET_OS_MAC) || __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 @interface PdAudioController : NSObject
 #else
 // AVAudioSessionDelegate is deprecated starting in iOS 6

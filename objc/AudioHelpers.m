@@ -84,6 +84,14 @@ NSString *AUStatusCodeAsString(OSStatus status) {
 			return @"kAudioUnitErr_InvalidOfflineRender";
 		case kAudioUnitErr_Unauthorized:
 			return @"kAudioUnitErr_Unauthorized";
+		case kAUGraphErr_NodeNotFound:
+			return @"kAUGraphErr_NodeNotFound";
+		case kAUGraphErr_InvalidConnection:
+			return @"kAUGraphErr_InvalidConnection";
+		case kAUGraphErr_OutputNodeErr:
+			return @"kAUGraphErr_OutputNodeErr";
+		case kAUGraphErr_InvalidAudioUnit:
+			return @"kAUGraphErr_InvalidAudioUnit";
 		default:
 			return [NSString stringWithFormat:@"unknown error code %ld", status];
 	}

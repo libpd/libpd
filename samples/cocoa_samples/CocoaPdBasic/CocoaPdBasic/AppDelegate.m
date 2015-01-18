@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "PdAudioUnit.h"
+#import "PdAudioController.h"
 #import "PdBase.h"
 #import "AudioHelpers.h"
 #import <Cocoa/Cocoa.h>
@@ -20,10 +20,12 @@ static NSString *const kPatchName = @"testinput.pd";
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
 	NSWindow	*_window;
 	PdAudioUnit *_pdAudioUnit;
+	PdAudioController *_pdAudioController;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (retain) PdAudioUnit *pdAudioUnit;
+@property (retain) PdAudioController *pdAudioController;
 
 @end
 
@@ -31,6 +33,7 @@ static NSString *const kPatchName = @"testinput.pd";
 
 @synthesize window = _window;
 @synthesize pdAudioUnit = _pdAudioUnit;
+@synthesize pdAudioController = _pdAudioController;
 
 - (void)dealloc {
 	self.pdAudioUnit = nil;
@@ -38,10 +41,17 @@ static NSString *const kPatchName = @"testinput.pd";
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[NSApp setDelegate:self];
-	self.pdAudioUnit = [[[PdAudioUnit alloc] init] autorelease];
-	[self.pdAudioUnit configureWithSampleRate:44100 numberChannels:2 inputEnabled:YES];
-	[self.pdAudioUnit print];
+	//[NSApp setDelegate:self];
+	
+//	self.pdAudioUnit = [[[PdAudioUnit alloc] init] autorelease];
+//	[self.pdAudioUnit configureWithSampleRate:44100 numberChannels:2 inputEnabled:YES];
+//	[self.pdAudioUnit print];
+
+	self.pdAudioController = [[[PdAudioController alloc] init] autorelease];
+	[self.pdAudioController configurePlaybackWithSampleRate:44100 numberChannels:2 inputEnabled:YES mixingEnabled:NO];
+	[self.pdAudioController print];
+	self.pdAudioController.active = true;
+	[PdBase computeAudio:YES];
 
 	void *handle = [PdBase openFile:kPatchName path:[[NSBundle mainBundle] resourcePath]];
 	if( handle ) {

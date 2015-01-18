@@ -16,22 +16,25 @@
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
 
+OSStatus createAggregateDevice(CFStringRef inputDeviceUID, CFStringRef outputDeviceUID);
+
 @interface PdAudioUnit () {
 @private
 	BOOL inputEnabled_;
 	BOOL initialized_;
 	int blockSizeAsLog_;
 }
-
+@property (nonatomic) AUGraph auGraph;
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
-- (void)destroyAudioUnit;
-- (AudioComponentDescription)ioDescription;
+- (void)destroyAudioUnits;
 @end
 
 @implementation PdAudioUnit
 
 @synthesize audioUnit = audioUnit_;
+@synthesize inputAudioUnit = inputAudioUnit_;
 @synthesize active = active_;
+@synthesize auGraph = auGraph_;
 
 #pragma mark - Init / Dealloc
 
@@ -46,7 +49,7 @@ static const AudioUnitElement kOutputElement = 0;
 }
 
 - (void)dealloc {
-	[self destroyAudioUnit];
+	[self destroyAudioUnits];
 	[super dealloc];
 }
 
@@ -61,8 +64,10 @@ static const AudioUnitElement kOutputElement = 0;
 	}
 	if (active) {
 		AU_RETURN_IF_ERROR(AudioOutputUnitStart(audioUnit_));
+		AU_RETURN_IF_ERROR(AudioOutputUnitStart(inputAudioUnit_));
 	} else {
 		AU_RETURN_IF_ERROR(AudioOutputUnitStop(audioUnit_));
+		AU_RETURN_IF_ERROR(AudioOutputUnitStop(inputAudioUnit_));
 	}
 	active_ = active;
 }
@@ -85,17 +90,45 @@ static const AudioUnitElement kOutputElement = 0;
 		return;
 	}
 	
-	UInt32 sizeASBD = sizeof(AudioStreamBasicDescription);
+	AudioDeviceID device;
+	CFStringRef deviceName;
+	UInt32 size = 0;
+	AudioObjectPropertyAddress property;
+	property.mScope = kAudioObjectPropertyScopeGlobal;
+	property.mElement = kAudioObjectPropertyElementMaster;
 	
 	if (inputEnabled_) {
+
+		#if TARGET_OS_MAC
+			// try to print the device name
+			size = sizeof(AudioDeviceID);
+			AU_RETURN_IF_ERROR(AudioUnitGetProperty(inputAudioUnit_,
+													kAudioOutputUnitProperty_CurrentDevice,
+													kAudioUnitScope_Global,
+													0,
+													&device,
+													&size));
+			property.mSelector = kAudioObjectPropertyName;
+			if (AudioObjectHasProperty(device, &property)) {
+				size = sizeof(CFStringRef);
+				OSStatus status = AudioObjectGetPropertyData(device, &property, 0, NULL, &size, &deviceName);
+				if(status == kAudioHardwareNoError) {
+					AU_LOG(@"input device: %@", deviceName);
+					CFRelease(deviceName);
+				}
+			}
+		#endif
+		
+		// description
 		AudioStreamBasicDescription inputStreamDescription;
-		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
-		AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
+		size = sizeof(inputStreamDescription);
+		memset (&inputStreamDescription, 0, size);
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inputAudioUnit_,
                            kAudioUnitProperty_StreamFormat,
-                           kAudioUnitScope_Output,
+                           kAudioUnitScope_Input,
                            kInputElement,
                            &inputStreamDescription,
-                           &sizeASBD));
+                           &size));
 		AU_LOG(@"input ASBD:");
 		AU_LOG(@"  mSampleRate: %.0fHz", inputStreamDescription.mSampleRate);
 		AU_LOG(@"  mChannelsPerFrame: %lu", inputStreamDescription.mChannelsPerFrame);
@@ -106,17 +139,39 @@ static const AudioUnitElement kOutputElement = 0;
 		AU_LOGV(@"  mBytesPerFrame: %lu", inputStreamDescription.mBytesPerFrame);
 		AU_LOGV(@"  mBitsPerChannel: %lu", inputStreamDescription.mBitsPerChannel);
 	} else {
-		AU_LOG(@"no input ASBD");
+		AU_LOG(@"input not enabled");
 	}
 	
+	#if TARGET_OS_MAC
+		// try to print the device name
+		size = sizeof(AudioDeviceID);
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
+												kAudioOutputUnitProperty_CurrentDevice,
+												kAudioUnitScope_Global,
+												0,
+												&device,
+												&size));
+		property.mSelector = kAudioObjectPropertyName;
+		if (AudioObjectHasProperty(device, &property)) {
+			size = sizeof(CFStringRef);
+			OSStatus status = AudioObjectGetPropertyData(device, &property, 0, NULL, &size, &deviceName);
+			if(status == kAudioHardwareNoError) {
+				AU_LOG(@"output device: %@", deviceName);
+				CFRelease(deviceName);
+			}
+		}
+	#endif
+	
+	// description
 	AudioStreamBasicDescription outputStreamDescription;
-	memset(&outputStreamDescription, 0, sizeASBD);
+	size = sizeof(outputStreamDescription);
+	memset(&outputStreamDescription, 0, size);
 	AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
                        kAudioUnitProperty_StreamFormat,
-                       kAudioUnitScope_Input,
+                       kAudioUnitScope_Output,
                        kOutputElement,
                        &outputStreamDescription,
-                       &sizeASBD));
+                       &size));
 	AU_LOG(@"output ASBD:");
 	AU_LOG(@"  mSampleRate: %.0fHz", outputStreamDescription.mSampleRate);
 	AU_LOG(@"  mChannelsPerFrame: %lu", outputStreamDescription.mChannelsPerFrame);
@@ -176,7 +231,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 #pragma mark - Private
 
-- (void)destroyAudioUnit {
+- (void)destroyAudioUnits {
 	if (!initialized_) {
 		return;
 	}
@@ -184,13 +239,34 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	initialized_ = NO;
 	AU_RETURN_IF_ERROR(AudioUnitUninitialize(audioUnit_));
 	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(audioUnit_));
-	AU_LOGV(@"destroyed audio unit");
+	if(inputAudioUnit_) { // OSX
+		AU_RETURN_IF_ERROR(AUGraphStop(auGraph_));
+		AUGraphClearConnections(auGraph_);
+		DisposeAUGraph(auGraph_);
+		AU_RETURN_IF_ERROR(AudioUnitUninitialize(inputAudioUnit_));
+		AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(inputAudioUnit_));
+		AUGraphClose(auGraph_);
+		AU_LOGV(@"destroyed audio units");
+	}
+	else {
+		AU_LOGV(@"destroyed audio unit");
+	}
 }
 
+#if TARGET_OS_IPHONE
+
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
-	[self destroyAudioUnit];
-	AudioComponentDescription ioDescription = [self ioDescription];
-	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
+	
+	[self destroyAudioUnits];
+	
+	AudioComponentDescription description;
+	description.componentType = kAudioUnitType_Output;
+	description.componentSubType = kAudioUnitSubType_RemoteIO;
+	description.componentManufacturer = kAudioUnitManufacturer_Apple;
+	description.componentFlags = 0;
+	description.componentFlagsMask = 0;
+	
+	AudioComponent audioComponent = AudioComponentFindNext(NULL, &description);
 	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &audioUnit_));
 	
 	AudioStreamBasicDescription streamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numChannels];
@@ -209,32 +285,6 @@ static OSStatus AudioRenderCallback(void *inRefCon,
                                                       kInputElement,
                                                       &streamDescription,
                                                       sizeof(streamDescription)));
-
-#if ! TARGET_OS_IPHONE
-		// set input device (osx only... iphone has only one device)
-		AudioDeviceID defaultDevice = kAudioObjectUnknown;
-		UInt32 propertySize = sizeof (defaultDevice);
-
-		AudioObjectPropertyAddress defaultDeviceProperty;
-		defaultDeviceProperty.mSelector = kAudioHardwarePropertyDefaultInputDevice;
-		defaultDeviceProperty.mScope = kAudioObjectPropertyScopeGlobal;
-		defaultDeviceProperty.mElement = kAudioObjectPropertyElementMaster;
-
-		AU_RETURN_FALSE_IF_ERROR( AudioObjectGetPropertyData(kAudioObjectSystemObject,
-															 &defaultDeviceProperty,
-															 0,
-															 NULL,
-															 &propertySize,
-															 &defaultDevice) );
-
-		AU_RETURN_FALSE_IF_ERROR( AudioUnitSetProperty(audioUnit_,
-													   kAudioOutputUnitProperty_CurrentDevice,
-													   kAudioUnitScope_Global,
-													   0,
-													   &defaultDevice,
-													   sizeof(defaultDevice)) );
-
-#endif
 	}
 	
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
@@ -260,20 +310,318 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	return true;
 }
 
-- (AudioComponentDescription)ioDescription {
+#else
+
+- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
+	
+	[self destroyAudioUnits];
+	
+	// setup output
 	AudioComponentDescription description;
 	description.componentType = kAudioUnitType_Output;
-
-#if TARGET_OS_IPHONE
-	description.componentSubType = kAudioUnitSubType_RemoteIO;
-#else
-	description.componentSubType = kAudioUnitSubType_HALOutput;
-#endif
-
+	description.componentSubType = kAudioUnitSubType_DefaultOutput;
 	description.componentManufacturer = kAudioUnitManufacturer_Apple;
 	description.componentFlags = 0;
 	description.componentFlagsMask = 0;
-	return description;
+	AudioComponent audioComponent = AudioComponentFindNext(NULL, &description);
+	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &audioUnit_));
+	
+	AudioStreamBasicDescription streamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numChannels];
+	if (inputEnabled) {
+	
+			UInt32 enableInput = 1;
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                      kAudioOutputUnitProperty_EnableIO,
+                                                      kAudioUnitScope_Input,
+                                                      kInputElement,
+                                                      &enableInput,
+                                                      sizeof(enableInput)));
+	
+//		// setup input, disable output
+//		description.componentSubType = kAudioUnitSubType_HALOutput;
+//		audioComponent = AudioComponentFindNext(NULL, &description);
+//		AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &inputAudioUnit_));
+		
+//		UInt32 enableOutput = 0;
+//		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(inputAudioUnit_,
+//                                                      kAudioOutputUnitProperty_EnableIO,
+//                                                      kAudioUnitScope_Output,
+//                                                      kOutputElement,
+//                                                      &enableOutput,
+//                                                      sizeof(enableOutput)));
+//		UInt32 enableInput = 1;
+//		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(inputAudioUnit_,
+//                                                      kAudioOutputUnitProperty_EnableIO,
+//                                                      kAudioUnitScope_Input,
+//                                                      kInputElement,
+//                                                      &enableInput,
+//                                                      sizeof(enableInput)));
+		
+//		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(inputAudioUnit_,
+//                                                      kAudioUnitProperty_StreamFormat,
+//                                                      kAudioUnitScope_Output,
+//                                                      kInputElement,
+//                                                      &streamDescription,
+//                                                      sizeof(streamDescription)));
+
+#if TARGET_OS_MAC
+		// set input device (osx only... iphone has only one device)
+		AudioDeviceID inputDevice;// = kAudioObjectUnknown;
+		UInt32 size = sizeof(inputDevice);
+
+		AudioObjectPropertyAddress property;
+		property.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+		property.mScope = kAudioObjectPropertyScopeGlobal;
+		property.mElement = kAudioObjectPropertyElementMaster;
+
+//		AU_RETURN_FALSE_IF_ERROR(AudioHardwareServiceGetPropertyData(kAudioObjectSystemObject, &property, 0, NULL, &size, &inputDevice));
+//
+		AU_RETURN_FALSE_IF_ERROR(AudioObjectGetPropertyData(kAudioObjectSystemObject,
+															&property,
+															0,
+															NULL,
+															&size,
+															&inputDevice));
+		
+		OSStatus status = AudioUnitSetProperty(audioUnit_, kAudioOutputUnitProperty_CurrentDevice,
+							                   kAudioUnitScope_Input,
+							                   0,
+											   &inputDevice,
+											   sizeof(inputDevice));
+		AU_LOG_IF_ERROR(status, @"error setting input device: %@", AUStatusCodeAsString(status));
+		
+//		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(inputAudioUnit_,
+//											  kAudioUnitProperty_StreamFormat,
+//											  kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
+//											  kInputElement,
+//											  &streamDescription,
+//											  sizeof(streamDescription)));
+#endif
+	}
+	
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                  kAudioUnitProperty_StreamFormat,
+                                                  kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
+                                                  kOutputElement,
+                                                  &streamDescription,
+                                                  sizeof(streamDescription)));
+
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                  kAudioUnitProperty_StreamFormat,
+                                                  kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
+                                                  kOutputElement,
+                                                  &streamDescription,
+                                                  sizeof(streamDescription)));
+	
+	AURenderCallbackStruct callbackStruct;
+	callbackStruct.inputProc = self.renderCallback;
+	callbackStruct.inputProcRefCon = self;
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+                                                  kAudioUnitProperty_SetRenderCallback,
+                                                  kAudioUnitScope_Input,
+                                                  kOutputElement,
+                                                  &callbackStruct,
+                                                  sizeof(callbackStruct)));
+	
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(audioUnit_));
+	if(inputAudioUnit_) {
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(inputAudioUnit_));
+		
+//		// setup audio graph to connect input -> output
+//		AUNode inputNode, outputNode;
+//		AudioComponentDescription inputDescription = { kAudioUnitType_Output, kAudioUnitSubType_HALOutput, kAudioUnitManufacturer_Apple, 0, 0 };
+//		AudioComponentDescription outputDescription = { kAudioUnitType_Output, kAudioUnitSubType_HALOutput, kAudioUnitManufacturer_Apple, 0, 0 };
+//		AU_RETURN_FALSE_IF_ERROR(NewAUGraph(&auGraph_));
+//		//description.componentType = kAudioUnitType_Output;
+//		//description.componentSubType = kAudioUnitSubType_HALOutput;
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphOpen(auGraph_));
+//		
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphAddNode(auGraph_, &inputDescription, &inputNode));
+//		//description.componentSubType = kAudioUnitSubType_DefaultOutput;
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphAddNode(auGraph_, &outputDescription, &outputNode));
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphConnectNodeInput(auGraph_, inputNode, 1, outputNode, 0));
+//		
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphNodeInfo(auGraph_, inputNode, NULL, &inputAudioUnit_));
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphNodeInfo(auGraph_, outputNode, NULL, &audioUnit_));
+//		AU_RETURN_FALSE_IF_ERROR(AUGraphStart(auGraph_));
+	}
+	initialized_ = YES;
+	AU_LOGV(@"initialized audio unit");
+	return true;
 }
+
+OSStatus createAggregateDevice(CFStringRef inputDeviceUID, CFStringRef outputDeviceUID) {
+
+	OSStatus osErr = noErr;
+	UInt32 outSize;
+	Boolean outWritable;
+
+	//-----------------------
+	// Start to create a new aggregate by getting the base audio hardware plugin
+	//-----------------------
+
+	osErr = AudioHardwareGetPropertyInfo(kAudioHardwarePropertyPlugInForBundleID, &outSize, &outWritable);
+	if (osErr != noErr) return osErr;
+
+	AudioValueTranslation pluginAVT;
+
+	CFStringRef inBundleRef = CFSTR("com.apple.audio.CoreAudio");
+	AudioObjectID pluginID;
+
+	pluginAVT.mInputData = &inBundleRef;
+	pluginAVT.mInputDataSize = sizeof(inBundleRef);
+	pluginAVT.mOutputData = &pluginID;
+	pluginAVT.mOutputDataSize = sizeof(pluginID);
+
+	osErr = AudioHardwareGetProperty(kAudioHardwarePropertyPlugInForBundleID, &outSize, &pluginAVT);
+	if (osErr != noErr) return osErr;
+
+	//-----------------------
+	// Create a CFDictionary for our aggregate device
+	//-----------------------
+
+	CFMutableDictionaryRef aggDeviceDict = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
+	CFStringRef AggregateDeviceNameRef = CFSTR("libpd");
+	CFStringRef AggregateDeviceUIDRef = CFSTR("org.libpd.libpd");
+
+	// add the name of the device to the dictionary
+	CFDictionaryAddValue(aggDeviceDict, CFSTR(kAudioAggregateDeviceNameKey), AggregateDeviceNameRef);
+
+	// add our choice of UID for the aggregate device to the dictionary
+	CFDictionaryAddValue(aggDeviceDict, CFSTR(kAudioAggregateDeviceUIDKey), AggregateDeviceUIDRef);
+
+	//-----------------------
+	// Create a CFMutableArray for our sub-device list
+	//-----------------------
+
+	// this example assumes that you already know the UID of the device to be added
+	// you can find this for a given AudioDeviceID via AudioDeviceGetProperty for the kAudioDevicePropertyDeviceUID property
+	// obviously the example deviceUID below won't actually work!
+	//CFStringRef deviceUID = CFSTR("UIDOfDeviceToBeAdded");
+
+	// we need to append the UID for each device to a CFMutableArray, so create one here
+	CFMutableArrayRef subDevicesArray = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
+
+	// just the one sub-device in this example, so append the sub-device's UID to the CFArray
+	CFArrayAppendValue(subDevicesArray, inputDeviceUID);
+	CFArrayAppendValue(subDevicesArray, outputDeviceUID);
+
+	// if you need to add more than one sub-device, then keep calling CFArrayAppendValue here for the other sub-device UIDs
+
+	//-----------------------
+	// Feed the dictionary to the plugin, to create a blank aggregate device
+	//-----------------------
+
+	AudioObjectPropertyAddress pluginAOPA;
+	pluginAOPA.mSelector = kAudioPlugInCreateAggregateDevice;
+	pluginAOPA.mScope = kAudioObjectPropertyScopeGlobal;
+	pluginAOPA.mElement = kAudioObjectPropertyElementMaster;
+	UInt32 outDataSize;
+
+	osErr = AudioObjectGetPropertyDataSize(pluginID, &pluginAOPA, 0, NULL, &outDataSize);
+	if (osErr != noErr) return osErr;
+
+	AudioDeviceID outAggregateDevice;
+
+	osErr = AudioObjectGetPropertyData(pluginID, &pluginAOPA, sizeof(aggDeviceDict), &aggDeviceDict, &outDataSize, &outAggregateDevice);
+	if (osErr != noErr) return osErr;
+
+	// pause for a bit to make sure that everything completed correctly
+	// this is to work around a bug in the HAL where a new aggregate device seems to disappear briefly after it is created
+	CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, false);
+
+	//-----------------------
+	// Set the sub-device list
+	//-----------------------
+
+	pluginAOPA.mSelector = kAudioAggregateDevicePropertyFullSubDeviceList;
+	pluginAOPA.mScope = kAudioObjectPropertyScopeGlobal;
+	pluginAOPA.mElement = kAudioObjectPropertyElementMaster;
+	outDataSize = sizeof(CFMutableArrayRef);
+	osErr = AudioObjectSetPropertyData(outAggregateDevice, &pluginAOPA, 0, NULL, outDataSize, &subDevicesArray);
+	if (osErr != noErr) return osErr;
+
+	// pause again to give the changes time to take effect
+	CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, false);
+
+	//-----------------------
+	// Set the master device
+	//-----------------------
+
+	// set the master device manually (this is the device which will act as the master clock for the aggregate device)
+	// pass in the UID of the device you want to use
+	pluginAOPA.mSelector = kAudioAggregateDevicePropertyMasterSubDevice;
+	pluginAOPA.mScope = kAudioObjectPropertyScopeGlobal;
+	pluginAOPA.mElement = kAudioObjectPropertyElementMaster;
+	outDataSize = sizeof(outputDeviceUID);
+	osErr = AudioObjectSetPropertyData(outAggregateDevice, &pluginAOPA, 0, NULL, outDataSize, &outputDeviceUID);
+	if (osErr != noErr) return osErr;
+
+	// pause again to give the changes time to take effect
+	CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, false);
+
+	//-----------------------
+	// Clean up
+	//-----------------------
+
+	// release the CF objects we have created - we don't need them any more
+	CFRelease(aggDeviceDict);
+	CFRelease(subDevicesArray);
+
+	// release the device UID
+	//CFRelease(deviceUID);
+
+	return noErr;
+
+}
+
+OSStatus DestroyAggregateDevice(AudioDeviceID inDeviceToDestroy) {
+
+	OSStatus osErr = noErr;
+
+	//-----------------------
+	// Start by getting the base audio hardware plugin
+	//-----------------------
+
+	UInt32 outSize;
+	Boolean outWritable;
+	osErr = AudioHardwareGetPropertyInfo(kAudioHardwarePropertyPlugInForBundleID, &outSize, &outWritable);
+	if (osErr != noErr) return osErr;
+
+	AudioValueTranslation pluginAVT;
+
+	CFStringRef inBundleRef = CFSTR("com.apple.audio.CoreAudio");
+	AudioObjectID pluginID;
+
+	pluginAVT.mInputData = &inBundleRef;
+	pluginAVT.mInputDataSize = sizeof(inBundleRef);
+	pluginAVT.mOutputData = &pluginID;
+	pluginAVT.mOutputDataSize = sizeof(pluginID);
+
+	osErr = AudioHardwareGetProperty(kAudioHardwarePropertyPlugInForBundleID, &outSize, &pluginAVT);
+	if (osErr != noErr) return osErr;
+
+	//-----------------------
+	// Feed the AudioDeviceID to the plugin, to destroy the aggregate device
+	//-----------------------
+
+	AudioObjectPropertyAddress pluginAOPA;
+	pluginAOPA.mSelector = kAudioPlugInDestroyAggregateDevice;
+	pluginAOPA.mScope = kAudioObjectPropertyScopeGlobal;
+	pluginAOPA.mElement = kAudioObjectPropertyElementMaster;
+	UInt32 outDataSize;
+
+	osErr = AudioObjectGetPropertyDataSize(pluginID, &pluginAOPA, 0, NULL, &outDataSize);
+	if (osErr != noErr) return osErr;
+
+	osErr = AudioObjectGetPropertyData(pluginID, &pluginAOPA, 0, NULL, &outDataSize, &inDeviceToDestroy);
+	if (osErr != noErr) return osErr;
+
+	return noErr;
+
+}
+
+#endif
 
 @end
