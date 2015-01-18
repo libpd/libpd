@@ -116,6 +116,7 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 		status |= PdAudioPropertyChanged;
 	}
 #endif
+	status |= [self configureAudioUnitWithNumberChannels:numChannels inputEnabled:inputEnabled];
 	status |= [self updateSampleRate:sampleRate];
 	if (status == PdAudioError) {
 		return PdAudioError;
@@ -124,7 +125,6 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self configureAudioUnitWithNumberChannels:numChannels inputEnabled:inputEnabled];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
@@ -170,7 +170,7 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 	AU_LOGV(@"numberFrames: %d, specified bufferDuration: %f", numberFrames, bufferDuration);
 	AU_LOGV(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
 #else // OSX
-	AudioObjectID outputDevice = kAudioObjectUnknown;
+	AudioObjectID outputDevice;// = [self.audioUnit aggregateDevice];//kAudioObjectUnknown;
 	UInt32 size = sizeof (outputDevice);
 	AudioObjectPropertyAddress property;
 	property.mScope = kAudioObjectPropertyScopeGlobal;
@@ -181,13 +181,30 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 	if (status == kAudioObjectUnknown) {
 		return PdAudioError;
 	}
-	size = sizeof(Float32);
-	property.mSelector = kAudioDevicePropertyNominalSampleRate;
-	status = AudioHardwareServiceSetPropertyData(outputDevice, &property, 0, NULL, &size, &bufferDuration);
-	AU_LOG_IF_ERROR(status, @"error setting output device sample rate (status = %ld)", status);
+	UInt32 bufferSize = bufferDuration;
+	size = sizeof(UInt32);
+	property.mSelector = kAudioDevicePropertyBufferSize;
+	status = AudioHardwareServiceSetPropertyData(outputDevice, &property, 0, NULL, size, &bufferSize);
+	AU_LOG_IF_ERROR(status, @"error setting output device buffer size (status = %ld)", status);
 	if (status != kAudioHardwareNoError) {
 		return PdAudioError;
 	}
+	
+	AudioObjectID inputDevice = [self.audioUnit aggregateDevice];//kAudioObjectUnknown;
+//	property.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+//	status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &property, 0, NULL, &size, &inputDevice);
+//	AU_LOG_IF_ERROR(status, @"error getting input device id (status = %ld)", status);
+//	if (status == kAudioObjectUnknown) {
+//		return PdAudioError;
+//	}
+	size = sizeof(UInt32);
+	property.mSelector = kAudioDevicePropertyBufferSize;
+	status = AudioHardwareServiceSetPropertyData(inputDevice, &property, 0, NULL, size, &bufferSize);
+	AU_LOG_IF_ERROR(status, @"error setting input device buffer size (status = %ld)", status);
+	if (status != kAudioHardwareNoError) {
+		return PdAudioError;
+	}
+	
 #endif
 	int tpb = self.ticksPerBuffer;
 	if (tpb != ticksPerBuffer) {
@@ -264,11 +281,16 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 	
 	// print buffer size
 	UInt32 bufferSize = 0;
-	property.mSelector = kAudioDevicePropertyBufferSize;
+	property.mSelector = kAudioDevicePropertyBufferFrameSize;
 	size = sizeof(UInt32);
+	status = AudioHardwareServiceGetPropertyData(inputDevice, &property, 0, NULL, &size, &bufferSize);
+	AU_LOG_IF_ERROR(status, @"error getting input device buffer size (status = %ld)", status);
+	AU_LOG(@"input buffer size: %d", bufferSize);
+	
+	property.mSelector = kAudioDevicePropertyBufferFrameSize;
 	status = AudioHardwareServiceGetPropertyData(outputDevice, &property, 0, NULL, &size, &bufferSize);
 	AU_LOG_IF_ERROR(status, @"error getting output device buffer size (status = %ld)", status);
-	AU_LOG(@"buffer size: %d", bufferSize);
+	AU_LOG(@"output buffer size: %d", bufferSize);
 	
 	// print number of inputs
 	int numChannels = 0;
@@ -347,7 +369,7 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 #pragma mark - Private
 
 - (PdAudioStatus)updateSampleRate:(int)sampleRate {
-	double currentHardwareSampleRate = 0;
+	Float64 currentHardwareSampleRate = 0;
 #if TARGET_OS_IPHONE
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	NSError *error = nil;
@@ -365,21 +387,65 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 		currentHardwareSampleRate = globalSession.currentHardwareSampleRate;
 	#endif
 #else // OSX
-	AudioObjectID outputDevice = kAudioObjectUnknown;
-	UInt32 size = sizeof (outputDevice);
+	AudioObjectID device = kAudioObjectUnknown;
+	UInt32 size = sizeof (device);
 	AudioObjectPropertyAddress property;
 	property.mScope = kAudioObjectPropertyScopeGlobal;
 	property.mElement = kAudioObjectPropertyElementMaster;
+
+	
+//	//size = sizeof(AudioDeviceID);
+//	OSStatus status = AudioUnitGetProperty(self.audioUnit.audioUnit,
+//											kAudioOutputUnitProperty_CurrentDevice,
+//											kAudioUnitScope_Global,
+//											0,
+//											&device,
+//											&size);
+//	AU_LOG_IF_ERROR(status, @"error getting device id (status = %ld)", status);
+
 	property.mSelector = kAudioHardwarePropertyDefaultOutputDevice;
-	OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &property, 0, NULL, &size, &outputDevice);
+	OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &property, 0, NULL, &size, &device);
 	AU_LOG_IF_ERROR(status, @"error getting output device id (status = %ld)", status);
 	if (status != kAudioHardwareNoError) {
 		return PdAudioError;
 	}
-	size = sizeof(double);
+	size = sizeof(Float64);
+	
+//	property.mSelector = kAudioDevicePropertyNominalSampleRate;
+//	status = AudioHardwareServiceSetPropertyData(device, &property, 0, NULL, size, &currentHardwareSampleRate);
+//	AU_LOG_IF_ERROR(status, @"error setting output device sample rate (status = %ld)", status);
+//	if(status != kAudioHardwareNoError) {
+//		return PdAudioError;
+//	}
+	
 	property.mSelector = kAudioDevicePropertyActualSampleRate;
-	status = AudioHardwareServiceGetPropertyData(outputDevice, &property, 0, NULL, &size, &currentHardwareSampleRate);
+	status = AudioHardwareServiceGetPropertyData(device, &property, 0, NULL, &size, &currentHardwareSampleRate);
 	AU_LOG_IF_ERROR(status, @"error getting output device sample rate (status = %ld)", status);
+	if(status != kAudioHardwareNoError) {
+		return PdAudioError;
+	}
+	
+	
+	size = sizeof (device);
+	property.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+	status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &property, 0, NULL, &size, &device);
+	AU_LOG_IF_ERROR(status, @"error getting input device id (status = %ld)", status);
+	if (status != kAudioHardwareNoError) {
+		return PdAudioError;
+	}
+	size = sizeof(Float64);
+
+	
+//	property.mSelector = kAudioDevicePropertyNominalSampleRate;
+//	status = AudioHardwareServiceSetPropertyData(device, &property, 0, NULL, size, &currentHardwareSampleRate);
+//	AU_LOG_IF_ERROR(status, @"error setting input device sample rate (status = %ld)", status);
+//	if(status != kAudioHardwareNoError) {
+//		return PdAudioError;
+//	}
+	
+	property.mSelector = kAudioDevicePropertyActualSampleRate;
+	status = AudioHardwareServiceGetPropertyData(device, &property, 0, NULL, &size, &currentHardwareSampleRate);
+	AU_LOG_IF_ERROR(status, @"error getting input device sample rate (status = %ld)", status);
 	if(status != kAudioHardwareNoError) {
 		return PdAudioError;
 	}
@@ -503,7 +569,7 @@ int getNumChannelsForDevice(AudioDeviceID device, AudioObjectPropertyScope scope
 	if(kAudioHardwareNoError == status) {
 	
 		AudioBufferList *bufferList = (AudioBufferList *)(malloc(size));
-		if(!bufferList) { // this shouldn't happen
+		if(bufferList == NULL) { // this shouldn't happen
 			AU_LOG(@"unable to allocate AudioBufferList");
 			return numChannels;
 		}

@@ -49,6 +49,7 @@ static NSString *const kPatchName = @"testinput.pd";
 
 	self.pdAudioController = [[[PdAudioController alloc] init] autorelease];
 	[self.pdAudioController configurePlaybackWithSampleRate:44100 numberChannels:2 inputEnabled:YES mixingEnabled:NO];
+	[self.pdAudioController configureTicksPerBuffer:4];
 	[self.pdAudioController print];
 	self.pdAudioController.active = true;
 	[PdBase computeAudio:YES];
@@ -60,7 +61,7 @@ static NSString *const kPatchName = @"testinput.pd";
 		AU_LOG(@"error: patch failed to open %@.", kPatchName);
 	}
 
-	[self performSelector:@selector(startAudio) withObject:nil afterDelay:1];
+//	[self performSelector:@selector(startAudio) withObject:nil afterDelay:1];
 }
 
 - (void)startAudio {
