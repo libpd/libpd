@@ -1027,7 +1027,7 @@
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_ALLOCA_H",
-					_DLIBPD_EXTRA,
+					"-DLIBPD_EXTRA",
 				);
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
@@ -1050,7 +1050,7 @@
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_UNISTD_H",
 					"-DHAVE_ALLOCA_H",
-					_DLIBPD_EXTRA,
+					"-DLIBPD_EXTRA",
 				);
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
