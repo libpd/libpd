@@ -320,6 +320,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 #else
 
+// https://developer.apple.com/library/mac/technotes/tn2091/_index.htmlq
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	
 	[self destroyAudioUnits];
@@ -485,6 +486,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	return true;
 }
 
+// modified from http://daveaddey.com/?p=51
 OSStatus createAggregateDevice(AudioDeviceID inputDevice, AudioDeviceID outputDevice, AudioDeviceID *aggregateDevice) {
 
 	if((*aggregateDevice) != kAudioDeviceUnknown) {
