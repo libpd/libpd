@@ -145,7 +145,7 @@ $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^
 	javah -o $@ -classpath java org.puredata.core.PdBase
 
-$(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${JNI_FILE:.c=.o}
+$(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
 	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS) 
 	cp $(PDJAVA_NATIVE) libs/
