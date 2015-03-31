@@ -72,7 +72,14 @@ static void encodeList(NSArray *list) {
 		if ([object isKindOfClass:[NSNumber class]]) {
 			libpd_add_float([(NSNumber *)object floatValue]);
 		} else if ([object isKindOfClass:[NSString class]]) {
-			libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
+			if ([(NSString *)object canBeConvertedToEncoding:NSASCIIStringEncoding]) {
+        			libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
+      			} else {
+        			// If string contains non-ASCII characters, allow a lossy conversion (instead of returning null).
+        			NSData *data = [(NSString *)object dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        			NSString* newString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+        			libpd_add_symbol([newString cStringUsingEncoding:NSASCIIStringEncoding]);
+      			}
 		} else {
 			NSLog(@"PdBase: message not supported. %@", [object class]);
 		}
