@@ -73,12 +73,12 @@ PD_FILES = \
 	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
 
 PD_EXTRA_FILES = \
-	pure-data/extra/bonk~/bonk~.c pure-data/extra/choice/choice.c \
-	pure-data/extra/expr~/vexp_fun.c pure-data/extra/expr~/vexp_if.c \
-	pure-data/extra/expr~/vexp.c pure-data/extra/fiddle~/fiddle~.c \
-	pure-data/extra/loop~/loop~.c pure-data/extra/lrshift~/lrshift~.c \
-	pure-data/extra/pique/pique.c pure-data/extra/sigmund~/sigmund~.c \
-	pure-data/extra/stdout/stdout.c
+	pure-data/extra/bob~/bob~.c pure-data/extra/bonk~/bonk~.c \
+	pure-data/extra/choice/choice.c pure-data/extra/expr~/vexp_fun.c \
+	pure-data/extra/expr~/vexp_if.c pure-data/extra/expr~/vexp.c \
+	pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c \
+	pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c \
+	pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
 
 LIBPD_UTILS = \
 	libpd_wrapper/util/z_print_util.c \

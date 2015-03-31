@@ -212,6 +212,8 @@
 		30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
 		30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
 		30E9358916ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
+		30FDBE7D1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
+		30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
@@ -331,6 +333,7 @@
 		30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fft_fftsg.c; sourceTree = "<group>"; };
 		30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdMidiDispatcher.h; sourceTree = "<group>"; };
 		30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdMidiDispatcher.m; sourceTree = "<group>"; };
+		30FDBE7C1ACAF701008B02E9 /* bob~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "bob~.c"; path = "pure-data/extra/bob~/bob~.c"; sourceTree = SOURCE_ROOT; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -545,6 +548,7 @@
 		30CEFE221A6A5E72000E3BAE /* extra */ = {
 			isa = PBXGroup;
 			children = (
+				30FDBE7B1ACAF6F2008B02E9 /* bob~ */,
 				30CEFE231A6A5EDB000E3BAE /* bonk~ */,
 				30CEFE251A6A5EDB000E3BAE /* choice */,
 				30CEFE271A6A5EDB000E3BAE /* expr~ */,
@@ -642,6 +646,14 @@
 			name = stdout;
 			path = "pure-data/extra/stdout";
 			sourceTree = SOURCE_ROOT;
+		};
+		30FDBE7B1ACAF6F2008B02E9 /* bob~ */ = {
+			isa = PBXGroup;
+			children = (
+				30FDBE7C1ACAF701008B02E9 /* bob~.c */,
+			);
+			name = "bob~";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -780,6 +792,7 @@
 				30CEFE3C1A6A5EDC000E3BAE /* choice.c in Sources */,
 				1190136B1486450C00086F19 /* g_canvas.c in Sources */,
 				1190136C1486450C00086F19 /* g_editor.c in Sources */,
+				30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */,
 				1190136D1486450C00086F19 /* g_graph.c in Sources */,
 				1190136E1486450C00086F19 /* g_guiconnect.c in Sources */,
 				1190136F1486450C00086F19 /* g_hdial.c in Sources */,
@@ -889,6 +902,7 @@
 				0E82A06112EEFDEE0053280E /* g_toggle.c in Sources */,
 				30CEFE4F1A6A5EDC000E3BAE /* sigmund~.c in Sources */,
 				0E82A06212EEFDEE0053280E /* g_traversal.c in Sources */,
+				30FDBE7D1ACAF701008B02E9 /* bob~.c in Sources */,
 				0E82A06312EEFDEE0053280E /* g_vdial.c in Sources */,
 				0E82A06412EEFDEE0053280E /* g_vslider.c in Sources */,
 				0E82A06512EEFDEE0053280E /* g_vumeter.c in Sources */,

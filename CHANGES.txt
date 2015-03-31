@@ -1,6 +1,6 @@
 0.8.0: In Development
 
-* tracking vanilla 0.46-4
+* tracking vanilla 0.46-6
 * pure-data source folder is now a submodule from the pd Sourceforge git
 * added LIBPD_EXTRA define to call pure-data/extra extern setup functions
   in libpd_init()
