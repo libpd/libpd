@@ -197,8 +197,8 @@ class PdBase {
 		/// call these in a loop somewhere in order to receive waiting messages
 		/// or midi data which are then sent to your PdReceiver & PdMidiReceiver
 		///
-		void receiveMessages();
-		void receiveMidi();
+		virtual void receiveMessages();
+		virtual void receiveMidi();
 
 	/// \section Event Receiving via Callbacks
 
@@ -415,6 +415,13 @@ class PdBase {
         void setMaxMessageLen(unsigned int len);
         unsigned int maxMessageLen();
 
+    protected:
+
+        #ifdef LIBPD_USE_STD_MUTEX
+            /// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
+            std::mutex mutex;
+        #endif
+
     private:
 
         /// compound message status
@@ -424,11 +431,6 @@ class PdBase {
             SYSEX,
             SYSRT
         };
-
-		#ifdef LIBPD_USE_STD_MUTEX
-			/// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
-			std::mutex mutex;
-		#endif
 
         /// a singleton libpd instance wrapper
         class PdContext {
