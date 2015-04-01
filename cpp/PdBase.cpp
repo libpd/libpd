@@ -805,6 +805,10 @@ bool PdBase::isInited() {
     return PdContext::instance().isInited();
 }
 
+bool PdBase::isQueued() {
+    return PdContext::instance().isQueued();
+}
+
 int PdBase::blockSize() {
 	// shouldn't need to lock this for now, it's always 64
     return libpd_blocksize();

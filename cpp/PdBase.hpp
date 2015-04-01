@@ -403,10 +403,13 @@ class PdBase {
         /// clear array and set to a specific value
         virtual void clearArray(const std::string& arrayName, int value=0);
 
-	/// \section Global Utils
+	/// \section Utils
 
         /// has the global pd instance been initialized?
         bool isInited();
+
+        /// is the global pd instance using the ringerbuffer queue for message padding?
+        bool isQueued();
 
         /// get the blocksize of pd (sample length per channel)
         static int blockSize();
@@ -461,6 +464,9 @@ class PdBase {
 
                 /// is the instance inited?
                 inline bool isInited() {return bInited;}
+
+                /// is this instance queued?
+                inline bool isQueued() {return bQueued;}
 
 			/// \section Variables
 
