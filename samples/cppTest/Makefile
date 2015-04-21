@@ -1,22 +1,44 @@
-SRC_FILES = src/PdObject.cpp src/main.cpp
-LIBPD = ../../libs/libpdcpp.so
-TARGET = pd-test
+# delect platform, move libpd dylib to local folder on mac
+UNAME = $(shell uname)
+SOLIB_PREFIX = lib
 
-CXXFLAGS = -I../../pure-data/src -I../../libpd_wrapper -I../../cpp -O3
+ifeq ($(UNAME), Darwin)  # Mac
+  SOLIB_EXT = dylib
+  PDNATIVE_PLATFORM = mac
+  LDFLAGS = -stdlib=libc++
+  CXXFLAGS = -stdlib=libc++
+else
+  ifeq ($(OS), Windows_NT)  # Windows, use Mingw
+    SOLIB_EXT = dll
+    SOLIB_PREFIX = 
+    PDNATIVE_PLATFORM = windows
+  else  # Assume Linux
+    SOLIB_EXT = so
+    PDNATIVE_PLATFORM = linux
+  endif
+endif
+
+LIBPD_DIR = ../..
+LIBPD_CPP = $(LIBPD_DIR)/libs/libpdcpp.$(SOLIB_EXT)
+
+SRC_FILES = src/PdObject.cpp src/main.cpp
+TARGET = cppTest
+
+CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/cpp -I./src -O3
 
 .PHONY: clean clobber
 
-$(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD)
-	g++ $^ $(LIBPD) -o $(TARGET)
+$(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD_CPP)
+	g++ -o $(TARGET) $^ $(LIBPD_CPP)
+	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir ./libs && cp $(LIBPD_CPP) ./libs; fi
 
-src/%.o: src/%.cpp 
-	g++ $(CXXFLAGS) -c src/$*.cpp -o src/$*.o
-
-$(LIBPD):
-	cd ../.. && make cpplib
+$(LIBPD_CPP):
+	cd ../.. && make cpplib UTIL=true EXTRA=true
 
 clean:
 	rm -f src/*.o
+	rm -f $(LIBPD_CPP)
+	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
 
 clobber: clean
 	rm -f $(TARGET)

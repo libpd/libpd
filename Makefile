@@ -10,6 +10,8 @@ ifeq ($(UNAME), Darwin)  # Mac
     -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
+  CPP_FLAGS = -stdlib=libc++
+  CPP_LDFLAGS = $(LDFLAGS) -stdlib=libc++
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
@@ -25,6 +27,7 @@ else
       -Wl,--out-implib=libs/libpd.lib
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -Wl,--out-implib=libs/libpdcsharp.lib
+    CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Assume Linux
     SOLIB_EXT = so
@@ -85,7 +88,9 @@ LIBPD_UTILS = \
 	libpd_wrapper/util/z_queued.c \
 	libpd_wrapper/util/ringbuffer.c
 
-CPP_FILES = cpp/PdBase.cpp cpp/PdTypes.cpp
+CPP_FILES = \
+	cpp/PdBase.cpp \
+	cpp/PdTypes.cpp
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
@@ -130,7 +135,7 @@ PDJAVA_JAR = libs/libpd.jar
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
          $(UTIL_CFLAGS) $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS)
 
-CXXFLAGS = $(CFLAGS)
+CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
 .PHONY: libpd csharplib cpplib javalib clean clobber
 
@@ -157,16 +162,16 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 csharplib: $(PDCSHARP)
 
 $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
-	gcc -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
+	$(CC) -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 cpplib: $(PDCPP)
 
-$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${CPP_FILES:.cpp=.o} ${EXTRA_FILES:.c=.o}
+$(PDCPP): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o} ${CPP_FILES:.cpp=.o} 
 	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
-	rm -f ${CPP_FILES:.cpp=.o} ${LIBPD_UTILS:.c=.o} ${PD_EXTRA_FILES:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${CPP_FILES:.cpp=.o} ${JNI_FILE:.c=.o}
+	rm -f ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
