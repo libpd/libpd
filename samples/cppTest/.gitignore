@@ -1,1 +1,3 @@
-pdtest
+cppTest
+libs
+src/*.o

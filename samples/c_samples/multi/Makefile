@@ -27,14 +27,14 @@ CFLAGS = -I../../../pure-data/src -I../../../libpd_wrapper
 
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
 	gcc -o $(TARGET) $^ $(LIBPD)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir ./libs && cp $(LIBPD) ./libs; fi
+	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
 	cd ../../.. && make
 
 clean:
 	rm -f *.o
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
 
 clobber: clean
 	rm -f $(TARGET)
+	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi

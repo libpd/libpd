@@ -30,16 +30,14 @@ CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_
 
 $(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD_CPP)
 	g++ -o $(TARGET) $^ $(LIBPD_CPP)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir ./libs && cp $(LIBPD_CPP) ./libs; fi
+	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD_CPP) ./libs; fi
 
 $(LIBPD_CPP):
 	cd ../.. && make cpplib UTIL=true EXTRA=true
 
 clean:
 	rm -f src/*.o
-	rm -f $(LIBPD_CPP)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
 
 clobber: clean
 	rm -f $(TARGET)
-
+	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
