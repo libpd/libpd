@@ -6,7 +6,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH = 
-  PLATFORM_CFLAGS = -DHAVE_LIBDL -O3 -arch x86_64 -arch i386 -g \
+  PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
@@ -20,7 +20,7 @@ else
     SOLIB_PREFIX = 
     PDNATIVE_PLATFORM = windows
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
-    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL -O3 \
+    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def \
@@ -36,7 +36,7 @@ else
     JAVA_HOME ?= /usr/lib/jvm/default-java
     PLATFORM_CFLAGS = -DHAVE_LIBDL -Wno-int-to-pointer-cast \
       -Wno-pointer-to-int-cast -fPIC -I"$(JAVA_HOME)/include" \
-      -I"$(JAVA_HOME)/include/linux" -O3
+      -I"$(JAVA_HOME)/include/linux"
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
     CPP_LDFLAGS = $(LDFLAGS)
@@ -114,6 +114,12 @@ ifeq ($(EXTRA), true)
 	EXTRA_CFLAGS = -I./pure-data/extra/expr~ -DLIBPD_EXTRA
 endif
 
+# conditional debug settings or optimizations
+OPT_CFLAGS = -O3
+ifeq ($(DEBUG), true)
+	OPT_CFLAGS = -Wall
+endif
+
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
@@ -133,7 +139,7 @@ PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
-         $(UTIL_CFLAGS) $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS)
+         $(UTIL_CFLAGS) $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS) $(OPT_CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 

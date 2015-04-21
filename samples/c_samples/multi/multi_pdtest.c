@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
   // open patch       [; pd open file folder(
   libpd_openfile(argv[1], argv[2]);
 
-    /* the follownig two messages can be sent without setting the pd nstance
+    /* the following two messages can be sent without setting the pd nstance
     and anyhow the symbols are global so they may affect multiple instances.
     However, if the messages change anyhing in the pd instacne structure
     (DSP state; current time; list of all canvases n our instance) those

@@ -1,4 +1,4 @@
-# delect platform, move libpd dylib to local folder on mac
+# detect platform, move libpd dylib to local folder on mac
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
 

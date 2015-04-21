@@ -49,11 +49,12 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, &
   - **clean**, removes the object files
   - **clobber**, removes the linked library files
       
-Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd:
+Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
 
   - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
   - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init()
-  
+  - **DEBUG=true**, compiles libpd with -Wall & no optimizations
+
 For example, to build libpd with both util and extra:
 
     make UTIL=true EXTRA=true
