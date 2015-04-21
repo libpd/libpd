@@ -1,3 +1,6 @@
+/*
+  this tests the pd's currently experimental multi instance support 
+*/
 #include <stdio.h>
 #include "z_libpd.h"
 #include "m_imp.h"
@@ -61,7 +64,7 @@ int main(int argc, char **argv) {
     changes will apply to the current Pd nstance, so the earlier messages,
     for instance, were sensitive to which was the current one. 
     
-    Note also that I'm using the fact taht $0 is set to 1003, 1004, ...
+    Note also that I'm using the fact that $0 is set to 1003, 1004, ...
     as patches are opened -it would be better to opent the patches with 
     settable $1, etc parameters to libpd_openfile().  */
     
