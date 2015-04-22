@@ -126,6 +126,9 @@ PD_EXTRA_OBJS = \
 	pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
 	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
 
+# default install location
+prefix=/usr/local
+
 JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c jni/z_jni_plain.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
@@ -143,7 +146,7 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
-.PHONY: libpd csharplib cpplib javalib clean clobber
+.PHONY: libpd csharplib cpplib javalib install uninstall clean clobber
 
 libpd: $(LIBPD)
 
@@ -183,3 +186,21 @@ clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
 	rm -f libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD)
+
+install:
+	mkdir -p $(prefix)/include/libpd
+	install libpd_wrapper/z_libpd.h $(prefix)/include/libpd
+	install pure-data/src/m_pd.h $(prefix)/include/libpd
+	mkdir -p $(prefix)/include/libpd/util
+	install libpd_wrapper/util/z_print_util.h $(prefix)/include/libpd/util
+	install libpd_wrapper/util/z_queued.h $(prefix)/include/libpd/util
+	install $(LIBPD) $(prefix)/lib
+	if [ -e $(PDCPP) ]; then \
+		install cpp/*.hpp $(prefix)/include/libpd; \
+		install $(PDCPP) $(prefix)/lib; \
+	fi
+
+uninstall:
+	rm -rf $(prefix)/include/libpd
+	rm -f $(prefix)/lib/`basename $(LIBPD)`
+	rm -f $(prefix)/lib/`basename $(PDCPP)`

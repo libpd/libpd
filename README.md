@@ -42,12 +42,14 @@ Build support for various platforms. Feel free to improve the build system in an
 	  
 Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & Mac OSX and has the following targets: 	  
       
-  - **libpd**, (default) builds if no target is specified, builds the libpd.so/dylib/dll
-  - **cpplib**, builds libpd with the cpp wrapper
-  - **csharplib**, builds libpdcsharp.dll (tested on Windows only)
-  - **javalib**, builds libpdnative and the jni wrapper
-  - **clean**, removes the object files
-  - **clobber**, removes the linked library files
+  - **libpd**: (default) builds if no target is specified, builds the libpd.so/dylib/dll
+  - **cpplib**: builds libpd with the cpp wrapper
+  - **csharplib**: builds libpdcsharp.dll (tested on Windows only)
+  - **javalib**: builds libpdnative and the jni wrapper
+  - **clean**: removes the object files
+  - **clobber**: removes the linked library files
+  - **install**: installs libpd C library (+ C++ if built) and headers, set location with prefix= (default: /usr/local)
+  - **uninstall**: removes libpd C library and headers, set location with prefix= (default: /usr/local)
       
 Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
 

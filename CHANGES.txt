@@ -6,7 +6,8 @@
   in libpd_init()
 * added UTIL and EXTRA Makefile vars to for conditional compilation of
   libpd_wrapper/utils and pure-data/extra extern sources into libpd
-* added DEBUG Makefile var to control buikd optimizations
+* added DEBUG Makefile var to control build optimizations
+* added rudimentary install & uninstall makefile targets
 * added -DHAVE_ALLOCA_H, _DHAVE_LIBDL, and -ldl on OSX in libpd.xcodeproj
 * [netsend] & [netreceive] now working in libpd (thanks Chris!)
 * Android: fixed makefile for 0.45-4+ source changes
