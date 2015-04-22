@@ -114,7 +114,7 @@ ifeq ($(EXTRA), true)
 	EXTRA_CFLAGS = -I./pure-data/extra/expr~ -DLIBPD_EXTRA
 endif
 
-# conditional debug settings or optimizations
+# conditional optimizations or debug settings
 OPT_CFLAGS = -O3
 ifeq ($(DEBUG), true)
 	OPT_CFLAGS = -Wall

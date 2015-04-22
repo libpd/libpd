@@ -24,7 +24,7 @@
 
 // define this to use C++11 std::mutex for locking
 #ifdef LIBPD_USE_STD_MUTEX
-    #if __cplusplus <= 201103L
+    #if __cplusplus < 201103L
         #warning std::mutex requires C++11
     #else
         #include <mutex>

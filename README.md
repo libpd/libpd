@@ -61,11 +61,11 @@ For example, to build libpd with both util and extra:
 
 ### java, csharp, objc, cpp, python
 
-Glue for using libpd with Java, C#, Objective C, C++ and Python.  Feel free to improve or add support for other languages such as Lua.
+Glue for using libpd with Java, C#, Objective C, C++ and Python. Feel free to improve or add support for other languages such as Lua.
 
 ### samples
 
-Contains a small sample program in C built on top of libpd, a sample project in Java that uses JavaSound, and the cppTest & iOSTest Xcode projects.
+Contains small sample programs and tests in the various supported langauges.
 
 Java Builds
 -----------
