@@ -21,7 +21,7 @@ LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 SRC_FILES = pdtest_multi.c
 TARGET = pdtest_multi
 
-CFLAGS = -I../../../pure-data/src -I../../../libpd_wrapper
+CFLAGS = -I../../../pure-data/src -I../../../libpd_wrapper -O3
 
 .PHONY: clean clobber
 
@@ -30,7 +30,7 @@ $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
 	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
-	cd ../../.. && make DEBUG=true
+	cd ../../.. && make
 
 clean:
 	rm -f *.o
