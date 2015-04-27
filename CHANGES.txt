@@ -1,6 +1,6 @@
-0.8.0: In Development
+0.8.0: 2015 Apr
 
-* tracking vanilla 0.46-6
+* tracking vanilla 0.46-6 (in 0.46 branch + multi instance bugfix)
 * pure-data source folder is now a submodule from the pd Sourceforge git
 * added LIBPD_EXTRA define to call pure-data/extra extern setup functions
   in libpd_init()
@@ -17,7 +17,8 @@
 * ObjC: PdAudioUnit can now be subclassed
 * ObjC: deprecation fix, use AVAudioSession IOBufferDuration if available
 * reorganized all samples & tests by language
-* updated C & C++ sample Makefiles so samples build and run on OSX
+* updated C & C++ sample Makefiles so samples build and run on OSXi
+* added multi instance example 
 
 0.7.0: 2014 May
 
