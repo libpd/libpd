@@ -1,5 +1,5 @@
 /*
-  this tests the pd's currently experimental multi instance support 
+  this tests pd's currently *experimental* multi instance support 
 */
 #include <stdio.h>
 #include "z_libpd.h"
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   }
   
   int srate = 44100;
-    // maybe these two calls should be available per-instnace somehow:
+    // maybe these two calls should be available per-instance somehow:
   libpd_set_printhook(pdprint);   
   libpd_set_noteonhook(pdnoteon);
     /* set a "current" instance before libpd_init() or else Pd will make
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
   pd_setinstance(pd1);
   libpd_init();
     /* ... here we'd sure like to be able to have number of channels be
-    per-nstance.  The sample rate is still global within Pd but we might
+    per-instance.  The sample rate is still global within Pd but we might
     also consider relaxing that restrction. */
   libpd_init_audio(1, 2, srate);
 
@@ -57,15 +57,15 @@ int main(int argc, char **argv) {
   // open patch       [; pd open file folder(
   libpd_openfile(argv[1], argv[2]);
 
-    /* the following two messages can be sent without setting the pd nstance
+    /* the following two messages can be sent without setting the pd instance
     and anyhow the symbols are global so they may affect multiple instances.
-    However, if the messages change anyhing in the pd instacne structure
+    However, if the messages change anything in the pd instance structure
     (DSP state; current time; list of all canvases n our instance) those
     changes will apply to the current Pd nstance, so the earlier messages,
     for instance, were sensitive to which was the current one. 
     
     Note also that I'm using the fact that $0 is set to 1003, 1004, ...
-    as patches are opened -it would be better to opent the patches with 
+    as patches are opened, it would be better to open the patches with 
     settable $1, etc parameters to libpd_openfile().  */
     
   // [; pd frequency 1 (
