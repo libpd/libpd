@@ -471,3 +471,14 @@ void libpd_start_gui(const char *libdir)
                 strcmp(x->gl_name->s_name, "_text_template"))
                     canvas_vis(x, 1);
 }
+
+void sys_stopgui( void);
+
+void libpd_stop_gui( void)
+{
+    t_canvas *x;
+    for (x = pd_getcanvaslist(); x; x = x->gl_next)
+        canvas_vis(x, 0);
+    sys_vgui("%s", "exit\n");
+    sys_stopgui();
+}
