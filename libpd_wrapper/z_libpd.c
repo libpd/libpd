@@ -467,6 +467,7 @@ void libpd_start_gui(const char *libdir)
     sys_startgui(libdir);
     for (x = pd_getcanvaslist(); x; x = x->gl_next)
         if (strcmp(x->gl_name->s_name, "_float_template") &&
-            strcmp(x->gl_name->s_name, "_float_array_template"))
-                canvas_vis(x, 1);
+            strcmp(x->gl_name->s_name, "_float_array_template") &&
+                strcmp(x->gl_name->s_name, "_text_template"))
+                    canvas_vis(x, 1);
 }
