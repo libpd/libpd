@@ -101,8 +101,9 @@ static void internal_printhook(const char *s) {
   static char padding[LIBPD_WORD_ALIGN];
   int len = (int) strlen(s) + 1; // remember terminating null char
   int rest = len % LIBPD_WORD_ALIGN;
+  int total;
   if (rest) rest = LIBPD_WORD_ALIGN - rest;
-  int total = len + rest;
+  total = len + rest;
   if (rb_available_to_write(pd_receive_buffer) >= S_PD_PARAMS + total) {
     pd_params p = {LIBPD_PRINT, NULL, 0.0f, NULL, total};
     rb_write_to_buffer(pd_receive_buffer, 3,
@@ -324,12 +325,13 @@ void libpd_queued_release() {
 }
 
 void libpd_queued_receive_pd_messages() {
+  char *end, *buffer;
+  static char temp_buffer[BUFFER_SIZE];
   size_t available = rb_available_to_read(pd_receive_buffer);
   if (!available) return;
-  static char temp_buffer[BUFFER_SIZE];
   rb_read_from_buffer(pd_receive_buffer, temp_buffer, (int) available);
-  char *end = temp_buffer + available;
-  char *buffer = temp_buffer;
+  *end = temp_buffer + available;
+  *buffer = temp_buffer;
   while (buffer < end) {
     pd_params *p = (pd_params *)buffer;
     buffer += S_PD_PARAMS;
