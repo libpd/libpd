@@ -24,11 +24,11 @@
 
 // define this to use C++11 std::mutex for locking
 #ifdef LIBPD_USE_STD_MUTEX
-	#if __cplusplus <= 201103L
-		#warning std::mutex requires C++11
-	#else
-		#include <mutex>
-	#endif
+    #if __cplusplus < 201103L
+        #warning std::mutex requires C++11
+    #else
+        #include <mutex>
+    #endif
 #endif
 
 typedef struct _atom t_atom;
@@ -64,7 +64,7 @@ class PdBase {
         PdBase();
         virtual ~PdBase();
 
-	/// \section Initializing Pd
+    /// \section Initializing Pd
 
         /// initialize resources and set up the audio processing
         ///
@@ -77,14 +77,14 @@ class PdBase {
         /// if you experience audio dropouts (audible clicks), increase the
         /// ticks per buffer
         ///
-		/// set queued = true to use the built in ringbuffers for message and
-		/// midi event passing, you will then need to call receiveMessages() and
-		/// receiveMidi() in order to pass messages from the ringbuffers to your
-		/// PdReceiver and PdMidiReceiver implementations
-		///
-		/// the queued ringbuffers are useful when you need to receieve events
-		/// on a gui thread and don't want to use locking (aka the mutex)
-		///
+        /// set queued = true to use the built in ringbuffers for message and
+        /// midi event passing, you will then need to call receiveMessages() and
+        /// receiveMidi() in order to pass messages from the ringbuffers to your
+        /// PdReceiver and PdMidiReceiver implementations
+        ///
+        /// the queued ringbuffers are useful when you need to receieve events
+        /// on a gui thread and don't want to use locking (aka the mutex)
+        ///
         /// return true if setup successfully
         ///
         /// note: must be called before processing
@@ -95,7 +95,7 @@ class PdBase {
         /// clear resources
         virtual void clear();
 
-	/// \section Adding Search Paths
+    /// \section Adding Search Paths
 
         /// add to the pd search path
         /// takes an absolute or relative path (in data folder)
@@ -107,7 +107,7 @@ class PdBase {
         /// clear the current pd search path
         virtual void clearSearchPath();
 
-	/// \section Opening Patches
+    /// \section Opening Patches
 
         /// open a patch file (aka somefile.pd) in a specified path
         /// returns a Patch object
@@ -126,7 +126,7 @@ class PdBase {
         /// object
         ///
         /// // open an instance of "somefile.pd"
-        /// Patch p2("somefile.pd", "/some/path");    // set file and path
+        /// Patch p2("somefile.pd", "/some/path"); // set file and path
         /// pd.openPatch(p2);
         ///
         /// // open a new instance of "somefile.pd"
@@ -144,7 +144,7 @@ class PdBase {
         /// note: clears the given Patch object
         virtual void closePatch(pd::Patch& patch);
 
-	/// \section Audio Processing
+    /// \section Audio Processing
 
         /// main process callbacks
         ///
@@ -165,7 +165,7 @@ class PdBase {
         bool processFloat(int ticks, const float* inBuffer, float* outBuffer);
         bool processDouble(int ticks, const double* inBuffer, double* outBuffer);
 
-	/// \section Audio Processing Control
+    /// \section Audio Processing Control
 
         /// start/stop audio processing
         ///
@@ -175,7 +175,7 @@ class PdBase {
         ///
         virtual void computeAudio(bool state);
 
-	//// \section Message Receiving
+    //// \section Message Receiving
 
         /// subscribe/unsubscribe to source names from libpd
         ///
@@ -189,18 +189,18 @@ class PdBase {
         virtual bool exists(const std::string& source); ///< is a receiver subscribed?
         virtual void unsubscribeAll(); ///< receivers will be unsubscribed from *all* sources
 
-		/// process the interal message queue if using the ringbuffer
-		///
-		/// internally, libpd will use a ringbuffer to pass messages & midi without
-		/// needing to require locking (mutexes) if you call init() with queued = true
-		///
-		/// call these in a loop somewhere in order to receive waiting messages
-		/// or midi data which are then sent to your PdReceiver & PdMidiReceiver
-		///
-		void receiveMessages();
-		void receiveMidi();
+        /// process the interal message queue if using the ringbuffer
+        ///
+        /// internally, libpd will use a ringbuffer to pass messages & midi without
+        /// needing to require locking (mutexes) if you call init() with queued = true
+        ///
+        /// call these in a loop somewhere in order to receive waiting messages
+        /// or midi data which are then sent to your PdReceiver & PdMidiReceiver
+        ///
+        virtual void receiveMessages();
+        virtual void receiveMidi();
 
-	/// \section Event Receiving via Callbacks
+    /// \section Event Receiving via Callbacks
 
         /// set the incoming event receiver, disables the event queue
         ///
@@ -211,7 +211,7 @@ class PdBase {
         ///
         void setReceiver(pd::PdReceiver* receiver);
 
-	/// \section Midi Receiving via Callbacks
+    /// \section Midi Receiving via Callbacks
 
         /// set the incoming midi event receiver, disables the midi queue
         ///
@@ -221,7 +221,7 @@ class PdBase {
         ///
         void setMidiReceiver(pd::PdMidiReceiver* midiReceiver);
 
-	/// \section Sending Functions
+    /// \section Sending Functions
 
         /// messages
         virtual void sendBang(const std::string& dest);
@@ -233,7 +233,7 @@ class PdBase {
         /// pd.startMessage();
         /// pd.addSymbol("hello");
         /// pd.addFloat(1.23);
-        /// pd.finishList("test");  // "test" is the reciever name in pd
+        /// pd.finishList("test"); // "test" is the reciever name in pd
         ///
         /// sends [list hello 1.23( -> [r test],
         /// you will need to use the [list trim] object on the reciving end
@@ -273,7 +273,7 @@ class PdBase {
         ///
         virtual void sendList(const std::string& dest, const pd::List& list);
         virtual void sendMessage(const std::string& dest, const std::string& msg,
-		                         const pd::List& list = pd::List());
+                                 const pd::List& list = pd::List());
 
         /// midi
         ///
@@ -314,7 +314,7 @@ class PdBase {
         virtual void sendSysex(const int port, const int value);
         virtual void sendSysRealTime(const int port, const int value);
 
-	/// \section Sending Stream Interface
+    /// \section Sending Stream Interface
 
         /// single messages
         ///
@@ -371,7 +371,7 @@ class PdBase {
         /// is a message or byte stream currently in progress?
         bool isMessageInProgress();
 
-	/// \section Array Access
+    /// \section Array Access
 
         /// get the size of a pd array
         /// returns 0 if array not found
@@ -403,10 +403,13 @@ class PdBase {
         /// clear array and set to a specific value
         virtual void clearArray(const std::string& arrayName, int value=0);
 
-	/// \section Global Utils
+    /// \section Utils
 
         /// has the global pd instance been initialized?
         bool isInited();
+
+        /// is the global pd instance using the ringerbuffer queue for message padding?
+        bool isQueued();
 
         /// get the blocksize of pd (sample length per channel)
         static int blockSize();
@@ -414,6 +417,13 @@ class PdBase {
         /// get/set the max length of messages and lists, default: 32
         void setMaxMessageLen(unsigned int len);
         unsigned int maxMessageLen();
+
+    protected:
+
+        #ifdef LIBPD_USE_STD_MUTEX
+            /// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
+            std::mutex mutex;
+        #endif
 
     private:
 
@@ -424,11 +434,6 @@ class PdBase {
             SYSEX,
             SYSRT
         };
-
-		#ifdef LIBPD_USE_STD_MUTEX
-			/// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
-			std::mutex mutex;
-		#endif
 
         /// a singleton libpd instance wrapper
         class PdContext {
@@ -460,29 +465,32 @@ class PdBase {
                 /// is the instance inited?
                 inline bool isInited() {return bInited;}
 
-			/// \section Variables
+                /// is this instance queued?
+                inline bool isQueued() {return bQueued;}
 
-                bool bMsgInProgress;    ///< is a compound message being constructed?
-                int maxMsgLen;          ///< maximum allowed message length
-                int curMsgLen;          ///< the length of the current message
+            /// \section Variables
+
+                bool bMsgInProgress;    //< is a compound message being constructed?
+                int maxMsgLen;          //< maximum allowed message length
+                int curMsgLen;          //< the length of the current message
 
                 /// compound message status
                 PdBase::MsgType msgType;
 
-                int midiPort;   ///< target midi port
+                int midiPort;   //< target midi port
 
-                std::map<std::string,void*> sources;    ///< subscribed sources
+                std::map<std::string,void*> sources;    //< subscribed sources
 
-                pd::PdReceiver* receiver;               ///< the message receiver
-                pd::PdMidiReceiver* midiReceiver;       ///< the midi receiver
+                pd::PdReceiver* receiver;               //< the message receiver
+                pd::PdMidiReceiver* midiReceiver;       //< the midi receiver
 
             private:
 
-                bool bLibPdInited; ///< has libpd_init be called?
-                bool bInited;      ///< is this pd context inited?
-				bool bQueued; //< is this context using the libpd_queued ringbuffer?
+                bool bLibPdInited; //< has libpd_init be called?
+                bool bInited;      //< is this pd context inited?
+                bool bQueued; //< is this context using the libpd_queued ringbuffer?
 
-                unsigned int numBases;  ///< number of pd base objects
+                unsigned int numBases;  //< number of pd base objects
 
                 // hide all the constructors, copy functions here
                 PdContext();                        // cannot create

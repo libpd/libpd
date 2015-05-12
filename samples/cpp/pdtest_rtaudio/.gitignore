@@ -1,0 +1,3 @@
+libs
+src/*.o
+pdtest_rtaudio

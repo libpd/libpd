@@ -1,20 +1,24 @@
-0.8.0: In Development
+0.8.0: 2015 Apr
 
-* tracking vanilla 0.46-4
+* tracking vanilla 0.46-6 (in 0.46 branch + multi instance bugfix)
 * pure-data source folder is now a submodule from the pd Sourceforge git
 * added LIBPD_EXTRA define to call pure-data/extra extern setup functions
   in libpd_init()
 * added UTIL and EXTRA Makefile vars to for conditional compilation of
   libpd_wrapper/utils and pure-data/extra extern sources into libpd
+* added DEBUG Makefile var to control build optimizations
+* added rudimentary install & uninstall makefile targets
 * added -DHAVE_ALLOCA_H, _DHAVE_LIBDL, and -ldl on OSX in libpd.xcodeproj
 * [netsend] & [netreceive] now working in libpd (thanks Chris!)
 * Android: fixed makefile for 0.45-4+ source changes
 * C++: added optional ringbuffer usage to init(), removed messaging queue
 * C++: added C++11 std::mutex locking, compile with LIBPD_USE_STD_MUTEX
-* C++: added cppTest Makefile (currently Linux only)
-* C++: added"cpplib" Makefile target to build libpd + C++ wrapper
+* C++: added "cpplib" Makefile target to build libpd + C++ wrapper
 * ObjC: PdAudioUnit can now be subclassed
 * ObjC: deprecation fix, use AVAudioSession IOBufferDuration if available
+* reorganized all samples & tests by language
+* updated C & C++ sample Makefiles so samples build and run on OSXi
+* added multi instance example 
 
 0.7.0: 2014 May
 

@@ -3,7 +3,7 @@
 from distutils.core import setup, Extension
 
 setup(name='pypdlib',
-      version='0.1',
+      version='0.2',
       py_modules = [
         'pylibpd'
       ],
@@ -14,15 +14,17 @@ setup(name='pypdlib',
                     ('HAVE_UNISTD_H', 1),
                     ('HAVE_LIBDL', 1),
                     ('USEAPI_DUMMY', 1),
+                    ('LIBPD_EXTRA', 1)
                   ],
                   include_dirs = [
                     '../libpd_wrapper',
                     '../pure-data/src',
+                    '../pure-data/extra/expr~'
                   ],
                   libraries = [
                     'm',
                     'dl',
-                    'pthread',
+                    'pthread'
                   ],
                   sources = [
                     'pylibpd.i',
@@ -98,6 +100,18 @@ setup(name='pypdlib',
                     '../pure-data/src/x_scalar.c',
                     '../pure-data/src/x_text.c',
                     '../pure-data/src/x_time.c',
+                    '../pure-data/extra/bob~/bob~.c',
+                    '../pure-data/extra/bonk~/bonk~.c', \
+                    '../pure-data/extra/choice/choice.c', \
+                    '../pure-data/extra/expr~/vexp_fun.c', \
+                    '../pure-data/extra/expr~/vexp_if.c', \
+                    '../pure-data/extra/expr~/vexp.c', \
+                    '../pure-data/extra/fiddle~/fiddle~.c', \
+                    '../pure-data/extra/loop~/loop~.c', \
+                    '../pure-data/extra/lrshift~/lrshift~.c', \
+                    '../pure-data/extra/pique/pique.c', \
+                    '../pure-data/extra/sigmund~/sigmund~.c', \
+                    '../pure-data/extra/stdout/stdout.c'
                   ]
         )
       ]

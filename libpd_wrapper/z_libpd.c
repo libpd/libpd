@@ -33,6 +33,7 @@ void pd_init(void);
 
 // (optional) built in pd externals setup functions
 #ifdef LIBPD_EXTRA
+  void bob_tilde_setup();
   void bonk_tilde_setup();
   void choice_setup();
   void expr_setup(); // also loads expr~ & fexpr~
@@ -84,6 +85,7 @@ int libpd_init(void) {
   sys_searchpath = NULL;
 	
 #ifdef LIBPD_EXTRA
+  bob_tilde_setup();
   bonk_tilde_setup();
   choice_setup();
   expr_setup();
