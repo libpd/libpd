@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		114677AB168A128D00687E25 /* testinput.pd in Resources */ = {isa = PBXBuildFile; fileRef = 114677AA168A128D00687E25 /* testinput.pd */; };
 		114677AE168A1B8100687E25 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114677AD168A1B8100687E25 /* CoreAudio.framework */; };
 		118408F816803D13007ACD8F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118408F716803D13007ACD8F /* Cocoa.framework */; };
 		1184090216803D13007ACD8F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1184090016803D13007ACD8F /* InfoPlist.strings */; };
@@ -15,38 +14,31 @@
 		1184090816803D13007ACD8F /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1184090616803D13007ACD8F /* Credits.rtf */; };
 		1184090B16803D13007ACD8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1184090A16803D13007ACD8F /* AppDelegate.m */; };
 		1184090E16803D13007ACD8F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1184090C16803D13007ACD8F /* MainMenu.xib */; };
-		1184091F16803D57007ACD8F /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1184091C16803D43007ACD8F /* libpd-osx.a */; };
-		1184092216804082007ACD8F /* tone.pd in Resources */ = {isa = PBXBuildFile; fileRef = 1184092116804082007ACD8F /* tone.pd */; };
 		1184092416804210007ACD8F /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1184092316804210007ACD8F /* AudioUnit.framework */; };
 		30CEFE601A6B38D2000E3BAE /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30CEFE5F1A6B38D2000E3BAE /* AudioToolbox.framework */; };
+		30E307361B023E060081EBC8 /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E3072C1B023D9B0081EBC8 /* libpd-osx.a */; };
+		30E3073B1B023E740081EBC8 /* testinput.pd in Resources */ = {isa = PBXBuildFile; fileRef = 30E307391B023E740081EBC8 /* testinput.pd */; };
+		30E3073C1B023E740081EBC8 /* tone.pd in Resources */ = {isa = PBXBuildFile; fileRef = 30E3073A1B023E740081EBC8 /* tone.pd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1184091916803D43007ACD8F /* PBXContainerItemProxy */ = {
+		30E307291B023D9B0081EBC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1184091416803D43007ACD8F /* libpd.xcodeproj */;
+			containerPortal = 30E307241B023D9B0081EBC8 /* libpd.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = "libpd-ios";
 		};
-		1184091B16803D43007ACD8F /* PBXContainerItemProxy */ = {
+		30E3072B1B023D9B0081EBC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1184091416803D43007ACD8F /* libpd.xcodeproj */;
+			containerPortal = 30E307241B023D9B0081EBC8 /* libpd.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 119013AB1486450C00086F19;
-			remoteInfo = "libpd-osx";
-		};
-		1184091D16803D52007ACD8F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1184091416803D43007ACD8F /* libpd.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 1190134E1486450C00086F19;
 			remoteInfo = "libpd-osx";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		114677AA168A128D00687E25 /* testinput.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = testinput.pd; path = Resources/testinput.pd; sourceTree = SOURCE_ROOT; };
 		114677AD168A1B8100687E25 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		118408F416803D13007ACD8F /* CocoaPdBasic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocoaPdBasic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		118408F716803D13007ACD8F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -60,10 +52,11 @@
 		1184090916803D13007ACD8F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1184090A16803D13007ACD8F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1184090D16803D13007ACD8F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		1184091416803D43007ACD8F /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../libpd.xcodeproj; sourceTree = "<group>"; };
-		1184092116804082007ACD8F /* tone.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tone.pd; path = Resources/tone.pd; sourceTree = SOURCE_ROOT; };
 		1184092316804210007ACD8F /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		30CEFE5F1A6B38D2000E3BAE /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		30E307241B023D9B0081EBC8 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
+		30E307391B023E740081EBC8 /* testinput.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = testinput.pd; path = Resources/testinput.pd; sourceTree = "<group>"; };
+		30E3073A1B023E740081EBC8 /* tone.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tone.pd; path = Resources/tone.pd; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,10 +64,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30E307361B023E060081EBC8 /* libpd-osx.a in Frameworks */,
 				30CEFE601A6B38D2000E3BAE /* AudioToolbox.framework in Frameworks */,
 				114677AE168A1B8100687E25 /* CoreAudio.framework in Frameworks */,
 				1184092416804210007ACD8F /* AudioUnit.framework in Frameworks */,
-				1184091F16803D57007ACD8F /* libpd-osx.a in Frameworks */,
 				118408F816803D13007ACD8F /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,8 +78,9 @@
 		118408EB16803D13007ACD8F = {
 			isa = PBXGroup;
 			children = (
-				1184091416803D43007ACD8F /* libpd.xcodeproj */,
+				30E307241B023D9B0081EBC8 /* libpd.xcodeproj */,
 				118408FD16803D13007ACD8F /* CocoaPdBasic */,
+				30E307381B023E300081EBC8 /* Resources */,
 				118408F616803D13007ACD8F /* Frameworks */,
 				118408F516803D13007ACD8F /* Products */,
 			);
@@ -127,7 +121,6 @@
 				1184090916803D13007ACD8F /* AppDelegate.h */,
 				1184090A16803D13007ACD8F /* AppDelegate.m */,
 				1184090C16803D13007ACD8F /* MainMenu.xib */,
-				118409201680407A007ACD8F /* Resources */,
 				118408FE16803D13007ACD8F /* Supporting Files */,
 			);
 			path = CocoaPdBasic;
@@ -145,20 +138,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1184091516803D43007ACD8F /* Products */ = {
+		30E307251B023D9B0081EBC8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1184091A16803D43007ACD8F /* libpd-ios.a */,
-				1184091C16803D43007ACD8F /* libpd-osx.a */,
+				30E3072A1B023D9B0081EBC8 /* libpd-ios.a */,
+				30E3072C1B023D9B0081EBC8 /* libpd-osx.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		118409201680407A007ACD8F /* Resources */ = {
+		30E307381B023E300081EBC8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				114677AA168A128D00687E25 /* testinput.pd */,
-				1184092116804082007ACD8F /* tone.pd */,
+				30E307391B023E740081EBC8 /* testinput.pd */,
+				30E3073A1B023E740081EBC8 /* tone.pd */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -177,7 +170,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				1184091E16803D52007ACD8F /* PBXTargetDependency */,
 			);
 			name = CocoaPdBasic;
 			productName = CocoaPdBasic;
@@ -205,8 +197,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 1184091516803D43007ACD8F /* Products */;
-					ProjectRef = 1184091416803D43007ACD8F /* libpd.xcodeproj */;
+					ProductGroup = 30E307251B023D9B0081EBC8 /* Products */;
+					ProjectRef = 30E307241B023D9B0081EBC8 /* libpd.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -217,18 +209,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		1184091A16803D43007ACD8F /* libpd-ios.a */ = {
+		30E3072A1B023D9B0081EBC8 /* libpd-ios.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libpd-ios.a";
-			remoteRef = 1184091916803D43007ACD8F /* PBXContainerItemProxy */;
+			remoteRef = 30E307291B023D9B0081EBC8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1184091C16803D43007ACD8F /* libpd-osx.a */ = {
+		30E3072C1B023D9B0081EBC8 /* libpd-osx.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libpd-osx.a";
-			remoteRef = 1184091B16803D43007ACD8F /* PBXContainerItemProxy */;
+			remoteRef = 30E3072B1B023D9B0081EBC8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -240,9 +232,9 @@
 			files = (
 				1184090216803D13007ACD8F /* InfoPlist.strings in Resources */,
 				1184090816803D13007ACD8F /* Credits.rtf in Resources */,
+				30E3073B1B023E740081EBC8 /* testinput.pd in Resources */,
+				30E3073C1B023E740081EBC8 /* tone.pd in Resources */,
 				1184090E16803D13007ACD8F /* MainMenu.xib in Resources */,
-				1184092216804082007ACD8F /* tone.pd in Resources */,
-				114677AB168A128D00687E25 /* testinput.pd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,14 +251,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		1184091E16803D52007ACD8F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "libpd-osx";
-			targetProxy = 1184091D16803D52007ACD8F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1184090016803D13007ACD8F /* InfoPlist.strings */ = {
@@ -364,6 +348,7 @@
 				GCC_PREFIX_HEADER = "CocoaPdBasic/CocoaPdBasic-Prefix.pch";
 				INFOPLIST_FILE = "CocoaPdBasic/CocoaPdBasic-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ../../../../objc;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -377,6 +362,7 @@
 				GCC_PREFIX_HEADER = "CocoaPdBasic/CocoaPdBasic-Prefix.pch";
 				INFOPLIST_FILE = "CocoaPdBasic/CocoaPdBasic-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ../../../../objc;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

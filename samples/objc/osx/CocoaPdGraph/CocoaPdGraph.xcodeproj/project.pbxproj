@@ -16,29 +16,22 @@
 		1146779A1689DEC000687E25 /* test.pd in Resources */ = {isa = PBXBuildFile; fileRef = 114677991689DEC000687E25 /* test.pd */; };
 		1146779C1689DF4E00687E25 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1146779B1689DF4E00687E25 /* AudioUnit.framework */; };
 		1146779E1689DF5900687E25 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1146779D1689DF5900687E25 /* AudioToolbox.framework */; };
-		114677A11689DF8F00687E25 /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 114677941689DB1400687E25 /* libpd-osx.a */; };
+		30E307371B023E0D0081EBC8 /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E307351B023DAC0081EBC8 /* libpd-osx.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		114677911689DB1400687E25 /* PBXContainerItemProxy */ = {
+		30E307321B023DAC0081EBC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1146778C1689DB1400687E25 /* libpd.xcodeproj */;
+			containerPortal = 30E3072D1B023DAC0081EBC8 /* libpd.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = "libpd-ios";
 		};
-		114677931689DB1400687E25 /* PBXContainerItemProxy */ = {
+		30E307341B023DAC0081EBC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1146778C1689DB1400687E25 /* libpd.xcodeproj */;
+			containerPortal = 30E3072D1B023DAC0081EBC8 /* libpd.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 119013AB1486450C00086F19;
-			remoteInfo = "libpd-osx";
-		};
-		1146779F1689DF8B00687E25 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1146778C1689DB1400687E25 /* libpd.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 1190134E1486450C00086F19;
 			remoteInfo = "libpd-osx";
 		};
 /* End PBXContainerItemProxy section */
@@ -55,10 +48,10 @@
 		1146777F1689D9FB00687E25 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		114677821689D9FB00687E25 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		114677851689D9FB00687E25 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		1146778C1689DB1400687E25 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../libpd.xcodeproj; sourceTree = "<group>"; };
 		114677991689DEC000687E25 /* test.pd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = test.pd; path = Resources/test.pd; sourceTree = "<group>"; };
 		1146779B1689DF4E00687E25 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		1146779D1689DF5900687E25 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		30E3072D1B023DAC0081EBC8 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				114677A11689DF8F00687E25 /* libpd-osx.a in Frameworks */,
+				30E307371B023E0D0081EBC8 /* libpd-osx.a in Frameworks */,
 				1146779E1689DF5900687E25 /* AudioToolbox.framework in Frameworks */,
 				1146779C1689DF4E00687E25 /* AudioUnit.framework in Frameworks */,
 				114677701689D9FB00687E25 /* Cocoa.framework in Frameworks */,
@@ -79,7 +72,7 @@
 		114677631689D9FB00687E25 = {
 			isa = PBXGroup;
 			children = (
-				1146778C1689DB1400687E25 /* libpd.xcodeproj */,
+				30E3072D1B023DAC0081EBC8 /* libpd.xcodeproj */,
 				114677751689D9FB00687E25 /* Source */,
 				114677981689DEB400687E25 /* Resources */,
 				1146776E1689D9FB00687E25 /* Frameworks */,
@@ -138,21 +131,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1146778D1689DB1400687E25 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				114677921689DB1400687E25 /* libpd-ios.a */,
-				114677941689DB1400687E25 /* libpd-osx.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		114677981689DEB400687E25 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				114677991689DEC000687E25 /* test.pd */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		30E3072E1B023DAC0081EBC8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				30E307331B023DAC0081EBC8 /* libpd-ios.a */,
+				30E307351B023DAC0081EBC8 /* libpd-osx.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,7 +162,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				114677A01689DF8B00687E25 /* PBXTargetDependency */,
 			);
 			name = CocoaPdGraph;
 			productName = CocoaGraph;
@@ -197,8 +189,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 1146778D1689DB1400687E25 /* Products */;
-					ProjectRef = 1146778C1689DB1400687E25 /* libpd.xcodeproj */;
+					ProductGroup = 30E3072E1B023DAC0081EBC8 /* Products */;
+					ProjectRef = 30E3072D1B023DAC0081EBC8 /* libpd.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -209,18 +201,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		114677921689DB1400687E25 /* libpd-ios.a */ = {
+		30E307331B023DAC0081EBC8 /* libpd-ios.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libpd-ios.a";
-			remoteRef = 114677911689DB1400687E25 /* PBXContainerItemProxy */;
+			remoteRef = 30E307321B023DAC0081EBC8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		114677941689DB1400687E25 /* libpd-osx.a */ = {
+		30E307351B023DAC0081EBC8 /* libpd-osx.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libpd-osx.a";
-			remoteRef = 114677931689DB1400687E25 /* PBXContainerItemProxy */;
+			remoteRef = 30E307341B023DAC0081EBC8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -250,14 +242,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		114677A01689DF8B00687E25 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "libpd-osx";
-			targetProxy = 1146779F1689DF8B00687E25 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		114677781689D9FB00687E25 /* InfoPlist.strings */ = {
@@ -352,6 +336,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CocoaGraph/CocoaPdGraph-Prefix.pch";
+				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "CocoaGraph/CocoaPdGraph-Info.plist";
 				PRODUCT_NAME = CocoaPdGraph;
 				WRAPPER_EXTENSION = app;
@@ -364,6 +349,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CocoaGraph/CocoaPdGraph-Prefix.pch";
+				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "CocoaGraph/CocoaPdGraph-Info.plist";
 				PRODUCT_NAME = CocoaPdGraph;
 				WRAPPER_EXTENSION = app;
