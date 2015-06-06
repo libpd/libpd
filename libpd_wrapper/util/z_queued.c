@@ -105,9 +105,11 @@ static void internal_printhook(const char *s) {
   int total = len + rest;
   if (rb_available_to_write(pd_receive_buffer) >= S_PD_PARAMS + total) {
     pd_params p = {LIBPD_PRINT, NULL, 0.0f, NULL, total};
+    rb_begin_write_group(pd_receive_buffer);
     rb_write_to_buffer(pd_receive_buffer, (const char *)&p, S_PD_PARAMS);
     rb_write_to_buffer(pd_receive_buffer, s, len);
     rb_write_to_buffer(pd_receive_buffer, padding, rest);
+    rb_end_write_group(pd_receive_buffer);
   }
 }
 
@@ -136,8 +138,10 @@ static void internal_listhook(const char *src, int argc, t_atom *argv) {
   int n = argc * S_ATOM;
   if (rb_available_to_write(pd_receive_buffer) >= S_PD_PARAMS + n) {
     pd_params p = {LIBPD_LIST, src, 0.0f, NULL, argc};
+    rb_begin_write_group(pd_receive_buffer);
     rb_write_to_buffer(pd_receive_buffer, (const char *)&p, S_PD_PARAMS);
     rb_write_to_buffer(pd_receive_buffer, (const char *)argv, n);
+    rb_end_write_group(pd_receive_buffer);
   }
 }
 
@@ -146,8 +150,10 @@ static void internal_messagehook(const char *src, const char* sym,
   int n = argc * S_ATOM;
   if (rb_available_to_write(pd_receive_buffer) >= S_PD_PARAMS + n) {
     pd_params p = {LIBPD_MESSAGE, src, 0.0f, sym, argc};
+    rb_begin_write_group(pd_receive_buffer);
     rb_write_to_buffer(pd_receive_buffer, (const char *)&p, S_PD_PARAMS);
     rb_write_to_buffer(pd_receive_buffer, (const char *)argv, n);
+    rb_end_write_group(pd_receive_buffer);
   }
 }
 

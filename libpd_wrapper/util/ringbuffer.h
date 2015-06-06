@@ -14,7 +14,9 @@ typedef struct ring_buffer {
     int size;
     char *buf_ptr;
     int write_idx;
+    int write_readable_idx;
     int read_idx;
+    int is_in_write_group;
 } ring_buffer;
 
 // Creates a ring buffer (returns NULL on failure).
@@ -40,5 +42,10 @@ int rb_write_to_buffer(ring_buffer *buffer, const char *src, int len);
 // buffer has enough data. Only to be called from a single reader thread.
 // Returns 0 on success.
 int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len);
+
+// Wrap these functions around a series of rb_write_to_buffer operations,
+// to prevent reading between the writes.
+int rb_begin_write_group(ring_buffer *buffer);
+int rb_end_write_group(ring_buffer *buffer);
 
 #endif
