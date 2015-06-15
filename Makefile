@@ -105,7 +105,6 @@ PDJAVA_JAR_CLASSES = \
 # conditional libpd_wrapper/util compilation
 ifeq ($(UTIL), true)
 	UTIL_FILES = $(LIBPD_UTILS)
-	UTIL_CFLAGS = -I./libpd_wrapper/util
 endif
 
 # conditional pure-data/extra externals compilation
@@ -142,7 +141,7 @@ PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
-         $(UTIL_CFLAGS) $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS) $(OPT_CFLAGS)
+         -I./libpd_wrapper/util $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS) $(OPT_CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
@@ -159,7 +158,7 @@ $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^
 	javah -o $@ -classpath java org.puredata.core.PdBase
 
-$(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
+$(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
 	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS) 
 	cp $(PDJAVA_NATIVE) libs/
