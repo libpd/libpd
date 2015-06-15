@@ -83,7 +83,7 @@ int libpd_init(void) {
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
-	
+
 #ifdef LIBPD_EXTRA
   bob_tilde_setup();
   bonk_tilde_setup();
@@ -96,8 +96,8 @@ int libpd_init(void) {
   sigmund_tilde_setup();
   stdout_setup();
 #endif
-	
-	return 0;
+
+  return 0;
 }
 
 void libpd_clear_search_path(void) {
@@ -280,23 +280,23 @@ void libpd_unbind(void *p) {
 }
 
 int libpd_is_float(t_atom *a) {
-	return (a)->a_type == A_FLOAT;
+  return (a)->a_type == A_FLOAT;
 }
 
 int libpd_is_symbol(t_atom *a) {
-	return (a)->a_type == A_SYMBOL;
+  return (a)->a_type == A_SYMBOL;
 }
 
 float libpd_get_float(t_atom *a) {
-	return (a)->a_w.w_float;
+  return (a)->a_w.w_float;
 }
 
 char *libpd_get_symbol(t_atom *a) {
-	return (a)->a_w.w_symbol->s_name;
+  return (a)->a_w.w_symbol->s_name;
 }
 
 t_atom *libpd_next_atom(t_atom *a) {
-	return a + 1;
+  return a + 1;
 }
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
