@@ -500,6 +500,8 @@ public final class PdBase {
       midiReceiver.beginBlock();
       pollMidiQueueInternal();
       midiReceiver.endBlock();
+    } else {
+      pollMidiQueueInternal();
     }
   }
 
