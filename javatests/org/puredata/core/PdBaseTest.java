@@ -236,14 +236,14 @@ public class PdBaseTest {
   @Test
   public void testAftertouch() {
     EasyMock.expect(midiReceiver.beginBlock()).andReturn(false);
-    midiReceiver.receiveAftertouch(0, 64);
-    midiReceiver.receiveAftertouch(12, 0);
-    midiReceiver.receiveAftertouch(30, 127);
+    midiReceiver.receiveAftertouch(0, 61);
+    midiReceiver.receiveAftertouch(11, 0);
+    midiReceiver.receiveAftertouch(25, 100);
     midiReceiver.endBlock();
     EasyMock.replay(midiReceiver);
-    assertEquals(0, PdBase.sendAftertouch(0, 64));
-    assertEquals(0, PdBase.sendAftertouch(12, 0));
-    assertEquals(0, PdBase.sendAftertouch(30, 127));
+    assertEquals(0, PdBase.sendAftertouch(0, 61));
+    assertEquals(0, PdBase.sendAftertouch(11, 0));
+    assertEquals(0, PdBase.sendAftertouch(25, 100));
     assertEquals(-1, PdBase.sendAftertouch(-1, 64));
     assertEquals(-1, PdBase.sendAftertouch(12, -1));
     assertEquals(-1, PdBase.sendAftertouch(10, 128));
