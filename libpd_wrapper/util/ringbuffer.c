@@ -21,6 +21,7 @@ ring_buffer *rb_create(int size) {
   }
   buffer->size = size;
   buffer->write_idx = 0;
+  buffer->write_readable_idx = 0;
   buffer->read_idx = 0;
   return buffer;
 }
@@ -46,8 +47,9 @@ int rb_available_to_write(ring_buffer *buffer) {
 int rb_available_to_read(ring_buffer *buffer) {
   if (buffer) {
     int read_idx = __sync_fetch_and_or(&(buffer->read_idx), 0);
-    int write_idx = __sync_fetch_and_or(&(buffer->write_idx), 0);
-    return (buffer->size + write_idx - read_idx) % buffer->size;
+    int write_readable_idx =
+         __sync_fetch_and_or(&(buffer->write_readable_idx), 0);
+    return (buffer->size + write_readable_idx - read_idx) % buffer->size;
   } else {
     return 0;
   }
@@ -66,6 +68,12 @@ int rb_write_to_buffer(ring_buffer *buffer, const char *src, int len) {
   }
   __sync_val_compare_and_swap(&(buffer->write_idx), buffer->write_idx,
        (write_idx + len) % buffer->size);  // Includes memory barrier.
+  if (buffer->is_in_write_group == 0) {
+    // If not in a write group, move write_readable_idx along with write_idx.
+    __sync_val_compare_and_swap(&(buffer->write_readable_idx),
+                                buffer->write_readable_idx,
+                                buffer->write_idx);
+  }
   return 0; 
 }
 
@@ -86,4 +94,16 @@ int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
   __sync_val_compare_and_swap(&(buffer->read_idx), buffer->read_idx,
        (read_idx + len) % buffer->size);  // Includes memory barrier.
   return 0; 
+}
+
+int rb_begin_write_group(ring_buffer *buffer) {
+  buffer->is_in_write_group = 1;
+}
+
+int rb_end_write_group(ring_buffer *buffer) {
+  buffer->is_in_write_group = 0;
+  // Move write_readable_idx up to the write index.
+  __sync_val_compare_and_swap(&(buffer->write_readable_idx),
+                              buffer->write_readable_idx,
+                              buffer->write_idx);
 }
