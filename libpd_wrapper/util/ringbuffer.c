@@ -7,6 +7,7 @@
 
 #include "ringbuffer.h"
 
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -53,19 +54,30 @@ int rb_available_to_read(ring_buffer *buffer) {
   }
 }
 
-int rb_write_to_buffer(ring_buffer *buffer, const char *src, int len) {
-  if (len == 0) return 0;
-  if (!buffer || len < 0 || len > rb_available_to_write(buffer)) return -1;
+int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
+  if (!buffer) return -1;
   int write_idx = buffer->write_idx;  // No need for sync in writer thread.
-  if (write_idx + len <= buffer->size) {
-    memcpy(buffer->buf_ptr + write_idx, src, len);
-  } else {
-    int d = buffer->size - write_idx;
-    memcpy(buffer->buf_ptr + write_idx, src, d);
-    memcpy(buffer->buf_ptr, src + d, len - d);
+  int available = rb_available_to_write(buffer);
+  va_list args;
+  va_start(args, n);
+  int i;
+  for (i = 0; i < n; ++i) {
+    const char* src = va_arg(args, const char*);
+    int len = va_arg(args, int);
+    available -= len;
+    if (len < 0 || available < 0) return -1;
+    if (write_idx + len <= buffer->size) {
+      memcpy(buffer->buf_ptr + write_idx, src, len);
+    } else {
+      int d = buffer->size - write_idx;
+      memcpy(buffer->buf_ptr + write_idx, src, d);
+      memcpy(buffer->buf_ptr, src + d, len - d);
+    }
+    write_idx = (write_idx + len) % buffer->size;
   }
+  va_end(args);
   __sync_val_compare_and_swap(&(buffer->write_idx), buffer->write_idx,
-       (write_idx + len) % buffer->size);  // Includes memory barrier.
+      write_idx);  // Includes memory barrier.
   return 0; 
 }
 

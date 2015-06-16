@@ -31,10 +31,12 @@ int rb_available_to_write(ring_buffer *buffer);
 // from any thread.
 int rb_available_to_read(ring_buffer *buffer);
 
-// Writes the given number of bytes from src to the ring buffer if the ring
-// buffer has enough space. Only to be called from a single writer thread.
+// Writes bytes from n sources to the ring buffer (if the ring buffer has
+// enough space). The varargs are pairs of type (const char*, int) giving a
+// pointer to a buffer and the number of bytes to be copied. Only to be called
+// from a single writer thread.
 // Returns 0 on success.
-int rb_write_to_buffer(ring_buffer *buffer, const char *src, int len);
+int rb_write_to_buffer(ring_buffer *buffer, int n, ...);
 
 // Reads the given number of bytes fromthe ring buffer to dest if the ring
 // buffer has enough data. Only to be called from a single reader thread.
