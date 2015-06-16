@@ -1,3 +1,9 @@
+0.8.1: 2015 Jun
+
+* ringbuffer bugfix to ensure compound messages do not cause a race condition
+* moved java tests back to root dir to match Java/Eclipse standard
+* updated Java tests
+
 0.8.0: 2015 Apr
 
 * tracking vanilla 0.46-6 (in 0.46 branch + multi instance bugfix)
