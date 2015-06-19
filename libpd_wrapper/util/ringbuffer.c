@@ -12,8 +12,9 @@
 #include <string.h>
 
 ring_buffer *rb_create(int size) {
+  ring_buffer *buffer;
   if (size & 0xff) return NULL;  // size must be a multiple of 256
-  ring_buffer *buffer = malloc(sizeof(ring_buffer));
+  buffer = malloc(sizeof(ring_buffer));
   if (!buffer) return NULL;
   buffer->buf_ptr = calloc(size, sizeof(char));
   if (!buffer->buf_ptr) {
@@ -55,12 +56,12 @@ int rb_available_to_read(ring_buffer *buffer) {
 }
 
 int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
+  int write_idx, available, i;
   if (!buffer) return -1;
-  int write_idx = buffer->write_idx;  // No need for sync in writer thread.
-  int available = rb_available_to_write(buffer);
+  write_idx = buffer->write_idx;  // No need for sync in writer thread.
+  available = rb_available_to_write(buffer);
   va_list args;
   va_start(args, n);
-  int i;
   for (i = 0; i < n; ++i) {
     const char* src = va_arg(args, const char*);
     int len = va_arg(args, int);
@@ -82,12 +83,13 @@ int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
 }
 
 int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
+  int read_idx;
   if (len == 0) return 0;
   if (!buffer || len < 0 || len > rb_available_to_read(buffer)) return -1;
   // Note that rb_available_to_read also serves as a memory barrier, and so any
   // writes to buffer->buf_ptr that precede the update of buffer->write_idx are
   // visible to us now.
-  int read_idx = buffer->read_idx;  // No need for sync in reader thread.
+  read_idx = buffer->read_idx;  // No need for sync in reader thread.
   if (read_idx + len <= buffer->size) {
     memcpy(dest, buffer->buf_ptr + read_idx, len);
   } else {

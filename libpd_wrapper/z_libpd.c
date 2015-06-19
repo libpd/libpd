@@ -19,6 +19,7 @@
 #include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
+#include "g_canvas.h"
 
 #if PD_MINOR_VERSION < 46
 # define HAVE_SCHED_TICK_ARG
@@ -118,8 +119,9 @@ void libpd_closefile(void *x) {
 }
 
 int libpd_getdollarzero(void *x) {
+  int dzero;
   pd_pushsym((t_pd *)x);
-  int dzero = canvas_getdollarzero();
+  dzero = canvas_getdollarzero();
   pd_popsym((t_pd *)x);
   return dzero;
 }
@@ -177,8 +179,9 @@ static const t_sample sample_to_short = SHRT_MAX,
   } \
   return 0;
 
-int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
-  PROCESS(* short_to_sample, * sample_to_short)
+int libpd_process_short(const int ticks, const short *inBuffer,
+  short *outBuffer) {
+    PROCESS(* short_to_sample, * sample_to_short)
 }
 
 int libpd_process_float(int ticks, const float *inBuffer, float *outBuffer) {
@@ -201,9 +204,9 @@ int libpd_arraysize(const char *name) {
 #define MEMCPY(_x, _y) \
   GETARRAY \
   if (n < 0 || offset < 0 || offset + n > garray_npoints(garray)) return -2; \
-  t_word *vec = ((t_word *) garray_vec(garray)) + offset; \
+  { t_word *vec = ((t_word *) garray_vec(garray)) + offset; \
   int i; \
-  for (i = 0; i < n; i++) _x = _y;
+  for (i = 0; i < n; i++) _x = _y; }
 
 int libpd_read_array(float *dest, const char *name, int offset, int n) {
   MEMCPY(*dest++, (vec++)->w_float)
@@ -453,4 +456,49 @@ void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_midibytehook = hook;
+}
+
+    /* recursively deselect everything in a gobj "g", if it happens to be
+    a glist, in preparation for deselecting g itself in glist_dselect() */
+static void glist_maybevis(t_glist *gl)
+{
+    t_gobj *g;
+    for (g = gl->gl_list; g; g = g->g_next)
+        if (pd_class(&g->g_pd) == canvas_class)
+            glist_maybevis((t_glist *)g);
+    if (gl->gl_havewindow)
+    {
+        canvas_vis(gl, 0);
+        canvas_vis(gl, 1);
+    }
+}
+
+int libpd_start_gui(const char *libdir)
+{
+    t_canvas *x;
+    for (x = pd_getcanvaslist(); x; x = x->gl_next)
+        canvas_vis(x, 0);
+    sys_nogui = 0;
+    if (sys_startgui(libdir))
+        return -1;
+    for (x = pd_getcanvaslist(); x; x = x->gl_next)
+        if (strcmp(x->gl_name->s_name, "_float_template") &&
+            strcmp(x->gl_name->s_name, "_float_array_template") &&
+                strcmp(x->gl_name->s_name, "_text_template"))
+    {
+                    glist_maybevis(x);
+                    canvas_vis(x, 1);
+    }
+    return 0;
+}
+
+void sys_stopgui( void);
+
+void libpd_stop_gui( void)
+{
+    t_canvas *x;
+    for (x = pd_getcanvaslist(); x; x = x->gl_next)
+        canvas_vis(x, 0);
+    sys_vgui("%s", "exit\n");
+    sys_stopgui();
 }
