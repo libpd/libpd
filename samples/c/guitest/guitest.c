@@ -59,7 +59,8 @@ int main(int argc, char **argv) {
         runawhile(1);
 
         printf("starting gui..\n");
-        libpd_start_gui("../../../pure-data/");
+        if (libpd_start_gui("../../../pure-data/"))
+            printf("gui startup failed\n");
 
         printf("running for 2000 more ticks...\n");
         runawhile(2);
