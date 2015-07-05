@@ -23,9 +23,9 @@ Repository Layout
 
 ### pure-data
   
-The folder containing the sources of Pd Vanilla and standard externals. This is a git submodule of Miller Puckette's [official Pd git repository](http://sourceforge.net/p/pure-data/pure-data/ci/master/tree) (git://git.code.sf.net/p/pure-data/pure-data), available through a Github mirror:  
-	  
-    https://github.com/pure-data/pure-data.git  
+The folder containing the sources of Pd Vanilla and standard externals. This is a git submodule of Miller Puckette's [official Pd git repository](http://sourceforge.net/p/pure-data/pure-data/ci/master/tree):
+
+    git://git.code.sf.net/p/pure-data/pure-data 
 	  
 If you're cloning this repo, make sure to checkout the submodule:  
 	  
