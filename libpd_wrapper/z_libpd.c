@@ -15,26 +15,35 @@
 #include <limits.h>
 #include "z_libpd.h"
 #include "x_libpdreceive.h"
+#include "z_hooks.h"
 #include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
 
+#if PD_MINOR_VERSION < 46
+# define HAVE_SCHED_TICK_ARG
+#endif
+
+#ifdef HAVE_SCHED_TICK_ARG
+# define SCHED_TICK(x) sched_tick(x)
+#else
+# define SCHED_TICK(x) sched_tick()
+#endif
 void pd_init(void);
 
-t_libpd_printhook libpd_printhook = NULL;
-t_libpd_banghook libpd_banghook = NULL;
-t_libpd_floathook libpd_floathook = NULL;
-t_libpd_symbolhook libpd_symbolhook = NULL;
-t_libpd_listhook libpd_listhook = NULL;
-t_libpd_messagehook libpd_messagehook = NULL;
-
-t_libpd_noteonhook libpd_noteonhook = NULL;
-t_libpd_controlchangehook libpd_controlchangehook = NULL;
-t_libpd_programchangehook libpd_programchangehook = NULL;
-t_libpd_pitchbendhook libpd_pitchbendhook = NULL;
-t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
-t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
-t_libpd_midibytehook libpd_midibytehook = NULL;
+// (optional) built in pd externals setup functions
+#ifdef LIBPD_EXTRA
+  void bob_tilde_setup();
+  void bonk_tilde_setup();
+  void choice_setup();
+  void expr_setup(); // also loads expr~ & fexpr~
+  void fiddle_tilde_setup();
+  void loop_tilde_setup();
+  void lrshift_tilde_setup();
+  void pique_setup();
+  void sigmund_tilde_setup();
+  void stdout_setup();
+#endif
 
 static t_atom *argv = NULL, *curr;
 static int argm = 0, argc;
@@ -45,7 +54,10 @@ static void *get_object(const char *s) {
 }
 
 /* this is called instead of sys_main() to start things */
-void libpd_init(void) {
+int libpd_init(void) {
+  static int initialized = 0;
+  if (initialized) return -1; // only allow init once (for now)
+  initialized = 1;
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   sys_printhook = (t_printhook) libpd_printhook;
@@ -63,11 +75,29 @@ void libpd_init(void) {
   sys_hipriority = 0;
   sys_nmidiin = 0;
   sys_nmidiout = 0;
+  sys_init_fdpoll();
+#ifdef HAVE_SCHED_TICK_ARG
   sys_time = 0;
+#endif
   pd_init();
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
+
+#ifdef LIBPD_EXTRA
+  bob_tilde_setup();
+  bonk_tilde_setup();
+  choice_setup();
+  expr_setup();
+  fiddle_tilde_setup();
+  loop_tilde_setup();
+  lrshift_tilde_setup();
+  pique_setup();
+  sigmund_tilde_setup();
+  stdout_setup();
+#endif
+
+  return 0;
 }
 
 void libpd_clear_search_path(void) {
@@ -77,6 +107,21 @@ void libpd_clear_search_path(void) {
 
 void libpd_add_to_search_path(const char *s) {
   sys_searchpath = namelist_append(sys_searchpath, s, 0);
+}
+
+void *libpd_openfile(const char *basename, const char *dirname) {
+  return (void *)glob_evalfile(NULL, gensym(basename), gensym(dirname));
+}
+
+void libpd_closefile(void *x) {
+  pd_free((t_pd *)x);
+}
+
+int libpd_getdollarzero(void *x) {
+  pd_pushsym((t_pd *)x);
+  int dzero = canvas_getdollarzero();
+  pd_popsym((t_pd *)x);
+  return dzero;
 }
 
 int libpd_init_audio(int inChans, int outChans, int sampleRate) {
@@ -97,11 +142,12 @@ int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   size_t n_out = sys_outchannels * DEFDACBLKSIZE;
   t_sample *p;
   size_t i;
+  sys_microsleep(0);
   for (p = sys_soundin, i = 0; i < n_in; i++) {
     *p++ = *inBuffer++;
   }
   memset(sys_soundout, 0, n_out * sizeof(t_sample));
-  sched_tick(sys_time + sys_time_per_dsp_tick);
+  SCHED_TICK(sys_time + sys_time_per_dsp_tick);
   for (p = sys_soundout, i = 0; i < n_out; i++) {
     *outBuffer++ = *p++;
   }
@@ -114,6 +160,7 @@ static const t_sample sample_to_short = SHRT_MAX,
 #define PROCESS(_x, _y) \
   int i, j, k; \
   t_sample *p0, *p1; \
+  sys_microsleep(0); \
   for (i = 0; i < ticks; i++) { \
     for (j = 0, p0 = sys_soundin; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < sys_inchannels; k++, p1 += DEFDACBLKSIZE) { \
@@ -121,7 +168,7 @@ static const t_sample sample_to_short = SHRT_MAX,
       } \
     } \
     memset(sys_soundout, 0, sys_outchannels*DEFDACBLKSIZE*sizeof(t_sample)); \
-    sched_tick(sys_time + sys_time_per_dsp_tick); \
+    SCHED_TICK(sys_time + sys_time_per_dsp_tick); \
     for (j = 0, p0 = sys_soundout; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < sys_outchannels; k++, p1 += DEFDACBLKSIZE) { \
         *outBuffer++ = *p1 _y; \
@@ -232,6 +279,50 @@ void libpd_unbind(void *p) {
   pd_free((t_pd *)p);
 }
 
+int libpd_is_float(t_atom *a) {
+  return (a)->a_type == A_FLOAT;
+}
+
+int libpd_is_symbol(t_atom *a) {
+  return (a)->a_type == A_SYMBOL;
+}
+
+float libpd_get_float(t_atom *a) {
+  return (a)->a_w.w_float;
+}
+
+char *libpd_get_symbol(t_atom *a) {
+  return (a)->a_w.w_symbol->s_name;
+}
+
+t_atom *libpd_next_atom(t_atom *a) {
+  return a + 1;
+}
+
+void libpd_set_printhook(const t_libpd_printhook hook) {
+  libpd_printhook = hook;
+}
+
+void libpd_set_banghook(const t_libpd_banghook hook) {
+  libpd_banghook = hook;
+}
+
+void libpd_set_floathook(const t_libpd_floathook hook) {
+  libpd_floathook = hook;
+}
+
+void libpd_set_symbolhook(const t_libpd_symbolhook hook) {
+  libpd_symbolhook = hook;
+}
+
+void libpd_set_listhook(const t_libpd_listhook hook) {
+  libpd_listhook = hook;
+}
+
+void libpd_set_messagehook(const t_libpd_messagehook hook) {
+  libpd_messagehook = hook;
+}
+
 int libpd_symbol(const char *recv, const char *sym) {
   void *obj = get_object(recv);
   if (obj == NULL) return -1;
@@ -336,17 +427,30 @@ int libpd_sysrealtime(int port, int byte) {
   return 0;
 }
 
-void *libpd_openfile(const char *basename, const char *dirname) {
-  return (void *)glob_evalfile(NULL, gensym(basename), gensym(dirname));
+void libpd_set_noteonhook(const t_libpd_noteonhook hook) {
+  libpd_noteonhook = hook;
 }
 
-void libpd_closefile(void *x) {
-  pd_free((t_pd *)x);
+void libpd_set_controlchangehook(const t_libpd_controlchangehook hook) {
+  libpd_controlchangehook = hook;
 }
 
-int libpd_getdollarzero(void *x) {
-  pd_pushsym((t_pd *)x);
-  int dzero = canvas_getdollarzero();
-  pd_popsym((t_pd *)x);
-  return dzero;
+void libpd_set_programchangehook(const t_libpd_programchangehook hook) {
+  libpd_programchangehook = hook;
+}
+
+void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook) {
+  libpd_pitchbendhook = hook;
+}
+
+void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook) {
+  libpd_aftertouchhook = hook;
+}
+
+void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
+  libpd_polyaftertouchhook = hook;
+}
+
+void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
+  libpd_midibytehook = hook;
 }

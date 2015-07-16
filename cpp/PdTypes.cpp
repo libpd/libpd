@@ -64,7 +64,7 @@ void Patch::operator=(const Patch& from) {
 
 std::ostream& operator<<(std::ostream& os, const Patch& from) {
     return os << "Patch: \"" << from.filename() << "\" $0: " << from.dollarZeroStr()
-                 << " valid: " << from.isValid();
+              << " valid: " << from.isValid();
 }
 
 /// LIST
@@ -158,7 +158,7 @@ List& List::operator<<(const std::string& var) {
 
 //----------------------------------------------------------
 const unsigned int List::len() const {
-    return objects.size();
+    return (unsigned int) objects.size();
 }
 
 const std::string& List::types() const {
@@ -191,32 +191,6 @@ std::string List::toString() const {
 
 std::ostream& operator<<(std::ostream& os, const List& from) {
     return os << from.toString();
-}
-
-/// MESSAGE
-//----------------------------------------------------------
-Message::Message() : type(NONE) {
-    clear();
-}
-
-Message::Message(MessageType type) {
-    clear();
-    this->type = type;
-}
-
-void Message::clear() {
-    type = NONE;
-    dest = "";
-    num = 0;
-    symbol = "";
-    list.clear();
-    channel = 0;
-    pitch = 0;
-    velocity = 0;
-    controller = 0;
-    value = 0;
-    port = 0;
-    byte = 0;
 }
 
 } // namespace

@@ -13,9 +13,21 @@
  */
 #include "PdBase.hpp"
 #include "z_libpd.h"
+#include "z_queued.h"
 #include "z_print_util.h"
 
 #include <iostream>
+
+#ifdef LIBPD_USE_STD_MUTEX
+    #if __cplusplus <= 201103L // C++ 11 check
+        #define _LOCK() mutex.lock()
+        #define _UNLOCK() mutex.unlock()
+    #endif
+#else
+    // no ops
+    #define _LOCK()
+    #define _UNLOCK()
+#endif
 
 // needed for libpd audio passing
 #ifndef USEAPI_DUMMY
@@ -38,33 +50,44 @@ PdBase::~PdBase() {
 }
 
 //--------------------------------------------------------------------
-bool PdBase::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
+bool PdBase::init(const int numInChannels, const int numOutChannels, const int sampleRate, bool queued) {
     clear();
-    return PdContext::instance().init(numInChannels, numOutChannels, sampleRate);
+    _LOCK();
+    bool ret = PdContext::instance().init(numInChannels, numOutChannels, sampleRate, queued);
+    _UNLOCK();
+    return ret;
 }
 
 void PdBase::clear() {
+    _LOCK();
     PdContext::instance().clear();
+    _UNLOCK();
     unsubscribeAll();
 }
 
 //--------------------------------------------------------------------
 void PdBase::addToSearchPath(const std::string& path) {
+    _LOCK();
     libpd_add_to_search_path(path.c_str());
+    _UNLOCK();
 }
 
 void PdBase::clearSearchPath() {
+    _LOCK();
     libpd_clear_search_path();
+    _UNLOCK();
 }
 
 //--------------------------------------------------------------------
 Patch PdBase::openPatch(const std::string& patch, const std::string& path) {
+    _LOCK();
     // [; pd open file folder(
     void* handle = libpd_openfile(patch.c_str(), path.c_str());
     if(handle == NULL) {
         return Patch(); // return empty Patch
     }
     int dollarZero = libpd_getdollarzero(handle);
+    _UNLOCK();
     return Patch(handle, dollarZero, patch, path);
 }
 
@@ -75,40 +98,58 @@ Patch PdBase::openPatch(pd::Patch& patch) {
 void PdBase::closePatch(const std::string& patch) {
     // [; pd-name menuclose 1(
     string patchname = (string) "pd-"+patch;
+    _LOCK();
     libpd_start_message(PdContext::instance().maxMsgLen);
     libpd_add_float(1.0f);
     libpd_finish_message(patchname.c_str(), "menuclose");
+    _UNLOCK();
 }
 
 void PdBase::closePatch(Patch& patch) {
     if(!patch.isValid()) {
         return;
     }
+    _LOCK();
     libpd_closefile(patch.handle());
+    _UNLOCK();
     patch.clear();
 }
 
 //--------------------------------------------------------------------
 bool PdBase::processRaw(const float* inBuffer, float* outBuffer) {
-    return libpd_process_raw(inBuffer, outBuffer) == 0;
+    _LOCK();
+    bool ret = libpd_process_raw(inBuffer, outBuffer) == 0;
+    _UNLOCK();
+    return ret;
 }
 
 bool PdBase::processShort(int ticks, const short* inBuffer, short* outBuffer) {
-    return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
+    _LOCK();
+    bool ret = libpd_process_short(ticks, inBuffer, outBuffer) == 0;
+    _UNLOCK();
+    return ret;
 }
 
 bool PdBase::processFloat(int ticks, const float* inBuffer, float* outBuffer) {
-    return libpd_process_float(ticks, inBuffer, outBuffer) == 0;
+    _LOCK();
+    bool ret = libpd_process_float(ticks, inBuffer, outBuffer) == 0;
+    _UNLOCK();
+    return ret;
 }
 
 bool PdBase::processDouble(int ticks, const double* inBuffer, double* outBuffer) {
-    return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
+    _LOCK();
+    bool ret = libpd_process_double(ticks, inBuffer, outBuffer) == 0;
+    _UNLOCK();
+    return ret;
 }
 
 
 //--------------------------------------------------------------------
 void PdBase::computeAudio(bool state) {
+    _LOCK();
     PdContext::instance().computeAudio(state);
+    _UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -119,7 +160,9 @@ void PdBase::subscribe(const std::string& source) {
         return;
     }
 
+    _LOCK();
     void* pointer = libpd_bind(source.c_str());
+    _UNLOCK();
     if(pointer != NULL) {
         map<string,void*>& sources = PdContext::instance().sources;
         sources.insert(pair<string,void*>(source, pointer));
@@ -137,71 +180,70 @@ void PdBase::unsubscribe(const std::string& source) {
         return;
     }
 
+    _LOCK();
     libpd_unbind(iter->second);
+    _UNLOCK();
     sources.erase(iter);
 }
 
 bool PdBase::exists(const std::string& source) {
     map<string,void*>& sources = PdContext::instance().sources;
-    if(sources.find(source) != sources.end())
+    if(sources.find(source) != sources.end()) {
         return true;
+    }
     return false;
 }
 
 void PdBase::unsubscribeAll(){
     map<string,void*>& sources = PdContext::instance().sources;
     map<string,void*>::iterator iter;
-    for(iter = sources.begin(); iter != sources.end(); ++iter)
+    _LOCK();
+    for(iter = sources.begin(); iter != sources.end(); ++iter) {
         libpd_unbind(iter->second);
+    }
+    _UNLOCK();
     sources.clear();
 }
 
 //--------------------------------------------------------------------
-int PdBase::numMessages() {
-    return (int) PdContext::instance().messages.size();
+void PdBase::receiveMessages() {
+    libpd_queued_receive_pd_messages();
 }
 
-Message& PdBase::nextMessage() {
-
-    PdContext& context = PdContext::instance();
-
-    if(context.messages.size() > 0) {
-        context.message = context.messages.front();
-        context.messages.pop_front();
-    }
-    else {
-        if(context.message.type != NONE) {
-            context.message.clear();
-        }
-    }
-
-    return context.message;
-}
-
-void PdBase::clearMessages() {
-    PdContext::instance().messages.clear();
+void PdBase::receiveMidi() {
+    libpd_queued_receive_midi_messages();
 }
 
 //--------------------------------------------------------------------
 void PdBase::setReceiver(PdReceiver* receiver) {
+    _LOCK();
     PdContext::instance().receiver = receiver;
+    _UNLOCK();
 }
 
 void PdBase::setMidiReceiver(PdMidiReceiver* midiReceiver) {
+    _LOCK();
     PdContext::instance().midiReceiver = midiReceiver;
+    _UNLOCK();
 }
 
 //----------------------------------------------------------
 void PdBase::sendBang(const std::string& dest) {
+    _LOCK();
     libpd_bang(dest.c_str());
+    _UNLOCK();
 }
 
 void PdBase::sendFloat(const std::string& dest, float value) {
+    _LOCK();
     libpd_float(dest.c_str(), value);
+    _UNLOCK();
 }
 
 void PdBase::sendSymbol(const std::string& dest, const std::string& symbol) {
+    _LOCK();
     libpd_symbol(dest.c_str(), symbol.c_str());
+    _UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -214,10 +256,12 @@ void PdBase::startMessage() {
         return;
     }
 
+    _LOCK();
     if(libpd_start_message(context.maxMsgLen) == 0) {
-		context.bMsgInProgress = true;
+        context.bMsgInProgress = true;
         context.msgType = MSG;
     }
+    _UNLOCK();
 }
 
 void PdBase::addFloat(const float num) {
@@ -239,7 +283,10 @@ void PdBase::addFloat(const float num) {
         return;
     }
 
+    _LOCK();
     libpd_add_float(num);
+    _UNLOCK();
+    
     context.curMsgLen++;
 }
 
@@ -262,7 +309,10 @@ void PdBase::addSymbol(const std::string& symbol) {
         return;
     }
 
+    _LOCK();
     libpd_add_symbol(symbol.c_str());
+    _UNLOCK();
+    
     context.curMsgLen++;
 }
 
@@ -280,7 +330,9 @@ void PdBase::finishList(const std::string& dest) {
         return;
     }
 
+    _LOCK();
     libpd_finish_list(dest.c_str());
+    _UNLOCK();
 
     context.bMsgInProgress = false;
     context.curMsgLen = 0;
@@ -300,7 +352,9 @@ void PdBase::finishMessage(const std::string& dest, const std::string& msg) {
         return;
     }
 
+    _LOCK();
     libpd_finish_message(dest.c_str(), msg.c_str());
+    _UNLOCK();
 
     context.bMsgInProgress = false;
     context.curMsgLen = 0;
@@ -316,7 +370,9 @@ void PdBase::sendList(const std::string& dest, const List& list) {
         return;
     }
 
+    _LOCK();
     libpd_start_message(list.len());
+    _UNLOCK();
 
     context.bMsgInProgress = true;
 
@@ -340,7 +396,9 @@ void PdBase::sendMessage(const std::string& dest, const std::string& msg, const 
         return;
     }
 
+    _LOCK();
     libpd_start_message(list.len());
+    _UNLOCK();
 
     context.bMsgInProgress = true;
 
@@ -357,40 +415,58 @@ void PdBase::sendMessage(const std::string& dest, const std::string& msg, const 
 
 //----------------------------------------------------------
 void PdBase::sendNoteOn(const int channel, const int pitch, const int velocity) {
+    _LOCK();
     libpd_noteon(channel, pitch, velocity);
+    _UNLOCK();
 }
 
 void PdBase::sendControlChange(const int channel, const int controller, const int value) {
+    _LOCK();
     libpd_controlchange(channel, controller, value);
+    _UNLOCK();
 }
 
 void PdBase::sendProgramChange(const int channel, int program) {
+    _LOCK();
     libpd_programchange(channel, program);
+    _UNLOCK();
 }
 
 void PdBase::sendPitchBend(const int channel, const int value) {
+    _LOCK();
     libpd_pitchbend(channel, value);
+    _UNLOCK();
 }
 
 void PdBase::sendAftertouch(const int channel, const int value) {
+    _LOCK();
     libpd_aftertouch(channel, value);
+    _UNLOCK();
 }
 
 void PdBase::sendPolyAftertouch(const int channel, int pitch, int value) {
+    _LOCK();
     libpd_polyaftertouch(channel, pitch, value);
+    _UNLOCK();
 }
 
 //----------------------------------------------------------
 void PdBase::sendMidiByte(const int port, const int value) {
+    _LOCK();
     libpd_midibyte(port, value);
+    _UNLOCK();
 }
 
 void PdBase::sendSysex(const int port, const int value) {
+    _LOCK();
     libpd_sysex(port, value);
+    _UNLOCK();
 }
 
 void PdBase::sendSysRealTime(const int port, const int value) {
+    _LOCK();
     libpd_sysrealtime(port, value);
+    _UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -611,7 +687,9 @@ bool PdBase::isMessageInProgress() {
 
 //----------------------------------------------------------
 int PdBase::arraySize(const std::string& arrayName) {
+    _LOCK();
     int len = libpd_arraysize(arrayName.c_str());;
+    _UNLOCK();
     if(len < 0) {
         cerr << "Pd: Cannot get size of unknown array \"" << arrayName << "\"" << endl;
         return 0;
@@ -621,7 +699,9 @@ int PdBase::arraySize(const std::string& arrayName) {
 
 bool PdBase::readArray(const std::string& arrayName, std::vector<float>& dest, int readLen, int offset) {
 
+    _LOCK();
     int arrayLen = libpd_arraysize(arrayName.c_str());
+    _UNLOCK();
     if(arrayLen < 0) {
         cerr << "Pd: Cannot read unknown array \"" << arrayName << "\"" << endl;
         return false;
@@ -650,17 +730,22 @@ bool PdBase::readArray(const std::string& arrayName, std::vector<float>& dest, i
         dest.resize(readLen, 0);
     }
 
+    _LOCK();
     if(libpd_read_array(&dest[0], arrayName.c_str(), offset, readLen) < 0) {
         cerr << "Pd: libpd_read_array failed for array \""
              << arrayName << "\"" << endl;
+        _UNLOCK();
         return false;
     }
+    _UNLOCK();
     return true;
 }
 
 bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source, int writeLen, int offset) {
 
+    _LOCK();
     int arrayLen = libpd_arraysize(arrayName.c_str());
+    _UNLOCK();
     if(arrayLen < 0) {
         cerr << "Pd: Cannot write to unknown array \"" << arrayName << "\"" << endl;
         return false;
@@ -684,16 +769,21 @@ bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source
         return false;
     }
 
+    _LOCK();
     if(libpd_write_array(arrayName.c_str(), offset, &source[0], writeLen) < 0) {
         cerr << "Pd: libpd_write_array failed for array \"" << arrayName << "\"" << endl;
+        _UNLOCK();
         return false;
     }
+    _UNLOCK();
     return true;
 }
 
 void PdBase::clearArray(const std::string& arrayName, int value) {
 
+    _LOCK();
     int arrayLen = libpd_arraysize(arrayName.c_str());
+    _UNLOCK();
     if(arrayLen < 0) {
         cerr << "Pd: Cannot clear unknown array \"" << arrayName << "\"" << endl;
         return;
@@ -702,10 +792,12 @@ void PdBase::clearArray(const std::string& arrayName, int value) {
     std::vector<float> array;
     array.resize(arrayLen, value);
 
+    _LOCK();
     if(libpd_write_array(arrayName.c_str(), 0, &array[0], arrayLen) < 0) {
         cerr << "Pd: libpd_write_array failed while clearing array \""
              << arrayName << "\"" << endl;
     }
+    _UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -713,7 +805,12 @@ bool PdBase::isInited() {
     return PdContext::instance().isInited();
 }
 
+bool PdBase::isQueued() {
+    return PdContext::instance().isQueued();
+}
+
 int PdBase::blockSize() {
+    // shouldn't need to lock this for now, it's always 64
     return libpd_blocksize();
 }
 
@@ -725,19 +822,10 @@ unsigned int PdBase::maxMessageLen() {
     return PdContext::instance().maxMsgLen;
 }
 
-void PdBase::setMaxQueueLen(unsigned int len) {
-    PdContext::instance().maxQueueLen = len;
-}
-
-unsigned int PdBase::maxQueueLen() {
-    return PdContext::instance().maxQueueLen;
-}
-
 /* ***** PD CONTEXT ***** */
 
 //----------------------------------------------------------
-PdBase::PdContext& PdBase::PdContext::instance()
-{
+PdBase::PdContext& PdBase::PdContext::instance() {
     static PdBase::PdContext * pointerToTheSingletonInstance = new PdContext;
     return *pointerToTheSingletonInstance;
 }
@@ -747,46 +835,74 @@ void PdBase::PdContext::addBase() {
 }
 
 void PdBase::PdContext::removeBase() {
-    if(numBases > 0)
+    if(numBases > 0) {
         numBases--;
-    else if(bInited)    // double check clear
+    }
+    else if(bInited) { // double check clear
         clear();
+    }
 }
 
 /// init the pd instance
-bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate) {
+bool PdBase::PdContext::init(const int numInChannels, const int numOutChannels, const int sampleRate, bool queued) {
+
+    bQueued = queued;
 
     // attach callbacks
-	libpd_printhook = (t_libpd_printhook) libpd_print_concatenator;
-    libpd_concatenated_printhook = (t_libpd_printhook) _print;
+    if(queued) {
+        libpd_set_queued_printhook(libpd_print_concatenator);
+        libpd_set_concatenated_printhook(_print);
 
-    libpd_banghook = (t_libpd_banghook) _bang;
-    libpd_floathook = (t_libpd_floathook) _float;
-    libpd_symbolhook = (t_libpd_symbolhook) _symbol;
-    libpd_listhook = (t_libpd_listhook) _list;
-    libpd_messagehook = (t_libpd_messagehook) _message;
+        libpd_set_queued_banghook(_bang);
+        libpd_set_queued_floathook(_float);
+        libpd_set_queued_symbolhook(_symbol);
+        libpd_set_queued_listhook(_list);
+        libpd_set_queued_messagehook(_message);
 
-    libpd_noteonhook = (t_libpd_noteonhook) _noteon;
-    libpd_controlchangehook = (t_libpd_controlchangehook) _controlchange;
-    libpd_programchangehook = (t_libpd_programchangehook) _programchange;
-    libpd_pitchbendhook = (t_libpd_pitchbendhook) _pitchbend;
-    libpd_aftertouchhook = (t_libpd_aftertouchhook) _aftertouch;
-    libpd_polyaftertouchhook = (t_libpd_polyaftertouchhook) _polyaftertouch;
+        libpd_set_queued_noteonhook(_noteon);
+        libpd_set_queued_controlchangehook(_controlchange);
+        libpd_set_queued_programchangehook(_programchange);
+        libpd_set_queued_pitchbendhook(_pitchbend);
+        libpd_set_queued_aftertouchhook(_aftertouch);
+        libpd_set_queued_polyaftertouchhook(_polyaftertouch);
+        libpd_set_queued_midibytehook(_midibyte);
+        
+        // init libpd, should only be called once!
+        if(!bLibPdInited) {
+            libpd_queued_init();
+            bLibPdInited = true;
+        }
+    }
+    else {
+        libpd_set_printhook(libpd_print_concatenator);
+        libpd_set_concatenated_printhook(_print);
 
-    libpd_midibytehook = (t_libpd_midibytehook) _midibyte;
+        libpd_set_banghook(_bang);
+        libpd_set_floathook(_float);
+        libpd_set_symbolhook(_symbol);
+        libpd_set_listhook(_list);
+        libpd_set_messagehook(_message);
 
-    // init libpd, should only be called once!
-	if(!bLibPDInited) {
-		libpd_init();
-		bLibPDInited = true;
-	}
-	// init audio
+        libpd_set_noteonhook(_noteon);
+        libpd_set_controlchangehook(_controlchange);
+        libpd_set_programchangehook(_programchange);
+        libpd_set_pitchbendhook(_pitchbend);
+        libpd_set_aftertouchhook(_aftertouch);
+        libpd_set_polyaftertouchhook(_polyaftertouch);
+        libpd_set_midibytehook(_midibyte);
+        
+        // init libpd, should only be called once!
+        if(!bLibPdInited) {
+            libpd_init();
+            bLibPdInited = true;
+        }
+    }
+    
+    // init audio
     if(libpd_init_audio(numInChannels, numOutChannels, sampleRate) != 0) {
         return false;
     }
     bInited = true;
-
-    messages.clear();
 
     return bInited;
 }
@@ -798,27 +914,48 @@ void PdBase::PdContext::clear() {
 
         computeAudio(false);
 
-        libpd_concatenated_printhook = (t_libpd_printhook) NULL;
+        if(bQueued) {
+            libpd_set_queued_printhook(NULL);
+            libpd_set_concatenated_printhook(NULL);
 
-        libpd_banghook = (t_libpd_banghook) NULL;
-        libpd_floathook = (t_libpd_floathook) NULL;
-        libpd_symbolhook = (t_libpd_symbolhook) NULL;
-        libpd_listhook = (t_libpd_listhook) NULL;
-        libpd_messagehook = (t_libpd_messagehook) NULL;
+            libpd_set_queued_banghook(NULL);
+            libpd_set_queued_floathook(NULL);
+            libpd_set_queued_symbolhook(NULL);
+            libpd_set_queued_listhook(NULL);
+            libpd_set_queued_messagehook(NULL);
 
-        libpd_noteonhook = (t_libpd_noteonhook) NULL;
-        libpd_controlchangehook = (t_libpd_controlchangehook) NULL;
-        libpd_programchangehook = (t_libpd_programchangehook) NULL;
-        libpd_pitchbendhook = (t_libpd_pitchbendhook) NULL;
-        libpd_aftertouchhook = (t_libpd_aftertouchhook) NULL;
-        libpd_polyaftertouchhook = (t_libpd_polyaftertouchhook) NULL;
+            libpd_set_queued_noteonhook(NULL);
+            libpd_set_queued_controlchangehook(NULL);
+            libpd_set_queued_programchangehook(NULL);
+            libpd_set_queued_pitchbendhook(NULL);
+            libpd_set_queued_aftertouchhook(NULL);
+            libpd_set_queued_polyaftertouchhook(NULL);
+            libpd_set_queued_midibytehook(NULL);
+            
+            libpd_queued_release();
+        }
+        else {
+            libpd_set_printhook(NULL);
+            libpd_set_concatenated_printhook(NULL);
 
-        libpd_midibytehook = (t_libpd_midibytehook) NULL;
+            libpd_set_banghook(NULL);
+            libpd_set_floathook(NULL);
+            libpd_set_symbolhook(NULL);
+            libpd_set_listhook(NULL);
+            libpd_set_messagehook(NULL);
+
+            libpd_set_noteonhook(NULL);
+            libpd_set_controlchangehook(NULL);
+            libpd_set_programchangehook(NULL);
+            libpd_set_pitchbendhook(NULL);
+            libpd_set_aftertouchhook(NULL);
+            libpd_set_polyaftertouchhook(NULL);
+            libpd_set_midibytehook(NULL);
+        }
     }
 
-    messages.clear();
-
     bInited = false;
+    bQueued = false;
 
     bMsgInProgress = false;
     curMsgLen = 0;
@@ -833,87 +970,56 @@ void PdBase::PdContext::computeAudio(bool state) {
     libpd_finish_message("pd", "dsp");
 }
 
-void PdBase::PdContext::addMessage(pd::Message& msg) {
-    if(messages.size() >= maxQueueLen) {
-        cerr << "Pd: message queue max len of " << maxQueueLen
-             << " reached, dropping oldest message" << endl;
-        messages.pop_front();
-    }
-    messages.push_back(msg);
-}
-
 /* ***** PD CONTEXT PRIVATE ***** */
 
 //----------------------------------------------------------
 PdBase::PdContext::PdContext() {
+    bLibPdInited = false;
+    bInited = false;
+    bQueued = false;
+    numBases = false;
     receiver = NULL;
     midiReceiver = NULL;
     clear();
     maxMsgLen = 32;
-
-	bLibPDInited = false;
-    bInited = false;
-    numBases = false;
-
-    maxQueueLen = 1000;
 }
 
 PdBase::PdContext::~PdContext() {
-    if(bInited)
-        clear();    // triple check clear
+    if(bInited) {
+        clear(); // triple check clear
+    }
 }
 
 //----------------------------------------------------------
 void PdBase::PdContext::_print(const char* s) {
     PdContext& context = PdContext::instance();
-	if(context.receiver)
-		context.receiver->print((string) s);
-	else {
-		Message m(PRINT);
-		m.symbol = (string) s;
-		context.messages.push_back(m);
-	}
+    if(context.receiver) {
+        context.receiver->print((string) s);
+    }
 }
 
 void PdBase::PdContext::_bang(const char* source) {
     PdContext& context = PdContext::instance();
-    if(context.receiver)
+    if(context.receiver) {
         context.receiver->receiveBang((string) source);
-    else {
-        Message m(BANG);
-        m.dest = (string) source;
-        context.addMessage(m);
     }
 }
 
-void PdBase::PdContext::_float(const char* source, float num)
-{
+void PdBase::PdContext::_float(const char* source, float num) {
     PdContext& context = PdContext::instance();
-    if(context.receiver)
+    if(context.receiver) {
         context.receiver->receiveFloat((string) source, num);
-    else {
-        Message m(FLOAT);
-        m.dest = (string) source;
-        m.num = num;
-        context.addMessage(m);
     }
 }
 
-void PdBase::PdContext::_symbol(const char* source, const char* symbol)
-{
+void PdBase::PdContext::_symbol(const char* source, const char* symbol) {
     PdContext& context = PdContext::instance();
-    if(context.receiver)
+    if(context.receiver) {
         context.receiver->receiveSymbol((string) source, (string) symbol);
-    else {
-        Message m(SYMBOL);
-        m.dest = (string) source;
-        m.symbol = (string) symbol;
-        context.addMessage(m);
     }
 }
 
-void PdBase::PdContext::_list(const char* source, int argc, t_atom* argv)
-{
+void PdBase::PdContext::_list(const char* source, int argc, t_atom* argv) {
     PdContext& context = PdContext::instance();
 
     List list;
@@ -933,12 +1039,6 @@ void PdBase::PdContext::_list(const char* source, int argc, t_atom* argv)
 
     if(context.receiver) {
         context.receiver->receiveList((string) source, list);
-    }
-    else {
-        Message m(LIST);
-        m.dest = (string) source;
-        m.list = list;
-        context.addMessage(m);
     }
 }
 
@@ -964,99 +1064,54 @@ void PdBase::PdContext::_message(const char* source, const char *symbol, int arg
     if(context.receiver) {
         context.receiver->receiveMessage((string) source, (string) symbol, list);
     }
-    else {
-        Message m(MESSAGE);
-        m.dest = (string) source;
-        m.symbol = (string) symbol;
-        m.list = list;
-        context.addMessage(m);
-    }
 }
 
 void PdBase::PdContext::_noteon(int channel, int pitch, int velocity) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receiveNoteOn(channel, pitch, velocity);
-    else {
-        Message m(NOTE_ON);
-        m.channel = channel;
-        m.pitch = pitch;
-        m.velocity = velocity;
-        context.addMessage(m);
     }
 }
 
 void PdBase::PdContext::_controlchange(int channel, int controller, int value) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receiveControlChange(channel, controller, value);
-    else {
-        Message m(CONTROL_CHANGE);
-        m.channel = channel;
-        m.controller = controller;
-        m.value = value;
-        context.addMessage(m);
     }
 }
 
 void PdBase::PdContext::_programchange(int channel, int value) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receiveProgramChange(channel, value);
-    else {
-        Message m(PROGRAM_CHANGE);
-        m.channel = channel;
-        m.value = value;
-        context.addMessage(m);
     }
 }
 
 void PdBase::PdContext::_pitchbend(int channel, int value) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receivePitchBend(channel, value);
-    else {
-        Message m(PITCH_BEND);
-        m.channel = channel;
-        m. value = value;
-        context.addMessage(m);
     }
 }
 
 void PdBase::PdContext::_aftertouch(int channel, int value) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receiveAftertouch(channel, value);
-    else {
-        Message m(AFTERTOUCH);
-        m.channel = channel;
-        m.value = value;
-        context.addMessage(m);
     }
 }
 
 void PdBase::PdContext::_polyaftertouch(int channel, int pitch, int value) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receivePolyAftertouch(channel, pitch, value);
-    else {
-        Message m(POLY_AFTERTOUCH);
-        m.channel = channel;
-        m.pitch = pitch;
-        m.value = value;
-        context.addMessage(m);
     }
 }
 
 void PdBase::PdContext::_midibyte(int port, int byte) {
     PdContext& context = PdContext::instance();
-    if(context.midiReceiver)
+    if(context.midiReceiver) {
         context.midiReceiver->receiveMidiByte(port, byte);
-    else {
-        Message m(BYTE);
-        m.port = port;
-        m.byte = byte;
-        context.addMessage(m);
     }
 }
 

@@ -35,12 +35,12 @@ class Patch {
 
         /// data access
         void* handle()                const    {return _handle;}
-        int dollarZero()            const    {return _dollarZero;}
+        int dollarZero()              const    {return _dollarZero;}
         std::string filename()        const    {return _filename;}
         std::string path()            const    {return _path;}
 
         /// get dollarZero as a string
-        std::string dollarZeroStr()    const    {return _dollarZeroStr;}
+        std::string dollarZeroStr()    const   {return _dollarZeroStr;}
 
         /// is the patch pointer valid?
         bool isValid() const;
@@ -62,12 +62,12 @@ class Patch {
 
     private:
 
-        void* _handle;                ///< patch handle pointer
-        int _dollarZero;            ///< the unique patch id, ie $0
-        std::string _dollarZeroStr;    ///< $0 as a string
+        void* _handle;              //< patch handle pointer
+        int _dollarZero;            //< the unique patch id, ie $0
+        std::string _dollarZeroStr; //< $0 as a string
 
-        std::string _filename;    ///< filename
-        std::string _path;        ///< full path
+        std::string _filename;      //< filename
+        std::string _path;          //< full path
 };
 
 /// \section Pd stream interface message objects
@@ -75,7 +75,7 @@ class Patch {
 /// bang event
 struct Bang {
 
-    const std::string dest; ///< dest receiver name
+    const std::string dest; //< dest receiver name
 
     explicit Bang(const std::string& dest) : dest(dest) {}
 };
@@ -83,8 +83,8 @@ struct Bang {
 /// float value
 struct Float {
 
-    const std::string dest; ///< dest receiver name
-    const float num;        ///< the float value
+    const std::string dest; //< dest receiver name
+    const float num;        //< the float value
 
     Float(const std::string& dest, const float num) :
         dest(dest), num(num) {}
@@ -93,8 +93,8 @@ struct Float {
 /// symbol value
 struct Symbol {
 
-    const std::string dest;        ///< dest receiver name
-    const std::string symbol;    ///< the symbol value
+    const std::string dest;   //< dest receiver name
+    const std::string symbol; //< the symbol value
 
     Symbol(const std::string& dest, const std::string& symbol) :
         dest(dest), symbol(symbol) {}
@@ -107,7 +107,7 @@ class List {
 
         List();
 
-        /// \section Read
+    /// \section Read
 
         /// check type
         bool isFloat(const unsigned int index) const;
@@ -117,7 +117,7 @@ class List {
         float getFloat(const unsigned int index) const;
         std::string getSymbol(const unsigned int index) const;
 
-        /// \section Write
+    /// \section Write
 
         /// add elements to the list
         ///
@@ -128,7 +128,7 @@ class List {
         void addFloat(const float num);
         void addSymbol(const std::string& symbol);
 
-        /// \section Write Stream Interface
+    /// \section Write Stream Interface
 
         /// list << "hello" << 1.23;
 
@@ -143,11 +143,11 @@ class List {
         List& operator<<(const char* var);
         List& operator<<(const std::string& var);
 
-        /// \section Util
+    /// \section Util
 
-        const unsigned int len() const;        ///< number of items
-        const std::string& types() const;    ///< OSC style type string ie "fsfs"
-        void clear();                         ///< clear all objects
+        const unsigned int len() const;   //< number of items
+        const std::string& types() const; //< OSC style type string ie "fsfs"
+        void clear();                     //< clear all objects
 
         /// get list as a string
         std::string toString() const;
@@ -157,7 +157,7 @@ class List {
 
     private:
 
-        std::string typeString;    ///< OSC style type string
+        std::string typeString; //< OSC style type string
 
         // object type
         enum MsgType {
@@ -172,7 +172,7 @@ class List {
             std::string symbol;
         };
 
-        std::vector<MsgObject> objects;    ///< list objects
+        std::vector<MsgObject> objects; //< list objects
 };
 
 /// start a compound message
@@ -183,7 +183,7 @@ struct StartMessage {
 /// finish a compound message as a list
 struct FinishList {
 
-    const std::string dest;     ///< dest receiver name
+    const std::string dest; //< dest receiver name
 
     explicit FinishList(const std::string& dest) : dest(dest) {}
 };
@@ -191,8 +191,8 @@ struct FinishList {
 /// finish a compound message as a typed message
 struct FinishMessage {
 
-    const std::string dest;    ///< dest receiver name
-    const std::string msg;    ///< target msg at the dest
+    const std::string dest; //< dest receiver name
+    const std::string msg;  //< target msg at the dest
 
     FinishMessage(const std::string& dest, const std::string& msg) :
             dest(dest), msg(msg) {}
@@ -204,9 +204,9 @@ struct FinishMessage {
 /// send a note on event (set vel = 0 for noteoff)
 struct NoteOn {
 
-    const int channel;    ///< channel (0 - 15 * dev#)
-    const int pitch;    ///< pitch (0 - 127)
-    const int velocity;    ///< velocity (0 - 127)
+    const int channel;  //< channel (0 - 15 * dev#)
+    const int pitch;    //< pitch (0 - 127)
+    const int velocity; //< velocity (0 - 127)
 
     NoteOn(const int channel, const int pitch, const int velocity=64) :
         channel(channel), pitch(pitch), velocity(velocity) {}
@@ -215,9 +215,9 @@ struct NoteOn {
 /// change a control value aka send a CC message
 struct ControlChange {
 
-    const int channel;        ///< channel (0 - 15 * dev#)
-    const int controller;    ///< controller (0 - 127)
-    const int value;        ///< value (0 - 127)
+    const int channel;    //< channel (0 - 15 * dev#)
+    const int controller; //< controller (0 - 127)
+    const int value;      //< value (0 - 127)
 
     ControlChange(const int channel, const int controller, const int value) :
         channel(channel), controller(controller), value(value) {}
@@ -226,8 +226,8 @@ struct ControlChange {
 /// change a program value (ie an instrument)
 struct ProgramChange {
 
-    const int channel;    ///< channel (0 - 15 * dev#)
-    const int value;    ///< value (0 - 127)
+    const int channel; //< channel (0 - 15 * dev#)
+    const int value;   //< value (0 - 127)
 
     ProgramChange(const int channel, const int value) :
         channel(channel), value(value) {}
@@ -236,8 +236,8 @@ struct ProgramChange {
 /// change the pitch bend value
 struct PitchBend {
 
-    const int channel;    ///< channel (0 - 15 * dev#)
-    const int value;    ///< value (-8192 - 8192)
+    const int channel; //< channel (0 - 15 * dev#)
+    const int value;   //< value (-8192 - 8192)
 
     PitchBend(const int channel, const int value) :
         channel(channel), value(value) {}
@@ -246,8 +246,8 @@ struct PitchBend {
 /// change an aftertouch value
 struct Aftertouch {
 
-    const int channel;    ///< channel (0 - 15 * dev#)
-    const int value;    ///< value (0 - 127)
+    const int channel; //< channel (0 - 15 * dev#)
+    const int value;   //< value (0 - 127)
 
     Aftertouch(const int channel, const int value) :
         channel(channel), value(value) {}
@@ -256,9 +256,9 @@ struct Aftertouch {
 /// change a poly aftertouch value
 struct PolyAftertouch {
 
-    const int channel;    ///< channel (0 - 15 * dev#)
-    const int pitch;    ///< pitch (0 - 127)
-    const int value;    ///< value (0 - 127)
+    const int channel; //< channel (0 - 15 * dev#)
+    const int pitch;   //< pitch (0 - 127)
+    const int value;   //< value (0 - 127)
 
     PolyAftertouch(const int channel, const int pitch, const int value) :
         channel(channel), pitch(pitch), value(value) {}
@@ -267,9 +267,9 @@ struct PolyAftertouch {
 /// a raw midi byte
 struct MidiByte {
 
-    const int port;                ///< raw portmidi port
-                                ///< see http://en.wikipedia.org/wiki/PortMidi
-    const unsigned char byte;    ///< the raw midi byte value
+    const int port; //< raw portmidi port
+                    //< see http://en.wikipedia.org/wiki/PortMidi
+    const unsigned char byte; //< the raw midi byte value
 
     MidiByte(const int port, unsigned char byte) : port(port), byte(byte) {}
 };
@@ -277,7 +277,7 @@ struct MidiByte {
 /// start a raw midi byte stream
 struct StartMidi {
 
-    const int port;     ///< raw portmidi port
+    const int port; //< raw portmidi port
 
     explicit StartMidi(const int port=0) : port(port) {}
 };
@@ -285,7 +285,7 @@ struct StartMidi {
 /// start a raw sysex byte stream
 struct StartSysex {
 
-    const int port;     ///< raw portmidi port
+    const int port; //< raw portmidi port
 
     explicit StartSysex(const int port=0) : port(port) {}
 };
@@ -293,7 +293,7 @@ struct StartSysex {
 /// start a sys realtime byte stream
 struct StartSysRealTime {
 
-    const int port;     ///< raw portmidi port
+    const int port; //< raw portmidi port
 
     explicit StartSysRealTime(const int port=0) : port(port) {}
 };
@@ -301,90 +301,6 @@ struct StartSysRealTime {
 /// finish a midi byte stream
 struct Finish {
     explicit Finish() {}
-};
-
-/// \section pd message polling objects
-
-enum MessageType {
-    NONE,
-
-    PRINT,
-
-    // events
-    BANG,
-    FLOAT,
-    SYMBOL,
-    LIST,
-    MESSAGE,
-
-    // midi
-    NOTE_ON,
-    CONTROL_CHANGE,
-    PROGRAM_CHANGE,
-    PITCH_BEND,
-    AFTERTOUCH,
-    POLY_AFTERTOUCH,
-    BYTE
-};
-
-/// a general message for polling
-///
-/// check message type and grab data:
-///
-/// while(pd.numMessages() > 0) {
-///        pd::Message& msg = pd.nextMessage(&msg);
-///
-///        switch(msg.type) {
-///            case PRINT:
-///                cout << got print: " << msg.symbol << endl;
-///                break;
-///            case BANG:
-///                cout << "go a bang to " << msg.dest << endl;
-///                break;
-///            case NOTE_ON:
-///                cout << "got a note on " << msg.channel
-///                     << msg.pitch << " " << msg.velocity << endl;
-///                break;
-///            ...
-///        }
-///    }
-///
-/// the message-specific types are only set for the appropriate
-/// message types ie pitch is only set for NOTE_ON & POLY_AFTERTOUCH messages etc
-///
-struct Message {
-
-        Message();
-        explicit Message(MessageType type);
-
-        MessageType type;        ///< the type of message
-
-        // events
-        std::string dest;        ///< dest receiver name
-
-        float num;                ///< FLOAT value
-        std::string symbol;        ///< SYMBOL value
-                                ///< PRINT message & message name for MESSAGE
-
-        pd::List list;            ///< LIST & MESSAGE
-
-        // midi
-        int channel;            ///< channel (0 - 15 * dev#)
-        int pitch;                ///< pitch (0 - 127) for NOTE_ON & POLY_AFTERTOUCH
-        int velocity;            ///< velocity (0 - 127) for NOTE_ON
-        int controller;            ///< controller (0 - 127) for CONTROL_CHANGE
-
-        int value;                ///< value (0 - 127) for CONTROL_CHANGE,
-                                ///< PROGRAM_CHANGE, & POLY_AFTERTOUCH
-                                ///< value (-8192 - 8192) for PITCH_BEND
-
-        // raw midi byte
-        int port;                ///< raw portmidi port
-                                ///< see http://en.wikipedia.org/wiki/PortMidi
-        unsigned char byte;        ///< the raw midi byte value
-
-        // clear the message contents, sets the type to NONE
-        void clear();
 };
 
 } // namespace

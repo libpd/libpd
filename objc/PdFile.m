@@ -35,67 +35,67 @@
 #pragma mark - Class Open method
 
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
-  PdFile *pdFile = [[[self alloc] init] autorelease];
-  if (pdFile) {
-    [pdFile openFile:baseName path:pathName];
-    if (![pdFile fileReference]) {
-      return nil;
-    }
-  }
-  return pdFile;
+	PdFile *pdFile = [[[self alloc] init] autorelease];
+	if (pdFile) {
+		[pdFile openFile:baseName path:pathName];
+		if (![pdFile fileReference]) {
+			return nil;
+		}
+	}
+	return pdFile;
 }
 
 #pragma mark -
 #pragma mark - Dealloc
 
 - (void)dealloc {
-  [self closeFile];
-  self.pathName = nil;
-  self.baseName = nil;
-  self.fileReference = nil;
+	[self closeFile];
+	self.pathName = nil;
+	self.baseName = nil;
+	self.fileReference = nil;
 
-  [super dealloc];
+	[super dealloc];
 }
 
 #pragma mark -
 #pragma mark - Public Open / Close methods
 
 - (void)openFile:(NSString *)baseName path:(NSString *)pathName {
-  if (!baseName || !pathName) {
-    return;
-  }
-  self.baseName = baseName;
-  self.pathName = pathName;
+	if (!baseName || !pathName) {
+		return;
+	}
+	self.baseName = baseName;
+	self.pathName = pathName;
 
-  void *x = [PdBase openFile:baseName path:pathName];
-  if (x) {
-    self.fileReference = [NSValue valueWithPointer:x];
-    self.dollarZero = [PdBase dollarZeroForFile:x];
-  }
+	void *x = [PdBase openFile:baseName path:pathName];
+	if (x) {
+		self.fileReference = [NSValue valueWithPointer:x];
+		self.dollarZero = [PdBase dollarZeroForFile:x];
+	}
 }
 
 - (PdFile *)openNewInstance {
-  return [PdFile openFileNamed:self.baseName path:self.pathName];
+	return [PdFile openFileNamed:self.baseName path:self.pathName];
 }
 
 - (bool)isValid {
-  return (bool) self.fileReference;
+	return (bool) self.fileReference;
 }
 
 - (void)closeFile {
-  void *x = [self.fileReference pointerValue];
-  if (x) {
-    [PdBase closeFile:x];
-    self.fileReference = nil;
-  }
+	void *x = [self.fileReference pointerValue];
+	if (x) {
+		[PdBase closeFile:x];
+		self.fileReference = nil;
+	}
 }
 
 #pragma mark -
 #pragma mark - Util
 
 - (NSString *)description {
-  return [NSString stringWithFormat: @"Patch: \"%@\" $0: %d valid: %d",
-  self.baseName, self.dollarZero, [self isValid]];
+	return [NSString stringWithFormat: @"Patch: \"%@\" $0: %d valid: %d",
+	self.baseName, self.dollarZero, [self isValid]];
 }
 
 @end

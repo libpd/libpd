@@ -1,6 +1,8 @@
 
-# samples
-samples/test/pdtest
+# built libs
+libs/libpd.*
+libs/libpdcpp.*
+libs/libpdnative.*
 
 # python
 python/pylibpd_wrap.c
@@ -24,25 +26,16 @@ build/*
 xcuserdata
 libpd.xcodeproj/project.xcworkspace
 libpd.xcodeproj/xcuserdata
-libs/libpd.dylib
-libs/libpdnative.dylib
-samples/iosTest/iosTest.xcodeproj/project.xcworkspace
 
-
-# OSX
+# osx
 .DS_STORE
 *.app
 
 # csharp
-samples/csharp/obj/*
-samples/csharp/bin/*
 csharp/obj/*
 csharp/bin/*
 libs/libpd.*
 libs/libpdnative.*
-csharptests/bin
-csharptests/obj
-csharptests/PartCover/coverage.xml
 libs/libpdcsharp.*
 
 # java
