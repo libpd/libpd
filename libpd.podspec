@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "libpd"
-  s.version = "0.0.1"
+  s.version = "0.8.1"
 
   s.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.homepage = "https://github.com/libpd/libpd"
   s.author = { "name or nickname" => "email@address.com" }
 
-  s.source = { :git => "https://github.com/libpd/libpd.git", :commit => "HEAD" }
+  s.source = { :git => "https://github.com/libpd/libpd.git", :tag => s.version.to_s}
   s.source_files = 'cpp/**/*.{hpp,cpp}', 'libpd_wrapper/**/*.{h,c}', 'objc/**/*.{h,m}', 'pure-data/src/**/*.{h,c}'
 
   s.ios.deployment_target = '4.0'
