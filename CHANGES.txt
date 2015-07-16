@@ -1,6 +1,8 @@
-current: TBD
+0.8.2: 2015 Jul
 
 * added CocoaPods podspec file 
+* updated pure-data upstream branch which removes debug print
+* changed pure-data git submodule back to Pure Data sourceforge link
 
 0.8.1: 2015 Jun
 
