@@ -75,3 +75,8 @@ Java Builds
 Ready-made binaries for Java are available at [libpd-java-build](https://github.com/wivlaro/libpd-java-build): 
 <https://github.com/wivlaro/libpd-java-build/blob/master/libpd.jar> (may not be up to date)
 
+CocoaPods
+---------
+
+If you are using XCode to build iOS apps, you can use [CocoaPods](https://cocoapods.org) to add libpd to your project.
+

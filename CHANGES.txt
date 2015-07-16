@@ -1,3 +1,7 @@
+current: TBD
+
+* added CocoaPods podspec file 
+
 0.8.1: 2015 Jun
 
 * ringbuffer bugfix to ensure compound messages do not cause a race condition
