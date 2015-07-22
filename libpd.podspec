@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
 
   s.summary = "Pure Data embeddable audio synthesis library, useful as a sound engine in mobile phone apps, games, web pages, and art projects"
   s.homepage = "https://github.com/libpd/libpd"
-  s.author = { "Peter Brinkmann", "Dan Wilcox", "Rich Eakin" }
+  s.authors = "Peter Brinkmann", "Dan Wilcox", "Rich Eakin", "Miller Puckette (Pure Data)"
 
   s.source = { :git => "https://github.com/libpd/libpd.git", :tag => s.version.to_s}
   s.source_files = 'cpp/**/*.{hpp,cpp}', 'libpd_wrapper/**/*.{h,c}', 'objc/**/*.{h,m}', 'pure-data/src/**/*.{h,c}'
