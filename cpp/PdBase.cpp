@@ -19,7 +19,10 @@
 #include <iostream>
 
 #ifdef LIBPD_USE_STD_MUTEX
-    #if __cplusplus <= 201103L // C++ 11 check
+	#ifdef _WIN32
+		#define _LOCK() mutex.lock()
+		#define _UNLOCK() mutex.unlock()
+    #elif __cplusplus <= 201103L // C++ 11 check
         #define _LOCK() mutex.lock()
         #define _UNLOCK() mutex.unlock()
     #endif
