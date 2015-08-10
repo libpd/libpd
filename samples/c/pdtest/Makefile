@@ -9,6 +9,7 @@ else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     SOLIB_EXT = dll
     PDNATIVE_PLATFORM = windows
+    CC = gcc
   else  # Assume Linux
     SOLIB_EXT = so
     PDNATIVE_PLATFORM = linux
