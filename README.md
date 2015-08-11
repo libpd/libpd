@@ -69,6 +69,13 @@ Glue for using libpd with Java, C#, Objective C, C++ and Python. Feel free to im
 
 Contains small sample programs and tests in the various supported langauges.
 
+Xcode Project
+-------------
+
+libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as a static library for iOS & Mac OSX. Drag the libpd project into your existing Xcode project, then add libpd-ios (or libpd-osx) to the Linked Frameworks and Libraries in the General tab of your project target.
+
+If you are unfamiliar with how static libraries work or how to use them in Xcode, see [this useful tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial).
+
 Java Builds
 -----------
 
