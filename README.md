@@ -87,3 +87,7 @@ CocoaPods
 
 If you are using XCode to build iOS apps, you can use [CocoaPods](https://cocoapods.org) to add libpd to your project.
 
+Use the following in your Cocoapods podfile:
+
+    pod 'libpd', :git => 'https://github.com/yairsz/libpd', :submodules => true
+
