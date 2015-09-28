@@ -91,4 +91,3 @@ Use the following in your Cocoapods podfile:
 
     pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
 
-
