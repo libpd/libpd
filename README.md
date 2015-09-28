@@ -22,13 +22,13 @@ Repository Layout
 -----------------
 
 ### pure-data
-  
+
 The folder containing the sources of Pd Vanilla and standard externals. This is a git submodule of Miller Puckette's [official Pd git repository](http://sourceforge.net/p/pure-data/pure-data/ci/master/tree):
 
-    git://git.code.sf.net/p/pure-data/pure-data 
-	  
-If you're cloning this repo, make sure to checkout the submodule:  
-	  
+    git://git.code.sf.net/p/pure-data/pure-data
+
+If you're cloning this repo, make sure to checkout the submodule:
+
 	git submodule init
 	git submodule update
 
@@ -39,9 +39,9 @@ This folder contains the source files that make up the core of libpd.
 ### Android.mk, Makefile, libpd.xcodeproj, libpd_win.sln
 
 Build support for various platforms. Feel free to improve the build system in any way you see fit.
-	  
-Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & Mac OSX and has the following targets: 	  
-      
+
+Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & Mac OSX and has the following targets:
+
   - **libpd**: (default) builds if no target is specified, builds the libpd.so/dylib/dll
   - **cpplib**: builds libpd with the cpp wrapper
   - **csharplib**: builds libpdcsharp.dll (tested on Windows only)
@@ -50,7 +50,7 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, &
   - **clobber**: removes the linked library files
   - **install**: installs libpd C library (+ C++ if built) and headers, set location with prefix= (default: /usr/local)
   - **uninstall**: removes libpd C library and headers, set location with prefix= (default: /usr/local)
-      
+
 Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
 
   - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
@@ -79,7 +79,7 @@ If you are unfamiliar with how static libraries work or how to use them in Xcode
 Java Builds
 -----------
 
-Ready-made binaries for Java are available at [libpd-java-build](https://github.com/wivlaro/libpd-java-build): 
+Ready-made binaries for Java are available at [libpd-java-build](https://github.com/wivlaro/libpd-java-build):
 <https://github.com/wivlaro/libpd-java-build/blob/master/libpd.jar> (may not be up to date)
 
 CocoaPods
@@ -89,5 +89,6 @@ If you are using XCode to build iOS apps, you can use [CocoaPods](https://cocoap
 
 Use the following in your Cocoapods podfile:
 
-    pod 'libpd', :git => 'https://github.com/yairsz/libpd', :submodules => true
+    pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
+
 
