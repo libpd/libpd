@@ -11,6 +11,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _MSC_VER // win api atomics
+# define SYNC_FETCH(ptr, val) InterlockedOr(ptr, val)
+# define SYNC_COMPARE(ptr, oldval, newval) \
+         InterlockedCompareExchange(ptr, oldval, newval)
+#else // gcc atomics
+# define SYNC_FETCH(ptr, val) __sync_fetch_and_or(ptr, val)
+# define SYNC_COMPARE(ptr, oldval, newval) \
+         __sync_val_compare_and_swap(ptr, oldval, newval)
+#endif
+
 ring_buffer *rb_create(int size) {
   if (size & 0xff) return NULL;  // size must be a multiple of 256
   ring_buffer *buffer = malloc(sizeof(ring_buffer));
@@ -36,8 +46,8 @@ int rb_available_to_write(ring_buffer *buffer) {
     // Note: The largest possible result is buffer->size - 1 because
     // we adopt the convention that read_idx == write_idx means that the
     // buffer is empty.
-    int read_idx = __sync_fetch_and_or(&(buffer->read_idx), 0);
-    int write_idx = __sync_fetch_and_or(&(buffer->write_idx), 0);
+    int read_idx = SYNC_FETCH(&(buffer->read_idx), 0);
+    int write_idx = SYNC_FETCH(&(buffer->write_idx), 0);
     return (buffer->size + read_idx - write_idx - 1) % buffer->size;
   } else {
     return 0;
@@ -46,8 +56,8 @@ int rb_available_to_write(ring_buffer *buffer) {
 
 int rb_available_to_read(ring_buffer *buffer) {
   if (buffer) {
-    int read_idx = __sync_fetch_and_or(&(buffer->read_idx), 0);
-    int write_idx = __sync_fetch_and_or(&(buffer->write_idx), 0);
+    int read_idx = SYNC_FETCH(&(buffer->read_idx), 0);
+    int write_idx = SYNC_FETCH(&(buffer->write_idx), 0);
     return (buffer->size + write_idx - read_idx) % buffer->size;
   } else {
     return 0;
@@ -76,7 +86,7 @@ int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
     write_idx = (write_idx + len) % buffer->size;
   }
   va_end(args);
-  __sync_val_compare_and_swap(&(buffer->write_idx), buffer->write_idx,
+  SYNC_COMPARE(&(buffer->write_idx), buffer->write_idx,
       write_idx);  // Includes memory barrier.
   return 0; 
 }
@@ -95,7 +105,7 @@ int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
     memcpy(dest, buffer->buf_ptr + read_idx, d);
     memcpy(dest + d, buffer->buf_ptr, len - d);
   }
-  __sync_val_compare_and_swap(&(buffer->read_idx), buffer->read_idx,
+  SYNC_COMPARE(&(buffer->read_idx), buffer->read_idx,
        (read_idx + len) % buffer->size);  // Includes memory barrier.
   return 0; 
 }
