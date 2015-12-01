@@ -32,7 +32,7 @@ public class IoUtils {
    * Extract a resource into a real file
    * 
    * @param in typically given as getResources().openRawResource(R.raw.something)
-   * @param name of the resulting file
+   * @param filename name of the resulting file
    * @param directory target directory
    * @return the resulting file
    * @throws IOException
