@@ -98,7 +98,7 @@ static const AudioUnitElement kOutputElement = 0;
                            &sizeASBD));
 		AU_LOG(@"input ASBD:");
 		AU_LOG(@"  mSampleRate: %.0fHz", inputStreamDescription.mSampleRate);
-		AU_LOG(@"  mChannelsPerFrame: %u", inputStreamDescription.mChannelsPerFrame);
+		AU_LOG(@"  mChannelsPerFrame: %u", (unsigned int)inputStreamDescription.mChannelsPerFrame);
 		AU_LOGV(@"  mFormatID: %lu", inputStreamDescription.mFormatID);
 		AU_LOGV(@"  mFormatFlags: %lu", inputStreamDescription.mFormatFlags);
 		AU_LOGV(@"  mBytesPerPacket: %lu", inputStreamDescription.mBytesPerPacket);
