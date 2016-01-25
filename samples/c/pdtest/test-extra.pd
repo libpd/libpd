@@ -1,0 +1,15 @@
+#N canvas 590 160 329 191 10;
+#X obj 52 53 expr~;
+#X obj 93 52 fexpr~;
+#X obj 137 52 sigmund~;
+#X obj 196 52 bob~;
+#X obj 52 76 expr;
+#X obj 227 52 fiddle~;
+#X text 52 27 test if extra objects can be created;
+#X obj 91 77 bonk~;
+#X obj 132 77 choice;
+#X obj 178 77 loop~;
+#X obj 221 77 lrshift~;
+#X obj 52 101 pique;
+#X obj 91 101 stdout;
+#X text 14 137 requires building libpd with LIBPD_EXTRAS defined;
