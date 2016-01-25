@@ -4,7 +4,7 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  *
- * See http://gitorious.org/pdlib/pages/Libpd for documentation
+ * See https://github.com/libpd/libpd/wiki for documentation
  *
  */
 
