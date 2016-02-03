@@ -15,6 +15,7 @@
 
 #include "z_libpd.h"
 #include "z_queued.h"
+#include "z_print_util.h"
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static JNIEnv *cached_env = NULL;
@@ -183,7 +184,9 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
   floatClass = LIBPD_CLASS_REF("java/lang/Float");
   floatInit = (*env)->GetMethodID(env, floatClass, "<init>", "(F)V");
 
-  libpd_set_queued_printhook(java_printhook);
+  libpd_set_queued_printhook(libpd_print_concatenator);
+  libpd_set_concatenated_printhook(java_printhook);
+
   libpd_set_queued_banghook(java_sendBang);
   libpd_set_queued_floathook(java_sendFloat);
   libpd_set_queued_symbolhook(java_sendSymbol);
