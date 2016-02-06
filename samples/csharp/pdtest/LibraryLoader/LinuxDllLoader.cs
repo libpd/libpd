@@ -1,8 +1,11 @@
+/*
+ * For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ * 
+ * Copyright(c) 2016 Thomas Mayer<thomas@residuum.org>
+ */
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace LibPDBindingTest.LibraryLoader
 {
@@ -10,7 +13,7 @@ namespace LibPDBindingTest.LibraryLoader
 	{
 		public IntPtr LoadLibrary (string fileName)
 		{
-			return dlopen (fileName, RTLD_LOCAL);
+			return dlopen (fileName, RTLD_NOW);
 		}
 
 		public bool FreeLibrary (IntPtr handle)
@@ -22,7 +25,6 @@ namespace LibPDBindingTest.LibraryLoader
 		}
 
 		const int RTLD_NOW = 2;
-		const int RTLD_LOCAL = 4;
 
 		[DllImport ("libdl.so")]
 		static extern IntPtr dlopen (string fileName, int flags);
