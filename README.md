@@ -18,6 +18,24 @@ If you are using [Processing](http://processing.org), iOS, or Android, see our c
 * [pd-for-ios](https://github.com/libpd/pd-for-ios)
 * [pd-for-android](https://github.com/libpd/pd-for-android)
 
+Getting libpd
+-------------
+
+The preferred method to download libpd is to use git.
+
+**Do not download libpd as a zip or tar.gz file from GitHub.**
+
+The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as "make: *** No rule to make target `pure-data/src/d_arithmetic.o'" or "No such file or directory: pure-data/extra/bonk~/bonk~.c".
+
+To download libpd & checkout the pure-data submodule do the following:
+
+    git clone https://github.com/libpd/libpd.git
+    cd libpd
+    git submodule init
+    git submodule update
+    
+You should now have a `libpd` directory and the `libpd/pure-data` should contain the pd sources. If not, make sure you ran the git submodule commands in the libpd folder itself.
+
 Repository Layout
 -----------------
 
@@ -26,11 +44,6 @@ Repository Layout
 The folder containing the sources of Pd Vanilla and standard externals. This is a git submodule of Miller Puckette's [official Pd git repository](http://sourceforge.net/p/pure-data/pure-data/ci/master/tree):
 
     git://git.code.sf.net/p/pure-data/pure-data
-
-If you're cloning this repo, make sure to checkout the submodule:
-
-	git submodule init
-	git submodule update
 
 ### libpd_wrapper
 
@@ -73,6 +86,8 @@ Xcode Project
 -------------
 
 libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as a static library for iOS & Mac OSX. Drag the libpd project into your existing Xcode project, then add libpd-ios (or libpd-osx) to the Linked Frameworks and Libraries in the General tab of your project target.
+
+For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 
 If you are unfamiliar with how static libraries work or how to use them in Xcode, see [this useful tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial).
 
