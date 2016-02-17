@@ -100,7 +100,7 @@ Ready-made binaries for Java are available at [libpd-java-build](https://github.
 CocoaPods
 ---------
 
-If you are using XCode to build iOS apps, you can use [CocoaPods](https://cocoapods.org) to add libpd to your project.
+If you are using Xcode to build iOS apps, you can use [CocoaPods](https://cocoapods.org) to add libpd to your project.
 
 Use the following in your CocoaPods podfile:
 
