@@ -73,6 +73,9 @@ class PdBase {
         ///
         /// ie 4 ticks per buffer * 64 = buffer len of 512
         ///
+        /// you can call this again after loading patches & setting receivers
+        /// in order to update the audio settings
+        ///
         /// the lower the number of ticks, the faster the audio processing
         /// if you experience audio dropouts (audible clicks), increase the
         /// ticks per buffer

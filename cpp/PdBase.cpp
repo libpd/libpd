@@ -40,6 +40,7 @@ namespace pd {
 
 //--------------------------------------------------------------------
 PdBase::PdBase() {
+    clear();
     PdContext::instance().addBase();
 }
 
@@ -51,8 +52,8 @@ PdBase::~PdBase() {
 
 //--------------------------------------------------------------------
 bool PdBase::init(const int numInChannels, const int numOutChannels, const int sampleRate, bool queued) {
-    clear();
     _LOCK();
+    PdContext::instance().clear();
     bool ret = PdContext::instance().init(numInChannels, numOutChannels, sampleRate, queued);
     _UNLOCK();
     return ret;
