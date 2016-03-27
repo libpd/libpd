@@ -72,13 +72,13 @@ PD_FILES = \
 	pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
 	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
 	pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
+	pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c pure-data/src/x_vexp_fun.c \
 	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
 	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
 
 PD_EXTRA_FILES = \
 	pure-data/extra/bob~/bob~.c pure-data/extra/bonk~/bonk~.c \
-	pure-data/extra/choice/choice.c pure-data/extra/expr~/vexp_fun.c \
-	pure-data/extra/expr~/vexp_if.c pure-data/extra/expr~/vexp.c \
+	pure-data/extra/choice/choice.c \
 	pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c \
 	pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c \
 	pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
