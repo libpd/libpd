@@ -26,6 +26,8 @@ build/*
 xcuserdata
 libpd.xcodeproj/project.xcworkspace
 libpd.xcodeproj/xcuserdata
+samples/cpp/pdtest/pdtest.xcodeproj/project.xcworkspace
+samples/objc/ios/pdtest/pdtest.xcodeproj/project.xcworkspace
 
 # osx
 .DS_STORE
