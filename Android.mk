@@ -179,3 +179,28 @@ LOCAL_SRC_FILES := pure-data/extra/expr~/vexp.c \
 LOCAL_SHARED_LIBRARIES := pd
 
 include $(BUILD_SHARED_LIBRARY)
+
+# Build bob_tilde.so
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := bob_tilde
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
+LOCAL_CFLAGS := -DPD
+LOCAL_SRC_FILES := pure-data/extra/bob~/bob~.c
+LOCAL_SHARED_LIBRARIES := pd
+
+include $(BUILD_SHARED_LIBRARY)
+
+# Build stdout.so
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := stdout
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
+LOCAL_CFLAGS := -DPD
+LOCAL_SRC_FILES := pure-data/extra/stdout/stdout.c
+LOCAL_SHARED_LIBRARIES := pd
+
+include $(BUILD_SHARED_LIBRARY)
+
