@@ -38,9 +38,9 @@ NSString *AVStatusCodeAsString(OSStatus status) {
 		case kAudioSessionUnspecifiedError:
 			return @"kAudioSessionUnspecifiedError";
 		case UNDEFINED_BAD_CATEGORY_ERROR:
-			return [NSString stringWithFormat:@"unknown error code %ld, but known to be related to a bad audio session category setting", status];
+			return [NSString stringWithFormat:@"unknown error code %d, but known to be related to a bad audio session category setting", (int)status];
 		default:
-			return [NSString stringWithFormat:@"unknown error code %ld", status];
+			return [NSString stringWithFormat:@"unknown error code %d", (int)status];
 	}
 }
 
@@ -81,7 +81,7 @@ NSString *AUStatusCodeAsString(OSStatus status) {
 		case kAudioUnitErr_Unauthorized:
 			return @"kAudioUnitErr_Unauthorized";
 		default:
-			return [NSString stringWithFormat:@"unknown error code %ld", status];
+			return [NSString stringWithFormat:@"unknown error code %d", (int)status];
 	}
 }
 

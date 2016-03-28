@@ -23,6 +23,7 @@ else
     SOLIB_PREFIX = 
     PDNATIVE_PLATFORM = windows
     CXXFLAGS = -D__WINDOWS_DS__
+    AUDIO_API = -lole32 -loleaut32 -ldsound -lwinmm
   else  # Assume Linux
     SOLIB_EXT = so
     PDNATIVE_PLATFORM = linux

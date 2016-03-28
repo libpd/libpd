@@ -1,3 +1,4 @@
+# build files
 libs
 src/*.o
 pdtest_rtaudio

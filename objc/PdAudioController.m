@@ -94,7 +94,13 @@
 									inputEnabled:(BOOL)inputEnabled
 								   mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = PdAudioOK;
-	if (inputEnabled && ![[AVAudioSession sharedInstance] inputIsAvailable]) {
+	BOOL isInputAvailable; // fix crash on iOS < 6 where AVAudioSession is not available
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+	isInputAvailable = [AVAudioSession sharedInstance].inputAvailable;
+#else
+	isInputAvailable = [AVAudioSession sharedInstance].inputIsAvailable;
+#endif
+	if (inputEnabled && !isInputAvailable) {
 		inputEnabled = NO;
 		status |= PdAudioPropertyChanged;
 	}
@@ -179,14 +185,14 @@
 		UInt32 defaultToSpeaker = 1;
 		status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
 		if (status) {
-			AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %ld)", status);
+			AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %d)", (int)status);
 			return PdAudioError;
 		}
 	}
 	UInt32 mix = allowsMixing ? 1 : 0;
 	status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
 	if (status) {
-		AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %ld)", (allowsMixing ? @"YES" : @"NO"), status);
+		AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
 		return PdAudioError;
 	}
 	mixingEnabled_ = allowsMixing;
@@ -267,8 +273,8 @@
 	AU_LOG(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
 
 	AU_LOG(@"inputAvailable: %@", (globalSession.inputAvailable ? @"YES" : @"NO"));
-	AU_LOG(@"inputNumberOfChannels: %d", globalSession.inputNumberOfChannels);
-	AU_LOG(@"outputNumberOfChannels: %d", globalSession.outputNumberOfChannels);
+	AU_LOG(@"inputNumberOfChannels: %ld", (long)globalSession.inputNumberOfChannels);
+	AU_LOG(@"outputNumberOfChannels: %ld", (long)globalSession.outputNumberOfChannels);
 #else
 	AU_LOG(@"currentHardwareSampleRate: %.0f", globalSession.currentHardwareSampleRate);
 	AU_LOG(@"preferredHardwareSampleRate: %.0f", globalSession.preferredHardwareSampleRate);

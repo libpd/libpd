@@ -3,6 +3,9 @@
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ *
+ * See https://github.com/libpd/libpd/wiki for documentation
+ *
  */
 
 #include "z_queued.h"

@@ -19,6 +19,7 @@
 	NSString *pathName_;
 }
 
+@property (nonatomic, retain, readonly) NSValue *fileReference; //< underlying t_pd pointer
 @property (nonatomic, assign, readonly) int dollarZero;   //< unique $0 argument assigned by pd
 @property (nonatomic, copy, readonly) NSString *baseName; //< stored file base name
 @property (nonatomic, copy, readonly) NSString *pathName; //< stored file path name

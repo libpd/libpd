@@ -7,16 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30071C211C6E505800039E34 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 30071C1A1C6E505800039E34 /* LICENSE.txt */; };
+		30071C221C6E505800039E34 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30071C1B1C6E505800039E34 /* PdBase.cpp */; };
+		30071C231C6E505800039E34 /* PdTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30071C1F1C6E505800039E34 /* PdTypes.cpp */; };
 		30562D0318620FAF006C6949 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 30562D0218620FAF006C6949 /* libc++.dylib */; };
 		309212E414F4689100194CAF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309212E314F4689100194CAF /* Cocoa.framework */; };
-		3092133514F4785000194CAF /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3092133414F4785000194CAF /* Project.xcconfig */; };
-		3096F5771AE70E1300F44A22 /* pdtest-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3096F5761AE70E1300F44A22 /* pdtest-Info.plist */; };
 		3096F5801AE73D2C00F44A22 /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 302110FB1AE70D5600DFFAF8 /* libpd-osx.a */; };
 		3096F5821AE73DF800F44A22 /* pd in Resources */ = {isa = PBXBuildFile; fileRef = 3096F5811AE73DF800F44A22 /* pd */; };
 		30EF3CB31AE74FD900E3DB68 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EF3CB01AE74FD900E3DB68 /* main.cpp */; };
 		30EF3CB41AE74FD900E3DB68 /* PdObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EF3CB11AE74FD900E3DB68 /* PdObject.cpp */; };
-		30EF3CC31AE767E200E3DB68 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EF3CBA1AE767E200E3DB68 /* PdBase.cpp */; };
-		30EF3CC51AE767E200E3DB68 /* PdTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30EF3CBF1AE767E200E3DB68 /* PdTypes.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +36,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		30071C1A1C6E505800039E34 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		30071C1B1C6E505800039E34 /* PdBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdBase.cpp; sourceTree = "<group>"; };
+		30071C1C1C6E505800039E34 /* PdBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdBase.hpp; sourceTree = "<group>"; };
+		30071C1D1C6E505800039E34 /* PdMidiReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdMidiReceiver.hpp; sourceTree = "<group>"; };
+		30071C1E1C6E505800039E34 /* PdReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdReceiver.hpp; sourceTree = "<group>"; };
+		30071C1F1C6E505800039E34 /* PdTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdTypes.cpp; sourceTree = "<group>"; };
+		30071C201C6E505800039E34 /* PdTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdTypes.hpp; sourceTree = "<group>"; };
 		302110F31AE70D5600DFFAF8 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
 		30562D0218620FAF006C6949 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		309212DF14F4689100194CAF /* pdtest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pdtest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,18 +50,11 @@
 		309212E614F4689100194CAF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		309212E714F4689100194CAF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		309212E814F4689100194CAF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		3092133414F4785000194CAF /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = SOURCE_ROOT; };
 		3096F5761AE70E1300F44A22 /* pdtest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "pdtest-Info.plist"; sourceTree = SOURCE_ROOT; };
 		3096F5811AE73DF800F44A22 /* pd */ = {isa = PBXFileReference; lastKnownFileType = folder; name = pd; path = ../pd; sourceTree = "<group>"; };
 		30EF3CB01AE74FD900E3DB68 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		30EF3CB11AE74FD900E3DB68 /* PdObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdObject.cpp; sourceTree = "<group>"; };
 		30EF3CB21AE74FD900E3DB68 /* PdObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdObject.h; sourceTree = "<group>"; };
-		30EF3CBA1AE767E200E3DB68 /* PdBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdBase.cpp; sourceTree = "<group>"; };
-		30EF3CBB1AE767E200E3DB68 /* PdBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdBase.hpp; sourceTree = "<group>"; };
-		30EF3CBD1AE767E200E3DB68 /* PdMidiReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdMidiReceiver.hpp; sourceTree = "<group>"; };
-		30EF3CBE1AE767E200E3DB68 /* PdReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdReceiver.hpp; sourceTree = "<group>"; };
-		30EF3CBF1AE767E200E3DB68 /* PdTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdTypes.cpp; sourceTree = "<group>"; };
-		30EF3CC01AE767E200E3DB68 /* PdTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdTypes.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +71,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		30071C191C6E505800039E34 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				30071C1A1C6E505800039E34 /* LICENSE.txt */,
+				30071C1B1C6E505800039E34 /* PdBase.cpp */,
+				30071C1C1C6E505800039E34 /* PdBase.hpp */,
+				30071C1D1C6E505800039E34 /* PdMidiReceiver.hpp */,
+				30071C1E1C6E505800039E34 /* PdReceiver.hpp */,
+				30071C1F1C6E505800039E34 /* PdTypes.cpp */,
+				30071C201C6E505800039E34 /* PdTypes.hpp */,
+			);
+			name = cpp;
+			path = ../../../../cpp;
+			sourceTree = "<group>";
+		};
 		302110F41AE70D5600DFFAF8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,11 +99,10 @@
 			isa = PBXGroup;
 			children = (
 				302110F31AE70D5600DFFAF8 /* libpd.xcodeproj */,
-				30EF3CB81AE767E200E3DB68 /* cpp */,
+				30071C191C6E505800039E34 /* cpp */,
 				30EF3CAF1AE74FD900E3DB68 /* src */,
 				3096F5811AE73DF800F44A22 /* pd */,
 				3096F5761AE70E1300F44A22 /* pdtest-Info.plist */,
-				3092133414F4785000194CAF /* Project.xcconfig */,
 				309212E214F4689100194CAF /* Frameworks */,
 				309212E014F4689100194CAF /* Products */,
 			);
@@ -134,20 +147,6 @@
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		30EF3CB81AE767E200E3DB68 /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				30EF3CBA1AE767E200E3DB68 /* PdBase.cpp */,
-				30EF3CBB1AE767E200E3DB68 /* PdBase.hpp */,
-				30EF3CBD1AE767E200E3DB68 /* PdMidiReceiver.hpp */,
-				30EF3CBE1AE767E200E3DB68 /* PdReceiver.hpp */,
-				30EF3CBF1AE767E200E3DB68 /* PdTypes.cpp */,
-				30EF3CC01AE767E200E3DB68 /* PdTypes.hpp */,
-			);
-			name = cpp;
-			path = ../../../../cpp;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -174,7 +173,7 @@
 		309212D614F4689100194CAF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0730;
 			};
 			buildConfigurationList = 309212D914F4689100194CAF /* Build configuration list for PBXProject "pdtest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -221,9 +220,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3096F5771AE70E1300F44A22 /* pdtest-Info.plist in Resources */,
+				30071C211C6E505800039E34 /* LICENSE.txt in Resources */,
 				3096F5821AE73DF800F44A22 /* pd in Resources */,
-				3092133514F4785000194CAF /* Project.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,10 +232,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30EF3CC31AE767E200E3DB68 /* PdBase.cpp in Sources */,
-				30EF3CC51AE767E200E3DB68 /* PdTypes.cpp in Sources */,
+				30071C221C6E505800039E34 /* PdBase.cpp in Sources */,
 				30EF3CB41AE74FD900E3DB68 /* PdObject.cpp in Sources */,
 				30EF3CB31AE74FD900E3DB68 /* main.cpp in Sources */,
+				30071C231C6E505800039E34 /* PdTypes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,16 +244,24 @@
 /* Begin XCBuildConfiguration section */
 		309212FB14F4689200194CAF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -266,8 +272,11 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -275,38 +284,49 @@
 		};
 		309212FC14F4689200194CAF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		309212FE14F4689200194CAF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				HEADER_SEARCH_PATHS = "$(PD_HEADERS)";
+				HEADER_SEARCH_PATHS = "../../../../**";
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest-Info.plist";
-				OTHER_CFLAGS = "$(PD_CFLAGS)";
+				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "";
 				PD_CFLAGS = "-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H";
 				PD_HEADERS = "$(PD_PATH)/pure-data/src $(PD_PATH)/libpd_wrapper $(PD_PATH)/libpd_wrapper/util";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
@@ -315,16 +335,17 @@
 		};
 		309212FF14F4689200194CAF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3092133414F4785000194CAF /* Project.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				HEADER_SEARCH_PATHS = "$(PD_HEADERS)";
+				HEADER_SEARCH_PATHS = "../../../../**";
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest-Info.plist";
-				OTHER_CFLAGS = "$(PD_CFLAGS)";
+				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "";
 				PD_CFLAGS = "-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H";
 				PD_HEADERS = "$(PD_PATH)/pure-data/src $(PD_PATH)/libpd_wrapper $(PD_PATH)/libpd_wrapper/util";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
