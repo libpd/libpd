@@ -14,7 +14,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef _MSC_VER // win api atomics
+#ifdef __APPLE__ // apple atomics
+# include <libkern/OSAtomic.h>
+# define SYNC_FETCH(ptr, val) OSAtomicOr32Barrier(val, ptr)
+# define SYNC_COMPARE(ptr, oldval, newval) \
+         OSAtomicCompareAndSwap32Barrier(oldval, newval, ptr) 
+#elif defined(_MSC_VER) // win api atomics
 # define SYNC_FETCH(ptr, val) InterlockedOr(ptr, val)
 # define SYNC_COMPARE(ptr, oldval, newval) \
          InterlockedCompareExchange(ptr, oldval, newval)
