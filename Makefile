@@ -7,7 +7,8 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH = 
   PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
-    -I/System/Library/Frameworks/JavaVM.framework/Headers
+    -I/System/Library/Frameworks/JavaVM.framework/Headers \
+    -Wno-parentheses
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
   CPP_FLAGS = -stdlib=libc++
@@ -140,7 +141,7 @@ PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PD
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
+CFLAGS = -DPD -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
          -I./libpd_wrapper/util $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS) $(OPT_CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
