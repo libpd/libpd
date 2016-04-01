@@ -176,7 +176,7 @@ static PyObject *convertArgs(const char *dest, const char* sym,
   int j;
   for (j = 0; i < n; i++, j++) {
     t_atom *a = &args[j];
-    PyObject *x;
+    PyObject *x = NULL;
     if (libpd_is_float(a)) {
       x = PyFloat_FromDouble(libpd_get_float(a));
     } else if (libpd_is_symbol(a)) {

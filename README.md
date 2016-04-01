@@ -36,6 +36,12 @@ To download libpd & checkout the pure-data submodule do the following:
     
 You should now have a `libpd` directory and the `libpd/pure-data` should contain the pd sources. If not, make sure you ran the git submodule commands in the libpd folder itself.
 
+For most uses, it is recommended to checkout the latest stable release version via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
+
+    git checkout 0.8.3
+
+The master branch contains the latest libpd development and can be considered *generally* stable. However, we make no gaurantees. :)
+
 Repository Layout
 -----------------
 
