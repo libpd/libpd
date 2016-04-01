@@ -111,7 +111,7 @@ endif
 # conditional pure-data/extra externals compilation
 ifeq ($(EXTRA), true)
 	EXTRA_FILES = $(PD_EXTRA_FILES)
-	EXTRA_CFLAGS = -I./pure-data/extra/expr~ -DLIBPD_EXTRA
+	EXTRA_CFLAGS = -DLIBPD_EXTRA
 endif
 
 # conditional optimizations or debug settings
@@ -180,7 +180,7 @@ $(PDCPP): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o} ${CPP_FILES
 
 clean:
 	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${CPP_FILES:.cpp=.o} ${JNI_FILE:.c=.o}
-	rm -f ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+	rm -f ${PD_UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
