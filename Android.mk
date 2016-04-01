@@ -28,7 +28,8 @@ PD_SRC_FILES := \
   pure-data/src/x_gui.c pure-data/src/x_list.c pure-data/src/x_midi.c \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_array.c \
   pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c \
-  pure-data/src/x_text.c libpd_wrapper/s_libpdmidi.c \
+  pure-data/src/x_text.c pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c \
+  pure-data/src/x_vexp_fun.c libpd_wrapper/s_libpdmidi.c \
   libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
   libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
   libpd_wrapper/z_hooks.c libpd_wrapper/util/z_print_util.c
@@ -167,19 +168,6 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
-# Build libexpr.so
-
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := expr
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
-LOCAL_CFLAGS := -DPD
-LOCAL_SRC_FILES := pure-data/extra/expr~/vexp.c \
-          pure-data/extra/expr~/vexp_fun.c pure-data/extra/expr~/vexp_if.c
-LOCAL_SHARED_LIBRARIES := pd
-
-include $(BUILD_SHARED_LIBRARY)
-
 # Build bob_tilde.so
 
 include $(CLEAR_VARS)
@@ -191,6 +179,7 @@ LOCAL_SRC_FILES := pure-data/extra/bob~/bob~.c
 LOCAL_SHARED_LIBRARIES := pd
 
 include $(BUILD_SHARED_LIBRARY)
+
 
 # Build stdout.so
 
