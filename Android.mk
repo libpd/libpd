@@ -10,8 +10,8 @@ PD_SRC_FILES := \
   pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
   pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
   pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
-  pure-data/src/g_canvas.c pure-data/src/g_editor.c pure-data/src/g_graph.c \
-  pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c \
+  pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
+  pure-data/src/g_graph.c pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c \
   pure-data/src/g_hslider.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c \
   pure-data/src/g_numbox.c pure-data/src/g_readwrite.c \
   pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_template.c \
