@@ -67,7 +67,7 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, &
   - **javalib**: builds libpdnative and the jni wrapper
   - **clean**: removes the object files
   - **clobber**: removes the linked library files
-  - **install**: installs libpd C library (+ C++ if built) and headers, set location with prefix= (default: /usr/local)
+  - **install**: installs libpd C library (& C++ if built) and headers, set location with prefix= (default: /usr/local)
   - **uninstall**: removes libpd C library and headers, set location with prefix= (default: /usr/local)
 
 Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
@@ -79,6 +79,8 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 For example, to build libpd with both util and extra:
 
     make UTIL=true EXTRA=true
+
+_Note: cpplib is automatically built with UTIL=true as it uses the ringbuffer_
 
 ### java, csharp, objc, cpp, python
 
