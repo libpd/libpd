@@ -210,6 +210,8 @@
 		30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
 		30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
 		30E9358916ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
+		30EAFA2C1CBB89DC005D1916 /* g_clone.c in Sources */ = {isa = PBXBuildFile; fileRef = 30EAFA2B1CBB89DC005D1916 /* g_clone.c */; };
+		30EAFA2D1CBB89DC005D1916 /* g_clone.c in Sources */ = {isa = PBXBuildFile; fileRef = 30EAFA2B1CBB89DC005D1916 /* g_clone.c */; };
 		30FDBE7D1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
 		30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
@@ -330,6 +332,7 @@
 		30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_fft_fftsg.c; sourceTree = "<group>"; };
 		30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdMidiDispatcher.h; sourceTree = "<group>"; };
 		30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdMidiDispatcher.m; sourceTree = "<group>"; };
+		30EAFA2B1CBB89DC005D1916 /* g_clone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = g_clone.c; sourceTree = "<group>"; };
 		30FDBE7C1ACAF701008B02E9 /* bob~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "bob~.c"; path = "pure-data/extra/bob~/bob~.c"; sourceTree = SOURCE_ROOT; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
@@ -485,6 +488,7 @@
 				0E82A00712EEFDED0053280E /* g_bang.c */,
 				0E82A00812EEFDED0053280E /* g_canvas.c */,
 				0E82A00912EEFDED0053280E /* g_canvas.h */,
+				30EAFA2B1CBB89DC005D1916 /* g_clone.c */,
 				0E82A00A12EEFDEE0053280E /* g_editor.c */,
 				0E82A00B12EEFDEE0053280E /* g_graph.c */,
 				0E82A00C12EEFDEE0053280E /* g_guiconnect.c */,
@@ -840,6 +844,7 @@
 				30E9358916ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 				306DBE5916BC6710007CF226 /* ringbuffer.c in Sources */,
 				306DBE6116BC6710007CF226 /* z_queued.c in Sources */,
+				30EAFA2D1CBB89DC005D1916 /* g_clone.c in Sources */,
 				3088883316BCB4A400781682 /* z_print_util.c in Sources */,
 				30CEFE4C1A6A5EDC000E3BAE /* lrshift~.c in Sources */,
 			);
@@ -923,6 +928,7 @@
 				30CEFE391A6A5EDC000E3BAE /* bonk~.c in Sources */,
 				0E82A08312EEFDEE0053280E /* x_midi.c in Sources */,
 				0E82A08412EEFDEE0053280E /* x_misc.c in Sources */,
+				30EAFA2C1CBB89DC005D1916 /* g_clone.c in Sources */,
 				0E82A08512EEFDEE0053280E /* x_net.c in Sources */,
 				0E82A08712EEFDEE0053280E /* x_time.c in Sources */,
 				30ABBFCC1CA8A67000E3722F /* x_vexp_if.c in Sources */,
