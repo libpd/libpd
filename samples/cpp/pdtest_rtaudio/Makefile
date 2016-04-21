@@ -43,7 +43,7 @@ CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_
 .PHONY: clean clobber
 
 $(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD_CPP)
-	g++ -o $(TARGET) $^ $(LIBPD_CPP) $(AUDIO_API)
+	g++ -o $(TARGET) $^ $(AUDIO_API)
 	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD_CPP) ./libs; fi
 
 $(LIBPD_CPP):

@@ -24,7 +24,7 @@ else
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -lws2_32 -lkernel32
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def \
-      -Wl,--out-implib=libs/libpd.lib
+      -Wl,--out-implib=libs/libpd.lib -Wl,--export-all-symbols
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -Wl,--out-implib=libs/libpdcsharp.lib
     CPP_LDFLAGS = $(LDFLAGS)
