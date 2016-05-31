@@ -974,7 +974,6 @@
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
-					"-DHAVE_ALLOCA_H",
 					"-DLIBPD_EXTRA",
 				);
 				OTHER_LDFLAGS = (
@@ -1002,7 +1001,6 @@
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_LIBDL",
 					"-DHAVE_UNISTD_H",
-					"-DHAVE_ALLOCA_H",
 					"-DLIBPD_EXTRA",
 				);
 				OTHER_LDFLAGS = (
@@ -1031,7 +1029,6 @@
 					"-DPD",
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_UNISTD_H",
-					"-DHAVE_ALLOCA_H",
 					"-DLIBPD_EXTRA",
 				);
 				PRODUCT_NAME = "pd-ios";
@@ -1055,7 +1052,6 @@
 					"-DPD",
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_UNISTD_H",
-					"-DHAVE_ALLOCA_H",
 					"-DLIBPD_EXTRA",
 				);
 				PRODUCT_NAME = "pd-ios";
