@@ -823,6 +823,15 @@ unsigned int PdBase::maxMessageLen() {
     return PdContext::instance().maxMsgLen;
 }
 
+//----------------------------------------------------------
+void PdBase::lock() {
+	_LOCK();
+}
+
+void PdBase::unlock() {
+	_UNLOCK();
+}
+
 /* ***** PD CONTEXT ***** */
 
 //----------------------------------------------------------
