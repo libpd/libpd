@@ -1,3 +1,17 @@
+0.9.0: 2016 May
+
+* updated to pd vanilla 0.47-0
+  * new clone object
+  * expr is now BSD licensed
+  * HAVE_ALLOCA_H no longer required
+* ringbuffer now uses OS-specific atomics
+* build cpplib with UTIL files since it always uses the ringbuffer
+* ObjC: added access to PdFile t_pd pointer, deprecation warning fixes
+* ObjC: fixed AVAudioSession method call on iOS 5 and below (diglesia)
+* C++: allow re-init without clearing current subscribers
+* Android: print concatenation layer added to jni (tkirshboim)
+* added audio api libs to pdtest_rtaudio
+
 0.8.3: 2015 Sep
 
 * CocoaPods podspec now actually works (thanks Yair Szarf!)

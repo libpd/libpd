@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "libpd"
-  s.version = "0.8.3"
+  s.version = "0.9.0"
 
   s.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '6.0'
   s.requires_arc = false
   s.frameworks = 'Foundation', 'AudioToolbox', 'AVFoundation'
-  s.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DHAVE_ALLOCA_H', '-DLIBPD_EXTRA'
+  s.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DLIBPD_EXTRA'
   s.exclude_files = 'pure-data/src/s_audio_alsa.h',
                     'pure-data/src/s_audio_alsa.c',
                     'pure-data/src/s_audio_alsamm.c',
