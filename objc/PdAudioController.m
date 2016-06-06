@@ -182,18 +182,33 @@
 		return PdAudioError;
 	}
 	if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
-		UInt32 defaultToSpeaker = 1;
-		status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
-		if (status) {
-			AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %d)", (int)status);
-			return PdAudioError;
+		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
+			// iOS 7+
+			if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error]) {
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker: %@", error.localizedDescription);
+				return PdAudioError;
+			}
+			if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+				return PdAudioError;
+			}
 		}
-	}
-	UInt32 mix = allowsMixing ? 1 : 0;
-	status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
-	if (status) {
-		AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
-		return PdAudioError;
+		else {
+			// iOS 6
+			UInt32 defaultToSpeaker = 1;
+			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
+			if (status) {
+				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %d)", (int)status);
+				return PdAudioError;
+			}
+			UInt32 mix = allowsMixing ? 1 : 0;
+			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
+			if (status) {
+				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
+				return PdAudioError;
+			}
+			
+		}
 	}
 	mixingEnabled_ = allowsMixing;
 	return PdAudioOK;
