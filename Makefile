@@ -26,7 +26,7 @@ else
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def \
       -Wl,--out-implib=libs/libpd.lib
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
-      -Wl,--out-implib=libs/libpdcsharp.lib
+	-static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
     CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Assume Linux

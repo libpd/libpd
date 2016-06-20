@@ -37,6 +37,9 @@ csharp/bin/*
 libs/libpd.*
 libs/libpdnative.*
 libs/libpdcsharp.*
+.vs/*
+*.suo
+packages/*
 
 # java
 java-build/*

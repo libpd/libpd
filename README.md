@@ -55,7 +55,7 @@ The folder containing the sources of Pd Vanilla and standard externals. This is 
 
 This folder contains the source files that make up the core of libpd.
 
-### Android.mk, Makefile, libpd.xcodeproj, libpd_win.sln
+### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln
 
 Build support for various platforms. Feel free to improve the build system in any way you see fit.
 
@@ -63,7 +63,7 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, &
 
   - **libpd**: (default) builds if no target is specified, builds the libpd.so/dylib/dll
   - **cpplib**: builds libpd with the cpp wrapper
-  - **csharplib**: builds libpdcsharp.dll (tested on Windows only)
+  - **csharplib**: builds libpdcsharp.dll (on Windows) or libpdcsharp.so (on Linux)
   - **javalib**: builds libpdnative and the jni wrapper
   - **clean**: removes the object files
   - **clobber**: removes the linked library files
@@ -114,3 +114,16 @@ Use the following in your CocoaPods podfile:
 
     pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
 
+C#
+--
+
+The C# library expects a file libpdcsharp.dll in its folder. Before using the project, you need to compile it.
+Executing `mingw_build.bat` will compile the file and copy the dll into the correct destination.
+
+If you want to use the library on Linux with Mono, you need the following changes to the LibPdBinding project:
+
+  - Mono does not have client profiles. change settings of the project to use a different profile.
+  - Compile the so file with `make csharplib`.
+  - Remove `libpdcsharp.dll` and `pthreadGC2.dll` from LibPdBinding project.
+  - Add `libpdcsharp.so` to the LibPdBinding project.
+  - Set "Copy to Output Directory" for `libpdcsharp.so` to "Copy always"
