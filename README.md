@@ -126,6 +126,15 @@ The C# library expects a file libpdcsharp.dll in its folder. Before using the pr
 Include `csharp/LibPdBinding.csproj` in your solution and reference the project in your application.
 
 #### Windows
+The wrapper can be built with [MinGW-w64](http://mingw-w64.org/doku.php).
+
+You need the following downloads:
+- [msys](https://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/)
+- For 32 bit or universal builts: [MinGW toolchain 32 bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/rubenvb/gcc-4.8-release/)
+- For 64 bit: [MinGW toolchain 64 bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/rubenvb/gcc-4.8-release/)
+
+Unpack the files into different folders, e.g. `C:\MinGW\msys\`, `C:\MinGW\w32\`, and `C:\MinGW\w64\`, as in the example batch scripts. Other toolchain packages might work as well, but will need some tweaking of the batch scripts.
+
 Edit `mingw32_build_csharp.bat` or `mingw63_build_csharp.bat` and execute it to create the native dll. Usually you want the 32 bit version, as it will work on 64 bit Windows as well, but Unity 5 needs the 64 bit version.
 
 For the 64 bit version, you also must change `pthreadGC2-64.dll` to `pthreadGC2.dll` in the `libs` subfolder.
