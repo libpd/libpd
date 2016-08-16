@@ -1,3 +1,8 @@
+0.9.2: 2016 August
+
+* ObjC: fixed bug where audio was not being routed to speaker when initing AVAudioSession,
+        also fixes possible session setup fail where the PdAudioUnit will not run
+
 0.9.1: 2016 June
 
 * ObjC: fixed wrong selectors in PdMidiListener

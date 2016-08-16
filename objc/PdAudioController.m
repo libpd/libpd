@@ -184,12 +184,8 @@
 	if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
 		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
 			// iOS 7+
-			if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&error]) {
-				AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker: %@", error.localizedDescription);
-				return PdAudioError;
-			}
-			if (![[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
-				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker & AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
 				return PdAudioError;
 			}
 		}
