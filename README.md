@@ -118,7 +118,7 @@ C#
 --
 
 ### Installation from NuGet
-LibPD is available as a [NuGet package](https://www.nuget.org/packages/LibPd). If your platform's native dll is not included, you have to build it yourself with `make csharplib` and copy the resulting file to the output directory. Batch scripts for compilations on Windows with MinGW64 are included.
+LibPD is available as a [NuGet package](https://www.nuget.org/packages/LibPdBinding). If your platform's native dll is not included, you have to build it yourself with `make csharplib` and copy the resulting file to the output directory. Batch scripts for compilations on Windows with MinGW64 are included.
 
 ### Building yourself
 The C# library expects a file libpdcsharp.dll in its folder. Before using the project, you need to compile it.
@@ -128,22 +128,25 @@ Include `csharp/LibPdBinding.csproj` in your solution and reference the project 
 #### Windows
 The wrapper can be built with [MinGW-w64](http://mingw-w64.org/doku.php).
 
-You need the following downloads:
-- [msys](https://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/)
-- For 32 bit or universal builts: [MinGW toolchain 32 bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/rubenvb/gcc-4.8-release/)
-- For 64 bit: [MinGW toolchain 64 bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/rubenvb/gcc-4.8-release/)
+You need to install [msys2](http://msys2.github.io/), preferably the version for i686, because that version can build the 64bit versions as well.
 
-Unpack the files into different folders, e.g. `C:\MinGW\msys\`, `C:\MinGW\w32\`, and `C:\MinGW\w64\`, as in the example batch scripts. Other toolchain packages might work as well, but will need some tweaking of the batch scripts.
+Install msys2 using the instructions on the download page.
 
-Edit `mingw32_build_csharp.bat` or `mingw63_build_csharp.bat` and execute it to create the native dll. Usually you want the 32 bit version, as it will work on 64 bit Windows as well, but Unity 5 needs the 64 bit version.
+Install make and gcc by running `pacman -S msys/make mingw32/mingw-w64-i686-gcc mingw64/mingw-w64-x86_64-gcc` from the msys2 console. You can search for packages in msys2 with `pacman -S -s <searchterm>`.
 
-For the 64 bit version, you also must change `pthreadGC2-64.dll` to `pthreadGC2.dll` in the `libs` subfolder.
+For the 64 bit version of msys2 you also need to install winpthread by running `pacman -S msys/mingw-w64-cross-winpthreads-git`.
+
+Edit `mingw32_build_csharp.bat` or `mingw64_build_csharp.bat` and execute it to create the native dll. You probably only need to change the variable for `%MSYS2%`. Usually you want the 32 bit version, as it will work on 64 bit Windows as well, but Unity 5 needs the 64 bit version.
+
+For the 64 bit version, you also must change `libwinptread-1-64.dll` to `libwinpthread-1.dll` in the `libs` subfolder.
+
+For a current version of `libwinpthread-1.dll` search in your msys2 installation folders.
 
 #### Linux 
 If you want to use the library on Linux with Mono, you need the following changes to the LibPdBinding project:
 
   - Mono does not have client profiles. change settings of the project to use a different profile.
   - Compile the so file with `make csharplib`.
-  - Remove `libpdcsharp.dll` and `pthreadGC2.dll` from LibPdBinding project.
+  - Remove `libpdcsharp.dll` and `libwinpthread-1.dll` from LibPdBinding project.
   - Add `libpdcsharp.so` to the LibPdBinding project.
   - Set "Copy to Output Directory" for `libpdcsharp.so` to "Copy always"
