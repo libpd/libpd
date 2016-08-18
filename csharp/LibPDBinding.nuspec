@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>Peter Brinkmann &amp; the libpd team</authors>
+		<owners>Peter Brinkmann &amp; the libpd team</owners>
+		<licenseUrl>https://github.com/libpd/libpd/blob/master/LICENSE.txt</licenseUrl>
+		<projectUrl>https://github.com/libpd/libpd</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Pure Data as an embeddable audio synthesis library.</description>
+		<releaseNotes>First release.</releaseNotes>
+		<copyright>Copyright 2012 - 2016</copyright>
+		<tags>C# .NET Mono audio sound</tags>
+	</metadata>
+	<files>
+		<file src="readme.txt" target="" />
+		<!-- Windows -->
+		<file src="..\libs\libpdcsharp-32.dll" target="native\UnmanagedLibraries\Windows\x86\libpdcsharp.dll" />
+		<file src="..\libs\pthreadGC2-64.dll" target="native\UnmanagedLibraries\Windows\x64\libpdcsharp.dll" />
+		<file src="..\libs\pthreadGC2-32.dll" target="native\UnmanagedLibraries\Windows\x86\pthreadGC2.dll" />
+		<file src="..\libs\pthreadGC2-64.dll" target="native\UnmanagedLibraries\Windows\x64\pthreadGC2.dll" />
+		<!-- Linux -->
+		<file src="..\libs\libpdcsharp.x86.so" target="native\UnmanagedLibraries\Linux\x86\libpdcsharp.so" />
+		<file src="..\libs\libpdcsharp.amd64.so" target="native\UnmanagedLibraries\Linux\amd64\libpdcsharp.so" />
+		<file src="..\libs\libpdcsharp.armv6l.so" target="native\UnmanagedLibraries\Linux\armv6l\libpdcsharp.so" />
+	</files>
+</package>

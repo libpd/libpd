@@ -117,9 +117,20 @@ Use the following in your CocoaPods podfile:
 C#
 --
 
-The C# library expects a file libpdcsharp.dll in its folder. Before using the project, you need to compile it.
-Executing `mingw_build.bat` will compile the file and copy the dll into the correct destination.
+### Installation from NuGet
+LibPD is available as a [NuGet package](https://www.nuget.org/packages/LibPd). If your platform's native dll is not included, you have to build it yourself with `make csharplib` and copy the resulting file to the output directory. Batch scripts for compilations on Windows with MinGW64 are included.
 
+### Building yourself
+The C# library expects a file libpdcsharp.dll in its folder. Before using the project, you need to compile it.
+
+Include `csharp/LibPdBinding.csproj` in your solution and reference the project in your application.
+
+#### Windows
+Edit `mingw32_build_csharp.bat` or `mingw63_build_csharp.bat` and execute it to create the native dll. Usually you want the 32 bit version, as it will work on 64 bit Windows as well, but Unity 5 needs the 64 bit version.
+
+For the 64 bit version, you also must change `pthreadGC2-64.dll` to `pthreadGC2.dll` in the `libs` subfolder.
+
+#### Linux 
 If you want to use the library on Linux with Mono, you need the following changes to the LibPdBinding project:
 
   - Mono does not have client profiles. change settings of the project to use a different profile.

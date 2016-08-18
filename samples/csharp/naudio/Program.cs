@@ -5,6 +5,7 @@
  * Copyright(c) 2016 Thomas Mayer<thomas@residuum.org>
  */
 using System;
+using System.Linq;
 using JackSharp;
 using NAudio.CoreAudioApi;
 using NAudio.Jack;
@@ -14,13 +15,13 @@ namespace LibPdBindingNaudio
 {
     class Program
     {
-        static bool useJack
-        {
-            get { return true; }
-        }
+        static bool useJack;
 
         static void Main(string[] args)
         {
+            if (args.Any() && args.First() == "jack") {
+                useJack = true;
+            }
             if (useJack) {
                 PlayWithJack();
             } else {

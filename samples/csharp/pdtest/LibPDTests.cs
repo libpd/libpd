@@ -207,7 +207,7 @@ namespace LibPDBindingTest
 		}
 
 		[Test]
-		public unsafe virtual void testArrayAccess ()
+		public virtual unsafe void testArrayAccess ()
 		{
 			int n = 128;
 			Assert.AreEqual (n, LibPD.ArraySize ("array1"));
