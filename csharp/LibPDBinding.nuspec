@@ -10,12 +10,16 @@
 		<projectUrl>https://github.com/libpd/libpd</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Pure Data as an embeddable audio synthesis library.</description>
-		<releaseNotes>First release.</releaseNotes>
+		<releaseNotes>
+			- [Win] include 64 bit managed library.
+			- [Linux] include patch for loading Pd files independently of locale.
+		</releaseNotes>
 		<copyright>Copyright 2012 - 2016</copyright>
 		<tags>C# .NET Mono audio sound</tags>
 	</metadata>
 	<files>
 		<file src="readme.txt" target="" />
+		<file src="bin\x64\Release\LibPDBinding.dll" target="lib\net40\x64\libpdcsharp.dll" />
 		<!-- Windows -->
 		<file src="..\libs\libpdcsharp-32.dll" target="native\UnmanagedLibraries\Windows\x86\libpdcsharp.dll" />
 		<file src="..\libs\libpdcsharp-64.dll" target="native\UnmanagedLibraries\Windows\x64\libpdcsharp.dll" />
