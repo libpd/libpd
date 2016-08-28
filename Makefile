@@ -119,6 +119,11 @@ ifeq ($(DEBUG), true)
 	OPT_CFLAGS = -Wall
 endif
 
+LOCALE_CFLAGS =
+ifeq ($(LIBPD_SETLOCALE), true)
+	LOCALE_CFLAGS = -DLIBPD_SETLOCALE
+endif
+
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
@@ -140,7 +145,7 @@ PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PD
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
+CFLAGS = $(LOCALE_CFLAGS) -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
          -I./libpd_wrapper/util $(EXTRA_CFLAGS) $(PLATFORM_CFLAGS) $(OPT_CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
