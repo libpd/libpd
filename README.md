@@ -138,7 +138,7 @@ For the 64 bit version of msys2 you also need to install winpthread by running `
 
 Edit `mingw32_build_csharp.bat` or `mingw64_build_csharp.bat` and execute it to create the native dll. You probably only need to change the variable for `%MSYS2%`. Usually you want the 32 bit version, as it will work on 64 bit Windows as well, but Unity 5 needs the 64 bit version.
 
-For the 64 bit version, you also must change `libwinptread-1-64.dll` to `libwinpthread-1.dll` in the `libs` subfolder.
+For the 64 bit version, you also must use `libs/mingw64/libwinptread-1.dll` instead of `libs/mingw32/libwinpthread-1.dll`.
 
 For a current version of `libwinpthread-1.dll` search in your msys2 installation folders.
 

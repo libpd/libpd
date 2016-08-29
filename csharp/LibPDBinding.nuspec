@@ -23,8 +23,8 @@
 		<!-- Windows -->
 		<file src="..\libs\libpdcsharp-32.dll" target="native\UnmanagedLibraries\Windows\x86\libpdcsharp.dll" />
 		<file src="..\libs\libpdcsharp-64.dll" target="native\UnmanagedLibraries\Windows\x64\libpdcsharp.dll" />
-		<file src="..\libs\libwinpthread-1-32.dll" target="native\UnmanagedLibraries\Windows\x86\libwinpthread-1.dll" />
-		<file src="..\libs\libwinpthread-1-64.dll" target="native\UnmanagedLibraries\Windows\x64\libwinpthread-1.dll" />
+		<file src="..\libs\mingw32\libwinpthread-1.dll" target="native\UnmanagedLibraries\Windows\x86\libwinpthread-1.dll" />
+		<file src="..\libs\mingw64\libwinpthread-1.dll" target="native\UnmanagedLibraries\Windows\x64\libwinpthread-1.dll" />
 		<!-- Linux -->
 		<file src="..\libs\libpdcsharp.x86.so" target="native\UnmanagedLibraries\Linux\x86\libpdcsharp.so" />
 		<file src="..\libs\libpdcsharp.amd64.so" target="native\UnmanagedLibraries\Linux\amd64\libpdcsharp.so" />
