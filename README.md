@@ -145,7 +145,6 @@ For a current version of `libwinpthread-1.dll` search in your msys2 installation
 #### Linux 
 If you want to use the library on Linux with Mono, you need the following changes to the LibPdBinding project:
 
-  - Mono does not have client profiles. change settings of the project to use a different profile.
   - Compile the so file with `make csharplib`.
   - Remove `libpdcsharp.dll` and `libwinpthread-1.dll` from LibPdBinding project.
   - Add `libpdcsharp.so` to the LibPdBinding project.
