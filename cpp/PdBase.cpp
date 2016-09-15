@@ -20,13 +20,15 @@
 
 #ifdef LIBPD_USE_STD_MUTEX
     #if __cplusplus <= 201103L // C++ 11 check
-        #define _LOCK() mutex.lock()
-        #define _UNLOCK() mutex.unlock()
+        #define _LOCK() _mutex.lock()
+        #define _UNLOCK() _mutex.unlock()
+        #define _GUARD() std::lock_guard<std::mutex> lock(_mutex);
     #endif
 #else
     // no ops
     #define _LOCK()
     #define _UNLOCK()
+    #define _GUARD()
 #endif
 
 // needed for libpd audio passing
@@ -52,11 +54,9 @@ PdBase::~PdBase() {
 
 //--------------------------------------------------------------------
 bool PdBase::init(const int numInChannels, const int numOutChannels, const int sampleRate, bool queued) {
-    _LOCK();
+    _GUARD();
     PdContext::instance().clear();
-    bool ret = PdContext::instance().init(numInChannels, numOutChannels, sampleRate, queued);
-    _UNLOCK();
-    return ret;
+    return PdContext::instance().init(numInChannels, numOutChannels, sampleRate, queued);
 }
 
 void PdBase::clear() {
@@ -85,6 +85,7 @@ Patch PdBase::openPatch(const std::string& patch, const std::string& path) {
     // [; pd open file folder(
     void* handle = libpd_openfile(patch.c_str(), path.c_str());
     if(handle == NULL) {
+        _UNLOCK();
         return Patch(); // return empty Patch
     }
     int dollarZero = libpd_getdollarzero(handle);
@@ -118,31 +119,24 @@ void PdBase::closePatch(Patch& patch) {
 
 //--------------------------------------------------------------------
 bool PdBase::processRaw(const float* inBuffer, float* outBuffer) {
-    _LOCK();
-    bool ret = libpd_process_raw(inBuffer, outBuffer) == 0;
-    _UNLOCK();
-    return ret;
+    _GUARD();
+    return libpd_process_raw(inBuffer, outBuffer) == 0;
 }
 
 bool PdBase::processShort(int ticks, const short* inBuffer, short* outBuffer) {
-    _LOCK();
-    bool ret = libpd_process_short(ticks, inBuffer, outBuffer) == 0;
-    _UNLOCK();
-    return ret;
+    _GUARD();
+    return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
 }
 
 bool PdBase::processFloat(int ticks, const float* inBuffer, float* outBuffer) {
-    _LOCK();
+    _GUARD();
     bool ret = libpd_process_float(ticks, inBuffer, outBuffer) == 0;
-    _UNLOCK();
     return ret;
 }
 
 bool PdBase::processDouble(int ticks, const double* inBuffer, double* outBuffer) {
-    _LOCK();
-    bool ret = libpd_process_double(ticks, inBuffer, outBuffer) == 0;
-    _UNLOCK();
-    return ret;
+    _GUARD();
+    return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
 }
 
 
@@ -688,9 +682,8 @@ bool PdBase::isMessageInProgress() {
 
 //----------------------------------------------------------
 int PdBase::arraySize(const std::string& arrayName) {
-    _LOCK();
+    _GUARD();
     int len = libpd_arraysize(arrayName.c_str());;
-    _UNLOCK();
     if(len < 0) {
         cerr << "Pd: Cannot get size of unknown array \"" << arrayName << "\"" << endl;
         return 0;
@@ -700,9 +693,8 @@ int PdBase::arraySize(const std::string& arrayName) {
 
 bool PdBase::readArray(const std::string& arrayName, std::vector<float>& dest, int readLen, int offset) {
 
-    _LOCK();
+    _GUARD();
     int arrayLen = libpd_arraysize(arrayName.c_str());
-    _UNLOCK();
     if(arrayLen < 0) {
         cerr << "Pd: Cannot read unknown array \"" << arrayName << "\"" << endl;
         return false;
@@ -731,22 +723,18 @@ bool PdBase::readArray(const std::string& arrayName, std::vector<float>& dest, i
         dest.resize(readLen, 0);
     }
 
-    _LOCK();
     if(libpd_read_array(&dest[0], arrayName.c_str(), offset, readLen) < 0) {
         cerr << "Pd: libpd_read_array failed for array \""
              << arrayName << "\"" << endl;
-        _UNLOCK();
         return false;
     }
-    _UNLOCK();
     return true;
 }
 
 bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source, int writeLen, int offset) {
 
-    _LOCK();
+    _GUARD();
     int arrayLen = libpd_arraysize(arrayName.c_str());
-    _UNLOCK();
     if(arrayLen < 0) {
         cerr << "Pd: Cannot write to unknown array \"" << arrayName << "\"" << endl;
         return false;
@@ -756,6 +744,7 @@ bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source
     if(writeLen < 0) {
         writeLen = arrayLen;
     }
+
     // check write len
     else if(writeLen > arrayLen) {
         cerr << "Pd: Given write len " << writeLen << " > len " << arrayLen
@@ -770,21 +759,17 @@ bool PdBase::writeArray(const std::string& arrayName, std::vector<float>& source
         return false;
     }
 
-    _LOCK();
     if(libpd_write_array(arrayName.c_str(), offset, &source[0], writeLen) < 0) {
         cerr << "Pd: libpd_write_array failed for array \"" << arrayName << "\"" << endl;
-        _UNLOCK();
         return false;
     }
-    _UNLOCK();
     return true;
 }
 
 void PdBase::clearArray(const std::string& arrayName, int value) {
 
-    _LOCK();
+    _GUARD();
     int arrayLen = libpd_arraysize(arrayName.c_str());
-    _UNLOCK();
     if(arrayLen < 0) {
         cerr << "Pd: Cannot clear unknown array \"" << arrayName << "\"" << endl;
         return;
@@ -793,12 +778,10 @@ void PdBase::clearArray(const std::string& arrayName, int value) {
     std::vector<float> array;
     array.resize(arrayLen, value);
 
-    _LOCK();
     if(libpd_write_array(arrayName.c_str(), 0, &array[0], arrayLen) < 0) {
         cerr << "Pd: libpd_write_array failed while clearing array \""
              << arrayName << "\"" << endl;
     }
-    _UNLOCK();
 }
 
 //----------------------------------------------------------
@@ -821,6 +804,15 @@ void PdBase::setMaxMessageLen(unsigned int len) {
 
 unsigned int PdBase::maxMessageLen() {
     return PdContext::instance().maxMsgLen;
+}
+
+//----------------------------------------------------------
+void PdBase::lock() {
+    _LOCK();
+}
+
+void PdBase::unlock() {
+    _UNLOCK();
 }
 
 /* ***** PD CONTEXT ***** */

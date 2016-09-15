@@ -420,16 +420,17 @@ class PdBase {
         /// get/set the max length of messages and lists, default: 32
         void setMaxMessageLen(unsigned int len);
         unsigned int maxMessageLen();
+    
+        /// lock the internal mutex
+        /// does nothing if not compiled with LIBPD_USE_STD_MUTEX
+        void lock();
+
+        /// unlock the internal mutex
+        /// does nothing if not compiled with LIBPD_USE_STD_MUTEX
+        void unlock();
 
     protected:
-
-        #ifdef LIBPD_USE_STD_MUTEX
-            /// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
-            std::mutex mutex;
-        #endif
-
-    private:
-
+    
         /// compound message status
         enum MsgType {
             MSG,
@@ -520,6 +521,13 @@ class PdBase {
 
                 static void _midibyte(int port, int byte);
         };
+    
+    private:
+
+        #ifdef LIBPD_USE_STD_MUTEX
+            /// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
+            std::mutex _mutex;
+        #endif
 };
 
 } // namespace
