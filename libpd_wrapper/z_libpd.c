@@ -19,6 +19,7 @@
 #include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
+#include "g_canvas.h"
 
 #if PD_MINOR_VERSION < 46
 # define HAVE_SCHED_TICK_ARG
@@ -30,6 +31,7 @@
 # define SCHED_TICK(x) sched_tick()
 #endif
 void pd_init(void);
+int sys_startgui(const char *guipath);
 
 // (optional) built in pd externals setup functions
 #ifdef LIBPD_EXTRA
@@ -451,4 +453,48 @@ void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_midibytehook = hook;
+}
+
+// recursively deselect everything in a gobj "g", if it happens to be
+// a glist, in preparation for deselecting g itself in glist_dselect()
+static void glist_maybevis(t_glist *gl) {
+  t_gobj *g;
+  for (g = gl->gl_list; g; g = g->g_next) {
+    if (pd_class(&g->g_pd) == canvas_class) {
+      glist_maybevis((t_glist *)g);
+    }
+  }
+  if (gl->gl_havewindow) {
+    canvas_vis(gl, 0);
+    canvas_vis(gl, 1);
+  }
+}
+
+int libpd_start_gui(const char *libdir) {
+  t_canvas *x;
+  for (x = pd_getcanvaslist(); x; x = x->gl_next) {
+    canvas_vis(x, 0);
+  }
+  sys_nogui = 0;
+  if (sys_startgui(libdir)) return -1;
+  for (x = pd_getcanvaslist(); x; x = x->gl_next) {
+    if (strcmp(x->gl_name->s_name, "_float_template") &&
+        strcmp(x->gl_name->s_name, "_float_array_template") &&
+        strcmp(x->gl_name->s_name, "_text_template")) {
+          glist_maybevis(x);
+          canvas_vis(x, 1);
+    }
+  }
+  return 0;
+}
+
+void sys_stopgui(void);
+
+void libpd_stop_gui(void) {
+  t_canvas *x;
+  for (x = pd_getcanvaslist(); x; x = x->gl_next) {
+    canvas_vis(x, 0);
+  }
+  sys_vgui("%s", "exit\n");
+  sys_stopgui();
 }
