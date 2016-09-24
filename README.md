@@ -75,12 +75,15 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
   - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
   - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init()
   - **DEBUG=true**, compiles libpd with -Wall & no optimizations
+  - **LOCALE=true**, set the number format to the default "C" locale\*
 
 For example, to build libpd with both util and extra:
 
     make UTIL=true EXTRA=true
 
 _Note: cpplib is automatically built with UTIL=true as it uses the ringbuffer_
+
+*\ Setting the number locale explictly may be necessary if you run into certain numbers not being read correctly when opening patches. See <https://github.com/libpd/libpd/issues/130> for more info.
 
 ### java, csharp, objc, cpp, python
 

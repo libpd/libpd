@@ -101,7 +101,7 @@ int libpd_init(void) {
   stdout_setup();
 #endif
 
-#ifdef LIBPD_LIBPD_SETLOCALE
+#ifdef LIBPD_SETLOCALE
   setlocale(LC_NUMERIC, "C");
 #endif
 
