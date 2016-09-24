@@ -32,11 +32,18 @@ libpd.xcodeproj/xcuserdata
 *.app
 
 # csharp
+samples/csharp/**/obj/*
+samples/csharp/**/bin/*
 csharp/obj/*
 csharp/bin/*
 libs/libpd.*
 libs/libpdnative.*
 libs/libpdcsharp.*
+.vs/*
+*.suo
+*.csproj.user
+packages/*
+*.nupkg
 
 # java
 java-build/*

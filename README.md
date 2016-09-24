@@ -55,7 +55,7 @@ The folder containing the sources of Pd Vanilla and standard externals. This is 
 
 This folder contains the source files that make up the core of libpd.
 
-### Android.mk, Makefile, libpd.xcodeproj, libpd_win.sln
+### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln
 
 Build support for various platforms. Feel free to improve the build system in any way you see fit.
 
@@ -63,7 +63,7 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, &
 
   - **libpd**: (default) builds if no target is specified, builds the libpd.so/dylib/dll
   - **cpplib**: builds libpd with the cpp wrapper
-  - **csharplib**: builds libpdcsharp.dll (tested on Windows only)
+  - **csharplib**: builds libpdcsharp.dll (on Windows) or libpdcsharp.so (on Linux)
   - **javalib**: builds libpdnative and the jni wrapper
   - **clean**: removes the object files
   - **clobber**: removes the linked library files
@@ -114,3 +114,38 @@ Use the following in your CocoaPods podfile:
 
     pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
 
+C#
+--
+
+### Installation from NuGet
+LibPD is available as a [NuGet package](https://www.nuget.org/packages/LibPdBinding). If your platform's native dll is not included, you have to build it yourself with `make csharplib` and copy the resulting file to the output directory. Batch scripts for compilations on Windows with MinGW64 are included.
+
+### Building yourself
+The C# library expects a file libpdcsharp.dll in its folder. Before using the project, you need to compile it.
+
+Include `csharp/LibPdBinding.csproj` in your solution and reference the project in your application.
+
+#### Windows
+The wrapper can be built with [MinGW-w64](http://mingw-w64.org/doku.php).
+
+You need to install [msys2](http://msys2.github.io/), preferably the version for i686, because that version can build the 64bit versions as well.
+
+Install msys2 using the instructions on the download page.
+
+Install make and gcc by running `pacman -S msys/make mingw32/mingw-w64-i686-gcc mingw64/mingw-w64-x86_64-gcc` from the msys2 console. You can search for packages in msys2 with `pacman -S -s <searchterm>`.
+
+For the 64 bit version of msys2 you also need to install winpthread by running `pacman -S msys/mingw-w64-cross-winpthreads-git`.
+
+Edit `mingw32_build_csharp.bat` or `mingw64_build_csharp.bat` and execute it to create the native dll. You probably only need to change the variable for `%MSYS2%`. Usually you want the 32 bit version, as it will work on 64 bit Windows as well, but Unity 5 needs the 64 bit version.
+
+For the 64 bit version, you also must use `libs/mingw64/libwinptread-1.dll` instead of `libs/mingw32/libwinpthread-1.dll`.
+
+For a current version of `libwinpthread-1.dll` search in your msys2 installation folders.
+
+#### Linux 
+If you want to use the library on Linux with Mono, you need the following changes to the LibPdBinding project:
+
+  - Compile the so file with `make csharplib`.
+  - Remove `libpdcsharp.dll` and `libwinpthread-1.dll` from LibPdBinding project.
+  - Add `libpdcsharp.so` to the LibPdBinding project.
+  - Set "Copy to Output Directory" for `libpdcsharp.so` to "Copy always"

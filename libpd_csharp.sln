@@ -1,0 +1,61 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDBinding", "csharp\LibPDBinding.csproj", "{C452F742-2653-4403-817B-136545EB5F1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDBindingTest", "samples\csharp\pdtest\LibPDBindingTest.csproj", "{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPdBindingNaudio", "samples\csharp\naudio\LibPdBindingNaudio.csproj", "{92BFACF0-E9D0-49B6-A31F-17621FC61470}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|x64.ActiveCfg = Debug|x64
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|x64.Build.0 = Debug|x64
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|x86.ActiveCfg = Debug|x86
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|x86.Build.0 = Debug|x86
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|x64.ActiveCfg = Release|x64
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|x64.Build.0 = Release|x64
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|x86.Build.0 = Release|Any CPU
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Debug|x64.ActiveCfg = Debug|x64
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Debug|x64.Build.0 = Debug|x64
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Debug|x86.ActiveCfg = Debug|x86
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Debug|x86.Build.0 = Debug|x86
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Release|x64.ActiveCfg = Release|x64
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Release|x64.Build.0 = Release|x64
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Release|x86.ActiveCfg = Release|Any CPU
+		{DC510CBA-CD9F-4C7A-BD04-C37AE01FC90B}.Release|x86.Build.0 = Release|Any CPU
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Debug|x64.ActiveCfg = Debug|x64
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Debug|x64.Build.0 = Debug|x64
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Debug|x86.ActiveCfg = Debug|x86
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Debug|x86.Build.0 = Debug|x86
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Release|x64.ActiveCfg = Release|x64
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Release|x64.Build.0 = Release|x64
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Release|x86.ActiveCfg = Release|Any CPU
+		{92BFACF0-E9D0-49B6-A31F-17621FC61470}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
