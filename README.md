@@ -83,7 +83,7 @@ For example, to build libpd with both util and extra:
 
 _Note: cpplib is automatically built with UTIL=true as it uses the ringbuffer_
 
-*\ Setting the number locale explictly may be necessary if you run into certain numbers not being read correctly when opening patches. See <https://github.com/libpd/libpd/issues/130> for more info.
+\* Setting the number locale explictly may be necessary if you run into certain numbers not being read correctly when opening patches. See <https://github.com/libpd/libpd/issues/130> for more info.
 
 ### java, csharp, objc, cpp, python
 
@@ -101,6 +101,8 @@ libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as 
 For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 
 If you are unfamiliar with how static libraries work or how to use them in Xcode, see [this useful tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial).
+
+_Note: libpd is tested with the release versions of Xcode. It is recommended that you avoid using beta or developer preview versions._
 
 Java Builds
 -----------
