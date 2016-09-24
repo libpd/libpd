@@ -1,14 +1,33 @@
+0.10.0: 2016 September
+
+* updated to pd vanilla 0.47-1
+* fixed divide by 0 when opening a patch by calling sys_startgui() in
+  libpd_init() (provided by Pierre Guillot)
+* added LIBPD_SETLOCALE define & makefile SETLOCALE option to explicitly set
+  "C" numeric locale in libpd_init() (Thomas Mayer)
+* C#: major updates to build system to support 64bit (thanks to Thomas Mayer!)
+  * mingw_build.bat -> mingw32_build_csharp.bat
+  * mingw_build64.bat -> mingw64_build_csharp.bat
+* C#: added NuGet packages for .NET and Mono (Thomas Mayer)
+* C#: added NAudio example (Thomas Mayer)
+* C++: removed C++11 version check for mutex, better to simply honor use of the
+       LIBPD_USE_STD_MUTEX define (Benjamin Porter)
+* python: fixed duplicate symbol error by setting -fcommon
+          when building (reported by David Glivar)
+
 0.9.2: 2016 August
 
-* ObjC: fixed bug where audio was not being routed to speaker when initing AVAudioSession,
-        also fixes possible session setup fail where the PdAudioUnit will not run
+* ObjC: fixed bug where audio was not being routed to speaker when initing
+        AVAudioSession, also fixes possible session setup fail where the
+        PdAudioUnit will not run
 
 0.9.1: 2016 June
 
 * ObjC: fixed wrong selectors in PdMidiListener
 * ObjC: fixed AudioSessionSetProperty deprecations in PdAudioController
 * C++: simplified PdBase locking with _GUARD() macro
-* C++: added mutex lock()/unlock() functions, PdContext now protected, mutex now private
+* C++: added mutex lock()/unlock() functions, PdContext now protected,
+       mutex now private
 * Podspec: fixed duplicate symbol link error by adding -fcommon
 * Podspec: C++ layer no longer added by default
 * added mingw_build64 batch script
