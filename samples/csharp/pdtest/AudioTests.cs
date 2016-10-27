@@ -1,0 +1,113 @@
+﻿using System;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using LibPDBinding.Managed;
+using NUnit.Framework;
+
+namespace LibPDBindingTest
+{
+	[TestFixture]
+	public class AudioTests
+	{
+		Pd _pd;
+		Patch _patch;
+		static readonly int _inputs = 2;
+		static readonly int _outputs = 3;
+		static readonly int _sampleRate = 44100;
+
+		[SetUp]
+		public void Init ()
+		{
+			_pd = new Pd (_inputs, _outputs, _sampleRate);
+			_patch = _pd.LoadPatch ("../../test_csharp.pd");
+		}
+
+		[TearDown]
+		public void Cleanup ()
+		{
+			_patch.Dispose ();
+			_pd.Dispose ();
+		}
+
+		[Test]
+		public virtual void TestAudioOutSize ()
+		{
+			int blocksize = _pd.BlockSize;
+			int ticks = 2;
+			float[] inBuffer = new float[ticks * _inputs * blocksize];
+			for (int i = 0; i < inBuffer.Length; i++) {
+				inBuffer [i] = i;
+			}
+			float[] outBuffer = _pd.Process (ticks, inBuffer);
+			Assert.AreEqual (ticks * _outputs * blocksize, outBuffer.Length);
+		}
+
+		[Test]
+		public virtual void TestAudioOff ()
+		{
+			int blocksize = _pd.BlockSize;
+			int ticks = 2;
+			float[] inBuffer = new float[ticks * _inputs * blocksize];
+			for (int i = 0; i < inBuffer.Length; i++) {
+				inBuffer [i] = i;
+			}
+			float[] outBuffer = _pd.Process (ticks, inBuffer);
+			for (int i = 0; i < outBuffer.Length; i++) {
+				Assert.AreEqual (0, outBuffer [i]);
+			}
+		}
+
+		[Test]
+		public virtual void TestAudioOn ()
+		{
+			int blocksize = _pd.BlockSize;
+			int ticks = 2;
+			float[] inBuffer = new float[ticks * _inputs * blocksize];
+			for (int i = 0; i < inBuffer.Length; i++) {
+				inBuffer [i] = i;
+			}
+			_pd.Start ();
+			float[] outBuffer = _pd.Process (ticks, inBuffer);
+			for (int i = 0; i < outBuffer.Length / 3; i++) {
+				Assert.AreEqual (2 * i, outBuffer [3 * i], 0.0001);
+				Assert.AreEqual (-6 * i, outBuffer [3 * i + 1], 0.0001);
+				Assert.AreEqual (Math.Cos (2 * Math.PI * 440 / 44100 * i), outBuffer [3 * i + 2], 0.0001);
+			}
+		}
+
+		[Test]
+		public virtual void TestDouble ()
+		{
+			int blocksize = _pd.BlockSize;
+			int ticks = 2;
+			double[] inBuffer = new double[ticks * _inputs * blocksize];
+			for (int i = 0; i < inBuffer.Length; i++) {
+				inBuffer [i] = i;
+			}
+			_pd.Start ();
+			double[] outBuffer = _pd.Process (ticks, inBuffer);
+			for (int i = 0; i < outBuffer.Length / 3; i++) {
+				Assert.AreEqual (2 * i, outBuffer [3 * i], 0.0001);
+				Assert.AreEqual (-6 * i, outBuffer [3 * i + 1], 0.0001);
+				Assert.AreEqual (Math.Cos (2 * Math.PI * 440 / 44100 * i), outBuffer [3 * i + 2], 0.0001);
+			}
+		}
+
+		[Test]
+		public virtual void TestShort ()
+		{
+			int blocksize = _pd.BlockSize;
+			int ticks = 2;
+			short[] inBuffer = new short[ticks * _inputs * blocksize];
+			for (int i = 0; i < inBuffer.Length; i++) {
+				inBuffer [i] = (short)i;
+			}
+			_pd.Start ();
+			short[] outBuffer = _pd.Process (ticks, inBuffer);
+			for (int i = 0; i < outBuffer.Length / 3; i++) {
+				Assert.AreEqual (2 * i, outBuffer [3 * i], 0.0001);
+				Assert.AreEqual (-6 * i, outBuffer [3 * i + 1], 0.0001);
+				Assert.AreEqual (Math.Cos (2 * Math.PI * 440 / 44100 * i), outBuffer [3 * i + 2], 0.0001);
+			}
+		}
+	}
+}

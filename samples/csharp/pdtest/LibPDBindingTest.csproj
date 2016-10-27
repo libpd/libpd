@@ -86,10 +86,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioTests.cs" />
     <Compile Include="LibPDTests.cs" />
     <Compile Include="LibraryLoader\IDllLoader.cs" />
     <Compile Include="LibraryLoader\LinuxDllLoader.cs" />
     <Compile Include="LibraryLoader\WindowsDllLoader.cs" />
+    <Compile Include="PatchTests.cs" />
+    <Compile Include="PdTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">
