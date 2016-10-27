@@ -91,9 +91,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Native\LibPDNativeMessaging.cs" />
-    <Compile Include="Native\LibPDNativeMethods.cs" />
-    <Compile Include="Native\LibPDNativeMidi.cs" />
+    <Compile Include="Hooks.cs" />
+    <Compile Include="LibPDNativeMessaging.cs" />
+    <Compile Include="LibPDNativeMethods.cs" />
+    <Compile Include="LibPDNativeMidi.cs" />
+    <Compile Include="Native\PInvoke.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,7 +107,9 @@
       <Link>libpdcsharp.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="LibPDBinding.nuspec">
       <SubType>Designer</SubType>
     </None>
