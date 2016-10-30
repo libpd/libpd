@@ -114,39 +114,8 @@ namespace LibPDBinding.Managed
 		public void Start ()
 		{
 			PInvoke.init_audio (Inputs, Outputs, SampleRate);
-			SendMessage ("pd", "dsp", 1);
+			Messaging.SendMessage ("pd", "dsp", 1);
 			IsComputing = true;
-		}
-
-		private void SendMessage (string receiver, string message, params object[] args)
-		{
-			SendArgs (args);
-			var finish = PInvoke.finish_message (receiver, message);
-
-			if (finish != 0) {
-				throw new PdProcessException (finish, "finish_message");
-			}
-		}
-
-		private static void SendArgs (object[] args)
-		{
-			int startMessage = PInvoke.start_message (args.Length);
-			if (startMessage != 0) {
-				throw new PdProcessException (startMessage, "start_message");
-			}
-			foreach (object arg in args) {
-				if (arg is int?) {
-					PInvoke.add_float ((int)((int?)arg));
-				} else if (arg is float?) {
-					PInvoke.add_float ((float)((float?)arg));
-				} else if (arg is double?) {
-					PInvoke.add_float ((float)((double?)arg));
-				} else if (arg is string) {
-					PInvoke.add_symbol ((string)arg);
-				} else {
-					throw new ArgumentOutOfRangeException ("args[]", arg, "Argument is of wrong type.");
-				}
-			}
 		}
 
 		public short[] Process (int ticks, short[] inBuffer)
@@ -181,7 +150,7 @@ namespace LibPDBinding.Managed
 		/// </summary>
 		public void Stop ()
 		{
-			SendMessage ("pd", "dsp", 0);
+			Messaging.SendMessage ("pd", "dsp", 0);
 			IsComputing = false;
 		}
 
@@ -197,6 +166,11 @@ namespace LibPDBinding.Managed
 			}
 			var ptr = PInvoke.openfile (Path.GetFileName (path), Path.GetDirectoryName (path));
 			return new Patch (ptr);
+		}
+
+		public PdArray GetArray (string array)
+		{
+			return new PdArray (array);
 		}
 	}
 }
