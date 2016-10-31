@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>LibPDBindingTest</RootNamespace>
     <AssemblyName>LibPDBindingTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -16,6 +16,7 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunCodeAnalysis>False</RunCodeAnalysis>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <RegisterForComInterop>False</RegisterForComInterop>
@@ -73,14 +74,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioTests.cs" />
+    <Compile Include="Managed\AudioTests.cs" />
     <Compile Include="LibPDTests.cs" />
     <Compile Include="LibraryLoader\IDllLoader.cs" />
     <Compile Include="LibraryLoader\LinuxDllLoader.cs" />
     <Compile Include="LibraryLoader\WindowsDllLoader.cs" />
-    <Compile Include="PatchTests.cs" />
-    <Compile Include="PdTests.cs" />
-    <Compile Include="PdArrayTests.cs" />
+    <Compile Include="Managed\PatchTests.cs" />
+    <Compile Include="Managed\PdTests.cs" />
+    <Compile Include="Managed\PdArrayTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">

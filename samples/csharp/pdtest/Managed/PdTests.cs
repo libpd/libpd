@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using LibPDBinding.Managed;
+﻿using LibPDBinding.Managed;
 using NUnit.Framework;
 
-namespace LibPDBindingTest
+namespace LibPDBindingTest.Managed
 {
 	[TestFixture]
 	public class PdTests

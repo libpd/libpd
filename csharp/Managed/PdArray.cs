@@ -2,7 +2,7 @@
 
 namespace LibPDBinding.Managed
 {
-	public class PdArray
+	public sealed class PdArray
 	{
 		readonly string _name;
 

@@ -23,11 +23,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using NUnit.Framework;
-using LibPDBinding.Managed;
 
-namespace LibPDBindingTest
+using LibPDBinding.Managed;
+using NUnit.Framework;
+
+namespace LibPDBindingTest.Managed
 {
 	[TestFixture]
 	public class PdArrayTests

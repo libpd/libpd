@@ -6,7 +6,7 @@ namespace LibPDBinding.Managed
 	/// <summary>
 	/// Pd Patch.
 	/// </summary>
-	public class Patch : IDisposable
+	public sealed class Patch : IDisposable
 	{
 		readonly IntPtr _handle;
 
@@ -29,9 +29,7 @@ namespace LibPDBinding.Managed
 
 		private void Dispose (bool disposing)
 		{
-			if (disposing) {
-				PInvoke.closefile (_handle);
-			}
+			PInvoke.closefile (_handle);
 		}
 
 		/// <summary>

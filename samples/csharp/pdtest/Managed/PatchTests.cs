@@ -1,7 +1,7 @@
 ﻿using LibPDBinding.Managed;
 using NUnit.Framework;
 
-namespace LibPDBindingTest
+namespace LibPDBindingTest.Managed
 {
 	[TestFixture]
 	public class PatchTests
