@@ -75,13 +75,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managed\AudioTests.cs" />
-    <Compile Include="LibPDTests.cs" />
     <Compile Include="LibraryLoader\IDllLoader.cs" />
     <Compile Include="LibraryLoader\LinuxDllLoader.cs" />
     <Compile Include="LibraryLoader\WindowsDllLoader.cs" />
     <Compile Include="Managed\PatchTests.cs" />
     <Compile Include="Managed\PdTests.cs" />
     <Compile Include="Managed\PdArrayTests.cs" />
+    <Compile Include="Managed\MessagingTests.cs" />
+    <Compile Include="LibPDTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">

@@ -81,7 +81,18 @@
     <Compile Include="Native\PInvoke.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Managed\PdArray.cs" />
-    <Compile Include="Managed\Utils\Messaging.cs" />
+    <Compile Include="Managed\Events\PrintEventArgs.cs" />
+    <Compile Include="Managed\Events\SymbolEventArgs.cs" />
+    <Compile Include="Managed\Events\FloatEventArgs.cs" />
+    <Compile Include="Managed\Events\BangEventArgs.cs" />
+    <Compile Include="Managed\Events\ListEventArgs.cs" />
+    <Compile Include="Managed\Events\MessageEventArgs.cs" />
+    <Compile Include="Managed\Data\IAtom.cs" />
+    <Compile Include="Managed\Data\Symbol.cs" />
+    <Compile Include="Managed\Data\Float.cs" />
+    <Compile Include="Managed\Messaging.cs" />
+    <Compile Include="Managed\Utils\MessageInvocation.cs" />
+    <Compile Include="Managed\Data\Bang.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\libs\mingw32\libwinpthread-1.dll">
@@ -102,6 +113,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Folder Include="Managed\Utils\" />
+    <Folder Include="Managed\Data\" />
   </ItemGroup>
-  <ItemGroup />
 </Project>

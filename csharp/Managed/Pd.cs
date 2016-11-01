@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LibPDBinding.Native;
+using LibPDBinding.Managed.Events;
+using LibPDBinding.Managed.Utils;
+using LibPDBinding.Managed.Data;
 
 namespace LibPDBinding.Managed
 {
@@ -35,6 +38,18 @@ namespace LibPDBinding.Managed
 			get { return PInvoke.blocksize (); }
 		}
 
+		Messaging _messaging;
+
+		/// <summary>
+		/// Gets the messaging object.
+		/// </summary>
+		/// <value>The messaging object.</value>
+		public Messaging Messaging {
+			get {
+				return _messaging;
+			}
+		}
+
 		/// <summary>
 		/// Returns [true] when audio computation is enabled, and [false] when audio computation is disabled.
 		/// </summary>
@@ -59,35 +74,15 @@ namespace LibPDBinding.Managed
 		/// <param name="searchPaths">Paths for Pd to search for externals.</param>
 		public Pd (int inputChannels, int outputChannels, int sampleRate, IEnumerable<string> searchPaths)
 		{
+			_messaging = new Messaging ();
 			Inputs = inputChannels;
 			Outputs = outputChannels;
 			SampleRate = sampleRate;
-			//SetupHooks();
+			_messaging.SetupHooks ();
 			PInvoke.libpd_init ();
 			foreach (string path in searchPaths ?? Enumerable.Empty<string>()) {
 				PInvoke.add_to_search_path (path);
 			}
-		}
-
-		private void SetupHooks ()
-		{
-			//PrintHook = new LibPDPrintHook(RaisePrintEvent);
-			//PInvoke.set_printhook(PrintHook);
-
-			//BangHook = new LibPDBangHook(RaiseBangEvent);
-			//PInvoke.set_banghook(BangHook);
-
-			//FloatHook = new LibPDFloatHook(RaiseFloatEvent);
-			//PInvoke.set_floathook(FloatHook);
-
-			//SymbolHook = new LibPDSymbolHook(RaiseSymbolEvent);
-			//PInvoke.set_symbolhook(SymbolHook);
-
-			//ListHook = new LibPDListHook(RaiseListEvent);
-			//PInvoke.set_listhook(ListHook);
-
-			//MessageHook = new LibPDMessageHook(RaiseMessageEvent);
-			//PInvoke.set_messagehook(MessageHook);
 		}
 
 		~Pd ()
@@ -114,7 +109,7 @@ namespace LibPDBinding.Managed
 		public void Start ()
 		{
 			PInvoke.init_audio (Inputs, Outputs, SampleRate);
-			Messaging.SendMessage ("pd", "dsp", 1);
+			MessageInvocation.SendMessage ("pd", "dsp", new Float (1));
 			IsComputing = true;
 		}
 
@@ -150,7 +145,7 @@ namespace LibPDBinding.Managed
 		/// </summary>
 		public void Stop ()
 		{
-			Messaging.SendMessage ("pd", "dsp", 0);
+			MessageInvocation.SendMessage ("pd", "dsp", new Float (0));
 			IsComputing = false;
 		}
 
