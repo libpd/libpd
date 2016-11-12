@@ -7,12 +7,13 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH = 
   PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
-    -I/System/Library/Frameworks/JavaVM.framework/Headers
+    -I/System/Library/Frameworks/JavaVM.framework/Headers -I/usr/local/include
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
   CPP_FLAGS = -stdlib=libc++
   CPP_LDFLAGS = $(LDFLAGS) -stdlib=libc++
-  JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
+  JAVA_LDFLAGS = -lportaudio -framework CoreAudio -framework AudioToolbox -framework AudioUnit \
+    -framework CoreServices -framework JavaVM $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC = gcc
@@ -28,7 +29,7 @@ else
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
     CPP_LDFLAGS = $(LDFLAGS)
-    JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
+    JAVA_LDFLAGS = -lportaudio $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Assume Linux
     SOLIB_EXT = so
     PDNATIVE_PLATFORM = linux
@@ -40,7 +41,7 @@ else
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
     CPP_LDFLAGS = $(LDFLAGS)
-    JAVA_LDFLAGS = $(LDFLAGS)
+    JAVA_LDFLAGS = -lportaudio $(LDFLAGS)
   endif
 endif
 
@@ -134,7 +135,7 @@ PD_EXTRA_OBJS = \
 # default install location
 prefix=/usr/local
 
-JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c jni/z_jni_plain.c
+JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c jni/z_jni_pa.c
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libs/libpd.$(SOLIB_EXT)
