@@ -12,8 +12,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   CSHARP_LDFLAGS = $(LDFLAGS)
   CPP_FLAGS = -stdlib=libc++
   CPP_LDFLAGS = $(LDFLAGS) -stdlib=libc++
-  JAVA_LDFLAGS = -lportaudio -framework CoreAudio -framework AudioToolbox -framework AudioUnit \
-    -framework CoreServices -framework JavaVM $(LDFLAGS)
+  JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC = gcc
@@ -103,6 +102,8 @@ PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/utils/IoUtils.java \
 	java/org/puredata/core/utils/PdDispatcher.java
 
+JNI_SOUND = jni/z_jni_plain.c
+
 # conditional libpd_wrapper/util compilation
 ifeq ($(UTIL), true)
 	UTIL_FILES = $(LIBPD_UTILS)
@@ -126,6 +127,17 @@ ifeq ($(SETLOCALE), true)
 	LOCALE_CFLAGS = -DLIBPD_SETLOCALE
 endif
 
+# portaudio backend?
+ifeq ($PORTAUDIO), true)
+	JNI_SOUND = jni/z_jni_pa.c
+	JAVA_LDFLAGS = $(JAVA_LDFLAGS) -lportaudio
+	ifeq ($(UNAME), Darwin)  # Mac
+		JAVA_LDFLAGS = $(JAVA_LDFLAGS) \
+			-framework CoreAudio -framework AudioToolbox \
+			-framework AudioUnit -framework CoreServices
+	endif
+endif
+
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
@@ -135,7 +147,7 @@ PD_EXTRA_OBJS = \
 # default install location
 prefix=/usr/local
 
-JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c jni/z_jni_pa.c
+JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libs/libpd.$(SOLIB_EXT)
@@ -148,7 +160,8 @@ PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
-         -I./libpd_wrapper/util $(PLATFORM_CFLAGS) $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(LOCALE_CFLAGS)
+         -I./libpd_wrapper/util $(PLATFORM_CFLAGS) $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(LOCALE_CFLAGS) \
+         $(CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
