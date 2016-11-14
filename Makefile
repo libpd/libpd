@@ -28,7 +28,7 @@ else
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
     CPP_LDFLAGS = $(LDFLAGS)
-    JAVA_LDFLAGS = -lportaudio $(MINGW_LDFLAGS) -Wl,--kill-at
+    JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Assume Linux
     SOLIB_EXT = so
     PDNATIVE_PLATFORM = linux
@@ -40,7 +40,7 @@ else
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
     CPP_LDFLAGS = $(LDFLAGS)
-    JAVA_LDFLAGS = -lportaudio $(LDFLAGS)
+    JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
 
