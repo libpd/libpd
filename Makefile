@@ -5,7 +5,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
-  PDNATIVE_ARCH = 
+  PDNATIVE_ARCH =
   PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
@@ -17,7 +17,7 @@ else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC = gcc
     SOLIB_EXT = dll
-    SOLIB_PREFIX = 
+    SOLIB_PREFIX =
     PDNATIVE_PLATFORM = windows
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
@@ -159,9 +159,9 @@ PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PD
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
-CFLAGS := -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src -I./libpd_wrapper \
-         -I./libpd_wrapper/util $(PLATFORM_CFLAGS) $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(LOCALE_CFLAGS) \
-         $(CFLAGS)
+CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
+         -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
+         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(LOCALE_CFLAGS) $(ADDITIONAL_CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
@@ -170,7 +170,7 @@ CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 libpd: $(LIBPD)
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
-	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread 
+	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
@@ -180,7 +180,7 @@ $(JNIH_FILE): $(JAVA_BASE)
 
 $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
-	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS) 
+	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS)
 	cp $(PDJAVA_NATIVE) libs/
 
 $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
@@ -195,7 +195,7 @@ $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 cpplib: $(PDCPP)
 
 # build with LIBPD_UTILS since cpp wrapper uses the ringbuffer
-$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${CPP_FILES:.cpp=.o} 
+$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${CPP_FILES:.cpp=.o}
 	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
 
 clean:
