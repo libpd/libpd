@@ -80,20 +80,12 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio(JNIEnv *env,
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio(JNIEnv *env,
                                                                 jclass cls) {
-  if (pa_stream) {
-    return Pa_StartStream(pa_stream) != paNoError;
-  } else {
-    return -1;
-  }
+  return pa_stream ? Pa_StartStream(pa_stream) : -1;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio(JNIEnv *env,
                                                                 jclass cls) {
-  if (pa_stream) {
-    return Pa_StopStream(pa_stream) != paNoError;
-  } else {
-    return -1;
-  }
+  return pa_stream ? Pa_StopStream(pa_stream) : -1;
 }
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning(JNIEnv *env,
