@@ -27,6 +27,26 @@ Java_org_puredata_core_PdBase_implementsAudio(JNIEnv *env, jclass cls) {
   return 1;
 }
 
+JNIEXPORT jstring JNICALL
+Java_org_puredata_core_PdBase_audioImplementation(JNIEnv *env, jclass cls) {
+  return (*env)->NewStringUTF(env, "PortAudio");
+}
+
+JNIEXPORT jint JNICALL
+Java_org_puredata_core_PdBase_suggestSampleRate(JNIEnv *env, jclass cls) {
+  return -1;
+}
+
+JNIEXPORT jint JNICALL
+Java_org_puredata_core_PdBase_suggestInputChannels(JNIEnv *env, jclass cls) {
+  return -1;
+}
+
+JNIEXPORT jint JNICALL
+Java_org_puredata_core_PdBase_suggestOutputChannels(JNIEnv *env, jclass cls) {
+  return -1;
+}
+
 JNIEXPORT jint JNICALL
 Java_org_puredata_core_PdBase_openAudio(JNIEnv *env, jclass cls, jint inChans,
                                         jint outChans, jint sRate, jobject x) {
