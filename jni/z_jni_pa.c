@@ -11,8 +11,7 @@
 
 #define NTICKS 4
 
-static PortAudioStream *pa_stream;
-static int isRunning = 0;
+static PortAudioStream *pa_stream = NULL;
 
 static int pa_callback(void *inputBuffer, void *outputBuffer,
                        unsigned long framesPerBuffer, PaTimestamp outTime,
@@ -55,7 +54,6 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio(JNIEnv *env,
     Pa_StopStream(pa_stream);
     Pa_CloseStream(pa_stream);
     pa_stream = NULL;
-    isRunning = 0;
     Pa_Terminate();
   }
 }
@@ -63,7 +61,6 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio(JNIEnv *env,
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio(JNIEnv *env,
                                                                 jclass cls) {
   if (pa_stream) {
-    isRunning = 1;
     return Pa_StartStream(pa_stream) != paNoError;
   } else {
     return -1;
@@ -73,7 +70,6 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio(JNIEnv *env,
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio(JNIEnv *env,
                                                                 jclass cls) {
   if (pa_stream) {
-    isRunning = 0;
     return Pa_StopStream(pa_stream) != paNoError;
   } else {
     return -1;
@@ -82,5 +78,5 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio(JNIEnv *env,
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning(JNIEnv *env,
                                                                    jclass cls) {
-  return isRunning;
+  return pa_stream && Pa_StreamActive(pa_stream) > 0;
 }
