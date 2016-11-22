@@ -56,7 +56,7 @@ Java_org_puredata_core_PdBase_openAudio(JNIEnv *env, jclass cls, jint inChans,
   pthread_mutex_unlock(&mutex);
   if (err) return err;
   PaError pa_err = Pa_Initialize();
-  if (pa_err != paNoError) return -1;
+  if (pa_err != paNoError) return pa_err;
   pa_err =
       Pa_OpenDefaultStream(&pa_stream, inChans, outChans, paFloat32, sRate,
                            NTICKS * libpd_blocksize(), 0, pa_callback, NULL);
@@ -64,7 +64,7 @@ Java_org_puredata_core_PdBase_openAudio(JNIEnv *env, jclass cls, jint inChans,
     return 0;
   } else {
     Pa_Terminate();
-    return -1;
+    return pa_err;
   }
 }
 
