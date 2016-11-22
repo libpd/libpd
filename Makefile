@@ -128,7 +128,7 @@ ifeq ($(SETLOCALE), true)
 endif
 
 # portaudio backend?
-ifeq ($PORTAUDIO), true)
+ifeq ($(PORTAUDIO), true)
 	JNI_SOUND = jni/z_jni_pa.c
 	JAVA_LDFLAGS = $(JAVA_LDFLAGS) -lportaudio
 	ifeq ($(UNAME), Darwin)  # Mac
