@@ -7,7 +7,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH = 
   PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
-    -I/System/Library/Frameworks/JavaVM.framework/Headers -I/usr/local/include
+    -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
   CPP_FLAGS = -stdlib=libc++
