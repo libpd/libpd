@@ -11,8 +11,7 @@
 
 #define NTICKS 4
 
-static PaStream *pa_stream;
-static int isRunning = 0;
+static PaStream *pa_stream = NULL;
 
 static int pa_callback(const void *inputBuffer, void *outputBuffer,
                        unsigned long framesPerBuffer,
@@ -58,14 +57,14 @@ Java_org_puredata_core_PdBase_openAudio(JNIEnv *env, jclass cls, jint inChans,
   pthread_mutex_unlock(&mutex);
   if (err) return err;
   PaError pa_err = Pa_Initialize();
-  if (pa_err != paNoError) return -1;
+  if (pa_err != paNoError) return pa_err;
   pa_err = Pa_OpenDefaultStream(&pa_stream, inChans, outChans, paFloat32, sRate,
                                 NTICKS * libpd_blocksize(), pa_callback, NULL);
   if (pa_err == paNoError) {
     return 0;
   } else {
     Pa_Terminate();
-    return -1;
+    return pa_err;
   }
 }
 
@@ -75,7 +74,6 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio(JNIEnv *env,
     Pa_StopStream(pa_stream);
     Pa_CloseStream(pa_stream);
     pa_stream = NULL;
-    isRunning = 0;
     Pa_Terminate();
   }
 }
@@ -83,7 +81,6 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio(JNIEnv *env,
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio(JNIEnv *env,
                                                                 jclass cls) {
   if (pa_stream) {
-    isRunning = 1;
     return Pa_StartStream(pa_stream) != paNoError;
   } else {
     return -1;
@@ -93,7 +90,6 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio(JNIEnv *env,
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio(JNIEnv *env,
                                                                 jclass cls) {
   if (pa_stream) {
-    isRunning = 0;
     return Pa_StopStream(pa_stream) != paNoError;
   } else {
     return -1;
@@ -102,5 +98,5 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio(JNIEnv *env,
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning(JNIEnv *env,
                                                                    jclass cls) {
-  return isRunning;
+  return pa_stream && Pa_IsStreamActive(pa_stream);
 }
