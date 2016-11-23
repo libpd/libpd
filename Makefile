@@ -214,6 +214,7 @@ install:
 	mkdir -p $(prefix)/include/libpd/util
 	install libpd_wrapper/util/z_print_util.h $(prefix)/include/libpd/util
 	install libpd_wrapper/util/z_queued.h $(prefix)/include/libpd/util
+	mkdir -p $(prefix)/lib
 	install $(LIBPD) $(prefix)/lib
 	if [ -e $(PDCPP) ]; then \
 		install cpp/*.hpp $(prefix)/include/libpd; \
