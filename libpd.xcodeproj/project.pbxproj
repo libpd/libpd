@@ -7,6 +7,114 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E5460871E01D77D00C4DC4B /* PureData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E5460851E01D77D00C4DC4B /* PureData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460971E01D7FF00C4DC4B /* PdAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD3147B838F00282ABC /* PdAudioUnit.m */; };
+		0E5460981E01D7FF00C4DC4B /* PdAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD1147B838F00282ABC /* PdAudioController.m */; };
+		0E5460991E01D7FF00C4DC4B /* AudioHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DCF147B838E00282ABC /* AudioHelpers.m */; };
+		0E54609A1E01D7FF00C4DC4B /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
+		0E54609B1E01D7FF00C4DC4B /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
+		0E54609C1E01D7FF00C4DC4B /* PdFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8C8DC91312007F000B9D7A /* PdFile.m */; };
+		0E54609D1E01D7FF00C4DC4B /* PdBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A0AB12EEFE5E0053280E /* PdBase.m */; };
+		0E54609E1E01D7FF00C4DC4B /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* ringbuffer.c */; };
+		0E54609F1E01D7FF00C4DC4B /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
+		0E5460A01E01D7FF00C4DC4B /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
+		0E5460A11E01D7FF00C4DC4B /* s_libpdmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A09012EEFE050053280E /* s_libpdmidi.c */; };
+		0E5460A21E01D7FF00C4DC4B /* x_libpdreceive.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A09112EEFE050053280E /* x_libpdreceive.c */; };
+		0E5460A31E01D7FF00C4DC4B /* z_hooks.c in Sources */ = {isa = PBXBuildFile; fileRef = 30562D0718621366006C6949 /* z_hooks.c */; };
+		0E5460A41E01D7FF00C4DC4B /* z_libpd.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A09512EEFE050053280E /* z_libpd.c */; };
+		0E5460A51E01D7FF00C4DC4B /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
+		0E5460A61E01D7FF00C4DC4B /* bonk~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE241A6A5EDB000E3BAE /* bonk~.c */; };
+		0E5460A71E01D7FF00C4DC4B /* choice.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE261A6A5EDB000E3BAE /* choice.c */; };
+		0E5460A81E01D7FF00C4DC4B /* fiddle~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE2E1A6A5EDB000E3BAE /* fiddle~.c */; };
+		0E5460A91E01D7FF00C4DC4B /* loop~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE301A6A5EDB000E3BAE /* loop~.c */; };
+		0E5460AA1E01D7FF00C4DC4B /* lrshift~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE321A6A5EDB000E3BAE /* lrshift~.c */; };
+		0E5460AB1E01D7FF00C4DC4B /* pique.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE341A6A5EDB000E3BAE /* pique.c */; };
+		0E5460AC1E01D7FF00C4DC4B /* sigmund~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE361A6A5EDB000E3BAE /* sigmund~.c */; };
+		0E5460AD1E01D7FF00C4DC4B /* stdout.c in Sources */ = {isa = PBXBuildFile; fileRef = 30CEFE381A6A5EDB000E3BAE /* stdout.c */; };
+		0E5460AE1E01D7FF00C4DC4B /* d_arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF412EEFDED0053280E /* d_arithmetic.c */; };
+		0E5460AF1E01D7FF00C4DC4B /* d_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF512EEFDED0053280E /* d_array.c */; };
+		0E5460B01E01D7FF00C4DC4B /* d_ctl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF612EEFDED0053280E /* d_ctl.c */; };
+		0E5460B11E01D7FF00C4DC4B /* d_dac.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF712EEFDED0053280E /* d_dac.c */; };
+		0E5460B21E01D7FF00C4DC4B /* d_delay.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF812EEFDED0053280E /* d_delay.c */; };
+		0E5460B31E01D7FF00C4DC4B /* d_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF912EEFDED0053280E /* d_fft.c */; };
+		0E5460B41E01D7FF00C4DC4B /* d_fft_fftsg.c in Sources */ = {isa = PBXBuildFile; fileRef = 30DDEC321A69B0DF00532EE8 /* d_fft_fftsg.c */; };
+		0E5460B51E01D7FF00C4DC4B /* d_filter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFC12EEFDED0053280E /* d_filter.c */; };
+		0E5460B61E01D7FF00C4DC4B /* d_global.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFD12EEFDED0053280E /* d_global.c */; };
+		0E5460B71E01D7FF00C4DC4B /* d_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFE12EEFDED0053280E /* d_math.c */; };
+		0E5460B81E01D7FF00C4DC4B /* d_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FFF12EEFDED0053280E /* d_misc.c */; };
+		0E5460B91E01D7FF00C4DC4B /* d_osc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00012EEFDED0053280E /* d_osc.c */; };
+		0E5460BA1E01D7FF00C4DC4B /* d_resample.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00112EEFDED0053280E /* d_resample.c */; };
+		0E5460BB1E01D7FF00C4DC4B /* d_soundfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00212EEFDED0053280E /* d_soundfile.c */; };
+		0E5460BC1E01D7FF00C4DC4B /* d_ugen.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00312EEFDED0053280E /* d_ugen.c */; };
+		0E5460BD1E01D7FF00C4DC4B /* g_all_guis.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00412EEFDED0053280E /* g_all_guis.c */; };
+		0E5460BE1E01D7FF00C4DC4B /* g_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00612EEFDED0053280E /* g_array.c */; };
+		0E5460BF1E01D7FF00C4DC4B /* g_bang.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00712EEFDED0053280E /* g_bang.c */; };
+		0E5460C01E01D7FF00C4DC4B /* g_canvas.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00812EEFDED0053280E /* g_canvas.c */; };
+		0E5460C11E01D7FF00C4DC4B /* g_clone.c in Sources */ = {isa = PBXBuildFile; fileRef = 30EAFA2B1CBB89DC005D1916 /* g_clone.c */; };
+		0E5460C21E01D7FF00C4DC4B /* g_editor.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00A12EEFDEE0053280E /* g_editor.c */; };
+		0E5460C31E01D7FF00C4DC4B /* g_graph.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00B12EEFDEE0053280E /* g_graph.c */; };
+		0E5460C41E01D7FF00C4DC4B /* g_guiconnect.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00C12EEFDEE0053280E /* g_guiconnect.c */; };
+		0E5460C51E01D7FF00C4DC4B /* g_hdial.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00D12EEFDEE0053280E /* g_hdial.c */; };
+		0E5460C61E01D7FF00C4DC4B /* g_hslider.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00E12EEFDEE0053280E /* g_hslider.c */; };
+		0E5460C71E01D7FF00C4DC4B /* g_io.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A00F12EEFDEE0053280E /* g_io.c */; };
+		0E5460C81E01D7FF00C4DC4B /* g_mycanvas.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01012EEFDEE0053280E /* g_mycanvas.c */; };
+		0E5460C91E01D7FF00C4DC4B /* g_numbox.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01112EEFDEE0053280E /* g_numbox.c */; };
+		0E5460CA1E01D7FF00C4DC4B /* g_readwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01212EEFDEE0053280E /* g_readwrite.c */; };
+		0E5460CB1E01D7FF00C4DC4B /* g_rtext.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01312EEFDEE0053280E /* g_rtext.c */; };
+		0E5460CC1E01D7FF00C4DC4B /* g_scalar.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01412EEFDEE0053280E /* g_scalar.c */; };
+		0E5460CD1E01D7FF00C4DC4B /* g_template.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01512EEFDEE0053280E /* g_template.c */; };
+		0E5460CE1E01D7FF00C4DC4B /* g_text.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01612EEFDEE0053280E /* g_text.c */; };
+		0E5460CF1E01D7FF00C4DC4B /* g_toggle.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01712EEFDEE0053280E /* g_toggle.c */; };
+		0E5460D01E01D7FF00C4DC4B /* g_traversal.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01812EEFDEE0053280E /* g_traversal.c */; };
+		0E5460D11E01D7FF00C4DC4B /* g_vdial.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01912EEFDEE0053280E /* g_vdial.c */; };
+		0E5460D21E01D7FF00C4DC4B /* g_vslider.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01A12EEFDEE0053280E /* g_vslider.c */; };
+		0E5460D31E01D7FF00C4DC4B /* g_vumeter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01B12EEFDEE0053280E /* g_vumeter.c */; };
+		0E5460D41E01D7FF00C4DC4B /* m_atom.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01C12EEFDEE0053280E /* m_atom.c */; };
+		0E5460D51E01D7FF00C4DC4B /* m_binbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01D12EEFDEE0053280E /* m_binbuf.c */; };
+		0E5460D61E01D7FF00C4DC4B /* m_class.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01E12EEFDEE0053280E /* m_class.c */; };
+		0E5460D71E01D7FF00C4DC4B /* m_conf.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A01F12EEFDEE0053280E /* m_conf.c */; };
+		0E5460D81E01D7FF00C4DC4B /* m_glob.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02112EEFDEE0053280E /* m_glob.c */; };
+		0E5460D91E01D7FF00C4DC4B /* m_memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02312EEFDEE0053280E /* m_memory.c */; };
+		0E5460DA1E01D7FF00C4DC4B /* m_obj.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02412EEFDEE0053280E /* m_obj.c */; };
+		0E5460DB1E01D7FF00C4DC4B /* m_pd.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02512EEFDEE0053280E /* m_pd.c */; };
+		0E5460DC1E01D7FF00C4DC4B /* m_sched.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02712EEFDEE0053280E /* m_sched.c */; };
+		0E5460DD1E01D7FF00C4DC4B /* s_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02812EEFDEE0053280E /* s_audio.c */; };
+		0E5460DE1E01D7FF00C4DC4B /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
+		0E5460DF1E01D7FF00C4DC4B /* s_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02A12EEFDEE0053280E /* s_file.c */; };
+		0E5460E01E01D7FF00C4DC4B /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
+		0E5460E11E01D7FF00C4DC4B /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
+		0E5460E21E01D7FF00C4DC4B /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
+		0E5460E31E01D7FF00C4DC4B /* s_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02E12EEFDEE0053280E /* s_path.c */; };
+		0E5460E41E01D7FF00C4DC4B /* s_print.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02F12EEFDEE0053280E /* s_print.c */; };
+		0E5460E51E01D7FF00C4DC4B /* s_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03112EEFDEE0053280E /* s_utf8.c */; };
+		0E5460E61E01D7FF00C4DC4B /* x_acoustics.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03312EEFDEE0053280E /* x_acoustics.c */; };
+		0E5460E71E01D7FF00C4DC4B /* x_arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03412EEFDEE0053280E /* x_arithmetic.c */; };
+		0E5460E81E01D7FF00C4DC4B /* x_connective.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03512EEFDEE0053280E /* x_connective.c */; };
+		0E5460E91E01D7FF00C4DC4B /* x_gui.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03612EEFDEE0053280E /* x_gui.c */; };
+		0E5460EA1E01D7FF00C4DC4B /* x_interface.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03712EEFDEE0053280E /* x_interface.c */; };
+		0E5460EB1E01D7FF00C4DC4B /* x_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03812EEFDEE0053280E /* x_list.c */; };
+		0E5460EC1E01D7FF00C4DC4B /* x_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03912EEFDEE0053280E /* x_midi.c */; };
+		0E5460ED1E01D7FF00C4DC4B /* x_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03A12EEFDEE0053280E /* x_misc.c */; };
+		0E5460EE1E01D7FF00C4DC4B /* x_net.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03B12EEFDEE0053280E /* x_net.c */; };
+		0E5460EF1E01D7FF00C4DC4B /* x_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 30377F421866680A0026ED3E /* x_array.c */; };
+		0E5460F01E01D7FF00C4DC4B /* x_scalar.c in Sources */ = {isa = PBXBuildFile; fileRef = 30377F431866680A0026ED3E /* x_scalar.c */; };
+		0E5460F11E01D7FF00C4DC4B /* x_text.c in Sources */ = {isa = PBXBuildFile; fileRef = 30377F441866680A0026ED3E /* x_text.c */; };
+		0E5460F21E01D7FF00C4DC4B /* x_time.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03D12EEFDEE0053280E /* x_time.c */; };
+		0E5460F31E01D7FF00C4DC4B /* x_vexp_fun.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */; };
+		0E5460F41E01D7FF00C4DC4B /* x_vexp_if.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC71CA8A67000E3722F /* x_vexp_if.c */; };
+		0E5460F51E01D7FF00C4DC4B /* x_vexp.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC81CA8A67000E3722F /* x_vexp.c */; };
+		0E5460F61E01DA6900C4DC4B /* PdAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD2147B838F00282ABC /* PdAudioUnit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460F71E01DA6900C4DC4B /* PdAudioController.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD0147B838F00282ABC /* PdAudioController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460F81E01DA6900C4DC4B /* AudioHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DCE147B838E00282ABC /* AudioHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460F91E01DA6900C4DC4B /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460FA1E01DA6900C4DC4B /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460FB1E01DA6900C4DC4B /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460FC1E01DA6900C4DC4B /* PdBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0AA12EEFE5E0053280E /* PdBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5460FD1E01DA6900C4DC4B /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* ringbuffer.h */; };
+		0E5460FE1E01DA6900C4DC4B /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
+		0E5460FF1E01DA6900C4DC4B /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
+		0E5461001E01DA6900C4DC4B /* z_hooks.h in Headers */ = {isa = PBXBuildFile; fileRef = 304C8ED91860FA2D006D2159 /* z_hooks.h */; };
+		0E5461011E01DA6900C4DC4B /* x_vexp.h in Headers */ = {isa = PBXBuildFile; fileRef = 30ABBFC91CA8A67000E3722F /* x_vexp.h */; };
 		0E82A03E12EEFDEE0053280E /* d_arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF412EEFDED0053280E /* d_arithmetic.c */; };
 		0E82A03F12EEFDEE0053280E /* d_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF512EEFDED0053280E /* d_array.c */; };
 		0E82A04012EEFDEE0053280E /* d_ctl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF612EEFDED0053280E /* d_ctl.c */; };
@@ -220,6 +328,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E5460831E01D77D00C4DC4B /* PureData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E5460851E01D77D00C4DC4B /* PureData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PureData.h; sourceTree = "<group>"; };
+		0E5460861E01D77D00C4DC4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E829FF412EEFDED0053280E /* d_arithmetic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_arithmetic.c; sourceTree = "<group>"; };
 		0E829FF512EEFDED0053280E /* d_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_array.c; sourceTree = "<group>"; };
 		0E829FF612EEFDED0053280E /* d_ctl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_ctl.c; sourceTree = "<group>"; };
@@ -341,6 +452,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0E54607F1E01D77D00C4DC4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		119013A61486450C00086F19 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -365,6 +483,7 @@
 			children = (
 				D2AAC07E0554694100DB518D /* libpd-ios.a */,
 				119013AB1486450C00086F19 /* libpd-osx.a */,
+				0E5460831E01D77D00C4DC4B /* PureData.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -375,6 +494,7 @@
 				0E82A0A712EEFE5E0053280E /* objc */,
 				0E82A08F12EEFE050053280E /* libpd_wrapper */,
 				0E829FF312EEFDED0053280E /* pure-data */,
+				0E5460841E01D77D00C4DC4B /* PureData */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
@@ -387,6 +507,15 @@
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0E5460841E01D77D00C4DC4B /* PureData */ = {
+			isa = PBXGroup;
+			children = (
+				0E5460851E01D77D00C4DC4B /* PureData.h */,
+				0E5460861E01D77D00C4DC4B /* Info.plist */,
+			);
+			path = PureData;
 			sourceTree = "<group>";
 		};
 		0E829FF312EEFDED0053280E /* pure-data */ = {
@@ -649,6 +778,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0E5460801E01D77D00C4DC4B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E5460871E01D77D00C4DC4B /* PureData.h in Headers */,
+				0E5460F61E01DA6900C4DC4B /* PdAudioUnit.h in Headers */,
+				0E5460F71E01DA6900C4DC4B /* PdAudioController.h in Headers */,
+				0E5460F81E01DA6900C4DC4B /* AudioHelpers.h in Headers */,
+				0E5460F91E01DA6900C4DC4B /* PdMidiDispatcher.h in Headers */,
+				0E5460FA1E01DA6900C4DC4B /* PdDispatcher.h in Headers */,
+				0E5460FB1E01DA6900C4DC4B /* PdFile.h in Headers */,
+				0E5460FC1E01DA6900C4DC4B /* PdBase.h in Headers */,
+				0E5460FE1E01DA6900C4DC4B /* z_print_util.h in Headers */,
+				0E5460FF1E01DA6900C4DC4B /* z_queued.h in Headers */,
+				0E5461001E01DA6900C4DC4B /* z_hooks.h in Headers */,
+				0E5461011E01DA6900C4DC4B /* x_vexp.h in Headers */,
+				0E5460FD1E01DA6900C4DC4B /* ringbuffer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1190134F1486450C00086F19 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -687,6 +836,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0E5460821E01D77D00C4DC4B /* PureData */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0E5460881E01D77D00C4DC4B /* Build configuration list for PBXNativeTarget "PureData" */;
+			buildPhases = (
+				0E54607E1E01D77D00C4DC4B /* Sources */,
+				0E54607F1E01D77D00C4DC4B /* Frameworks */,
+				0E5460801E01D77D00C4DC4B /* Headers */,
+				0E5460811E01D77D00C4DC4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PureData;
+			productName = PureData;
+			productReference = 0E5460831E01D77D00C4DC4B /* PureData.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		1190134E1486450C00086F19 /* libpd-osx */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 119013A81486450C00086F19 /* Build configuration list for PBXNativeTarget "libpd-osx" */;
@@ -728,6 +895,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0810;
+				TargetAttributes = {
+					0E5460821E01D77D00C4DC4B = {
+						CreatedOnToolsVersion = 8.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -746,11 +919,124 @@
 			targets = (
 				D2AAC07D0554694100DB518D /* libpd-ios */,
 				1190134E1486450C00086F19 /* libpd-osx */,
+				0E5460821E01D77D00C4DC4B /* PureData */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		0E5460811E01D77D00C4DC4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		0E54607E1E01D77D00C4DC4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E5460971E01D7FF00C4DC4B /* PdAudioUnit.m in Sources */,
+				0E5460981E01D7FF00C4DC4B /* PdAudioController.m in Sources */,
+				0E5460991E01D7FF00C4DC4B /* AudioHelpers.m in Sources */,
+				0E54609A1E01D7FF00C4DC4B /* PdMidiDispatcher.m in Sources */,
+				0E54609B1E01D7FF00C4DC4B /* PdDispatcher.m in Sources */,
+				0E54609C1E01D7FF00C4DC4B /* PdFile.m in Sources */,
+				0E54609D1E01D7FF00C4DC4B /* PdBase.m in Sources */,
+				0E54609E1E01D7FF00C4DC4B /* ringbuffer.c in Sources */,
+				0E54609F1E01D7FF00C4DC4B /* z_print_util.c in Sources */,
+				0E5460A01E01D7FF00C4DC4B /* z_queued.c in Sources */,
+				0E5460A11E01D7FF00C4DC4B /* s_libpdmidi.c in Sources */,
+				0E5460A21E01D7FF00C4DC4B /* x_libpdreceive.c in Sources */,
+				0E5460A31E01D7FF00C4DC4B /* z_hooks.c in Sources */,
+				0E5460A41E01D7FF00C4DC4B /* z_libpd.c in Sources */,
+				0E5460A51E01D7FF00C4DC4B /* bob~.c in Sources */,
+				0E5460A61E01D7FF00C4DC4B /* bonk~.c in Sources */,
+				0E5460A71E01D7FF00C4DC4B /* choice.c in Sources */,
+				0E5460A81E01D7FF00C4DC4B /* fiddle~.c in Sources */,
+				0E5460A91E01D7FF00C4DC4B /* loop~.c in Sources */,
+				0E5460AA1E01D7FF00C4DC4B /* lrshift~.c in Sources */,
+				0E5460AB1E01D7FF00C4DC4B /* pique.c in Sources */,
+				0E5460AC1E01D7FF00C4DC4B /* sigmund~.c in Sources */,
+				0E5460AD1E01D7FF00C4DC4B /* stdout.c in Sources */,
+				0E5460AE1E01D7FF00C4DC4B /* d_arithmetic.c in Sources */,
+				0E5460AF1E01D7FF00C4DC4B /* d_array.c in Sources */,
+				0E5460B01E01D7FF00C4DC4B /* d_ctl.c in Sources */,
+				0E5460B11E01D7FF00C4DC4B /* d_dac.c in Sources */,
+				0E5460B21E01D7FF00C4DC4B /* d_delay.c in Sources */,
+				0E5460B31E01D7FF00C4DC4B /* d_fft.c in Sources */,
+				0E5460B41E01D7FF00C4DC4B /* d_fft_fftsg.c in Sources */,
+				0E5460B51E01D7FF00C4DC4B /* d_filter.c in Sources */,
+				0E5460B61E01D7FF00C4DC4B /* d_global.c in Sources */,
+				0E5460B71E01D7FF00C4DC4B /* d_math.c in Sources */,
+				0E5460B81E01D7FF00C4DC4B /* d_misc.c in Sources */,
+				0E5460B91E01D7FF00C4DC4B /* d_osc.c in Sources */,
+				0E5460BA1E01D7FF00C4DC4B /* d_resample.c in Sources */,
+				0E5460BB1E01D7FF00C4DC4B /* d_soundfile.c in Sources */,
+				0E5460BC1E01D7FF00C4DC4B /* d_ugen.c in Sources */,
+				0E5460BD1E01D7FF00C4DC4B /* g_all_guis.c in Sources */,
+				0E5460BE1E01D7FF00C4DC4B /* g_array.c in Sources */,
+				0E5460BF1E01D7FF00C4DC4B /* g_bang.c in Sources */,
+				0E5460C01E01D7FF00C4DC4B /* g_canvas.c in Sources */,
+				0E5460C11E01D7FF00C4DC4B /* g_clone.c in Sources */,
+				0E5460C21E01D7FF00C4DC4B /* g_editor.c in Sources */,
+				0E5460C31E01D7FF00C4DC4B /* g_graph.c in Sources */,
+				0E5460C41E01D7FF00C4DC4B /* g_guiconnect.c in Sources */,
+				0E5460C51E01D7FF00C4DC4B /* g_hdial.c in Sources */,
+				0E5460C61E01D7FF00C4DC4B /* g_hslider.c in Sources */,
+				0E5460C71E01D7FF00C4DC4B /* g_io.c in Sources */,
+				0E5460C81E01D7FF00C4DC4B /* g_mycanvas.c in Sources */,
+				0E5460C91E01D7FF00C4DC4B /* g_numbox.c in Sources */,
+				0E5460CA1E01D7FF00C4DC4B /* g_readwrite.c in Sources */,
+				0E5460CB1E01D7FF00C4DC4B /* g_rtext.c in Sources */,
+				0E5460CC1E01D7FF00C4DC4B /* g_scalar.c in Sources */,
+				0E5460CD1E01D7FF00C4DC4B /* g_template.c in Sources */,
+				0E5460CE1E01D7FF00C4DC4B /* g_text.c in Sources */,
+				0E5460CF1E01D7FF00C4DC4B /* g_toggle.c in Sources */,
+				0E5460D01E01D7FF00C4DC4B /* g_traversal.c in Sources */,
+				0E5460D11E01D7FF00C4DC4B /* g_vdial.c in Sources */,
+				0E5460D21E01D7FF00C4DC4B /* g_vslider.c in Sources */,
+				0E5460D31E01D7FF00C4DC4B /* g_vumeter.c in Sources */,
+				0E5460D41E01D7FF00C4DC4B /* m_atom.c in Sources */,
+				0E5460D51E01D7FF00C4DC4B /* m_binbuf.c in Sources */,
+				0E5460D61E01D7FF00C4DC4B /* m_class.c in Sources */,
+				0E5460D71E01D7FF00C4DC4B /* m_conf.c in Sources */,
+				0E5460D81E01D7FF00C4DC4B /* m_glob.c in Sources */,
+				0E5460D91E01D7FF00C4DC4B /* m_memory.c in Sources */,
+				0E5460DA1E01D7FF00C4DC4B /* m_obj.c in Sources */,
+				0E5460DB1E01D7FF00C4DC4B /* m_pd.c in Sources */,
+				0E5460DC1E01D7FF00C4DC4B /* m_sched.c in Sources */,
+				0E5460DD1E01D7FF00C4DC4B /* s_audio.c in Sources */,
+				0E5460DE1E01D7FF00C4DC4B /* s_audio_dummy.c in Sources */,
+				0E5460DF1E01D7FF00C4DC4B /* s_file.c in Sources */,
+				0E5460E01E01D7FF00C4DC4B /* s_inter.c in Sources */,
+				0E5460E11E01D7FF00C4DC4B /* s_loader.c in Sources */,
+				0E5460E21E01D7FF00C4DC4B /* s_main.c in Sources */,
+				0E5460E31E01D7FF00C4DC4B /* s_path.c in Sources */,
+				0E5460E41E01D7FF00C4DC4B /* s_print.c in Sources */,
+				0E5460E51E01D7FF00C4DC4B /* s_utf8.c in Sources */,
+				0E5460E61E01D7FF00C4DC4B /* x_acoustics.c in Sources */,
+				0E5460E71E01D7FF00C4DC4B /* x_arithmetic.c in Sources */,
+				0E5460E81E01D7FF00C4DC4B /* x_connective.c in Sources */,
+				0E5460E91E01D7FF00C4DC4B /* x_gui.c in Sources */,
+				0E5460EA1E01D7FF00C4DC4B /* x_interface.c in Sources */,
+				0E5460EB1E01D7FF00C4DC4B /* x_list.c in Sources */,
+				0E5460EC1E01D7FF00C4DC4B /* x_midi.c in Sources */,
+				0E5460ED1E01D7FF00C4DC4B /* x_misc.c in Sources */,
+				0E5460EE1E01D7FF00C4DC4B /* x_net.c in Sources */,
+				0E5460EF1E01D7FF00C4DC4B /* x_array.c in Sources */,
+				0E5460F01E01D7FF00C4DC4B /* x_scalar.c in Sources */,
+				0E5460F11E01D7FF00C4DC4B /* x_text.c in Sources */,
+				0E5460F21E01D7FF00C4DC4B /* x_time.c in Sources */,
+				0E5460F31E01D7FF00C4DC4B /* x_vexp_fun.c in Sources */,
+				0E5460F41E01D7FF00C4DC4B /* x_vexp_if.c in Sources */,
+				0E5460F51E01D7FF00C4DC4B /* x_vexp.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		119013571486450C00086F19 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -955,6 +1241,102 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0E5460891E01D77D00C4DC4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = PureData/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.squarefrog.PureData;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		0E54608A1E01D77D00C4DC4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = PureData/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.squarefrog.PureData;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		119013A91486450C00086F19 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1141,6 +1523,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0E5460881E01D77D00C4DC4B /* Build configuration list for PBXNativeTarget "PureData" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E5460891E01D77D00C4DC4B /* Debug */,
+				0E54608A1E01D77D00C4DC4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		119013A81486450C00086F19 /* Build configuration list for PBXNativeTarget "libpd-osx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
