@@ -12,10 +12,35 @@ namespace LibPDBinding
 	/// <summary>
 	/// Messaging in Pd.
 	/// </summary>
-	public sealed class Messaging
+	public sealed class Messaging : IDisposable
 	{
 		internal Messaging ()
 		{
+			SetupHooks ();
+		}
+
+		~Messaging ()
+		{
+			Dispose (false);
+		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		private void Dispose (bool disposing)
+		{
+			foreach(IntPtr pointer in _bindings.Values){
+				PInvoke.unbind (pointer);
+			}
+			Print = null;
+			Bang = null;
+			Float = null;
+			Symbol = null;
+			List = null;
+			Message = null;
 		}
 
 		Dictionary<string, IntPtr> _bindings = new Dictionary<string, IntPtr>();
@@ -156,7 +181,7 @@ namespace LibPDBinding
 		LibPDListHook ListHook;
 		LibPDMessageHook MessageHook;
 
-		internal void SetupHooks ()
+		void SetupHooks ()
 		{
 			PrintHook = new LibPDPrintHook (RaisePrintEvent);
 			PInvoke.set_printhook (PrintHook);

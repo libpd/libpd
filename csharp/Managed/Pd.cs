@@ -78,7 +78,6 @@ namespace LibPDBinding.Managed
 			Inputs = inputChannels;
 			Outputs = outputChannels;
 			SampleRate = sampleRate;
-			_messaging.SetupHooks ();
 			PInvoke.libpd_init ();
 			foreach (string path in searchPaths ?? Enumerable.Empty<string>()) {
 				PInvoke.add_to_search_path (path);
@@ -101,6 +100,7 @@ namespace LibPDBinding.Managed
 			if (disposing) {
 				Stop ();
 			}
+			Messaging.Dispose ();
 		}
 
 		/// <summary>
