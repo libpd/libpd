@@ -83,6 +83,7 @@
     <Compile Include="Managed\PdArrayTests.cs" />
     <Compile Include="Managed\MessagingTests.cs" />
     <Compile Include="LibPDTests.cs" />
+    <Compile Include="Managed\CApiTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">
