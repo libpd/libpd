@@ -24,7 +24,7 @@ namespace LibPDBindingTest.Managed
 		}
 
 		[Test]
-		public void TestNotNullOnExisting ()
+		public void NotNullOnExistingTest ()
 		{
 			using (Patch patch = _pd.LoadPatch (@"../../test_csharp.pd")) {
 				Assert.NotNull (patch);
@@ -32,14 +32,14 @@ namespace LibPDBindingTest.Managed
 		}
 
 		[Test]
-		public void TestNullOnNotExisting ()
+		public void NullOnNotExistingTest ()
 		{
 			Patch patch = _pd.LoadPatch (@"something_not_there.pd");
 			Assert.Null (patch);
 		}
 
 		[Test]
-		public void TestDollarZero ()
+		public void DollarZeroTest ()
 		{
 			using (Patch patch = _pd.LoadPatch (@"../../test_csharp.pd")) {
 				Assert.True (patch.DollarZero > 1000);

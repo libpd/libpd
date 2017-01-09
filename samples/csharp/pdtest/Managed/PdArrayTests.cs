@@ -53,21 +53,21 @@ namespace LibPDBindingTest.Managed
 		}
 
 		[Test]
-		public void TestArrayLength ()
+		public void ArrayLengthTest ()
 		{
 			PdArray array = _pd.GetArray ("array1");
 			Assert.AreEqual (128, array.Size);
 		}
 
 		[Test]
-		public void TestNonExistingTest ()
+		public void NonExistingTest ()
 		{
 			PdArray array = _pd.GetArray ("array2");
 			Assert.AreEqual (-1, array.Size);
 		}
 
 		[Test]
-		public void TestResize ()
+		public void ResizeTest ()
 		{
 			PdArray array = _pd.GetArray ("array1");
 			array.Resize (256);

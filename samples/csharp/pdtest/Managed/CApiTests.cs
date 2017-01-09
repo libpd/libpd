@@ -26,7 +26,7 @@ namespace LibPDBindingTest.Managed
 		}
 
 		[Test]
-		public virtual void TestLoadBang ()
+		public virtual void LoadbangTest ()
 		{
 			_pd.Messaging.Bind ("foo");
 			string value = "";
