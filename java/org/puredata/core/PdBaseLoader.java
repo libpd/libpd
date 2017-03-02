@@ -6,12 +6,12 @@ package org.puredata.core;
  * @author mgsx
  *
  */
-public interface PdBaseLoader {
+public abstract class PdBaseLoader {
 
 	/**
 	 * Load required native libraries prior to use {@link PdBase}.
 	 */
-	public void load();
+	public abstract void load();
 	
 	/**
 	 * Default {@link PdBaseLoader}. Called when {@link PdBase} is first accessed.
