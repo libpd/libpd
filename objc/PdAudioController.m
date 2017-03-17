@@ -181,7 +181,19 @@
 		AU_LOG(@"failed to set session category, error %@", error);
 		return PdAudioError;
 	}
-	if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+	
+	
+	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
+		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
+			// iOS 7+
+			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+				return PdAudioError;
+			}
+		}
+	}
+	
+	else if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
 		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
 			// iOS 7+
 			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
