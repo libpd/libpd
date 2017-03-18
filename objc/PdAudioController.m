@@ -181,31 +181,69 @@
 		AU_LOG(@"failed to set session category, error %@", error);
 		return PdAudioError;
 	}
-	if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+	
+	
+	// If Playback category, set MixWithOthers property
+    	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
+       
+		// iOS 7+
 		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
-			// iOS 7+
-			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+
+		    // TODO: we should be checking allowsMixing flag here, but setting that requires an update to how we handle interruptions.
+		    // - more specifically, endInterruptionWithFlags: needs to be updated since AVAudioSessionInterruptionOptionShouldResume has been deprecated.
+			
+// 			if (allowsMixing) {
+				if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+				    AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+				    return PdAudioError;
+				}
+// 			}
+		}
+        
+		// iOS 6
+		else {
+			UInt32 mix = allowsMixing ? 1 : 0;
+		    	status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
+			if (status) {
+				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
+				return PdAudioError;
+		    	}
+		}
+    }
+    
+    // If PlayAndRecord cagegory, set MixWithOthers & DefaultToSpeaker properties
+    else if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+        
+        	// iOS 7+
+		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
+			
+			AVAudioSessionCategoryOptions options = (allowsMixing ? AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers : AVAudioSessionCategoryOptionDefaultToSpeaker);
+            
+            		if (![[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&error]) {
 				AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker & AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
 				return PdAudioError;
 			}
 		}
+        
+        	// iOS 6
 		else {
-			// iOS 6
+
 			UInt32 defaultToSpeaker = 1;
 			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
 			if (status) {
 				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %d)", (int)status);
 				return PdAudioError;
 			}
+            
 			UInt32 mix = allowsMixing ? 1 : 0;
 			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
 			if (status) {
 				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
 				return PdAudioError;
 			}
-			
 		}
 	}
+	
 	mixingEnabled_ = allowsMixing;
 	return PdAudioOK;
 }
