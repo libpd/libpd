@@ -80,11 +80,13 @@ void initAudio(){
    }
 }
 
-// main: init audio & run until stopped via Ctl-C
 int main (int argc, char *argv[]) {
    initAudio();
+
+   // keep the program alive until it's killed with Ctrl+C
    while(1) {
       usleep(500);
    }
+
    return 0;
 }
