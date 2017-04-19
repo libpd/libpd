@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
   libpd_start_message(1); // one entry in list
   libpd_add_float(1.0f);
   fprintf(stderr, "x 1\n");
-  libpd_finish_message("1003-frequency", "float");
+  libpd_finish_message("frequency", "float");
   fprintf(stderr, "x 2\n");
 
   pd_setinstance(pd2);
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
   libpd_start_message(1); // one entry in list
   libpd_add_float(2.0f);
   fprintf(stderr, "x 3\n");
-  libpd_finish_message("1004-frequency", "float");
+  libpd_finish_message("frequency", "float");
   fprintf(stderr, "x 4\n");
 
   // now run pd for ten seconds (logical time)
