@@ -87,7 +87,6 @@ int libpd_init(void) {
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
-  sys_startgui(NULL);
 #ifdef LIBPD_EXTRA
   bob_tilde_setup();
   bonk_tilde_setup();
@@ -543,4 +542,18 @@ void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_midibytehook = hook;
+}
+
+int libpd_startgui(char *path) {
+  int retval;
+  sys_lock();
+  retval = sys_startgui(path);
+  sys_unlock();
+  return retval;
+}
+
+void libpd_stopgui( void) {
+  sys_lock();
+  sys_stopgui();
+  sys_unlock();
 }
