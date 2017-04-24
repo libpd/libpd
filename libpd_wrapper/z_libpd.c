@@ -79,11 +79,11 @@ int libpd_init(void) {
   sys_hipriority = 0;
   sys_nmidiin = 0;
   sys_nmidiout = 0;
-  sys_init_fdpoll();
 #ifdef HAVE_SCHED_TICK_ARG
   sys_time = 0;
 #endif
   pd_init();
+  sys_init_fdpoll();
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   sys_searchpath = NULL;
