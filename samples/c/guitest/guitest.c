@@ -2,81 +2,98 @@
 #include <unistd.h>
 #include "z_libpd.h"
 
-int sys_startgui(const char *guipath);
-void sys_stopgui( void);
-int sys_pollgui( void);
-
+#define NINSTANCES 2
+t_pdinstance *pdinstancevec[NINSTANCES];
 
 void pdprint(const char *s)
 {
-    printf("%s", s);
+    int instancenumber = -1, i;
+    for (i = 0; i < NINSTANCES; i++)
+        if (pdinstancevec[i] == pd_this)
+            instancenumber = i; 
+    printf("print(%d): %s", instancenumber, s);
 }
 
 void pdnoteon(int ch, int pitch, int vel)
 {
-    printf("noteon: %d %d %d\n", ch, pitch, vel);
+    int instancenumber = -1, i;
+    for (i = 0; i < NINSTANCES; i++)
+        if (pdinstancevec[i] == pd_this)
+            instancenumber = i; 
+    printf("noteon (%d): %d %d %d\n", instancenumber, ch, pitch, vel);
 }
 
 float inbuf[64], outbuf[128];  // one input channel, two output channels
                                // block size 64, one tick per buffer
 
-static void runawhile(int num_ticks)
+#include <sys/time.h>
+
+static void waituntil(double f)
 {
-    int ticksleft = num_ticks*1000;
-    while (ticksleft > 0)
+    static struct timeval starttime;
+    struct timeval now;
+    double fnow;
+    if (starttime.tv_sec == 0 && starttime.tv_usec == 0)
+        gettimeofday(&starttime, 0);
+    while (1)
     {
-        // fill inbuf here
-        libpd_process_float(1, inbuf, outbuf);
-        // use outbuf here
-        sys_pollgui();
-        usleep(1451);   /* 1 tick is about 1.45 msec */
-        ticksleft -= 1;
+        gettimeofday(&now, 0);
+        fnow = now.tv_sec - starttime.tv_sec +
+            1e-6 * (now.tv_usec - starttime.tv_usec);
+        if (fnow >= f)
+            break;
+        usleep(1000);
     }
 }
 
-extern int sys_verbose, sys_printtostderr, sys_debuglevel;
-
-int main(int argc, char **argv) {
-    if (argc < 3) {
-    fprintf(stderr, "usage: %s file folder\n", argv[0]);
-    return -1;
+int main(int argc, char **argv)
+{
+    int i;
+    void *file[NINSTANCES];
+    if (argc < 2)
+    {
+        fprintf(stderr, "usage: %s file [folder]\n", argv[0]);
+        return (-1);
     }
-    sys_debuglevel = sys_printtostderr = sys_verbose = 1;
     // init pd
-    int srate = 44100, foo;
+    float logicaltime;
+
     libpd_set_printhook((t_libpd_printhook)pdprint);
     libpd_set_noteonhook((t_libpd_noteonhook)pdnoteon);
     libpd_init();
-    libpd_init_audio(1, 2, srate);
-
-    // compute audio    [; pd dsp 1(
-    libpd_start_message(1); // one entry in list
-    libpd_add_float(1.0f);
-    libpd_finish_message("pd", "dsp");
-
-    // open patch       [; pd open file folder(
-    void *file = libpd_openfile(argv[1], argv[2]);
-
-    // now run pd
-    for (foo = 0; foo < 2; foo++)
+    libpd_init_audio(1, 2, 44100);
+    for (i = 0; i < NINSTANCES; i++)
     {
-        printf("running nogui for 1000 ticks...\n");
+        pdinstancevec[i] = pdinstance_new();
+        pd_setinstance(pdinstancevec[i]);
 
-        runawhile(1);
+            /* [; pd dsp 1( */
+        libpd_start_message(1); // one entry in list
+        libpd_add_float(1.0f);
+        libpd_finish_message("pd", "dsp");
 
-        printf("starting gui..\n");
-        // sys_debuglevel = sys_printtostderr = sys_verbose = 1;
+        file[i] = libpd_openfile(argv[1], (argc > 2 ? argv[2] : "."));
+
         if (libpd_startgui("../../../pure-data/"))
             printf("gui startup failed\n");
-
-        printf("running for 2000 more ticks...\n");
-        runawhile(2);
-
-        libpd_stopgui();
     }
 
-    printf("Closing and exiting\n");
-    libpd_closefile(file);
+    for (logicaltime = 0; ; logicaltime += 0.001451)
+    {
+        for (i = 0; i < NINSTANCES; i++)
+        {
+            pd_setinstance(pdinstancevec[i]);
+            libpd_process_float(1, inbuf, outbuf);
+            libpd_pollgui();
+        }
+        waituntil(logicaltime);
+    }
 
-    return 0;
+    for (i = 0; i < NINSTANCES; i++)
+    {
+        pd_setinstance(pdinstancevec[i]);
+        libpd_stopgui();
+        libpd_closefile(file[i]);
+    }
+    return (0);
 }

@@ -557,3 +557,9 @@ void libpd_stopgui( void) {
   sys_stopgui();
   sys_unlock();
 }
+
+void libpd_pollgui( void) {
+  sys_lock();
+  sys_pollgui();
+  sys_unlock();
+}
