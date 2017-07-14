@@ -32,13 +32,13 @@ int main(int argc, char **argv) {
     /* ... here we'd sure like to be able to have number of channels be
     per-instance.  The sample rate is still global within Pd but we might
     also consider relaxing that restrction. */
-  libpd_init_audio(1, 2, srate);
 
   pd1 = pdinstance_new();
   pd2 = pdinstance_new();
 
   pd_setinstance(pd1);  // talk to first pd instance 
 
+  libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
   libpd_start_message(1); // one entry in list
   libpd_add_float(1.0f);
@@ -49,6 +49,7 @@ int main(int argc, char **argv) {
 
   pd_setinstance(pd2);
 
+  libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
   libpd_start_message(1); // one entry in list
   libpd_add_float(1.0f);

@@ -72,7 +72,6 @@ int libpd_init(void) {
   sys_debuglevel = 0;
   sys_verbose = 0;
   sys_noloadbang = 0;
-  sys_nogui = 1;
   sys_hipriority = 0;
   sys_nmidiin = 0;
   sys_nmidiout = 0;
@@ -566,3 +565,11 @@ void libpd_pollgui( void) {
   sys_pollgui();
   sys_unlock();
 }
+
+/* dummy routines needed because we don't use s_file.c */
+void glob_loadpreferences(t_pd *dummy, t_symbol *s) {}
+void glob_savepreferences(t_pd *dummy, t_symbol *s) {}
+void glob_forgetpreferences(t_pd *dummy) {}
+void sys_loadpreferences(const char *filename, int startingup) {}
+
+
