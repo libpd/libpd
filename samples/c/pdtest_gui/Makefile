@@ -18,11 +18,11 @@ endif
 LIBPD_DIR = ../../..
 LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 
-SRC_FILES = pdtest_multi.c
-TARGET = pdtest_multi
+SRC_FILES = pdtest_gui.c
+TARGET = pdtest_gui
 
 CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
-         -O3 -DPDINSTANCE
+         -Wall -Werror -O3 -DPDINSTANCE
 
 .PHONY: clean clobber
 
@@ -31,7 +31,7 @@ $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
 	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
-	cd ../../.. && make ADDITIONAL_CFLAGS=-DPDINSTANCE
+	cd $(LIBPD_DIR) && make ADDITIONAL_CFLAGS=-DPDINSTANCE
 
 clean:
 	rm -f *.o

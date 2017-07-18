@@ -48,19 +48,30 @@ static void libpdrecanything(t_libpdrec *x, t_symbol *s,
 }
 
 static void libpdreceive_free(t_libpdrec *x) {
-    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
+  pd_unbind(&x->x_obj.ob_pd, x->x_sym);
 }
 
-void *libpdreceive_new(t_symbol *s) {
-  t_libpdrec *x = (t_libpdrec *)pd_new(libpdrec_class);
+static void *libpdreceive_donew(t_symbol *s) {
+  t_libpdrec *x;
+  x = (t_libpdrec *)pd_new(libpdrec_class);
   x->x_sym = s;
   pd_bind(&x->x_obj.ob_pd, s);
   return x;
 }
 
+    /* This is exposed in the libpd API so must set the lock. */
+void *libpdreceive_new(t_symbol *s) {
+  t_libpdrec *x;
+  sys_lock();
+  x = (t_libpdrec *)libpdreceive_donew(s);
+  sys_unlock();
+  return x;
+}
+
 void libpdreceive_setup(void) {
+  sys_lock();
   libpdrec_class = class_new(gensym("libpd_receive"),
-       (t_newmethod)libpdreceive_new, (t_method)libpdreceive_free,
+       (t_newmethod)libpdreceive_donew, (t_method)libpdreceive_free,
        sizeof(t_libpdrec), CLASS_DEFAULT, A_DEFSYM, 0);
   class_addbang(libpdrec_class, libpdrecbang);
   class_addfloat(libpdrec_class, libpdrecfloat);
@@ -68,4 +79,5 @@ void libpdreceive_setup(void) {
   class_addpointer(libpdrec_class, libpdrecpointer);
   class_addlist(libpdrec_class, libpdreclist);
   class_addanything(libpdrec_class, libpdrecanything);
+  sys_unlock();
 }

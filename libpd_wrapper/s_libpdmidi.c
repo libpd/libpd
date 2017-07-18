@@ -51,11 +51,14 @@ void outmidi_byte(int port, int value) {
     libpd_midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
 }
 
+/* tell Pd gui that our list of MIDI APIs is empty */
+#include <string.h>
+void sys_get_midi_apis(char *buf) {strcpy(buf, "{}");}
+
 // The rest is not relevant to libpd.
-void sys_get_midi_apis(char *buf) {}
 void sys_listmididevs(void) {}
 void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,
-    int *pnmidioutdev, int *pmidioutdev) {}
+    int *pnmidioutdev, int *pmidioutdev) {*pnmidiindev = *pnmidioutdev = 0;}
 void sys_open_midi(int nmidiindev, int *midiindev,
     int nmidioutdev, int *midioutdev, int enable) {}
 void sys_close_midi() {}
@@ -68,4 +71,6 @@ void glob_midi_properties(t_pd *dummy, t_floatarg flongform) {}
 void glob_midi_dialog(t_pd *dummy, t_symbol *s, int argc, t_atom *argv) {}
 int sys_mididevnametonumber(int output, const char *name) { return 0; }
 void sys_mididevnumbertoname(int output, int devno, char *name, int namesize) {}
+void sys_set_midi_api(int api) {}
+int sys_midiapi;
 
