@@ -28,6 +28,7 @@ Pod::Spec.new do |spec|
                        'pure-data/src/s_audio_pa.c',
                        'pure-data/src/s_audio_paring.h',
                        'pure-data/src/s_audio_paring.c',
+                       'pure-data/src/s_file.c',
                        'pure-data/src/s_midi_alsa.c',
                        'pure-data/src/s_midi_dummy.c',
                        'pure-data/src/s_midi_mmio.c',
