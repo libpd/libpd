@@ -14,19 +14,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef __APPLE__ // apple atomics
-# include <libkern/OSAtomic.h>
-# define SYNC_FETCH(ptr) OSAtomicOr32Barrier(0, (volatile uint32_t *)ptr)
-# define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
-         OSAtomicCompareAndSwap32Barrier(oldval, newval, ptr) 
-#elif defined(_MSC_VER) // win api atomics
-# define SYNC_FETCH(ptr) InterlockedOr(ptr, 0)
-# define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
-         InterlockedCompareExchange(ptr, oldval, newval)
-#else // gcc atomics
-# define SYNC_FETCH(ptr) __sync_fetch_and_or(ptr, 0)
-# define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
-         __sync_val_compare_and_swap(ptr, oldval, newval)
+#if __STDC_VERSION__ >= 201112L // use stdatomic if C11 is available
+  #include <stdatomic.h>
+  #define SYNC_FETCH(ptr) atomic_fetch_or((_Atomic int *)ptr, 0)
+  #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
+          atomic_compare_exchange_strong((_Atomic int *)ptr, &oldval, newval)
+#else // use platform specfics
+  #ifdef __APPLE__ // apple atomics
+    #include <libkern/OSAtomic.h>
+    #define SYNC_FETCH(ptr) OSAtomicOr32Barrier(0, (volatile uint32_t *)ptr)
+    #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
+            OSAtomicCompareAndSwap32Barrier(oldval, newval, ptr)
+  #elif defined(_MSC_VER) // win api atomics
+    #define SYNC_FETCH(ptr) InterlockedOr(ptr, 0)
+    #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
+            InterlockedCompareExchange(ptr, oldval, newval)
+  #else // gcc atomics
+    #define SYNC_FETCH(ptr) __sync_fetch_and_or(ptr, 0)
+    #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
+            __sync_val_compare_and_swap(ptr, oldval, newval)
+  #endif
 #endif
 
 ring_buffer *rb_create(int size) {
