@@ -35,6 +35,8 @@
 
 void pd_init(void);
 int sys_startgui(const char *libdir);
+void sys_stopgui(void);
+int sys_pollgui(void);
 
 // (optional) built in pd externals setup functions
 #ifdef LIBPD_EXTRA
@@ -279,7 +281,7 @@ int libpd_message(const char *recv, const char *msg, int n, t_atom *v) {
     return -1;
   }
   pd_typedmess(dest, gensym(msg), n, v);
-    sys_unlock();
+  sys_unlock();
   return 0;
 }
 
@@ -321,11 +323,11 @@ int libpd_finish_message(const char *recv, const char *msg) {
 }
 
 void *libpd_bind(const char *sym) {
-  void *retval;
+  t_symbol *x;
   sys_lock();
-  retval = libpdreceive_new(gensym(sym));
+  x = gensym(sym);
   sys_unlock();
-  return retval;
+  return libpdreceive_new(x);
 }
 
 void libpd_unbind(void *p) {
@@ -443,7 +445,9 @@ int libpd_noteon(int channel, int pitch, int velocity) {
   CHECK_CHANNEL
   CHECK_RANGE_7BIT(pitch)
   CHECK_RANGE_7BIT(velocity)
+  sys_lock();
   inmidi_noteon(PORT, CHANNEL, pitch, velocity);
+  sys_unlock();
   return 0;
 }
 
@@ -451,14 +455,18 @@ int libpd_controlchange(int channel, int controller, int value) {
   CHECK_CHANNEL
   CHECK_RANGE_7BIT(controller)
   CHECK_RANGE_7BIT(value)
+  sys_lock();
   inmidi_controlchange(PORT, CHANNEL, controller, value);
+  sys_unlock();
   return 0;
 }
 
 int libpd_programchange(int channel, int value) {
   CHECK_CHANNEL
   CHECK_RANGE_7BIT(value)
+  sys_lock();
   inmidi_programchange(PORT, CHANNEL, value);
+  sys_unlock();
   return 0;
 }
 
@@ -497,6 +505,7 @@ int libpd_midibyte(int port, int byte) {
   CHECK_RANGE_8BIT(byte)
   sys_lock();
   inmidi_byte(port, byte);
+  sys_unlock();
   return 0;
 }
 
@@ -571,6 +580,4 @@ void glob_loadpreferences(t_pd *dummy, t_symbol *s) {}
 void glob_savepreferences(t_pd *dummy, t_symbol *s) {}
 void glob_forgetpreferences(t_pd *dummy) {}
 void sys_loadpreferences(const char *filename, int startingup) {}
-int sys_oktoloadfiles(int done) {}
-
-
+int sys_oktoloadfiles(int done) {return 1;}
