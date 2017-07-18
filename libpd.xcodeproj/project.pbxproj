@@ -54,7 +54,6 @@
 		0E82A07112EEFDEE0053280E /* m_sched.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02712EEFDEE0053280E /* m_sched.c */; };
 		0E82A07212EEFDEE0053280E /* s_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02812EEFDEE0053280E /* s_audio.c */; };
 		0E82A07312EEFDEE0053280E /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
-		0E82A07412EEFDEE0053280E /* s_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02A12EEFDEE0053280E /* s_file.c */; };
 		0E82A07512EEFDEE0053280E /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
 		0E82A07612EEFDEE0053280E /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
 		0E82A07712EEFDEE0053280E /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
@@ -134,7 +133,6 @@
 		119013861486450C00086F19 /* m_sched.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02712EEFDEE0053280E /* m_sched.c */; };
 		119013871486450C00086F19 /* s_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02812EEFDEE0053280E /* s_audio.c */; };
 		119013881486450C00086F19 /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
-		119013891486450C00086F19 /* s_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02A12EEFDEE0053280E /* s_file.c */; };
 		1190138A1486450C00086F19 /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
 		1190138B1486450C00086F19 /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
 		1190138C1486450C00086F19 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
@@ -271,7 +269,6 @@
 		0E82A02712EEFDEE0053280E /* m_sched.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = m_sched.c; sourceTree = "<group>"; };
 		0E82A02812EEFDEE0053280E /* s_audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_audio.c; sourceTree = "<group>"; };
 		0E82A02912EEFDEE0053280E /* s_audio_dummy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_audio_dummy.c; sourceTree = "<group>"; };
-		0E82A02A12EEFDEE0053280E /* s_file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_file.c; sourceTree = "<group>"; };
 		0E82A02B12EEFDEE0053280E /* s_inter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_inter.c; sourceTree = "<group>"; };
 		0E82A02C12EEFDEE0053280E /* s_loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_loader.c; sourceTree = "<group>"; };
 		0E82A02D12EEFDEE0053280E /* s_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_main.c; sourceTree = "<group>"; };
@@ -520,7 +517,6 @@
 				0E82A02712EEFDEE0053280E /* m_sched.c */,
 				0E82A02812EEFDEE0053280E /* s_audio.c */,
 				0E82A02912EEFDEE0053280E /* s_audio_dummy.c */,
-				0E82A02A12EEFDEE0053280E /* s_file.c */,
 				0E82A02B12EEFDEE0053280E /* s_inter.c */,
 				0E82A02C12EEFDEE0053280E /* s_loader.c */,
 				0E82A02D12EEFDEE0053280E /* s_main.c */,
@@ -813,7 +809,6 @@
 				119013861486450C00086F19 /* m_sched.c in Sources */,
 				119013871486450C00086F19 /* s_audio.c in Sources */,
 				119013881486450C00086F19 /* s_audio_dummy.c in Sources */,
-				119013891486450C00086F19 /* s_file.c in Sources */,
 				1190138A1486450C00086F19 /* s_inter.c in Sources */,
 				1190138B1486450C00086F19 /* s_loader.c in Sources */,
 				1190138C1486450C00086F19 /* s_main.c in Sources */,
@@ -908,7 +903,6 @@
 				30ABBFCA1CA8A67000E3722F /* x_vexp_fun.c in Sources */,
 				0E82A07212EEFDEE0053280E /* s_audio.c in Sources */,
 				0E82A07312EEFDEE0053280E /* s_audio_dummy.c in Sources */,
-				0E82A07412EEFDEE0053280E /* s_file.c in Sources */,
 				0E82A07512EEFDEE0053280E /* s_inter.c in Sources */,
 				0E82A07612EEFDEE0053280E /* s_loader.c in Sources */,
 				0E82A07712EEFDEE0053280E /* s_main.c in Sources */,
