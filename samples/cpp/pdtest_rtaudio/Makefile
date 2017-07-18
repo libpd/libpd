@@ -14,39 +14,40 @@ SOLIB_PREFIX = lib
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
-  PDNATIVE_PLATFORM = mac
+  PLATFORM = mac
   CXXFLAGS = -D__MACOSX_CORE__
   AUDIO_API = -framework Foundation -framework CoreAudio
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     SOLIB_EXT = dll
     SOLIB_PREFIX = 
-    PDNATIVE_PLATFORM = windows
+    PLATFORM = windows
     CXXFLAGS = -D__WINDOWS_DS__
     AUDIO_API = -lole32 -loleaut32 -ldsound -lwinmm
-  else  # Assume Linux
+  else  # assume Linux
     SOLIB_EXT = so
-    PDNATIVE_PLATFORM = linux
+    PLATFORM = linux
     CXXFLAGS = -D__UNIX_JACK__ -D__LINUX_ALSA__
     AUDIO_API = -ljack -lasound -pthread
   endif
 endif
 
 LIBPD_DIR = ../../..
-LIBPD_CPP = $(LIBPD_DIR)/libs/libpdcpp.$(SOLIB_EXT)
+LIBPD = $(LIBPD_DIR)/libs/libpdcpp.$(SOLIB_EXT)
 
 SRC_FILES = src/PdObject.cpp src/main.cpp src/RtAudio.cpp
 TARGET = pdtest_rtaudio
 
-CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/cpp -I./src -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
+CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
+            -I$(LIBPD_DIR)/cpp -I./src -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
 
 .PHONY: clean clobber
 
-$(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD_CPP)
-	g++ -o $(TARGET) $^ $(LIBPD_CPP) $(AUDIO_API)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD_CPP) ./libs; fi
+$(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD)
+	g++ -o $(TARGET) $^ $(LIBPD) $(AUDIO_API)
+	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
-$(LIBPD_CPP):
+$(LIBPD):
 	cd $(LIBPD_DIR) && make cpplib UTIL=true EXTRA=true
 
 clean:
@@ -54,4 +55,5 @@ clean:
 
 clobber: clean
 	rm -f $(TARGET)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
+	if [ $(PLATFORM) == "mac" ]; then rm -rf ./libs; fi
+	cd $(LIBPD_DIR) && make clobber

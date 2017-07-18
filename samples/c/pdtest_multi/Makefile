@@ -2,14 +2,14 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
 
-ifeq ($(UNAME), Darwin)    # Mac
+ifeq ($(UNAME), Darwin) # Mac
   SOLIB_EXT = dylib
   PLATFORM = mac
 else
   ifeq ($(OS), Windows_NT) # Windows, use Mingw
     SOLIB_EXT = dll
     PLATFORM = windows
-  else                     # assume Linux
+  else # assume Linux
     SOLIB_EXT = so
     PLATFORM = linux
   endif
