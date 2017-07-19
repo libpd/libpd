@@ -144,7 +144,9 @@ PD_EXTRA_OBJS = \
 	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
 
 # default install location
-prefix=/usr/local
+prefix ?= /usr/local
+includedir ?= $(prefix)/include
+libdir ?= $(prefix)/lib
 
 JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
 JNIH_FILE = jni/z_jni.h
@@ -206,21 +208,26 @@ clobber: clean
 	rm -f libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD)
 
+# optional install headers & libs based on build type: cpplib and/or UTIL=true 
 install:
-	mkdir -p $(prefix)/include/libpd
-	install libpd_wrapper/z_libpd.h $(prefix)/include/libpd
-	install pure-data/src/m_pd.h $(prefix)/include/libpd
-	mkdir -p $(prefix)/include/libpd/util
-	install libpd_wrapper/util/z_print_util.h $(prefix)/include/libpd/util
-	install libpd_wrapper/util/z_queued.h $(prefix)/include/libpd/util
-	mkdir -p $(prefix)/lib
-	install $(LIBPD) $(prefix)/lib
+	install -d $(includedir)/libpd
+	install -m 644 libpd_wrapper/z_libpd.h $(includedir)/libpd
+	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
+	if [ -e libpd_wrapper/util/z_queued.o ]; then \
+	    install -d $(includedir)/libpd/util; \
+	    install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
+	    install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
+	fi
+	install -d $(libdir)
+	if [ -e $(LIBPD) ]; then \
+		install -m 755 $(LIBPD) $(libdir); \
+	fi
 	if [ -e $(PDCPP) ]; then \
-		install cpp/*.hpp $(prefix)/include/libpd; \
-		install $(PDCPP) $(prefix)/lib; \
+		install -m 644 cpp/*.hpp $(includedir)/libpd; \
+		install -m 755 $(PDCPP) $(libdir); \
 	fi
 
 uninstall:
-	rm -rf $(prefix)/include/libpd
-	rm -f $(prefix)/lib/`basename $(LIBPD)`
-	rm -f $(prefix)/lib/`basename $(PDCPP)`
+	rm -rf $(includedir)/libpd
+	rm -f $(libdir)/`basename $(LIBPD)`
+	rm -f $(libdir)/`basename $(PDCPP)`
