@@ -47,101 +47,101 @@ endif
 PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 
 PD_FILES = \
-	pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
-	pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
-	pure-data/src/d_fft_fftsg.c \
-	pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
-	pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
-	pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
-	pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
-	pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
-	pure-data/src/g_graph.c pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c \
-	pure-data/src/g_hslider.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c \
-	pure-data/src/g_numbox.c pure-data/src/g_readwrite.c \
-	pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_template.c \
-	pure-data/src/g_text.c pure-data/src/g_toggle.c pure-data/src/g_traversal.c \
-	pure-data/src/g_vdial.c pure-data/src/g_vslider.c pure-data/src/g_vumeter.c \
-	pure-data/src/m_atom.c pure-data/src/m_binbuf.c pure-data/src/m_class.c \
-	pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
-	pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
-	pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c pure-data/src/s_inter.c \
-	pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
-	pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
-	pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
-	pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
-	pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
-	pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
-	pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c pure-data/src/x_vexp_fun.c \
-	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
+    pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
+    pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
+    pure-data/src/d_fft_fftsg.c \
+    pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
+    pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
+    pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
+    pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
+    pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
+    pure-data/src/g_graph.c pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c \
+    pure-data/src/g_hslider.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c \
+    pure-data/src/g_numbox.c pure-data/src/g_readwrite.c \
+    pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_template.c \
+    pure-data/src/g_text.c pure-data/src/g_toggle.c pure-data/src/g_traversal.c \
+    pure-data/src/g_vdial.c pure-data/src/g_vslider.c pure-data/src/g_vumeter.c \
+    pure-data/src/m_atom.c pure-data/src/m_binbuf.c pure-data/src/m_class.c \
+    pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
+    pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
+    pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c pure-data/src/s_inter.c \
+    pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
+    pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
+    pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
+    pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
+    pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
+    pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
+    pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c pure-data/src/x_vexp_fun.c \
+    libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
+    libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
 
 PD_EXTRA_FILES = \
-	pure-data/extra/bob~/bob~.c pure-data/extra/bonk~/bonk~.c \
-	pure-data/extra/choice/choice.c \
-	pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c \
-	pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c \
-	pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
+    pure-data/extra/bob~/bob~.c pure-data/extra/bonk~/bonk~.c \
+    pure-data/extra/choice/choice.c \
+    pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c \
+    pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c \
+    pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
 
 LIBPD_UTILS = \
-	libpd_wrapper/util/z_print_util.c \
-	libpd_wrapper/util/z_queued.c \
-	libpd_wrapper/util/ringbuffer.c
+    libpd_wrapper/util/z_print_util.c \
+    libpd_wrapper/util/z_queued.c \
+    libpd_wrapper/util/ringbuffer.c
 
 CPP_FILES = \
-	cpp/PdBase.cpp \
-	cpp/PdTypes.cpp
+    cpp/PdBase.cpp \
+    cpp/PdTypes.cpp
 
 PDJAVA_JAR_CLASSES = \
-	java/org/puredata/core/PdBase.java \
-	java/org/puredata/core/NativeLoader.java \
-	java/org/puredata/core/PdListener.java \
-	java/org/puredata/core/PdMidiListener.java \
-	java/org/puredata/core/PdMidiReceiver.java \
-	java/org/puredata/core/PdReceiver.java \
-	java/org/puredata/core/utils/IoUtils.java \
-	java/org/puredata/core/utils/PdDispatcher.java
+    java/org/puredata/core/PdBase.java \
+    java/org/puredata/core/NativeLoader.java \
+    java/org/puredata/core/PdListener.java \
+    java/org/puredata/core/PdMidiListener.java \
+    java/org/puredata/core/PdMidiReceiver.java \
+    java/org/puredata/core/PdReceiver.java \
+    java/org/puredata/core/utils/IoUtils.java \
+    java/org/puredata/core/utils/PdDispatcher.java
 
 JNI_SOUND = jni/z_jni_plain.c
 
 # conditional libpd_wrapper/util compilation
 ifeq ($(UTIL), true)
-	UTIL_FILES = $(LIBPD_UTILS)
+    UTIL_FILES = $(LIBPD_UTILS)
 endif
 
 # conditional pure-data/extra externals compilation
 ifeq ($(EXTRA), true)
-	EXTRA_FILES = $(PD_EXTRA_FILES)
-	EXTRA_CFLAGS = -DLIBPD_EXTRA
+    EXTRA_FILES = $(PD_EXTRA_FILES)
+    EXTRA_CFLAGS = -DLIBPD_EXTRA
 endif
 
 # conditional optimizations or debug settings
 OPT_CFLAGS = -O3
 ifeq ($(DEBUG), true)
-	OPT_CFLAGS = -Wall
+    OPT_CFLAGS = -Wall
 endif
 
 # conditional to set numeric locale to default "C"
 LOCALE_CFLAGS =
 ifeq ($(SETLOCALE), true)
-	LOCALE_CFLAGS = -DLIBPD_SETLOCALE
+    LOCALE_CFLAGS = -DLIBPD_SETLOCALE
 endif
 
 # portaudio backend?
 ifeq ($(PORTAUDIO), true)
-	JNI_SOUND = jni/z_jni_pa.c
-	JAVA_LDFLAGS := $(JAVA_LDFLAGS) -lportaudio
-	ifeq ($(UNAME), Darwin)  # Mac
-		JAVA_LDFLAGS := $(JAVA_LDFLAGS) \
-			-framework CoreAudio -framework AudioToolbox \
-			-framework AudioUnit -framework CoreServices
-	endif
+    JNI_SOUND = jni/z_jni_pa.c
+    JAVA_LDFLAGS := $(JAVA_LDFLAGS) -lportaudio
+    ifeq ($(UNAME), Darwin)  # Mac
+        JAVA_LDFLAGS := $(JAVA_LDFLAGS) \
+                        -framework CoreAudio -framework AudioToolbox \
+                        -framework AudioUnit -framework CoreServices
+    endif
 endif
 
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
-	pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
-	pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
+    pure-data/src/d_fft_fft_fftsg.o pure-data/src/d_fft_fftw.o \
+    pure-data/src/d_fft_fftsg_h.o pure-data/src/x_qlist.o
 
 # default install location
 prefix ?= /usr/local
@@ -220,11 +220,11 @@ install:
 	fi
 	install -d $(libdir)
 	if [ -e $(LIBPD) ]; then \
-		install -m 755 $(LIBPD) $(libdir); \
+	    install -m 755 $(LIBPD) $(libdir); \
 	fi
 	if [ -e $(PDCPP) ]; then \
-		install -m 644 cpp/*.hpp $(includedir)/libpd; \
-		install -m 755 $(PDCPP) $(libdir); \
+	    install -m 644 cpp/*.hpp $(includedir)/libpd; \
+	    install -m 755 $(PDCPP) $(libdir); \
 	fi
 
 uninstall:
