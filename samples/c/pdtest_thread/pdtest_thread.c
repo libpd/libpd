@@ -200,7 +200,8 @@ static void* multi_instance_run(t_libpd_instance* inst)
         libpd_instance_perform(inst); }
     libpd_instance_dsp_stop(inst);
     libpd_instance_close(inst);
-    libpd_instance_free(inst);
+    /* for the moment remove it wait for Pd to correct the bug */
+    //libpd_instance_free(inst);
     return NULL;
 }
 
