@@ -189,11 +189,12 @@ static void libpd_instance_perform(t_libpd_instance* inst)
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+static char* test_path = "../samples/c/pdtest_thread/";
 static void* multi_instance_run(t_libpd_instance* inst)
 {
     size_t i;
     libpd_instance_init(inst, 256, 44100, 2, 2);
-    libpd_instance_open(inst, LIBPD_TEST_PATCH_NAME, "/Users/Pierre/GitHub/PureData/libpd/samples/c/pdtest_thread/");
+    libpd_instance_open(inst, LIBPD_TEST_PATCH_NAME, test_path);
     libpd_instance_dsp_start(inst);
     for(i = 0; i < LIBPD_TEST_NLOOPS; ++i) {
         libpd_instance_perform(inst); }
@@ -215,7 +216,9 @@ int main(int argc, char **argv)
     libpd_init();
     assert(PDINSTANCE && "PDINSTANCE undefined");
     assert(PDTHREADS && "PDTHREADS undefined");
-    
+    if(argc > 1 && argv[1])
+        test_path = argv[1];
+        
     for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i)
     {
         assert(!pthread_create(threads+i, NULL, (void *)multi_instance_run, instance+i) &&
