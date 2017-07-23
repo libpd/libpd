@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#ifdef LIBPD_SETLOCALE
+#ifndef LIBPD_NO_NUMERIC
 # include <locale.h>
 #endif
 #include "z_libpd.h"
@@ -99,7 +99,7 @@ int libpd_init(void) {
   sigmund_tilde_setup();
   stdout_setup();
 #endif
-#ifdef LIBPD_SETLOCALE
+#ifndef LIBPD_NO_NUMERIC
   setlocale(LC_NUMERIC, "C");
 #endif
   return 0;
