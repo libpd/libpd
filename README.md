@@ -124,6 +124,15 @@ Use the following in your CocoaPods podfile:
 
     pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
 
+Carthage
+--------
+
+Alternatively, you can use [Carthage](https://github.com/Carthage/Carthage) to add libpd.
+
+Use the following in your `Cartfile`
+
+    github "libpd/libpd"
+
 C#
 --
 
