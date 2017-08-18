@@ -581,3 +581,4 @@ void glob_savepreferences(t_pd *dummy, t_symbol *s) {}
 void glob_forgetpreferences(t_pd *dummy) {}
 void sys_loadpreferences(const char *filename, int startingup) {}
 int sys_oktoloadfiles(int done) {return 1;}
+void sys_savepreferences(const char *filename) {} /* used in s_path.c */
