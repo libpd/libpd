@@ -511,7 +511,7 @@ int libpd_midibyte(int port, int byte) {
 
 int libpd_sysex(int port, int byte) {
   CHECK_PORT
-  CHECK_RANGE_7BIT(byte)
+  CHECK_RANGE_8BIT(byte)
   sys_lock();
   inmidi_sysex(port, byte);
   sys_unlock();
