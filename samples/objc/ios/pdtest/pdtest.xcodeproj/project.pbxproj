@@ -19,9 +19,9 @@
 		302110E21AE7095200DFFAF8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 302110D71AE7095200DFFAF8 /* Default.png */; };
 		302110E31AE7095200DFFAF8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 302110D81AE7095200DFFAF8 /* Default@2x.png */; };
 		302110E41AE7095200DFFAF8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 302110DA1AE7095200DFFAF8 /* InfoPlist.strings */; };
-		302110E51AE7095200DFFAF8 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302110DC1AE7095200DFFAF8 /* ViewController.xib */; };
 		302110E71AE7095200DFFAF8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 302110E01AE7095200DFFAF8 /* main.m */; };
 		30EF3CD11AE76AE600E3DB68 /* libpd-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */; };
+		F41438CC1F72684400E7BCAE /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F41438CA1F72684400E7BCAE /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,11 +57,11 @@
 		302110D71AE7095200DFFAF8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = pdtest/Default.png; sourceTree = SOURCE_ROOT; };
 		302110D81AE7095200DFFAF8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "pdtest/Default@2x.png"; sourceTree = SOURCE_ROOT; };
 		302110DB1AE7095200DFFAF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
-		302110DD1AE7095200DFFAF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ViewController.xib; sourceTree = "<group>"; };
 		302110DE1AE7095200DFFAF8 /* pdtest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "pdtest-Info.plist"; path = "pdtest/pdtest-Info.plist"; sourceTree = SOURCE_ROOT; };
 		302110DF1AE7095200DFFAF8 /* pdtest-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "pdtest-Prefix.pch"; path = "pdtest/pdtest-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		302110E01AE7095200DFFAF8 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = pdtest/main.m; sourceTree = SOURCE_ROOT; };
 		30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
+		F41438CB1F72684400E7BCAE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = Storyboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,7 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				302110DA1AE7095200DFFAF8 /* InfoPlist.strings */,
-				302110DC1AE7095200DFFAF8 /* ViewController.xib */,
+				F41438CA1F72684400E7BCAE /* Storyboard.storyboard */,
 			);
 			name = en.lproj;
 			path = pdtest/en.lproj;
@@ -232,11 +232,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				302110E51AE7095200DFFAF8 /* ViewController.xib in Resources */,
 				302110E31AE7095200DFFAF8 /* Default@2x.png in Resources */,
 				302110E21AE7095200DFFAF8 /* Default.png in Resources */,
 				301135B316A79729005421C7 /* pd in Resources */,
 				302110E41AE7095200DFFAF8 /* InfoPlist.strings in Resources */,
+				F41438CC1F72684400E7BCAE /* Storyboard.storyboard in Resources */,
 				302110E11AE7095200DFFAF8 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,12 +265,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		302110DC1AE7095200DFFAF8 /* ViewController.xib */ = {
+		F41438CA1F72684400E7BCAE /* Storyboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				302110DD1AE7095200DFFAF8 /* en */,
+				F41438CB1F72684400E7BCAE /* en */,
 			);
-			name = ViewController.xib;
+			name = Storyboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -337,7 +337,7 @@
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -354,7 +354,7 @@
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

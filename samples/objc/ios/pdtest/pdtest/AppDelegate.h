@@ -8,14 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "PdBase.h"
-
 @class ViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, PdReceiverDelegate, PdMidiReceiverDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) ViewController *viewController;
+@property (weak, nonatomic) ViewController *viewController;
 
 @end
