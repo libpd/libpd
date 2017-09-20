@@ -38,7 +38,7 @@
 	PdFile *pdFile = [[self alloc] init];
 	if (pdFile) {
 		[pdFile openFile:baseName path:pathName];
-		if (![pdFile fileReference]) {
+		if (!pdFile.fileReference) {
 			return nil;
 		}
 	}
@@ -81,7 +81,7 @@
 }
 
 - (void)closeFile {
-	void *x = [self.fileReference pointerValue];
+	void *x = (self.fileReference).pointerValue;
 	if (x) {
 		[PdBase closeFile:x];
 		self.fileReference = nil;

@@ -51,7 +51,7 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 		t_atom *a = &argv[i];
 		if (libpd_is_float(a)) {
 			float x = libpd_get_float(a);
-			NSNumber *num = [[NSNumber alloc] initWithFloat:x];
+			NSNumber *num = @(x);
 			[list addObject:num];
 		} else if (libpd_is_symbol(a)) {
 			const char *s = libpd_get_symbol(a);
@@ -65,10 +65,10 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 }
 
 static void encodeList(NSArray *list) {
-	for (int i = 0; i < [list count]; i++) {
-		NSObject *object = [list objectAtIndex:i];
+	for (int i = 0; i < list.count; i++) {
+		NSObject *object = list[i];
 		if ([object isKindOfClass:[NSNumber class]]) {
-			libpd_add_float([(NSNumber *)object floatValue]);
+			libpd_add_float(((NSNumber *)object).floatValue);
 		} else if ([object isKindOfClass:[NSString class]]) {
 			if ([(NSString *)object canBeConvertedToEncoding:NSASCIIStringEncoding]) {
         			libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -303,7 +303,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
 	@synchronized(self) {
-		if (libpd_start_message((int) [list count])) return -100;
+		if (libpd_start_message((int) list.count)) return -100;
 			encodeList(list);
 		return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
 	}
@@ -311,7 +311,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
 	@synchronized(self) {
-		if (libpd_start_message((int) [list count])) return -100;
+		if (libpd_start_message((int) list.count)) return -100;
 		encodeList(list);
 		return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
 			[message cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -367,8 +367,8 @@ static NSTimer *midiPollTimer;
 }
 
 + (void)computeAudio:(BOOL)enable {
-	NSNumber *val = [[NSNumber alloc] initWithBool:enable];
-	NSArray *args = [[NSArray alloc] initWithObjects:val, nil];
+	NSNumber *val = @(enable);
+	NSArray *args = @[val];
 	[PdBase sendMessage:@"dsp" withArguments:args toReceiver:@"pd"];
 }
 

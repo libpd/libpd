@@ -42,7 +42,7 @@
 	CGPoint pos = [touch locationInView:self.view];
 	int pitch = (-1 * (pos.y/CGRectGetHeight(self.view.frame)) + 1) * 127;
 
-	[PdBase sendList:[NSArray arrayWithObjects:@"pitch", [NSNumber numberWithInt:pitch], nil] toReceiver:@"tone"];
+	[PdBase sendList:@[@"pitch", @(pitch)] toReceiver:@"tone"];
 	[PdBase sendBangToReceiver:@"tone"];
 
 	NSLog(@"touch at %.f %.f with pitch: %d", pos.x, pos.y, pitch);
@@ -77,7 +77,7 @@
 	[PdBase subscribe:@"fromPD"];
 
 	// add search path
-	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [[NSBundle mainBundle] bundlePath]]];
+	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [NSBundle mainBundle].bundlePath]];
 
 	// turn on dsp
 	self.audioController.active = YES;
@@ -91,7 +91,7 @@
 	NSLog(@"-- BEGIN Patch Test");
 
 	// open patch
-	self.patch = [PdFile openFileNamed:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", [[NSBundle mainBundle] bundlePath]]];
+	self.patch = [PdFile openFileNamed:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", [NSBundle mainBundle].bundlePath]];
 	NSLog(@"%@", self.patch);
 
 	// close patch
@@ -113,8 +113,7 @@
 	[PdBase sendSymbol:@"test string" toReceiver:@"toPD" ];
 
 	// send a list
-	NSArray *list = [[NSArray alloc] initWithObjects:
-					 [NSNumber numberWithFloat:1.23], @"a symbol", nil];
+	NSArray *list = @[@1.23f, @"a symbol"];
 	[PdBase sendList:list toReceiver:@"toPd"];
 
 	// send a list to the $0 receiver ie $0-toOF

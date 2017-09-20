@@ -35,7 +35,7 @@ static const AudioUnitElement kOutputElement = 0;
 
 #pragma mark - Init / Dealloc
 
-- (id)init {
+- (instancetype)init {
 	self = [super init];
 	if (self) {
 		_initialized = NO;

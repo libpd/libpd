@@ -41,7 +41,7 @@ typedef enum PdAudioStatus {
 
 /// Init with a custom pd audio unit. Derive PdAudioUnit when you need to access
 /// to the raw samples when using, for instance, AudioBus, and call this method after init.
-- (id)initWithAudioUnit:(PdAudioUnit *)audioUnit;
+- (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit;
 
 /// Configure the audio with the specified samplerate, as well as number of output channels (which will also be the number of
 /// input channels if input is enable).  Note that this method has three possible outcomes: success, failure, or conditional

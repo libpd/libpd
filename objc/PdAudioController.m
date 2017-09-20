@@ -17,6 +17,12 @@
 
 @interface PdAudioController ()
 
+@property (nonatomic, readwrite) int sampleRate;
+@property (nonatomic, readwrite) int numberChannels;
+@property (nonatomic, readwrite) BOOL inputEnabled;
+@property (nonatomic, readwrite) BOOL mixingEnabled;
+@property (nonatomic, readwrite) int ticksPerBuffer;
+
 @property (nonatomic, strong, readwrite) PdAudioUnit *audioUnit;
 
 // updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
@@ -30,20 +36,12 @@
 
 @implementation PdAudioController
 
-//@synthesize sampleRate = sampleRate_;
-//@synthesize numberChannels = numberChannels_;
-//@synthesize inputEnabled = inputEnabled_;
-//@synthesize mixingEnabled = mixingEnabled_;
-@synthesize ticksPerBuffer = _ticksPerBuffer;
-//@synthesize active = active_;
-//@synthesize audioUnit = audioUnit_;
-
-- (id)init {
+- (instancetype)init {
 	self = [self initWithAudioUnit:[[PdAudioUnit alloc] init]];
 	return self;
 }
 
-- (id)initWithAudioUnit:(PdAudioUnit *)audioUnit {
+- (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit {
 	self = [super init];
 	if (self) {
 		AVAudioSession *globalSession = [AVAudioSession sharedInstance];
@@ -58,7 +56,7 @@
 }
 
 - (int)ticksPerBuffer {
-	NSTimeInterval asBufferDuration = [[AVAudioSession sharedInstance] IOBufferDuration];
+	NSTimeInterval asBufferDuration = [AVAudioSession sharedInstance].IOBufferDuration;
 	AU_LOGV(@"IOBufferDuration: %f seconds", asBufferDuration);
 	_ticksPerBuffer = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
 	return _ticksPerBuffer;
