@@ -17,7 +17,7 @@
 
 @interface PdAudioController ()
 
-@property (nonatomic, retain, readwrite) PdAudioUnit *audioUnit;
+@property (nonatomic, strong, readwrite) PdAudioUnit *audioUnit;
 
 // updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;
@@ -30,16 +30,16 @@
 
 @implementation PdAudioController
 
-@synthesize sampleRate = sampleRate_;
-@synthesize numberChannels = numberChannels_;
-@synthesize inputEnabled = inputEnabled_;
-@synthesize mixingEnabled = mixingEnabled_;
-@synthesize ticksPerBuffer = ticksPerBuffer_;
-@synthesize active = active_;
-@synthesize audioUnit = audioUnit_;
+//@synthesize sampleRate = sampleRate_;
+//@synthesize numberChannels = numberChannels_;
+//@synthesize inputEnabled = inputEnabled_;
+//@synthesize mixingEnabled = mixingEnabled_;
+@synthesize ticksPerBuffer = _ticksPerBuffer;
+//@synthesize active = active_;
+//@synthesize audioUnit = audioUnit_;
 
 - (id)init {
-	self = [self initWithAudioUnit:[[[PdAudioUnit alloc] init] autorelease]];
+	self = [self initWithAudioUnit:[[PdAudioUnit alloc] init]];
 	return self;
 }
 
@@ -60,13 +60,12 @@
 - (int)ticksPerBuffer {
 	NSTimeInterval asBufferDuration = [[AVAudioSession sharedInstance] IOBufferDuration];
 	AU_LOGV(@"IOBufferDuration: %f seconds", asBufferDuration);
-	ticksPerBuffer_ = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
-	return ticksPerBuffer_;
+	_ticksPerBuffer = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
+	return _ticksPerBuffer;
 }
 
 - (void)dealloc {
 	self.audioUnit = nil;
-	[super dealloc];
 }
 
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
@@ -109,8 +108,8 @@
 }
 
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
-	inputEnabled_ = inputEnabled;
-	numberChannels_ = numChannels;
+	_inputEnabled = inputEnabled;
+	_numberChannels = numChannels;
 	return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
 }
 
@@ -123,7 +122,7 @@
 	}
 	double currentHardwareSampleRate = globalSession.sampleRate;
 	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
-	sampleRate_ = currentHardwareSampleRate;
+	_sampleRate = currentHardwareSampleRate;
 	if (!floatsAreEqual(sampleRate, currentHardwareSampleRate)) {
 		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)", currentHardwareSampleRate);
 		return PdAudioPropertyChanged;
@@ -169,7 +168,7 @@
 		}
 	}
 	
-	mixingEnabled_ = allowsMixing;
+	_mixingEnabled = allowsMixing;
 	return PdAudioOK;
 }
 
@@ -202,7 +201,7 @@
 
 - (void)setActive:(BOOL)active {
 	self.audioUnit.active = active;
-	active_ = self.audioUnit.isActive;
+	_active = self.audioUnit.isActive;
 }
 
 // receives interrupt notification
@@ -216,7 +215,7 @@
 	else if (interuptionType == AVAudioSessionInterruptionTypeEnded) {
 		NSUInteger option = [[interuptionDict valueForKey:AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
 		if (option == AVAudioSessionInterruptionOptionShouldResume) {
-			self.active = active_;  // Not redundant due to weird ObjC accessor.
+			self.active = _active;  // Not redundant due to weird ObjC accessor.
 			AU_LOGV(@"ended interruption");
 		} else {
 			AU_LOGV(@"still interrupted");

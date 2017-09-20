@@ -47,7 +47,7 @@
 @property (nonatomic, readonly) AURenderCallback renderCallback;
 
 /// Check or set the active status of the audio unit
-@property (nonatomic, getter = isActive) BOOL active;
+@property (nonatomic, getter=isActive) BOOL active;
 
 /// The configure method sets all parameters of the audio unit that may require it to be
 /// recreated at the same time.  This is an expensive process and will stop the audio unit

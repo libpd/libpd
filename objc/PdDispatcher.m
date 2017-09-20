@@ -26,9 +26,6 @@
 		void *ptr = [handle pointerValue];
 		[PdBase unsubscribe:ptr];
 	}
-	[subscriptions release];
-	[listenerMap release];
-	[super dealloc];
 }
 
 - (int)addListener:(NSObject<PdListener> *)listener forSource:(NSString *)symbol {
@@ -42,7 +39,6 @@
 		[subscriptions setObject:handle forKey:symbol];
 		listeners = [[NSMutableArray alloc] init];
 		[listenerMap setObject:listeners forKey:symbol];
-		[listeners release];
 	}
 	[listeners addObject:listener];
 	return 0;

@@ -34,7 +34,7 @@ typedef enum PdAudioStatus {
 @property (nonatomic, readonly) int ticksPerBuffer;
 
 /// Read only access to the underlying pd audio unit
-@property (nonatomic, retain, readonly) PdAudioUnit *audioUnit;
+@property (nonatomic, strong, readonly) PdAudioUnit *audioUnit;
 
 /// Check or set the active status of the audio unit
 @property (nonatomic, getter=isActive) BOOL active;

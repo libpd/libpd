@@ -1008,6 +1008,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1033,6 +1034,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1095,7 +1097,7 @@
 					"-DLIBPD_EXTRA",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1140,7 +1142,7 @@
 					"-DLIBPD_EXTRA",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
