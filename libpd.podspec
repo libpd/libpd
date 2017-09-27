@@ -13,7 +13,7 @@ Pod::Spec.new do |spec|
                       'pure-data/extra/**/*.{h,c}',
                       'libpd_wrapper/**/*.{h,c}',
                       'objc/**/*.{h,m}'
-  spec.public_header_files = 'objc/**/*.{h,m}'
+  spec.public_header_files = 'objc/**/*.{h}'
   spec.ios.deployment_target = '6.0'
   spec.requires_arc = false
   spec.frameworks = 'Foundation', 'AudioToolbox', 'AVFoundation'
