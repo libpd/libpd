@@ -96,7 +96,7 @@ Glue for using libpd with Java, C#, Objective C, C++ and Python. Feel free to im
 
 ### samples
 
-Contains small sample programs and tests in the various supported langauges.
+Contains small sample programs and tests in the various supported languages.
 
 Xcode Project
 -------------
