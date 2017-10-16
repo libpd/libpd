@@ -17,47 +17,35 @@
 
 @interface PdAudioController ()
 
-@property (nonatomic, retain, readwrite) PdAudioUnit *audioUnit;	// our PdAudioUnit
-- (PdAudioStatus)updateSampleRate:(int)sampleRate;		// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
-- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;  // Not all inputs make sense, but that's okay in the private interface.
-- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
+@property (nonatomic, readwrite) int sampleRate;
+@property (nonatomic, readwrite) int numberChannels;
+@property (nonatomic, readwrite) BOOL inputEnabled;
+@property (nonatomic, readwrite) BOOL mixingEnabled;
+@property (nonatomic, readwrite) int ticksPerBuffer;
 
-#if __IPHONE_OS_VERSION_MIN_ALLOWED >= 60000
-// AVAudioSessionDelegate is deprecated starting in iOS 6, so we declare it's methods here
-- (void)beginInterruption;
-- (void)endInterruptionWithFlags:(NSUInteger)flags;
-- (void)interruptionOcurred:(NSNotification*)notification; // handles AVAudioSessionInterruptionNotification
-#endif
+@property (nonatomic, strong, readwrite) PdAudioUnit *audioUnit;
+
+// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
+- (PdAudioStatus)updateSampleRate:(int)sampleRate;
+
+// not all inputs make sense, but that's okay in the private interface
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 
 @end
 
 @implementation PdAudioController
 
-@synthesize sampleRate = sampleRate_;
-@synthesize numberChannels = numberChannels_;
-@synthesize inputEnabled = inputEnabled_;
-@synthesize mixingEnabled = mixingEnabled_;
-@synthesize ticksPerBuffer = ticksPerBuffer_;
-@synthesize active = active_;
-@synthesize audioUnit = audioUnit_;
-
-- (id)init {
-	self = [self initWithAudioUnit:[[[PdAudioUnit alloc] init] autorelease]];
+- (instancetype)init {
+	self = [self initWithAudioUnit:[[PdAudioUnit alloc] init]];
 	return self;
 }
 
-- (id)initWithAudioUnit:(PdAudioUnit *)audioUnit {
+- (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit {
 	self = [super init];
 	if (self) {
 		AVAudioSession *globalSession = [AVAudioSession sharedInstance];
-		
-		[AVAudioSession sharedInstance];
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(interruptionOcurred:) name:AVAudioSessionInterruptionNotification object:nil];
-	#else
-		// AVAudioSessionDelegate is deprecated starting in iOS 6
-		globalSession.delegate = self;
-	#endif
 		NSError *error = nil;
 		[globalSession setActive:YES error:&error];
 		AU_LOG_IF_ERROR(error, @"Audio Session activation failed");
@@ -68,25 +56,14 @@
 }
 
 - (int)ticksPerBuffer {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-	NSTimeInterval asBufferDuration = [[AVAudioSession sharedInstance] IOBufferDuration];
+	NSTimeInterval asBufferDuration = [AVAudioSession sharedInstance].IOBufferDuration;
 	AU_LOGV(@"IOBufferDuration: %f seconds", asBufferDuration);
-#else
-	Float32 asBufferDuration = 0;
-	UInt32 size = sizeof(asBufferDuration);
-	
-	OSStatus status = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareIOBufferDuration, &size, &asBufferDuration);
-	AU_LOG_IF_ERROR(status, @"error getting audio session buffer duration (status = %ld)", status);
-	AU_LOGV(@"kAudioSessionProperty_CurrentHardwareIOBufferDuration: %f seconds", asBufferDuration);
-#endif
-	
-	ticksPerBuffer_ = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
-	return ticksPerBuffer_;
+	_ticksPerBuffer = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
+	return _ticksPerBuffer;
 }
 
 - (void)dealloc {
 	self.audioUnit = nil;
-	[super dealloc];
 }
 
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
@@ -94,12 +71,7 @@
 									inputEnabled:(BOOL)inputEnabled
 								   mixingEnabled:(BOOL)mixingEnabled {
 	PdAudioStatus status = PdAudioOK;
-	BOOL isInputAvailable; // fix crash on iOS < 6 where AVAudioSession is not available
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-	isInputAvailable = [AVAudioSession sharedInstance].inputAvailable;
-#else
-	isInputAvailable = [AVAudioSession sharedInstance].inputIsAvailable;
-#endif
+	BOOL isInputAvailable = [AVAudioSession sharedInstance].inputAvailable;
 	if (inputEnabled && !isInputAvailable) {
 		inputEnabled = NO;
 		status |= PdAudioPropertyChanged;
@@ -134,29 +106,21 @@
 }
 
 - (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
-	inputEnabled_ = inputEnabled;
-	numberChannels_ = numChannels;
+	_inputEnabled = inputEnabled;
+	_numberChannels = numChannels;
 	return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
 }
 
 - (PdAudioStatus)updateSampleRate:(int)sampleRate {
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	NSError *error = nil;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	[globalSession setPreferredSampleRate:sampleRate error:&error];
-#else
-	[globalSession setPreferredHardwareSampleRate:sampleRate error:&error];
-#endif
 	if (error) {
 		return PdAudioError;
 	}
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	double currentHardwareSampleRate = globalSession.sampleRate;
-#else
-	double currentHardwareSampleRate = globalSession.currentHardwareSampleRate;
-#endif
 	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
-	sampleRate_ = currentHardwareSampleRate;
+	_sampleRate = currentHardwareSampleRate;
 	if (!floatsAreEqual(sampleRate, currentHardwareSampleRate)) {
 		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)", currentHardwareSampleRate);
 		return PdAudioPropertyChanged;
@@ -182,64 +146,27 @@
 		return PdAudioError;
 	}
 	
-	
 	// set MixWithOthers property for Playback category
 	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
-	   
-		// iOS 7+
-		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
-
-			// TODO: we should be checking allowsMixing flag here, but setting that requires an update to how we handle interruptions.
-			// - more specifically, endInterruptionWithFlags: needs to be updated since AVAudioSessionInterruptionOptionShouldResume has been deprecated.
-// 			if (allowsMixing) {
-				if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
-					AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
-					return PdAudioError;
-				}
-// 			}
-		}
-		
-		// iOS 6
-		else {
-			UInt32 mix = allowsMixing ? 1 : 0;
-			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
-			if (status) {
-				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
+		// TODO: we should be checking allowsMixing flag here, but setting that requires an update to how we handle interruptions.
+// 		if (allowsMixing) {
+			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
 				return PdAudioError;
 			}
-		}
+// 		}
 	}
 	
 	// set MixWithOthers & DefaultToSpeaker properties for PlayAndRecord category
 	else if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
-		
-		// iOS 7+
-		if ([[AVAudioSession sharedInstance] respondsToSelector:@selector(setCategory:withOptions:error:)]) {
-			AVAudioSessionCategoryOptions options = (allowsMixing ? (AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers) : AVAudioSessionCategoryOptionDefaultToSpeaker);
-			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&error]) {
-				AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker & AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
-				return PdAudioError;
-			}
-		}
-		
-		// iOS 6
-		else {
-			UInt32 defaultToSpeaker = 1;
-			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(defaultToSpeaker), &defaultToSpeaker);
-			if (status) {
-				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryDefaultToSpeaker (status = %d)", (int)status);
-				return PdAudioError;
-			}
-			UInt32 mix = allowsMixing ? 1 : 0;
-			status = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(mix), &mix);
-			if (status) {
-				AU_LOG(@"error setting kAudioSessionProperty_OverrideCategoryMixWithOthers to %@ (status = %d)", (allowsMixing ? @"YES" : @"NO"), (int)status);
-				return PdAudioError;
-			}
+		AVAudioSessionCategoryOptions options = (allowsMixing ? (AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers) : AVAudioSessionCategoryOptionDefaultToSpeaker);
+		if (![[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&error]) {
+			AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker & AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+			return PdAudioError;
 		}
 	}
 	
-	mixingEnabled_ = allowsMixing;
+	_mixingEnabled = allowsMixing;
 	return PdAudioOK;
 }
 
@@ -272,38 +199,25 @@
 
 - (void)setActive:(BOOL)active {
 	self.audioUnit.active = active;
-	active_ = self.audioUnit.isActive;
+	_active = self.audioUnit.isActive;
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-// receives interrupt notification and calls ex-AVAudioSessionDelegate methods
+// receives interrupt notification
 - (void)interruptionOcurred:(NSNotification*)notification {
 	NSDictionary *interuptionDict = notification.userInfo;
 	NSUInteger interuptionType = (NSUInteger)[interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey];
 	if (interuptionType == AVAudioSessionInterruptionTypeBegan) {
-		[self beginInterruption];
+		self.audioUnit.active = NO;  // Leave active_ unchanged.
+		AU_LOGV(@"interrupted");
 	}
 	else if (interuptionType == AVAudioSessionInterruptionTypeEnded) {
-		[self endInterruptionWithFlags:(NSUInteger)[interuptionDict valueForKey:AVAudioSessionInterruptionOptionKey]];
-	}
-}
-#endif
-
-- (void)beginInterruption {
-	self.audioUnit.active = NO;  // Leave active_ unchanged.
-	AU_LOGV(@"interrupted");
-}
-
-- (void)endInterruptionWithFlags:(NSUInteger)flags {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-	if (flags == AVAudioSessionInterruptionOptionShouldResume) {
-#else
-	if (flags == AVAudioSessionInterruptionFlags_ShouldResume) {
-#endif
-		self.active = active_;  // Not redundant due to weird ObjC accessor.
-		AU_LOGV(@"ended interruption");
-	} else {
-		AU_LOGV(@"still interrupted");
+		NSUInteger option = [[interuptionDict valueForKey:AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
+		if (option == AVAudioSessionInterruptionOptionShouldResume) {
+			self.active = _active;  // Not redundant due to weird ObjC accessor.
+			AU_LOGV(@"ended interruption");
+		} else {
+			AU_LOGV(@"still interrupted");
+		}
 	}
 }
 
@@ -311,7 +225,6 @@
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	AU_LOG(@"----- AVAudioSession properties -----");
 	AU_LOG(@"category: %@", globalSession.category);
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 	AU_LOG(@"sampleRate: %.0f", globalSession.sampleRate);
 	AU_LOG(@"preferredSampleRate: %.0f", globalSession.preferredSampleRate);
 	AU_LOG(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
@@ -319,15 +232,6 @@
 	AU_LOG(@"inputAvailable: %@", (globalSession.inputAvailable ? @"YES" : @"NO"));
 	AU_LOG(@"inputNumberOfChannels: %ld", (long)globalSession.inputNumberOfChannels);
 	AU_LOG(@"outputNumberOfChannels: %ld", (long)globalSession.outputNumberOfChannels);
-#else
-	AU_LOG(@"currentHardwareSampleRate: %.0f", globalSession.currentHardwareSampleRate);
-	AU_LOG(@"preferredHardwareSampleRate: %.0f", globalSession.preferredHardwareSampleRate);
-	AU_LOG(@"preferredIOBufferDuration: %f", globalSession.preferredIOBufferDuration);
-
-	AU_LOG(@"inputIsAvailable: %@", (globalSession.inputIsAvailable ? @"YES" : @"NO"));
-	AU_LOG(@"currentHardwareInputNumberOfChannels: %d", globalSession.currentHardwareInputNumberOfChannels);
-	AU_LOG(@"currentHardwareOutputNumberOfChannels: %d", globalSession.currentHardwareOutputNumberOfChannels);
-#endif
 	[self.audioUnit print];
 }
 

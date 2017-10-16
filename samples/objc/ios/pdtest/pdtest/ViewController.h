@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+#import "PdBase.h"
+
+@interface ViewController : UIViewController <PdReceiverDelegate, PdMidiReceiverDelegate>
+
+// setup the Pd audio controller, etc
+- (void)setupPd;
+
+// run some Pd tests
+- (void)testPd;
 
 @end

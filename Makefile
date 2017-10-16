@@ -122,8 +122,8 @@ endif
 
 # conditional to set numeric locale to default "C"
 LOCALE_CFLAGS =
-ifeq ($(SETLOCALE), true)
-    LOCALE_CFLAGS = -DLIBPD_SETLOCALE
+ifeq ($(SETLOCALE), false)
+    LOCALE_CFLAGS = -DLIBPD_NO_NUMERIC
 endif
 
 # portaudio backend?

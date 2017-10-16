@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#ifdef LIBPD_SETLOCALE
+#ifndef LIBPD_NO_NUMERIC
 # include <locale.h>
 #endif
 #include "z_libpd.h"
@@ -99,7 +99,7 @@ int libpd_init(void) {
   sigmund_tilde_setup();
   stdout_setup();
 #endif
-#ifdef LIBPD_SETLOCALE
+#ifndef LIBPD_NO_NUMERIC
   setlocale(LC_NUMERIC, "C");
 #endif
   return 0;
@@ -513,7 +513,7 @@ int libpd_midibyte(int port, int byte) {
 
 int libpd_sysex(int port, int byte) {
   CHECK_PORT
-  CHECK_RANGE_7BIT(byte)
+  CHECK_RANGE_8BIT(byte)
   sys_lock();
   inmidi_sysex(port, byte);
   sys_unlock();
@@ -583,3 +583,4 @@ void glob_savepreferences(t_pd *dummy, t_symbol *s) {}
 void glob_forgetpreferences(t_pd *dummy) {}
 void sys_loadpreferences(const char *filename, int startingup) {}
 int sys_oktoloadfiles(int done) {return 1;}
+void sys_savepreferences(const char *filename) {} /* used in s_path.c */

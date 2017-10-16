@@ -31,7 +31,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Updated 2013 Dan Wilcox (danomatika@gmail.com)
+ * Updated 2013 Dan Wilcox <danomatika@gmail.com>
  *
  */
 
@@ -51,14 +51,12 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 		t_atom *a = &argv[i];
 		if (libpd_is_float(a)) {
 			float x = libpd_get_float(a);
-			NSNumber *num = [[NSNumber alloc] initWithFloat:x];
+			NSNumber *num = @(x);
 			[list addObject:num];
-			[num release];
 		} else if (libpd_is_symbol(a)) {
 			const char *s = libpd_get_symbol(a);
 			NSString *str = [[NSString alloc] initWithCString:s encoding:NSASCIIStringEncoding];
 			[list addObject:str];
-			[str release];
 		} else {
 			NSLog(@"PdBase: element type unsupported: %i", a->a_type);
 		}
@@ -67,10 +65,10 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 }
 
 static void encodeList(NSArray *list) {
-	for (int i = 0; i < [list count]; i++) {
-		NSObject *object = [list objectAtIndex:i];
+	for (int i = 0; i < list.count; i++) {
+		NSObject *object = list[i];
 		if ([object isKindOfClass:[NSNumber class]]) {
-			libpd_add_float([(NSNumber *)object floatValue]);
+			libpd_add_float(((NSNumber *)object).floatValue);
 		} else if ([object isKindOfClass:[NSString class]]) {
 			if ([(NSString *)object canBeConvertedToEncoding:NSASCIIStringEncoding]) {
         			libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -92,7 +90,6 @@ static void printHook(const char *s) {
 	if ([delegate respondsToSelector:@selector(receivePrint:)]) {
 		NSString *msg = [[NSString alloc] initWithCString:s encoding:NSASCIIStringEncoding];
 		[delegate receivePrint:msg];
-		[msg release];
 	}
 }
 
@@ -100,7 +97,6 @@ static void bangHook(const char *src) {
 	if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
 		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
 		[delegate receiveBangFromSource:source];
-		[source release];
 	}
 }
 
@@ -108,7 +104,6 @@ static void floatHook(const char *src, float x) {
 	if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
 		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
 		[delegate receiveFloat:x fromSource:source];
-		[source release];
 	}
 }
 
@@ -117,8 +112,6 @@ static void symbolHook(const char *src, const char *sym) {
 		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
 		NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSASCIIStringEncoding];
 		[delegate receiveSymbol:symbol fromSource:source];
-		[source release];
-		[symbol release];
 	}
 }
 
@@ -127,8 +120,6 @@ static void listHook(const char *src, int argc, t_atom *argv) {
 		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
 		NSArray *args = decodeList(argc, argv);
 		[delegate receiveList:args fromSource:source];
-		[source release];
-		[args release];
 	}
 }
 
@@ -138,9 +129,6 @@ static void messageHook(const char *src, const char* sym, int argc, t_atom *argv
 		NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSASCIIStringEncoding];
 		NSArray *args = decodeList(argc, argv);
 		[delegate receiveMessage:symbol withArguments:args fromSource:source];
-		[source release];
-		[symbol release];
-		[args release];
 	}
 }
 
@@ -237,8 +225,6 @@ static NSTimer *midiPollTimer;
 	[messagePollTimer invalidate]; // this also releases the timer.
 	messagePollTimer = nil;
 	}
-	[newDelegate retain];
-	[delegate release];
 	delegate = newDelegate;
 	if (delegate && pollingEnabled) {
 		messagePollTimer = [NSTimer timerWithTimeInterval:0.02 target:self selector:@selector(receiveMessagesTimer:) userInfo:nil repeats:YES];
@@ -251,8 +237,6 @@ static NSTimer *midiPollTimer;
 		[midiPollTimer invalidate]; // this also releases the timer.
 		midiPollTimer = nil;
 	}
-	[newDelegate retain];
-	[midiDelegate release];
 	midiDelegate = newDelegate;
 	if (midiDelegate && pollingEnabled) {
 		midiPollTimer = [NSTimer timerWithTimeInterval:0.02 target:self selector:@selector(receiveMidiTimer:) userInfo:nil repeats:YES];
@@ -319,7 +303,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
 	@synchronized(self) {
-		if (libpd_start_message((int) [list count])) return -100;
+		if (libpd_start_message((int) list.count)) return -100;
 			encodeList(list);
 		return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
 	}
@@ -327,7 +311,7 @@ static NSTimer *midiPollTimer;
 
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list toReceiver:(NSString *)receiverName {
 	@synchronized(self) {
-		if (libpd_start_message((int) [list count])) return -100;
+		if (libpd_start_message((int) list.count)) return -100;
 		encodeList(list);
 		return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
 			[message cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -383,11 +367,9 @@ static NSTimer *midiPollTimer;
 }
 
 + (void)computeAudio:(BOOL)enable {
-	NSNumber *val = [[NSNumber alloc] initWithBool:enable];
-	NSArray *args = [[NSArray alloc] initWithObjects:val, nil];
+	NSNumber *val = @(enable);
+	NSArray *args = @[val];
 	[PdBase sendMessage:@"dsp" withArguments:args toReceiver:@"pd"];
-	[args release];
-	[val release];
 }
 
 + (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
