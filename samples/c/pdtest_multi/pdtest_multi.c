@@ -106,9 +106,6 @@ int main(int argc, char **argv) {
         printf("\n");
     }
   }
-    
-    pdinstance_free(pd1);
-    pdinstance_free(pd2);
 
   pdinstance_free(pd1);
   pdinstance_free(pd2);
