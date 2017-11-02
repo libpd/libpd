@@ -117,7 +117,7 @@ endif
 # conditional multi-instance support
 MULTI_CFLAGS =
 ifeq ($(MULTI), true)
-    MULTI_CFLAGS = -DPDINSTANCE
+    MULTI_CFLAGS = -DPDINSTANCE -DPDTHREADS
 endif
 
 # conditional optimizations or debug settings

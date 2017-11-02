@@ -74,7 +74,7 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 
   - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
   - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init()
-  - **MULTI=true**, compiles libpd with multiple instance support (you will still need to define PDINSTANCE in your own project)
+  - **MULTI=true**, compiles libpd with multiple instance support
   - **DEBUG=true**, compiles libpd with -Wall & no optimizations
   - **LOCALE=false**, do not set the LC_NUMERIC number format to the default "C" locale\*
   - **PORTAUDIO=true**, compiles libpd with portaudio support (currently JAVA jni only)

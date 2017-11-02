@@ -1664,6 +1664,7 @@
 					"-DHAVE_UNISTD_H",
 					"-DLIBPD_EXTRA",
 					"-DPDINSTANCE",
+					"-DPDTHREADS",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1691,6 +1692,7 @@
 					"-DHAVE_UNISTD_H",
 					"-DLIBPD_EXTRA",
 					"-DPDINSTANCE",
+					"-DPDTHREADS",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1720,6 +1722,7 @@
 					"-DHAVE_UNISTD_H",
 					"-DLIBPD_EXTRA",
 					"-DPDINSTANCE",
+					"-DPDTHREADS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1744,6 +1747,7 @@
 					"-DHAVE_UNISTD_H",
 					"-DLIBPD_EXTRA",
 					"-DPDINSTANCE",
+					"-DPDTHREADS",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
