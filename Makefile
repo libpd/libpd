@@ -114,6 +114,12 @@ ifeq ($(EXTRA), true)
     EXTRA_CFLAGS = -DLIBPD_EXTRA
 endif
 
+# conditional multi-instance support
+MULTI_CFLAGS =
+ifeq ($(MULTI), true)
+    MULTI_CFLAGS = -DPDINSTANCE
+endif
+
 # conditional optimizations or debug settings
 OPT_CFLAGS = -O3
 ifeq ($(DEBUG), true)
@@ -162,7 +168,8 @@ PDJAVA_JAR = libs/libpd.jar
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
-         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(LOCALE_CFLAGS) $(ADDITIONAL_CFLAGS)
+         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
+         $(ADDITIONAL_CFLAGS)
 
 CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
