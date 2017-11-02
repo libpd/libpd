@@ -601,7 +601,7 @@ t_pdinstance *libpd_this_instance(void) {
 
 t_pdinstance *libpd_get_instance(int index) {
 #ifdef PDINSTANCE
-  if(index > pd_ninstances) {return 0;}
+  if(index < 0 || index >= pd_ninstances) {return 0;}
   return pd_instances[index];
 #else
   return pd_this;
