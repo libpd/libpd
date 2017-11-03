@@ -21,8 +21,7 @@ LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 SRC_FILES = pdtest_thread.c
 TARGET = pdtest_thread
 
-CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
-         -O3 -DPDINSTANCE -DPDTHREADS
+CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -O3
 
 .PHONY: clean clobber
 
@@ -31,7 +30,7 @@ $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
 	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
-	cd ../../.. && make ADDITIONAL_CFLAGS=-DPDINSTANCE -DPDTHREADS
+	cd ../../.. && make MULTI=true
 
 clean:
 	rm -f *.o
