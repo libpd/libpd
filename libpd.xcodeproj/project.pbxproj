@@ -526,8 +526,8 @@
 		30ABBFC71CA8A67000E3722F /* x_vexp_if.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp_if.c; sourceTree = "<group>"; };
 		30ABBFC81CA8A67000E3722F /* x_vexp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp.c; sourceTree = "<group>"; };
 		30ABBFC91CA8A67000E3722F /* x_vexp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x_vexp.h; sourceTree = "<group>"; };
-		30C3D2FA1FAA1FCC00C67F08 /* liblibpd-osx-multi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibpd-osx-multi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		30C3D36D1FAA200100C67F08 /* liblibpd-ios-multi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibpd-ios-multi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		30C3D2FA1FAA1FCC00C67F08 /* libpd-osx-multi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-osx-multi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		30C3D36D1FAA200100C67F08 /* libpd-ios-multi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-ios-multi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30CEFE241A6A5EDB000E3BAE /* bonk~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "bonk~.c"; sourceTree = "<group>"; };
 		30CEFE261A6A5EDB000E3BAE /* choice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = choice.c; sourceTree = "<group>"; };
 		30CEFE2E1A6A5EDB000E3BAE /* fiddle~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "fiddle~.c"; sourceTree = "<group>"; };
@@ -588,8 +588,8 @@
 			children = (
 				D2AAC07E0554694100DB518D /* libpd-ios.a */,
 				119013AB1486450C00086F19 /* libpd-osx.a */,
-				30C3D2FA1FAA1FCC00C67F08 /* liblibpd-osx-multi.a */,
-				30C3D36D1FAA200100C67F08 /* liblibpd-ios-multi.a */,
+				30C3D2FA1FAA1FCC00C67F08 /* libpd-osx-multi.a */,
+				30C3D36D1FAA200100C67F08 /* libpd-ios-multi.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -977,7 +977,7 @@
 			);
 			name = "libpd-osx-multi";
 			productName = libpd;
-			productReference = 30C3D2FA1FAA1FCC00C67F08 /* liblibpd-osx-multi.a */;
+			productReference = 30C3D2FA1FAA1FCC00C67F08 /* libpd-osx-multi.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		30C3D2FB1FAA200100C67F08 /* libpd-ios-multi */ = {
@@ -994,7 +994,7 @@
 			);
 			name = "libpd-ios-multi";
 			productName = libpd;
-			productReference = 30C3D36D1FAA200100C67F08 /* liblibpd-ios-multi.a */;
+			productReference = 30C3D36D1FAA200100C67F08 /* libpd-ios-multi.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		D2AAC07D0554694100DB518D /* libpd-ios */ = {
@@ -1670,7 +1670,7 @@
 					"-ObjC",
 					"-ldl",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "pd-osx-multi";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1698,7 +1698,7 @@
 					"-ObjC",
 					"-ldl",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "pd-osx-multi";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1724,7 +1724,7 @@
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "pd-ios-multi";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
@@ -1749,7 +1749,7 @@
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "pd-ios-multi";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
