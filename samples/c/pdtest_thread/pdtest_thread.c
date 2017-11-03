@@ -10,7 +10,6 @@
 
 #define LIBPD_TEST_NINSTANCES   4
 #define LIBPD_TEST_NLOOPS       16
-#define LIBPD_TEST_PATCH_NAME   "test.pd"
 
 typedef struct l_instance
 {
@@ -21,7 +20,7 @@ typedef struct l_instance
     t_sample*           l_inputs;
     size_t              l_noutputs;
     t_sample*           l_outputs;
-    char                l_name[MAXPDSTRING];
+    char                l_file[MAXPDSTRING];
     char                l_folder[MAXPDSTRING];
     void*               l_patch;
     
@@ -147,16 +146,16 @@ static void libpd_instance_close(t_libpd_instance* inst)
 static void* libpd_instance_doopen(t_libpd_instance* inst)
 {
     libpd_set_instance(inst->l_pd);
-    assert((inst->l_patch = libpd_openfile(inst->l_name, inst->l_folder)) &&
+    assert((inst->l_patch = libpd_openfile(inst->l_file, inst->l_folder)) &&
            "patch can't be loaded");
     return NULL;
 }
 
-static void libpd_instance_open(t_libpd_instance* inst, const char *name, const char *folder)
+static void libpd_instance_open(t_libpd_instance* inst, const char *file, const char *folder)
 {
     if(inst->l_patch) {
         libpd_instance_close(inst); }
-    strncpy(inst->l_name, name, MAXPDSTRING);
+    strncpy(inst->l_file, file, MAXPDSTRING);
     strncpy(inst->l_folder, folder, MAXPDSTRING);
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_doopen, inst) &&
            "libpd_instance_open thread creation error.");
@@ -188,12 +187,13 @@ static void libpd_instance_perform(t_libpd_instance* inst)
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-static char* test_path = "../samples/c/pdtest_thread/";
+static char* test_file;
+static char* test_folder;
 static void* multi_instance_run(t_libpd_instance* inst)
 {
     size_t i;
     libpd_instance_init(inst, 256, 44100, 2, 2);
-    libpd_instance_open(inst, LIBPD_TEST_PATCH_NAME, test_path);
+    libpd_instance_open(inst, test_file, test_folder);
     libpd_instance_dsp_start(inst);
     for(i = 0; i < LIBPD_TEST_NLOOPS; ++i) {
         libpd_instance_perform(inst); }
@@ -213,6 +213,13 @@ int main(int argc, char **argv)
     pthread_t threads[LIBPD_TEST_NINSTANCES];
     t_libpd_instance instance[LIBPD_TEST_NINSTANCES];
     
+    if (argc < 3) {
+        fprintf(stderr, "usage: %s file folder\n", argv[0]);
+        return -1;
+    }
+    test_file = argv[1];
+    test_folder = argv[2];
+
     libpd_init();
 #ifndef PDINSTANCE
     assert("PDINSTANCE undefined");
@@ -220,8 +227,6 @@ int main(int argc, char **argv)
 #ifndef PDTHREADS
     assert("PDTHREADS undefined");
 #endif
-    if(argc > 1 && argv[1])
-        test_path = argv[1];
         
     for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i)
     {
