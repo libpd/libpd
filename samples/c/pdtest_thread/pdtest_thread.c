@@ -7,7 +7,6 @@
 #include <assert.h>
 #include <pthread.h>
 #include "z_libpd.h"
-#include "m_imp.h"
 
 #define LIBPD_TEST_NINSTANCES   4
 #define LIBPD_TEST_NLOOPS       16
@@ -34,8 +33,8 @@ typedef struct l_instance
 
 static void* libpd_instance_doinit(t_libpd_instance* inst)
 {
-    inst->l_pd = pdinstance_new();
-    pd_setinstance(inst->l_pd);
+    inst->l_pd = libpd_new_instance();
+    libpd_set_instance(inst->l_pd);
     assert(inst->l_pd && "pd instance can't be allocated.");
     libpd_init_audio((int)inst->l_ninputs, (int)inst->l_noutputs, (int)inst->l_samplerate);
     return NULL;
@@ -66,9 +65,9 @@ static void libpd_instance_init(t_libpd_instance* inst,
 
 static void* libpd_instance_dofree(t_libpd_instance* inst)
 {
-    pd_setinstance(inst->l_pd);
+    libpd_set_instance(inst->l_pd);
     if(inst->l_pd) {
-        pdinstance_free(inst->l_pd); }
+        libpd_free_instance(inst->l_pd); }
     return NULL;
 }
 
@@ -96,7 +95,7 @@ static void libpd_instance_free(t_libpd_instance* inst)
 
 static void* libpd_instance_dodsp_start(t_libpd_instance* inst)
 {
-    pd_setinstance(inst->l_pd);
+    libpd_set_instance(inst->l_pd);
     libpd_start_message(1);
     libpd_add_float(1.f);
     libpd_finish_message("pd", "dsp");
@@ -112,7 +111,7 @@ static void libpd_instance_dsp_start(t_libpd_instance* inst)
 
 static void* libpd_instance_dodsp_stop(t_libpd_instance* inst)
 {
-    pd_setinstance(inst->l_pd);
+    libpd_set_instance(inst->l_pd);
     libpd_start_message(1);
     libpd_add_float(0.f);
     libpd_finish_message("pd", "dsp");
@@ -131,7 +130,7 @@ static void libpd_instance_dsp_stop(t_libpd_instance* inst)
 
 static void* libpd_instance_doclose(t_libpd_instance* inst)
 {
-    pd_setinstance(inst->l_pd);
+    libpd_set_instance(inst->l_pd);
     assert(inst->l_patch && "patch not loaded so can't be closed");
     libpd_closefile(inst->l_patch);
     return NULL;
@@ -147,7 +146,7 @@ static void libpd_instance_close(t_libpd_instance* inst)
 
 static void* libpd_instance_doopen(t_libpd_instance* inst)
 {
-    pd_setinstance(inst->l_pd);
+    libpd_set_instance(inst->l_pd);
     assert((inst->l_patch = libpd_openfile(inst->l_name, inst->l_folder)) &&
            "patch can't be loaded");
     return NULL;
@@ -170,7 +169,7 @@ static void libpd_instance_open(t_libpd_instance* inst, const char *name, const 
 static void* libpd_instance_doperform(t_libpd_instance* inst)
 {
     size_t i;
-    pd_setinstance(inst->l_pd);
+    libpd_set_instance(inst->l_pd);
     libpd_process_float((int)(inst->l_blocksize / (size_t)64), inst->l_inputs, inst->l_outputs);
     for(i = 0; i < inst->l_blocksize; ++i) {
         int result   = (int)inst->l_outputs[i];
@@ -215,8 +214,12 @@ int main(int argc, char **argv)
     t_libpd_instance instance[LIBPD_TEST_NINSTANCES];
     
     libpd_init();
-    assert(PDINSTANCE && "PDINSTANCE undefined");
-    assert(PDTHREADS && "PDTHREADS undefined");
+#ifndef PDINSTANCE
+    assert("PDINSTANCE undefined");
+#endif
+#ifndef PDTHREADS
+    assert("PDTHREADS undefined");
+#endif
     if(argc > 1 && argv[1])
         test_path = argv[1];
         
