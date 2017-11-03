@@ -26,7 +26,7 @@ CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -O3
 .PHONY: clean clobber
 
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
-	gcc -o $(TARGET) $^ $(LIBPD) $(LDFLAGS)
+	gcc -o $(TARGET) $^ $(LIBPD) $(LDFLAGS) -lpthread
 	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
