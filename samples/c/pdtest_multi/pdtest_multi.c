@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     return -1;
   }
   
-    // maybe these two calls should be available per-instance somehow:
+  // maybe these two calls should be available per-instance somehow:
   libpd_set_printhook(pdprint);   
   libpd_set_noteonhook(pdnoteon);
 
@@ -33,10 +33,10 @@ int main(int argc, char **argv) {
     per-instance.  The sample rate is still global within Pd but we might
     also consider relaxing that restrction. */
 
-  pd1 = pdinstance_new();
-  pd2 = pdinstance_new();
+  pd1 = libpd_new_instance();
+  pd2 = libpd_new_instance();
 
-  pd_setinstance(pd1);  // talk to first pd instance 
+  libpd_set_instance(pd1); // talk to first pd instance
 
   libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
   // open patch       [; pd open file folder(
   libpd_openfile(argv[1], argv[2]);
 
-  pd_setinstance(pd2);
+  libpd_set_instance(pd2);
 
   libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     as patches are opened, it would be better to open the patches with 
     settable $1, etc parameters to libpd_openfile().  */
 
-  pd_setinstance(pd1);
+  libpd_set_instance(pd1);
   // [; pd frequency 1 (
   libpd_start_message(1); // one entry in list
   libpd_add_float(1.0f);
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
   libpd_finish_message("frequency", "float");
   fprintf(stderr, "x 2\n");
 
-  pd_setinstance(pd2);
+  libpd_set_instance(pd2);
   // [; pd frequency 2 (
   libpd_start_message(1); // one entry in list
   libpd_add_float(2.0f);
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
   int i, j;
   for (i = 0; i < 3; i++) {
     // fill inbuf here
-    pd_setinstance(pd1);
+    libpd_set_instance(pd1);
     libpd_process_float(1, inbuf, outbuf);
     if (i < 2)
     {
@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
             printf("%f ", outbuf[j]);
         printf("\n");
     }
-    pd_setinstance(pd2);
+    libpd_set_instance(pd2);
     libpd_process_float(1, inbuf, outbuf);
     if (i < 2)
     {
@@ -107,8 +107,8 @@ int main(int argc, char **argv) {
     }
   }
 
-  pdinstance_free(pd1);
-  pdinstance_free(pd2);
+  libpd_free_instance(pd1);
+  libpd_free_instance(pd2);
 
   return 0;
 }

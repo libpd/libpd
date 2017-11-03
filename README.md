@@ -74,6 +74,7 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 
   - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
   - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init()
+  - **MULTI=true**, compiles libpd with multiple instance support
   - **DEBUG=true**, compiles libpd with -Wall & no optimizations
   - **LOCALE=false**, do not set the LC_NUMERIC number format to the default "C" locale\*
   - **PORTAUDIO=true**, compiles libpd with portaudio support (currently JAVA jni only)
@@ -101,7 +102,14 @@ Contains small sample programs and tests in the various supported languages.
 Xcode Project
 -------------
 
-libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as a static library for iOS & Mac OSX. Drag the libpd project into your existing Xcode project, then add libpd-ios (or libpd-osx) to the Linked Frameworks and Libraries in the General tab of your project target.
+libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as a static library for iOS & macOS. Drag the libpd project into your existing Xcode project, then add libpd-ios (or libpd-osx) to the Linked Frameworks and Libraries in the General tab of your project target.
+
+The Xcode project builds the following targets:
+
+* **libpd-ios**: libpd and the Obj-C wrapper for iOS
+* **libpd-osx**: libpd and the Obj-C wrapper for macOS
+* **libpd-ios-multi**: libpd for iOS with multiple instance support
+* **libpd-osx-multi**: libpd for macOS with multiple instance support
 
 For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 

@@ -565,16 +565,57 @@ int libpd_startgui(char *path) {
   return retval;
 }
 
-void libpd_stopgui( void) {
+void libpd_stopgui(void) {
   sys_lock();
   sys_stopgui();
   sys_unlock();
 }
 
-void libpd_pollgui( void) {
+void libpd_pollgui(void) {
   sys_lock();
   sys_pollgui();
   sys_unlock();
+}
+
+t_pdinstance *libpd_new_instance(void) {
+#ifdef PDINSTANCE
+  return pdinstance_new();
+#else
+  return 0;
+#endif
+}
+
+void libpd_set_instance(t_pdinstance *x) {
+#ifdef PDINSTANCE
+  pd_setinstance(x);
+#endif
+}
+
+void libpd_free_instance(t_pdinstance *x) {
+#ifdef PDINSTANCE
+  pdinstance_free(x);
+#endif
+}
+
+t_pdinstance *libpd_this_instance(void) {
+  return pd_this;
+}
+
+t_pdinstance *libpd_get_instance(int index) {
+#ifdef PDINSTANCE
+  if(index < 0 || index >= pd_ninstances) {return 0;}
+  return pd_instances[index];
+#else
+  return pd_this;
+#endif
+}
+
+int libpd_num_instances() {
+#ifdef PDINSTANCE
+  return pd_ninstances;
+#else
+  return 1;
+#endif
 }
 
 /* dummy routines needed because we don't use s_file.c */
