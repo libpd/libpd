@@ -137,7 +137,7 @@ EXTERN t_pdinstance *libpd_get_instance(int index);
 
 /// get the number of pd instances
 /// returns 1 when libpd is not compiled with PDINSTANCE
-EXTERN int libpd_num_instances();
+EXTERN int libpd_num_instances(void);
 
 #ifdef __cplusplus
 }

@@ -610,7 +610,7 @@ t_pdinstance *libpd_get_instance(int index) {
 #endif
 }
 
-int libpd_num_instances() {
+int libpd_num_instances(void) {
 #ifdef PDINSTANCE
   return pd_ninstances;
 #else
