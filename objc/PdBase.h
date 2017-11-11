@@ -31,7 +31,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Updated 2013 Dan Wilcox (danomatika@gmail.com)
+ * Updated 2013 Dan Wilcox <danomatika@gmail.com>
  *
  */
 

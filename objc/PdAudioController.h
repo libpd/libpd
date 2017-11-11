@@ -24,12 +24,7 @@ typedef enum PdAudioStatus {
 /// The returned PdAudioStatus is used to indicate success, failure, or
 /// that parameters had to be adjusted in order to work.
 ///
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 @interface PdAudioController : NSObject
-#else
-// AVAudioSessionDelegate is deprecated starting in iOS 6
-@interface PdAudioController : NSObject	<AVAudioSessionDelegate>
-#endif
 
 /// Read only properties that are set by the configure methods
 @property (nonatomic, readonly) int sampleRate;
@@ -39,20 +34,20 @@ typedef enum PdAudioStatus {
 @property (nonatomic, readonly) int ticksPerBuffer;
 
 /// Read only access to the underlying pd audio unit
-@property (nonatomic, retain, readonly) PdAudioUnit *audioUnit;
+@property (nonatomic, strong, readonly) PdAudioUnit *audioUnit;
 
 /// Check or set the active status of the audio unit
 @property (nonatomic, getter=isActive) BOOL active;
 
 /// Init with a custom pd audio unit. Derive PdAudioUnit when you need to access
 /// to the raw samples when using, for instance, AudioBus, and call this method after init.
-- (id)initWithAudioUnit:(PdAudioUnit *)audioUnit;
+- (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit;
 
 /// Configure the audio with the specified samplerate, as well as number of output channels (which will also be the number of
 /// input channels if input is enable).  Note that this method has three possible outcomes: success, failure, or conditional
 /// success, where parameters had to be adjusted to set up the audio.  In the third case, you can query the sample rate and
 /// channel properties to determine whether the selected configuration is acceptable.  Specifying mixingEnabled = YES will
-/// allow the app to continue playing audio along with other apps (such as iPod music player).
+/// allow the app to continue playing audio along with other apps (such as Music).
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                   numberChannels:(int)numChannels
                                     inputEnabled:(BOOL)inputEnabled

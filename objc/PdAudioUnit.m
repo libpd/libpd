@@ -18,9 +18,9 @@ static const AudioUnitElement kOutputElement = 0;
 
 @interface PdAudioUnit () {
 @private
-	BOOL inputEnabled_;
-	BOOL initialized_;
-	int blockSizeAsLog_;
+	BOOL _inputEnabled;
+	BOOL _initialized;
+	int _blockSizeAsLog;
 }
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
@@ -30,67 +30,66 @@ static const AudioUnitElement kOutputElement = 0;
 
 @implementation PdAudioUnit
 
-@synthesize audioUnit = audioUnit_;
-@synthesize active = active_;
+//@synthesize audioUnit = audioUnit_;
+//@synthesize active = active_;
 
 #pragma mark - Init / Dealloc
 
-- (id)init {
+- (instancetype)init {
 	self = [super init];
 	if (self) {
-		initialized_ = NO;
-		active_ = NO;
-		blockSizeAsLog_ = log2int([PdBase getBlockSize]);
+		_initialized = NO;
+		_active = NO;
+		_blockSizeAsLog = log2int([PdBase getBlockSize]);
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[self destroyAudioUnit];
-	[super dealloc];
 }
 
 #pragma mark - Public Methods
 
 - (void)setActive:(BOOL)active {
-	if (!initialized_) {
+	if (!_initialized) {
 		return;
 	}
-	if (active == active_) {
+	if (active == _active) {
 		return;
 	}
 	if (active) {
-		AU_RETURN_IF_ERROR(AudioOutputUnitStart(audioUnit_));
+		AU_RETURN_IF_ERROR(AudioOutputUnitStart(_audioUnit));
 	} else {
-		AU_RETURN_IF_ERROR(AudioOutputUnitStop(audioUnit_));
+		AU_RETURN_IF_ERROR(AudioOutputUnitStop(_audioUnit));
 	}
-	active_ = active;
+	_active = active;
 }
 
 - (int)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	Boolean wasActive = self.isActive;
-	inputEnabled_ = inputEnabled;
-	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:inputEnabled_]) {
+	_inputEnabled = inputEnabled;
+	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:_inputEnabled]) {
 		return -1;
 	}
-	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(inputEnabled_ ? numChannels : 0) outputChannels:numChannels];
+	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(_inputEnabled ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
 	return 0;
 }
 
 - (void)print {
-	if (!initialized_) {
+	if (!_initialized) {
 		AU_LOG(@"Audio Unit not initialized");
 		return;
 	}
 	
 	UInt32 sizeASBD = sizeof(AudioStreamBasicDescription);
 	
-	if (inputEnabled_) {
+	if (_inputEnabled) {
 		AudioStreamBasicDescription inputStreamDescription;
 		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
-		AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(_audioUnit,
                            kAudioUnitProperty_StreamFormat,
                            kAudioUnitScope_Output,
                            kInputElement,
@@ -111,7 +110,7 @@ static const AudioUnitElement kOutputElement = 0;
 	
 	AudioStreamBasicDescription outputStreamDescription;
 	memset(&outputStreamDescription, 0, sizeASBD);
-	AU_RETURN_IF_ERROR(AudioUnitGetProperty(audioUnit_,
+	AU_RETURN_IF_ERROR(AudioUnitGetProperty(_audioUnit,
                        kAudioUnitProperty_StreamFormat,
                        kAudioUnitScope_Input,
                        kOutputElement,
@@ -157,14 +156,15 @@ static OSStatus AudioRenderCallback(void *inRefCon,
                                     UInt32 inNumberFrames,
                                     AudioBufferList *ioData) {
 	
-	PdAudioUnit *pdAudioUnit = (PdAudioUnit *)inRefCon;
+	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
 	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
 	
-	if (pdAudioUnit->inputEnabled_) {
-		AudioUnitRender(pdAudioUnit->audioUnit_, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
+	if (pdAudioUnit->_inputEnabled) {
+		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
 	}
-	
-	int ticks = inNumberFrames >> pdAudioUnit->blockSizeAsLog_; // this is a faster way of computing (inNumberFrames / blockSize)
+
+	// this is a faster way of computing (inNumberFrames / blockSize)
+	int ticks = inNumberFrames >> pdAudioUnit->_blockSizeAsLog;
 	[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
 	return noErr;
 }
@@ -177,13 +177,13 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 #pragma mark - Private
 
 - (void)destroyAudioUnit {
-	if (!initialized_) {
+	if (!_initialized) {
 		return;
 	}
 	self.active = NO;
-	initialized_ = NO;
-	AU_RETURN_IF_ERROR(AudioUnitUninitialize(audioUnit_));
-	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(audioUnit_));
+	_initialized = NO;
+	AU_RETURN_IF_ERROR(AudioUnitUninitialize(_audioUnit));
+	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
 	AU_LOGV(@"destroyed audio unit");
 }
 
@@ -191,45 +191,47 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	[self destroyAudioUnit];
 	AudioComponentDescription ioDescription = [self ioDescription];
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
-	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &audioUnit_));
+	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &_audioUnit));
 	
 	AudioStreamBasicDescription streamDescription = [self ASBDForSampleRate:sampleRate numberChannels:numChannels];
 	if (inputEnabled) {
 		UInt32 enableInput = 1;
-		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
                                                       kAudioOutputUnitProperty_EnableIO,
                                                       kAudioUnitScope_Input,
                                                       kInputElement,
                                                       &enableInput,
                                                       sizeof(enableInput)));
-		
-		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+
+		// Output scope because we're defining the output of the input element _to_ our render callback
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
                                                       kAudioUnitProperty_StreamFormat,
-                                                      kAudioUnitScope_Output,  // Output scope because we're defining the output of the input element _to_ our render callback
+                                                      kAudioUnitScope_Output,
                                                       kInputElement,
                                                       &streamDescription,
                                                       sizeof(streamDescription)));
 	}
-	
-	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+
+	// Input scope because we're defining the input of the output element _from_ our render callback.
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
                                                   kAudioUnitProperty_StreamFormat,
-                                                  kAudioUnitScope_Input,  // Input scope because we're defining the input of the output element _from_ our render callback.
+                                                  kAudioUnitScope_Input,
                                                   kOutputElement,
                                                   &streamDescription,
                                                   sizeof(streamDescription)));
 	
 	AURenderCallbackStruct callbackStruct;
 	callbackStruct.inputProc = self.renderCallback;
-	callbackStruct.inputProcRefCon = self;
-	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(audioUnit_,
+	callbackStruct.inputProcRefCon = (__bridge void * _Nullable)(self);
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
                                                   kAudioUnitProperty_SetRenderCallback,
                                                   kAudioUnitScope_Input,
                                                   kOutputElement,
                                                   &callbackStruct,
                                                   sizeof(callbackStruct)));
 	
-	AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(audioUnit_));
-	initialized_ = YES;
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(_audioUnit));
+	_initialized = YES;
 	AU_LOGV(@"initialized audio unit");
 	return true;
 }

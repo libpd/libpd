@@ -74,8 +74,10 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 
   - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
   - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init()
+  - **MULTI=true**, compiles libpd with multiple instance support
   - **DEBUG=true**, compiles libpd with -Wall & no optimizations
-  - **LOCALE=true**, set the number format to the default "C" locale\*
+  - **LOCALE=false**, do not set the LC_NUMERIC number format to the default "C" locale\*
+  - **PORTAUDIO=true**, compiles libpd with portaudio support (currently JAVA jni only)
 
 For example, to build libpd with both util and extra:
 
@@ -83,7 +85,11 @@ For example, to build libpd with both util and extra:
 
 _Note: cpplib is automatically built with UTIL=true as it uses the ringbuffer_
 
-\* Setting the number locale explictly may be necessary if you run into certain numbers not being read correctly when opening patches. See <https://github.com/libpd/libpd/issues/130> for more info.
+\* See the Known Issues section for more info.
+
+If you need to add custom search paths to the CFLAGS, you can specify them when building via:
+
+    make CFLAGS="-I/usr/local/lib"
 
 ### java, csharp, objc, cpp, python
 
@@ -91,12 +97,19 @@ Glue for using libpd with Java, C#, Objective C, C++ and Python. Feel free to im
 
 ### samples
 
-Contains small sample programs and tests in the various supported langauges.
+Contains small sample programs and tests in the various supported languages.
 
 Xcode Project
 -------------
 
-libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as a static library for iOS & Mac OSX. Drag the libpd project into your existing Xcode project, then add libpd-ios (or libpd-osx) to the Linked Frameworks and Libraries in the General tab of your project target.
+libpd.xcodeproj provides an Xcode project to build libpd + the Obj-C wrapper as a static library for iOS & macOS. Drag the libpd project into your existing Xcode project, then add libpd-ios (or libpd-osx) to the Linked Frameworks and Libraries in the General tab of your project target.
+
+The Xcode project builds the following targets:
+
+* **libpd-ios**: libpd and the Obj-C wrapper for iOS
+* **libpd-osx**: libpd and the Obj-C wrapper for macOS
+* **libpd-ios-multi**: libpd for iOS with multiple instance support
+* **libpd-osx-multi**: libpd for macOS with multiple instance support
 
 For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 
@@ -154,3 +167,16 @@ If you want to use the library on Linux with Mono, you need the following change
   - Remove `libpdcsharp.dll` and `libwinpthread-1.dll` from LibPdBinding project.
   - Add `libpdcsharp.so` to the LibPdBinding project.
   - Set "Copy to Output Directory" for `libpdcsharp.so` to "Copy always"
+
+Known Issues
+------------
+
+### Problems with numbers in loaded patches or DSP output always seems to be 0
+
+Pd expects numbers to be in an english format, ie. "0.3". If you are using a non-English language or locale setting on your system, it may be encoding numbers differently, ie. "0,3". This can lead to weird bugs in loaded patches where numbers seem wrong or end up truncated as 0.
+
+By default, libpd is built with the LC\_NUMERIC locale set to the "C" default, so this shouldn't be a problem. If you are using libpd within a project that requires specific locale settings, you will need to make sure libpd's LC\_NUMERIC is left alone or at least reset it to "C" if working with a different numeric setting. If a non-english LC\_NUMERIC is set, you will run into the number parsing issues mentioned above.
+
+If you need to control LC\_NUMERIC manually, you can build libpd without the call to setlocale() in libpd_init using the SETLOCALE=false makefile option or by setting the LIBPD_NO_NUMERIC define.
+
+See <https://github.com/libpd/libpd/issues/130> for more info.

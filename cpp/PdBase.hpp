@@ -97,7 +97,7 @@ class PdBase {
     /// \section Adding Search Paths
 
         /// add to the pd search path
-        /// takes an absolute or relative path (in data folder)
+        /// takes an absolute or relative path
         ///
         /// note: fails silently if path not found
         ///

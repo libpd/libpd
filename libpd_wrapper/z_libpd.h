@@ -108,6 +108,37 @@ EXTERN void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook);
 EXTERN void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
+EXTERN int libpd_startgui(char *path);
+EXTERN void libpd_stopgui(void);
+EXTERN void libpd_pollgui(void);
+
+/// \section Multiple Instances
+
+/// create a new pd instance
+/// returns 0 when libpd is not compiled with PDINSTANCE
+EXTERN t_pdinstance *libpd_new_instance(void);
+
+/// set the current pd instance,
+/// subsequent libpd calls will affect this instance only
+/// does nothing when libpd is not compiled with PDINSTANCE
+EXTERN void libpd_set_instance(t_pdinstance *x);
+
+/// free a pd instance
+/// does nothing when libpd is not compiled with PDINSTANCE
+EXTERN void libpd_free_instance(t_pdinstance *x);
+
+/// get the current pd instance
+EXTERN t_pdinstance *libpd_this_instance(void);
+
+/// get a pd instance by index
+/// returns 0 if index is out of bounds
+/// returns "this" instance when libpd is not compiled with PDINSTANCE
+EXTERN t_pdinstance *libpd_get_instance(int index);
+
+/// get the number of pd instances
+/// returns 1 when libpd is not compiled with PDINSTANCE
+EXTERN int libpd_num_instances(void);
+
 #ifdef __cplusplus
 }
 #endif

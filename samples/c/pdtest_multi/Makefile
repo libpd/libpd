@@ -2,16 +2,16 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
 
-ifeq ($(UNAME), Darwin)  # Mac
+ifeq ($(UNAME), Darwin) # Mac
   SOLIB_EXT = dylib
-  PDNATIVE_PLATFORM = mac
+  PLATFORM = mac
 else
-  ifeq ($(OS), Windows_NT)  # Windows, use Mingw
-	SOLIB_EXT = dll
-	PDNATIVE_PLATFORM = windows
-  else  # Assume Linux
-	SOLIB_EXT = so
-	PDNATIVE_PLATFORM = linux
+  ifeq ($(OS), Windows_NT) # Windows, use Mingw
+    SOLIB_EXT = dll
+    PLATFORM = windows
+  else # assume Linux
+    SOLIB_EXT = so
+    PLATFORM = linux
   endif
 endif
 
@@ -21,21 +21,21 @@ LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 SRC_FILES = pdtest_multi.c
 TARGET = pdtest_multi
 
-CFLAGS = -I../../../pure-data/src -I../../../libpd_wrapper -O3
+CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -O3
 
 .PHONY: clean clobber
 
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
-	gcc -o $(TARGET) $^ $(LIBPD)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
+	gcc -o $(TARGET) $^ $(LIBPD) $(LDFLAGS)
+	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
-	cd ../../.. && make
+	cd ../../.. && make MULTI=true
 
 clean:
 	rm -f *.o
 
 clobber: clean
 	rm -f $(TARGET)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
-
+	if [ $(PLATFORM) == "mac" ]; then rm -rf ./libs; fi
+	cd $(LIBPD_DIR) && make clobber

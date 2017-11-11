@@ -39,7 +39,8 @@ int main(int argc, char **argv) {
     libpd_process_float(1, inbuf, outbuf);
     // use outbuf here
   }
-
+  for (i = 0; i < 10; i++)
+    printf("%g\n", outbuf[i]);
   return 0;
 }
 

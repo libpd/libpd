@@ -1,6 +1,6 @@
 # C++ JACK Example.
 
-This is a basic c++ sample application that uses the JACK library for audio output.  It has been tested on Linux and Mac OSX. See the JACK documentation for details.
+This is a basic C++ sample application that uses the JACK library for audio output.  It has been tested on Linux and macOS. See the JACK documentation for details.
 
 ## License
 

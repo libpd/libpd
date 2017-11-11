@@ -13,6 +13,7 @@ Pod::Spec.new do |spec|
                       'pure-data/extra/**/*.{h,c}',
                       'libpd_wrapper/**/*.{h,c}',
                       'objc/**/*.{h,m}'
+  spec.public_header_files = 'objc/**/*.{h}'
   spec.ios.deployment_target = '6.0'
   spec.requires_arc = false
   spec.frameworks = 'Foundation', 'AudioToolbox', 'AVFoundation'
@@ -28,6 +29,7 @@ Pod::Spec.new do |spec|
                        'pure-data/src/s_audio_pa.c',
                        'pure-data/src/s_audio_paring.h',
                        'pure-data/src/s_audio_paring.c',
+                       'pure-data/src/s_file.c',
                        'pure-data/src/s_midi_alsa.c',
                        'pure-data/src/s_midi_dummy.c',
                        'pure-data/src/s_midi_mmio.c',
