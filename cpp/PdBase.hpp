@@ -23,20 +23,6 @@
 #include "PdReceiver.hpp"
 #include "PdMidiReceiver.hpp"
 
-// define this to use C++11 std::mutex for locking
-#ifdef LIBPD_USE_STD_MUTEX
-    // requires C++ 11
-    #include <mutex>
-    #define _LOCK() _mutex.lock()
-    #define _UNLOCK() _mutex.unlock()
-    #define _GUARD() std::lock_guard<std::mutex> lock(_mutex);
-#else
-    // no ops
-    #define _LOCK()
-    #define _UNLOCK()
-    #define _GUARD()
-#endif
-
 // needed for libpd audio passing
 #ifndef USEAPI_DUMMY
     #define USEAPI_DUMMY
@@ -116,7 +102,6 @@ class PdBase {
         ///
         virtual bool init(const int numInChannels, const int numOutChannels,
                           const int sampleRate, bool queued=false) {
-            _GUARD();
             PdContext::instance().clear();
             return PdContext::instance().init(numInChannels,
                                               numOutChannels,
@@ -126,9 +111,7 @@ class PdBase {
 
         /// clear resources
         virtual void clear() {
-            _LOCK();
             PdContext::instance().clear();
-            _UNLOCK();
             unsubscribeAll();
         }
 
@@ -140,16 +123,12 @@ class PdBase {
         /// note: fails silently if path not found
         ///
         virtual void addToSearchPath(const std::string& path) {
-            _LOCK();
             libpd_add_to_search_path(path.c_str());
-            _UNLOCK();
         }
 
         /// clear the current pd search path
         virtual void clearSearchPath() {
-            _LOCK();
             libpd_clear_search_path();
-            _UNLOCK();
         }
 
     /// \section Opening Patches
@@ -165,15 +144,12 @@ class PdBase {
         ///     }
         virtual pd::Patch openPatch(const std::string& patch,
                                     const std::string& path) {
-            _LOCK();
             // [; pd open file folder(
             void* handle = libpd_openfile(patch.c_str(), path.c_str());
             if(handle == NULL) {
-                _UNLOCK();
                 return Patch(); // return empty Patch
             }
             int dollarZero = libpd_getdollarzero(handle);
-            _UNLOCK();
             return Patch(handle, dollarZero, patch, path);
         }
 
@@ -200,11 +176,9 @@ class PdBase {
         virtual void closePatch(const std::string& patch) {
             // [; pd-name menuclose 1(
             std::string patchname = (std::string) "pd-"+patch;
-            _LOCK();
             libpd_start_message(PdContext::instance().maxMsgLen);
             libpd_add_float(1.0f);
             libpd_finish_message(patchname.c_str(), "menuclose");
-            _UNLOCK();
         }
 
         /// close a patch file, takes a patch object
@@ -213,9 +187,7 @@ class PdBase {
             if(!patch.isValid()) {
                 return;
             }
-            _LOCK();
             libpd_closefile(patch.handle());
-            _UNLOCK();
             patch.clear();
         }
 
@@ -234,21 +206,18 @@ class PdBase {
         /// process one pd tick, writes raw float data to/from buffers
         /// returns false on error
         bool processRaw(const float *inBuffer, float *outBuffer) {
-            _GUARD();
             return libpd_process_raw(inBuffer, outBuffer) == 0;
         }
 
         /// process short buffers for a given number of ticks
         /// returns false on error
         bool processShort(int ticks, const short *inBuffer, short *outBuffer) {
-            _GUARD();
             return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
         }
 
         /// process float buffers for a given number of ticks
         /// returns false on error
         bool processFloat(int ticks, const float *inBuffer, float *outBuffer) {
-            _GUARD();
             bool ret = libpd_process_float(ticks, inBuffer, outBuffer) == 0;
             return ret;
         }
@@ -257,7 +226,6 @@ class PdBase {
         /// returns false on error
         bool processDouble(int ticks, const double *inBuffer,
                                             double *outBuffer) {
-            _GUARD();
             return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
         }
 
@@ -270,9 +238,7 @@ class PdBase {
         /// shortcut for [; pd dsp 1( & [; pd dsp 0(
         ///
         virtual void computeAudio(bool state) {
-            _LOCK();
             PdContext::instance().computeAudio(state);
-            _UNLOCK();
         }
 
     /// \section Message Receiving
@@ -290,9 +256,8 @@ class PdBase {
                 std::cerr << "Pd: unsubscribe: ignoring duplicate source" << std::endl;
                 return;
             }
-            _LOCK();
+            ;
             void* pointer = libpd_bind(source.c_str());
-            _UNLOCK();
             if(pointer != NULL) {
                 std::map<std::string,void*>& sources = PdContext::instance().sources;
                 sources.insert(std::pair<std::string,void*>(source, pointer));
@@ -308,9 +273,7 @@ class PdBase {
                 std::cerr << "Pd: unsubscribe: ignoring unknown source" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_unbind(iter->second);
-            _UNLOCK();
             sources.erase(iter);
         }
 
@@ -323,16 +286,13 @@ class PdBase {
             return false;
         }
 
-
         //// receivers will be unsubscribed from *all* pd send sources
         virtual void unsubscribeAll() {
             std::map<std::string,void*>& sources = PdContext::instance().sources;
             std::map<std::string,void*>::iterator iter;
-            _LOCK();
             for(iter = sources.begin(); iter != sources.end(); ++iter) {
                 libpd_unbind(iter->second);
             }
-            _UNLOCK();
             sources.clear();
         }
 
@@ -367,9 +327,7 @@ class PdBase {
         /// event queue
         ///
         void setReceiver(pd::PdReceiver* receiver) {
-            _LOCK();
             PdContext::instance().receiver = receiver;
-            _UNLOCK();
         }
 
     /// \section Midi Receiving via Callbacks
@@ -381,32 +339,24 @@ class PdBase {
         /// set this to NULL to disable midi events and re-enable the midi queue
         ///
         void setMidiReceiver(pd::PdMidiReceiver* midiReceiver) {
-            _LOCK();
             PdContext::instance().midiReceiver = midiReceiver;
-            _UNLOCK();
         }
 
     /// \section Send Functions
 
         /// send a bang message
         virtual void sendBang(const std::string& dest) {
-            _LOCK();
             libpd_bang(dest.c_str());
-            _UNLOCK();
         }
 
         /// send a float
         virtual void sendFloat(const std::string& dest, float value) {
-            _LOCK();
             libpd_float(dest.c_str(), value);
-            _UNLOCK();
         }
 
         /// send a symbol
         virtual void sendSymbol(const std::string& dest, const std::string& symbol) {
-            _LOCK();
             libpd_symbol(dest.c_str(), symbol.c_str());
-            _UNLOCK();
         }
 
     /// \section Sending Compound Messages
@@ -434,12 +384,10 @@ class PdBase {
                 std::cerr << "Pd: Can not start message, message in progress" << std::endl;
                 return;
             }
-            _LOCK();
             if(libpd_start_message(context.maxMsgLen) == 0) {
                 context.bMsgInProgress = true;
                 context.msgType = MSG;
             }
-            _UNLOCK();
         }
 
         /// add a float to the current compound list or message
@@ -457,9 +405,7 @@ class PdBase {
                 std::cerr << "Pd: Can not add float, max message len of " << context.maxMsgLen << " reached" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_add_float(num);
-            _UNLOCK();
             context.curMsgLen++;
         }
 
@@ -478,10 +424,7 @@ class PdBase {
                 std::cerr << "Pd: Can not add symbol, max message len of " << context.maxMsgLen << " reached" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_add_symbol(symbol.c_str());
-            _UNLOCK();
-        
             context.curMsgLen++;
         }
 
@@ -496,9 +439,7 @@ class PdBase {
                 std::cerr << "Pd: Can not finish list, midi byte stream in progress" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_finish_list(dest.c_str());
-            _UNLOCK();
             context.bMsgInProgress = false;
             context.curMsgLen = 0;
         }
@@ -514,9 +455,7 @@ class PdBase {
                 std::cerr << "Pd: Can not finish message, midi byte stream in progress" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_finish_message(dest.c_str(), msg.c_str());
-            _UNLOCK();
             context.bMsgInProgress = false;
             context.curMsgLen = 0;
         }
@@ -541,9 +480,7 @@ class PdBase {
                 std::cerr << "Pd: Can not send list, message in progress" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_start_message(list.len());
-            _UNLOCK();
             context.bMsgInProgress = true;
             // step through list
             for(int i = 0; i < (int)list.len(); ++i) {
@@ -577,9 +514,7 @@ class PdBase {
                 std::cerr << "Pd: Can not send message, message in progress" << std::endl;
                 return;
             }
-            _LOCK();
             libpd_start_message(list.len());
-            _UNLOCK();
             context.bMsgInProgress = true;
             // step through list
             for(int i = 0; i < (int)list.len(); ++i) {
@@ -612,18 +547,14 @@ class PdBase {
         virtual void sendNoteOn(const int channel,
                                 const int pitch,
                                 const int velocity=64) {
-            _LOCK();
             libpd_noteon(channel, pitch, velocity);
-            _UNLOCK();
         }
 
         /// send a MIDI control change
         virtual void sendControlChange(const int channel,
                                        const int controller,
                                        const int value) {
-            _LOCK();
             libpd_controlchange(channel, controller, value);
-            _UNLOCK();
         }
 
         /// send a MIDI program change
@@ -631,9 +562,7 @@ class PdBase {
         /// in pd: [pgmin] and [pgmout] are 0 - 127
         ///
         virtual void sendProgramChange(const int channel, const int value) {
-            _LOCK();
             libpd_programchange(channel, value);
-            _UNLOCK();
         }
         
         /// send a MIDI pitch bend
@@ -641,25 +570,19 @@ class PdBase {
         /// in pd: [bendin] takes 0 - 16383 while [bendout] returns -8192 - 8192
         ///
         virtual void sendPitchBend(const int channel, const int value) {
-            _LOCK();
             libpd_pitchbend(channel, value);
-            _UNLOCK();
         }
         
         /// send a MIDI aftertouch
         virtual void sendAftertouch(const int channel, const int value) {
-            _LOCK();
             libpd_aftertouch(channel, value);
-            _UNLOCK();
         }
 
         /// send a MIDI poly aftertouch
         virtual void sendPolyAftertouch(const int channel,
                                         const int pitch,
                                         const int value) {
-            _LOCK();
             libpd_polyaftertouch(channel, pitch, value);
-            _UNLOCK();
         }
 
         /// send a raw MIDI byte
@@ -674,23 +597,17 @@ class PdBase {
         /// port num, so sending port 1 to [midiout] returns port 1 in PdBase
         ///
         virtual void sendMidiByte(const int port, const int value) {
-            _LOCK();
             libpd_midibyte(port, value);
-            _UNLOCK();
         }
 
         /// send a raw MIDI sysex byte
         virtual void sendSysex(const int port, const int value) {
-            _LOCK();
             libpd_sysex(port, value);
-            _UNLOCK();
         }
 
         /// send a raw MIDI realtime byte
         virtual void sendSysRealTime(const int port, const int value) {
-            _LOCK();
             libpd_sysrealtime(port, value);
-            _UNLOCK();
         }
 
     /// \section Stream Interface
@@ -933,7 +850,6 @@ class PdBase {
         /// get the size of a pd array
         /// returns 0 if array not found
         int arraySize(const std::string& name) {
-            _GUARD();
             int len = libpd_arraysize(name.c_str());;
             if(len < 0) {
                 std::cerr << "Pd: Cannot get size of unknown array \""
@@ -957,7 +873,6 @@ class PdBase {
         virtual bool readArray(const std::string& name,
                                std::vector<float>& dest,
                                int readLen=-1, int offset=0) {
-            _GUARD();
             int len = libpd_arraysize(name.c_str());
             if(len < 0) {
                 std::cerr << "Pd: Cannot read unknown array \""
@@ -1002,7 +917,6 @@ class PdBase {
         virtual bool writeArray(const std::string& name,
                                 std::vector<float>& source,
                                 int writeLen=-1, int offset=0) {
-            _GUARD();
             int len = libpd_arraysize(name.c_str());
             if(len < 0) {
                 std::cerr << "Pd: Cannot write to unknown array \""
@@ -1040,7 +954,6 @@ class PdBase {
 
         /// clear array and set to a specific value
         virtual void clearArray(const std::string& name, int value=0) {
-            _GUARD();
             int len = libpd_arraysize(name.c_str());
             if(len < 0) {
                 std::cerr << "Pd: Cannot clear unknown array \""
@@ -1049,7 +962,6 @@ class PdBase {
             }
             std::vector<float> array;
             array.resize(len, value);
-
             if(libpd_write_array(name.c_str(), 0, &array[0], len) < 0) {
                 std::cerr << "Pd: libpd_write_array failed while clearing array \""
                      << name << "\"" << std::endl;
@@ -1084,14 +996,6 @@ class PdBase {
         unsigned int maxMessageLen() {
             return PdContext::instance().maxMsgLen;
         }
-    
-        /// lock the internal mutex
-        /// does nothing if not compiled with LIBPD_USE_STD_MUTEX
-        void lock() {_LOCK();}
-
-        /// unlock the internal mutex
-        /// does nothing if not compiled with LIBPD_USE_STD_MUTEX
-        void unlock() {_UNLOCK();}
 
     protected:
     
@@ -1420,13 +1324,6 @@ class PdBase {
                     }
                 }
         };
-    
-    private:
-
-        #ifdef LIBPD_USE_STD_MUTEX
-            /// locks libpd C function calls, enable by defining LIBPD_USE_STD_MUTEX
-            std::mutex _mutex;
-        #endif
 };
 
 } // namespace

@@ -20,7 +20,8 @@
 @property (nonatomic, copy) NSString *baseName;
 @property (nonatomic, copy) NSString *pathName;
 
-- (void)openFile:(NSString *)baseName path:(NSString *)pathName;  // open a file with base and path names
+// open a file with base and path names
+- (void)openFile:(NSString *)baseName path:(NSString *)pathName;
 
 @end
 

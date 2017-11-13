@@ -99,4 +99,3 @@ int log2int(int x) {
 	}
 	return y;
 }
-

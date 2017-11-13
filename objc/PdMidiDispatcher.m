@@ -116,7 +116,6 @@
 }
 
 // Override this method in subclasses if you want different printing behavior.
-// No need to synchronize here.
 - (void)receiveMidiByte:(int)byte forPort: (int)port {
 	NSLog(@"Received midi byte: %d 0x%X", port, byte);
 }
