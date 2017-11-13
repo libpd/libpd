@@ -49,33 +49,7 @@ public final class PdBase {
   private static PdMidiReceiver midiReceiver = null;
 
   static {
-    try {
-      Class<?> inner[] = Class.forName("android.os.Build").getDeclaredClasses();
-      // Now we know we're running on an Android device.
-      System.loadLibrary("pd");
-      int version = -1;
-      for (Class<?> c : inner) {
-        if (c.getCanonicalName().equals("android.os.Build.VERSION")) {
-          try {
-            version = c.getDeclaredField("SDK_INT").getInt(null);
-          } catch (Exception e) {
-            version = 3; // SDK_INT is not available for Cupcake.
-          }
-          break;
-        }
-      }
-      if (version >= 9) {
-        System.out.println("loading pdnativeopensl for Android");
-        System.loadLibrary("pdnativeopensl");
-      } else {
-        System.out.println("loading pdnative for Android");
-        System.loadLibrary("pdnative");
-      }
-    } catch (Exception e) {
-      // Now we know we aren't running on an Android device.
-      NativeLoader.loadLibrary("pthreadGC2", "windows");
-      NativeLoader.loadLibrary("pdnative");
-    }
+	PdBaseLoader.loaderHandler.load();
     initialize();
   }
 
