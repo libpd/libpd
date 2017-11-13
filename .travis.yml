@@ -1,0 +1,30 @@
+language: c
+dist: trusty
+sudo: required
+
+notifications:
+  email: false
+
+git:
+  submodules: true
+  depth: 3
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+    - os: osx
+      compiler: clang
+
+script:
+  - make UTIL=true EXTRA=true MULTI=true
+  - cd samples/c/pdtest && make && cd ../../..
+  - cd samples/c/pdtest_gui && make && cd ../../..
+  - cd samples/c/pdtest_multi && make && cd ../../..
+  - cd samples/c/pdtest_thread && make && cd ../../..
+
+after_success:
+  - cd samples/c/pdtest && ./pdtest test.pd ./ && cd ../../..
+  #- cd samples/c/pdtest_gui && ./pdtest_gui test.pd ./ && cd ../../..
+  - cd samples/c/pdtest_multi && ./pdtest_multi test.pd ./ && cd ../../..
+  - cd samples/c/pdtest_thread && ./pdtest_thread test.pd ./ && cd ../../..
