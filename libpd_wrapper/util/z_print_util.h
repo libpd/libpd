@@ -19,10 +19,10 @@ extern "C"
 {
 #endif
 
-// Concatenate print messages into single lines before returning them to a print hook.
-// ie "hello 123" is sent in 1 part -> "hello 123"
+// Concatenate print messages into single lines before returning them
+// to a print hook: ie "hello 123" is sent in 1 part -> "hello 123"
 //
-// For comparison, the default behavior returns individual words and spaces.
+// For comparison, the default behavior returns individual words and spaces:
 // ie "hello 123" is sent in 3 parts -> "hello", " ", "123"
 
 // Assign the pointer to your print handler.

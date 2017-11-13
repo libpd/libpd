@@ -1,3 +1,10 @@
+/**
+ * 
+ * For information on usage and redistribution, and for a DISCLAIMER OF ALL WARRANTIES, see the
+ * file, "LICENSE.txt," in this distribution.
+ * 
+ */
+
 package org.puredata.core;
 
 /**
@@ -15,7 +22,7 @@ public abstract class PdBaseLoader {
 	
 	/**
 	 * Default {@link PdBaseLoader}. Called when {@link PdBase} is first accessed.
-	 * This give a chance to implements a custom loader depending on libpd use context. To do so,
+	 * This allows for implementing a custom loader depending on libpd use context. To do so,
 	 * first change this {@link PdBaseLoader} with your own one prior to call any {@link PdBase} methods.
 	 */
 	public static PdBaseLoader loaderHandler = new PdBaseLoader() {

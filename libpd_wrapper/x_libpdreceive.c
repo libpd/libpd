@@ -59,7 +59,7 @@ static void *libpdreceive_donew(t_symbol *s) {
   return x;
 }
 
-    /* This is exposed in the libpd API so must set the lock. */
+// This is exposed in the libpd API so must set the lock.
 void *libpdreceive_new(t_symbol *s) {
   t_libpdrec *x;
   sys_lock();
