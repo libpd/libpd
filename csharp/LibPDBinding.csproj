@@ -97,7 +97,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\libs\mings32\libwinpthread-1.dll">
+    <None Include="..\libs\mingw32\libwinpthread-1.dll">
       <Link>libwinpthread-1.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
