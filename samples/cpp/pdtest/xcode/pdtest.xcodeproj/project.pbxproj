@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30071C211C6E505800039E34 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 30071C1A1C6E505800039E34 /* LICENSE.txt */; };
-		30071C221C6E505800039E34 /* PdBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30071C1B1C6E505800039E34 /* PdBase.cpp */; };
-		30071C231C6E505800039E34 /* PdTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30071C1F1C6E505800039E34 /* PdTypes.cpp */; };
 		30562D0318620FAF006C6949 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 30562D0218620FAF006C6949 /* libc++.dylib */; };
 		309212E414F4689100194CAF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309212E314F4689100194CAF /* Cocoa.framework */; };
 		3096F5801AE73D2C00F44A22 /* libpd-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 302110FB1AE70D5600DFFAF8 /* libpd-osx.a */; };
@@ -33,15 +30,26 @@
 			remoteGlobalIDString = 119013AB1486450C00086F19;
 			remoteInfo = "libpd-osx";
 		};
+		3069A1251FB9DC12002883ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 302110F31AE70D5600DFFAF8 /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C3D36D1FAA200100C67F08;
+			remoteInfo = "libpd-ios-multi";
+		};
+		3069A1271FB9DC12002883ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 302110F31AE70D5600DFFAF8 /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C3D2FA1FAA1FCC00C67F08;
+			remoteInfo = "libpd-osx-multi";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		30071C1A1C6E505800039E34 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		30071C1B1C6E505800039E34 /* PdBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdBase.cpp; sourceTree = "<group>"; };
 		30071C1C1C6E505800039E34 /* PdBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdBase.hpp; sourceTree = "<group>"; };
 		30071C1D1C6E505800039E34 /* PdMidiReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdMidiReceiver.hpp; sourceTree = "<group>"; };
 		30071C1E1C6E505800039E34 /* PdReceiver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdReceiver.hpp; sourceTree = "<group>"; };
-		30071C1F1C6E505800039E34 /* PdTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PdTypes.cpp; sourceTree = "<group>"; };
 		30071C201C6E505800039E34 /* PdTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PdTypes.hpp; sourceTree = "<group>"; };
 		302110F31AE70D5600DFFAF8 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
 		30562D0218620FAF006C6949 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -74,12 +82,9 @@
 		30071C191C6E505800039E34 /* cpp */ = {
 			isa = PBXGroup;
 			children = (
-				30071C1A1C6E505800039E34 /* LICENSE.txt */,
-				30071C1B1C6E505800039E34 /* PdBase.cpp */,
 				30071C1C1C6E505800039E34 /* PdBase.hpp */,
 				30071C1D1C6E505800039E34 /* PdMidiReceiver.hpp */,
 				30071C1E1C6E505800039E34 /* PdReceiver.hpp */,
-				30071C1F1C6E505800039E34 /* PdTypes.cpp */,
 				30071C201C6E505800039E34 /* PdTypes.hpp */,
 			);
 			name = cpp;
@@ -91,6 +96,8 @@
 			children = (
 				302110F91AE70D5600DFFAF8 /* libpd-ios.a */,
 				302110FB1AE70D5600DFFAF8 /* libpd-osx.a */,
+				3069A1261FB9DC12002883ED /* libpd-ios-multi.a */,
+				3069A1281FB9DC12002883ED /* libpd-osx-multi.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,6 +220,20 @@
 			remoteRef = 302110FA1AE70D5600DFFAF8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		3069A1261FB9DC12002883ED /* libpd-ios-multi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-ios-multi.a";
+			remoteRef = 3069A1251FB9DC12002883ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3069A1281FB9DC12002883ED /* libpd-osx-multi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-osx-multi.a";
+			remoteRef = 3069A1271FB9DC12002883ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -220,7 +241,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30071C211C6E505800039E34 /* LICENSE.txt in Resources */,
 				3096F5821AE73DF800F44A22 /* pd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,10 +252,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30071C221C6E505800039E34 /* PdBase.cpp in Sources */,
 				30EF3CB41AE74FD900E3DB68 /* PdObject.cpp in Sources */,
 				30EF3CB31AE74FD900E3DB68 /* main.cpp in Sources */,
-				30071C231C6E505800039E34 /* PdTypes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

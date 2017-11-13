@@ -1,4 +1,4 @@
-Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
+Copyright (c) 2012-2017 Dan Wilcox <danomatika@gmail.com>
 All rights reserved.
 
 The following terms (the "Standard Improved BSD License") apply to all

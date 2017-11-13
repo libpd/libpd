@@ -19,13 +19,13 @@ else
 endif
 
 LIBPD_DIR = ../../..
-LIBPD = $(LIBPD_DIR)/libs/libpdcpp.$(SOLIB_EXT)
+LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 
 SRC_FILES = src/PdObject.cpp src/main.cpp
 TARGET = pdtest
 
 CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
-            -I$(LIBPD_DIR)/cpp -I./src -O3
+            -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp -I./src -O3
 
 .PHONY: clean clobber
 
@@ -34,7 +34,7 @@ $(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD)
 	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
-	cd $(LIBPD_DIR) && make cpplib UTIL=true EXTRA=true
+	cd $(LIBPD_DIR) && make UTIL=true EXTRA=true
 
 clean:
 	rm -f src/*.o

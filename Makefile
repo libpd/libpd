@@ -10,8 +10,6 @@ ifeq ($(UNAME), Darwin)  # Mac
     -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
-  CPP_FLAGS = -stdlib=libc++
-  CPP_LDFLAGS = $(LDFLAGS) -stdlib=libc++
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
@@ -27,7 +25,6 @@ else
       -Wl,--out-implib=libs/libpd.lib
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
-    CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Assume Linux
     SOLIB_EXT = so
@@ -39,7 +36,6 @@ else
       -I"$(JAVA_HOME)/include/linux"
     LDFLAGS = -shared -ldl -Wl,-Bsymbolic
     CSHARP_LDFLAGS = $(LDFLAGS)
-    CPP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
 endif
@@ -87,10 +83,6 @@ LIBPD_UTILS = \
     libpd_wrapper/util/z_queued.c \
     libpd_wrapper/util/ringbuffer.c
 
-CPP_FILES = \
-    cpp/PdBase.cpp \
-    cpp/PdTypes.cpp
-
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
     java/org/puredata/core/NativeLoader.java \
@@ -104,14 +96,17 @@ PDJAVA_JAR_CLASSES = \
 JNI_SOUND = jni/z_jni_plain.c
 
 # conditional libpd_wrapper/util compilation
-ifeq ($(UTIL), true)
-    UTIL_FILES = $(LIBPD_UTILS)
+UTIL_FILES = $(LIBPD_UTILS)
+ifeq ($(UTIL), false)
+    UTIL_FILES =
 endif
 
 # conditional pure-data/extra externals compilation
-ifeq ($(EXTRA), true)
-    EXTRA_FILES = $(PD_EXTRA_FILES)
-    EXTRA_CFLAGS = -DLIBPD_EXTRA
+EXTRA_FILES = $(PD_EXTRA_FILES)
+EXTRA_CFLAGS = -DLIBPD_EXTRA
+ifeq ($(EXTRA), false)
+    EXTRA_FILES =
+    EXTRA_CFLAGS =
 endif
 
 # conditional multi-instance support
@@ -159,7 +154,6 @@ JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
-PDCPP = libs/libpdcpp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
 PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
@@ -170,8 +164,6 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
          $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
          $(ADDITIONAL_CFLAGS)
-
-CXXFLAGS = $(CFLAGS) $(CPP_FLAGS)
 
 .PHONY: libpd csharplib cpplib javalib install uninstall clean clobber
 
@@ -200,22 +192,16 @@ csharplib: $(PDCSHARP)
 $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
-cpplib: $(PDCPP)
-
-# build with LIBPD_UTILS since cpp wrapper uses the ringbuffer
-$(PDCPP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${CPP_FILES:.cpp=.o}
-	g++ -o $(PDCPP) $^ $(CPP_LDFLAGS) -lm -lpthread
-
 clean:
-	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${CPP_FILES:.cpp=.o} ${JNI_FILE:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
 	rm -f ${PD_UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(PDCSHARP) $(PDCPP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
+	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
 	rm -f libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD)
 
-# optional install headers & libs based on build type: cpplib and/or UTIL=true 
+# optional install headers & libs based on build type: UTIL=true and/or windows
 install:
 	install -d $(includedir)/libpd
 	install -m 644 libpd_wrapper/z_libpd.h $(includedir)/libpd
@@ -224,17 +210,13 @@ install:
 	    install -d $(includedir)/libpd/util; \
 	    install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
 	    install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
+		install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi
 	install -d $(libdir)
-	if [ -e $(LIBPD) ]; then \
-	    install -m 755 $(LIBPD) $(libdir); \
-	fi
-	if [ -e $(PDCPP) ]; then \
-	    install -m 644 cpp/*.hpp $(includedir)/libpd; \
-	    install -m 755 $(PDCPP) $(libdir); \
-	fi
+	install -m 755 $(LIBPD) $(libdir)
+	if [ -e ${LIBPD:.$(SOLIB_EXT)=.def} ]; then install -m 755 ${LIBPD:.$(SOLIB_EXT)=.def} $(libdir); fi
+	if [ -e ${LIBPD:.$(SOLIB_EXT)=.lib} ]; then install -m 755 ${LIBPD:.$(SOLIB_EXT)=.lib} $(libdir); fi
 
 uninstall:
 	rm -rf $(includedir)/libpd
 	rm -f $(libdir)/`basename $(LIBPD)`
-	rm -f $(libdir)/`basename $(PDCPP)`

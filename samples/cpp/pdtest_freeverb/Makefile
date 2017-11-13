@@ -23,7 +23,7 @@ else
 endif
 
 LIBPD_DIR = ../../..
-LIBPD = $(LIBPD_DIR)/libs/libpdcpp.$(SOLIB_EXT)
+LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 
 SRC_FILES = src/PdObject.cpp src/RtAudio.cpp src/main.cpp
 EXT_FILES = src/externals/freeverb~.c
@@ -31,7 +31,7 @@ TARGET = pdtest_freeverb
 
 # make sure to define PD for freeverb~
 CFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
-          -I$(LIBPD_DIR)/cpp -I./src -DPD -O3
+          -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp -I./src -DPD -O3
 CXXFLAGS += $(CFLAGS) -std=c++11 -DLIBPD_USE_STD_MUTEX
 
 .PHONY: clean clobber
@@ -41,7 +41,7 @@ $(TARGET): ${SRC_FILES:.cpp=.o} ${EXT_FILES:.c=.o} $(LIBPD)
 	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
-	cd $(LIBPD_DIR) && make cpplib UTIL=true EXTRA=true
+	cd $(LIBPD_DIR) && make UTIL=true EXTRA=true
 
 clean:
 	rm -f src/*.o
