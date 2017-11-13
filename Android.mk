@@ -21,7 +21,7 @@ PD_SRC_FILES := \
   pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
   pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
   pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c \
-  pure-data/src/s_file.c pure-data/src/s_inter.c \
+  pure-data/src/s_inter.c \
   pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
   pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
   pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
@@ -37,7 +37,7 @@ PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
   $(LOCAL_PATH)/libpd_wrapper/util
 PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w
 PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
-PD_LDLIBS := -ldl
+PD_LDLIBS := -ldl -latomic
 
 
 # Build libpd

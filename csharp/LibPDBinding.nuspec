@@ -11,8 +11,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Pure Data as an embeddable audio synthesis library.</description>
 		<releaseNotes>
-			- [Win] include 64 bit managed library.
-			- [Linux] include patch for loading Pd files independently of locale.
+			Update to Pd version 0.47-1.
 		</releaseNotes>
 		<copyright>Copyright 2012 - 2016</copyright>
 		<tags>C# .NET Mono audio sound</tags>
