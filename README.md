@@ -25,7 +25,7 @@ The preferred method to download libpd is to use git.
 
 **Do not download libpd as a zip or tar.gz file from GitHub.**
 
-The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target `pure-data/src/d_arithmetic.o'* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
+The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target `pure-data/src/d_arithmetic.o`* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
 
 To download libpd & checkout the pure-data submodule do the following:
 
@@ -62,28 +62,29 @@ Build support for various platforms. Feel free to improve the build system in an
 Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & Mac OSX and has the following targets:
 
   - **libpd**: (default) builds if no target is specified, builds the libpd.so/dylib/dll
-  - **cpplib**: builds libpd with the cpp wrapper
   - **csharplib**: builds libpdcsharp.dll (on Windows) or libpdcsharp.so (on Linux)
   - **javalib**: builds libpdnative and the jni wrapper
   - **clean**: removes the object files
   - **clobber**: removes the linked library files
-  - **install**: installs libpd C library (& C++ if built) and headers, set location with prefix= (default: /usr/local)
-  - **uninstall**: removes libpd C library and headers, set location with prefix= (default: /usr/local)
+  - **install**: installs libpd C library and C/C++\* headers, set location with prefix= (default: /usr/local)
+  - **uninstall**: removes libpd C library and C/C++ headers, set location with prefix= (default: /usr/local)
+
+\* _C++ headers are only installed if the C utility layers were built as well (ie. UTIL=true), see below._
 
 Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
 
-  - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator
-  - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init()
+  - **UTIL=true**, compiles `libpd_wrapper/util` ringbuffer and print concatenator (default true)
+  - **EXTRA=true**, compiles `pure-data/extra` externals which are then inited in libpd_init() (default true)
   - **MULTI=true**, compiles libpd with multiple instance support
   - **DEBUG=true**, compiles libpd with -Wall & no optimizations
-  - **LOCALE=false**, do not set the LC_NUMERIC number format to the default "C" locale\*
+  - **LOCALE=false**, do not set the LC_NUMERIC number format to the default "C" locale\* (default false)
   - **PORTAUDIO=true**, compiles libpd with portaudio support (currently JAVA jni only)
 
-For example, to build libpd with both util and extra:
+For example, to build libpd without the util libs and extra externals:
 
-    make UTIL=true EXTRA=true
+    make UTIL=false EXTRA=false
 
-_Note: cpplib is automatically built with UTIL=true as it uses the ringbuffer_
+_Note: The C++ wrapper requires UTIL=true as it uses the ringbuffer._
 
 \* See the Known Issues section for more info.
 
@@ -136,14 +137,17 @@ C#
 --
 
 ### Installation from NuGet
+
 LibPD is available as a [NuGet package](https://www.nuget.org/packages/LibPdBinding). If your platform's native dll is not included, you have to build it yourself with `make csharplib` and copy the resulting file to the output directory. Batch scripts for compilations on Windows with MinGW64 are included.
 
 ### Building yourself
+
 The C# library expects a file libpdcsharp.dll in its folder. Before using the project, you need to compile it.
 
 Include `csharp/LibPdBinding.csproj` in your solution and reference the project in your application.
 
 #### Windows
+
 The wrapper can be built with [MinGW-w64](http://mingw-w64.org/doku.php).
 
 You need to install [msys2](http://msys2.github.io/), preferably the version for i686, because that version can build the 64bit versions as well.
@@ -161,6 +165,7 @@ For the 64 bit version, you also must use `libs/mingw64/libwinptread-1.dll` inst
 For a current version of `libwinpthread-1.dll` search in your msys2 installation folders.
 
 #### Linux 
+
 If you want to use the library on Linux with Mono, you need the following changes to the LibPdBinding project:
 
   - Compile the so file with `make csharplib`.
@@ -171,11 +176,21 @@ If you want to use the library on Linux with Mono, you need the following change
 Known Issues
 ------------
 
+### How do I use libpd in Visual Studio?
+
+Historically, Pd was designed to be built using the open source gcc & make and did not directly support being built in Visual Studio on Windows, mainly due to differences in C compiler versions. More recently, this has become less of an issue so it is becoming more *possible* to build libpd directly in Visual Studio, although this is still not currently supported by this project.
+
+What *does* work is building the libpd C library using gcc and make using MinGW in msys on Windows. You can use the resulting .dll, .def, & .lib files with Visual Studio and the cpp wrapper is provided as an all header library so it should work directly within VS as well.
+
+After building libpd in msys, you can "install" it to a temp folder to get only the libs and headers you need:
+
+    make install prefix=libpd-build
+
 ### Problems with numbers in loaded patches or DSP output always seems to be 0
 
-Pd expects numbers to be in an english format, ie. "0.3". If you are using a non-English language or locale setting on your system, it may be encoding numbers differently, ie. "0,3". This can lead to weird bugs in loaded patches where numbers seem wrong or end up truncated as 0.
+Pd expects numbers to be in an English format, ie. "0.3". If you are using a non-English language or locale setting on your system, it may be encoding numbers differently, ie. "0,3". This can lead to weird bugs in loaded patches where numbers seem wrong or end up truncated as 0.
 
-By default, libpd is built with the LC\_NUMERIC locale set to the "C" default, so this shouldn't be a problem. If you are using libpd within a project that requires specific locale settings, you will need to make sure libpd's LC\_NUMERIC is left alone or at least reset it to "C" if working with a different numeric setting. If a non-english LC\_NUMERIC is set, you will run into the number parsing issues mentioned above.
+By default, libpd is built with the LC\_NUMERIC locale set to the "C" default, so this shouldn't be a problem. If you are using libpd within a project that requires specific locale settings, you will need to make sure libpd's LC\_NUMERIC is left alone or at least reset it to "C" if working with a different numeric setting. If a non-English LC\_NUMERIC is set, you will run into the number parsing issues mentioned above.
 
 If you need to control LC\_NUMERIC manually, you can build libpd without the call to setlocale() in libpd_init using the SETLOCALE=false makefile option or by setting the LIBPD_NO_NUMERIC define.
 

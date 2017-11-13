@@ -1,3 +1,45 @@
+0.11.0: ???
+
+* updated to pd vanilla 0.48-0
+* support for multiple libpd instances is more or less working, see new
+  libpd_*_instance() api and pdtest_multi/pdtest_thread C samples,
+  note: language wrappers are not yet updated with the new APIs
+* libpd can now open a patch in the Pd vanilla GUI directly, see the new
+  libpd_startgui()/libpd_stopgui() functions and the pdtest_gui C sample
+* no longer build s_file.c as desktop settings have no real meaning for libpd,
+  this also fixes iOS build error due to system calls being removed in Xcode 9
+* libpd binaries built with MinGW now work in Visual Studio (see readme)
+* updated ringbuffer atomics macros to use C11 stdatomics.h if available,
+  this fixes deprecation warning on macOS 10.12
+* fixed bug in libpd_sysex which masked 8 bit bytes, the MIDI spec allows 8 bit
+  bytes except for realtime messages
+
+* makefile: UTIL=true, EXTRA=true, LOCALE=false are now defaults
+* makefile: added MULTI option to build libpd with multiple instance support
+* makefile: now installs libpd .def and .lib files on Windows
+* makefile: C++ headers are now conditionally installed if built with UTIL=true
+* makefile: fixed install bug when libdir doesn't exist (Wim Muskee)
+* makefile: use install command and set permissions
+
+* C++: transitioned to all-header library and removed "cpplib" make target,
+       you may need to add `libpd_wrapper/util` to you include paths,
+       this also makes it easier to use libpd & C++ with Visual Studio
+
+* Java: added PortAudio support, build using PORTAUDIO=true makefile option
+* Java: allow custom natives loading by implementing PdBaseLoader class (MGSX)
+
+* ObjC: iOS 8 is now the min-deployment target, now using ARC, modernized syntax
+* ObjC: macOS Xcode project universal build by default
+* ObjC: fixed cocoapods swift build by only exposing obj folder (Cerupcat)
+* ObjC: fixed PdAudioController playback stopping when another app starts
+        playing by setting MixWithOthers option for Playback category
+        (Alexander Randon)
+
+* added pdtest_freeverb C sample (a project with a working external!)
+* added pdtest_thread C sample (Pierre Guillot)
+* updated Xcode projects for Xcode 9
+* added Travis-CI support for C (Pierre Guillot)
+
 0.10.0: 2016 September
 
 * updated to pd vanilla 0.47-1
