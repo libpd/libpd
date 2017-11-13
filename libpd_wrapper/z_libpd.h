@@ -108,9 +108,18 @@ EXTERN void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook);
 EXTERN void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
-EXTERN int libpd_startgui(char *path);
-EXTERN void libpd_stopgui(void);
-EXTERN void libpd_pollgui(void);
+/// \section GUI
+
+/// open the current patches within a Pd vanilla GUI
+/// requires the path to Pd's main folder that contains bin/, tcl/, etc
+/// returns 0 on success
+EXTERN int libpd_start_gui(char *path);
+
+/// stop the Pd vanilla GUI
+EXTERN void libpd_stop_gui(void);
+
+/// update and handle any GUI messages
+EXTERN void libpd_poll_gui(void);
 
 /// \section Multiple Instances
 

@@ -33,6 +33,7 @@
 # define SCHED_TICK(x) sched_tick()
 #endif
 
+// forward declares
 void pd_init(void);
 int sys_startgui(const char *libdir);
 void sys_stopgui(void);
@@ -59,7 +60,7 @@ static void *get_object(const char *s) {
   return x;
 }
 
-/* this is called instead of sys_main() to start things */
+// this is called instead of sys_main() to start things
 int libpd_init(void) {
   static int initialized = 0;
   if (initialized) return -1; // only allow init once (for now)
@@ -557,7 +558,7 @@ void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_midibytehook = hook;
 }
 
-int libpd_startgui(char *path) {
+int libpd_start_gui(char *path) {
   int retval;
   sys_lock();
   retval = sys_startgui(path);
@@ -565,13 +566,13 @@ int libpd_startgui(char *path) {
   return retval;
 }
 
-void libpd_stopgui(void) {
+void libpd_stop_gui(void) {
   sys_lock();
   sys_stopgui();
   sys_unlock();
 }
 
-void libpd_pollgui(void) {
+void libpd_poll_gui(void) {
   sys_lock();
   sys_pollgui();
   sys_unlock();
@@ -618,10 +619,10 @@ int libpd_num_instances(void) {
 #endif
 }
 
-/* dummy routines needed because we don't use s_file.c */
+// dummy routines needed because we don't use s_file.c
 void glob_loadpreferences(t_pd *dummy, t_symbol *s) {}
 void glob_savepreferences(t_pd *dummy, t_symbol *s) {}
 void glob_forgetpreferences(t_pd *dummy) {}
 void sys_loadpreferences(const char *filename, int startingup) {}
 int sys_oktoloadfiles(int done) {return 1;}
-void sys_savepreferences(const char *filename) {} /* used in s_path.c */
+void sys_savepreferences(const char *filename) {} // used in s_path.c

@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
         file[i] = libpd_openfile(argv[1], (argc > 2 ? argv[2] : "."));
 
-        if (libpd_startgui("../../../pure-data/"))
+        if (libpd_start_gui("../../../pure-data/"))
             printf("gui startup failed\n");
     }
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
         {
             pd_setinstance(pdinstancevec[i]);
             libpd_process_float(1, inbuf, outbuf);
-            libpd_pollgui();
+            libpd_poll_gui();
         }
         waituntil(logicaltime);
     }
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     for (i = 0; i < NINSTANCES; i++)
     {
         pd_setinstance(pdinstancevec[i]);
-        libpd_stopgui();
+        libpd_stop_gui();
         libpd_closefile(file[i]);
     }
     return (0);
