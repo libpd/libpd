@@ -150,7 +150,7 @@ Include `csharp/LibPdBinding.csproj` in your solution and reference the project 
 
 The wrapper can be built with [MinGW-w64](http://mingw-w64.org/doku.php).
 
-You need to install [msys2](http://msys2.github.io/), preferably the version for i686, because that version can build the 64bit versions as well.
+You need to install [msys2](http://msys2.github.io/).
 
 Install msys2 using the instructions on the download page.
 
