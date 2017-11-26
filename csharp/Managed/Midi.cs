@@ -1,9 +1,13 @@
 ﻿using System;
 using LibPDBinding.Managed.Events;
 using LibPDBinding.Native;
+using System.Runtime.CompilerServices;
 
 namespace LibPDBinding.Managed
 {
+	/// <summary>
+	/// MIDI in Pd.
+	/// </summary>
 	public sealed class Midi : IDisposable
 	{
 		internal Midi ()
@@ -33,12 +37,39 @@ namespace LibPDBinding.Managed
 			MidiByte = null;
 		}
 
+		/// <summary>
+		/// Occurs when MIDI note on message is sent from Pd.
+		/// </summary>
 		public event EventHandler<NoteOnEventArgs> NoteOn;
+
+		/// <summary>
+		/// Occurs when MIDI program change is sent from Pd.
+		/// </summary>
 		public event EventHandler<ProgramChangeEventArgs> ProgramChange;
+
+		/// <summary>
+		/// Occurs when MIDI control change is sent from Pd.
+		/// </summary>
 		public event EventHandler<ControlChangeEventArgs> ControlChange;
+
+		/// <summary>
+		/// Occurs when MIDI pitchbend is sent from Pd.
+		/// </summary>
 		public event EventHandler<PitchbendEventArgs> Pitchbend;
+
+		/// <summary>
+		/// Occurs when MIDI aftertouch is sent from Pd.
+		/// </summary>
 		public event EventHandler<AftertouchEventArgs> Aftertouch;
+
+		/// <summary>
+		/// Occurs when MIDI poly aftertouch is sent from Pd.
+		/// </summary>
 		public event EventHandler<PolyAftertouchEventArgs> PolyAftertouch;
+
+		/// <summary>
+		/// Occurs when raw MIDI byte is sent from Pd.
+		/// </summary>
 		public event EventHandler<MidiByteEventArgs> MidiByte;
 
 		LibPDNoteOnHook NoteOnHook;
@@ -49,46 +80,102 @@ namespace LibPDBinding.Managed
 		LibPDPolyAftertouchHook PolyAftertouchHook;
 		LibPDMidiByteHook MidiByteHook;
 
+		/// <summary>
+		/// Sends note on MIDI message.
+		/// </summary>
+		/// <param name="channel">Channel.</param>
+		/// <param name="pitch">Pitch.</param>
+		/// <param name="velocity">Velocity.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendNoteOn (int channel, int pitch, int velocity)
 		{
 			PInvoke.noteon (channel, pitch, velocity);
 		}
 
+		/// <summary>
+		/// Sends program change MIDI message.
+		/// </summary>
+		/// <param name="channel">Channel.</param>
+		/// <param name="value">Value.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendProgramChange (int channel, int value)
 		{
 			PInvoke.programchange (channel, value);
 		}
 
+		/// <summary>
+		/// Sends control change MIDI message.
+		/// </summary>
+		/// <param name="channel">Channel.</param>
+		/// <param name="controller">Controller.</param>
+		/// <param name="value">Value.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendControlChange (int channel, int controller, int value)
 		{
 			PInvoke.controlchange (channel, controller, value);			
 		}
 
+		/// <summary>
+		/// Sends pitchbend MIDI message.
+		/// </summary>
+		/// <param name="channel">Channel.</param>
+		/// <param name="value">Value.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendPitchbend (int channel, int value)
 		{
 			PInvoke.pitchbend (channel, value);			
 		}
 
+		/// <summary>
+		/// Sends aftertouch MIDI message.
+		/// </summary>
+		/// <param name="channel">Channel.</param>
+		/// <param name="value">Value.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendAftertouch (int channel, int value)
 		{
 			PInvoke.aftertouch (channel, value);
 		}
-
+		/// <summary>
+		/// Sends poly aftertouch MIDI message.
+		/// </summary>
+		/// <param name="channel">Channel.</param>
+		/// <param name="pitch">Pitch.</param>
+		/// <param name="value">Value.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendPolyAftertouch (int channel, int pitch, int value)
 		{
 			PInvoke.polyaftertouch (channel, pitch, value);
 		}
 
+		/// <summary>
+		/// Sends raw midi byte.
+		/// </summary>
+		/// <param name="port">Port.</param>
+		/// <param name="value">Byte.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendMidiByte (int port, int value)
 		{
 			PInvoke.midibyte (port, value);
 		}
 
+		/// <summary>
+		/// Sends MIDI system exclusive byte.
+		/// </summary>
+		/// <param name="port">Port.</param>
+		/// <param name="value">Byte.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendSysex (int port, int value)
 		{
 			PInvoke.sysex (port, value);
 		}
 
+		/// <summary>
+		/// Sends MIDI system realtime byte.
+		/// </summary>
+		/// <param name="port">Port.</param>
+		/// <param name="value">Value.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendSysRealtime (int port, int value)
 		{
 			PInvoke.sysrealtime (port, value);
