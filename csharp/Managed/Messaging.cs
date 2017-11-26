@@ -1,13 +1,12 @@
 ﻿using System;
-using LibPDBinding.Native;
-using LibPDBinding.Managed.Events;
-using LibPDBinding.Managed.Data;
-using LibPDBinding.Managed.Utils;
-using System.Runtime.CompilerServices;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.CompilerServices;
+using LibPDBinding.Managed.Data;
+using LibPDBinding.Managed.Events;
+using LibPDBinding.Managed.Utils;
+using LibPDBinding.Native;
 
-namespace LibPDBinding
+namespace LibPDBinding.Managed
 {
 	/// <summary>
 	/// Messaging in Pd.
@@ -32,7 +31,7 @@ namespace LibPDBinding
 
 		private void Dispose (bool disposing)
 		{
-			foreach(IntPtr pointer in _bindings.Values){
+			foreach (IntPtr pointer in _bindings.Values) {
 				PInvoke.unbind (pointer);
 			}
 			Print = null;
@@ -43,7 +42,8 @@ namespace LibPDBinding
 			Message = null;
 		}
 
-		Dictionary<string, IntPtr> _bindings = new Dictionary<string, IntPtr>();
+		Dictionary<string, IntPtr> _bindings = new Dictionary<string, IntPtr> ();
+
 		/// <summary>
 		/// Send a general message to the specified receiver with a range of atoms.
 		/// </summary>
@@ -62,13 +62,14 @@ namespace LibPDBinding
 		/// <param name="receiver">Receiver.</param>
 		/// <param name="atoms">Atoms.</param>
 		[MethodImpl (MethodImplOptions.Synchronized)]
-		public void Send (string receiver, params IAtom[] atoms){
-			if (atoms.Length == 1){
+		public void Send (string receiver, params IAtom[] atoms)
+		{
+			if (atoms.Length == 1) {
 				MessageInvocation.Send (receiver, atoms [0]);
 				return;
 			}
 			MessageInvocation.SendList (receiver, atoms);
-		}		
+		}
 
 		/// <summary>
 		/// Send a bang message to the specified receiver with a range of atoms.
@@ -76,7 +77,8 @@ namespace LibPDBinding
 		/// <param name="receiver">Receiver.</param>
 		/// <param name="atoms">Atoms.</param>
 		[MethodImpl (MethodImplOptions.Synchronized)]
-		public void Send (string receiver, Bang bang){
+		public void Send (string receiver, Bang bang)
+		{
 			MessageInvocation.SendBang (receiver);
 		}
 
@@ -86,7 +88,7 @@ namespace LibPDBinding
 		/// <param name="receiver">Receiver.</param>
 		public void Bind (string receiver)
 		{
-			if (_bindings.ContainsKey(receiver)){
+			if (_bindings.ContainsKey (receiver)) {
 				return;
 			}
 			IntPtr pointer = PInvoke.bind (receiver);
@@ -97,10 +99,10 @@ namespace LibPDBinding
 		/// Unbinds from the specified receiver.
 		/// </summary>
 		/// <param name="receiver">Receiver.</param>
-		public void Unbind(string receiver)
+		public void Unbind (string receiver)
 		{
 			IntPtr pointer;
-			if (!_bindings.TryGetValue(receiver, out pointer)){
+			if (!_bindings.TryGetValue (receiver, out pointer)) {
 				return;
 			}
 			PInvoke.unbind (pointer);

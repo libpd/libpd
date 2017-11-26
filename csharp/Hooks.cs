@@ -28,4 +28,33 @@ namespace LibPDBinding
 	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
     internal delegate void LibPDMessageHook ([In] [MarshalAs (UnmanagedType.LPStr)] string recv, [In] [MarshalAs (UnmanagedType.LPStr)] string msg, int argc, IntPtr argv);
 
+	// MIDI
+	public delegate void LibPDNoteOn (int channel, int pitch, int velocity);
+	public delegate void LibPDControlChange (int channel, int controller, int value);
+	public delegate void LibPDProgramChange (int channel, int value);
+	public delegate void LibPDPitchbend (int channel, int value);
+	public delegate void LibPDAftertouch (int channel, int value);
+	public delegate void LibPDPolyAftertouch (int channel, int pitch, int value);
+	public delegate void LibPDMidiByte (int port, int midiByte);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDNoteOnHook (int channel, int pitch, int velocity);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDControlChangeHook (int channel, int controller, int value);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDProgramChangeHook (int channel, int value);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDPitchbendHook (int channel, int value);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDAftertouchHook (int channel, int value);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDPolyAftertouchHook (int channel, int pitch, int value);
+
+	[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	internal delegate void LibPDMidiByteHook (int port, int midiByte);
 }

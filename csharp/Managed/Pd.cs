@@ -40,7 +40,7 @@ namespace LibPDBinding.Managed
 
 		Messaging _messaging;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the messaging object.
 		/// </summary>
 		/// <value>The messaging object.</value>
@@ -49,6 +49,16 @@ namespace LibPDBinding.Managed
 				return _messaging;
 			}
 		}
+
+	    Midi _midi;
+
+        /// <summary>
+        /// Get the object for MIDI communication
+        /// </summary>
+	    public Midi Midi
+	    {
+	        get { return _midi; }
+	    }
 
 		/// <summary>
 		/// Returns [true] when audio computation is enabled, and [false] when audio computation is disabled.
@@ -75,6 +85,7 @@ namespace LibPDBinding.Managed
 		public Pd (int inputChannels, int outputChannels, int sampleRate, IEnumerable<string> searchPaths)
 		{
 			_messaging = new Messaging ();
+            _midi = new Midi();
 			Inputs = inputChannels;
 			Outputs = outputChannels;
 			SampleRate = sampleRate;
@@ -101,6 +112,7 @@ namespace LibPDBinding.Managed
 				Stop ();
 			}
 			Messaging.Dispose ();
+			Midi.Dispose ();
 		}
 
 		/// <summary>

@@ -78,18 +78,17 @@
     <Compile Include="LibraryLoader\IDllLoader.cs" />
     <Compile Include="LibraryLoader\LinuxDllLoader.cs" />
     <Compile Include="LibraryLoader\WindowsDllLoader.cs" />
+    <Compile Include="Managed\MidiTests.cs" />
     <Compile Include="Managed\PatchTests.cs" />
     <Compile Include="Managed\PdTests.cs" />
     <Compile Include="Managed\PdArrayTests.cs" />
     <Compile Include="Managed\MessagingTests.cs" />
-    <Compile Include="LibPDTests.cs" />
+    <Compile Include="LibPDTests.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Managed\CApiTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">
-      <Project>0D2EF933-6094-4DE1-9D63-9B43786C06AE</Project>
-      <Name>LibPDBinding</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">
       <Project>{C452F742-2653-4403-817B-136545EB5F1F}</Project>
       <Name>LibPDBinding</Name>
@@ -98,6 +97,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="test_csharp.pd" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

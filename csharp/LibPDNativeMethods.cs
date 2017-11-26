@@ -59,58 +59,58 @@ namespace LibPDBinding
 	/// </summary>
 	public static partial class LibPD
 	{
-	    //only call this once
-        static LibPD()
+		//only call this once
+		static LibPD ()
 		{
-			Init();
+			Init ();
 		}
-		
+
 		#region Environment
 
 		static void Init ()
 		{
 			SetupHooks ();
-			libpd_init ();
+			PInvoke.libpd_init ();
 		}
-		
+
 		/// <summary>
 		/// You almost never have to call this! The only case is when the libpdcsharp.dll 
 		/// was unloaded and you load it again into your application.
 		/// So be careful, it will also call Release() to clear all state.
 		/// The first initialization is done automatically when using a LibPD method.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.Synchronized)] 
-		public static void ReInit()
+		[MethodImpl (MethodImplOptions.Synchronized)] 
+		public static void ReInit ()
 		{
-			Release();
+			Release ();
 			Init ();
 		}
 		
 		//store open patches
-		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr>();
+		private static Dictionary<int, IntPtr> Patches = new Dictionary<int, IntPtr> ();
 
 
-	    /// <summary>
+		/// <summary>
 		/// clears the search path for pd externals
 		/// </summary>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void ClearSearchPath()
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static void ClearSearchPath ()
 		{
-		    PInvoke.clear_search_path();
+			PInvoke.clear_search_path ();
 		}
 
 
-	    /// <summary>
+		/// <summary>
 		/// adds a directory to the search paths
 		/// </summary>
 		/// <param name="sym">directory to add</param>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void AddToSearchPath(string sym)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static void AddToSearchPath (string sym)
 		{
-		    PInvoke.add_to_search_path(sym);
+			PInvoke.add_to_search_path (sym);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// reads a patch from a file
 		/// </summary>
 		/// <param name="path">to the file </param>
@@ -118,53 +118,52 @@ namespace LibPDBinding
 		///         $0 value of the patch </returns>
 		/// <exception cref="IOException">
 		///             thrown if the file doesn't exist or can't be opened </exception>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int OpenPatch(string filepath)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int OpenPatch (string filepath)
 		{
-			if(!File.Exists(filepath))
-			{
-				throw new FileNotFoundException(filepath);
+			if (!File.Exists (filepath)) {
+				throw new FileNotFoundException (filepath);
 			}
 			
-			var ptr = PInvoke.openfile(Path.GetFileName(filepath), Path.GetDirectoryName(filepath));
+			var ptr = PInvoke.openfile (Path.GetFileName (filepath), Path.GetDirectoryName (filepath));
 			
-			if(ptr == IntPtr.Zero)
-			{
-				throw new IOException("unable to open patch " + filepath);
+			if (ptr == IntPtr.Zero) {
+				throw new IOException ("unable to open patch " + filepath);
 			}
 			
-			var handle = PInvoke.getdollarzero(ptr);
-			Patches[handle] = ptr;
+			var handle = PInvoke.getdollarzero (ptr);
+			Patches [handle] = ptr;
 			return handle;
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// closes a patch; will do nothing if the handle is invalid
 		/// </summary>
 		/// <param name="p">$0 of the patch, as returned by OpenPatch</param>
 		/// <returns>true if file was found and closed</returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static bool ClosePatch(int p)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static bool ClosePatch (int p)
 		{
-			if(!Patches.ContainsKey(p)) return false;
-			var ptr = Patches[p];
-		    PInvoke.closefile(ptr);
-			return Patches.Remove(p);
+			if (!Patches.ContainsKey (p))
+				return false;
+			var ptr = Patches [p];
+			PInvoke.closefile (ptr);
+			return Patches.Remove (p);
 		}
 
 
-	    /// <summary>
+		/// <summary>
 		/// checks whether a symbol represents a pd object
 		/// </summary>
 		/// <param name="s">String representing pd symbol </param>
 		/// <returns> true if and only if the symbol given by s is associated with
 		///         something in pd </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static bool Exists(string sym)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static bool Exists (string sym)
 		{
-			return PInvoke.exists(sym) != 0;
+			return PInvoke.exists (sym) != 0;
 		}
-		
+
 		/// <summary>
 		/// releases resources held by native bindings (PdReceiver object and
 		/// subscriptions); otherwise, the state of pd will remain unaffected
@@ -172,28 +171,26 @@ namespace LibPDBinding
 		/// Note: It would be nice to free pd's I/O buffers here, but sys_close_audio
 		/// doesn't seem to do that, and so we'll just skip this for now.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void Release()
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static void Release ()
 		{
-			ComputeAudio(false);
+			ComputeAudio (false);
 			
-			foreach (var ptr in Bindings.Values)
-			{
-			    PInvoke.unbind(ptr);
+			foreach (var ptr in Bindings.Values) {
+				PInvoke.unbind (ptr);
 			}
-			Bindings.Clear();
+			Bindings.Clear ();
 			
-			foreach (var ptr in Patches.Values)
-			{
-			    PInvoke.closefile(ptr);
+			foreach (var ptr in Patches.Values) {
+				PInvoke.closefile (ptr);
 			}
-			Patches.Clear();
+			Patches.Clear ();
 		}
 
 		#endregion Environment
-		
+
 		#region Audio
-		
+
 		/// <summary>
 		/// same as "compute audio" checkbox in pd gui, or [;pd dsp 0/1(
 		/// 
@@ -203,39 +200,37 @@ namespace LibPDBinding
 		/// beginning and then forget that this method exists.
 		/// </summary>
 		/// <param name="state"></param>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void ComputeAudio(bool state)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static void ComputeAudio (bool state)
 		{
-			SendMessage("pd", "dsp", state ? 1 : 0);
+			SendMessage ("pd", "dsp", state ? 1 : 0);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// default pd block size, DEFDACBLKSIZE (currently 64) (aka number
 		/// of samples per tick per channel)
 		/// </summary>
-		public static int BlockSize
-		{
+		public static int BlockSize {
 			[MethodImpl(MethodImplOptions.Synchronized)]
-			get
-			{
-				return PInvoke.blocksize();
+			get {
+				return PInvoke.blocksize ();
 			}
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// sets up pd audio; must be called before process callback
 		/// </summary>
 		/// <param name="inputChannels"> </param>
 		/// <param name="outputChannels"> </param>
 		/// <param name="sampleRate"> </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int OpenAudio(int inputChannels, int outputChannels, int sampleRate)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int OpenAudio (int inputChannels, int outputChannels, int sampleRate)
 		{
-			return PInvoke.init_audio(inputChannels, outputChannels, sampleRate);
+			return PInvoke.init_audio (inputChannels, outputChannels, sampleRate);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// raw process callback, processes one pd tick, writes raw data to buffers
 		/// without interlacing
 		/// </summary>
@@ -245,13 +240,13 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int ProcessRaw(float[] inBuffer, float[] outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int ProcessRaw (float[] inBuffer, float[] outBuffer)
 		{
-			return PInvoke.process_raw(inBuffer, outBuffer);
+			return PInvoke.process_raw (inBuffer, outBuffer);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// raw process callback, processes one pd tick, writes raw data to buffers
 		/// without interlacing. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
 		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
@@ -263,13 +258,13 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer to an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static unsafe int ProcessRaw(float* inBuffer, float* outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static unsafe int ProcessRaw (float* inBuffer, float* outBuffer)
 		{
-			return PInvoke.process_raw(inBuffer, outBuffer);
+			return PInvoke.process_raw (inBuffer, outBuffer);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
 		/// outBuffer, using arrays of type float
 		/// </summary>
@@ -281,13 +276,13 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int Process(int ticks, short[] inBuffer, short[] outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int Process (int ticks, short[] inBuffer, short[] outBuffer)
 		{
-			return PInvoke.process_short(ticks, inBuffer, outBuffer);
+			return PInvoke.process_short (ticks, inBuffer, outBuffer);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
 		/// outBuffer, using arrays of type float. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
 		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
@@ -301,14 +296,14 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer to an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static unsafe int Process(int ticks, short* inBuffer, short* outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static unsafe int Process (int ticks, short* inBuffer, short* outBuffer)
 		{
-			return PInvoke.process_short(ticks, inBuffer, outBuffer);
+			return PInvoke.process_short (ticks, inBuffer, outBuffer);
 		}
 
 
-	    /// <summary>
+		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
 		/// outBuffer, using arrays of type float
 		/// </summary>
@@ -320,13 +315,13 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int Process(int ticks, float[] inBuffer, float[] outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int Process (int ticks, float[] inBuffer, float[] outBuffer)
 		{
-			return PInvoke.process_float(ticks, inBuffer, outBuffer);
+			return PInvoke.process_float (ticks, inBuffer, outBuffer);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
 		/// outBuffer, using arrays of type float. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
 		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
@@ -340,13 +335,13 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer to an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static unsafe int Process(int ticks, float* inBuffer, float* outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static unsafe int Process (int ticks, float* inBuffer, float* outBuffer)
 		{
-			return PInvoke.process_float(ticks, inBuffer, outBuffer);
+			return PInvoke.process_float (ticks, inBuffer, outBuffer);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
 		/// outBuffer, using arrays of type float
 		/// </summary>
@@ -358,13 +353,13 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int Process(int ticks, double[] inBuffer, double[] outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int Process (int ticks, double[] inBuffer, double[] outBuffer)
 		{
-			return PInvoke.process_double(ticks, inBuffer, outBuffer);
+			return PInvoke.process_double (ticks, inBuffer, outBuffer);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// main process callback, reads samples from inBuffer and writes samples to
 		/// outBuffer, using arrays of type double. use this method if you have a pointer to the local memory or raw byte arrays in the right format.
 		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
@@ -378,29 +373,29 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static unsafe int Process(int ticks, double* inBuffer, double* outBuffer)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static unsafe int Process (int ticks, double* inBuffer, double* outBuffer)
 		{
-			return PInvoke.process_double(ticks, inBuffer, outBuffer);
-		}		
-		
+			return PInvoke.process_double (ticks, inBuffer, outBuffer);
+		}
+
 		#endregion Audio
 
 		#region Array
 
-	    /// <summary>
+		/// <summary>
 		/// Get the size of an array
 		/// </summary>
 		/// <param name="name">Identifier of array</param>
 		/// <returns>array size</returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int ArraySize(string name)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int ArraySize (string name)
 		{
-			return PInvoke.arraysize(name);
+			return PInvoke.arraysize (name);
 		}
 
 
-	    /// <summary>
+		/// <summary>
 		/// read values from an array in Pd. if you need an offset use the pointer method and use pointer arithmetic.
 		/// </summary>
 		/// <param name="destination"> float array to write to </param>
@@ -408,19 +403,18 @@ namespace LibPDBinding
 		/// <param name="srcOffset">   index at which to start reading </param>
 		/// <param name="n">           number of values to read </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int ReadArray(float[] destination, string source, int srcOffset, int n)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int ReadArray (float[] destination, string source, int srcOffset, int n)
 		{
-			if (n > destination.Length)
-			{
+			if (n > destination.Length) {
 				return -2;
 			}
 			
-			return PInvoke.read_array(destination, source, srcOffset, n);
+			return PInvoke.read_array (destination, source, srcOffset, n);
 		}
 
 
-	    /// <summary>
+		/// <summary>
 		/// read values from an array in Pd. use this method if you have a pointer to the local memory.
 		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
 		/// pointer arithmetic like: &myDestinationMemory[offset]
@@ -430,13 +424,13 @@ namespace LibPDBinding
 		/// <param name="srcOffset">   index at which to start reading </param>
 		/// <param name="n">           number of values to read </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static unsafe int ReadArray(float* destination, string source, int srcOffset, int n)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static unsafe int ReadArray (float* destination, string source, int srcOffset, int n)
 		{
-			return PInvoke.read_array(destination, source, srcOffset, n);
+			return PInvoke.read_array (destination, source, srcOffset, n);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// write values to an array in Pd. if you need an offset use the pointer method and use pointer arithmetic.
 		/// </summary>
 		/// <param name="destination"> name of the array in Pd to write to </param>
@@ -444,18 +438,17 @@ namespace LibPDBinding
 		/// <param name="source">      float array to read from </param>
 		/// <param name="n">           number of values to write </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int WriteArray(string destination, int destOffset, float[] source, int n)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int WriteArray (string destination, int destOffset, float[] source, int n)
 		{
-			if (n > source.Length)
-			{
+			if (n > source.Length) {
 				return -2;
 			}
 			
-			return PInvoke.write_array(destination, destOffset, source, n);
+			return PInvoke.write_array (destination, destOffset, source, n);
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// write values to an array in Pd. use this method if you have a pointer to the local memory.
 		/// you need to pin the memory yourself with a fixed{} code block. it also allows an offset using
 		/// pointer arithmetic like: &mySourceMemory[offset]
@@ -465,10 +458,10 @@ namespace LibPDBinding
 		/// <param name="source"> pointer to a float array to read from </param>
 		/// <param name="n">         number of values to write </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static unsafe int WriteArray(string destination, int destOffset, float* source, int n)
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static unsafe int WriteArray (string destination, int destOffset, float* source, int n)
 		{
-			return PInvoke.write_array(destination, destOffset, source, n);
+			return PInvoke.write_array (destination, destOffset, source, n);
 		}
 
 		#endregion Array
