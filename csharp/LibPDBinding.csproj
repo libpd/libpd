@@ -109,8 +109,12 @@
     <None Include="LibPDBinding.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="..\libs\libpdcsharp.so">
-      <Link>libpdcsharp.so</Link>
+    <None Include="..\libs\mingw32\libwinpthread-1.dll">
+      <Link>libwinpthread-1.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\libs\libpdcsharp.dll">
+      <Link>libpdcsharp.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
