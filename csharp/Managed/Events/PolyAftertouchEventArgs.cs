@@ -2,18 +2,18 @@ using System;
 
 namespace LibPDBinding.Managed.Events
 {
-	public class ControlChangeEventArgs:EventArgs
+	public class PolyAftertouchEventArgs:EventArgs
 	{
 		public int Channel { get; private set; }
 
-		public int Controller { get; private set; }
+		public int Pitch { get; private set; }
 
 		public int Value { get; private set; }
 
-		public ControlChangeEventArgs (int channel, int controller, int value)
+		public PolyAftertouchEventArgs (int channel, int pitch, int value)
 		{
 			Channel = channel;
-			Controller = controller;
+			Pitch = pitch;
 			Value = value;
 		}
 	}

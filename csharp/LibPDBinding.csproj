@@ -97,6 +97,10 @@
     <Compile Include="Managed\Events\NoteOnEventArgs.cs" />
     <Compile Include="Managed\Events\ProgramChangeEventArgs.cs" />
     <Compile Include="Managed\Events\ControlChangeEventArgs.cs" />
+    <Compile Include="Managed\Events\PolyAftertouchEventArgs.cs" />
+    <Compile Include="Managed\Events\MidiByteEventArgs.cs" />
+    <Compile Include="Managed\Events\PitchbendEventArgs.cs" />
+    <Compile Include="Managed\Events\AftertouchEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
