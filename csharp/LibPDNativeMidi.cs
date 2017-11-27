@@ -34,7 +34,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendNoteOn (int channel, int pitch, int velocity)
 		{
-			return PInvoke.noteon (channel, pitch, velocity);
+			return Midi.noteon (channel, pitch, velocity);
 		}
 
 
@@ -51,7 +51,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendControlChange (int channel, int controller, int value)
 		{
-			return PInvoke.controlchange (channel, controller, value);
+			return Midi.controlchange (channel, controller, value);
 		}
 
 
@@ -66,7 +66,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendProgramChange (int channel, int value)
 		{
-			return PInvoke.programchange (channel, value);
+			return Midi.programchange (channel, value);
 		}
 
 
@@ -82,7 +82,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendPitchbend (int channel, int value)
 		{
-			return PInvoke.pitchbend (channel, value);
+			return Midi.pitchbend (channel, value);
 		}
 
 
@@ -97,7 +97,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendAftertouch (int channel, int value)
 		{
-			return PInvoke.aftertouch (channel, value);
+			return Midi.aftertouch (channel, value);
 		}
 
 
@@ -114,7 +114,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendPolyAftertouch (int channel, int pitch, int value)
 		{
-			return PInvoke.polyaftertouch (channel, pitch, value);
+			return Midi.polyaftertouch (channel, pitch, value);
 		}
 
 
@@ -129,7 +129,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendMidiByte (int port, int value)
 		{
-			return PInvoke.midibyte (port, value);
+			return Midi.midibyte (port, value);
 		}
 
 
@@ -144,7 +144,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendSysex (int port, int value)
 		{
-			return PInvoke.sysex (port, value);
+			return Midi.sysex (port, value);
 		}
 
 
@@ -159,7 +159,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendSysRealtime (int port, int value)
 		{
-			return PInvoke.sysrealtime (port, value);
+			return Midi.sysrealtime (port, value);
 		}
 
 		#endregion Send Midi

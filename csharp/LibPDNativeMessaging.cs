@@ -39,22 +39,22 @@ namespace LibPDBinding
 		{
 			//create the delegate with the method to call
 			PrintHook = new LibPDPrintHook (RaisePrintEvent);
-			PInvoke.set_printhook (PrintHook);
+			Messaging.set_printhook (PrintHook);
 			
 			BangHook = new LibPDBangHook (RaiseBangEvent);
-			PInvoke.set_banghook (BangHook);
+			Messaging.set_banghook (BangHook);
 
 			FloatHook = new LibPDFloatHook (RaiseFloatEvent);
-			PInvoke.set_floathook (FloatHook);
+			Messaging.set_floathook (FloatHook);
 
 			SymbolHook = new LibPDSymbolHook (RaiseSymbolEvent);
-			PInvoke.set_symbolhook (SymbolHook);
+			Messaging.set_symbolhook (SymbolHook);
 			
 			ListHook = new LibPDListHook (RaiseListEvent);
-			PInvoke.set_listhook (ListHook);
+			Messaging.set_listhook (ListHook);
 			
 			MessageHook = new LibPDMessageHook (RaiseMessageEvent);
-			PInvoke.set_messagehook (MessageHook);
+			Messaging.set_messagehook (MessageHook);
 			
 		}
 
@@ -150,12 +150,12 @@ namespace LibPDBinding
 			
 			for (int i = 0; i < argc; i++) {
 				if (i != 0)
-					argv = PInvoke.next_atom (argv);
+					argv = Messaging.next_atom (argv);
 				
-				if (PInvoke.atom_is_float (argv) != 0) {
-					args [i] = PInvoke.atom_get_float (argv);
-				} else if (PInvoke.atom_is_symbol (argv) != 0) {
-					args [i] = Marshal.PtrToStringAnsi (PInvoke.atom_get_symbol (argv));
+				if (Messaging.atom_is_float (argv) != 0) {
+					args [i] = Messaging.atom_get_float (argv);
+				} else if (Messaging.atom_is_symbol (argv) != 0) {
+					args [i] = Marshal.PtrToStringAnsi (Messaging.atom_get_symbol (argv));
 				}
 			}
 			
@@ -200,7 +200,7 @@ namespace LibPDBinding
 			if (Bindings.ContainsKey (sym))
 				return true;
 
-			var ptr = PInvoke.bind (sym);
+			var ptr = Messaging.bind (sym);
 
 			if (ptr == IntPtr.Zero)
 				return false;
@@ -220,7 +220,7 @@ namespace LibPDBinding
 		{
 			if (String.IsNullOrEmpty (sym) || !Bindings.ContainsKey (sym))
 				return false;
-			PInvoke.unbind (Bindings [sym]);
+			Messaging.unbind (Bindings [sym]);
 			return Bindings.Remove (sym);
 		}
 
@@ -236,7 +236,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendBang (string recv)
 		{
-			return PInvoke.send_bang (recv);
+			return Messaging.send_bang (recv);
 		}
 
 
@@ -250,7 +250,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendFloat (string recv, float x)
 		{
-			return PInvoke.send_float (recv, x);
+			return Messaging.send_float (recv, x);
 		}
 
 		/// <summary>
@@ -263,7 +263,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendSymbol (string recv, string sym)
 		{
-			return PInvoke.send_symbol (recv, sym);
+			return Messaging.send_symbol (recv, sym);
 		}
 
 
@@ -279,7 +279,7 @@ namespace LibPDBinding
 		{
 			var s = "";
 			int err = ProcessArgs (args, ref s);
-			var ret = (err == 0) ? PInvoke.finish_message (receiver, message) : err;
+			var ret = (err == 0) ? Messaging.finish_message (receiver, message) : err;
 			
 			if (SWriteMessageToDebug) {
 				s = String.Format ("Message: {0} {1}", receiver, message) + s;
@@ -304,7 +304,7 @@ namespace LibPDBinding
 			string s = "";
 			int err = ProcessArgs (args, ref s);
 							
-			var ret = (err == 0) ? PInvoke.finish_list (receiver) : err;
+			var ret = (err == 0) ? Messaging.finish_list (receiver) : err;
 				
 			
 			if (SWriteMessageToDebug) {
@@ -321,24 +321,24 @@ namespace LibPDBinding
 		//parse args helper with debug string
 		private static int ProcessArgs (object[] args, ref string debug)
 		{
-			if (PInvoke.start_message (args.Length) != 0) {
+			if (Messaging.start_message (args.Length) != 0) {
 				return -100;
 			}
 			foreach (object arg in args) {
 				if (arg is int?) {
-					PInvoke.add_float ((int)((int?)arg));
+					Messaging.add_float ((int)((int?)arg));
 					if (SWriteMessageToDebug)
 						debug += " i:" + arg.ToString ();
 				} else if (arg is float?) {
-					PInvoke.add_float ((float)((float?)arg));
+					Messaging.add_float ((float)((float?)arg));
 					if (SWriteMessageToDebug)
 						debug += " f:" + arg.ToString ();
 				} else if (arg is double?) {
-					PInvoke.add_float ((float)((double?)arg));
+					Messaging.add_float ((float)((double?)arg));
 					if (SWriteMessageToDebug)
 						debug += " d:" + arg.ToString ();
 				} else if (arg is string) {
-					PInvoke.add_symbol ((string)arg);
+					Messaging.add_symbol ((string)arg);
 					if (SWriteMessageToDebug)
 						debug += " s:" + arg.ToString ();
 				} else {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LibPDBinding.Native;
+using LibPDBinding.Managed.Data;
 using LibPDBinding.Managed.Events;
 using LibPDBinding.Managed.Utils;
-using LibPDBinding.Managed.Data;
+using LibPDBinding.Native;
 
 namespace LibPDBinding.Managed
 {
@@ -35,12 +35,12 @@ namespace LibPDBinding.Managed
 		/// Gets the block size.
 		/// </summary>
 		public int BlockSize {
-			get { return PInvoke.blocksize (); }
+			get { return Audio.blocksize (); }
 		}
 
 		Messaging _messaging;
 
-	    /// <summary>
+		/// <summary>
 		/// Gets the messaging object.
 		/// </summary>
 		/// <value>The messaging object.</value>
@@ -50,15 +50,14 @@ namespace LibPDBinding.Managed
 			}
 		}
 
-	    Midi _midi;
+		Midi _midi;
 
-        /// <summary>
-        /// Get the object for MIDI communication
-        /// </summary>
-	    public Midi Midi
-	    {
-	        get { return _midi; }
-	    }
+		/// <summary>
+		/// Get the object for MIDI communication
+		/// </summary>
+		public Midi Midi {
+			get { return _midi; }
+		}
 
 		/// <summary>
 		/// Returns [true] when audio computation is enabled, and [false] when audio computation is disabled.
@@ -85,13 +84,13 @@ namespace LibPDBinding.Managed
 		public Pd (int inputChannels, int outputChannels, int sampleRate, IEnumerable<string> searchPaths)
 		{
 			_messaging = new Messaging ();
-            _midi = new Midi();
+			_midi = new Midi ();
 			Inputs = inputChannels;
 			Outputs = outputChannels;
 			SampleRate = sampleRate;
-			PInvoke.libpd_init ();
+			General.libpd_init ();
 			foreach (string path in searchPaths ?? Enumerable.Empty<string>()) {
-				PInvoke.add_to_search_path (path);
+				General.add_to_search_path (path);
 			}
 		}
 
@@ -120,7 +119,7 @@ namespace LibPDBinding.Managed
 		/// </summary>
 		public void Start ()
 		{
-			PInvoke.init_audio (Inputs, Outputs, SampleRate);
+			Audio.init_audio (Inputs, Outputs, SampleRate);
 			MessageInvocation.SendMessage ("pd", "dsp", new Float (1));
 			IsComputing = true;
 		}
@@ -128,7 +127,7 @@ namespace LibPDBinding.Managed
 		public short[] Process (int ticks, short[] inBuffer)
 		{
 			short[] outBuffer = new short[Outputs * ticks * BlockSize];
-			PInvoke.process_short (ticks, inBuffer, outBuffer);
+			Audio.process_short (ticks, inBuffer, outBuffer);
 			return outBuffer;
 		}
 
@@ -141,14 +140,14 @@ namespace LibPDBinding.Managed
 		public float[] Process (int ticks, float[] inBuffer)
 		{
 			float[] outBuffer = new float[Outputs * ticks * BlockSize];
-			PInvoke.process_float (ticks, inBuffer, outBuffer);
+			Audio.process_float (ticks, inBuffer, outBuffer);
 			return outBuffer;
 		}
 
 		public double[] Process (int ticks, double[] inBuffer)
 		{
 			double[] outBuffer = new double[Outputs * ticks * BlockSize];
-			PInvoke.process_double (ticks, inBuffer, outBuffer);
+			Audio.process_double (ticks, inBuffer, outBuffer);
 			return outBuffer;
 		}
 
@@ -171,7 +170,7 @@ namespace LibPDBinding.Managed
 			if (!File.Exists (path)) {
 				return null;
 			}
-			var ptr = PInvoke.openfile (Path.GetFileName (path), Path.GetDirectoryName (path));
+			var ptr = General.openfile (Path.GetFileName (path), Path.GetDirectoryName (path));
 			return new Patch (ptr);
 		}
 

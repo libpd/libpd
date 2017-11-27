@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using LibPDBinding.Managed.Data;
 using LibPDBinding.Managed.Events;
 using LibPDBinding.Managed.Utils;
-using LibPDBinding.Native;
 
 namespace LibPDBinding.Managed
 {
@@ -29,10 +28,10 @@ namespace LibPDBinding.Managed
 			GC.SuppressFinalize (this);
 		}
 
-		private void Dispose (bool disposing)
+		void Dispose (bool disposing)
 		{
 			foreach (IntPtr pointer in _bindings.Values) {
-				PInvoke.unbind (pointer);
+				Native.Messaging.unbind (pointer);
 			}
 			Print = null;
 			Bang = null;
@@ -42,7 +41,7 @@ namespace LibPDBinding.Managed
 			Message = null;
 		}
 
-		Dictionary<string, IntPtr> _bindings = new Dictionary<string, IntPtr> ();
+		readonly Dictionary<string, IntPtr> _bindings = new Dictionary<string, IntPtr> ();
 
 		/// <summary>
 		/// Send a general message to the specified receiver with a range of atoms.
@@ -75,7 +74,7 @@ namespace LibPDBinding.Managed
 		/// Send a bang message to the specified receiver with a range of atoms.
 		/// </summary>
 		/// <param name="receiver">Receiver.</param>
-		/// <param name="atoms">Atoms.</param>
+		/// <param name="bang">Bang.</param>
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Send (string receiver, Bang bang)
 		{
@@ -92,7 +91,7 @@ namespace LibPDBinding.Managed
 			if (_bindings.ContainsKey (receiver)) {
 				return;
 			}
-			IntPtr pointer = PInvoke.bind (receiver);
+			IntPtr pointer = Native.Messaging.bind (receiver);
 			_bindings.Add (receiver, pointer);
 		}
 
@@ -107,7 +106,7 @@ namespace LibPDBinding.Managed
 			if (!_bindings.TryGetValue (receiver, out pointer)) {
 				return;
 			}
-			PInvoke.unbind (pointer);
+			Native.Messaging.unbind (pointer);
 			_bindings.Remove (receiver);
 		}
 
@@ -188,22 +187,22 @@ namespace LibPDBinding.Managed
 		void SetupHooks ()
 		{
 			PrintHook = new LibPDPrintHook (RaisePrintEvent);
-			PInvoke.set_printhook (PrintHook);
+			Native.Messaging.set_printhook (PrintHook);
 
 			BangHook = new LibPDBangHook (RaiseBangEvent);
-			PInvoke.set_banghook (BangHook);
+			Native.Messaging.set_banghook (BangHook);
 
 			FloatHook = new LibPDFloatHook (RaiseFloatEvent);
-			PInvoke.set_floathook (FloatHook);
+			Native.Messaging.set_floathook (FloatHook);
 
 			SymbolHook = new LibPDSymbolHook (RaiseSymbolEvent);
-			PInvoke.set_symbolhook (SymbolHook);
+			Native.Messaging.set_symbolhook (SymbolHook);
 
 			ListHook = new LibPDListHook (RaiseListEvent);
-			PInvoke.set_listhook (ListHook);
+			Native.Messaging.set_listhook (ListHook);
 
 			MessageHook = new LibPDMessageHook (RaiseMessageEvent);
-			PInvoke.set_messagehook (MessageHook);
+			Native.Messaging.set_messagehook (MessageHook);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
-using LibPDBinding.Managed.Events;
-using LibPDBinding.Native;
 using System.Runtime.CompilerServices;
+using LibPDBinding.Managed.Events;
 
 namespace LibPDBinding.Managed
 {
@@ -26,7 +25,7 @@ namespace LibPDBinding.Managed
 			GC.SuppressFinalize (this);
 		}
 
-		private void Dispose (bool disposing)
+		void Dispose (bool disposing)
 		{			
 			NoteOn = null;
 			ProgramChange = null;
@@ -89,7 +88,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendNoteOn (int channel, int pitch, int velocity)
 		{
-			PInvoke.noteon (channel, pitch, velocity);
+			Native.Midi.noteon (channel, pitch, velocity);
 		}
 
 		/// <summary>
@@ -100,7 +99,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendProgramChange (int channel, int value)
 		{
-			PInvoke.programchange (channel, value);
+			Native.Midi.programchange (channel, value);
 		}
 
 		/// <summary>
@@ -112,7 +111,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendControlChange (int channel, int controller, int value)
 		{
-			PInvoke.controlchange (channel, controller, value);			
+			Native.Midi.controlchange (channel, controller, value);			
 		}
 
 		/// <summary>
@@ -123,7 +122,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendPitchbend (int channel, int value)
 		{
-			PInvoke.pitchbend (channel, value);			
+			Native.Midi.pitchbend (channel, value);			
 		}
 
 		/// <summary>
@@ -134,8 +133,9 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendAftertouch (int channel, int value)
 		{
-			PInvoke.aftertouch (channel, value);
+			Native.Midi.aftertouch (channel, value);
 		}
+
 		/// <summary>
 		/// Sends poly aftertouch MIDI message.
 		/// </summary>
@@ -145,7 +145,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendPolyAftertouch (int channel, int pitch, int value)
 		{
-			PInvoke.polyaftertouch (channel, pitch, value);
+			Native.Midi.polyaftertouch (channel, pitch, value);
 		}
 
 		/// <summary>
@@ -156,7 +156,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendMidiByte (int port, int value)
 		{
-			PInvoke.midibyte (port, value);
+			Native.Midi.midibyte (port, value);
 		}
 
 		/// <summary>
@@ -167,7 +167,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendSysex (int port, int value)
 		{
-			PInvoke.sysex (port, value);
+			Native.Midi.sysex (port, value);
 		}
 
 		/// <summary>
@@ -178,7 +178,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendSysRealtime (int port, int value)
 		{
-			PInvoke.sysrealtime (port, value);
+			Native.Midi.sysrealtime (port, value);
 		}
 
 		void RaiseNoteOnEvent (int channel, int pitch, int velocity)
@@ -233,19 +233,19 @@ namespace LibPDBinding.Managed
 		void SetupHooks ()
 		{
 			NoteOnHook = new LibPDNoteOnHook (RaiseNoteOnEvent);
-			PInvoke.set_noteonhook (NoteOnHook);
+			Native.Midi.set_noteonhook (NoteOnHook);
 			ProgramChangeHook = new LibPDProgramChangeHook (RaiseProgramChangeEvent);
-			PInvoke.set_programchangehook (ProgramChangeHook);
+			Native.Midi.set_programchangehook (ProgramChangeHook);
 			ControlChangeHook = new LibPDControlChangeHook (RaiseControlChangeEvent);
-			PInvoke.set_controlchangehook (ControlChangeHook);
+			Native.Midi.set_controlchangehook (ControlChangeHook);
 			PitchbendHook = new LibPDPitchbendHook (RaisePitchbendEvent);
-			PInvoke.set_pitchbendhook (RaisePitchbendEvent);
+			Native.Midi.set_pitchbendhook (PitchbendHook);
 			AftertouchHook = new LibPDAftertouchHook (RaiseAftertouchEvent);
-			PInvoke.set_aftertouchhook (RaiseAftertouchEvent);
+			Native.Midi.set_aftertouchhook (AftertouchHook);
 			PolyAftertouchHook = new LibPDPolyAftertouchHook (RaisePolyAftertouchEvent);
-			PInvoke.set_polyaftertouchhook (RaisePolyAftertouchEvent);
+			Native.Midi.set_polyaftertouchhook (PolyAftertouchHook);
 			MidiByteHook = new LibPDMidiByteHook (RaiseMidiByteEvent);
-			PInvoke.set_midibytehook (RaiseMidiByteEvent);
+			Native.Midi.set_midibytehook (MidiByteHook);
 		}
 	}
 }

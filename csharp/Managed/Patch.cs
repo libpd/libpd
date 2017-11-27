@@ -1,5 +1,5 @@
-using LibPDBinding.Native;
 using System;
+using LibPDBinding.Native;
 
 namespace LibPDBinding.Managed
 {
@@ -13,7 +13,7 @@ namespace LibPDBinding.Managed
 		internal Patch (IntPtr handle)
 		{
 			_handle = handle;
-			DollarZero = PInvoke.getdollarzero (_handle);
+			DollarZero = General.getdollarzero (_handle);
 		}
 
 		~Patch ()
@@ -27,9 +27,9 @@ namespace LibPDBinding.Managed
 			GC.SuppressFinalize (this);
 		}
 
-		private void Dispose (bool disposing)
+		void Dispose (bool disposing)
 		{
-			PInvoke.closefile (_handle);
+			General.closefile (_handle);
 		}
 
 		/// <summary>

@@ -1,6 +1,6 @@
-﻿using LibPDBinding.Native;
+﻿using LibPDBinding.Managed.Data;
 using LibPDBinding.Managed.Utils;
-using LibPDBinding.Managed.Data;
+using LibPDBinding.Native;
 
 namespace LibPDBinding.Managed
 {
@@ -27,7 +27,7 @@ namespace LibPDBinding.Managed
 		/// </summary>
 		/// <value>The size.</value>
 		public int Size {
-			get { return PInvoke.arraysize (_name); }
+			get { return Audio.arraysize (_name); }
 		}
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace LibPDBinding.Managed
 		public float[] Read (int start, int length)
 		{
 			float[] arrayContent = new float [length];
-			int status = PInvoke.read_array (arrayContent, _name, start, length);
+			int status = Audio.read_array (arrayContent, _name, start, length);
 			if (status != 0) {
 				throw new PdProcessException (status, "read_array");
 			}
@@ -53,7 +53,7 @@ namespace LibPDBinding.Managed
 		/// <param name="length">Number of values to be written.</param>
 		public void Write (float[] newContent, int start, int length)
 		{
-			int status = PInvoke.write_array (_name, start, newContent, length);
+			int status = Audio.write_array (_name, start, newContent, length);
 			if (status != 0) {
 				throw new PdProcessException (status, "write_array");
 			}
@@ -65,9 +65,9 @@ namespace LibPDBinding.Managed
 		/// NB: This is an expensive method, use sparingly.
 		/// </summary>
 		/// <param name="length">The new size of the array.</param>
-		public void Resize (int size)
+		public void Resize (int length)
 		{
-			MessageInvocation.SendMessage (_name, "resize", new Float (size));
+			MessageInvocation.SendMessage (_name, "resize", new Float (length));
 		}
 	}
 }

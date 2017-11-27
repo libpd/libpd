@@ -24,9 +24,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using LibPDBinding.Native;
-using LibPDBinding.Managed.Data;
 using System.Runtime.InteropServices;
+using LibPDBinding.Managed.Data;
+using LibPDBinding.Native;
 
 namespace LibPDBinding.Managed.Utils
 {
@@ -35,7 +35,7 @@ namespace LibPDBinding.Managed.Utils
 		public static void SendMessage (string receiver, string message, params IAtom[] args)
 		{
 			SendArgs (args);
-			int finish = PInvoke.finish_message (receiver, message);
+			int finish = Native.Messaging.finish_message (receiver, message);
 
 			if (finish != 0) {
 				throw new PdProcessException (finish, "finish_message");
@@ -44,7 +44,7 @@ namespace LibPDBinding.Managed.Utils
 
 		public static void SendBang (string receiver)
 		{
-			int finish = PInvoke.send_bang (receiver);
+			int finish = Native.Messaging.send_bang (receiver);
 			if (finish != 0) {
 				throw new PdProcessException (finish, "send_bang");
 			}
@@ -53,15 +53,15 @@ namespace LibPDBinding.Managed.Utils
 
 		public static void Send (string receiver, IAtom atom)
 		{
-			if (atom is Float){
-				int finish = PInvoke.send_float (receiver, (float)atom.Value);
+			if (atom is Float) {
+				int finish = Native.Messaging.send_float (receiver, (float)atom.Value);
 				if (finish != 0) {
 					throw new PdProcessException (finish, "send_float");
 				}
 				return;
 			}
-			if (atom is Symbol){
-				int finish = PInvoke.send_symbol (receiver, (string)atom.Value);
+			if (atom is Symbol) {
+				int finish = Native.Messaging.send_symbol (receiver, (string)atom.Value);
 				if (finish != 0) {
 					throw new PdProcessException (finish, "send_symbol");
 				}
@@ -72,23 +72,23 @@ namespace LibPDBinding.Managed.Utils
 		public static void SendList (string receiver, IAtom[] args)
 		{
 			SendArgs (args);
-			int finish = PInvoke.finish_list (receiver);
-			if (finish != 0){
+			int finish = Native.Messaging.finish_list (receiver);
+			if (finish != 0) {
 				throw new PdProcessException (finish, "finish_list");				
 			}
 		}
 
-		private static void SendArgs (IAtom[] args)
+		static void SendArgs (IAtom[] args)
 		{
-			int startMessage = PInvoke.start_message (args.Length);
+			int startMessage = Native.Messaging.start_message (args.Length);
 			if (startMessage != 0) {
 				throw new PdProcessException (startMessage, "start_message");
 			}
 			foreach (IAtom arg in args) {
 				if (arg is Float) {
-					PInvoke.add_float (((Float)arg).Value);
+					Native.Messaging.add_float (((Float)arg).Value);
 				} else if (arg is Symbol) {
-					PInvoke.add_symbol (((Symbol)arg).Value);
+					Native.Messaging.add_symbol (((Symbol)arg).Value);
 				}
 			}
 		}
@@ -99,12 +99,12 @@ namespace LibPDBinding.Managed.Utils
 
 			for (int i = 0; i < argc; i++) {
 				if (i != 0)
-					argv = PInvoke.next_atom (argv);
+					argv = Native.Messaging.next_atom (argv);
 
-				if (PInvoke.atom_is_float (argv) != 0) {
-					args [i] = new Float (PInvoke.atom_get_float (argv));
-				} else if (PInvoke.atom_is_symbol (argv) != 0) {
-					args [i] = new Symbol (Marshal.PtrToStringAnsi (PInvoke.atom_get_symbol (argv)));
+				if (Native.Messaging.atom_is_float (argv) != 0) {
+					args [i] = new Float (Native.Messaging.atom_get_float (argv));
+				} else if (Native.Messaging.atom_is_symbol (argv) != 0) {
+					args [i] = new Symbol (Marshal.PtrToStringAnsi (Native.Messaging.atom_get_symbol (argv)));
 				}
 			}
 

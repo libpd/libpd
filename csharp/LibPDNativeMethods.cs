@@ -70,7 +70,7 @@ namespace LibPDBinding
 		static void Init ()
 		{
 			SetupHooks ();
-			PInvoke.libpd_init ();
+			General.libpd_init ();
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static void ClearSearchPath ()
 		{
-			PInvoke.clear_search_path ();
+			General.clear_search_path ();
 		}
 
 
@@ -107,7 +107,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static void AddToSearchPath (string sym)
 		{
-			PInvoke.add_to_search_path (sym);
+			General.add_to_search_path (sym);
 		}
 
 		/// <summary>
@@ -125,13 +125,13 @@ namespace LibPDBinding
 				throw new FileNotFoundException (filepath);
 			}
 			
-			var ptr = PInvoke.openfile (Path.GetFileName (filepath), Path.GetDirectoryName (filepath));
+			var ptr = General.openfile (Path.GetFileName (filepath), Path.GetDirectoryName (filepath));
 			
 			if (ptr == IntPtr.Zero) {
 				throw new IOException ("unable to open patch " + filepath);
 			}
 			
-			var handle = PInvoke.getdollarzero (ptr);
+			var handle = General.getdollarzero (ptr);
 			Patches [handle] = ptr;
 			return handle;
 		}
@@ -147,7 +147,7 @@ namespace LibPDBinding
 			if (!Patches.ContainsKey (p))
 				return false;
 			var ptr = Patches [p];
-			PInvoke.closefile (ptr);
+			General.closefile (ptr);
 			return Patches.Remove (p);
 		}
 
@@ -161,7 +161,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static bool Exists (string sym)
 		{
-			return PInvoke.exists (sym) != 0;
+			return General.exists (sym) != 0;
 		}
 
 		/// <summary>
@@ -177,12 +177,12 @@ namespace LibPDBinding
 			ComputeAudio (false);
 			
 			foreach (var ptr in Bindings.Values) {
-				PInvoke.unbind (ptr);
+				Messaging.unbind (ptr);
 			}
 			Bindings.Clear ();
 			
 			foreach (var ptr in Patches.Values) {
-				PInvoke.closefile (ptr);
+				General.closefile (ptr);
 			}
 			Patches.Clear ();
 		}
@@ -213,7 +213,7 @@ namespace LibPDBinding
 		public static int BlockSize {
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			get {
-				return PInvoke.blocksize ();
+				return Audio.blocksize ();
 			}
 		}
 
@@ -227,7 +227,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int OpenAudio (int inputChannels, int outputChannels, int sampleRate)
 		{
-			return PInvoke.init_audio (inputChannels, outputChannels, sampleRate);
+			return Audio.init_audio (inputChannels, outputChannels, sampleRate);
 		}
 
 		/// <summary>
@@ -243,7 +243,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int ProcessRaw (float[] inBuffer, float[] outBuffer)
 		{
-			return PInvoke.process_raw (inBuffer, outBuffer);
+			return Audio.process_raw (inBuffer, outBuffer);
 		}
 
 		/// <summary>
@@ -261,7 +261,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int ProcessRaw (float* inBuffer, float* outBuffer)
 		{
-			return PInvoke.process_raw (inBuffer, outBuffer);
+			return Audio.process_raw (inBuffer, outBuffer);
 		}
 
 		/// <summary>
@@ -279,7 +279,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int Process (int ticks, short[] inBuffer, short[] outBuffer)
 		{
-			return PInvoke.process_short (ticks, inBuffer, outBuffer);
+			return Audio.process_short (ticks, inBuffer, outBuffer);
 		}
 
 		/// <summary>
@@ -299,7 +299,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int Process (int ticks, short* inBuffer, short* outBuffer)
 		{
-			return PInvoke.process_short (ticks, inBuffer, outBuffer);
+			return Audio.process_short (ticks, inBuffer, outBuffer);
 		}
 
 
@@ -318,7 +318,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int Process (int ticks, float[] inBuffer, float[] outBuffer)
 		{
-			return PInvoke.process_float (ticks, inBuffer, outBuffer);
+			return Audio.process_float (ticks, inBuffer, outBuffer);
 		}
 
 		/// <summary>
@@ -338,7 +338,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int Process (int ticks, float* inBuffer, float* outBuffer)
 		{
-			return PInvoke.process_float (ticks, inBuffer, outBuffer);
+			return Audio.process_float (ticks, inBuffer, outBuffer);
 		}
 
 		/// <summary>
@@ -356,7 +356,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int Process (int ticks, double[] inBuffer, double[] outBuffer)
 		{
-			return PInvoke.process_double (ticks, inBuffer, outBuffer);
+			return Audio.process_double (ticks, inBuffer, outBuffer);
 		}
 
 		/// <summary>
@@ -376,7 +376,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int Process (int ticks, double* inBuffer, double* outBuffer)
 		{
-			return PInvoke.process_double (ticks, inBuffer, outBuffer);
+			return Audio.process_double (ticks, inBuffer, outBuffer);
 		}
 
 		#endregion Audio
@@ -391,7 +391,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int ArraySize (string name)
 		{
-			return PInvoke.arraysize (name);
+			return Audio.arraysize (name);
 		}
 
 
@@ -410,7 +410,7 @@ namespace LibPDBinding
 				return -2;
 			}
 			
-			return PInvoke.read_array (destination, source, srcOffset, n);
+			return Audio.read_array (destination, source, srcOffset, n);
 		}
 
 
@@ -427,7 +427,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int ReadArray (float* destination, string source, int srcOffset, int n)
 		{
-			return PInvoke.read_array (destination, source, srcOffset, n);
+			return Audio.read_array (destination, source, srcOffset, n);
 		}
 
 		/// <summary>
@@ -445,7 +445,7 @@ namespace LibPDBinding
 				return -2;
 			}
 			
-			return PInvoke.write_array (destination, destOffset, source, n);
+			return Audio.write_array (destination, destOffset, source, n);
 		}
 
 		/// <summary>
@@ -461,7 +461,7 @@ namespace LibPDBinding
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int WriteArray (string destination, int destOffset, float* source, int n)
 		{
-			return PInvoke.write_array (destination, destOffset, source, n);
+			return Audio.write_array (destination, destOffset, source, n);
 		}
 
 		#endregion Array
