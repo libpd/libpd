@@ -86,6 +86,7 @@ namespace LibPDBinding.Managed
 		/// Binds to get messages from the specified receiver.
 		/// </summary>
 		/// <param name="receiver">Receiver.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Bind (string receiver)
 		{
 			if (_bindings.ContainsKey (receiver)) {
@@ -99,6 +100,7 @@ namespace LibPDBinding.Managed
 		/// Unbinds from the specified receiver.
 		/// </summary>
 		/// <param name="receiver">Receiver.</param>
+		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Unbind (string receiver)
 		{
 			IntPtr pointer;

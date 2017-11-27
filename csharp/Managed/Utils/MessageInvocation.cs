@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using LibPDBinding.Native;
-using LibPDBinding.Managed;
 using LibPDBinding.Managed.Data;
 using System.Runtime.InteropServices;
 
