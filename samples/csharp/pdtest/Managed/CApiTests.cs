@@ -38,5 +38,27 @@ namespace LibPDBindingTest.Managed
 			}
 			Assert.AreEqual("print: hello\n", value);
 		}
+
+		[Test]
+		public virtual void FloatFormattingTest ()
+		{
+			using (Patch patch = _pd.LoadPatch (@"../../test_float.pd")) {
+				int blocksize = _pd.BlockSize;
+				int ticks = 2;
+				float[] inBuffer = new float[ticks * _inputs * blocksize];
+				for (int i = 0; i < inBuffer.Length; i++) {
+					inBuffer [i] = i;
+				}
+
+				_pd.Start ();
+				float[] outBuffer = _pd.Process (ticks, inBuffer);
+
+				for (int i = 0; i < outBuffer.Length / 3; i++) {
+					Assert.AreEqual (i, outBuffer [3 * i], 0.0001);
+					Assert.AreEqual (i + 0.5, outBuffer [3 * i + 1], 0.0001);
+					Assert.AreEqual (0, outBuffer [3 * i + 2], 0.0001);
+				}
+			}
+		}
 	}
 }
