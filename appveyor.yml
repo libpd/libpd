@@ -1,11 +1,9 @@
 
 environment:
    matrix:
-      - CONFIGURATION: Release
-        PLATFORM: x64
+      - PLATFORM: x64
         MINGW: mingw64
-      - CONFIGURATION: Release
-        PLATFORM: x64
+      - PLATFORM: x64
         MINGW: mingw32
 
 os: Visual Studio 2015
