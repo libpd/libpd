@@ -1,0 +1,25 @@
+
+environment:
+   matrix:
+      - CONFIGURATION: Release
+        PLATFORM: x64
+        MINGW: mingw64
+      - CONFIGURATION: Release
+        PLATFORM: x64
+        MINGW: mingw32
+
+os: Visual Studio 2015
+
+install:
+    - git submodule update --init --recursive
+    - C:\msys64\usr\bin\bash -lc "pacman -Syuu --noconfirm"
+    - C:\msys64\usr\bin\bash -lc "pacman -S --noconfirm --needed make mingw-w64-i686-gcc mingw-w64-x86_64-gcc"
+    - C:\msys64\usr\bin\bash -lc "pacman -S --noconfirm --needed mingw-w64-cross-winpthreads-git"
+build_script:
+    - 'if "%MINGW%"=="mingw64" C:\msys64\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER/appveyor; ./mingw64_build_libpd.bat"'
+    - 'if "%MINGW%"=="mingw32" C:\msys64\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER/appveyor; ./mingw32_build_libpd.bat"'
+
+notifications:
+
+  - provider: Email
+    on_build_status_changed: false
