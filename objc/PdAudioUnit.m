@@ -10,6 +10,7 @@
 
 #import "PdAudioUnit.h"
 #import "PdBase.h"
+#import "PdBuffer.h"
 #import "AudioHelpers.h"
 #import <AudioToolbox/AudioToolbox.h>
 
@@ -20,8 +21,10 @@ static const AudioUnitElement kOutputElement = 0;
 @private
 	BOOL _inputEnabled;
 	BOOL _initialized;
-	int _blockSizeAsLog;
 }
+
+@property (nonatomic) PdBuffer *buffer;
+@property (nonatomic) NSInteger samplesPerBlock;
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 - (void)destroyAudioUnit;
@@ -40,7 +43,6 @@ static const AudioUnitElement kOutputElement = 0;
 	if (self) {
 		_initialized = NO;
 		_active = NO;
-		_blockSizeAsLog = log2int([PdBase getBlockSize]);
 	}
 	return self;
 }
@@ -74,6 +76,8 @@ static const AudioUnitElement kOutputElement = 0;
 	}
 	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(_inputEnabled ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
+    self.samplesPerBlock = [PdBase getBlockSize] * numChannels;
+    self.buffer = [[PdBuffer alloc] initWithCapacity:self.samplesPerBlock];
 	self.active = wasActive;
 	return 0;
 }
@@ -163,9 +167,31 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
 	}
 
-	// this is a faster way of computing (inNumberFrames / blockSize)
-	int ticks = inNumberFrames >> pdAudioUnit->_blockSizeAsLog;
-	[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
+    NSInteger remainSamples = ioData->mBuffers[0].mDataByteSize / sizeof(Float32);
+    NSInteger offsetSamples = 0;
+
+    while (0 < remainSamples) {
+        NSInteger cachedSamples = MIN(remainSamples, pdAudioUnit.buffer.writable);
+        if (0 < cachedSamples) {
+            [pdAudioUnit.buffer writeTo:auBuffer + offsetSamples count:cachedSamples];
+            remainSamples -= cachedSamples;
+            offsetSamples += cachedSamples;
+        }
+        NSInteger samplesPerBlock = pdAudioUnit.samplesPerBlock;
+        NSInteger numBlocks = remainSamples / samplesPerBlock;
+        if (0 < numBlocks) {
+            [PdBase processFloatWithInputBuffer:auBuffer + offsetSamples outputBuffer:auBuffer + offsetSamples ticks:(int)numBlocks];
+            NSInteger numSamples = samplesPerBlock * numBlocks;
+            remainSamples -= numSamples;
+            offsetSamples += numSamples;
+        }
+        if (0 < remainSamples) {
+            [pdAudioUnit.buffer setBytes:^NSInteger(Float32 *ptr) {
+                [PdBase processFloatWithInputBuffer:ptr outputBuffer:ptr ticks:1];
+                return samplesPerBlock;
+            }];
+        }
+    }
 	return noErr;
 }
 
