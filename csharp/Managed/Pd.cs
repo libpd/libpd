@@ -124,11 +124,9 @@ namespace LibPDBinding.Managed
 			IsComputing = true;
 		}
 
-		public short[] Process (int ticks, short[] inBuffer)
+		public bool Process (int ticks, short[] inBuffer, short[] outBuffer)
 		{
-			short[] outBuffer = new short[Outputs * ticks * BlockSize];
-			Audio.process_short (ticks, inBuffer, outBuffer);
-			return outBuffer;
+			return Audio.process_short (ticks, inBuffer, outBuffer) == 0;
 		}
 
 		/// <summary>
@@ -136,19 +134,16 @@ namespace LibPDBinding.Managed
 		/// </summary>
 		/// <param name="ticks">Number of ticks to process. To reduce overhead of function calls, raise this number. To lower latency, reduce this number.</param>
 		/// <param name="inBuffer">Interleaved input buffer. Must be at least of size [InputChannels] * [Blocksize] * [ticks]</param>
-		/// <returns>Interleaved processed audio samples.</returns>
-		public float[] Process (int ticks, float[] inBuffer)
+		/// <param name="outBuffer">Output buffer for storing interleaved processed audio. Must be at least of size [OutputChannels] * [Blocksize] * [ticks]</param>
+		/// <returns>[true] if audio processing was successful, [false] otherwise.</returns>
+		public bool Process (int ticks, float[] inBuffer, float[] outBuffer)
 		{
-			float[] outBuffer = new float[Outputs * ticks * BlockSize];
-			Audio.process_float (ticks, inBuffer, outBuffer);
-			return outBuffer;
+			return Audio.process_float (ticks, inBuffer, outBuffer) == 0;
 		}
 
-		public double[] Process (int ticks, double[] inBuffer)
+		public bool Process (int ticks, double[] inBuffer, double[] outBuffer)
 		{
-			double[] outBuffer = new double[Outputs * ticks * BlockSize];
-			Audio.process_double (ticks, inBuffer, outBuffer);
-			return outBuffer;
+			return Audio.process_double (ticks, inBuffer, outBuffer) == 0;
 		}
 
 		/// <summary>

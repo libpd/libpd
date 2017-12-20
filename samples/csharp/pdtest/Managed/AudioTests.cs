@@ -36,7 +36,8 @@ namespace LibPDBindingTest.Managed
 			for (int i = 0; i < inBuffer.Length; i++) {
 				inBuffer [i] = i;
 			}
-			float[] outBuffer = _pd.Process (ticks, inBuffer);
+			float[] outBuffer = new float[ticks * _outputs * blocksize];
+			_pd.Process (ticks, inBuffer, outBuffer);
 			Assert.AreEqual (ticks * _outputs * blocksize, outBuffer.Length);
 		}
 
@@ -49,7 +50,8 @@ namespace LibPDBindingTest.Managed
 			for (int i = 0; i < inBuffer.Length; i++) {
 				inBuffer [i] = i;
 			}
-			float[] outBuffer = _pd.Process (ticks, inBuffer);
+			float[] outBuffer = new float[ticks * _outputs * blocksize];
+			_pd.Process (ticks, inBuffer, outBuffer);
 			for (int i = 0; i < outBuffer.Length; i++) {
 				Assert.AreEqual (0, outBuffer [i]);
 			}
@@ -65,7 +67,8 @@ namespace LibPDBindingTest.Managed
 				inBuffer [i] = i;
 			}
 			_pd.Start ();
-			float[] outBuffer = _pd.Process (ticks, inBuffer);
+			float[] outBuffer = new float[ticks * _outputs * blocksize];
+			_pd.Process (ticks, inBuffer, outBuffer);
 			for (int i = 0; i < outBuffer.Length / 3; i++) {
 				Assert.AreEqual (2 * i, outBuffer [3 * i], 0.0001);
 				Assert.AreEqual (-6 * i, outBuffer [3 * i + 1], 0.0001);
@@ -83,7 +86,8 @@ namespace LibPDBindingTest.Managed
 				inBuffer [i] = i;
 			}
 			_pd.Start ();
-			double[] outBuffer = _pd.Process (ticks, inBuffer);
+			double[] outBuffer = new double[ticks * _outputs * blocksize];
+			_pd.Process (ticks, inBuffer, outBuffer);
 			for (int i = 0; i < outBuffer.Length / 3; i++) {
 				Assert.AreEqual (2 * i, outBuffer [3 * i], 0.0001);
 				Assert.AreEqual (-6 * i, outBuffer [3 * i + 1], 0.0001);
@@ -101,7 +105,8 @@ namespace LibPDBindingTest.Managed
 				inBuffer [i] = (short)i;
 			}
 			_pd.Start ();
-			short[] outBuffer = _pd.Process (ticks, inBuffer);
+			short[] outBuffer = new short[ticks * _outputs * blocksize];
+			_pd.Process (ticks, inBuffer, outBuffer);
 			for (int i = 0; i < outBuffer.Length / 3; i++) {
 				Assert.AreEqual ((short)2 * i, outBuffer [3 * i]);
 				Assert.AreEqual ((short)-6 * i, outBuffer [3 * i + 1]);

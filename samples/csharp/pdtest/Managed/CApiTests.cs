@@ -51,7 +51,8 @@ namespace LibPDBindingTest.Managed
 				}
 
 				_pd.Start ();
-				float[] outBuffer = _pd.Process (ticks, inBuffer);
+				float[] outBuffer = new float[ticks * _outputs * blocksize];
+				_pd.Process (ticks, inBuffer, outBuffer);
 
 				for (int i = 0; i < outBuffer.Length / 3; i++) {
 					Assert.AreEqual (i, outBuffer [3 * i], 0.0001);

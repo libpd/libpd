@@ -30,6 +30,7 @@ namespace LibPdBindingNaudio
 		int _minBuffer;
 		Pd _pd;
 		Patch _patch;
+		float[] _pdBuffer;
 
 		public NewApiPdProvider ()
 		{
@@ -50,6 +51,7 @@ namespace LibPdBindingNaudio
 		{
 			int blocksize = _pd.BlockSize;
 			_circularBuffer = new CircularBuffer (blocksize * Ticks * Channels * 4); // make the circular buffer large enough
+			_pdBuffer = new float[Ticks * Channels * blocksize];
 			_minBuffer = blocksize * Ticks * Channels * 2;
 		}
 
@@ -83,9 +85,9 @@ namespace LibPdBindingNaudio
 		void RefillBuffer ()
 		{
 			while (_circularBuffer.Count < _minBuffer) {
-				// Compute audio. Take care of the array sizes for audio in and out.
-				float[] buffer = _pd.Process (Ticks, new float[0]);
-				_circularBuffer.Write (PcmFromFloat (buffer), 0, buffer.Length * 4);
+				// Compute audio. Take care of the array sizes for audio in and out.z
+				_pd.Process (Ticks, new float[0], _pdBuffer);
+				_circularBuffer.Write (PcmFromFloat (_pdBuffer), 0, _pdBuffer.Length * 4);
 			}
 		}
 
