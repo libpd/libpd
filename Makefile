@@ -170,7 +170,7 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
 libpd: $(LIBPD)
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
-	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
+	$(CC) -o $(LIBPD) $^ $(LDFLAGS) $(ADDITIONAL_LDFLAGS) -lm -lpthread
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
@@ -180,7 +180,7 @@ $(JNIH_FILE): $(JAVA_BASE)
 
 $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
-	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS)
+	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS) $(ADDITIONAL_LDFLAGS)
 	cp $(PDJAVA_NATIVE) libs/
 
 $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
@@ -190,7 +190,7 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 csharplib: $(PDCSHARP)
 
 $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
-	$(CC) -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
+	$(CC) -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) $(ADDITIONAL_LDFLAGS) -lm -lpthread
 
 clean:
 	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
