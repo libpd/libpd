@@ -72,7 +72,7 @@ int libpd_init(void) {
   sys_externalschedlib = 0;
   sys_printtostderr = 0;
   sys_usestdpath = 0; // don't use pd_extrapath, only sys_searchpath
-  sys_verbose = 0;
+  sys_debuglevel = 0;
   sys_noloadbang = 0;
   sys_hipriority = 0;
   sys_nmidiin = 0;
