@@ -119,11 +119,11 @@ void libpd_add_to_search_path(const char *s) {
 }
 
 void libpd_set_loglevel(int level) {
-  sys_debuglevel = level;
+  sys_verbose = level;
 }
 
 int libpd_get_loglevel(void) {
-  return sys_debuglevel;
+  return sys_verbose;
 }
 
 void *libpd_openfile(const char *basename, const char *dirname) {
