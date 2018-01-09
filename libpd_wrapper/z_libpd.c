@@ -91,6 +91,7 @@ int libpd_init(void) {
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   STUFF->st_searchpath = NULL;
+  sys_libdir = gensym("");
 #ifdef LIBPD_EXTRA
   bob_tilde_setup();
   bonk_tilde_setup();
