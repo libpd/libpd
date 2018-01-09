@@ -21,7 +21,10 @@ extern "C"
 EXTERN int libpd_init(void);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
-
+    
+EXTERN void libpd_set_loglevel(int level);
+EXTERN int libpd_get_loglevel(void);
+    
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
 EXTERN int libpd_getdollarzero(void *p);

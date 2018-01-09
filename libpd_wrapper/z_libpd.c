@@ -75,7 +75,6 @@ int libpd_init(void) {
   sys_printtostderr = 0;
   sys_usestdpath = 0; // don't use pd_extrapath, only sys_searchpath
   sys_debuglevel = 0;
-  sys_verbose = 0;
   sys_noloadbang = 0;
   sys_hipriority = 0;
   sys_nmidiin = 0;
@@ -119,6 +118,14 @@ void libpd_add_to_search_path(const char *s) {
   sys_lock();
   STUFF->st_searchpath = namelist_append(STUFF->st_searchpath, s, 0);
   sys_unlock();
+}
+
+void libpd_set_loglevel(int level) {
+  sys_verbose = level;
+}
+
+int libpd_get_loglevel(void) {
+  return sys_verbose;
 }
 
 void *libpd_openfile(const char *basename, const char *dirname) {
