@@ -26,15 +26,21 @@ else
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
       -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
-  else  # Assume Linux
+  else  # Linux or *BSD
     SOLIB_EXT = so
-    PDNATIVE_PLATFORM = linux
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
-    JAVA_HOME ?= /usr/lib/jvm/default-java
-    PLATFORM_CFLAGS = -DHAVE_LIBDL -Wno-int-to-pointer-cast \
-      -Wno-pointer-to-int-cast -fPIC -I"$(JAVA_HOME)/include" \
-      -I"$(JAVA_HOME)/include/linux"
-    LDFLAGS = -shared -ldl -Wl,-Bsymbolic
+    PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC
+    LDFLAGS = -shared -Wl,-Bsymbolic
+    ifeq ($(UNAME), Linux)
+      PDNATIVE_PLATFORM = linux
+      JAVA_HOME ?= /usr/lib/jvm/default-java
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -DHAVE_LIBDL
+      LDFLAGS += -ldl
+    else ifeq ($(UNAME), FreeBSD)
+      PDNATIVE_PLATFORM = FreeBSD
+      JAVA_HOME ?= /usr/local/openjdk8
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/"
+    endif
     CSHARP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
@@ -197,7 +203,7 @@ $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 
 clean:
 	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
-	rm -f ${PD_UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
+	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
 	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
