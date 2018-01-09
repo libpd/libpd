@@ -16,6 +16,7 @@
   this fixes deprecation warning on macOS 10.12
 * fixed bug in libpd_sysex which masked 8 bit bytes, the MIDI spec allows 8 bit
   bytes except for realtime messages
+* fixed [declare -stdpath] crash (reported by Pierre Guillot)
 
 * makefile: UTIL=true, EXTRA=true, LOCALE=false are now defaults
 * makefile: added MULTI option to build libpd with multiple instance support
