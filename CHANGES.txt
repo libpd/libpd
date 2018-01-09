@@ -1,6 +1,6 @@
 0.11.0: ???
 
-* updated to pd vanilla 0.48-0
+* updated to pd vanilla 0.48-1
 * the libpd C core is now thread safe
 * support for multiple libpd instances is more or less working, see new
   libpd_*_instance() api and pdtest_multi/pdtest_thread C samples,
