@@ -124,7 +124,7 @@ endif
 # conditional optimizations or debug settings
 OPT_CFLAGS = -O3
 ifeq ($(DEBUG), true)
-    OPT_CFLAGS = -Wall
+    OPT_CFLAGS = -g
 endif
 
 # conditional to set numeric locale to default "C"
