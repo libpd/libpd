@@ -7,6 +7,8 @@
   note: language wrappers are not yet updated with the new APIs
 * libpd can now open a patch in the Pd vanilla GUI directly, see the new
   libpd_startgui()/libpd_stopgui() functions and the pdtest_gui C sample
+* enable/query verbose printing with new libpd_set_verbose()/libpd_get_verbose()
+  functions (Pierre Guillot)
 * no longer build s_file.c as desktop settings have no real meaning for libpd,
   this also fixes iOS build error due to system calls being removed in Xcode 9
 * libpd binaries built with MinGW now work in Visual Studio (see readme)

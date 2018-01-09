@@ -22,9 +22,6 @@ EXTERN int libpd_init(void);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
     
-EXTERN void libpd_set_loglevel(int level);
-EXTERN int libpd_get_loglevel(void);
-    
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
 EXTERN int libpd_getdollarzero(void *p);
@@ -150,6 +147,14 @@ EXTERN t_pdinstance *libpd_get_instance(int index);
 /// get the number of pd instances
 /// returns 1 when libpd is not compiled with PDINSTANCE
 EXTERN int libpd_num_instances(void);
+
+/// \section Log Level
+
+/// set verbose print state: 0 or 1
+EXTERN void libpd_set_verbose(int verbose);
+
+/// get the verbose print state: 0 or 1
+EXTERN int libpd_get_verbose(void);
 
 #ifdef __cplusplus
 }
