@@ -122,7 +122,7 @@ void libpd_set_loglevel(int level) {
   sys_debuglevel = level;
 }
 
-int libpd_get_loglevel() {
+int libpd_get_loglevel(void) {
   return sys_debuglevel;
 }
 
