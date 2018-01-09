@@ -52,8 +52,10 @@ int sys_pollgui(void);
   void stdout_setup();
 #endif
 
-static t_atom *argv = NULL, *curr;
-static int argm = 0, argc;
+static PERTHREAD t_atom *argv = NULL;
+static PERTHREAD t_atom *curr = NULL;
+static PERTHREAD int argm = 0;
+static PERTHREAD int argc = 0;
 
 static void *get_object(const char *s) {
   t_pd *x = gensym(s)->s_thing;
