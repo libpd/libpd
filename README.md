@@ -88,9 +88,9 @@ _Note: The C++ wrapper requires UTIL=true as it uses the ringbuffer._
 
 \* See the Known Issues section for more info.
 
-If you need to add custom search paths to the CFLAGS, you can specify them when building via:
+If you need to add custom search paths to the CFLAGS or LDFLAGS, you can specify them when building via the ADDITIONAL_* variables:
 
-    make CFLAGS="-I/usr/local/lib"
+    make ADDITIONAL_CFLAGS="-I/usr/local/include" ADDITIONAL_LDFLAGS="-L/usr/local/lib"
 
 ### java, csharp, objc, cpp, python
 

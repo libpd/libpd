@@ -164,6 +164,9 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
          $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
          $(ADDITIONAL_CFLAGS)
+LDFLAGS += $(ADDITIONAL_LDFLAGS)
+CSHARP_LDFLAGS += $(ADDITIONAL_LDFLAGS)
+JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
 .PHONY: libpd csharplib cpplib javalib install uninstall clean clobber
 

@@ -21,8 +21,10 @@
 * makefile: added MULTI option to build libpd with multiple instance support
 * makefile: now installs libpd .def and .lib files on Windows
 * makefile: C++ headers are now conditionally installed if built with UTIL=true
-* makefile: fixed install bug when libdir doesn't exist (Wim Muskee)
 * makefile: use install command and set permissions
+* makefile: fixed install bug when libdir doesn't exist (Wim Muskee)
+* makefile: added BSD build support (Luc Hondareyte)
+* makefile: aded ADDITIONAL_LDFLAGS (Pierre Guillot)
 
 * C++: transitioned to all-header library and removed "cpplib" make target,
        you may need to add `libpd_wrapper/util` to you include paths,
