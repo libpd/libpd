@@ -75,7 +75,6 @@ int libpd_init(void) {
   sys_printtostderr = 0;
   sys_usestdpath = 0; // don't use pd_extrapath, only sys_searchpath
   sys_debuglevel = 0;
-  sys_verbose = 0;
   sys_noloadbang = 0;
   sys_hipriority = 0;
   sys_nmidiin = 0;
@@ -623,7 +622,8 @@ int libpd_num_instances(void) {
 }
 
 void libpd_set_verbose(int verbose) {
-  sys_verbose = (verbose > 0 ? 1 : 0);
+  if (verbose < 0) verbose = 0;
+  sys_verbose = verbose;
 }
 
 int libpd_get_verbose(void) {
