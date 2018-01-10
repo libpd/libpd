@@ -32,7 +32,7 @@
        you may need to add `libpd_wrapper/util` to you include paths,
        this also makes it easier to use libpd & C++ with Visual Studio
 
-* C#: added new object-oriented wrapper for the C core (Thomas Mayer)
+* C#: added Managed object-oriented classes (Thomas Mayer)
 
 * Java: added PortAudio support, build using PORTAUDIO=true makefile option
 * Java: allow custom natives loading by implementing PdBaseLoader class (MGSX)
