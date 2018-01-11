@@ -48,7 +48,7 @@ public final class PdBase {
   private static PdMidiReceiver midiReceiver = null;
 
   static {
-	PdBaseLoader.loaderHandler.load();
+    PdBaseLoader.loaderHandler.load();
     initialize();
   }
 

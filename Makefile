@@ -91,6 +91,7 @@ LIBPD_UTILS = \
 
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
+    java/org/puredata/core/PdBaseloader.java \
     java/org/puredata/core/NativeLoader.java \
     java/org/puredata/core/PdListener.java \
     java/org/puredata/core/PdMidiListener.java \
@@ -193,7 +194,7 @@ $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${
 	cp $(PDJAVA_NATIVE) libs/
 
 $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
-	javac -d $(PDJAVA_BUILD) $(PDJAVA_JAR_CLASSES)
+	javac -classpath java -d $(PDJAVA_BUILD) $(PDJAVA_JAR_CLASSES)
 	jar -cvf $(PDJAVA_JAR) -C $(PDJAVA_BUILD) org/puredata/
 
 csharplib: $(PDCSHARP)
