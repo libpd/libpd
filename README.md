@@ -173,7 +173,7 @@ system, either i686 for 32 bit Windows or x86_64 for 64 bit:
 Then install to the default location (C:\msys32 or C:\msys64) and follow the
 setup/update info on the Msys2 webpage.
 
-Msys comes with several command shells, the most important being the
+Msys2 comes with several command shells, the most important being the
 "MSYS2 MinGW 32-bit" and "MSYS2 MinGW 64-bit" shells which are used to compile
 for 32 or 64 bit, respectively.
 
@@ -184,7 +184,7 @@ Be aware of the differences in some of the Msys2 software package names, where
 "i686" denotes 32 bit and "x86_64" 64 bit. Due to how MinGW is designed, you
 cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
-Open a Msys2 shell (either MSYS2 MinGW 32-bit or MSYS MinGW 64-bit) and
+Open a Msys2 shell (either MSYS2 MinGW 32-bit or MSYS2 MinGW 64-bit) and
 install the compiler chain, autotools, & gettext via:
 
     # 32 bit
@@ -193,7 +193,7 @@ install the compiler chain, autotools, & gettext via:
     # 64 bit
     pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-clang make
 
-_You can also search for packages in msys2 with `pacman -S -s <searchterm>`._
+_You can also search for packages in Msys2 with `pacman -S -s <searchterm>`._
 
 Once the packages are installed, you should now be ready to build libpd.
 
