@@ -3,6 +3,7 @@
 libs/libpd.*
 libs/libpdcpp.*
 libs/libpdnative.*
+libs/pdnative.*
 
 # python
 python/pylibpd_wrap.c
