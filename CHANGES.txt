@@ -41,7 +41,7 @@
        you may need to add `libpd_wrapper/util` to you include paths, this also
        makes it possible to use libpd compiled by MinGW & C++ with Visual Studio
 
-* C#: added Managed object-oriented classes (Thomas Mayer)
+* C#: added instance based API (Thomas Mayer)
 
 * Java: added PortAudio support, build using PORTAUDIO=true makefile option
 * Java: allow custom natives loading by implementing PdBaseLoader class (MGSX)

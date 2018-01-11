@@ -14,6 +14,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using LibPDBinding.Native;
+using System;
 
 namespace LibPDBinding
 {
@@ -31,6 +32,7 @@ namespace LibPDBinding
 		/// <param name="velocity">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendNoteOn()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendNoteOn (int channel, int pitch, int velocity)
 		{
@@ -48,6 +50,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendControlChange()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendControlChange (int channel, int controller, int value)
 		{
@@ -63,6 +66,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendProgramChange()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendProgramChange (int channel, int value)
 		{
@@ -79,6 +83,7 @@ namespace LibPDBinding
 		///            -8192..8191 (note that Pd has some offset bug in its pitch
 		///            bend objects, but libpd corrects for this) </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendPitchbend()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendPitchbend (int channel, int value)
 		{
@@ -94,6 +99,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendAftertouch()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendAftertouch (int channel, int value)
 		{
@@ -111,6 +117,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendPolyAftertouch()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendPolyAftertouch (int channel, int pitch, int value)
 		{
@@ -126,6 +133,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0xff </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendMidiByte()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendMidiByte (int port, int value)
 		{
@@ -141,6 +149,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendSysex()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendSysex (int port, int value)
 		{
@@ -156,6 +165,7 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0xff </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendSysRealtime()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendSysRealtime (int port, int value)
 		{

@@ -51,3 +51,4 @@ packages/*
 java-build/*
 javadoc
 libs/libpd-sources*
+*.coverage

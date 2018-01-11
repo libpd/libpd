@@ -108,9 +108,9 @@ namespace LibPDBindingTest.Managed
 			short[] outBuffer = new short[ticks * _outputs * blocksize];
 			_pd.Process (ticks, inBuffer, outBuffer);
 			for (int i = 0; i < outBuffer.Length / 3; i++) {
-				Assert.AreEqual ((short)2 * i, outBuffer [3 * i]);
-				Assert.AreEqual ((short)-6 * i, outBuffer [3 * i + 1]);
-				Assert.AreEqual ((short)(32767 * Math.Cos (2 * Math.PI * 440 / 44100 * i)), outBuffer [3 * i + 2]);
+				Assert.AreEqual ((short)(2 * i / (float)short.MaxValue), outBuffer [3 * i]);
+				Assert.AreEqual ((short)(-6 * i / (float)short.MaxValue), outBuffer [3 * i + 1]);
+				Assert.AreEqual ((short)(32767 * Math.Cos (2 * Math.PI * 440 / 44100 * i) / short.MaxValue), outBuffer [3 * i + 2]);
 			}
 		}
 	}
