@@ -41,7 +41,7 @@ To download libpd & checkout the pure-data submodule do the following:
     
 You should now have a `libpd` directory and the `libpd/pure-data` should contain
 the pd sources. If not, make sure you ran the git submodule commands in the
-libpd folder itself.
+libpd directory itself.
 
 For most uses, it is recommended to checkout the latest stable release version
 via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
@@ -63,7 +63,7 @@ This is a git submodule of Miller Puckette's [official Pd git repository](http:/
 
 ### libpd_wrapper
 
-This folder contains the source files that make up the core of libpd.
+This directory contains the source files that make up the core of libpd.
 
 ### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln
 
@@ -202,7 +202,7 @@ C++
 
 The C++ wrapper is inspired by the Java wrapper and provides a PdBase class as
 well as listener, list, and message type classes. This is a header only library
-so you only need to include the `cpp` folder in your project.
+so you only need to include the `cpp` directory in your project.
 
 Sample programs are found in `samples/cpp`.
 
@@ -219,8 +219,8 @@ Batch scripts for compilation on Windows with MinGW are included.
 
 ### Building yourself
 
-The C\# library expects a file libpdcsharp.(so/dll) in its folder. Before using the
-project, you need to compile it:
+The C\# library expects a file libpdcsharp.(so/dll) in its directory. Before
+using the project, you need to compile it:
 
     make csharplib
 
@@ -248,12 +248,12 @@ Once the build is finished, a libpdcsharp.(so/dll) library should be found in
 the `libs` directory
 
 You also may need to use include the libwinpthread library along with
-libpdcsharp. This is included with libpd in the `libs` folder, either within
+libpdcsharp. This is included with libpd in the `libs` directory, either within
 `libs/mingw32` or `libs/mingw64`. For a current version of `libwinpthread-1.dll`
 search in your Msys2 installation's `bin` directory.
 
-_Note: If you have installed Msys2 in to a non-default location, you will need to change
-the variable for `%MSYS2%` in the .bat files._
+_Note: If you have installed Msys2 in to a non-default location, you will need
+to change the variable for `%MSYS2%` in the .bat files._
 
 #### Linux
 
@@ -298,6 +298,35 @@ the open source package managers for macOS:
 
 * homebrew: https://brew.sh (recommended)
 * macports: https://www.macports.org
+
+### Windows
+
+The wrapper can be built with MinGW. See the previous "Windows" section for
+instructions on setting up a MinGW-based build environment using Msys2.
+
+Install the JDK by downloading an installer package, then add the path to
+JDK/bin to your $PATH shell variable and the JDK path to $JAVA_HOME (optional).
+If the JDK is installed to `C:\Program Files\Java\jdk1.8.0_152`, add the
+following to your ~/.bash_profile:
+
+    # add JDK bin path
+    export PATH=$PATH:'C:\Program Files\Java\jdk1.8.0_152\bin'
+    
+    # JDK path (optional)
+    export JAVA_HOME=C:/Program\ Files/Java/jdk1.8.0_152
+
+Restart your shell if it's open.
+
+Build the libpd javalib with:
+
+    make javalib
+
+You can also set the JAVA_HOME path when running make with:
+
+    make javalib JAVA_HOME=C:/Program\ Files/Java/jdk1.8.0_152
+
+Once the build is finished, you should find libpd.jar and pdnative.(so/dll) in
+the `libs` directory.
 
 Objective-C
 -----------
