@@ -341,7 +341,7 @@ struct FinishMessage {
             dest(dest), msg(msg) {}
 };
 
-/// /section Pd stream interface midi objects
+/// \section Pd stream interface midi objects
 /// ref: http://www.gweep.net/~prefect/eng/reference/protocol/midispec.html
 
 /// send a note on event (set vel = 0 for noteoff)

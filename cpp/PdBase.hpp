@@ -40,14 +40,6 @@ namespace pd {
 ///
 /// use this class directly or extend it and any of its virtual functions
 ///
-///
-/// note: this object is not thread safe by default, use the ring
-///
-/// see https://github.com/danomatika/ofxPd/tree/master/src for an example
-///
-/// note: if you need to grab events in your main thread (working with a gui),
-///       you should either use
-///
 /// note: libpd currently does not support multiple states and it is
 ///       suggested that you use only one PdBase-derived object at a time
 ///
