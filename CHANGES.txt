@@ -22,8 +22,9 @@
 * makefile: added MULTI option to build libpd with multiple instance support
 * makefile: now installs libpd .def and .lib files on Windows
 * makefile: C++ headers are now conditionally installed if built with UTIL=true
-* makefile: DEBUG option now sets -g instead of -Wall
-* makefile: use install command and set permissions
+* makefile: use default optimzations from pd: fast math, loop unrolling, etc 
+* makefile: DEBUG option now sets "-O0 -g" instead of "-Wall"
+* makefile: "make install" now uses install command and sets permissions
 * makefile: fixed install bug when libdir doesn't exist (Wim Muskee)
 * makefile: added BSD build support (Luc Hondareyte)
 * makefile: added ADDITIONAL_LDFLAGS (Pierre Guillot)

@@ -6,7 +6,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
+  PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
   LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
   CSHARP_LDFLAGS = $(LDFLAGS)
@@ -123,9 +123,9 @@ ifeq ($(MULTI), true)
 endif
 
 # conditional optimizations or debug settings
-OPT_CFLAGS = -O3
+OPT_CFLAGS = -ffast-math -funroll-loops -fomit-frame-pointer -O3
 ifeq ($(DEBUG), true)
-    OPT_CFLAGS = -g
+    OPT_CFLAGS = -g -O0
 endif
 
 # conditional to set numeric locale to default "C"

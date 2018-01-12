@@ -109,13 +109,13 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux,
 
 Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
 
-  - **UTIL=true**: compile utilities in `libpd_wrapper/util` (default true)
-  - **EXTRA=true**: compile `pure-data/extra` externals which are then inited in libpd_init() (default true)
+  - **UTIL=true**: compile utilities in `libpd_wrapper/util` (default)
+  - **EXTRA=true**: compile `pure-data/extra` externals which are then inited in libpd_init() (default)
   - **MULTI=true**: compile with multiple instance support
   - **DEBUG=true**: compile with debug symbols & no optimizations
-  - **LOCALE=false**: do not set the LC_NUMERIC number format to the default "C" locale\* (default false)
+  - **LOCALE=false**: do not set the LC_NUMERIC number format to the default "C" locale\* (default)
   - **PORTAUDIO=true**: compile with portaudio support (currently JAVA jni only)
-  - **JAVA_HOME**: specify the path to the Java Development Kit
+  - **JAVA_HOME=/path/to/jdk**: specify the path to the Java Development Kit
 
 To build the libpd C core with default options:
 
@@ -200,7 +200,8 @@ C++
 
 The C++ wrapper is inspired by the Java wrapper and provides a PdBase class as
 well as listener, list, and message type classes. This is a header only library
-so you only need to include the `cpp` directory in your project.
+so you only need to include the `cpp` directory in your project. You also may
+need to add `libpd_wrapper/util` to you include paths.
 
 Sample programs are found in `samples/cpp`.
 
