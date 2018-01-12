@@ -183,7 +183,7 @@ Be aware of the differences in some of the Msys2 software package names, where
 "i686" denotes 32 bit and "x86_64" 64 bit. Due to how MinGW is designed, you
 cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
-Open a Msys2 shell and install the compiler chain, autotools, & gettext via:
+Open an Msys2 shell and install the compiler chain, autotools, & gettext via:
 
     # 32 bit
     pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang make
@@ -223,7 +223,7 @@ using the project, you need to compile it:
     make csharplib
 
 Include `csharp/LibPdBinding.csproj` in your solution and reference the project
-in your application.
+in your application. See `csharp/README.txt` for details.
 
 #### Windows
 
@@ -237,20 +237,20 @@ which MinGW you are using:
     ./mingw32_build_csharp.bat
     
     # 64 bit
-    ./mingw32_build_csharp.bat
+    ./mingw64_build_csharp.bat
 
-Usually you want the 32 bit version, as it will work on 64 bit Windows as well,
-but Unity 5 needs the 64 bit version.
+Usually you want the 32 bit version, as it will work on 64 bit Windows as well.
+However so C\# environments require a 64 bit version, Unity 5 for instance.
 
 Once the build is finished, a libpdcsharp.(so/dll) library should be found in
 the `libs` directory
 
-You also may need to use include the libwinpthread library along with
-libpdcsharp. This is included with libpd in the `libs` directory, either within
-`libs/mingw32` or `libs/mingw64`. For a current version of `libwinpthread-1.dll`
-search in your Msys2 installation's `bin` directory.
+You also may need to use the libwinpthread library along with libpdcsharp. Thi
+ is included with libpd in the `libs` directory, either within `libs/mingw32` or
+ `libs/mingw64`. For a current version of `libwinpthread-1.dll` search in your
+ Msys2 installation's `bin` directory.
 
-_Note: If you have installed Msys2 in to a non-default location, you will need
+_Note: If you have installed Msys2 to a non-default location, you will need
 to change the variable for `%MSYS2%` in the .bat files._
 
 #### Linux
