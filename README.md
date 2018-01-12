@@ -173,15 +173,12 @@ if you are using 32 bit Windows) from:
 Then install to the default location (C:\msys32 or C:\msys64) and follow the
 setup/update info on the Msys2 webpage.
 
-Msys2 provides both 32 and 64 bit command shells for MinGW which are used to
-compile for 32 or 64 bit, respectively.
+Msys2 provides both 32 and 64 bit MinGW and command shells which are used to
+compile for 32 or 64 bit, respectively. Due to how MinGW is designed, you cannot
+build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
 Note: Msys2 development seems to change frequently, so some of the package names
       below may have changed after this document was written.
-
-Be aware of the differences in some of the Msys2 software package names, where
-"i686" denotes 32 bit and "x86_64" 64 bit. Due to how MinGW is designed, you
-cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
 Open an Msys2 shell and install the compiler chain, autotools, & gettext via:
 
