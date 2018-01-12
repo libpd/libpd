@@ -161,21 +161,20 @@ from the Mac App Store or downloaded from http://developer.apple.com
 
 ### Windows
 
-libpd on Windows is built with either MinGW or Cygwin which provide the required
-open source compiler chain & build environment.
+libpd on Windows can be built with either MinGW or Cygwin which provide the
+core build requirements: a compiler chain & shell environment.
 
 It is recommended to use the Msys2 distribution which provides both a Unix
-command shell and MinGW. Start by downloading the Msys2 installer for your
-system, either i686 for 32 bit Windows or x86_64 for 64 bit:
+command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686"
+if you are using 32 bit Windows) from:
 
     http://www.msys2.org/
 
 Then install to the default location (C:\msys32 or C:\msys64) and follow the
 setup/update info on the Msys2 webpage.
 
-Msys2 comes with several command shells, the most important being the
-"MSYS2 MinGW 32-bit" and "MSYS2 MinGW 64-bit" shells which are used to compile
-for 32 or 64 bit, respectively.
+Msys2 provides both 32 and 64 bit command shells for MinGW which are used to
+compile for 32 or 64 bit, respectively.
 
 Note: Msys2 development seems to change frequently, so some of the package names
       below may have changed after this document was written.
@@ -184,8 +183,7 @@ Be aware of the differences in some of the Msys2 software package names, where
 "i686" denotes 32 bit and "x86_64" 64 bit. Due to how MinGW is designed, you
 cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
-Open a Msys2 shell (either MSYS2 MinGW 32-bit or MSYS2 MinGW 64-bit) and
-install the compiler chain, autotools, & gettext via:
+Open a Msys2 shell and install the compiler chain, autotools, & gettext via:
 
     # 32 bit
     pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang make
