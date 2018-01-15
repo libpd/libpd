@@ -19,8 +19,8 @@ public interface PdMidiListener {
    * receives a note on event from pd
    * 
    * @param channel starting at 0
-   * @param pitch
-   * @param velocity
+   * @param pitch 0-127
+   * @param velocity 0-127
    */
   void receiveNoteOn(int channel, int pitch, int velocity);
 
@@ -28,8 +28,8 @@ public interface PdMidiListener {
    * receives a control change event from pd
    * 
    * @param channel starting at 0
-   * @param controller
-   * @param value
+   * @param controller 0-127
+   * @param value 0-127
    */
   void receiveControlChange(int channel, int controller, int value);
 
@@ -37,7 +37,7 @@ public interface PdMidiListener {
    * receives a program event from pd
    * 
    * @param channel starting at 0
-   * @param value
+   * @param value 0-127
    */
   void receiveProgramChange(int channel, int value);
 
@@ -53,7 +53,7 @@ public interface PdMidiListener {
    * receives an aftertouch event from pd
    * 
    * @param channel starting at 0
-   * @param value
+   * @param value 0-127
    */
   void receiveAftertouch(int channel, int value);
 
@@ -61,8 +61,8 @@ public interface PdMidiListener {
    * receives a polyphonic aftertouch event from pd
    * 
    * @param channel starting at 0
-   * @param pitch
-   * @param value
+   * @param pitch 0-127
+   * @param value 0-127
    */
   void receivePolyAftertouch(int channel, int pitch, int value);
 

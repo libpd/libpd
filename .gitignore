@@ -48,3 +48,4 @@ packages/*
 
 # java
 java-build/*
+javadoc

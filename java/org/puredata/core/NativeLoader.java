@@ -72,8 +72,9 @@ public class NativeLoader {
    * Load the library named, if osNameCheck is the current operating system and osArchCheck is the
    * current architecture.
    * 
+   * @param library Name of library to load
    * @param osNameCheck Name of detected operating system (linux/mac/windows)
-   * @param osArchCheck Architecture name (x86/x86_64),
+   * @param osArchCheck Architecture name (x86/x86_64)
    */
   public static void loadLibrary(String library, String osNameCheck, String osArchCheck) {
     if (osArch.equals(osArchCheck)) {
@@ -84,6 +85,7 @@ public class NativeLoader {
   /**
    * Load the library named, if osNameCheck is the current operating system.
    * 
+   * @param library Name of library to load
    * @param osNameCheck Name of detected operating system (linux/mac/windows)
    */
   public static void loadLibrary(String library, String osNameCheck) {
@@ -92,7 +94,10 @@ public class NativeLoader {
     }
   }
 
-  /** Load the library named. */
+  /** Load the library named.
+   *
+   * @param library Name of library to load
+   */
   public static void loadLibrary(String library) {
     try {
       System.loadLibrary(library);
