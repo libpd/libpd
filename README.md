@@ -100,6 +100,8 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux,
   - **libpd**: build the libpd C core, default if no target is specified
   - **csharplib**: build libpdcsharp
   - **javalib**: build libpdnative and the jni wrapper
+  - **javadoc**: generate Java HTML documentation
+  - **javarc**: create a Java source jar
   - **clean**: remove object files
   - **clobber**: remove linked library files
   - **install**: install libpd C library and C/C++\* headers, set location with prefix= (default: /usr/local)
@@ -282,6 +284,13 @@ Build the libpd Java lib with:
     make javalib
 
 This should result in a libpd.jar and pdnative.(so/dll) in the `libs` directory.
+
+You can also build a libpd source jar and Java HTML documentation:
+
+    make javasrc
+    make javadoc
+
+This should result in a `libs/libpd-sources.jar` and a `javadoc` directory.
 
 #### Linux & BSD
 
