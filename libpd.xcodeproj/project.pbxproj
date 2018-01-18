@@ -422,14 +422,14 @@
 		30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
-		745D21E81FD6AB4900EBD784 /* PdBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 745D21E61FD6AB4900EBD784 /* PdBuffer.h */; };
-		745D21E91FD6AB4900EBD784 /* PdBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 745D21E61FD6AB4900EBD784 /* PdBuffer.h */; };
-		745D21EA1FD6AB4900EBD784 /* PdBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 745D21E61FD6AB4900EBD784 /* PdBuffer.h */; };
-		745D21EB1FD6AB4900EBD784 /* PdBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 745D21E61FD6AB4900EBD784 /* PdBuffer.h */; };
-		745D21EC1FD6AB4900EBD784 /* PdBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 745D21E71FD6AB4900EBD784 /* PdBuffer.m */; };
-		745D21ED1FD6AB4900EBD784 /* PdBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 745D21E71FD6AB4900EBD784 /* PdBuffer.m */; };
-		745D21EE1FD6AB4900EBD784 /* PdBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 745D21E71FD6AB4900EBD784 /* PdBuffer.m */; };
-		745D21EF1FD6AB4900EBD784 /* PdBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 745D21E71FD6AB4900EBD784 /* PdBuffer.m */; };
+		742A6F712011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F682011142100BDC78F /* TPCircularBuffer+AudioBufferList.c */; };
+		742A6F722011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F682011142100BDC78F /* TPCircularBuffer+AudioBufferList.c */; };
+		742A6F732011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F682011142100BDC78F /* TPCircularBuffer+AudioBufferList.c */; };
+		742A6F742011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F682011142100BDC78F /* TPCircularBuffer+AudioBufferList.c */; };
+		742A6F752011142200BDC78F /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F6B2011142100BDC78F /* TPCircularBuffer.c */; };
+		742A6F762011142200BDC78F /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F6B2011142100BDC78F /* TPCircularBuffer.c */; };
+		742A6F772011142200BDC78F /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F6B2011142100BDC78F /* TPCircularBuffer.c */; };
+		742A6F782011142200BDC78F /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 742A6F6B2011142100BDC78F /* TPCircularBuffer.c */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -551,8 +551,12 @@
 		30FDBE7C1ACAF701008B02E9 /* bob~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "bob~.c"; path = "pure-data/extra/bob~/bob~.c"; sourceTree = SOURCE_ROOT; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
-		745D21E61FD6AB4900EBD784 /* PdBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdBuffer.h; sourceTree = "<group>"; };
-		745D21E71FD6AB4900EBD784 /* PdBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdBuffer.m; sourceTree = "<group>"; };
+		742A6F672011142100BDC78F /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
+		742A6F682011142100BDC78F /* TPCircularBuffer+AudioBufferList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "TPCircularBuffer+AudioBufferList.c"; sourceTree = "<group>"; };
+		742A6F692011142100BDC78F /* TPCircularBuffer.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TPCircularBuffer.podspec; sourceTree = "<group>"; };
+		742A6F6A2011142100BDC78F /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
+		742A6F6B2011142100BDC78F /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
+		742A6F6C2011142100BDC78F /* TPCircularBuffer+AudioBufferList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TPCircularBuffer+AudioBufferList.h"; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libpd-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -610,6 +614,7 @@
 				0E82A0A712EEFE5E0053280E /* objc */,
 				0E82A08F12EEFE050053280E /* libpd_wrapper */,
 				0E829FF312EEFDED0053280E /* pure-data */,
+				742A6F662011142100BDC78F /* TPCircularBuffer */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
@@ -682,8 +687,6 @@
 				5828C8B41409C8C600F8B9AC /* PdDispatcher.m */,
 				0E8C8DC81312007F000B9D7A /* PdFile.h */,
 				0E8C8DC91312007F000B9D7A /* PdFile.m */,
-				745D21E61FD6AB4900EBD784 /* PdBuffer.h */,
-				745D21E71FD6AB4900EBD784 /* PdBuffer.m */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -882,6 +885,19 @@
 			name = "bob~";
 			sourceTree = "<group>";
 		};
+		742A6F662011142100BDC78F /* TPCircularBuffer */ = {
+			isa = PBXGroup;
+			children = (
+				742A6F672011142100BDC78F /* TPCircularBuffer.h */,
+				742A6F682011142100BDC78F /* TPCircularBuffer+AudioBufferList.c */,
+				742A6F692011142100BDC78F /* TPCircularBuffer.podspec */,
+				742A6F6A2011142100BDC78F /* README.markdown */,
+				742A6F6B2011142100BDC78F /* TPCircularBuffer.c */,
+				742A6F6C2011142100BDC78F /* TPCircularBuffer+AudioBufferList.h */,
+			);
+			path = TPCircularBuffer;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -891,7 +907,6 @@
 			files = (
 				119013511486450C00086F19 /* PdBase.h in Headers */,
 				119013521486450C00086F19 /* PdDispatcher.h in Headers */,
-				745D21E91FD6AB4900EBD784 /* PdBuffer.h in Headers */,
 				119013531486450C00086F19 /* PdFile.h in Headers */,
 				30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 				306DBE5B16BC6710007CF226 /* ringbuffer.h in Headers */,
@@ -908,7 +923,6 @@
 			files = (
 				30C3D2901FAA1FCC00C67F08 /* PdBase.h in Headers */,
 				30C3D2911FAA1FCC00C67F08 /* PdDispatcher.h in Headers */,
-				745D21EB1FD6AB4900EBD784 /* PdBuffer.h in Headers */,
 				30C3D2921FAA1FCC00C67F08 /* PdFile.h in Headers */,
 				30C3D2931FAA1FCC00C67F08 /* PdMidiDispatcher.h in Headers */,
 				30C3D2941FAA1FCC00C67F08 /* ringbuffer.h in Headers */,
@@ -935,7 +949,6 @@
 				30C3D3061FAA200100C67F08 /* ringbuffer.h in Headers */,
 				30C3D3071FAA200100C67F08 /* z_queued.h in Headers */,
 				30C3D3081FAA200100C67F08 /* z_print_util.h in Headers */,
-				745D21EA1FD6AB4900EBD784 /* PdBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,7 +968,6 @@
 				306DBE5A16BC6710007CF226 /* ringbuffer.h in Headers */,
 				306DBE6216BC6710007CF226 /* z_queued.h in Headers */,
 				3088883416BCB4A400781682 /* z_print_util.h in Headers */,
-				745D21E81FD6AB4900EBD784 /* PdBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,7 +1048,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0920;
 			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1089,6 +1101,7 @@
 				119013691486450C00086F19 /* g_array.c in Sources */,
 				30CEFE4E1A6A5EDC000E3BAE /* pique.c in Sources */,
 				1190136A1486450C00086F19 /* g_bang.c in Sources */,
+				742A6F722011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				30CEFE3C1A6A5EDC000E3BAE /* choice.c in Sources */,
 				1190136B1486450C00086F19 /* g_canvas.c in Sources */,
 				1190136C1486450C00086F19 /* g_editor.c in Sources */,
@@ -1121,6 +1134,7 @@
 				119013831486450C00086F19 /* m_memory.c in Sources */,
 				119013841486450C00086F19 /* m_obj.c in Sources */,
 				119013851486450C00086F19 /* m_pd.c in Sources */,
+				742A6F762011142200BDC78F /* TPCircularBuffer.c in Sources */,
 				119013861486450C00086F19 /* m_sched.c in Sources */,
 				119013871486450C00086F19 /* s_audio.c in Sources */,
 				119013881486450C00086F19 /* s_audio_dummy.c in Sources */,
@@ -1133,7 +1147,6 @@
 				1190138F1486450C00086F19 /* s_utf8.c in Sources */,
 				119013901486450C00086F19 /* x_acoustics.c in Sources */,
 				119013911486450C00086F19 /* x_arithmetic.c in Sources */,
-				745D21ED1FD6AB4900EBD784 /* PdBuffer.m in Sources */,
 				119013921486450C00086F19 /* x_connective.c in Sources */,
 				119013931486450C00086F19 /* x_gui.c in Sources */,
 				119013941486450C00086F19 /* x_interface.c in Sources */,
@@ -1188,6 +1201,7 @@
 				30C3D2AE1FAA1FCC00C67F08 /* g_array.c in Sources */,
 				30C3D2AF1FAA1FCC00C67F08 /* pique.c in Sources */,
 				30C3D2B01FAA1FCC00C67F08 /* g_bang.c in Sources */,
+				742A6F742011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				30C3D2B11FAA1FCC00C67F08 /* choice.c in Sources */,
 				30C3D2B21FAA1FCC00C67F08 /* g_canvas.c in Sources */,
 				30C3D2B31FAA1FCC00C67F08 /* g_editor.c in Sources */,
@@ -1220,6 +1234,7 @@
 				30C3D2CE1FAA1FCC00C67F08 /* m_memory.c in Sources */,
 				30C3D2CF1FAA1FCC00C67F08 /* m_obj.c in Sources */,
 				30C3D2D01FAA1FCC00C67F08 /* m_pd.c in Sources */,
+				742A6F782011142200BDC78F /* TPCircularBuffer.c in Sources */,
 				30C3D2D11FAA1FCC00C67F08 /* m_sched.c in Sources */,
 				30C3D2D21FAA1FCC00C67F08 /* s_audio.c in Sources */,
 				30C3D2D31FAA1FCC00C67F08 /* s_audio_dummy.c in Sources */,
@@ -1232,7 +1247,6 @@
 				30C3D2DA1FAA1FCC00C67F08 /* s_utf8.c in Sources */,
 				30C3D2DB1FAA1FCC00C67F08 /* x_acoustics.c in Sources */,
 				30C3D2DC1FAA1FCC00C67F08 /* x_arithmetic.c in Sources */,
-				745D21EF1FD6AB4900EBD784 /* PdBuffer.m in Sources */,
 				30C3D2DD1FAA1FCC00C67F08 /* x_connective.c in Sources */,
 				30C3D2DE1FAA1FCC00C67F08 /* x_gui.c in Sources */,
 				30C3D2DF1FAA1FCC00C67F08 /* x_interface.c in Sources */,
@@ -1293,10 +1307,10 @@
 				30C3D3241FAA200100C67F08 /* g_io.c in Sources */,
 				30C3D3251FAA200100C67F08 /* g_mycanvas.c in Sources */,
 				30C3D3261FAA200100C67F08 /* g_numbox.c in Sources */,
+				742A6F732011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				30C3D3271FAA200100C67F08 /* g_readwrite.c in Sources */,
 				30C3D3281FAA200100C67F08 /* g_rtext.c in Sources */,
 				30C3D3291FAA200100C67F08 /* g_scalar.c in Sources */,
-				745D21EE1FD6AB4900EBD784 /* PdBuffer.m in Sources */,
 				30C3D32A1FAA200100C67F08 /* g_template.c in Sources */,
 				30C3D32B1FAA200100C67F08 /* g_text.c in Sources */,
 				30C3D32C1FAA200100C67F08 /* g_toggle.c in Sources */,
@@ -1354,6 +1368,7 @@
 				30C3D3601FAA200100C67F08 /* PdDispatcher.m in Sources */,
 				30C3D3611FAA200100C67F08 /* AudioHelpers.m in Sources */,
 				30C3D3621FAA200100C67F08 /* PdAudioController.m in Sources */,
+				742A6F772011142200BDC78F /* TPCircularBuffer.c in Sources */,
 				30C3D3631FAA200100C67F08 /* PdAudioUnit.m in Sources */,
 				30C3D3641FAA200100C67F08 /* PdMidiDispatcher.m in Sources */,
 				30C3D3651FAA200100C67F08 /* ringbuffer.c in Sources */,
@@ -1395,10 +1410,10 @@
 				0E82A05912EEFDEE0053280E /* g_io.c in Sources */,
 				0E82A05A12EEFDEE0053280E /* g_mycanvas.c in Sources */,
 				0E82A05B12EEFDEE0053280E /* g_numbox.c in Sources */,
+				742A6F712011142200BDC78F /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				0E82A05C12EEFDEE0053280E /* g_readwrite.c in Sources */,
 				0E82A05D12EEFDEE0053280E /* g_rtext.c in Sources */,
 				0E82A05E12EEFDEE0053280E /* g_scalar.c in Sources */,
-				745D21EC1FD6AB4900EBD784 /* PdBuffer.m in Sources */,
 				0E82A05F12EEFDEE0053280E /* g_template.c in Sources */,
 				0E82A06012EEFDEE0053280E /* g_text.c in Sources */,
 				0E82A06112EEFDEE0053280E /* g_toggle.c in Sources */,
@@ -1456,6 +1471,7 @@
 				5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */,
 				110E6DD5147B838F00282ABC /* AudioHelpers.m in Sources */,
 				110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */,
+				742A6F752011142200BDC78F /* TPCircularBuffer.c in Sources */,
 				110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */,
 				30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 				306DBE5816BC6710007CF226 /* ringbuffer.c in Sources */,
@@ -1471,7 +1487,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
@@ -1501,7 +1516,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
@@ -1670,7 +1684,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
@@ -1702,7 +1715,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
