@@ -95,7 +95,7 @@ static const AudioUnitElement kOutputElement = 0;
     TPCircularBufferInit(&_renderedBuffer, kRenderedBufferLength);
     // When input is enabled, we insert silent samples which size is equal to PdBase's block size.
     // This affects latency, but since processing of audio samples in `PdBase` is done for each block size,
-    // it is necessary to process the number of frames passed in` AudioRenderCallback`.
+    // it is necessary to process the number of frames passed in `AudioRenderCallback()`.
     if (_inputEnabled) {
         uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
         uint32_t availableBytes;
