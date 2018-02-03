@@ -10,7 +10,6 @@
 
 #import "PdAudioUnit.h"
 #import "PdBase.h"
-#import "PdBuffer.h"
 #import "AudioHelpers.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "TPCircularBuffer.h"
