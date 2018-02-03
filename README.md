@@ -65,7 +65,7 @@ This is a git submodule of Miller Puckette's [official Pd git repository](http:/
 
 This directory contains the source files that make up the core of libpd.
 
-### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln
+### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln, .classpath, .project
 
 Build support for various platforms. Feel free to improve the build system in
 any way you see fit.
@@ -75,7 +75,7 @@ any way you see fit.
 Glue for using libpd with C++, C#, Java, Objective-C, and Python. Feel free to
 improve or add support for other languages such as Lua.
 
-### samples, javatests
+### samples
 
 Small sample programs and tests in the various supported languages.
 
@@ -101,7 +101,7 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux,
   - **csharplib**: build libpdcsharp
   - **javalib**: build libpdnative and the jni wrapper
   - **javadoc**: generate Java HTML documentation
-  - **javarc**: create a Java source jar
+  - **javasrc**: create a Java source jar
   - **clean**: remove object files
   - **clobber**: remove linked library files
   - **install**: install libpd C library and C/C++\* headers, set location with prefix= (default: /usr/local)
@@ -159,7 +159,7 @@ can install the Commandline Tools Package only by running the following:
     xcode-select --install
 
 If you are running macOS 10.6 - 10.8, you will need to install Xcode
-from the Mac App Store or downloaded from http://developer.apple.com
+from the Mac App Store or downloaded from <http://developer.apple.com>
 
 ### Windows
 
@@ -209,7 +209,9 @@ C\#
 
 ### Installation from NuGet
 
-The libpd C\# library is available as a [NuGet package](https://www.nuget.org/packages/LibPdBinding).
+The libpd C\# library is available as a NuGet package:
+
+<https://www.nuget.org/packages/LibPdBinding>
 
 If your platform's native libpdcsharp.(so/dll) is not included, you have to
 build it yourself following and copy the resulting file to the output directory.
@@ -268,10 +270,11 @@ Java
 
 ### Precompiled Binaries
 
-**Out of date**
+**May be out of date**
 
-Ready-made binaries for Java are available at [libpd-java-build](https://github.com/wivlaro/libpd-java-build):
-[libpd.jar](https://github.com/wivlaro/libpd-java-build/blob/master/libpd.jar) (may not be up to date)
+Ready-made binaries for Java are available at the libpd-java-build repository:
+
+<https://github.com/wivlaro/libpd-java-build>
 
 ### Building Yourself
 
@@ -284,6 +287,9 @@ Build the libpd Java lib with:
     make javalib
 
 This should result in a libpd.jar and pdnative.(so/dll) in the `libs` directory.
+
+Optionally, you can build libpd with Eclipse using the `.classpath` & `.project`
+workspace files.
 
 You can also build a libpd source jar and Java HTML documentation:
 
@@ -301,8 +307,8 @@ Install the JDK via your distributions package manager.
 Install the JDK either by downloading an installer package or by using one of
 the open source package managers for macOS:
 
-* homebrew: https://brew.sh (recommended)
-* macports: https://www.macports.org
+* homebrew: <https://brew.sh> (recommended)
+* macports: <https://www.macports.org>
 
 ### Windows
 

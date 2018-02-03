@@ -39,6 +39,8 @@
 * Java: added PortAudio support, build using PORTAUDIO=true makefile option
 * Java: allow custom natives loading by implementing PdBaseLoader class (MGSX)
 * Java: fixed Windows pthread naming in PdBaseLoader (reported by Pooya Moradi)
+* Java: moved javatest to samples/java
+* Java: removed out of date dist/libpd.jar
 
 * ObjC: iOS 8 is now the min-deployment target, now using ARC, modernized syntax
 * ObjC: macOS Xcode project universal build by default
