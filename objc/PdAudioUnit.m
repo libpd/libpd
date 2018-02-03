@@ -14,8 +14,8 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "TPCircularBuffer.h"
 
-#define kWorkingBufferLength    (1024 * 64)
-#define kRenderedBufferLength   (1024 * 64)
+// default buffer size: 2 channel * pd block size * sample size * 2x extra room
+#define kDefaultBufferLength  (2 * 64 * sizeof(Float32) * 2)
 
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
@@ -26,12 +26,8 @@ static const AudioUnitElement kOutputElement = 0;
 	BOOL _initialized;
 }
 
-// `workingBuffer` is a buffer for processing audio data with pd. This is used only when input enabled.
-@property (nonatomic) TPCircularBuffer workingBuffer;
-
-// `renderedBuffer` is a buffer for storing output audio data.
-@property (nonatomic) TPCircularBuffer renderedBuffer;
-
+@property (nonatomic) TPCircularBuffer inputBuffer;
+@property (nonatomic) TPCircularBuffer outputBuffer;
 @property (nonatomic) NSInteger samplesPerBlock;
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
@@ -41,9 +37,6 @@ static const AudioUnitElement kOutputElement = 0;
 
 @implementation PdAudioUnit
 
-//@synthesize audioUnit = audioUnit_;
-//@synthesize active = active_;
-
 #pragma mark - Init / Dealloc
 
 - (instancetype)init {
@@ -51,15 +44,15 @@ static const AudioUnitElement kOutputElement = 0;
 	if (self) {
 		_initialized = NO;
 		_active = NO;
-        TPCircularBufferInit(&_workingBuffer, kWorkingBufferLength);
-        TPCircularBufferInit(&_renderedBuffer, kRenderedBufferLength);
+        TPCircularBufferInit(&_inputBuffer, kDefaultBufferLength);
+        TPCircularBufferInit(&_outputBuffer, kDefaultBufferLength);
 	}
 	return self;
 }
 
 - (void)dealloc {
-    TPCircularBufferCleanup(&_workingBuffer);
-    TPCircularBufferCleanup(&_renderedBuffer);
+    TPCircularBufferCleanup(&_inputBuffer);
+    TPCircularBufferCleanup(&_outputBuffer);
 	[self destroyAudioUnit];
 }
 
@@ -83,26 +76,31 @@ static const AudioUnitElement kOutputElement = 0;
 - (int)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	Boolean wasActive = self.isActive;
 	_inputEnabled = inputEnabled;
+
+	// (re)start audio unit and libpd
 	if (![self initAudioUnitWithSampleRate:sampleRate numberChannels:numChannels inputEnabled:_inputEnabled]) {
 		return -1;
 	}
 	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(_inputEnabled ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
+
+	// allocate buffers
     self.samplesPerBlock = [PdBase getBlockSize] * numChannels;
-    TPCircularBufferCleanup(&_workingBuffer);
-    TPCircularBufferCleanup(&_renderedBuffer);
-    TPCircularBufferInit(&_workingBuffer, kWorkingBufferLength);
-    TPCircularBufferInit(&_renderedBuffer, kRenderedBufferLength);
-    // When input is enabled, we insert silent samples which size is equal to PdBase's block size.
-    // This affects latency, but since processing of audio samples in `PdBase` is done for each block size,
-    // it is necessary to process the number of frames passed in `AudioRenderCallback()`.
+    uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
+    TPCircularBufferCleanup(&_inputBuffer);
+    TPCircularBufferCleanup(&_outputBuffer);
+    TPCircularBufferInit(&_inputBuffer, blockBytes * 2);  // 2x extra space
+    TPCircularBufferInit(&_outputBuffer, blockBytes * 2); // 2x extra space
     if (_inputEnabled) {
-        uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
+        // When input is enabled, insert a number of silent samples equal to
+        // PdBase's block size. This affects latency, but since processing of
+        // audio samples in PdBase is done for each block size, it is necessary
+    	// to process the number of frames passed in AudioRenderCallback().
         uint32_t availableBytes;
-        void *ptr = TPCircularBufferHead(&_workingBuffer, &availableBytes);
+        void *ptr = TPCircularBufferHead(&_inputBuffer, &availableBytes);
         if (ptr != NULL && blockBytes <= availableBytes) {
             bzero(ptr, blockBytes);
-            TPCircularBufferProduce(&_workingBuffer, (uint32_t)blockBytes);
+            TPCircularBufferProduce(&_inputBuffer, (uint32_t)blockBytes);
         }
     }
 	self.active = wasActive;
@@ -178,9 +176,32 @@ static const AudioUnitElement kOutputElement = 0;
 	return description;
 }
 
-#pragma mark - AURenderCallback
+#pragma mark - AURenderCallbacks
 
-static OSStatus AudioRenderCallback(void *inRefCon,
+// original unbuffered callback, set samplesPerBlock = log2int([PdBase getBlockSize])
+//static OSStatus AudioRenderCallback(void *inRefCon,
+//                                    AudioUnitRenderActionFlags *ioActionFlags,
+//                                    const AudioTimeStamp *inTimeStamp,
+//                                    UInt32 inBusNumber,
+//                                    UInt32 inNumberFrames,
+//                                    AudioBufferList *ioData) {
+//
+//	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
+//	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
+//
+//	if (pdAudioUnit->_inputEnabled) {
+//		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
+//		                kInputElement, inNumberFrames, ioData);
+//	}
+//
+//	// this is a faster way of computing (inNumberFrames / blockSize)
+//	int ticks = inNumberFrames >> pdAudioUnit->_samplesPerBlock;
+//	[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
+//	return noErr;
+//}
+
+// buffered callback which should handle changing device buffer lengths
+static OSStatus BufferedAudioRenderCallback(void *inRefCon,
                                     AudioUnitRenderActionFlags *ioActionFlags,
                                     const AudioTimeStamp *inTimeStamp,
                                     UInt32 inBusNumber,
@@ -193,82 +214,83 @@ static OSStatus AudioRenderCallback(void *inRefCon,
     uint32_t readableBytes, writableBytes, targetBytes;
 
     if (pdAudioUnit->_inputEnabled) {
-        // Get input audio data.
-        AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
+        // get input audio data
+        AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
+                        kInputElement, inNumberFrames, ioData);
 
-        // Copy input audio data to `_workingBuffer`.
+        // copy input audio data to _inputBuffer
         src = buffer;
         targetBytes = ioData->mBuffers[0].mDataByteSize;
-        dst = TPCircularBufferHead(&pdAudioUnit->_workingBuffer, &writableBytes);
+        dst = TPCircularBufferHead(&pdAudioUnit->_inputBuffer, &writableBytes);
         assert(dst != NULL && targetBytes <= writableBytes);
         memcpy(dst, src, targetBytes);
-        TPCircularBufferProduce(&pdAudioUnit->_workingBuffer, targetBytes);
+        TPCircularBufferProduce(&pdAudioUnit->_inputBuffer, targetBytes);
 
-        // Render audio data to `_renderedBuffer`.
-        src = TPCircularBufferTail(&pdAudioUnit->_workingBuffer, &readableBytes);
+        // render audio data to _outputBuffer
+        src = TPCircularBufferTail(&pdAudioUnit->_inputBuffer, &readableBytes);
         assert(src != NULL);
-        dst = TPCircularBufferHead(&pdAudioUnit->_renderedBuffer, &writableBytes);
+        dst = TPCircularBufferHead(&pdAudioUnit->_outputBuffer, &writableBytes);
         assert(dst != NULL);
-        NSInteger remainSamples = readableBytes / sizeof(Float32);
-        NSInteger samplesPerBlock = pdAudioUnit.samplesPerBlock;
-        NSInteger numBlocks = remainSamples / samplesPerBlock;
+        NSInteger remainingSamples = readableBytes / sizeof(Float32);
+        NSInteger numBlocks = remainingSamples / pdAudioUnit->_samplesPerBlock;
         if (0 < numBlocks) {
-            targetBytes = (uint32_t)(numBlocks * samplesPerBlock * sizeof(Float32));
+            targetBytes = (uint32_t)(numBlocks * pdAudioUnit->_samplesPerBlock* sizeof(Float32));
             assert(targetBytes <= writableBytes);
             [PdBase processFloatWithInputBuffer:src outputBuffer:dst ticks:(int)numBlocks];
-            TPCircularBufferProduce(&pdAudioUnit->_renderedBuffer, targetBytes);
-            TPCircularBufferConsume(&pdAudioUnit->_workingBuffer, targetBytes);
+            TPCircularBufferProduce(&pdAudioUnit->_outputBuffer, targetBytes);
+            TPCircularBufferConsume(&pdAudioUnit->_inputBuffer, targetBytes);
         }
 
-        // Copy result audio data to `ioData`.
-        src = TPCircularBufferTail(&pdAudioUnit->_renderedBuffer, &readableBytes);
+        // copy result audio data to ioData
+        src = TPCircularBufferTail(&pdAudioUnit->_outputBuffer, &readableBytes);
         dst = buffer;
         targetBytes = ioData->mBuffers[0].mDataByteSize;
         assert(src != NULL && targetBytes <= readableBytes);
         memcpy(dst, src, targetBytes);
-        TPCircularBufferConsume(&pdAudioUnit->_renderedBuffer, targetBytes);
+        TPCircularBufferConsume(&pdAudioUnit->_outputBuffer, targetBytes);
     } else {
-        uint32_t remainBytes = ioData->mBuffers[0].mDataByteSize;
-        uint32_t blockBytes = (uint32_t)pdAudioUnit.samplesPerBlock * sizeof(Float32);
+        uint32_t remainingBytes = ioData->mBuffers[0].mDataByteSize;
+        uint32_t blockBytes = (uint32_t)pdAudioUnit->_samplesPerBlock * sizeof(Float32);
         uint32_t offsetBytes = 0;
 
-        while (0 < remainBytes) {
-            // Copy cached result data to `ioData`.
-            src = TPCircularBufferTail(&pdAudioUnit->_renderedBuffer, &readableBytes);
+        while (0 < remainingBytes) {
+            // copy cached result data to ioData
+            src = TPCircularBufferTail(&pdAudioUnit->_outputBuffer, &readableBytes);
             if (src != NULL && 0 < readableBytes) {
-                targetBytes = MIN(readableBytes, remainBytes);
+                targetBytes = MIN(readableBytes, remainingBytes);
                 memcpy(buffer + offsetBytes, src, targetBytes);
-                remainBytes -= targetBytes;
+                remainingBytes -= targetBytes;
                 offsetBytes += targetBytes;
-                TPCircularBufferConsume(&pdAudioUnit->_renderedBuffer, targetBytes);
+                TPCircularBufferConsume(&pdAudioUnit->_outputBuffer, targetBytes);
             }
 
-            // Render audio data to `ioData`.
-            uint32_t numBlocks = remainBytes / blockBytes;
+            // render audio data to ioData
+            uint32_t numBlocks = remainingBytes / blockBytes;
             if (0 < numBlocks) {
                 targetBytes = blockBytes * numBlocks;
-                [PdBase processFloatWithInputBuffer:buffer + offsetBytes outputBuffer:buffer + offsetBytes ticks:(int)numBlocks];
-                remainBytes -= targetBytes;
+				[PdBase processFloatWithInputBuffer:buffer + offsetBytes
+									   outputBuffer:buffer + offsetBytes
+											  ticks:(int)numBlocks];
+                remainingBytes -= targetBytes;
                 offsetBytes += targetBytes;
             }
 
-            // Render audio data to `_renderedBuffer` and cache it.
-            if (0 < remainBytes) {
-                dst = TPCircularBufferHead(&pdAudioUnit->_renderedBuffer, &writableBytes);
+            // render audio data to _outputBuffer and cache it
+            if (0 < remainingBytes) {
+                dst = TPCircularBufferHead(&pdAudioUnit->_outputBuffer, &writableBytes);
                 targetBytes = blockBytes;
                 assert(dst != NULL && targetBytes <= writableBytes);
                 bzero(dst, targetBytes);
                 [PdBase processFloatWithInputBuffer:dst outputBuffer:dst ticks:1];
-                TPCircularBufferProduce(&pdAudioUnit->_renderedBuffer, targetBytes);
+                TPCircularBufferProduce(&pdAudioUnit->_outputBuffer, targetBytes);
             }
         }
     }
     return noErr;
 }
 
-
 - (AURenderCallback)renderCallback {
-	return AudioRenderCallback;
+	return BufferedAudioRenderCallback;
 }
 
 #pragma mark - Private
