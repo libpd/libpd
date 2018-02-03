@@ -28,6 +28,7 @@
 * makefile: fixed install bug when libdir doesn't exist (Wim Muskee)
 * makefile: added BSD build support (Luc Hondareyte)
 * makefile: added ADDITIONAL_LDFLAGS (Pierre Guillot)
+* makefile: added javadoc & javasrc targets (suggested by Pooya Moradi)
 
 * C++: transitioned to all-header library and removed "cpplib" make target,
        you may need to add `libpd_wrapper/util` to you include paths,
@@ -37,6 +38,7 @@
 
 * Java: added PortAudio support, build using PORTAUDIO=true makefile option
 * Java: allow custom natives loading by implementing PdBaseLoader class (MGSX)
+* Java: fixed Windows pthread naming in PdBaseLoader (reported by Pooya Moradi)
 * Java: moved javatest to samples/java
 * Java: removed out of date dist/libpd.jar
 

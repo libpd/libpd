@@ -100,6 +100,11 @@ PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/utils/IoUtils.java \
     java/org/puredata/core/utils/PdDispatcher.java
 
+# additional Java source jar files
+PDJAVA_SRC_FILES = \
+	.classpath \
+	.project
+
 JNI_SOUND = jni/z_jni_plain.c
 
 # conditional libpd_wrapper/util compilation
@@ -163,9 +168,11 @@ LIBPD = libs/libpd.$(SOLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
-PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
+PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
+PDJAVA_SRC = libs/libpd-sources.jar
+PDJAVA_DOC = javadoc
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
@@ -175,7 +182,7 @@ LDFLAGS += $(ADDITIONAL_LDFLAGS)
 CSHARP_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
-.PHONY: libpd csharplib cpplib javalib install uninstall clean clobber
+.PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
 
 libpd: $(LIBPD)
 
@@ -197,6 +204,14 @@ $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
 	javac -classpath java -d $(PDJAVA_BUILD) $(PDJAVA_JAR_CLASSES)
 	jar -cvf $(PDJAVA_JAR) -C $(PDJAVA_BUILD) org/puredata/
 
+javadoc: $(PDJAVA_JAR_CLASSES)
+	javadoc -d $(PDJAVA_DOC) -sourcepath java org.puredata.core
+
+javasrc: $(PDJAVA_SRC)
+
+$(PDJAVA_SRC): $(PDJAVA_JAR_FILES)
+	jar -cvf $(PDJAVA_SRC) $(PDJAVA_SRC_FILES) -C java org
+
 csharplib: $(PDCSHARP)
 
 $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
@@ -207,9 +222,10 @@ clean:
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
-	rm -f libs/`basename $(PDJAVA_NATIVE)`
-	rm -rf $(PDJAVA_BUILD)
+	rm -f $(LIBPD) ${LIBPD:.$(SOLIB_EXT)=.lib} ${LIBPD:.$(SOLIB_EXT)=.def}
+	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
+	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
+	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
 
 # optional install headers & libs based on build type: UTIL=true and/or windows
 install:

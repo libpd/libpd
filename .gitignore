@@ -48,3 +48,5 @@ packages/*
 
 # java
 java-build/*
+javadoc
+libs/libpd-sources*
