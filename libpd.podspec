@@ -14,8 +14,8 @@ Pod::Spec.new do |spec|
                       'libpd_wrapper/**/*.{h,c}',
                       'objc/**/*.{h,m}'
   spec.public_header_files = 'objc/**/*.{h}'
-  spec.ios.deployment_target = '6.0'
-  spec.requires_arc = false
+  spec.ios.deployment_target = '8.0'
+  spec.requires_arc = true
   spec.frameworks = 'Foundation', 'AudioToolbox', 'AVFoundation'
   spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DLIBPD_EXTRA', '-fcommon'
   spec.exclude_files = 'pure-data/src/s_audio_alsa.h',
@@ -40,5 +40,8 @@ Pod::Spec.new do |spec|
                        'pure-data/src/s_entry.c',
                        'pure-data/src/s_watchdog.c',
                        'pure-data/src/u_pdreceive.c',
-                       'pure-data/src/u_pdsend.c'
+                       'pure-data/src/u_pdsend.c',
+                       'objc/TPCircularBuffer/TPCircularBuffer.h',
+                       'objc/TPCircularBuffer/TPCircularBuffer.m'
+  spec.dependency 'TPCircularBuffer'
 end
