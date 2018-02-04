@@ -14,8 +14,9 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "TPCircularBuffer.h"
 
-// default buffer size: 2 channel * pd block size * sample size * 2x extra room
-#define kDefaultBufferLength  (2 * 64 * sizeof(Float32) * 2)
+// max AU io buffer duration as outlined in
+// https://developer.apple.com/library/content/qa/qa1606/_index.html
+#define kMaxIOBufferDuration 4096
 
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
@@ -44,8 +45,8 @@ static const AudioUnitElement kOutputElement = 0;
 	if (self) {
 		_initialized = NO;
 		_active = NO;
-		TPCircularBufferInit(&_inputBuffer, kDefaultBufferLength);
-		TPCircularBufferInit(&_outputBuffer, kDefaultBufferLength);
+		TPCircularBufferInit(&_inputBuffer, 2 * kMaxIOBufferDuration * sizeof(Float32));
+		TPCircularBufferInit(&_outputBuffer, 2 * kMaxIOBufferDuration * sizeof(Float32));
 	}
 	return self;
 }
@@ -84,19 +85,19 @@ static const AudioUnitElement kOutputElement = 0;
 	[PdBase openAudioWithSampleRate:sampleRate inputChannels:(_inputEnabled ? numChannels : 0) outputChannels:numChannels];
 	[PdBase computeAudio:YES];
 
-	// allocate buffers
+	// allocate buffers, size is # channels * max AU io buffer duration * sample size
 	self.samplesPerBlock = [PdBase getBlockSize] * numChannels;
-	uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
 	TPCircularBufferCleanup(&_inputBuffer);
 	TPCircularBufferCleanup(&_outputBuffer);
-	TPCircularBufferInit(&_inputBuffer, blockBytes * 2);  // 2x extra space
-	TPCircularBufferInit(&_outputBuffer, blockBytes * 2); // 2x extra space
+	TPCircularBufferInit(&_inputBuffer, numChannels * kMaxIOBufferDuration * sizeof(Float32));
+	TPCircularBufferInit(&_outputBuffer, numChannels * kMaxIOBufferDuration * sizeof(Float32));
 	if (_inputEnabled) {
 		// When input is enabled, insert a number of silent samples equal to
 		// PdBase's block size. This affects latency, but since processing of
 		// audio samples in PdBase is done for each block size, it is necessary
 		// to process the number of frames passed in AudioRenderCallback().
 		uint32_t availableBytes;
+		uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
 		void *ptr = TPCircularBufferHead(&_inputBuffer, &availableBytes);
 		if (ptr != NULL && blockBytes <= availableBytes) {
 			bzero(ptr, blockBytes);
