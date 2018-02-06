@@ -174,6 +174,10 @@
 		306DBE6116BC6710007CF226 /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
 		306DBE6216BC6710007CF226 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
 		306DBE6316BC6710007CF226 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
+		30875D9120266D6000FA2C85 /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 30875D8F20266D6000FA2C85 /* TPCircularBuffer.h */; };
+		30875D9220266D6000FA2C85 /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 30875D8F20266D6000FA2C85 /* TPCircularBuffer.h */; };
+		30875D9320266D6000FA2C85 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 30875D9020266D6000FA2C85 /* TPCircularBuffer.c */; };
+		30875D9420266D6000FA2C85 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 30875D9020266D6000FA2C85 /* TPCircularBuffer.c */; };
 		3088883216BCB4A400781682 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		3088883316BCB4A400781682 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		3088883416BCB4A400781682 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
@@ -520,6 +524,8 @@
 		306DBE5116BC6710007CF226 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		306DBE5416BC6710007CF226 /* z_queued.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_queued.c; sourceTree = "<group>"; };
 		306DBE5516BC6710007CF226 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
+		30875D8F20266D6000FA2C85 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
+		30875D9020266D6000FA2C85 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
 		3088882C16BCB4A400781682 /* z_print_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_print_util.c; sourceTree = "<group>"; };
 		3088882D16BCB4A400781682 /* z_print_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_print_util.h; sourceTree = "<group>"; };
 		30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp_fun.c; sourceTree = "<group>"; };
@@ -659,6 +665,7 @@
 				110E6DD1147B838F00282ABC /* PdAudioController.m */,
 				110E6DCE147B838E00282ABC /* AudioHelpers.h */,
 				110E6DCF147B838E00282ABC /* AudioHelpers.m */,
+				30875D8E20266D6000FA2C85 /* TPCircularBuffer */,
 			);
 			name = audio;
 			sourceTree = "<group>";
@@ -687,6 +694,15 @@
 				306DBE5516BC6710007CF226 /* z_queued.h */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		30875D8E20266D6000FA2C85 /* TPCircularBuffer */ = {
+			isa = PBXGroup;
+			children = (
+				30875D8F20266D6000FA2C85 /* TPCircularBuffer.h */,
+				30875D9020266D6000FA2C85 /* TPCircularBuffer.c */,
+			);
+			path = TPCircularBuffer;
 			sourceTree = "<group>";
 		};
 		30CEFE211A6A5E5F000E3BAE /* src */ = {
@@ -916,6 +932,7 @@
 				30C3D3011FAA200100C67F08 /* z_hooks.h in Headers */,
 				30C3D3021FAA200100C67F08 /* PdAudioController.h in Headers */,
 				30C3D3031FAA200100C67F08 /* PdAudioUnit.h in Headers */,
+				30875D9220266D6000FA2C85 /* TPCircularBuffer.h in Headers */,
 				30C3D3041FAA200100C67F08 /* PdMidiDispatcher.h in Headers */,
 				30C3D3051FAA200100C67F08 /* x_vexp.h in Headers */,
 				30C3D3061FAA200100C67F08 /* ringbuffer.h in Headers */,
@@ -935,6 +952,7 @@
 				304C8EDA1860FA2D006D2159 /* z_hooks.h in Headers */,
 				110E6DD6147B838F00282ABC /* PdAudioController.h in Headers */,
 				110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */,
+				30875D9120266D6000FA2C85 /* TPCircularBuffer.h in Headers */,
 				30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 				30ABBFD01CA8A67000E3722F /* x_vexp.h in Headers */,
 				306DBE5A16BC6710007CF226 /* ringbuffer.h in Headers */,
@@ -1254,6 +1272,7 @@
 				30C3D30F1FAA200100C67F08 /* d_fft.c in Sources */,
 				30C3D3101FAA200100C67F08 /* x_array.c in Sources */,
 				30C3D3111FAA200100C67F08 /* d_filter.c in Sources */,
+				30875D9420266D6000FA2C85 /* TPCircularBuffer.c in Sources */,
 				30C3D3121FAA200100C67F08 /* d_global.c in Sources */,
 				30C3D3131FAA200100C67F08 /* d_math.c in Sources */,
 				30C3D3141FAA200100C67F08 /* d_misc.c in Sources */,
@@ -1355,6 +1374,7 @@
 				0E82A04312EEFDEE0053280E /* d_fft.c in Sources */,
 				30377F451866680A0026ED3E /* x_array.c in Sources */,
 				0E82A04612EEFDEE0053280E /* d_filter.c in Sources */,
+				30875D9320266D6000FA2C85 /* TPCircularBuffer.c in Sources */,
 				0E82A04712EEFDEE0053280E /* d_global.c in Sources */,
 				0E82A04812EEFDEE0053280E /* d_math.c in Sources */,
 				0E82A04912EEFDEE0053280E /* d_misc.c in Sources */,

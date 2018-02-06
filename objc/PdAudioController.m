@@ -25,13 +25,16 @@
 
 @property (nonatomic, strong, readwrite) PdAudioUnit *audioUnit;
 
-// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
+// updates the sample rate while verifying it is in sync with the audio session
+// and PdAudioUnit
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;
 
 // not all inputs make sense, but that's okay in the private interface
-- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;
-- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
-
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
+								isAmbient:(BOOL)isAmbient
+							 allowsMixing:(BOOL)allowsMixing;
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels
+                                         inputEnabled:(BOOL)inputEnabled;
 @end
 
 @implementation PdAudioController
@@ -80,11 +83,14 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self selectCategoryWithInputs:inputEnabled isAmbient:NO allowsMixing:mixingEnabled];
+	status |= [self selectCategoryWithInputs:inputEnabled
+	                               isAmbient:NO
+								allowsMixing:mixingEnabled];
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self configureAudioUnitWithNumberChannels:numChannels inputEnabled:inputEnabled];
+	status |= [self configureAudioUnitWithNumberChannels:numChannels
+	                                        inputEnabled:inputEnabled];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
@@ -96,19 +102,26 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self selectCategoryWithInputs:NO isAmbient:YES allowsMixing:mixingEnabled];
+	status |= [self selectCategoryWithInputs:NO
+	                               isAmbient:YES
+								allowsMixing:mixingEnabled];
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self configureAudioUnitWithNumberChannels:numChannels inputEnabled:NO];
+	status |= [self configureAudioUnitWithNumberChannels:numChannels
+	                                        inputEnabled:NO];
 	AU_LOGV(@"configuration finished. status: %d", status);
 	return status;
 }
 
-- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels
+                                         inputEnabled:(BOOL)inputEnabled {
 	_inputEnabled = inputEnabled;
 	_numberChannels = numChannels;
-	return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
+	int ret = [self.audioUnit configureWithSampleRate:self.sampleRate
+									numberChannels:numChannels
+	                                  inputEnabled:inputEnabled];
+	return ret ? PdAudioError : PdAudioOK;
 }
 
 - (PdAudioStatus)updateSampleRate:(int)sampleRate {
@@ -122,13 +135,16 @@
 	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
 	_sampleRate = currentHardwareSampleRate;
 	if (!floatsAreEqual(sampleRate, currentHardwareSampleRate)) {
-		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)", currentHardwareSampleRate);
+		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)",
+			currentHardwareSampleRate);
 		return PdAudioPropertyChanged;
 	}
 	return PdAudioOK;
 }
 
-- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing {
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
+                                isAmbient:(BOOL)isAmbient
+                             allowsMixing:(BOOL)allowsMixing {
 	NSString *category;
 	OSStatus status;
 	if (hasInputs && isAmbient) {
@@ -148,10 +164,12 @@
 	
 	// set MixWithOthers property for Playback category
 	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
-		// TODO: we should be checking allowsMixing flag here, but setting that requires an update to how we handle interruptions.
+		// TODO: we should be checking allowsMixing flag here, but setting that
+		//       requires an update to how we handle interruptions.
 // 		if (allowsMixing) {
 			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
-				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@",
+					error.localizedDescription);
 				return PdAudioError;
 			}
 // 		}
@@ -170,13 +188,11 @@
 	return PdAudioOK;
 }
 
-/* note about the magic 0.5 added to numberFrames:
- * apple is doing some horrible rounding of the bufferDuration into
- * what tries to give a power of two frames to the audio unit, which
- * is inconsistent accross different devices.  As they are currently
- * truncating, we add in this value to make sure the resulting ticks
- * value is not halved.
- */
+// Note about the magic 0.5 added to numberFrames:
+// Apple is doing some horrible rounding of the bufferDuration into what tries
+// to give a power of two frames to the audio unit, which is inconsistent across
+// different devices.  As they are currently truncating, we add in this value to
+// make sure the resulting ticks value is not halved.
 - (PdAudioStatus)configureTicksPerBuffer:(int)ticksPerBuffer {
 	int numberFrames = [PdBase getBlockSize] * ticksPerBuffer;
 	NSTimeInterval bufferDuration = (Float32) (numberFrames + 0.5) / self.sampleRate;
