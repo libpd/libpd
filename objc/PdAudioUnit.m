@@ -45,8 +45,6 @@ static const AudioUnitElement kOutputElement = 0;
 	if (self) {
 		_initialized = NO;
 		_active = NO;
-		TPCircularBufferInit(&_inputBuffer, 2 * kMaxIOBufferDuration * sizeof(Float32));
-		TPCircularBufferInit(&_outputBuffer, 2 * kMaxIOBufferDuration * sizeof(Float32));
 	}
 	return self;
 }
@@ -87,17 +85,18 @@ static const AudioUnitElement kOutputElement = 0;
 
 	// allocate buffers, size is # channels * max AU io buffer duration * sample size
 	self.samplesPerBlock = [PdBase getBlockSize] * numChannels;
+	uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
+	uint32_t maxIOBufferBytes = numChannels * kMaxIOBufferDuration * sizeof(Float32);
 	TPCircularBufferCleanup(&_inputBuffer);
 	TPCircularBufferCleanup(&_outputBuffer);
-	TPCircularBufferInit(&_inputBuffer, numChannels * kMaxIOBufferDuration * sizeof(Float32));
-	TPCircularBufferInit(&_outputBuffer, numChannels * kMaxIOBufferDuration * sizeof(Float32));
+	TPCircularBufferInit(&_inputBuffer, blockBytes + maxIOBufferBytes);
+	TPCircularBufferInit(&_outputBuffer, maxIOBufferBytes);
 	if (_inputEnabled) {
 		// When input is enabled, insert a number of silent samples equal to
 		// PdBase's block size. This affects latency, but since processing of
 		// audio samples in PdBase is done for each block size, it is necessary
 		// to process the number of frames passed in AudioRenderCallback().
 		uint32_t availableBytes;
-		uint32_t blockBytes = (uint32_t)self.samplesPerBlock * sizeof(Float32);
 		void *ptr = TPCircularBufferHead(&_inputBuffer, &availableBytes);
 		if (ptr != NULL && blockBytes <= availableBytes) {
 			bzero(ptr, blockBytes);
@@ -181,11 +180,11 @@ static const AudioUnitElement kOutputElement = 0;
 
 // original unbuffered callback, set samplesPerBlock = log2int([PdBase getBlockSize])
 //static OSStatus AudioRenderCallback(void *inRefCon,
-//                                    AudioUnitRenderActionFlags *ioActionFlags,
-//                                    const AudioTimeStamp *inTimeStamp,
-//                                    UInt32 inBusNumber,
-//                                    UInt32 inNumberFrames,
-//                                    AudioBufferList *ioData) {
+//                                   AudioUnitRenderActionFlags *ioActionFlags,
+//                                   const AudioTimeStamp *inTimeStamp,
+//                                   UInt32 inBusNumber,
+//                                   UInt32 inNumberFrames,
+//                                   AudioBufferList *ioData) {
 //
 //	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
 //	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
@@ -217,7 +216,7 @@ static OSStatus BufferedAudioRenderCallback(void *inRefCon,
 	if (pdAudioUnit->_inputEnabled) {
 		// get input audio data
 		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
-		kInputElement, inNumberFrames, ioData);
+			            kInputElement, inNumberFrames, ioData);
 
 		// copy input audio data to _inputBuffer
 		src = buffer;
