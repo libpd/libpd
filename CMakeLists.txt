@@ -1,0 +1,110 @@
+cmake_minimum_required (VERSION 2.8.11)
+project (libpd C)
+
+option(pd_utils "Compile utilities" ON)
+option(pd_extra "Compile extras" ON)
+option(pd_multi "Compile with multiple instance support" ON)
+option(pd_locale "Set the LC_NUMERIC number format to the default C locale" ON)
+option(pd_build_c_examples "Builds C API example programs" OFF)
+
+if(WIN32)
+  set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL")
+endif()
+if (MSVC)
+  set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DHAVE_STRUCT_TIMESPEC")
+else()
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast")
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -ffast-math -funroll-loops -fomit-frame-pointer -O3")
+  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -O0")
+endif()
+
+
+set(PD_FILES pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c
+    pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c
+    pure-data/src/d_fft_fftsg.c
+    pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c
+    pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c
+    pure-data/src/d_soundfile.c pure-data/src/d_ugen.c
+    pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c
+    pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c
+    pure-data/src/g_graph.c pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c
+    pure-data/src/g_hslider.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c
+    pure-data/src/g_numbox.c pure-data/src/g_readwrite.c
+    pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_template.c
+    pure-data/src/g_text.c pure-data/src/g_toggle.c pure-data/src/g_traversal.c
+    pure-data/src/g_vdial.c pure-data/src/g_vslider.c pure-data/src/g_vumeter.c
+    pure-data/src/m_atom.c pure-data/src/m_binbuf.c pure-data/src/m_class.c
+    pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c
+    pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c
+    pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c pure-data/src/s_inter.c
+    pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c
+    pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c
+    pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c
+    pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c
+    pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c
+    pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c
+    pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c pure-data/src/x_vexp_fun.c
+    libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c
+    libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c)
+
+set(PD_EXTRA_FILES pure-data/extra/bob~/bob~.c pure-data/extra/bonk~/bonk~.c
+    pure-data/extra/choice/choice.c
+    pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c
+    pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c
+    pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c)
+
+set(PD_UTILS_FILES libpd_wrapper/util/z_print_util.c
+    libpd_wrapper/util/z_queued.c
+    libpd_wrapper/util/ringbuffer.c)
+
+set(PD_SOURCES ${PD_FILES})
+if(pd_utils)
+  list(APPEND PD_SOURCES ${PD_UTILS_FILES})
+endif()
+if(pd_extra)
+  list(APPEND PD_SOURCES ${PD_EXTRA_FILES})
+endif()
+
+add_library(libpd SHARED ${PD_SOURCES})
+if(MSVC)
+  target_link_libraries(libpd PUBLIC Ws2_32.lib)
+  target_link_libraries(libpd PUBLIC pthreadVC2.lib)
+endif()
+target_include_directories(libpd PUBLIC libpd_wrapper libpd_wrapper/util pure-data/src)
+set_target_properties(libpd PROPERTIES OUTPUT_NAME pd POSITION_INDEPENDENT_CODE True)
+target_compile_definitions(libpd PRIVATE PD USEAPI_DUMMY)
+
+if(NOT MSVC)
+  target_compile_definitions(libpd PRIVATE HAVE_UNISTD_H)
+endif()
+
+if(pd_extra)
+  target_compile_definitions(libpd PRIVATE LIBPD_EXTRA)
+endif()
+
+if(pd_multi)
+  target_compile_definitions(libpd PRIVATE PDINSTANCE PDTHREADS)
+endif()
+
+if(NOT pd_locale)
+  target_compile_definitions(libpd PRIVATE LIBPD_NO_NUMERIC)
+endif()
+
+if(pd_build_c_examples)
+  macro(ADD_EXAMPLE name)
+    add_executable(${name} samples/c/${name}/${name}.c)
+    target_link_libraries(${name} PUBLIC libpd)
+    target_include_directories(${name} PUBLIC "libpd_wrapper")
+    set_target_properties(${name} PROPERTIES FOLDER "Examples C")
+  endmacro(ADD_EXAMPLE)
+
+  ADD_EXAMPLE(pdtest)
+  if(NOT MSVC)
+    # uses gettimeofday()
+    ADD_EXAMPLE(pdtest_gui)
+  endif()
+  if(pd_multi)
+    ADD_EXAMPLE(pdtest_multi)
+  endif()
+  ADD_EXAMPLE(pdtest_thread)
+endif()
