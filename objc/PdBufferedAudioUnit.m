@@ -48,8 +48,8 @@ static const AudioUnitElement kInputElement = 1;
 				numberChannels:(int)numChannels
                   inputEnabled:(BOOL)inputEnabled {
 	int ret = [super configureWithSampleRate:sampleRate
-							  numberChannels:numChannels
-							    inputEnabled:inputEnabled];
+	                          numberChannels:numChannels
+	                            inputEnabled:inputEnabled];
 	if (ret == 0) {
 		_blockSize = [PdBase getBlockSize] * numChannels * sizeof(Float32);
 		_blockSizeAsLog = log2int(_blockSize);
