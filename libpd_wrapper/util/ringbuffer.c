@@ -65,12 +65,12 @@ int rb_available_to_write(ring_buffer *buffer) {
     int read_idx;
     int write_idx;
     if (buffer->atomic) {
-	  read_idx = SYNC_FETCH(&(buffer->read_idx));
-	  write_idx = SYNC_FETCH(&(buffer->write_idx));
-	} else {
-	  read_idx = buffer->read_idx;
-	  write_idx = buffer->write_idx;
-	}
+    read_idx = SYNC_FETCH(&(buffer->read_idx));
+    write_idx = SYNC_FETCH(&(buffer->write_idx));
+  } else {
+    read_idx = buffer->read_idx;
+    write_idx = buffer->write_idx;
+  }
     return (buffer->size + read_idx - write_idx - 1) % buffer->size;
   } else {
     return 0;
@@ -82,12 +82,12 @@ int rb_available_to_read(ring_buffer *buffer) {
     int read_idx;
     int write_idx;
     if (buffer->atomic) {
-	  read_idx = SYNC_FETCH(&(buffer->read_idx));
-	  write_idx = SYNC_FETCH(&(buffer->write_idx));
-	} else {
-	  read_idx = buffer->read_idx;
-	  write_idx = buffer->write_idx;
-	}
+    read_idx = SYNC_FETCH(&(buffer->read_idx));
+    write_idx = SYNC_FETCH(&(buffer->write_idx));
+  } else {
+    read_idx = buffer->read_idx;
+    write_idx = buffer->write_idx;
+  }
     return (buffer->size + write_idx - read_idx) % buffer->size;
   } else {
     return 0;
@@ -117,10 +117,10 @@ int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
   }
   va_end(args);
   if (buffer->atomic) {
-  	SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
-	  write_idx);  // Includes memory barrier.
+    SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
+    write_idx);  // Includes memory barrier.
   } else {
-	buffer->write_idx = write_idx;
+  buffer->write_idx = write_idx;
   }
   return 0; 
 }
@@ -140,7 +140,7 @@ int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
     memcpy(dest + d, buffer->buf_ptr, len - d);
   }
   if (buffer->atomic) {
-  	SYNC_COMPARE_AND_SWAP(&(buffer->read_idx), buffer->read_idx,
+    SYNC_COMPARE_AND_SWAP(&(buffer->read_idx), buffer->read_idx,
       (read_idx + len) % buffer->size);  // Includes memory barrier.
   } else {
     buffer->read_idx = (read_idx + len) % buffer->size;
@@ -149,11 +149,11 @@ int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
 }
 
 void rb_set_atomic(ring_buffer *buffer, int atomic) {
-	if (buffer) {
-		buffer->atomic = (atomic > 0 ? 1 : 0);
-	}
+  if (buffer) {
+    buffer->atomic = (atomic > 0 ? 1 : 0);
+  }
 }
 
 int rb_is_atomic(ring_buffer *buffer) {
-	return (buffer ? buffer->atomic : 0);
+  return (buffer ? buffer->atomic : 0);
 }

@@ -79,7 +79,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
                                     const AudioTimeStamp *inTimeStamp,
                                     UInt32 inBusNumber,
                                     UInt32 inNumberFrames,
-									AudioBufferList *ioData) {
+                                    AudioBufferList *ioData) {
 
 	PdBufferedAudioUnit *pdAudioUnit = (__bridge PdBufferedAudioUnit *)inRefCon;
 	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
@@ -92,7 +92,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	if (pdAudioUnit->_inputEnabled) {
 		// audio unit -> input buffer
 		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
-			            kInputElement, inNumberFrames, ioData);
+		                kInputElement, inNumberFrames, ioData);
 		rb_write_to_buffer(pdAudioUnit->_inputBuffer, 1, auBuffer, auBufferLen);
 		rb_read_from_buffer(pdAudioUnit->_inputBuffer, (char *)auBuffer, bytes);
 	}
