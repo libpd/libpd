@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef __OPENSL_RING_BUFFER_H__
-#define __OPENSL_RING_BUFFER_H__
+#ifndef __RING_BUFFER_H__
+#define __RING_BUFFER_H__
 
 // Simple lock-free ring buffer implementation for one writer thread and one
 // consumer thread.
@@ -18,9 +18,11 @@ typedef struct ring_buffer {
     char *buf_ptr;
     int write_idx;
     int read_idx;
+    int atomic;
 } ring_buffer;
 
 // Creates a ring buffer (returns NULL on failure).
+// Size must be multiple of 256.
 ring_buffer *rb_create(int size);
 
 // Deletes a ring buffer.
@@ -41,9 +43,17 @@ int rb_available_to_read(ring_buffer *buffer);
 // Returns 0 on success.
 int rb_write_to_buffer(ring_buffer *buffer, int n, ...);
 
-// Reads the given number of bytes fromthe ring buffer to dest if the ring
+// Reads the given number of bytes from the ring buffer to dest if the ring
 // buffer has enough data. Only to be called from a single reader thread.
 // Returns 0 on success.
 int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len);
+
+/// Set the atomicity of the buffer. By default, the buffer is atomic and is
+/// inherently thread safe. If you are only using one thread to read & write,
+/// disabling this can increase performance slightly.
+void rb_set_atomic(ring_buffer *buffer, int atomic);
+
+/// Returns the atomicity of the buffer.
+int rb_is_atomic(ring_buffer *buffer);
 
 #endif

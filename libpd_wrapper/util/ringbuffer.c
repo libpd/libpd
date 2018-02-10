@@ -48,6 +48,7 @@ ring_buffer *rb_create(int size) {
   buffer->size = size;
   buffer->write_idx = 0;
   buffer->read_idx = 0;
+  buffer->atomic = 1;
   return buffer;
 }
 
@@ -61,8 +62,15 @@ int rb_available_to_write(ring_buffer *buffer) {
     // Note: The largest possible result is buffer->size - 1 because
     // we adopt the convention that read_idx == write_idx means that the
     // buffer is empty.
-    int read_idx = SYNC_FETCH(&(buffer->read_idx));
-    int write_idx = SYNC_FETCH(&(buffer->write_idx));
+    int read_idx;
+    int write_idx;
+    if (buffer->atomic) {
+	  read_idx = SYNC_FETCH(&(buffer->read_idx));
+	  write_idx = SYNC_FETCH(&(buffer->write_idx));
+	} else {
+	  read_idx = buffer->read_idx;
+	  write_idx = buffer->write_idx;
+	}
     return (buffer->size + read_idx - write_idx - 1) % buffer->size;
   } else {
     return 0;
@@ -71,8 +79,15 @@ int rb_available_to_write(ring_buffer *buffer) {
 
 int rb_available_to_read(ring_buffer *buffer) {
   if (buffer) {
-    int read_idx = SYNC_FETCH(&(buffer->read_idx));
-    int write_idx = SYNC_FETCH(&(buffer->write_idx));
+    int read_idx;
+    int write_idx;
+    if (buffer->atomic) {
+	  read_idx = SYNC_FETCH(&(buffer->read_idx));
+	  write_idx = SYNC_FETCH(&(buffer->write_idx));
+	} else {
+	  read_idx = buffer->read_idx;
+	  write_idx = buffer->write_idx;
+	}
     return (buffer->size + write_idx - read_idx) % buffer->size;
   } else {
     return 0;
@@ -101,8 +116,12 @@ int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
     write_idx = (write_idx + len) % buffer->size;
   }
   va_end(args);
-  SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
-      write_idx);  // Includes memory barrier.
+  if (buffer->atomic) {
+  	SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
+	  write_idx);  // Includes memory barrier.
+  } else {
+	buffer->write_idx = write_idx;
+  }
   return 0; 
 }
 
@@ -120,7 +139,21 @@ int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
     memcpy(dest, buffer->buf_ptr + read_idx, d);
     memcpy(dest + d, buffer->buf_ptr, len - d);
   }
-  SYNC_COMPARE_AND_SWAP(&(buffer->read_idx), buffer->read_idx,
-       (read_idx + len) % buffer->size);  // Includes memory barrier.
-  return 0; 
+  if (buffer->atomic) {
+  	SYNC_COMPARE_AND_SWAP(&(buffer->read_idx), buffer->read_idx,
+      (read_idx + len) % buffer->size);  // Includes memory barrier.
+  } else {
+    buffer->read_idx = (read_idx + len) % buffer->size;
+  }
+  return 0;
+}
+
+void rb_set_atomic(ring_buffer *buffer, int atomic) {
+	if (buffer) {
+		buffer->atomic = (atomic > 0 ? 1 : 0);
+	}
+}
+
+int rb_is_atomic(ring_buffer *buffer) {
+	return (buffer ? buffer->atomic : 0);
 }
