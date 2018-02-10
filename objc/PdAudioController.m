@@ -9,7 +9,7 @@
 //
 
 #import "PdAudioController.h"
-#import "PdAudioUnit.h"
+#import "PdBufferedAudioUnit.h"
 #import "AudioHelpers.h"
 #import "PdBase.h"
 #import <AudioToolbox/AudioToolbox.h>
@@ -37,7 +37,7 @@
 @implementation PdAudioController
 
 - (instancetype)init {
-	self = [self initWithAudioUnit:[[PdAudioUnit alloc] init]];
+	self = [self initWithAudioUnit:[[PdBufferedAudioUnit alloc] init]];
 	return self;
 }
 

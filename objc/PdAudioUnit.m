@@ -16,13 +16,7 @@
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
 
-@interface PdAudioUnit () {
-@private
-	BOOL _inputEnabled;
-	BOOL _initialized;
-	int _blockSizeAsLog;
-}
-
+@interface PdAudioUnit () {}
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
 - (void)destroyAudioUnit;
 - (AudioComponentDescription)ioDescription;
@@ -30,8 +24,7 @@ static const AudioUnitElement kOutputElement = 0;
 
 @implementation PdAudioUnit
 
-//@synthesize audioUnit = audioUnit_;
-//@synthesize active = active_;
+@synthesize audioUnit = audioUnit_;
 
 #pragma mark - Init / Dealloc
 

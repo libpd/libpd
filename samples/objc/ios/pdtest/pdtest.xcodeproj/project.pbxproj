@@ -25,6 +25,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		30A7076D202D0674000B5CC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C3D36D1FAA200100C67F08;
+			remoteInfo = "libpd-ios-multi";
+		};
+		30A7076F202D0674000B5CC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C3D2FA1FAA1FCC00C67F08;
+			remoteInfo = "libpd-osx-multi";
+		};
 		30EF3CCD1AE7696300E3DB68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */;
@@ -154,6 +168,8 @@
 			children = (
 				30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */,
 				30EF3CD01AE7696300E3DB68 /* libpd-osx.a */,
+				30A7076E202D0674000B5CC0 /* libpd-ios-multi.a */,
+				30A70770202D0674000B5CC0 /* libpd-osx-multi.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,6 +227,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		30A7076E202D0674000B5CC0 /* libpd-ios-multi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-ios-multi.a";
+			remoteRef = 30A7076D202D0674000B5CC0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30A70770202D0674000B5CC0 /* libpd-osx-multi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-osx-multi.a";
+			remoteRef = 30A7076F202D0674000B5CC0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -368,6 +398,7 @@
 		3011357016A6ECD1005421C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
@@ -375,7 +406,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.libpd.pdtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
@@ -385,6 +416,7 @@
 		3011357116A6ECD1005421C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
@@ -392,7 +424,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = cc.libpd.pdtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;

@@ -178,6 +178,10 @@
 		3088883316BCB4A400781682 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		3088883416BCB4A400781682 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
 		3088883516BCB4A400781682 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
+		30A70765202D00E4000B5CC0 /* PdBufferedAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 30A70763202D00E4000B5CC0 /* PdBufferedAudioUnit.h */; };
+		30A70766202D00E4000B5CC0 /* PdBufferedAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 30A70763202D00E4000B5CC0 /* PdBufferedAudioUnit.h */; };
+		30A70767202D00E4000B5CC0 /* PdBufferedAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A70764202D00E4000B5CC0 /* PdBufferedAudioUnit.m */; };
+		30A70768202D00E4000B5CC0 /* PdBufferedAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A70764202D00E4000B5CC0 /* PdBufferedAudioUnit.m */; };
 		30ABBFCA1CA8A67000E3722F /* x_vexp_fun.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */; };
 		30ABBFCB1CA8A67000E3722F /* x_vexp_fun.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */; };
 		30ABBFCC1CA8A67000E3722F /* x_vexp_if.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC71CA8A67000E3722F /* x_vexp_if.c */; };
@@ -522,6 +526,8 @@
 		306DBE5516BC6710007CF226 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
 		3088882C16BCB4A400781682 /* z_print_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_print_util.c; sourceTree = "<group>"; };
 		3088882D16BCB4A400781682 /* z_print_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_print_util.h; sourceTree = "<group>"; };
+		30A70763202D00E4000B5CC0 /* PdBufferedAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdBufferedAudioUnit.h; sourceTree = "<group>"; };
+		30A70764202D00E4000B5CC0 /* PdBufferedAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdBufferedAudioUnit.m; sourceTree = "<group>"; };
 		30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp_fun.c; sourceTree = "<group>"; };
 		30ABBFC71CA8A67000E3722F /* x_vexp_if.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp_if.c; sourceTree = "<group>"; };
 		30ABBFC81CA8A67000E3722F /* x_vexp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp.c; sourceTree = "<group>"; };
@@ -655,6 +661,8 @@
 			children = (
 				110E6DD2147B838F00282ABC /* PdAudioUnit.h */,
 				110E6DD3147B838F00282ABC /* PdAudioUnit.m */,
+				30A70763202D00E4000B5CC0 /* PdBufferedAudioUnit.h */,
+				30A70764202D00E4000B5CC0 /* PdBufferedAudioUnit.m */,
 				110E6DD0147B838F00282ABC /* PdAudioController.h */,
 				110E6DD1147B838F00282ABC /* PdAudioController.m */,
 				110E6DCE147B838E00282ABC /* AudioHelpers.h */,
@@ -914,6 +922,7 @@
 				30C3D2FF1FAA200100C67F08 /* PdFile.h in Headers */,
 				30C3D3001FAA200100C67F08 /* AudioHelpers.h in Headers */,
 				30C3D3011FAA200100C67F08 /* z_hooks.h in Headers */,
+				30A70766202D00E4000B5CC0 /* PdBufferedAudioUnit.h in Headers */,
 				30C3D3021FAA200100C67F08 /* PdAudioController.h in Headers */,
 				30C3D3031FAA200100C67F08 /* PdAudioUnit.h in Headers */,
 				30C3D3041FAA200100C67F08 /* PdMidiDispatcher.h in Headers */,
@@ -933,6 +942,7 @@
 				0E8C8DCA1312007F000B9D7A /* PdFile.h in Headers */,
 				110E6DD4147B838F00282ABC /* AudioHelpers.h in Headers */,
 				304C8EDA1860FA2D006D2159 /* z_hooks.h in Headers */,
+				30A70765202D00E4000B5CC0 /* PdBufferedAudioUnit.h in Headers */,
 				110E6DD6147B838F00282ABC /* PdAudioController.h in Headers */,
 				110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */,
 				30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
@@ -1290,6 +1300,7 @@
 				30C3D3331FAA200100C67F08 /* m_atom.c in Sources */,
 				30C3D3341FAA200100C67F08 /* fiddle~.c in Sources */,
 				30C3D3351FAA200100C67F08 /* m_binbuf.c in Sources */,
+				30A70768202D00E4000B5CC0 /* PdBufferedAudioUnit.m in Sources */,
 				30C3D3361FAA200100C67F08 /* m_class.c in Sources */,
 				30C3D3371FAA200100C67F08 /* m_conf.c in Sources */,
 				30C3D3381FAA200100C67F08 /* m_glob.c in Sources */,
@@ -1391,6 +1402,7 @@
 				0E82A06612EEFDEE0053280E /* m_atom.c in Sources */,
 				30CEFE471A6A5EDC000E3BAE /* fiddle~.c in Sources */,
 				0E82A06712EEFDEE0053280E /* m_binbuf.c in Sources */,
+				30A70767202D00E4000B5CC0 /* PdBufferedAudioUnit.m in Sources */,
 				0E82A06812EEFDEE0053280E /* m_class.c in Sources */,
 				0E82A06912EEFDEE0053280E /* m_conf.c in Sources */,
 				0E82A06B12EEFDEE0053280E /* m_glob.c in Sources */,

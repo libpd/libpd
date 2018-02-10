@@ -18,7 +18,13 @@
 ///
 /// For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
 ///
-@interface PdAudioUnit : NSObject
+@interface PdAudioUnit : NSObject {
+@protected
+	AudioUnit _audioUnit; ///< the underlying audio unit instance
+	BOOL _inputEnabled;   ///< is audio input enabled?
+	BOOL _initialized;    ///< has the audio unit been successfully inited?
+	int _blockSizeAsLog;  ///< log(blockSize) for fast bitshift division
+}
 
 /// A reference to the audio unit, which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
