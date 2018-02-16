@@ -125,6 +125,29 @@ int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
   return 0; 
 }
 
+int rb_write_value_to_buffer(ring_buffer *buffer, int value, int n) {
+  if (!buffer) return -1;
+  int write_idx = buffer->write_idx;  // No need for sync in writer thread.
+  int available = rb_available_to_write(buffer);
+  available -= n;
+  if (n < 0 || available < 0) return -1;
+  if (write_idx + n <= buffer->size) {
+    memset(buffer->buf_ptr + write_idx, value, n);
+  } else {
+    int d = buffer->size - write_idx;
+    memset(buffer->buf_ptr + write_idx, value, d);
+    memset(buffer->buf_ptr, value, n - d);
+  }
+  write_idx = (write_idx + n) % buffer->size;
+  if (buffer->atomic) {
+    SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
+    write_idx);  // Includes memory barrier.
+  } else {
+    buffer->write_idx = write_idx;
+  }
+  return 0;
+}
+
 int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
   if (len == 0) return 0;
   if (!buffer || len < 0 || len > rb_available_to_read(buffer)) return -1;
