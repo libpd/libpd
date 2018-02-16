@@ -96,7 +96,8 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 	// this is a faster way of computing (auBufferLen / blockLen)
 	int ticks = auBufferLen >> pdAudioUnit->_blockSizeAsLog;
-	if (auBufferLen == ticks * pdAudioUnit->_blockSize) {
+	int bytes = ticks * pdAudioUnit->_blockSize;
+	if (bytes == auBufferLen) {
 		// auBufferLen is a multiple of pd's block size
 		if (pdAudioUnit->_inputEnabled) {
 			AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
@@ -117,12 +118,12 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 							kInputElement, inNumberFrames, ioData);
 
 			// audio unit -> input buffer
-			rb_write_to_buffer(input, 1, (char *)auBuffer, auBufferLen);
-			while (rb_available_to_read(input) < auBufferLen) {
+			while (bytes + rb_available_to_read(input) < auBufferLen) {
 				// pad input buffer to make sure we have enough blocks to fill auBuffer,
 				// this should hopefully only happen when the audio unit is started
 				rb_write_value_to_buffer(input, 0, pdAudioUnit->_blockSize);
 			}
+			rb_write_to_buffer(input, 1, (char *)auBuffer, auBufferLen);
 
 			// input buffer -> pd -> output buffer
 			while (rb_available_to_read(output) < auBufferLen) {
