@@ -29,6 +29,7 @@ static const AudioUnitElement kInputElement = 1;
 		_blockSizeAsLog = 0;
 		_inputBuffer = NULL;
 		_outputBuffer = NULL;
+		_copyBuffer = NULL;
 	}
 	return self;
 }
@@ -39,6 +40,9 @@ static const AudioUnitElement kInputElement = 1;
 	}
 	if(_outputBuffer) {
 		rb_free(_outputBuffer);
+	}
+	if(_copyBuffer) {
+		free(_copyBuffer);
 	}
 }
 
@@ -61,6 +65,10 @@ static const AudioUnitElement kInputElement = 1;
 			rb_free(_outputBuffer);
 			_outputBuffer = NULL;
 		}
+		if(_copyBuffer) {
+			free(_copyBuffer);
+			_copyBuffer = NULL;
+		}
 		int bufferLen = numChannels * kMaxIOBufferDuration * sizeof(Float32);
 		if(_inputEnabled) {
 			_inputBuffer = rb_create(bufferLen);
@@ -68,6 +76,7 @@ static const AudioUnitElement kInputElement = 1;
 		}
 		_outputBuffer = rb_create(bufferLen);
 		rb_set_atomic(_outputBuffer, 0);
+		_copyBuffer = malloc(_blockSize);
 	}
 	return ret;
 }
@@ -87,26 +96,51 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 
 	// this is a faster way of computing (auBufferLen / blockLen)
 	int ticks = auBufferLen >> pdAudioUnit->_blockSizeAsLog;
-	int bytes = ticks * pdAudioUnit->_blockSize;
-
-	if (pdAudioUnit->_inputEnabled) {
-		// audio unit -> input buffer
-		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
-		                kInputElement, inNumberFrames, ioData);
-		rb_write_to_buffer(pdAudioUnit->_inputBuffer, 1, auBuffer, auBufferLen);
-		rb_read_from_buffer(pdAudioUnit->_inputBuffer, (char *)auBuffer, bytes);
+	if (auBufferLen == ticks * pdAudioUnit->_blockSize) {
+		// auBufferLen is a multiple of pd's block size
+		if (pdAudioUnit->_inputEnabled) {
+			AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
+			                kInputElement, inNumberFrames, ioData);
+		}
+		[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
 	}
+	else {
+		// auBufferLen is not a multiple of pd's block size, use FIFO buffers to
+		// make sure we have enough samples to render each callback at the expense
+		// of being 1-2 pd blocks behind
+		// TODO: reduce amount of buffer copying
+		ring_buffer *input = pdAudioUnit->_inputBuffer;
+		ring_buffer *output = pdAudioUnit->_outputBuffer;
+		char *copy = pdAudioUnit->_copyBuffer;
+		if (pdAudioUnit->_inputEnabled) {
+			AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
+							kInputElement, inNumberFrames, ioData);
 
-	// input buffer -> pd -> output buffer
-	[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
-	rb_write_to_buffer(pdAudioUnit->_outputBuffer, 1, auBuffer, bytes);
+			// audio unit -> input buffer
+			rb_write_to_buffer(input, 1, (char *)auBuffer, auBufferLen);
+			while (rb_available_to_read(input) < auBufferLen) {
+				// pad input buffer to make sure we have enough blocks to fill auBuffer,
+				// this should hopefully only happen when the audio unit is started
+				rb_write_value_to_buffer(input, 0, pdAudioUnit->_blockSize);
+			}
 
-	// output buffer -> audio unit
-	rb_read_from_buffer(pdAudioUnit->_outputBuffer, (char *)auBuffer, bytes);
-	if (auBufferLen - bytes > 0) {
-		// underflow: pd couldn't keep up so generate 0s
-		auBuffer += bytes;
-		memset(auBuffer, 0, auBufferLen - bytes);
+			// input buffer -> pd -> output buffer
+			while (rb_available_to_read(output) < auBufferLen) {
+				rb_read_from_buffer(input, copy, pdAudioUnit->_blockSize);
+				[PdBase processFloatWithInputBuffer:(float *)copy outputBuffer:(float *)copy ticks:1];
+				rb_write_to_buffer(output, 1, copy, pdAudioUnit->_blockSize);
+			}
+		}
+		else {
+			// pd -> output buffer
+			while (rb_available_to_read(output) < auBufferLen) {
+				[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:(float *)copy ticks:1];
+				rb_write_to_buffer(output, 1, copy, pdAudioUnit->_blockSize);
+			}
+		}
+
+		// output buffer -> audio unit
+		rb_read_from_buffer(output, (char *)auBuffer, auBufferLen);
 	}
 
 	return noErr;
