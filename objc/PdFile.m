@@ -14,26 +14,15 @@
 #import "PdBase.h"
 
 @interface PdFile ()
-
 @property (nonatomic, strong) NSValue *fileReference;
 @property (nonatomic, assign) int dollarZero;
 @property (nonatomic, copy) NSString *baseName;
 @property (nonatomic, copy) NSString *pathName;
-
-// open a file with base and path names
-- (void)openFile:(NSString *)baseName path:(NSString *)pathName;
-
 @end
 
 @implementation PdFile
 
-@synthesize fileReference = fileReference_;
-@synthesize dollarZero = dollarZero_;
-@synthesize baseName = baseName_;
-@synthesize pathName = pathName_;
-
-#pragma mark -
-#pragma mark - Class Open method
+#pragma mark - Class Methods
 
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
 	PdFile *pdFile = [[self alloc] init];
@@ -46,8 +35,7 @@
 	return pdFile;
 }
 
-#pragma mark -
-#pragma mark - Dealloc
+#pragma mark - Instance Methods
 
 - (void)dealloc {
 	[self closeFile];
@@ -56,21 +44,19 @@
 	self.fileReference = nil;
 }
 
-#pragma mark -
-#pragma mark - Public Open / Close methods
-
-- (void)openFile:(NSString *)baseName path:(NSString *)pathName {
+- (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName {
 	if (!baseName || !pathName) {
-		return;
+		return NO;
 	}
 	self.baseName = baseName;
 	self.pathName = pathName;
-
 	void *x = [PdBase openFile:baseName path:pathName];
 	if (x) {
 		self.fileReference = [NSValue valueWithPointer:x];
 		self.dollarZero = [PdBase dollarZeroForFile:x];
+		return YES;
 	}
+	return NO;
 }
 
 - (PdFile *)openNewInstance {
@@ -89,7 +75,6 @@
 	}
 }
 
-#pragma mark -
 #pragma mark - Util
 
 - (NSString *)description {
