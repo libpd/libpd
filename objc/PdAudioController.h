@@ -12,18 +12,19 @@
 #import <AVFoundation/AVFoundation.h>
 #import "PdAudioUnit.h"
 
+/// PdAudioStatus is used to indicate success, failure, or that parameters had
+/// to be adjusted in order to work.
 typedef enum PdAudioStatus {
-	PdAudioOK = 0,              // success
-	PdAudioError = -1,          // unrecoverable error
-	PdAudioPropertyChanged = 1  // some properties have changed to run correctly
+	PdAudioOK = 0,             // success
+	PdAudioError = -1,         // unrecoverable error
+	PdAudioPropertyChanged = 1 // some properties have changed to run correctly
 } PdAudioStatus;
 
-/// PdAudioController: A class for managing PdAudioUnit within iOS
-/// by using the AVFoundation and Audio Services APIs.
-/// Handles phone interruptions and provides high level configuration methods
-/// The returned PdAudioStatus is used to indicate success, failure, or
-/// that parameters had to be adjusted in order to work.
+/// PdAudioController: A class for managing a PdAudioUnit instance within iOS
+/// by using the AVFoundation and Audio Services APIs. Handles phone
+/// interruptions and provides high level configuration methods.
 ///
+/// Uses a PdBufferedAudioUnit by default.
 @interface PdAudioController : NSObject
 
 /// Read only properties that are set by the configure methods

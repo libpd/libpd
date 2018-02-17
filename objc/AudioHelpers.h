@@ -1,5 +1,5 @@
 //
-//  AudioDebug.h
+//  AudioHelpers.h
 //  libpd
 //
 //  Created on 18/10/11.

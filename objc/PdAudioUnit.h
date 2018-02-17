@@ -17,7 +17,6 @@
 /// which will cause the underlying audio unit to be reconstructed.
 ///
 /// For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
-///
 @interface PdAudioUnit : NSObject {
 @protected
 	AudioUnit _audioUnit; ///< the underlying audio unit instance
