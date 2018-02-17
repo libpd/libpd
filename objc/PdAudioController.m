@@ -25,11 +25,11 @@
 
 @property (nonatomic, strong, readwrite) PdAudioUnit *audioUnit;
 
-// updates the sample rate while verifying it is in sync with the audio session
-// and PdAudioUnit
+// Update the sample rate while verifying it is in
+// sync with the audio session and PdAudioUnit.
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;
 
-// not all inputs make sense, but that's okay in the private interface
+// Not all inputs make sense, but that's okay in the private interface.
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
                                 isAmbient:(BOOL)isAmbient
 							 allowsMixing:(BOOL)allowsMixing;

@@ -17,7 +17,9 @@ static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
 
 @interface PdAudioUnit () {}
-- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
+- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate
+                     numberChannels:(int)numChannels
+                     inputEnabled:(BOOL)inputEnabled;
 - (void)destroyAudioUnit;
 - (AudioComponentDescription)ioDescription;
 @end

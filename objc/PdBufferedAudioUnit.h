@@ -11,10 +11,11 @@
 #import "PdAudioUnit.h"
 #include "ringbuffer.h"
 
-/// a buffered PdAudioUnit which should handle variable device audio buffer
-/// sizes on newer devices due to power throttling, audio interface changes, etc
-/// at the expense of 1-2 pd block sizes in latency, only uses buffering if the
-/// audio unit buffer is *not* a multiple of pd's block size
+/// PdBufferedAudioUnit: A buffered PdAudioUnit which should handle variable
+/// device audio buffer sizes on newer devices due to power throttling, audio
+/// interface changes, etc at the expense of 1-2 pd block sizes in latency,
+/// only uses buffering if the audio unit buffer is *not* a multiple of pd's
+/// fixed block size.
 @interface PdBufferedAudioUnit : PdAudioUnit {
 @protected
 	ring_buffer *_inputBuffer;  ///< input FIFO
