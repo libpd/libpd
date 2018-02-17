@@ -12,7 +12,8 @@
 
 #pragma mark - Audio Unit / Audio Session Debugging
 
-/// uncomment this to log more information from the audio classes, or define it in "Other C Flags" build settings
+/// uncomment this to log more information from the audio classes
+///  or define it in "Other C Flags" build settings
 //#define AU_DEBUG_VERBOSE
 
 /// returns the name of the const value associated with the OSStatus as a string
