@@ -35,15 +35,9 @@ static const AudioUnitElement kInputElement = 1;
 }
 
 - (void)dealloc {
-	if(_inputBuffer) {
-		rb_free(_inputBuffer);
-	}
-	if(_outputBuffer) {
-		rb_free(_outputBuffer);
-	}
-	if(_copyBuffer) {
-		free(_copyBuffer);
-	}
+	if(_inputBuffer)  {rb_free(_inputBuffer);}
+	if(_outputBuffer) {rb_free(_outputBuffer);}
+	if(_copyBuffer)   {free(_copyBuffer);}
 }
 
 #pragma mark - Public Methods
@@ -97,21 +91,28 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	// this is a faster way of computing (auBufferLen / blockLen)
 	int ticks = auBufferLen >> pdAudioUnit->_blockSizeAsLog;
 	int bytes = ticks * pdAudioUnit->_blockSize;
+	ring_buffer *input = pdAudioUnit->_inputBuffer;
+	ring_buffer *output = pdAudioUnit->_outputBuffer;
 	if (bytes == auBufferLen) {
-		// auBufferLen is a multiple of pd's block size
+		// auBufferLen is a multiple of pd's block size, no need to use buffers
 		if (pdAudioUnit->_inputEnabled) {
 			AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,
 			                kInputElement, inNumberFrames, ioData);
 		}
+
+		// audio unit -> pd -> audio unit
 		[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
+
+		// clear buffers in case auBufferLen changes and
+		// buffering needs to be restarted
+		if(rb_available_to_read(input) > 0)  {rb_clear_buffer(input);}
+		if(rb_available_to_read(output) > 0) {rb_clear_buffer(output);}
 	}
 	else {
 		// auBufferLen is not a multiple of pd's block size, use FIFO buffers to
 		// make sure we have enough samples to render each callback at the expense
 		// of being 1-2 pd blocks behind
 		// TODO: reduce amount of buffer copying
-		ring_buffer *input = pdAudioUnit->_inputBuffer;
-		ring_buffer *output = pdAudioUnit->_outputBuffer;
 		char *copy = pdAudioUnit->_copyBuffer;
 		if (pdAudioUnit->_inputEnabled) {
 			AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp,

@@ -53,6 +53,9 @@ int rb_write_value_to_buffer(ring_buffer *buffer, int value, int n);
 /// Returns 0 on success.
 int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len);
 
+/// Clears the contents of the ring buffer; safe to be called from any thread.
+void rb_clear_buffer(ring_buffer *buffer);
+
 /// Set the atomicity of the buffer. By default, the buffer is atomic and is
 /// inherently thread safe. If you are only using one thread to read & write,
 /// disabling this can increase performance slightly.
