@@ -39,7 +39,7 @@ EXTERN int libpd_process_double(int ticks,
 EXTERN int libpd_arraysize(const char *name);
 // The parameters of the next two functions are inspired by memcpy.
 EXTERN int libpd_read_array(float *dest, const char *src, int offset, int n);
-EXTERN int libpd_write_array(const char *dest, int offset, float *src, int n);
+EXTERN int libpd_write_array(const char *dest, int offset, float const* src, int n);
 
 EXTERN int libpd_bang(const char *recv);
 EXTERN int libpd_float(const char *recv, float x);
