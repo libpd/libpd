@@ -247,7 +247,7 @@ int libpd_read_array(float *dest, const char *name, int offset, int n) {
   return 0;
 }
 
-int libpd_write_array(const char *name, int offset, float const* src, int n) {
+int libpd_write_array(const char *name, int offset, const float *src, int n) {
   sys_lock();
   MEMCPY((vec++)->w_float, *src++)
   sys_unlock();
