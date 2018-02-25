@@ -25,12 +25,16 @@
 
 @property (nonatomic, strong, readwrite) PdAudioUnit *audioUnit;
 
-// updates the sample rate while verifying it is in sync with the audio session and PdAudioUnit
+// Update the sample rate while verifying it is in
+// sync with the audio session and PdAudioUnit.
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;
 
-// not all inputs make sense, but that's okay in the private interface
-- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing;
-- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
+// Not all inputs make sense, but that's okay in the private interface.
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
+                                isAmbient:(BOOL)isAmbient
+							 allowsMixing:(BOOL)allowsMixing;
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels
+                                         inputEnabled:(BOOL)inputEnabled;
 
 @end
 
@@ -170,13 +174,11 @@
 	return PdAudioOK;
 }
 
-/* note about the magic 0.5 added to numberFrames:
- * apple is doing some horrible rounding of the bufferDuration into
- * what tries to give a power of two frames to the audio unit, which
- * is inconsistent accross different devices.  As they are currently
- * truncating, we add in this value to make sure the resulting ticks
- * value is not halved.
- */
+// Note about the magic 0.5 added to numberFrames:
+// Apple is doing some horrible rounding of the bufferDuration into what tries
+// to give a power of two frames to the audio unit, which is inconsistent across
+// different devices.  As they are currently truncating, we add in this value to
+// make sure the resulting ticks value is not halved.
 - (PdAudioStatus)configureTicksPerBuffer:(int)ticksPerBuffer {
 	int numberFrames = [PdBase getBlockSize] * ticksPerBuffer;
 	NSTimeInterval bufferDuration = (Float32) (numberFrames + 0.5) / self.sampleRate;
