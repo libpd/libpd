@@ -7,10 +7,12 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import <Foundation/Foundation.h>
 
-#pragma mark - Audio Unit / Audio Session Debugging
+#pragma mark Audio Unit / Audio Session Debugging
 
 /// Uncomment this to log more information from the audio classes
 /// or define it in "Other C Flags" build settings.
@@ -55,7 +57,7 @@ return false;\
 }\
 } while (0)
 
-#pragma mark - Math Helpers
+#pragma mark Math Helpers
 
 /// Returns YES if floats are equal within 0.0001.
 extern BOOL floatsAreEqual(Float64 f1, Float64 f2);

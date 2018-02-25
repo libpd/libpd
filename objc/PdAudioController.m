@@ -7,6 +7,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import "PdAudioController.h"
 #import "PdAudioUnit.h"
@@ -59,13 +61,6 @@
 	return self;
 }
 
-- (int)ticksPerBuffer {
-	NSTimeInterval asBufferDuration = [AVAudioSession sharedInstance].IOBufferDuration;
-	AU_LOGV(@"IOBufferDuration: %f seconds", asBufferDuration);
-	_ticksPerBuffer = round((asBufferDuration * self.sampleRate) /  (NSTimeInterval)[PdBase getBlockSize]);
-	return _ticksPerBuffer;
-}
-
 - (void)dealloc {
 	self.audioUnit = nil;
 }
@@ -109,75 +104,10 @@
 	return status;
 }
 
-- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
-	_inputEnabled = inputEnabled;
-	_numberChannels = numChannels;
-	return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
-}
-
-- (PdAudioStatus)updateSampleRate:(int)sampleRate {
-	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
-	NSError *error = nil;
-	[globalSession setPreferredSampleRate:sampleRate error:&error];
-	if (error) {
-		return PdAudioError;
-	}
-	double currentHardwareSampleRate = globalSession.sampleRate;
-	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
-	_sampleRate = currentHardwareSampleRate;
-	if (!floatsAreEqual(sampleRate, currentHardwareSampleRate)) {
-		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)", currentHardwareSampleRate);
-		return PdAudioPropertyChanged;
-	}
-	return PdAudioOK;
-}
-
-- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs isAmbient:(BOOL)isAmbient allowsMixing:(BOOL)allowsMixing {
-	NSString *category;
-	OSStatus status;
-	if (hasInputs && isAmbient) {
-		AU_LOG(@"impossible session config; this should never happen");
-		return PdAudioError;
-	} else if (!isAmbient) {
-		category = hasInputs ? AVAudioSessionCategoryPlayAndRecord : AVAudioSessionCategoryPlayback;
-	} else {
-		category = allowsMixing ? AVAudioSessionCategoryAmbient : AVAudioSessionCategorySoloAmbient;
-	}
-	NSError *error = nil;
-	[[AVAudioSession sharedInstance] setCategory:category error:&error];
-	if (error) {
-		AU_LOG(@"failed to set session category, error %@", error);
-		return PdAudioError;
-	}
-	
-	// set MixWithOthers property for Playback category
-	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
-		// TODO: we should be checking allowsMixing flag here, but setting that requires an update to how we handle interruptions.
-// 		if (allowsMixing) {
-			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
-				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
-				return PdAudioError;
-			}
-// 		}
-	}
-	
-	// set MixWithOthers & DefaultToSpeaker properties for PlayAndRecord category
-	else if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
-		AVAudioSessionCategoryOptions options = (allowsMixing ? (AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers) : AVAudioSessionCategoryOptionDefaultToSpeaker);
-		if (![[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&error]) {
-			AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker & AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
-			return PdAudioError;
-		}
-	}
-	
-	_mixingEnabled = allowsMixing;
-	return PdAudioOK;
-}
-
 // Note about the magic 0.5 added to numberFrames:
 // Apple is doing some horrible rounding of the bufferDuration into what tries
 // to give a power of two frames to the audio unit, which is inconsistent across
-// different devices.  As they are currently truncating, we add in this value to
+// different devices. As they are currently truncating, we add in this value to
 // make sure the resulting ticks value is not halved.
 - (PdAudioStatus)configureTicksPerBuffer:(int)ticksPerBuffer {
 	int numberFrames = [PdBase getBlockSize] * ticksPerBuffer;
@@ -199,30 +129,6 @@
 	return PdAudioOK;
 }
 
-- (void)setActive:(BOOL)active {
-	self.audioUnit.active = active;
-	_active = self.audioUnit.isActive;
-}
-
-// receives interrupt notification
-- (void)interruptionOcurred:(NSNotification*)notification {
-	NSDictionary *interuptionDict = notification.userInfo;
-	NSUInteger interuptionType = (NSUInteger)[interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey];
-	if (interuptionType == AVAudioSessionInterruptionTypeBegan) {
-		self.audioUnit.active = NO;  // Leave active_ unchanged.
-		AU_LOGV(@"interrupted");
-	}
-	else if (interuptionType == AVAudioSessionInterruptionTypeEnded) {
-		NSUInteger option = [[interuptionDict valueForKey:AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
-		if (option == AVAudioSessionInterruptionOptionShouldResume) {
-			self.active = _active;  // Not redundant due to weird ObjC accessor.
-			AU_LOGV(@"ended interruption");
-		} else {
-			AU_LOGV(@"still interrupted");
-		}
-	}
-}
-
 - (void)print {
 	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
 	AU_LOG(@"----- AVAudioSession properties -----");
@@ -235,6 +141,113 @@
 	AU_LOG(@"inputNumberOfChannels: %ld", (long)globalSession.inputNumberOfChannels);
 	AU_LOG(@"outputNumberOfChannels: %ld", (long)globalSession.outputNumberOfChannels);
 	[self.audioUnit print];
+}
+
+#pragma mark Callbacks
+
+// receives interrupt notification
+- (void)interruptionOcurred:(NSNotification*)notification {
+	NSDictionary *interuptionDict = notification.userInfo;
+	NSUInteger interuptionType = (NSUInteger)[interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey];
+	if (interuptionType == AVAudioSessionInterruptionTypeBegan) {
+		self.audioUnit.active = NO; // Leave _active unchanged.
+		AU_LOGV(@"interrupted");
+	}
+	else if (interuptionType == AVAudioSessionInterruptionTypeEnded) {
+		NSUInteger option = [[interuptionDict valueForKey:AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
+		if (option == AVAudioSessionInterruptionOptionShouldResume) {
+			self.active = _active; // Not redundant due to weird ObjC accessor.
+			AU_LOGV(@"ended interruption");
+		} else {
+			AU_LOGV(@"still interrupted");
+		}
+	}
+}
+
+#pragma mark Overridden Getters/Setters
+
+- (void)setActive:(BOOL)active {
+	self.audioUnit.active = active;
+	_active = self.audioUnit.isActive;
+}
+
+- (int)ticksPerBuffer {
+	NSTimeInterval asBufferDuration = [AVAudioSession sharedInstance].IOBufferDuration;
+	AU_LOGV(@"IOBufferDuration: %f seconds", asBufferDuration);
+	_ticksPerBuffer = round((asBufferDuration * self.sampleRate) / (NSTimeInterval)[PdBase getBlockSize]);
+	return _ticksPerBuffer;
+}
+
+#pragma mark Private
+
+- (PdAudioStatus)updateSampleRate:(int)sampleRate {
+	AVAudioSession *globalSession = [AVAudioSession sharedInstance];
+	NSError *error = nil;
+	[globalSession setPreferredSampleRate:sampleRate error:&error];
+	if (error) {
+		return PdAudioError;
+	}
+	double currentHardwareSampleRate = globalSession.sampleRate;
+	AU_LOGV(@"currentHardwareSampleRate: %.0f", currentHardwareSampleRate);
+	_sampleRate = currentHardwareSampleRate;
+	if (!floatsAreEqual(sampleRate, currentHardwareSampleRate)) {
+		AU_LOG(@"*** WARNING *** could not update samplerate, resetting to match audio session (%.0fHz)",
+		       currentHardwareSampleRate);
+		return PdAudioPropertyChanged;
+	}
+	return PdAudioOK;
+}
+
+- (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
+                                isAmbient:(BOOL)isAmbient
+                             allowsMixing:(BOOL)allowsMixing {
+	NSString *category;
+	OSStatus status;
+	if (hasInputs && isAmbient) {
+		AU_LOG(@"impossible session config; this should never happen");
+		return PdAudioError;
+	} else if (!isAmbient) {
+		category = hasInputs ? AVAudioSessionCategoryPlayAndRecord : AVAudioSessionCategoryPlayback;
+	} else {
+		category = allowsMixing ? AVAudioSessionCategoryAmbient : AVAudioSessionCategorySoloAmbient;
+	}
+	NSError *error = nil;
+	[[AVAudioSession sharedInstance] setCategory:category error:&error];
+	if (error) {
+		AU_LOG(@"failed to set session category, error %@", error);
+		return PdAudioError;
+	}
+
+	// set MixWithOthers property for Playback category
+	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
+		// TODO: we should be checking allowsMixing flag here, but setting that
+		// requires an update to how we handle interruptions.
+// 		if (allowsMixing) {
+			if (![[AVAudioSession sharedInstance] setCategory:category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:&error]) {
+				AU_LOG(@"error setting AVAudioSessionCategoryOptionMixWithOthers: %@",
+				       error.localizedDescription);
+				return PdAudioError;
+			}
+// 		}
+	}
+
+	// set MixWithOthers & DefaultToSpeaker properties for PlayAndRecord category
+	else if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+		AVAudioSessionCategoryOptions options = (allowsMixing ? (AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers) : AVAudioSessionCategoryOptionDefaultToSpeaker);
+		if (![[AVAudioSession sharedInstance] setCategory:category withOptions:options error:&error]) {
+			AU_LOG(@"error setting AVAudioSessionCategoryOptionDefaultToSpeaker & AVAudioSessionCategoryOptionMixWithOthers: %@", error.localizedDescription);
+			return PdAudioError;
+		}
+	}
+
+	_mixingEnabled = allowsMixing;
+	return PdAudioOK;
+}
+
+- (PdAudioStatus)configureAudioUnitWithNumberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
+	_inputEnabled = inputEnabled;
+	_numberChannels = numChannels;
+	return [self.audioUnit configureWithSampleRate:self.sampleRate numberChannels:numChannels inputEnabled:inputEnabled] ? PdAudioError : PdAudioOK;
 }
 
 @end
