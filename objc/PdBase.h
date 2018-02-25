@@ -57,7 +57,7 @@
 @protocol PdMidiListener<NSObject>
 @optional
 - (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity
-		                           forChannel:(int)channel;
+                                   forChannel:(int)channel;
 - (void)receiveControlChange:(int)value forController:(int)controller
                                            forChannel:(int)channel;
 - (void)receiveProgramChange:(int)value forChannel:(int)channel;
@@ -202,7 +202,7 @@
 
 /// Send a typed message. The list may be nil to specify an empty list.
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list
-	    toReceiver:(NSString *)receiverName;
+        toReceiver:(NSString *)receiverName;
 
 /// \section Array
 

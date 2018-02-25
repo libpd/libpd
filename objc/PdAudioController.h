@@ -7,6 +7,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
@@ -39,6 +41,9 @@ typedef enum PdAudioStatus {
 
 /// Check or set the active status of the audio unit
 @property (nonatomic, getter=isActive) BOOL active;
+
+/// Init with default pd audio unit.
+- (instancetype)init;
 
 /// Init with a custom pd audio unit.
 ///

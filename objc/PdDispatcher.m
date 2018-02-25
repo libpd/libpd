@@ -7,6 +7,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2013, 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import "PdDispatcher.h"
 

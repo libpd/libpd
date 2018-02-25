@@ -340,8 +340,8 @@ static NSTimer *midiPollTimer;
 }
 
 + (int)processShortWithInputBuffer:(const short *)inputBuffer
-											outputBuffer:(short *)outputBuffer
-											       ticks:(int)ticks {
+                      outputBuffer:(short *)outputBuffer
+                             ticks:(int)ticks {
 	return libpd_process_short(ticks, inputBuffer, outputBuffer);
 }
 
@@ -370,7 +370,7 @@ static NSTimer *midiPollTimer;
 }
 
 + (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset
-							toArray:(float *)destinationArray count:(int)n {
+              toArray:(float *)destinationArray count:(int)n {
 	const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
 	return libpd_read_array(destinationArray, name, offset, n);
 }

@@ -28,7 +28,7 @@
 
 /// Removes a listener for a channel.
 - (int)removeListener:(NSObject<PdMidiListener> *)listener
-		   forChannel:(int)channel;
+           forChannel:(int)channel;
 
 /// Removes all listeners.
 - (void)removeAllListeners;

@@ -7,6 +7,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import <Foundation/Foundation.h>
 #import "AudioUnit/AudioUnit.h"
@@ -62,7 +64,7 @@
 /// audio and UI if run from the main thread.
 /// Returns zero on success.
 - (int)configureWithSampleRate:(Float64)sampleRate
-				numberChannels:(int)numChannels
+                numberChannels:(int)numChannels
                   inputEnabled:(BOOL)inputEnabled;
 
 /// Print info on the audio unit settings to the console

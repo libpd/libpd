@@ -7,6 +7,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2013, 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import <Foundation/Foundation.h>
 #import "PdBase.h"
@@ -26,7 +28,7 @@
 /// the first listener for this source, a subscription for this symbol will
 /// automatically be registered with PdBase.
 - (int)addListener:(NSObject<PdListener> *)listener
-		 forSource:(NSString *)source;
+         forSource:(NSString *)source;
 
 /// Removes a listener for a source symbol and unsubscribes from messages to
 /// this symbol if the listener was the last listener for this symbol.

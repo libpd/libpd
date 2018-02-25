@@ -9,6 +9,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2013, 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import "PdFile.h"
 #import "PdBase.h"
@@ -22,7 +24,7 @@
 
 @implementation PdFile
 
-#pragma mark - Class Methods
+#pragma mark Class Methods
 
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
 	PdFile *pdFile = [[self alloc] init];
@@ -35,7 +37,7 @@
 	return pdFile;
 }
 
-#pragma mark - Instance Methods
+#pragma mark Instance Methods
 
 - (void)dealloc {
 	[self closeFile];
@@ -75,7 +77,7 @@
 	}
 }
 
-#pragma mark - Util
+#pragma mark Util
 
 - (NSString *)description {
 	return [NSString stringWithFormat: @"Patch: \"%@\" $0: %d valid: %d",
