@@ -91,4 +91,24 @@ typedef enum PdAudioStatus {
 /// Print current settings to the console.
 - (void)print;
 
+/// Returns the default audio session options when configuring for playback:
+/// audio output only, no input.
+/// Override if you want to add new options such as bluetooth support, etc.
+- (AVAudioSessionCategoryOptions)playbackOptions;
+
+/// Returns the default audio session options when configuring for playback:
+/// audio input and output.
+/// Override if you want to add new options such as bluetooth support, etc.
+- (AVAudioSessionCategoryOptions)playAndRecordOptions;
+
+/// Returns the default audio session options when configuring for ambient use,
+/// doesn't mix with other apps.
+/// Override if you want to add new options such as bluetooth support, etc.
+- (AVAudioSessionCategoryOptions)soloAmbientOptions;
+
+/// Returns the default audio session options when configuring for ambient use,
+/// mixes with other apps.
+/// Override if you want to add new options such as bluetooth support, etc.
+- (AVAudioSessionCategoryOptions)ambientOptions;
+
 @end
