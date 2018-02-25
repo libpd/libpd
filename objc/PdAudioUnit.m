@@ -26,8 +26,6 @@ static const AudioUnitElement kOutputElement = 0;
 
 @implementation PdAudioUnit
 
-@synthesize audioUnit = audioUnit_;
-
 #pragma mark - Init / Dealloc
 
 - (instancetype)init {
