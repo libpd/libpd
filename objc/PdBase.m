@@ -352,13 +352,21 @@ static NSTimer *midiPollTimer;
 }
 
 + (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
+	if (!baseName || !pathName) {
+		return NULL;
+	}
+	if (![[NSFileManager defaultManager] fileExistsAtPath:[pathName stringByAppendingPathComponent:baseName]]) {
+		return NULL;
+	}
 	const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
 	const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
 	return libpd_openfile(base, path);
 }
 
 + (void)closeFile:(void *)x {
-	libpd_closefile(x);
+	if (x) {
+		libpd_closefile(x);
+	}
 }
 
 + (int)dollarZeroForFile:(void *)x {
