@@ -162,6 +162,22 @@
 	return 0;
 }
 
++ (BOOL)addSessionOptions:(AVAudioSessionCategoryOptions)options {
+	options = options | [[AVAudioSession sharedInstance] categoryOptions];
+	return [PdAudioController setSessionOptions:options];
+}
+
++ (BOOL)setSessionOptions:(AVAudioSessionCategoryOptions)options {
+	NSError *error;
+	NSString *const category = [[AVAudioSession sharedInstance] category];
+	if(![[AVAudioSession sharedInstance] setCategory:category
+	                                     withOptions:options error:&error]) {
+		AU_LOG(@"error setting audio session options: %@", error.localizedDescription);
+		return NO;
+	}
+	return YES;
+}
+
 #pragma mark Callbacks
 
 // receives interrupt notification
