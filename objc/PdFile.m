@@ -47,9 +47,6 @@
 }
 
 - (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName {
-	if (!baseName || !pathName) {
-		return NO;
-	}
 	self.baseName = baseName;
 	self.pathName = pathName;
 	void *x = [PdBase openFile:baseName path:pathName];

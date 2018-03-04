@@ -60,6 +60,9 @@ typedef enum PdAudioStatus {
 /// audio. In the third case, you can query the sample rate and channel
 /// properties to determine whether the selected configuration is acceptable.
 ///
+/// Specifying inputEnabled = YES uses the PlayAndRecord AVAudioSession category
+/// while setting NO uses the Playback category.
+///
 /// Specifying mixingEnabled = YES will allow the app to continue playing audio
 /// along with other apps (such as Music).
 ///
@@ -72,7 +75,8 @@ typedef enum PdAudioStatus {
 /// Configure audio for ambient use, without input channels.
 ///
 /// Specifying mixingEnabled = YES will allow the app to continue playing audio
-/// along with other apps (such as iPod music player).
+/// along with other apps (such as Music) and uses the Ambient AVAudioSession
+/// category, while setting NO uses the SoloAmbient category.
 ///
 /// Uses AU input and output buffering by default.
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
@@ -93,22 +97,36 @@ typedef enum PdAudioStatus {
 
 /// Returns the default audio session options when configuring for playback:
 /// audio output only, no input.
+/// Playback is chosen when inputEnabled = YEs when configuring.
+/// Note: AVAudioSessionCategoryOptionMixWithOthers is set when configuring.
 /// Override if you want to add new options such as bluetooth support, etc.
 - (AVAudioSessionCategoryOptions)playbackOptions;
 
 /// Returns the default audio session options when configuring for playback:
-/// audio input and output.
+/// audio input and output, AVAudioSessionCategoryOptionDefaultToSpeaker.
+/// PlayAndRecord is chosen when inputEnabled = YEs when configuring.
+/// Note: AVAudioSessionCategoryOptionMixWithOthers is set when configuring.
 /// Override if you want to add new options such as bluetooth support, etc.
 - (AVAudioSessionCategoryOptions)playAndRecordOptions;
 
 /// Returns the default audio session options when configuring for ambient use,
 /// doesn't mix with other apps.
+/// SoloAmbient is chosen with mixingEnabled = NO when configuring.
 /// Override if you want to add new options such as bluetooth support, etc.
 - (AVAudioSessionCategoryOptions)soloAmbientOptions;
 
 /// Returns the default audio session options when configuring for ambient use,
 /// mixes with other apps.
+/// Ambient is chosen with mixingEnabled = YES when configuring.
 /// Override if you want to add new options such as bluetooth support, etc.
 - (AVAudioSessionCategoryOptions)ambientOptions;
+
+/// Helper to add to the current audio session category options.
+/// Returns YES on success.
++ (BOOL)addSessionOptions:(AVAudioSessionCategoryOptions)options;
+
+/// Helper to replace the current audio session category options.
+/// Returns YES on success.
++ (BOOL)setSessionOptions:(AVAudioSessionCategoryOptions)options;
 
 @end
