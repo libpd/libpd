@@ -66,10 +66,10 @@ static const AudioUnitElement kInputElement = 1;
 		int bufferLen = numChannels * kMaxIOBufferDuration * sizeof(Float32);
 		if(_inputEnabled) {
 			_inputBuffer = rb_create(bufferLen);
-			rb_set_atomic(_inputBuffer, 0);
+			_inputBuffer->is_atomic = 0;
 		}
 		_outputBuffer = rb_create(bufferLen);
-		rb_set_atomic(_outputBuffer, 0);
+		_outputBuffer->is_atomic = 0;
 		_copyBuffer = malloc(_blockSize);
 	}
 	return ret;
