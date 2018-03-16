@@ -18,12 +18,9 @@ typedef struct ring_buffer {
     char *buf_ptr;
     int write_idx;
     int read_idx;
-    int is_atomic;
 } ring_buffer;
 
 /// Creates a ring buffer (returns NULL on failure).
-/// By default, the buffer is atomic and is inherently thread safe. If you are
-/// only using one thread to read & write, you can set is_atomic = 0.
 /// Size must be multiple of 256.
 ring_buffer *rb_create(int size);
 
