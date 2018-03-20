@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 2.8.11)
 project (libpd C)
 
-option(BUILD_SHARED_LIBS "Build libpd as a shared library instead of static" ON)
 option(pd_utils "Compile utilities" ON)
 option(pd_extra "Compile extras" ON)
 option(pd_multi "Compile with multiple instance support" OFF)
@@ -39,10 +38,7 @@ if(NOT DEFINED CMAKE_OSX_ARCHITECTURES)
 endif()
 set(CMAKE_MACOSX_RPATH ON)
 
-#---------------------------------------#
-#        The Pure Data Sources          #
-#---------------------------------------#
-set(PDSOURCES
+set(PD_SOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/src/d_arithmetic.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/d_array.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/d_ctl.c
@@ -59,11 +55,9 @@ set(PDSOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/src/d_soundfile.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/d_ugen.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_all_guis.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_all_guis.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_array.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_bang.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_canvas.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_canvas.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_clone.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_editor.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/g_graph.c
@@ -88,15 +82,12 @@ set(PDSOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_class.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_conf.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_glob.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_imp.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_memory.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_obj.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_pd.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_pd.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/m_sched.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_audio.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_audio_dummy.c
-    #${PROJECT_SOURCE_DIR}/pure-data/src/s_file.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_inter.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_loader.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_main.c
@@ -104,7 +95,6 @@ set(PDSOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_print.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_stuff.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/s_utf8.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_utf8.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_acoustics.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_arithmetic.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_array.c
@@ -119,15 +109,11 @@ set(PDSOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_text.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_time.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp.h
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp_fun.c
     ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp_if.c
 )
 
-#---------------------------------------#
-#        The Pure Data Extra Sources    #
-#---------------------------------------#
-set(PDEXTRASOURCES
+set(PD_EXTRA_SOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/extra/bob~/bob~.c
     ${PROJECT_SOURCE_DIR}/pure-data/extra/bonk~/bonk~.c
     ${PROJECT_SOURCE_DIR}/pure-data/extra/choice/choice.c
@@ -139,76 +125,67 @@ set(PDEXTRASOURCES
     ${PROJECT_SOURCE_DIR}/pure-data/extra/stdout/stdout.c
 )
 
-#---------------------------------------#
-#         The libpd Sources             #
-#---------------------------------------#
-
-set(LIBPDSOURCES
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_libpd.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_libpd.h
+set(LIBPD_SOURCES
     ${PROJECT_SOURCE_DIR}/libpd_wrapper/s_libpdmidi.c
     ${PROJECT_SOURCE_DIR}/libpd_wrapper/x_libpdreceive.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/x_libpdreceive.h
     ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_hooks.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_hooks.h
+    ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_libpd.c
 )
-set(LIBPDUTILSSOURCES
+set(LIBPD_UTILS_SOURCES
     ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/ringbuffer.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/ringbuffer.h
     ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/z_print_util.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/z_print_util.h
     ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/z_queued.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/z_queued.h
 )
 
-source_group(pd FILES ${PDSOURCES})
-source_group(pdextra FILES ${PDEXTRASOURCES})
-source_group(libpd FILES ${LIBPDSOURCES})
-source_group(libpdutils FILES ${LIBPDUTILSSOURCES})
+source_group(pd FILES ${PD_SOURCES})
+source_group(pdextra FILES ${PD_EXTRA_SOURCES})
+source_group(libpd FILES ${LIBPD_SOURCES})
+source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
 include_directories(${PROJECT_SOURCE_DIR}/libpd_wrapper)
 include_directories(${PROJECT_SOURCE_DIR}/pure-data/src)
 
-if(WIN32)
-    include_directories(${PROJECT_SOURCE_DIR}/winpthreads/include)
-    link_directories(${PROJECT_SOURCE_DIR}/winpthreads/lib)
-endif()
-
 find_package(Threads REQUIRED)
 
-set(SOURCE_FILES ${PDSOURCES} ${LIBPDSOURCES})
+set(SOURCE_FILES ${PD_SOURCES} ${LIBPD_SOURCES})
 if(pd_utils)
-    list(APPEND SOURCE_FILES ${LIBPDUTILSSOURCES})
+    list(APPEND SOURCE_FILES ${LIBPD_UTILS_SOURCES})
 endif()
 if(pd_extra)
-    list(APPEND SOURCE_FILES ${PDEXTRASOURCES})
+    list(APPEND SOURCE_FILES ${PD_EXTRA_SOURCES})
 endif()
 
+add_library(libpd_static STATIC ${SOURCE_FILES})
 add_library(libpd SHARED ${SOURCE_FILES})
+set_target_properties(libpd PROPERTIES OUTPUT_NAME libpd)
+
+set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
 
 if(NOT MSVC)
-    target_compile_definitions(libpd PRIVATE HAVE_UNISTD_H=1)
+    list(APPEND LIBPD_COMPILE_DEFINITIONS HAVE_UNISTD_H=1)
 endif()
 
 if(pd_extra)
-    target_compile_definitions(libpd PRIVATE LIBPD_EXTRA=1)
+    list(APPEND LIBPD_COMPILE_DEFINITIONS LIBPD_EXTRA=1)
 endif()
 
 if(pd_multi)
-    target_compile_definitions(libpd PRIVATE PDINSTANCE=1 PDTHREADS=1)
+    list(APPEND LIBPD_COMPILE_DEFINITIONS PDINSTANCE=1 PDTHREADS=1)
 endif()
 
 if(NOT pd_locale)
-    target_compile_definitions(libpd PRIVATE LIBPD_NO_NUMERIC=1)
+    list(APPEND LIBPD_COMPILE_DEFINITIONS LIBPD_NO_NUMERIC=1)
 endif()
-target_compile_definitions(libpd PRIVATE PD_INTERNAL)
+
+target_compile_definitions(libpd_static PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
+target_compile_definitions(libpd PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
 
 if(MSVC)
     target_link_libraries(libpd PUBLIC Ws2_32)
+    target_include_directories(libpd_static PUBLIC ${PTHREADS_INCLUDE_DIR})
     target_include_directories(libpd PUBLIC ${PTHREADS_INCLUDE_DIR})
     target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 endif()
-set_target_properties(libpd PROPERTIES OUTPUT_NAME libpd)
 
 if(NOT MSVC AND NOT APPLE)
     find_library(MATH_LIB m)
