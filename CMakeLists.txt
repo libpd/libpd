@@ -150,7 +150,10 @@ endif()
 
 add_library(libpd_static STATIC ${SOURCE_FILES})
 add_library(libpd        SHARED ${SOURCE_FILES})
-set_target_properties(libpd PROPERTIES OUTPUT_NAME libpd)
+if(UNIX)
+    set_target_properties(libpd_static PROPERTIES OUTPUT_NAME pd_static)
+    set_target_properties(libpd        PROPERTIES OUTPUT_NAME pd)
+endif()
 
 set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
 
