@@ -33,10 +33,10 @@ EXTERN void libpd_set_queued_aftertouchhook(const t_libpd_aftertouchhook hook);
 EXTERN void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
 
-int libpd_queued_init();
-void libpd_queued_release();
-void libpd_queued_receive_pd_messages();
-void libpd_queued_receive_midi_messages();
+EXTERN int libpd_queued_init();
+EXTERN void libpd_queued_release();
+EXTERN void libpd_queued_receive_pd_messages();
+EXTERN void libpd_queued_receive_midi_messages();
 
 #ifdef __cplusplus
 }
