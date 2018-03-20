@@ -149,7 +149,7 @@ if(pd_extra)
 endif()
 
 add_library(libpd_static STATIC ${SOURCE_FILES})
-add_library(libpd SHARED ${SOURCE_FILES})
+add_library(libpd        SHARED ${SOURCE_FILES})
 set_target_properties(libpd PROPERTIES OUTPUT_NAME libpd)
 
 set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
@@ -171,12 +171,12 @@ if(NOT pd_locale)
 endif()
 
 target_compile_definitions(libpd_static PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
-target_compile_definitions(libpd PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
+target_compile_definitions(libpd        PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
 
 if(MSVC)
     target_link_libraries(libpd PUBLIC Ws2_32)
     target_include_directories(libpd_static PUBLIC ${PTHREADS_INCLUDE_DIR})
-    target_include_directories(libpd PUBLIC ${PTHREADS_INCLUDE_DIR})
+    target_include_directories(libpd        PUBLIC ${PTHREADS_INCLUDE_DIR})
     target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
