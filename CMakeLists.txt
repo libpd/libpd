@@ -32,102 +32,102 @@ endif()
 set(CMAKE_MACOSX_RPATH ON)
 
 set(PD_SOURCES
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_arithmetic.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_array.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_ctl.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_dac.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_delay.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_fft.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_fft_fftsg.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_filter.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_global.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_math.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_misc.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_osc.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_resample.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_soundfile.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/d_ugen.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_all_guis.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_array.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_bang.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_canvas.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_clone.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_editor.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_graph.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_guiconnect.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_hdial.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_hslider.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_io.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_mycanvas.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_numbox.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_readwrite.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_rtext.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_scalar.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_template.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_text.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_toggle.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_traversal.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_vdial.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_vslider.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/g_vumeter.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_atom.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_binbuf.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_class.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_conf.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_glob.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_memory.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_obj.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_pd.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/m_sched.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_audio.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_audio_dummy.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_inter.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_loader.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_main.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_path.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_print.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_stuff.h
-    ${PROJECT_SOURCE_DIR}/pure-data/src/s_utf8.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_acoustics.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_arithmetic.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_array.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_connective.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_gui.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_interface.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_list.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_midi.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_misc.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_net.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_scalar.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_text.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_time.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp_fun.c
-    ${PROJECT_SOURCE_DIR}/pure-data/src/x_vexp_if.c
+    pure-data/src/d_arithmetic.c
+    pure-data/src/d_array.c
+    pure-data/src/d_ctl.c
+    pure-data/src/d_dac.c
+    pure-data/src/d_delay.c
+    pure-data/src/d_fft.c
+    pure-data/src/d_fft_fftsg.c
+    pure-data/src/d_filter.c
+    pure-data/src/d_global.c
+    pure-data/src/d_math.c
+    pure-data/src/d_misc.c
+    pure-data/src/d_osc.c
+    pure-data/src/d_resample.c
+    pure-data/src/d_soundfile.c
+    pure-data/src/d_ugen.c
+    pure-data/src/g_all_guis.c
+    pure-data/src/g_array.c
+    pure-data/src/g_bang.c
+    pure-data/src/g_canvas.c
+    pure-data/src/g_clone.c
+    pure-data/src/g_editor.c
+    pure-data/src/g_graph.c
+    pure-data/src/g_guiconnect.c
+    pure-data/src/g_hdial.c
+    pure-data/src/g_hslider.c
+    pure-data/src/g_io.c
+    pure-data/src/g_mycanvas.c
+    pure-data/src/g_numbox.c
+    pure-data/src/g_readwrite.c
+    pure-data/src/g_rtext.c
+    pure-data/src/g_scalar.c
+    pure-data/src/g_template.c
+    pure-data/src/g_text.c
+    pure-data/src/g_toggle.c
+    pure-data/src/g_traversal.c
+    pure-data/src/g_vdial.c
+    pure-data/src/g_vslider.c
+    pure-data/src/g_vumeter.c
+    pure-data/src/m_atom.c
+    pure-data/src/m_binbuf.c
+    pure-data/src/m_class.c
+    pure-data/src/m_conf.c
+    pure-data/src/m_glob.c
+    pure-data/src/m_memory.c
+    pure-data/src/m_obj.c
+    pure-data/src/m_pd.c
+    pure-data/src/m_sched.c
+    pure-data/src/s_audio.c
+    pure-data/src/s_audio_dummy.c
+    pure-data/src/s_inter.c
+    pure-data/src/s_loader.c
+    pure-data/src/s_main.c
+    pure-data/src/s_path.c
+    pure-data/src/s_print.c
+    pure-data/src/s_stuff.h
+    pure-data/src/s_utf8.c
+    pure-data/src/x_acoustics.c
+    pure-data/src/x_arithmetic.c
+    pure-data/src/x_array.c
+    pure-data/src/x_connective.c
+    pure-data/src/x_gui.c
+    pure-data/src/x_interface.c
+    pure-data/src/x_list.c
+    pure-data/src/x_midi.c
+    pure-data/src/x_misc.c
+    pure-data/src/x_net.c
+    pure-data/src/x_scalar.c
+    pure-data/src/x_text.c
+    pure-data/src/x_time.c
+    pure-data/src/x_vexp.c
+    pure-data/src/x_vexp_fun.c
+    pure-data/src/x_vexp_if.c
 )
 
 set(PD_EXTRA_SOURCES
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/bob~/bob~.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/bonk~/bonk~.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/choice/choice.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/fiddle~/fiddle~.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/loop~/loop~.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/lrshift~/lrshift~.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/pique/pique.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/sigmund~/sigmund~.c
-    ${PROJECT_SOURCE_DIR}/pure-data/extra/stdout/stdout.c
+    pure-data/extra/bob~/bob~.c
+    pure-data/extra/bonk~/bonk~.c
+    pure-data/extra/choice/choice.c
+    pure-data/extra/fiddle~/fiddle~.c
+    pure-data/extra/loop~/loop~.c
+    pure-data/extra/lrshift~/lrshift~.c
+    pure-data/extra/pique/pique.c
+    pure-data/extra/sigmund~/sigmund~.c
+    pure-data/extra/stdout/stdout.c
 )
 
 set(LIBPD_SOURCES
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/s_libpdmidi.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/x_libpdreceive.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_hooks.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/z_libpd.c
+    libpd_wrapper/s_libpdmidi.c
+    libpd_wrapper/x_libpdreceive.c
+    libpd_wrapper/z_hooks.c
+    libpd_wrapper/z_libpd.c
 )
 set(LIBPD_UTILS_SOURCES
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/ringbuffer.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/z_print_util.c
-    ${PROJECT_SOURCE_DIR}/libpd_wrapper/util/z_queued.c
+    libpd_wrapper/util/ringbuffer.c
+    libpd_wrapper/util/z_print_util.c
+    libpd_wrapper/util/z_queued.c
 )
 
 source_group(pd FILES ${PD_SOURCES})
@@ -135,8 +135,8 @@ source_group(pdextra FILES ${PD_EXTRA_SOURCES})
 source_group(libpd FILES ${LIBPD_SOURCES})
 source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
-include_directories(${PROJECT_SOURCE_DIR}/libpd_wrapper)
-include_directories(${PROJECT_SOURCE_DIR}/pure-data/src)
+include_directories(libpd_wrapper)
+include_directories(pure-data/src)
 
 find_package(Threads REQUIRED)
 
