@@ -39,7 +39,7 @@ EXTERN void libpd_set_concatenated_printhook(const t_libpd_printhook hook);
 //       callback; if you intend to use the argument after the callback has 
 //       returned, you need to make a defensive copy.
 //
-void libpd_print_concatenator(const char *s);
+EXTERN void libpd_print_concatenator(const char *s);
 
 #ifdef __cplusplus
 }
