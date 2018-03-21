@@ -193,6 +193,7 @@ if(pd_build_c_examples)
     macro(ADD_EXAMPLE name)
         add_executable(${name} samples/c/${name}/${name}.c)
         target_link_libraries(${name} PUBLIC libpd)
+        set_target_properties(${name} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
     endmacro(ADD_EXAMPLE)
 
     ADD_EXAMPLE(pdtest)
