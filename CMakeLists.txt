@@ -156,10 +156,16 @@ endif()
 
 add_library(libpd_static STATIC ${SOURCE_FILES})
 add_library(libpd        SHARED ${SOURCE_FILES})
-if(UNIX)
-    set_target_properties(libpd_static PROPERTIES OUTPUT_NAME pd_static)
-    set_target_properties(libpd        PROPERTIES OUTPUT_NAME pd)
+
+set(LIBPD_OUTPUT_NAME     pd)
+if (WIN32)
+    set(LIBPD_OUTPUT_NAME libpd)
 endif()
+if (pd_multi)
+    set(LIBPD_OUTPUT_NAME ${LIBPD_OUTPUT_NAME}-multi)
+endif()
+set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME}-static)
+set_target_properties(libpd        PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
 
 set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
 
