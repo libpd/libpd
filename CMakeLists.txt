@@ -185,6 +185,11 @@ if(NOT pd_locale)
     list(APPEND LIBPD_COMPILE_DEFINITIONS LIBPD_NO_NUMERIC=1)
 endif()
 
+if(UNIX)
+    list(APPEND LIBPD_COMPILE_DEFINITIONS HAVE_LIBDL)
+    target_link_libraries(libpd PUBLIC ${CMAKE_DL_LIBS})
+endif()
+
 target_compile_definitions(libpd_static PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
 target_compile_definitions(libpd        PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
 
@@ -198,7 +203,6 @@ target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 if(NOT MSVC AND NOT APPLE)
     find_library(MATH_LIB m)
     target_link_libraries(libpd PUBLIC ${MATH_LIB})
-    target_link_libraries(libpd PUBLIC ${CMAKE_DL_LIBS})
 endif()
 
 if(pd_build_c_examples)
