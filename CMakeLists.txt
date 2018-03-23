@@ -49,9 +49,11 @@ set(PD_SOURCES
     pure-data/src/d_soundfile.c
     pure-data/src/d_ugen.c
     pure-data/src/g_all_guis.c
+    pure-data/src/g_all_guis.h
     pure-data/src/g_array.c
     pure-data/src/g_bang.c
     pure-data/src/g_canvas.c
+    pure-data/src/g_canvas.h
     pure-data/src/g_clone.c
     pure-data/src/g_editor.c
     pure-data/src/g_graph.c
@@ -76,9 +78,11 @@ set(PD_SOURCES
     pure-data/src/m_class.c
     pure-data/src/m_conf.c
     pure-data/src/m_glob.c
+    pure-data/src/m_imp.h
     pure-data/src/m_memory.c
     pure-data/src/m_obj.c
     pure-data/src/m_pd.c
+    pure-data/src/m_pd.h
     pure-data/src/m_sched.c
     pure-data/src/s_audio.c
     pure-data/src/s_audio_dummy.c
@@ -89,6 +93,7 @@ set(PD_SOURCES
     pure-data/src/s_print.c
     pure-data/src/s_stuff.h
     pure-data/src/s_utf8.c
+    pure-data/src/s_utf8.h
     pure-data/src/x_acoustics.c
     pure-data/src/x_arithmetic.c
     pure-data/src/x_array.c
@@ -103,6 +108,7 @@ set(PD_SOURCES
     pure-data/src/x_text.c
     pure-data/src/x_time.c
     pure-data/src/x_vexp.c
+    pure-data/src/x_vexp.h
     pure-data/src/x_vexp_fun.c
     pure-data/src/x_vexp_if.c
 )
@@ -122,13 +128,18 @@ set(PD_EXTRA_SOURCES
 set(LIBPD_SOURCES
     libpd_wrapper/s_libpdmidi.c
     libpd_wrapper/x_libpdreceive.c
+    libpd_wrapper/x_libpdreceive.h
     libpd_wrapper/z_hooks.c
+    libpd_wrapper/z_hooks.h
     libpd_wrapper/z_libpd.c
 )
 set(LIBPD_UTILS_SOURCES
     libpd_wrapper/util/ringbuffer.c
+    libpd_wrapper/util/ringbuffer.h
     libpd_wrapper/util/z_print_util.c
+    libpd_wrapper/util/z_print_util.h
     libpd_wrapper/util/z_queued.c
+    libpd_wrapper/util/z_queued.h
 )
 
 source_group(pd FILES ${PD_SOURCES})
