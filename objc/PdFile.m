@@ -16,10 +16,10 @@
 #import "PdBase.h"
 
 @interface PdFile ()
-@property (nonatomic, strong) NSValue *fileReference;
-@property (nonatomic, assign) int dollarZero;
-@property (nonatomic, copy) NSString *baseName;
-@property (nonatomic, copy) NSString *pathName;
+@property (nonatomic, strong, readwrite) NSValue *fileReference;
+@property (nonatomic, assign, readwrite) int dollarZero;
+@property (nonatomic, copy, readwrite) NSString *baseName;
+@property (nonatomic, copy, readwrite) NSString *pathName;
 @end
 
 @implementation PdFile
