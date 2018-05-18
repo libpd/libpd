@@ -7,6 +7,21 @@ option(PD_MULTI "Compile with multiple instance support" OFF)
 option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
+if (WIN32)
+    option(CMAKE_THREAD_LIBS_INIT "Path to pthreads library")
+    option(PTHREADS_INCLUDE_DIR "Path to the pthreads library header files")
+    # We need pthreads.
+    # Please provide the path to the pthreads library include path and
+    # the path to the pthread library by specifying the following arguments
+    # on the CMake command-line:
+    # -DCMAKE_THREAD_LIBS_INIT:PATH=<path to library, either MSVC (for example pthreadVC2.lib) or GNUC version>
+    # -DPTHREADS_INCLUDE_DIR:PATH=<path to the pthread header files>
+    if (NOT CMAKE_THREAD_LIBS_INIT OR NOT PTHREADS_INCLUDE_DIR)
+        message(FATAL_ERROR "Please provide a path to the pthreads library and its headers.")
+    endif()
+    set(CMAKE_THREAD_PREFER_PTHREAD ON)
+endif()
+
 if(WIN32)
     # Use Windows APIs compatible with most versions
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DWINVER=0x502 -DWIN32 -D_WIN32")
