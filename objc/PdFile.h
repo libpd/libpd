@@ -22,20 +22,23 @@
 /// Unique $0 argument assigned by pd
 @property (nonatomic, assign, readonly) int dollarZero;
 
-/// Stored file base name
+/// Stored file base name aka file name
 @property (nonatomic, copy, readonly) NSString *baseName;
 
-/// Stored file path name
+/// Stored file path name aka parent directory
 @property (nonatomic, copy, readonly) NSString *pathName;
 
+/// Full file path: pathName/baseName
+@property (nonatomic, copy, readonly) NSString *filePath;
+
 /// Open a pd file/patch and return a representative PdFile object
-+ (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName;
++ (instancetype)openFileNamed:(NSString *)baseName path:(NSString *)pathName;
 
 /// Open a pd file/patch, returns YES on success
 - (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName;
 
 /// Open a new instance of an existing PdFile
-- (id)openNewInstance;
+- (instancetype)openNewInstance;
 
 /// Is the file reference valid? (aka non-nil)
 - (bool)isValid;

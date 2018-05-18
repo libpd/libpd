@@ -26,7 +26,7 @@
 
 #pragma mark Class Methods
 
-+ (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
++ (instancetype)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
 	PdFile *pdFile = [[self alloc] init];
 	if (pdFile) {
 		[pdFile openFile:baseName path:pathName];
@@ -72,6 +72,10 @@
 		[PdBase closeFile:x];
 		self.fileReference = nil;
 	}
+}
+
+- (NSString *)path {
+	return [self.baseName stringByAppendingPathComponent:self.pathName];
 }
 
 #pragma mark Util
