@@ -8,12 +8,14 @@ option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
 if(WIN32)
+    # Use Windows APIs compatible with most versions
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DWINVER=0x502 -DWIN32 -D_WIN32")
 endif()
 if (MSVC)
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DHAVE_STRUCT_TIMESPEC")
     add_definitions("/D_CRT_SECURE_NO_WARNINGS /wd4091 /wd4996")
     if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+        # Select appropriate long int type on 64-bit Windows
         set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DPD_LONGINTTYPE=\"long long\"")
     endif()
 else()
@@ -155,6 +157,7 @@ include_directories(pure-data/src)
 
 find_package(Threads REQUIRED)
 
+# create final list of source files
 set(SOURCE_FILES ${PD_SOURCES} ${LIBPD_SOURCES})
 if(PD_UTILS)
     list(APPEND SOURCE_FILES ${LIBPD_UTILS_SOURCES})
@@ -166,6 +169,7 @@ endif()
 add_library(libpd_static STATIC ${SOURCE_FILES})
 add_library(libpd        SHARED ${SOURCE_FILES})
 
+# set the output library name for libpd depending on the settings
 set(LIBPD_OUTPUT_NAME     pd)
 if (WIN32)
     set(LIBPD_OUTPUT_NAME libpd)
@@ -180,6 +184,7 @@ else()
 endif()
 set_target_properties(libpd        PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
 
+# add appropriate compile definitions
 set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
 
 if(NOT MSVC)
@@ -206,6 +211,7 @@ endif()
 target_compile_definitions(libpd_static PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
 target_compile_definitions(libpd        PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
 
+# link against necessary libraries
 if(MSVC)
     target_link_libraries(libpd PUBLIC Ws2_32)
     target_include_directories(libpd_static PUBLIC ${PTHREADS_INCLUDE_DIR})
