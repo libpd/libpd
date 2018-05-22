@@ -7,7 +7,7 @@ option(PD_MULTI "Compile with multiple instance support" OFF)
 option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
-if (WIN32)
+if (MSVC)
     option(CMAKE_THREAD_LIBS_INIT "Path to pthreads library")
     option(PTHREADS_INCLUDE_DIR "Path to the pthreads library header files")
     # We need pthreads.
