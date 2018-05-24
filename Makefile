@@ -13,12 +13,17 @@ ifeq ($(UNAME), Darwin)  # Mac
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
-    CC = gcc
+    ifeq ($(LLVM), True)
+        CC = clang -target x86_64-w64-mingw32
+        PLATFORM_CFLAGS += -MJ $(@).json 
+    else
+        CC = gcc
+    endif
     SOLIB_EXT = dll
     SOLIB_PREFIX =
     PDNATIVE_PLATFORM = windows
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
-    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
+    PLATFORM_CFLAGS += -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def \
