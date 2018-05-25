@@ -24,11 +24,11 @@ else
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
-    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32
+    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=$(LIBPD_DEF) \
       -Wl,--out-implib=$(LIBPD_IMPLIB)
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
-      -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
+      -Wl,--out-implib=libs/libpdcsharp.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Linux or *BSD
     SOLIB_EXT = so
