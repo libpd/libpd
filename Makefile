@@ -15,7 +15,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
-    CC = gcc
+    CC ?= gcc
     SOLIB_EXT = dll
     SOLIB_PREFIX =
     LIBPD_IMPLIB = libs/libpd.lib
