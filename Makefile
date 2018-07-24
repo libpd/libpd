@@ -1,5 +1,7 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
+LIBPD_IMPLIB =
+LIBPD_DEF =
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
@@ -16,15 +18,17 @@ else
     CC = gcc
     SOLIB_EXT = dll
     SOLIB_PREFIX =
+    LIBPD_IMPLIB = libs/libpd.lib
+    LIBPD_DEF = libs/libpd.def
     PDNATIVE_PLATFORM = windows
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
-    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32
-    LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def \
-      -Wl,--out-implib=libs/libpd.lib
+    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
+    LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=$(LIBPD_DEF) \
+      -Wl,--out-implib=$(LIBPD_IMPLIB)
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
-      -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
+      -Wl,--out-implib=libs/libpdcsharp.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Linux or *BSD
     SOLIB_EXT = so
@@ -164,7 +168,11 @@ libdir ?= $(prefix)/lib
 JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-LIBPD = libs/libpd.$(SOLIB_EXT)
+ifeq ($(OS), Windows_NT)
+	LIBPD = libs/pd.$(SOLIB_EXT)
+else
+	LIBPD = libs/libpd.$(SOLIB_EXT)
+endif
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
@@ -222,7 +230,7 @@ clean:
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) ${LIBPD:.$(SOLIB_EXT)=.lib} ${LIBPD:.$(SOLIB_EXT)=.def}
+	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF)
 	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
 	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
@@ -240,9 +248,9 @@ install:
 	fi
 	install -d $(libdir)
 	install -m 755 $(LIBPD) $(libdir)
-	if [ -e ${LIBPD:.$(SOLIB_EXT)=.def} ]; then install -m 755 ${LIBPD:.$(SOLIB_EXT)=.def} $(libdir); fi
-	if [ -e ${LIBPD:.$(SOLIB_EXT)=.lib} ]; then install -m 755 ${LIBPD:.$(SOLIB_EXT)=.lib} $(libdir); fi
+	if [ -e $(LIBPD_IMPLIB) ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
+	if [ -e $(LIBPD_DEF) ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
 uninstall:
 	rm -rf $(includedir)/libpd
-	rm -f $(libdir)/`basename $(LIBPD)`
+	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_IMPLIB)` $(libdir)/`basename $(LIBPD_DEF)`
