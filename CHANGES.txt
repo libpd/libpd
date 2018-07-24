@@ -20,7 +20,8 @@
 
 * makefile: UTIL=true, EXTRA=true, LOCALE=false are now defaults
 * makefile: added MULTI option to build libpd with multiple instance support
-* makefile: now installs libpd .def and .lib files on Windows
+* makefile: installs libpd .def and .lib files on Windows
+* makefile: builds working pd.dll needed by externals on Windows (Spacechild1)
 * makefile: C++ headers are now conditionally installed if built with UTIL=true
 * makefile: use default optimzations from pd: fast math, loop unrolling, etc 
 * makefile: DEBUG option now sets "-O0 -g" instead of "-Wall"
@@ -30,9 +31,12 @@
 * makefile: added ADDITIONAL_LDFLAGS (Pierre Guillot)
 * makefile: added javadoc & javasrc targets (suggested by Pooya Moradi)
 
+* C: const int tick argument in libpd_process functions (Pierre Guillot)
+* C: const float src argument in libpd_write_array (Pierre Guillot)
+
 * C++: transitioned to all-header library and removed "cpplib" make target,
-       you may need to add `libpd_wrapper/util` to you include paths,
-       this also makes it easier to use libpd & C++ with Visual Studio
+       you may need to add `libpd_wrapper/util` to you include paths, this also
+       makes it possible to use libpd compiled by MinGW & C++ with Visual Studio
 
 * C#: added Managed object-oriented classes (Thomas Mayer)
 
@@ -44,10 +48,14 @@
 
 * ObjC: iOS 8 is now the min-deployment target, now using ARC, modernized syntax
 * ObjC: macOS Xcode project universal build by default
+* ObjC: added PdAudioController default category option methods for subclassing
+* ObjC: PdAudioController should always restart on audio interruption
+* ObjC: PdFile now checks for file existence before opening
 * ObjC: fixed cocoapods swift build by only exposing obj folder (Cerupcat)
 * ObjC: fixed PdAudioController playback stopping when another app starts
         playing by setting MixWithOthers option for Playback category
         (Alexander Randon)
+* ObjC: general source commenting & formatting improvements
 
 * added pdtest_freeverb C sample (a project with a working external!)
 * added pdtest_thread C sample (Pierre Guillot)
