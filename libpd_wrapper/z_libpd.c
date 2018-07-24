@@ -208,15 +208,15 @@ static const t_sample sample_to_short = SHRT_MAX,
   sys_unlock(); \
   return 0;
 
-int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
+int libpd_process_short(const int ticks, const short *inBuffer, short *outBuffer) {
   PROCESS(* short_to_sample, * sample_to_short)
 }
 
-int libpd_process_float(int ticks, const float *inBuffer, float *outBuffer) {
+int libpd_process_float(const int ticks, const float *inBuffer, float *outBuffer) {
   PROCESS(,)
 }
 
-int libpd_process_double(int ticks, const double *inBuffer, double *outBuffer) {
+int libpd_process_double(const int ticks, const double *inBuffer, double *outBuffer) {
   PROCESS(,)
 }
  
