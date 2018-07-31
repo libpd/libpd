@@ -1,15 +1,15 @@
 cmake_minimum_required (VERSION 2.8.11)
 project (libpd C)
 
-option(PD_UTILS "Compile utilities" ON)
-option(PD_EXTRA "Compile extras" ON)
-option(PD_MULTI "Compile with multiple instance support" OFF)
+option(PD_UTILS  "Compile utilities" ON)
+option(PD_EXTRA  "Compile extras" ON)
+option(PD_MULTI  "Compile with multiple instance support" OFF)
 option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
 if (MSVC)
     option(CMAKE_THREAD_LIBS_INIT "Path to pthreads library")
-    option(PTHREADS_INCLUDE_DIR "Path to the pthreads library header files")
+    option(PTHREADS_INCLUDE_DIR   "Path to the pthreads library header files")
     # We need pthreads.
     # Please provide the path to the pthreads library include path and
     # the path to the pthread library by specifying the following arguments
@@ -34,9 +34,9 @@ if (MSVC)
         set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DPD_LONGINTTYPE=\"long long\"")
     endif()
 else()
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast")
+    set(CMAKE_C_FLAGS         "${CMAKE_C_FLAGS} -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast")
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -ffast-math -funroll-loops -fomit-frame-pointer -O3")
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -O0")
+    set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS} -g -O0")
     if(NOT APPLE)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-Bsymbolic")
     endif()
@@ -162,9 +162,9 @@ set(LIBPD_UTILS_SOURCES
     libpd_wrapper/util/z_queued.h
 )
 
-source_group(pd FILES ${PD_SOURCES})
-source_group(pdextra FILES ${PD_EXTRA_SOURCES})
-source_group(libpd FILES ${LIBPD_SOURCES})
+source_group(pd         FILES ${PD_SOURCES})
+source_group(pdextra    FILES ${PD_EXTRA_SOURCES})
+source_group(libpd      FILES ${LIBPD_SOURCES})
 source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
 include_directories(libpd_wrapper)
@@ -197,7 +197,7 @@ if (WIN32)
 else()
     set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
 endif()
-set_target_properties(libpd        PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
+set_target_properties(libpd            PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
 
 # add appropriate compile definitions
 set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
