@@ -19,6 +19,7 @@ if (MSVC)
     if (NOT CMAKE_THREAD_LIBS_INIT OR NOT PTHREADS_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide a path to the pthreads library and its headers.")
     endif()
+    # Prefer pthread implementation on platforms where multiple are available.
     set(CMAKE_THREAD_PREFER_PTHREAD ON)
 endif()
 
