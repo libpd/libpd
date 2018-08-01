@@ -387,6 +387,36 @@ the wrapper with:
 See the sample programs in `samples/python`. Note, some samples require the
 "pyaudio" Portaudio library.
 
+Building with CMake
+-------------------
+CMake can be used to build the libpd C library.
+CMake is a cross-platform, open-source build system. CMake is used to control
+the software compilation process using simple platform and compiler independent
+configuration files, and generate native makefiles and workspaces that can be used
+in the compiler environment of your choice.
+
+### Dependencies
+- CMake: You can download CMake for your platform [here](https://cmake.org). The
+minimum version is 2.8.11.
+- pthreads: On windows, you need to provide a pthreads library.
+  - If you are using MinGW, you may use the DLL included in the folder `libs` in this
+    repository.
+  - You can also provide another pthreads library either by downloading it or compiling
+    it yourself. See [here](https://www.sourceware.org/pthreads-win32/).
+    - Be careful to download / compile the right version for your setup. This could
+      tipically be `pthreadVC2.dll`/`.lib` if you are using Microsoft Visual Studio or
+      `pthreadGC2.dll`/`.lib` if you are using GNUC (like when using MinGW).
+
+### Configuring CMake
+One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcmake/).
+The GUI will list the variables that can be provided to configure the build.
+In this step you can select the features to be included with `PD_EXTRA`, `PD_LOCALE`,
+`PD_MULTI` and `PD_UTILS` as described above.
+You can also enable building the C sample programs using `PD_BUILD_C_EXAMPLES`.
+
+### Limitations
+Currently the CMake script is not capable of building the C# or the Java bindings. Please use the makefile for that.      
+
 Known Issues
 ------------
 
