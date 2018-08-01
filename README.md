@@ -414,6 +414,15 @@ In this step you can select the features to be included with `PD_EXTRA`, `PD_LOC
 `PD_MULTI` and `PD_UTILS` as described above.
 You can also enable building the C sample programs using `PD_BUILD_C_EXAMPLES`.
 
+When using Microsoft Visual Studio (MSVC), you will be requested to provide a path
+to the pthreads library and its headers using variables `CMAKE_THREAD_LIBS_INIT`
+and `PTHREADS_INCLUDE_DIR`.
+
+On macOS, you can define different deployment target and architectures from your current
+system using the variables `CMAKE_OSX_DEPLOYMENT_TARGET` and `CMAKE_OSX_ARCHITECTURES`.
+
+You can specify additional compilation flags using the variable `CMAKE_C_FLAGS`.
+
 ### Limitations
 Currently the CMake script is not capable of building the C# or the Java bindings. Please use the makefile for that.      
 
