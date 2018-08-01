@@ -407,7 +407,7 @@ minimum version is 2.8.11.
       tipically be `pthreadVC2.dll`/`.lib` if you are using Microsoft Visual Studio or
       `pthreadGC2.dll`/`.lib` if you are using GNUC (like when using MinGW).
 
-### Configuring CMake
+### Configuring the build
 One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcmake/).
 The GUI will list the variables that can be provided to configure the build.
 The variables can also be specified in the command-line interface (See below for an example)
@@ -438,6 +438,31 @@ Of course you can also use CMake itself to build libpd by running this on the co
 ```
     $> cd <path/to/build/files/generated/by/CMake>
     $> cmake --build .
+```
+
+### Command-line examples
+Here are examples of how to download, configure and build libpd on the command line.
+
+Linux:
+```
+   $> git clone https://github.com/libpd/libpd
+   $> cd libpd
+   $> git submodule init
+   $> git submodule update
+   $> mkdir build && cd build
+   $> cmake .. -DPD_MULTI:BOOL=ON -DPD_BUILD_C_EXAMPLES:BOOL=ON
+   $> cmake --build .
+```
+
+Windows / MSVC:
+```
+   $> git clone https://github.com/libpd/libpd
+   $> cd libpd
+   $> git submodule init
+   $> git submodule update
+   $> mkdir build && cd build
+   $> cmake .. -DCMAKE_THREAD_LIBS_INIT:PATH=</path/to/pthreadsVC2.lib> -DPTHREADS_INCLUDE_DIR:PATH=</path/to/pthread/header/files>
+   $> cmake --build .
 ```
 
 ### Limitations
