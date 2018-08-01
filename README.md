@@ -390,6 +390,7 @@ See the sample programs in `samples/python`. Note, some samples require the
 Building with CMake
 -------------------
 CMake can be used to build the libpd C library.
+
 CMake is a cross-platform, open-source build system. CMake is used to control
 the software compilation process using simple platform and compiler independent
 configuration files, and generate native makefiles and workspaces that can be used
