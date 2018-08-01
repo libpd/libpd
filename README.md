@@ -442,7 +442,8 @@ Of course you can also use CMake itself to build libpd by running this on the co
 ```
 
 ### Command-line examples
-Here are examples of how to download, configure and build libpd on the command line.
+Here are examples of how to download, configure and build the latest libpd on the
+command line using CMake.
 
 Linux:
 ```
