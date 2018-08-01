@@ -14,6 +14,7 @@
 * libpd binaries built with MinGW now work in Visual Studio (see readme)
 * updated ringbuffer atomics macros to use C11 stdatomics.h if available,
   this fixes deprecation warning on macOS 10.12
+* fixed possible crash due to stale printhook pointer (reported by Niall Moody)
 * fixed bug in libpd_sysex which masked 8 bit bytes, the MIDI spec allows 8 bit
   bytes except for realtime messages
 * fixed [declare -stdpath] crash (reported by Pierre Guillot)

@@ -65,11 +65,11 @@ static void *get_object(const char *s) {
 // this is called instead of sys_main() to start things
 int libpd_init(void) {
   static int initialized = 0;
+  sys_printhook = (t_printhook) libpd_printhook;
   if (initialized) return -1; // only allow init once (for now)
   initialized = 1;
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
-  sys_printhook = (t_printhook) libpd_printhook;
   // are all these settings necessary?
   sys_externalschedlib = 0;
   sys_printtostderr = 0;
