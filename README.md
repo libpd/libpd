@@ -477,11 +477,15 @@ Known Issues
 
 Historically, Pd was designed to be built using the open source gcc & make and
 did not directly support being built in Visual Studio on Windows, mainly due to
-differences in C compiler versions. More recently, this has become less of an
-issue so it is becoming more *possible* to build libpd directly in Visual
-Studio, although this is still not currently supported by this project.
+differences in C compiler versions.
 
-What *does* work is building the libpd C library using gcc and make using MinGW
+Recently, the code has been adapted and a CMake build script has been developed
+that should allow you to generate a MSVC solution.
+The only important thing you need to be careful about is providing a pthreads
+library compiled for Visual Studio.
+See the section above about building with CMake.
+
+Another possible approach is building the libpd C library using gcc and make using MinGW
 in msys on Windows. You can use the resulting .dll, .def, & .lib files with
 Visual Studio and the cpp wrapper is provided as an all header library so it
 should work directly within VS as well.
