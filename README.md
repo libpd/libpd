@@ -401,12 +401,14 @@ in the compiler environment of your choice.
 minimum version is 2.8.11.
 - pthreads: On windows, you need to provide a pthreads library.
   - If you are using MinGW, you may use the DLL included in the folder `libs` in this
-    repository.
-  - You can also provide another pthreads library either by downloading it or compiling
+    repository. Alternatively, you can also download it or compile it yourself from
+    the sources [here](https://www.sourceware.org/pthreads-win32/).
+    This will tipically result in `pthreadGC2.dll`/`.lib`.
+  - If you are using Visual Studio, you need to provide a pthreads library 
+    compiled for Visual Studio either by downloading it or compiling
     it yourself. See [here](https://www.sourceware.org/pthreads-win32/).
     - Be careful to download / compile the right version for your setup. This could
-      tipically be `pthreadVC2.dll`/`.lib` if you are using Microsoft Visual Studio or
-      `pthreadGC2.dll`/`.lib` if you are using GNUC (like when using MinGW).
+      tipically be `pthreadVC2.dll`/`.lib`.
 
 ### Configuring the build
 One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcmake/).
