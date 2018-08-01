@@ -410,6 +410,8 @@ minimum version is 2.8.11.
 ### Configuring CMake
 One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcmake/).
 The GUI will list the variables that can be provided to configure the build.
+The variables can also be specified in the command-line interface (See below for an example)
+
 In this step you can select the features to be included with `PD_EXTRA`, `PD_LOCALE`,
 `PD_MULTI` and `PD_UTILS` as described above.
 You can also enable building the C sample programs using `PD_BUILD_C_EXAMPLES`.
@@ -422,6 +424,21 @@ On macOS, you can define different deployment target and architectures from your
 system using the variables `CMAKE_OSX_DEPLOYMENT_TARGET` and `CMAKE_OSX_ARCHITECTURES`.
 
 You can specify additional compilation flags using the variable `CMAKE_C_FLAGS`.
+
+CMake can now generate Makefiles, a MSVC solution or an XCode project.
+
+### Building
+After generation, depending on your platform you can navigate to the folder where
+CMake generated the build files and then:
+- On Linux: run `make`
+- On Windows: open the MSVC solution and build it
+- On macOS: open the XCode project and build it
+
+Of course you can also use CMake itself to build libpd by running this on the command line:
+```
+    $> cd <path/to/build/files/generated/by/CMake>
+    $> cmake --build .
+```
 
 ### Limitations
 Currently the CMake script is not capable of building the C# or the Java bindings. Please use the makefile for that.      
