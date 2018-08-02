@@ -65,7 +65,6 @@ static void *get_object(const char *s) {
 // this is called instead of sys_main() to start things
 int libpd_init(void) {
   static int initialized = 0;
-  sys_printhook = (t_printhook) libpd_printhook;
   if (initialized) return -1; // only allow init once (for now)
   initialized = 1;
   signal(SIGFPE, SIG_IGN);
@@ -362,7 +361,9 @@ t_atom *libpd_next_atom(t_atom *a) {
 }
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
-  libpd_printhook = hook;
+  sys_lock();
+  sys_printhook = (t_printhook) hook;
+  sys_unlock();
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {

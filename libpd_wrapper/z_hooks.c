@@ -10,7 +10,6 @@
  
 #include "z_hooks.h"
 
-t_libpd_printhook libpd_printhook = NULL;
 t_libpd_banghook libpd_banghook = NULL;
 t_libpd_floathook libpd_floathook = NULL;
 t_libpd_symbolhook libpd_symbolhook = NULL;
