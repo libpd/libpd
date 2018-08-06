@@ -389,87 +389,79 @@ See the sample programs in `samples/python`. Note, some samples require the
 
 Building with CMake
 -------------------
+
 CMake can be used to build the libpd C library.
 
 CMake is a cross-platform, open-source build system. CMake is used to control
 the software compilation process using simple platform and compiler independent
-configuration files, and generate native makefiles and workspaces that can be used
-in the compiler environment of your choice.
+configuration files, and generate native makefiles and workspaces that can be
+used in the compiler environment of your choice.
 
 ### Dependencies
-- CMake: You can download CMake for your platform [here](https://cmake.org). The
+
+* CMake: You can download CMake for your platform [here](https://cmake.org). The
 minimum version is 2.8.11.
-- pthreads: On windows, you need to provide a pthreads library.
-  - If you are using MinGW, you may use the DLL included in the folder `libs` in this
-    repository. Alternatively, you can also download it or compile it yourself from
-    the sources [here](https://www.sourceware.org/pthreads-win32/).
-    This will tipically result in `pthreadGC2.dll`/`.lib`.
-  - If you are using Visual Studio, you need to provide a pthreads library 
-    compiled for Visual Studio either by downloading it or compiling
-    it yourself. See [here](https://www.sourceware.org/pthreads-win32/).
-    - Be careful to download / compile the right version for your setup. This could
-      tipically be `pthreadVC2.dll`/`.lib`.
+* pthreads: On Windows, you need to provide a pthreads library.
+
+If you are using MinGW, you can use the libwinpthread-1.dll included in the `libs/mingw*` folders in this repository. Alternatively, you can also download it or compile it yourself from the sources [here](https://www.sourceware.org/pthreads-win32/). This will typically result in `pthreadGC2.dll`/`.lib`.
+
+If you are using Visual Studio, you need to provide a pthreads library compiled for Visual Studio either by downloading it or compiling it yourself. See [here](https://www.sourceware.org/pthreads-win32/). Be careful to download / compile the right version for your setup. This would typically be `pthreadVC2.dll`/`.lib`.
 
 ### Configuring the build
-One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcmake/).
-The GUI will list the variables that can be provided to configure the build.
-The variables can also be specified in the command-line interface (See below for an example)
 
-In this step you can select the features to be included with `PD_EXTRA`, `PD_LOCALE`,
-`PD_MULTI` and `PD_UTILS` as described above.
-You can also enable building the C sample programs using `PD_BUILD_C_EXAMPLES`.
+One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcmake/). The GUI will list the variables that can be provided to configure the build. The variables can also be specified in the command-line interface (See below for an example)
 
-When using Microsoft Visual Studio (MSVC), you will be requested to provide a path
-to the pthreads library and its headers using variables `CMAKE_THREAD_LIBS_INIT`
-and `PTHREADS_INCLUDE_DIR`.
+In this step you can select the features to be included with `PD_EXTRA`, `PD_LOCALE`, `PD_MULTI` and `PD_UTILS` as described above. You can also enable building the C sample programs using `PD_BUILD_C_EXAMPLES`.
 
-On macOS, you can define different deployment target and architectures from your current
-system using the variables `CMAKE_OSX_DEPLOYMENT_TARGET` and `CMAKE_OSX_ARCHITECTURES`.
+When using Microsoft Visual Studio (MSVC), you will be requested to provide a path to the pthreads library and its headers using variables `CMAKE_THREAD_LIBS_INIT` and `PTHREADS_INCLUDE_DIR`.
+
+On macOS, you can define different deployment target and architectures from your current system using the variables `CMAKE_OSX_DEPLOYMENT_TARGET` and `CMAKE_OSX_ARCHITECTURES`.
 
 You can specify additional compilation flags using the variable `CMAKE_C_FLAGS`.
 
-CMake can now generate Makefiles, a MSVC solution or an XCode project.
+CMake can now generate Makefiles, a MSVC solution, or an XCode project.
 
 ### Building
+
 After generation, depending on your platform you can navigate to the folder where
 CMake generated the build files and then:
-- On Linux: run `make`
-- On Windows: open the MSVC solution and build it
-- On macOS: open the XCode project and build it
+
+* On Linux: run `make`
+* On Windows: open the MSVC solution and build it
+* On macOS: open the XCode project and build it
 
 Of course you can also use CMake itself to build libpd by running this on the command line:
-```
-    $> cd <path/to/build/files/generated/by/CMake>
-    $> cmake --build .
-```
+
+    cd <path/to/build/files/generated/by/CMake>
+    cmake --build .
+
 
 ### Command-line examples
-Here are examples of how to download, configure and build the latest libpd on the
-command line using CMake.
+
+Here are examples of how to download, configure and build the latest libpd on the command line using CMake.
 
 Linux:
-```
-   $> git clone https://github.com/libpd/libpd
-   $> cd libpd
-   $> git submodule init
-   $> git submodule update
-   $> mkdir build && cd build
-   $> cmake .. -DPD_MULTI:BOOL=ON -DPD_BUILD_C_EXAMPLES:BOOL=ON
-   $> cmake --build .
-```
+
+   git clone https://github.com/libpd/libpd
+   cd libpd
+   git submodule init
+   git submodule update
+   mkdir build && cd build
+   cmake .. -DPD_MULTI:BOOL=ON -DPD_BUILD_C_EXAMPLES:BOOL=ON
+   cmake --build .
 
 Windows / MSVC:
-```
-   $> git clone https://github.com/libpd/libpd
-   $> cd libpd
-   $> git submodule init
-   $> git submodule update
-   $> mkdir build && cd build
-   $> cmake .. -DCMAKE_THREAD_LIBS_INIT:PATH=</path/to/pthreadsVC2.lib> -DPTHREADS_INCLUDE_DIR:PATH=</path/to/pthread/header/files>
-   $> cmake --build .
-```
+
+   git clone https://github.com/libpd/libpd
+   cd libpd
+   git submodule init
+   git submodule update
+   mkdir build && cd build
+   cmake .. -DCMAKE_THREAD_LIBS_INIT:PATH=</path/to/pthreadsVC2.lib> -DPTHREADS_INCLUDE_DIR:PATH=</path/to/pthread/header/files>
+   cmake --build .
 
 ### Limitations
+
 Currently the CMake script is not capable of building the C# or the Java bindings. Please use the makefile for that.      
 
 Known Issues
@@ -477,23 +469,13 @@ Known Issues
 
 ### How do I use libpd in Visual Studio?
 
-Historically, Pd was designed to be built using the open source gcc & make and
-did not directly support being built in Visual Studio on Windows, mainly due to
-differences in C compiler versions.
+Historically, Pd was designed to be built using the open source gcc & make and did not directly support being built in Visual Studio on Windows, mainly due to differences in C compiler versions.
 
-Recently, the code has been adapted and a CMake build script has been developed
-that should allow you to generate a MSVC solution.
-The only important thing you need to be careful about is providing a pthreads
-library compiled for Visual Studio.
-See the section above about building with CMake.
+Recently, the code has been adapted and a CMake build script has been developed that should allow you to generate a MSVC solution. The only important thing you need to be careful about is providing a pthreads library compiled for Visual Studio. See the section above about building with CMake.
 
-Another possible approach is building the libpd C library using gcc and make using MinGW
-in msys on Windows. You can use the resulting .dll, .def, & .lib files with
-Visual Studio and the cpp wrapper is provided as an all header library so it
-should work directly within VS as well.
+Another possible approach is building the libpd C library using gcc and make using MinGW in msys on Windows. You can use the resulting .dll, .def, & .lib files with Visual Studio and the cpp wrapper is provided as an all header library so it should work directly within VS as well.
 
-After building libpd in msys, you can "install" it to a temp directory to get
-only the libs and headers you need:
+After building libpd in msys, you can "install" it to a temp directory to get only the libs and headers you need:
 
     make install prefix=libpd-build
 

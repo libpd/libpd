@@ -32,6 +32,8 @@
 * makefile: added ADDITIONAL_LDFLAGS (Pierre Guillot)
 * makefile: added javadoc & javasrc targets (suggested by Pooya Moradi)
 
+* cmake: added CMakeLists.txt for cmake support (Diego Barrios Romero)
+
 * C: const int tick argument in libpd_process functions (Pierre Guillot)
 * C: const float src argument in libpd_write_array (Pierre Guillot)
 
