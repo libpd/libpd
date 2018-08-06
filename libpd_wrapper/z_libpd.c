@@ -361,9 +361,7 @@ t_atom *libpd_next_atom(t_atom *a) {
 }
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
-  sys_lock();
   sys_printhook = (t_printhook) hook;
-  sys_unlock();
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {

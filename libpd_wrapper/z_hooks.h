@@ -17,7 +17,7 @@
 // in a separate file so they can be used throughout the libpd_wrapper sources,
 // do *not* include this file in a user-facing header
 
-// libpd_printhook is a proxy for the internal sys_printhook
+// no libpd_printhook as libpd_set_printhook() sets internal sys_printhook
 extern t_libpd_banghook libpd_banghook;
 extern t_libpd_floathook libpd_floathook;
 extern t_libpd_symbolhook libpd_symbolhook;
