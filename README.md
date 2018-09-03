@@ -371,7 +371,33 @@ Of course you can also use CMake itself to build libpd by running this on the co
 
     cd <path/to/build/files/generated/by/CMake>
     cmake --build .
+    
+### Windows cross-compilation on Linux
 
+You can build Windows binaries from Linux, using MinGW. This will only build the static and shared libraries, and not the csharp bindings.
+
+The easiest way is to set up a toolchain file for CMake pointing to all the necessary MinGW tools. For debian based distributions the file would contain the following:
+
+    SET(CMAKE_SYSTEM_NAME Windows)
+
+    SET(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)
+    SET(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
+    SET(CMAKE_RC_COMPILER x86_64-w64-mingw32-windres)
+
+    SET(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32)
+
+    SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+    SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+    SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+Note paths and binary names might vary in other distributions.
+
+You can then use the [`CMAKE_TOOLCHAIN_FILE`](https://cmake.org/cmake/help/v3.12/variable/CMAKE_TOOLCHAIN_FILE.html) option to tell CMake to load the settings from your file. So if we save the above file to `$HOME/.local/share/cmake/toolchain-mingw-x86_64-w64.cmake`, then we'd invoke CMake with 
+
+    cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/.local/share/cmake/toolchain-mingw-x86_64-w64.cmake
+    
+followed any other CMake options you'd normally use, and the source directory.
+    
 ### Command-line examples
 
 Here are examples of how to download, configure and build the latest libpd on the command line using CMake.
