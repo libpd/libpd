@@ -1,6 +1,6 @@
-0.11.0: ???
+0.11.0: 2018 Sep
 
-* updated to pd vanilla 0.48-1
+* updated to pd vanilla 0.48-2
 * the libpd C core is now thread safe
 * support for multiple libpd instances is more or less working, see new
   libpd_*_instance() api and pdtest_multi/pdtest_thread C samples,
@@ -65,7 +65,7 @@
 * updated Xcode projects for Xcode 9
 * added Travis-CI support for C (Pierre Guillot)
 
-0.10.0: 2016 September
+0.10.0: 2016 Sep
 
 * updated to pd vanilla 0.47-1
 * fixed divide by 0 when opening a patch by calling sys_startgui() in
@@ -82,13 +82,13 @@
 * python: fixed duplicate symbol error by setting -fcommon
           when building (reported by David Glivar)
 
-0.9.2: 2016 August
+0.9.2: 2016 Aug
 
 * ObjC: fixed bug where audio was not being routed to speaker when initing
         AVAudioSession, also fixes possible session setup fail where the
         PdAudioUnit will not run
 
-0.9.1: 2016 June
+0.9.1: 2016 Jun
 
 * ObjC: fixed wrong selectors in PdMidiListener
 * ObjC: fixed AudioSessionSetProperty deprecations in PdAudioController
