@@ -248,8 +248,8 @@ install:
 	fi
 	install -d $(libdir)
 	install -m 755 $(LIBPD) $(libdir)
-	if [ -e $(LIBPD_IMPLIB) ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
-	if [ -e $(LIBPD_DEF) ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
+	if [ -e '$(LIBPD_IMPLIB)' ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
+	if [ -e '$(LIBPD_DEF)' ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
 uninstall:
 	rm -rf $(includedir)/libpd
