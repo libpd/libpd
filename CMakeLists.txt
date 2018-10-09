@@ -234,6 +234,8 @@ if(MSVC)
     target_link_libraries(libpd PUBLIC Ws2_32)
     target_include_directories(libpd_static PUBLIC ${PTHREADS_INCLUDE_DIR})
     target_include_directories(libpd        PUBLIC ${PTHREADS_INCLUDE_DIR})
+elseif(WIN32)
+    target_link_libraries(libpd PUBLIC -Wl,--export-all-symbols ws2_32 kernel32 -static-libgcc)
 endif()
 target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
