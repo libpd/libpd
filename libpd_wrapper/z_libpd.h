@@ -63,7 +63,7 @@ EXTERN void libpd_unbind(void *p);
 EXTERN int libpd_is_float(t_atom *a);
 EXTERN int libpd_is_symbol(t_atom *a);
 EXTERN float libpd_get_float(t_atom *a);
-EXTERN char *libpd_get_symbol(t_atom *a);
+EXTERN const char *libpd_get_symbol(t_atom *a);
 EXTERN t_atom *libpd_next_atom(t_atom *a);
 
 typedef void (*t_libpd_printhook)(const char *recv);

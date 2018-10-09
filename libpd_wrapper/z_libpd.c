@@ -352,7 +352,7 @@ float libpd_get_float(t_atom *a) {
   return (a)->a_w.w_float;
 }
 
-char *libpd_get_symbol(t_atom *a) {
+const char *libpd_get_symbol(t_atom *a) {
   return (a)->a_w.w_symbol->s_name;
 }
 
