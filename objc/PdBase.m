@@ -54,7 +54,7 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 			[list addObject:num];
 		} else if (libpd_is_symbol(a)) {
 			const char *s = libpd_get_symbol(a);
-			NSString *str = [[NSString alloc] initWithCString:s encoding:NSASCIIStringEncoding];
+			NSString *str = [[NSString alloc] initWithCString:s encoding:NSUTF8StringEncoding];
 			[list addObject:str];
 		} else {
 			NSLog(@"PdBase: element type unsupported: %i", a->a_type);
@@ -69,14 +69,14 @@ static void encodeList(NSArray *list) {
 		if ([object isKindOfClass:[NSNumber class]]) {
 			libpd_add_float(((NSNumber *)object).floatValue);
 		} else if ([object isKindOfClass:[NSString class]]) {
-			if ([(NSString *)object canBeConvertedToEncoding:NSASCIIStringEncoding]) {
-        			libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSASCIIStringEncoding]);
-      			} else {
-        			// If string contains non-ASCII characters, allow a lossy conversion (instead of returning null).
-        			NSData *data = [(NSString *)object dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        			NSString* newString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-        			libpd_add_symbol([newString cStringUsingEncoding:NSASCIIStringEncoding]);
-      			}
+			if ([(NSString *)object canBeConvertedToEncoding:NSUTF8StringEncoding]) {
+				libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSUTF8StringEncoding]);
+			} else {
+				// If string contains non-ASCII characters, allow a lossy conversion (instead of returning null).
+				NSData *data = [(NSString *)object dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+				NSString* newString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+				libpd_add_symbol([newString cStringUsingEncoding:NSUTF8StringEncoding]);
+			}
 		} else {
 			NSLog(@"PdBase: message not supported. %@", [object class]);
 		}
@@ -87,36 +87,36 @@ static void encodeList(NSArray *list) {
 
 static void printHook(const char *s) {
 	if ([delegate respondsToSelector:@selector(receivePrint:)]) {
-		NSString *msg = [[NSString alloc] initWithCString:s encoding:NSASCIIStringEncoding];
+		NSString *msg = [[NSString alloc] initWithCString:s encoding:NSUTF8StringEncoding];
 		[delegate receivePrint:msg];
 	}
 }
 
 static void bangHook(const char *src) {
 	if ([delegate respondsToSelector:@selector(receiveBangFromSource:)]) {
-		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
+		NSString *source = [[NSString alloc] initWithCString:src encoding:NSUTF8StringEncoding];
 		[delegate receiveBangFromSource:source];
 	}
 }
 
 static void floatHook(const char *src, float x) {
 	if ([delegate respondsToSelector:@selector(receiveFloat:fromSource:)]) {
-		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
+		NSString *source = [[NSString alloc] initWithCString:src encoding:NSUTF8StringEncoding];
 		[delegate receiveFloat:x fromSource:source];
 	}
 }
 
 static void symbolHook(const char *src, const char *sym) {
 	if ([delegate respondsToSelector:@selector(receiveSymbol:fromSource:)]) {
-		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
-		NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSASCIIStringEncoding];
+		NSString *source = [[NSString alloc] initWithCString:src encoding:NSUTF8StringEncoding];
+		NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSUTF8StringEncoding];
 		[delegate receiveSymbol:symbol fromSource:source];
 	}
 }
 
 static void listHook(const char *src, int argc, t_atom *argv) {
 	if ([delegate respondsToSelector:@selector(receiveList:fromSource:)]) {
-		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
+		NSString *source = [[NSString alloc] initWithCString:src encoding:NSUTF8StringEncoding];
 		NSArray *args = decodeList(argc, argv);
 		[delegate receiveList:args fromSource:source];
 	}
@@ -124,8 +124,8 @@ static void listHook(const char *src, int argc, t_atom *argv) {
 
 static void messageHook(const char *src, const char* sym, int argc, t_atom *argv) {
 	if ([delegate respondsToSelector:@selector(receiveMessage:withArguments:fromSource:)]) {
-		NSString *source = [[NSString alloc] initWithCString:src encoding:NSASCIIStringEncoding];
-		NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSASCIIStringEncoding];
+		NSString *source = [[NSString alloc] initWithCString:src encoding:NSUTF8StringEncoding];
+		NSString *symbol = [[NSString alloc] initWithCString:sym encoding:NSUTF8StringEncoding];
 		NSArray *args = decodeList(argc, argv);
 		[delegate receiveMessage:symbol withArguments:args fromSource:source];
 	}
@@ -222,8 +222,8 @@ static NSTimer *midiPollTimer;
 
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate pollingEnabled:(BOOL)pollingEnabled {
 	if (messagePollTimer) {
-	  [messagePollTimer invalidate];
-	  messagePollTimer = nil;
+		[messagePollTimer invalidate];
+		messagePollTimer = nil;
 	}
 	delegate = newDelegate;
 	if (delegate && pollingEnabled) {
@@ -271,7 +271,7 @@ static NSTimer *midiPollTimer;
 }
 
 + (void *)subscribe:(NSString *)symbol {
-	return libpd_bind([symbol cStringUsingEncoding:NSASCIIStringEncoding]);
+	return libpd_bind([symbol cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (void)unsubscribe:(void *)subscription {
@@ -279,30 +279,30 @@ static NSTimer *midiPollTimer;
 }
 
 + (int)sendBangToReceiver:(NSString *)receiverName {
-	return libpd_bang([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
+	return libpd_bang([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (int)sendFloat:(float)value toReceiver:(NSString *)receiverName {
-	return libpd_float([receiverName cStringUsingEncoding:NSASCIIStringEncoding], value);
+	return libpd_float([receiverName cStringUsingEncoding:NSUTF8StringEncoding], value);
 }
 
 + (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
-	return libpd_symbol([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-			[symbol cStringUsingEncoding:NSASCIIStringEncoding]);
+	return libpd_symbol([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
+			[symbol cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
 	if (libpd_start_message((int) list.count)) return -100;
 			encodeList(list);
-		return libpd_finish_list([receiverName cStringUsingEncoding:NSASCIIStringEncoding]);
+		return libpd_finish_list([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (int)sendMessage:(NSString *)message withArguments:(NSArray *)list
         toReceiver:(NSString *)receiverName {
 	if (libpd_start_message((int) list.count)) return -100;
 	encodeList(list);
-	return libpd_finish_message([receiverName cStringUsingEncoding:NSASCIIStringEncoding],
-		[message cStringUsingEncoding:NSASCIIStringEncoding]);
+	return libpd_finish_message([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
+		[message cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (void)clearSearchPath {
@@ -310,7 +310,7 @@ static NSTimer *midiPollTimer;
 }
 
 + (void)addToSearchPath:(NSString *)path {
-	libpd_add_to_search_path([path cStringUsingEncoding:NSASCIIStringEncoding]);
+	libpd_add_to_search_path([path cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (int)getBlockSize {
@@ -318,7 +318,7 @@ static NSTimer *midiPollTimer;
 }
 
 + (BOOL)exists:(NSString *)symbol {
-	return (BOOL) libpd_exists([symbol cStringUsingEncoding:NSASCIIStringEncoding]);
+	return (BOOL) libpd_exists([symbol cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (int)openAudioWithSampleRate:(int)samplerate
@@ -358,8 +358,8 @@ static NSTimer *midiPollTimer;
 	if (![[NSFileManager defaultManager] fileExistsAtPath:[pathName stringByAppendingPathComponent:baseName]]) {
 		return NULL;
 	}
-	const char *base = [baseName cStringUsingEncoding:NSASCIIStringEncoding];
-	const char *path = [pathName cStringUsingEncoding:NSASCIIStringEncoding];
+	const char *base = [baseName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char *path = [pathName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_openfile(base, path);
 }
 
@@ -374,18 +374,18 @@ static NSTimer *midiPollTimer;
 }
 
 + (int)arraySizeForArrayNamed:(NSString *)arrayName {
-	return libpd_arraysize([arrayName cStringUsingEncoding:NSASCIIStringEncoding]);
+	return libpd_arraysize([arrayName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 + (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset
               toArray:(float *)destinationArray count:(int)n {
-	const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
+	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_read_array(destinationArray, name, offset, n);
 }
 
 + (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName
       withOffset:(int)offset count:(int)n {
-	const char *name = [arrayName cStringUsingEncoding:NSASCIIStringEncoding];
+	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_write_array(name, offset, sourceArray, n);
 }
 
