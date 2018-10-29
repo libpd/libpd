@@ -1238,7 +1238,7 @@ class PdBase {
                             list.addFloat(f);
                         }
                         else if(a.a_type == A_SYMBOL) {
-                            char* s = a.a_w.w_symbol->s_name;
+                            const char* s = a.a_w.w_symbol->s_name;
                             list.addSymbol((std::string) s);
                         }
                     }
@@ -1258,7 +1258,7 @@ class PdBase {
                             list.addFloat(f);
                         }
                         else if(a.a_type == A_SYMBOL) {
-                            char* s = a.a_w.w_symbol->s_name;
+                            const char* s = a.a_w.w_symbol->s_name;
                             list.addSymbol((std::string) s);
                         }
                     }
