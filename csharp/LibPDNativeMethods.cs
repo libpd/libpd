@@ -57,6 +57,7 @@ namespace LibPDBinding
 	/// Author: Tebjan Halm (tebjan@vvvv.org)
 	/// 
 	/// </summary>
+	[Obsolete("Use the new class based API instead and initialize LibPDBinding.Managed.Pd")]
 	public static partial class LibPD
 	{
 		//only call this once
@@ -66,7 +67,6 @@ namespace LibPDBinding
 		}
 
 		#region Environment
-
 		static void Init ()
 		{
 			SetupHooks ();
@@ -79,7 +79,8 @@ namespace LibPDBinding
 		/// So be careful, it will also call Release() to clear all state.
 		/// The first initialization is done automatically when using a LibPD method.
 		/// </summary>
-		[MethodImpl (MethodImplOptions.Synchronized)] 
+		[MethodImpl (MethodImplOptions.Synchronized)] 		
+		[Obsolete("Use the new class based API instead and initialize a instance of LibPDBinding.Managed.Pd")]
 		public static void ReInit ()
 		{
 			Release ();
@@ -105,6 +106,7 @@ namespace LibPDBinding
 		/// </summary>
 		/// <param name="sym">directory to add</param>
 		[MethodImpl (MethodImplOptions.Synchronized)]
+		[Obsolete("Use searchPaths parameter in LibPDBinding.Managed.Pd()")]
 		public static void AddToSearchPath (string sym)
 		{
 			General.add_to_search_path (sym);
@@ -119,6 +121,7 @@ namespace LibPDBinding
 		/// <exception cref="IOException">
 		///             thrown if the file doesn't exist or can't be opened </exception>
 		[MethodImpl (MethodImplOptions.Synchronized)]
+		[Obsolete("Use LibPDBinding.Managed.Pd.LoadPatch()")]
 		public static int OpenPatch (string filepath)
 		{
 			if (!File.Exists (filepath)) {
@@ -140,7 +143,8 @@ namespace LibPDBinding
 		/// closes a patch; will do nothing if the handle is invalid
 		/// </summary>
 		/// <param name="p">$0 of the patch, as returned by OpenPatch</param>
-		/// <returns>true if file was found and closed</returns>
+		/// <returns>true if file was found and closed</returns>,		
+		[Obsolete("Use LibPDBinding.Managed.Patch.Dispose()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static bool ClosePatch (int p)
 		{
@@ -158,6 +162,7 @@ namespace LibPDBinding
 		/// <param name="s">String representing pd symbol </param>
 		/// <returns> true if and only if the symbol given by s is associated with
 		///         something in pd </returns>
+		[Obsolete]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static bool Exists (string sym)
 		{
@@ -171,6 +176,7 @@ namespace LibPDBinding
 		/// Note: It would be nice to free pd's I/O buffers here, but sys_close_audio
 		/// doesn't seem to do that, and so we'll just skip this for now.
 		/// </summary>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Dispose()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static void Release ()
 		{
@@ -200,6 +206,7 @@ namespace LibPDBinding
 		/// beginning and then forget that this method exists.
 		/// </summary>
 		/// <param name="state"></param>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Start() and LibPDBinding.Managed.Pd.Stop()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static void ComputeAudio (bool state)
 		{
@@ -210,6 +217,7 @@ namespace LibPDBinding
 		/// default pd block size, DEFDACBLKSIZE (currently 64) (aka number
 		/// of samples per tick per channel)
 		/// </summary>
+		[Obsolete("Use LibPDBinding.Managed.Pd.BlockSize")]
 		public static int BlockSize {
 			[MethodImpl(MethodImplOptions.Synchronized)]
 			get {
@@ -224,6 +232,7 @@ namespace LibPDBinding
 		/// <param name="outputChannels"> </param>
 		/// <param name="sampleRate"> </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use parameters inputChannels, outputChannels. and sampleRate in LibPDBinding.Managed.Pd()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int OpenAudio (int inputChannels, int outputChannels, int sampleRate)
 		{
@@ -240,6 +249,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int ProcessRaw (float[] inBuffer, float[] outBuffer)
 		{
@@ -258,6 +268,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer to an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int ProcessRaw (float* inBuffer, float* outBuffer)
 		{
@@ -276,6 +287,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Process()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int Process (int ticks, short[] inBuffer, short[] outBuffer)
 		{
@@ -296,6 +308,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer to an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Process()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int Process (int ticks, short* inBuffer, short* outBuffer)
 		{
@@ -315,6 +328,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Process()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int Process (int ticks, float[] inBuffer, float[] outBuffer)
 		{
@@ -335,6 +349,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer to an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Process()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int Process (int ticks, float* inBuffer, float* outBuffer)
 		{
@@ -353,6 +368,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            must be an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Process()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int Process (int ticks, double[] inBuffer, double[] outBuffer)
 		{
@@ -373,6 +389,7 @@ namespace LibPDBinding
 		/// <param name="outBuffer">
 		///            pointer an array of size outBufferSize from openAudio call </param>
 		/// <returns> error code, 0 on success </returns>
+		[Obsolete("Use LibPDBinding.Managed.Pd.Process()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int Process (int ticks, double* inBuffer, double* outBuffer)
 		{
@@ -388,6 +405,7 @@ namespace LibPDBinding
 		/// </summary>
 		/// <param name="name">Identifier of array</param>
 		/// <returns>array size</returns>
+		[Obsolete("Use LibPDBinding.Managed.PdArray.Size")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int ArraySize (string name)
 		{
@@ -403,6 +421,7 @@ namespace LibPDBinding
 		/// <param name="srcOffset">   index at which to start reading </param>
 		/// <param name="n">           number of values to read </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
+		[Obsolete("Use LibPDBinding.Managed.PdArray.Read()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int ReadArray (float[] destination, string source, int srcOffset, int n)
 		{
@@ -424,6 +443,7 @@ namespace LibPDBinding
 		/// <param name="srcOffset">   index at which to start reading </param>
 		/// <param name="n">           number of values to read </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
+		[Obsolete("Use LibPDBinding.Managed.PdArray.Read()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int ReadArray (float* destination, string source, int srcOffset, int n)
 		{
@@ -438,6 +458,7 @@ namespace LibPDBinding
 		/// <param name="source">      float array to read from </param>
 		/// <param name="n">           number of values to write </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
+		[Obsolete("Use LibPDBinding.Managed.PdArray.Write()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int WriteArray (string destination, int destOffset, float[] source, int n)
 		{
@@ -458,6 +479,7 @@ namespace LibPDBinding
 		/// <param name="source"> pointer to a float array to read from </param>
 		/// <param name="n">         number of values to write </param>
 		/// <returns>            0 on success, or a negative error code on failure </returns>
+		[Obsolete("Use LibPDBinding.Managed.PdArray.Write()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static unsafe int WriteArray (string destination, int destOffset, float* source, int n)
 		{
