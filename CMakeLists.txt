@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.11)
-project (libpd C)
+project (libpd C CXX)
 
 option(PD_UTILS  "Compile utilities" ON)
 option(PD_EXTRA  "Compile extras" ON)
@@ -170,7 +170,9 @@ source_group(pdextra    FILES ${PD_EXTRA_SOURCES})
 source_group(libpd      FILES ${LIBPD_SOURCES})
 source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
+include_directories(cpp)
 include_directories(libpd_wrapper)
+include_directories(libpd_wrapper/util)
 include_directories(pure-data/src)
 
 find_package(Threads REQUIRED)
@@ -262,4 +264,16 @@ if(PD_BUILD_C_EXAMPLES)
         endif()
     endif()
     ADD_EXAMPLE(pdtest_thread)
+endif()
+
+option(BUILD_TESTING "If ON, libpd tests will be built." OFF)
+
+if(BUILD_TESTING)
+    enable_testing()
+    foreach(TESTNAME LoadPatch)
+        add_executable(${TESTNAME}Test tests/${TESTNAME}Test.cpp)
+        target_link_libraries (${TESTNAME}Test libpd)
+    endforeach(TESTNAME)
+    add_test (NAME LoadPatchTest COMMAND LoadPatchTest "${PROJECT_SOURCE_DIR}/samples/c/pdtest/" "test.pd")
+    add_test (NAME LoadPatchExtraTest COMMAND LoadPatchTest "${PROJECT_SOURCE_DIR}/samples/c/pdtest/" "test-extra.pd")
 endif()
