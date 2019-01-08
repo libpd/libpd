@@ -88,6 +88,6 @@ int main(int argc, char **argv)
 
   // start audio processing
   SDL_PauseAudioDevice(dev, 0);
-  emscripten_set_main_loop(main1, 60, 1);
+  emscripten_set_main_loop(main1, 0, 1);
   return 0;
 }
