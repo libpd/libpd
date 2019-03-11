@@ -41,15 +41,15 @@ int sys_pollgui(void);
 
 // (optional) built in pd externals setup functions
 #ifdef LIBPD_EXTRA
-  void bob_tilde_setup();
-  void bonk_tilde_setup();
-  void choice_setup();
-  void fiddle_tilde_setup();
-  void loop_tilde_setup();
-  void lrshift_tilde_setup();
-  void pique_setup();
-  void sigmund_tilde_setup();
-  void stdout_setup();
+  void bob_tilde_setup(void);
+  void bonk_tilde_setup(void);
+  void choice_setup(void);
+  void fiddle_tilde_setup(void);
+  void loop_tilde_setup(void);
+  void lrshift_tilde_setup(void);
+  void pique_setup(void);
+  void sigmund_tilde_setup(void);
+  void stdout_setup(void);
 #endif
 
 static PERTHREAD t_atom *argv = NULL;
