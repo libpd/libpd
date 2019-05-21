@@ -152,7 +152,7 @@ def libpd_release():
 class PdManager:
   def __init__(self, inch, outch, srate, ticks):
     self.__ticks = ticks
-    self.__outbuf = array.array('h', '\x00\x00' * outch * libpd_blocksize())
+    self.__outbuf = array.array('h', b'\x00\x00' * outch * libpd_blocksize())
     libpd_compute_audio(1)
     libpd_init_audio(inch, outch, srate)
   def process(self, inbuf):
