@@ -82,6 +82,14 @@ public class IoUtils {
     directory.mkdirs();
     while ((entry = zin.getNextEntry()) != null) {
       File file = new File(directory, entry.getName());
+      if (!file.getCanonicalPath().startsWith(directory.getCanonicalPath())) {
+        // Ref: https://support.google.com/faqs/answer/9294009
+        throw new SecurityException("Zip Path Traversal Vulnerability: " +
+                    "Zip entry " + entry.getName() + " has " + 
+                    file.getCanonicalPath() + " as its target path. " + 
+                    "But it should not be outside target dir " + directory.getCanonicalPath());
+      }
+      
       files.add(file);
       if (overwrite || !file.exists()) {
         if (entry.isDirectory()) {
