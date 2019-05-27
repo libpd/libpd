@@ -57,6 +57,7 @@ public class IoUtils {
    * @param directory target directory
    * @return list of files that were unpacked, not including files that existed before
    * @throws IOException
+   * @throws SecurityException if zip resource has Path Traversal Vulnerability
    */
   public static List<File> extractZipResource(InputStream in, File directory) throws IOException {
     return extractZipResource(in, directory, false);
@@ -71,6 +72,7 @@ public class IoUtils {
    * @return list of files that were unpacked (if overwrite is false, this list won't include files
    *         that existed before)
    * @throws IOException
+   * @throws SecurityException if zip resource has Path Traversal Vulnerability
    */
   public static List<File> extractZipResource(InputStream in, File directory, boolean overwrite)
       throws IOException {
