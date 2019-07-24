@@ -8,11 +8,16 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 \
+  PLATFORM_CFLAGS = -arch x86_64 -DHAVE_LIBDL \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
-  LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl -Wl,-no_compact_unwind
+  LDFLAGS = -arch x86_64 -dynamiclib -ldl -Wl,-no_compact_unwind
   CSHARP_LDFLAGS = $(LDFLAGS)
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
+  FAT_LIB := $(shell expr `sw_vers -productVersion | cut -f2 -d.` \<= 10.13)
+  ifeq ($(FAT_LIB), 1) # macOS 10.14+ does not build i386
+    PLATFORM_CFLAGS += -arch i386
+    LDFLAGS += -arch i386
+  endif
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC ?= gcc
