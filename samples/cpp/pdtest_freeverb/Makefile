@@ -5,7 +5,7 @@ SOLIB_PREFIX = lib
 ifeq ($(UNAME), Darwin) # Mac
   SOLIB_EXT = dylib
   PLATFORM = mac
-  CXXFLAGS = -D__MACOSX_CORE__
+  CXXFLAGS = -D__MACOSX_CORE__ -DHAVE_UNISTD_H
   AUDIO_API = -framework Foundation -framework CoreAudio
 else
   ifeq ($(OS), Windows_NT) # Windows, use Mingw
