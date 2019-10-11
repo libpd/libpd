@@ -64,8 +64,8 @@ int main(int argc, char **argv)
     libpd_init_audio(1, 2, 44100);
     for (i = 0; i < NINSTANCES; i++)
     {
-        pdinstancevec[i] = pdinstance_new();
-        pd_setinstance(pdinstancevec[i]);
+        pdinstancevec[i] = libpd_new_instance();
+        libpd_set_instance(pdinstancevec[i]);
 
             /* [; pd dsp 1( */
         libpd_start_message(1); // one entry in list
@@ -74,6 +74,8 @@ int main(int argc, char **argv)
 
         file[i] = libpd_openfile(argv[1], (argc > 2 ? argv[2] : "."));
 
+        // start pd vanilla gui from main folder which contains bin/, tcl/, etc
+        // for a macOS .app bundle: /Applications/Pd-#.#-#.app/Contents/Resources
         if (libpd_start_gui("../../../pure-data/"))
             printf("gui startup failed\n");
     }
@@ -82,18 +84,22 @@ int main(int argc, char **argv)
     {
         for (i = 0; i < NINSTANCES; i++)
         {
-            pd_setinstance(pdinstancevec[i]);
+            libpd_set_instance(pdinstancevec[i]);
             libpd_process_float(1, inbuf, outbuf);
-            libpd_poll_gui();
+
+            // when not calling a libpd_process* function, call libpd_pollgui to
+            // update network messaging
+            //libpd_poll_gui();
         }
         waituntil(logicaltime);
     }
 
     for (i = 0; i < NINSTANCES; i++)
     {
-        pd_setinstance(pdinstancevec[i]);
+        libpd_set_instance(pdinstancevec[i]);
         libpd_stop_gui();
         libpd_closefile(file[i]);
+        libpd_free_instance(pdinstancevec[i]);
     }
     return (0);
 }
