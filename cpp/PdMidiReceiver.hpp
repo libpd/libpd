@@ -41,6 +41,9 @@ class PdMidiReceiver {
 
         /// receive a raw MIDI byte (sysex, realtime, etc)
         virtual void receiveMidiByte(const int port, const int byte) {}
+    
+        /// Virtual destructor to avoid warnings in Xcode
+        virtual ~PdMidiReceiver() {}
 };
 
 } // namespace
