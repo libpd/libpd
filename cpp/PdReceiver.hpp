@@ -23,7 +23,7 @@ class PdReceiver {
     public:
 
         /// receieve a print
-        virtual void print(const std::string& message) {};
+        virtual void print(const std::string& message) {}
 
         /// receive a bang
         virtual void receiveBang(const std::string& dest) {}
@@ -39,6 +39,9 @@ class PdReceiver {
 
         /// receive a named message ie. sent from a message box [; dest msg arg1 arg2 arg3... <
         virtual void receiveMessage(const std::string& dest, const std::string& msg, const List& list) {}
+        
+        /// Virtual destructor to avoid warnings in Xcode
+        virtual ~PdReceiver() {}
 };
 
 } // namespace
