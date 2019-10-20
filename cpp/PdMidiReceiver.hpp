@@ -20,6 +20,8 @@ class PdMidiReceiver {
 
     public:
 
+        virtual ~PdMidiReceiver() {}
+
         /// receive a MIDI note on
         virtual void receiveNoteOn(const int channel, const int pitch, const int velocity) {}
         
@@ -41,9 +43,6 @@ class PdMidiReceiver {
 
         /// receive a raw MIDI byte (sysex, realtime, etc)
         virtual void receiveMidiByte(const int port, const int byte) {}
-    
-        /// Virtual destructor to avoid warnings in Xcode
-        virtual ~PdMidiReceiver() {}
 };
 
 } // namespace
