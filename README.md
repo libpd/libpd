@@ -25,18 +25,18 @@ The preferred method to download libpd is to use git.
 
 **Do not download libpd as a zip or tar.gz file from GitHub.**
 
-The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target `pure-data/src/d_arithmetic.o`* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
+The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
 
 To download libpd & checkout the pure-data submodule do the following:
 
-    git clone https://github.com/libpd/libpd.git
-    cd libpd
-    git submodule init
-    git submodule update
+    git clone --recurse-submodules https://github.com/libpd/libpd.git
     
-You should now have a `libpd` directory and the `libpd/pure-data` should contain the pd sources. If not, make sure you ran the git submodule commands in the libpd directory itself.
+You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources. If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
 
-For most uses, it is recommended to checkout the latest stable release version via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
+    cd libpd
+    git submodule update --init --recursive
+
+For most uses, it is recommended to check out the latest stable release version via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
 
     git checkout 0.8.3
 
