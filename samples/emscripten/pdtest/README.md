@@ -24,4 +24,5 @@ first install and activate the emscripten environment. then
 ## run
 
     python -m SimpleHTTPServer 8080 &
-    firefox localhost:8080/pdtest.html
+    firefox localhost:8080/pdtest.html   # plays automatically
+    chromium localhost:8080/index.html   # click to play
