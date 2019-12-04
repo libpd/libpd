@@ -75,6 +75,7 @@ EXTERN t_atom *libpd_next_atom(t_atom *a);
 typedef void (*t_libpd_printhook)(const char *recv);
 typedef void (*t_libpd_banghook)(const char *recv);
 typedef void (*t_libpd_floathook)(const char *recv, float x);
+typedef void (*t_libpd_doublehook)(const char *recv, double x);
 typedef void (*t_libpd_symbolhook)(const char *recv, const char *sym);
 typedef void (*t_libpd_listhook)(const char *recv, int argc, t_atom *argv);
 typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
@@ -83,6 +84,7 @@ typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
 EXTERN void libpd_set_printhook(const t_libpd_printhook hook);
 EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
+EXTERN void libpd_set_doublehook(const t_libpd_doublehook hook);
 EXTERN void libpd_set_symbolhook(const t_libpd_symbolhook hook);
 EXTERN void libpd_set_listhook(const t_libpd_listhook hook);
 EXTERN void libpd_set_messagehook(const t_libpd_messagehook hook);
