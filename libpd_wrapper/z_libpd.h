@@ -40,18 +40,23 @@ EXTERN int libpd_arraysize(const char *name);
 // The parameters of the next two functions are inspired by memcpy.
 EXTERN int libpd_read_array(float *dest, const char *src, int offset, int n);
 EXTERN int libpd_write_array(const char *dest, int offset, const float *src, int n);
+EXTERN int libpd_read_array_double(double *dest, const char *src, int offset, int n);
+EXTERN int libpd_write_array_double(const char *dest, int offset, const double *src, int n);
 
 EXTERN int libpd_bang(const char *recv);
 EXTERN int libpd_float(const char *recv, float x);
+EXTERN int libpd_double(const char *recv, double x);
 EXTERN int libpd_symbol(const char *recv, const char *sym);
 
 EXTERN void libpd_set_float(t_atom *v, float x);
+EXTERN void libpd_set_double(t_atom *v, double x);
 EXTERN void libpd_set_symbol(t_atom *v, const char *sym);
 EXTERN int libpd_list(const char *recv, int argc, t_atom *argv);
 EXTERN int libpd_message(const char *recv, const char *msg, int argc, t_atom *argv);
 
 EXTERN int libpd_start_message(int max_length);
 EXTERN void libpd_add_float(float x);
+EXTERN void libpd_add_double(double x);
 EXTERN void libpd_add_symbol(const char *sym);
 EXTERN int libpd_finish_list(const char *recv);
 EXTERN int libpd_finish_message(const char *recv, const char *msg);
@@ -63,6 +68,7 @@ EXTERN void libpd_unbind(void *p);
 EXTERN int libpd_is_float(t_atom *a);
 EXTERN int libpd_is_symbol(t_atom *a);
 EXTERN float libpd_get_float(t_atom *a);
+EXTERN double libpd_get_double(t_atom *a);
 EXTERN const char *libpd_get_symbol(t_atom *a);
 EXTERN t_atom *libpd_next_atom(t_atom *a);
 

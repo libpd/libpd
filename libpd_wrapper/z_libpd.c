@@ -253,7 +253,25 @@ int libpd_write_array(const char *name, int offset, const float *src, int n) {
   return 0;
 }
 
+int libpd_read_array_double(double *dest, const char *name, int offset, int n) {
+  sys_lock();
+  MEMCPY(*dest++, (vec++)->w_float)
+  sys_unlock();
+  return 0;
+}
+
+int libpd_write_array_double(const char *name, int offset, const double *src, int n) {
+  sys_lock();
+  MEMCPY((vec++)->w_float, *src++)
+  sys_unlock();
+  return 0;
+}
+
 void libpd_set_float(t_atom *v, float x) {
+  SETFLOAT(v, x);
+}
+
+void libpd_set_double(t_atom *v, double x) {
   SETFLOAT(v, x);
 }
 
@@ -309,6 +327,9 @@ int libpd_start_message(int max_length) {
 void libpd_add_float(float x) {
   ADD_ARG(SETFLOAT);
 }
+void libpd_add_double(double x) {
+  ADD_ARG(SETFLOAT);
+}
 
 void libpd_add_symbol(const char *s) {
   t_symbol *x;
@@ -349,6 +370,9 @@ int libpd_is_symbol(t_atom *a) {
 }
 
 float libpd_get_float(t_atom *a) {
+  return (a)->a_w.w_float;
+}
+double libpd_get_double(t_atom *a) {
   return (a)->a_w.w_float;
 }
 
@@ -398,7 +422,7 @@ int libpd_symbol(const char *recv, const char *sym) {
   return 0;
 }
 
-int libpd_float(const char *recv, float x) {
+static int libpd_dofloat(const char *recv, t_float x) {
   void *obj;
   sys_lock();
   obj = get_object(recv);
@@ -410,6 +434,12 @@ int libpd_float(const char *recv, float x) {
   pd_float(obj, x);
   sys_unlock();
   return 0;
+}
+int libpd_float(const char *recv, float x) {
+  return libpd_dofloat(recv, x);
+}
+int libpd_double(const char *recv, double x) {
+  return libpd_dofloat(recv, x);
 }
 
 int libpd_bang(const char *recv) {
