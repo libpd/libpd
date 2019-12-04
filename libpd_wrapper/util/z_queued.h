@@ -21,6 +21,7 @@ extern "C"
 EXTERN void libpd_set_queued_printhook(const t_libpd_printhook hook);
 EXTERN void libpd_set_queued_banghook(const t_libpd_banghook hook);
 EXTERN void libpd_set_queued_floathook(const t_libpd_floathook hook);
+EXTERN void libpd_set_queued_doublehook(const t_libpd_doublehook hook);
 EXTERN void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook);
 EXTERN void libpd_set_queued_listhook(const t_libpd_listhook hook);
 EXTERN void libpd_set_queued_messagehook(const t_libpd_messagehook hook);
