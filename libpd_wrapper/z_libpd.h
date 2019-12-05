@@ -19,7 +19,7 @@ extern "C"
 
 #include "m_pd.h"
 
-/// \section Initializing Pd
+/* initializing pd */
 
 /// initialize libpd, it is safe to call this more than once
 /// returns 0 on success or -1 if libpd was already initialized
@@ -106,7 +106,7 @@ EXTERN int libpd_read_array(float *dest, const char *name, int offset, int n);
 EXTERN int libpd_write_array(const char *name, int offset,
 	const float *src, int n);
 
-/// \section Sending Messages to Pd
+/* sending messages to pd */
 
 /// send a bang to a destination receiver
 /// ex: libpd_bang("foo") will send a bang to [s foo] on the next tick
@@ -123,7 +123,7 @@ EXTERN int libpd_float(const char *recv, float x);
 /// returns 0 on success or -1 if receiver name is non-existent
 EXTERN int libpd_symbol(const char *recv, const char *symbol);
 
-/// \subsection Sending Compound Messages: Sequenced Function Calls
+/* sending compound messages: sequenced function calls */
 
 /// start composition of a new list or typed message of up to max element length
 /// messages can be of a smaller length as max length is only an upper bound
@@ -157,7 +157,7 @@ EXTERN int libpd_finish_list(const char *recv);
 ///     libpd_finish_message("pd", "dsp");
 EXTERN int libpd_finish_message(const char *recv, const char *msg);
 
-/// \subsection Sending Compound Messages: Atom Array
+/* sending compound messages: atom array */
 
 /// write a float value to the given t_atom
 EXTERN void libpd_set_float(t_atom *a, float x);
@@ -184,7 +184,7 @@ EXTERN int libpd_list(const char *recv, int argc, t_atom *argv);
 EXTERN int libpd_message(const char *recv, const char *msg,
 	int argc, t_atom *argv);
 
-/// \Section Receiving Messages from Pd
+/* receiving messages from pd */
 
 /// subscribe to messages sent to a source receiver
 /// ex: libpd_bind("foo") adds a "virtual" [r foo] which forwards messages to
@@ -293,7 +293,7 @@ EXTERN const char *libpd_get_symbol(t_atom *a);
 /// returns next atom or NULL, assuming the atom vector is NULL-terminated
 EXTERN t_atom *libpd_next_atom(t_atom *a);
 
-/// \section Sending MIDI Messages to Pd
+/* sending MIDI messages to pd */
 
 /// send a MIDI note on message to [notein] objects
 /// channel is 0-indexed, pitch is 0-127, and velocity is 0-127
@@ -348,7 +348,7 @@ EXTERN int libpd_sysex(int port, int byte);
 /// returns 0 on success or -1 if an argument is out of range
 EXTERN int libpd_sysrealtime(int port, int byte);
 
-/// \section Receiving MIDI Messages from Pd
+/* receiving MIDI messages from pd */
 
 /// MIDI note on receive hook signature
 /// channel is 0-indexed, pitch is 0-127, and value is 0-127
@@ -428,7 +428,7 @@ EXTERN void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 /// note: avoid calling this while DSP is running
 EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
-/// \section GUI
+/* GUI */
 
 /// open the current patches within a Pd vanilla GUI
 /// requires the path to Pd's main folder that contains bin/, tcl/, etc
@@ -472,7 +472,7 @@ EXTERN t_pdinstance *libpd_get_instance(int index);
 /// returns number or 1 when libpd is not compiled with PDINSTANCE
 EXTERN int libpd_num_instances(void);
 
-/// \section Log Level
+/* log level */
 
 /// set verbose print state: 0 or 1
 EXTERN void libpd_set_verbose(int verbose);
