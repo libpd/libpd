@@ -13,7 +13,13 @@
 
 #include "m_pd.h"
 
+// internal "virtual" libpd receive object which forwards events to hooks
+// do *not* include this file in a user-facing header
+
+// set up the libpd source receiver class
 void libpdreceive_setup(void);
+
+// create a new libpd source receiver with a given name symbol
 void *libpdreceive_new(t_symbol *);
 
 #endif

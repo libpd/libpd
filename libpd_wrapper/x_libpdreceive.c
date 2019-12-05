@@ -9,7 +9,6 @@
  */
 
 #include <stdio.h>
-#include "m_pd.h"
 #include "x_libpdreceive.h"
 #include "z_libpd.h"
 #include "z_hooks.h"
@@ -59,7 +58,7 @@ static void *libpdreceive_donew(t_symbol *s) {
   return x;
 }
 
-// This is exposed in the libpd API so must set the lock.
+// this is exposed in the libpd API so must set the lock
 void *libpdreceive_new(t_symbol *s) {
   t_libpdrec *x;
   sys_lock();

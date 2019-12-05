@@ -13,8 +13,7 @@
 
 #include "z_libpd.h"
 
-// the internal hooks
-// in a separate file so they can be used throughout the libpd_wrapper sources,
+// internal hooks
 // do *not* include this file in a user-facing header
 
 // no libpd_printhook as libpd_set_printhook() sets internal sys_printhook
