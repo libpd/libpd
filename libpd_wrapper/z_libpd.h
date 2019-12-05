@@ -36,7 +36,7 @@ EXTERN void libpd_clear_search_path(void);
 /// unlike desktop Pd, *no* search paths are set by default (ie. extra)
 EXTERN void libpd_add_to_search_path(const char *path);
 
-/// \section Opening Patches
+/* opening patches */
 
 /// open a patch by filename and parent dir path
 /// returns an opaque patch handle pointer or NULL on failure
@@ -48,7 +48,7 @@ EXTERN void libpd_closefile(void *p);
 /// returns the $0 id of the patch handle pointer
 EXTERN int libpd_getdollarzero(void *p);
 
-/// \section Audio Processing
+/* audio processing */
 
 /// returns the block size of Pd
 EXTERN int libpd_blocksize(void);
@@ -88,7 +88,7 @@ EXTERN int libpd_process_double(const int ticks,
 /// returns 0 on success
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
 
-/// \section Array Access
+/* array access */
 
 /// returns the size of an array by name or negative error code if non-existent
 EXTERN int libpd_arraysize(const char *name);
@@ -445,7 +445,7 @@ EXTERN void libpd_stop_gui(void);
 ///       useful to call repeatedly when idle for more throughput
 EXTERN void libpd_poll_gui(void);
 
-/// \section Multiple Instances
+/* multiple instances */
 
 /// create a new pd instance
 /// returns new instance or NULL when libpd is not compiled with PDINSTANCE
