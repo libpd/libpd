@@ -86,7 +86,7 @@ class PdBase {
         /// PdReceiver and PdMidiReceiver implementations
         ///
         /// the queued ringbuffers are useful when you need to receive events
-        /// on a gui thread and don't want to use locking (aka the mutex)
+        /// on a gui thread and don't want to use locking
         ///
         /// return true if setup successfully
         ///
@@ -125,12 +125,12 @@ class PdBase {
 
     /// \section Opening Patches
 
-        /// open a patch file (aka somefile.pd) in a specified path
+        /// open a patch file (aka somefile.pd) at a specified parent dir path
         /// returns a Patch object
         ///
         /// use Patch::isValid() to check if a patch was opened successfully:
         ///
-        ///     Patch p1 = pd.openPatch("somefile.pd", "/some/path/");
+        ///     Patch p1 = pd.openPatch("somefile.pd", "/some/dir/path/");
         ///     if(!p1.isValid()) {
         ///         cout << "aww ... p1 couldn't be opened" << std::endl;
         ///     }
@@ -168,8 +168,8 @@ class PdBase {
         virtual void closePatch(const std::string& patch) {
             // [; pd-name menuclose 1(
             std::string patchname = (std::string) "pd-"+patch;
-            libpd_start_message(PdContext::instance().maxMsgLen);
-            libpd_add_float(1.0f);
+            libpd_start_message(1);
+            libpd_add_float(1);
             libpd_finish_message(patchname.c_str(), "menuclose");
         }
 
@@ -293,7 +293,7 @@ class PdBase {
     /// process the internal message queue if using the ringbuffer
     ///
     /// internally, libpd will use a ringbuffer to pass messages & midi without
-    /// needing to require locking (mutexes) if you call init() with queued = true
+    /// needing to require locking if you call init() with queued = true
     ///
     /// call these in a loop somewhere in order to receive waiting messages
     /// or midi data which are then sent to your PdReceiver & PdMidiReceiver
@@ -527,7 +527,7 @@ class PdBase {
     /// * pitch               0 - 127
     /// * velocity            0 - 127
     /// * controller value    0 - 127
-    /// * program value       1 - 128
+    /// * program value       0 - 127
     /// * bend value          -8192 - 8191
     /// * touch value         0 - 127
     ///
@@ -550,9 +550,6 @@ class PdBase {
         }
 
         /// send a MIDI program change
-        ///
-        /// in pd: [pgmin] and [pgmout] are 0 - 127
-        ///
         virtual void sendProgramChange(const int channel, const int value) {
             libpd_programchange(channel, value);
         }
@@ -975,7 +972,6 @@ class PdBase {
 
         /// get the blocksize of pd (sample length per channel)
         static int blockSize() {
-            // shouldn't need to lock this for now, it's always 64
             return libpd_blocksize();
         }
 
