@@ -90,6 +90,8 @@ int libpd_init(void) {
   sys_set_audio_api(API_DUMMY);
   STUFF->st_searchpath = NULL;
   sys_libdir = gensym("");
+  post("pd %d.%d.%d%s", PD_MAJOR_VERSION, PD_MINOR_VERSION,
+    PD_BUGFIX_VERSION, PD_TEST_VERSION);
 #ifdef LIBPD_EXTRA
   bob_tilde_setup();
   bonk_tilde_setup();
