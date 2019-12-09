@@ -21,7 +21,7 @@ extern "C"
 
 /* initializing pd */
 
-/// initialize libpd, it is safe to call this more than once
+/// initialize libpd; it is safe to call this more than once
 /// returns 0 on success or -1 if libpd was already initialized
 /// note: sets SIGFPE handler to keep bad pd patches from crashing due to divide
 ///       by 0, set any custom handling after calling this function
@@ -250,27 +250,27 @@ typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
     int argc, t_atom *argv);
 
 /// set the print receiver hook, prints to stdout by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_printhook(const t_libpd_printhook hook);
 
 /// set the bang receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 
 /// set the float receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
 
 /// set the symbol receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_symbolhook(const t_libpd_symbolhook hook);
 
 /// set the list receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_listhook(const t_libpd_listhook hook);
 
 /// set the message receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_messagehook(const t_libpd_messagehook hook);
 
 /// returns 1 if the atom is a float type
@@ -395,37 +395,37 @@ typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
 typedef void (*t_libpd_midibytehook)(int port, int byte);
 
 /// set the MIDI note on hook to receive from [noteout] objects, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_noteonhook(const t_libpd_noteonhook hook);
 
 /// set the MIDI control change hook to receive from [ctlout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_controlchangehook(const t_libpd_controlchangehook hook);
 
 /// set the MIDI program change hook to receive from [pgmout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_programchangehook(const t_libpd_programchangehook hook);
 
 /// set the MIDI pitch bend hook to receive from [bendout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook);
 
 /// set the MIDI after touch hook to receive from [touchout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook);
 
 /// set the MIDI poly after touch hook to receive from [polytouchout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 
 /// set the raw MIDI byte hook to receive from [midiout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
 /* GUI */

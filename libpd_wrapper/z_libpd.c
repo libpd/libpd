@@ -40,7 +40,7 @@ int sys_startgui(const char *libdir);
 void sys_stopgui(void);
 int sys_pollgui(void);
 
-// (optional) built in pd core externals setup functions
+// (optional) setup functions for built-in "extra" externals
 #ifdef LIBPD_EXTRA
   void bob_tilde_setup(void);
   void bonk_tilde_setup(void);

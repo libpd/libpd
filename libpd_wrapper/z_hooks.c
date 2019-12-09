@@ -11,7 +11,6 @@
  
 #include "z_hooks.h"
 
-// libpd_printhook is sys_printhook
 t_libpd_banghook libpd_banghook = NULL;
 t_libpd_floathook libpd_floathook = NULL;
 t_libpd_symbolhook libpd_symbolhook = NULL;
