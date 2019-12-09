@@ -31,7 +31,7 @@ CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
 
 $(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD)
 	g++ -o $(TARGET) $^ $(LIBPD)
-	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
+	if [ "$(PLATFORM)" = "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
 
 $(LIBPD):
 	cd $(LIBPD_DIR) && make UTIL=true EXTRA=true
@@ -41,5 +41,5 @@ clean:
 
 clobber: clean
 	rm -f $(TARGET)
-	if [ $(PLATFORM) == "mac" ]; then rm -rf ./libs; fi
+	if [ "$(PLATFORM)" = "mac" ]; then rm -rf ./libs; fi
 	cd $(LIBPD_DIR) && make clobber

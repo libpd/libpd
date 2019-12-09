@@ -3,4 +3,4 @@
 	url = git://github.com/nettoyeurny/opensl_stream.git
 [submodule "pure-data"]
 	path = pure-data
-	url = git://git.code.sf.net/p/pure-data/pure-data
+	url = git://github.com/pure-data/pure-data
