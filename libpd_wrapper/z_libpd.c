@@ -160,6 +160,9 @@ int libpd_init_audio(int inChans, int outChans, int sampleRate) {
   return 0;
 }
 
+static const t_sample sample_to_short = SHRT_MAX,
+                   short_to_sample = 1.0 / (t_sample) SHRT_MAX;
+
 #define PROCESS_RAW(_x, _y) \
   size_t n_in = STUFF->st_inchannels * DEFDACBLKSIZE; \
   size_t n_out = STUFF->st_outchannels * DEFDACBLKSIZE; \
@@ -178,24 +181,17 @@ int libpd_init_audio(int inChans, int outChans, int sampleRate) {
   sys_unlock(); \
   return 0; 
 
-int libpd_process_raw_short(const short *inBuffer, short *outBuffer) {
-  PROCESS_RAW(* short_to_sample, * sample_to_short)
+int libpd_process_raw(const float *inBuffer, float *outBuffer) {
+  PROCESS_RAW(,)
 }
 
-int libpd_process_raw_float(const float *inBuffer, float *outBuffer) {
-  PROCESS_RAW(,)
+int libpd_process_raw_short(const short *inBuffer, short *outBuffer) {
+  PROCESS_RAW(* short_to_sample, * sample_to_short)
 }
 
 int libpd_process_raw_double(const double *inBuffer, double *outBuffer) {
   PROCESS_RAW(,)
 }
- 
-int libpd_process_raw(const float *inBuffer, float *outBuffer) {
-  return libpd_process_raw_float(inBuffer, outBuffer);
-}
-
-static const t_sample sample_to_short = SHRT_MAX,
-                   short_to_sample = 1.0 / (t_sample) SHRT_MAX;
 
 #define PROCESS(_x, _y) \
   int i, j, k; \

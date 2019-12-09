@@ -30,7 +30,6 @@ EXTERN int libpd_blocksize(void);
 EXTERN int libpd_init_audio(int inChans, int outChans, int sampleRate);
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
 EXTERN int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
-EXTERN int libpd_process_raw_float(const float *inBuffer, float *outBuffer);
 EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 EXTERN int libpd_process_short(const int ticks,
     const short *inBuffer, short *outBuffer);
