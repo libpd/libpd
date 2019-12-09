@@ -1,6 +1,4 @@
 import pyaudio
-import wave
-import sys
 from pylibpd import *
 
 p = pyaudio.PyAudio()
@@ -28,4 +26,3 @@ while 1:
 stream.close()
 p.terminate()
 libpd_release()
-
