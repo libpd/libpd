@@ -21,7 +21,7 @@ extern "C"
 EXTERN int libpd_init(void);
 EXTERN void libpd_clear_search_path(void);
 EXTERN void libpd_add_to_search_path(const char *sym);
-
+    
 EXTERN void *libpd_openfile(const char *basename, const char *dirname);
 EXTERN void libpd_closefile(void *p);
 EXTERN int libpd_getdollarzero(void *p);
@@ -34,15 +34,15 @@ EXTERN int libpd_process_raw_float(const float *inBuffer, float *outBuffer);
 EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 EXTERN int libpd_process_short(const int ticks,
     const short *inBuffer, short *outBuffer);
-EXTERN int libpd_process_float(int ticks,
+EXTERN int libpd_process_float(const int ticks,
     const float *inBuffer, float *outBuffer);
-EXTERN int libpd_process_double(int ticks,
+EXTERN int libpd_process_double(const int ticks,
     const double *inBuffer, double *outBuffer);
 
 EXTERN int libpd_arraysize(const char *name);
 // The parameters of the next two functions are inspired by memcpy.
 EXTERN int libpd_read_array(float *dest, const char *src, int offset, int n);
-EXTERN int libpd_write_array(const char *dest, int offset, float *src, int n);
+EXTERN int libpd_write_array(const char *dest, int offset, const float *src, int n);
 
 EXTERN int libpd_bang(const char *recv);
 EXTERN int libpd_float(const char *recv, float x);
@@ -66,7 +66,7 @@ EXTERN void libpd_unbind(void *p);
 EXTERN int libpd_is_float(t_atom *a);
 EXTERN int libpd_is_symbol(t_atom *a);
 EXTERN float libpd_get_float(t_atom *a);
-EXTERN char *libpd_get_symbol(t_atom *a);
+EXTERN const char *libpd_get_symbol(t_atom *a);
 EXTERN t_atom *libpd_next_atom(t_atom *a);
 
 typedef void (*t_libpd_printhook)(const char *recv);
@@ -115,13 +115,17 @@ EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
 /// open the current patches within a Pd vanilla GUI
 /// requires the path to Pd's main folder that contains bin/, tcl/, etc
+/// for a macOS .app bundle: /path/to/Pd-#.#-#.app/Contents/Resources
 /// returns 0 on success
 EXTERN int libpd_start_gui(char *path);
 
 /// stop the Pd vanilla GUI
 EXTERN void libpd_stop_gui(void);
 
-/// update and handle any GUI messages
+/// manually update and handle any GUI messages
+/// this is called automatically when using a libpd_process* function,
+/// also facilitates network message processing, etc so it can be useful to
+/// call repeatedly when idle for more throughput
 EXTERN void libpd_poll_gui(void);
 
 /// \section Multiple Instances
@@ -150,6 +154,14 @@ EXTERN t_pdinstance *libpd_get_instance(int index);
 /// get the number of pd instances
 /// returns 1 when libpd is not compiled with PDINSTANCE
 EXTERN int libpd_num_instances(void);
+
+/// \section Log Level
+
+/// set verbose print state: 0 or 1
+EXTERN void libpd_set_verbose(int verbose);
+
+/// get the verbose print state: 0 or 1
+EXTERN int libpd_get_verbose(void);
 
 #ifdef __cplusplus
 }

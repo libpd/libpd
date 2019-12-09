@@ -3,6 +3,7 @@
 libs/libpd.*
 libs/libpdcpp.*
 libs/libpdnative.*
+libs/pdnative.*
 
 # python
 python/pylibpd_wrap.c
@@ -36,6 +37,7 @@ samples/csharp/**/obj/*
 samples/csharp/**/bin/*
 csharp/obj/*
 csharp/bin/*
+libs/pd.*
 libs/libpd.*
 libs/libpdnative.*
 libs/libpdcsharp.*
@@ -47,3 +49,6 @@ packages/*
 
 # java
 java-build/*
+javadoc
+libs/libpd-sources*
+*.coverage

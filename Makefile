@@ -1,40 +1,55 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
+LIBPD_IMPLIB =
+LIBPD_DEF =
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -DHAVE_LIBDL -arch x86_64 -arch i386 -g \
+  PLATFORM_CFLAGS = -arch x86_64 -DHAVE_LIBDL \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
-  LDFLAGS = -arch x86_64 -arch i386 -dynamiclib -ldl
+  LDFLAGS = -arch x86_64 -dynamiclib -ldl -Wl,-no_compact_unwind
   CSHARP_LDFLAGS = $(LDFLAGS)
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
+  FAT_LIB := $(shell expr `sw_vers -productVersion | cut -f2 -d.` \<= 10.13)
+  ifeq ($(FAT_LIB), 1) # macOS 10.14+ does not build i386
+    PLATFORM_CFLAGS += -arch i386
+    LDFLAGS += -arch i386
+  endif
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
-    CC = gcc
+    CC ?= gcc
     SOLIB_EXT = dll
     SOLIB_PREFIX =
+    LIBPD_IMPLIB = libs/libpd.lib
+    LIBPD_DEF = libs/libpd.def
     PDNATIVE_PLATFORM = windows
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
-    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32
-    LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpd.def \
-      -Wl,--out-implib=libs/libpd.lib
+    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
+    LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=$(LIBPD_DEF) \
+      -Wl,--out-implib=$(LIBPD_IMPLIB)
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
-      -static-libgcc -Wl,--out-implib=libs/libpdcsharp.lib
+      -Wl,--out-implib=libs/libpdcsharp.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
-  else  # Assume Linux
+  else  # Linux or *BSD
     SOLIB_EXT = so
-    PDNATIVE_PLATFORM = linux
     PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
-    JAVA_HOME ?= /usr/lib/jvm/default-java
-    PLATFORM_CFLAGS = -DHAVE_LIBDL -Wno-int-to-pointer-cast \
-      -Wno-pointer-to-int-cast -fPIC -I"$(JAVA_HOME)/include" \
-      -I"$(JAVA_HOME)/include/linux"
-    LDFLAGS = -shared -ldl -Wl,-Bsymbolic
+    PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC
+    LDFLAGS = -shared -Wl,-Bsymbolic
+    ifeq ($(UNAME), Linux)
+      PDNATIVE_PLATFORM = linux
+      JAVA_HOME ?= /usr/lib/jvm/default-java
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -DHAVE_LIBDL
+      LDFLAGS += -ldl
+    else ifeq ($(UNAME), FreeBSD)
+      PDNATIVE_PLATFORM = FreeBSD
+      JAVA_HOME ?= /usr/local/openjdk8
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/"
+    endif
     CSHARP_LDFLAGS = $(LDFLAGS)
     JAVA_LDFLAGS = $(LDFLAGS)
   endif
@@ -51,11 +66,13 @@ PD_FILES = \
     pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
     pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
     pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
+    pure-data/src/g_editor_extras.c \
     pure-data/src/g_graph.c pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c \
     pure-data/src/g_hslider.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c \
     pure-data/src/g_numbox.c pure-data/src/g_readwrite.c \
     pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_template.c \
     pure-data/src/g_text.c pure-data/src/g_toggle.c pure-data/src/g_traversal.c \
+    pure-data/src/g_undo.c \
     pure-data/src/g_vdial.c pure-data/src/g_vslider.c pure-data/src/g_vumeter.c \
     pure-data/src/m_atom.c pure-data/src/m_binbuf.c pure-data/src/m_class.c \
     pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
@@ -85,6 +102,7 @@ LIBPD_UTILS = \
 
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
+    java/org/puredata/core/PdBaseloader.java \
     java/org/puredata/core/NativeLoader.java \
     java/org/puredata/core/PdListener.java \
     java/org/puredata/core/PdMidiListener.java \
@@ -92,6 +110,11 @@ PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdReceiver.java \
     java/org/puredata/core/utils/IoUtils.java \
     java/org/puredata/core/utils/PdDispatcher.java
+
+# additional Java source jar files
+PDJAVA_SRC_FILES = \
+	.classpath \
+	.project
 
 JNI_SOUND = jni/z_jni_plain.c
 
@@ -116,9 +139,9 @@ ifeq ($(MULTI), true)
 endif
 
 # conditional optimizations or debug settings
-OPT_CFLAGS = -O3
+OPT_CFLAGS = -ffast-math -funroll-loops -fomit-frame-pointer -O3
 ifeq ($(DEBUG), true)
-    OPT_CFLAGS = -Wall
+    OPT_CFLAGS = -g -O0
 endif
 
 # conditional to set numeric locale to default "C"
@@ -152,20 +175,29 @@ libdir ?= $(prefix)/lib
 JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
-LIBPD = libs/libpd.$(SOLIB_EXT)
+ifeq ($(OS), Windows_NT)
+	LIBPD = libs/pd.$(SOLIB_EXT)
+else
+	LIBPD = libs/libpd.$(SOLIB_EXT)
+endif
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
-PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)/
+PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PDNATIVE_ARCH)
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
+PDJAVA_SRC = libs/libpd-sources.jar
+PDJAVA_DOC = javadoc
 
 CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
          $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
          $(ADDITIONAL_CFLAGS)
+LDFLAGS += $(ADDITIONAL_LDFLAGS)
+CSHARP_LDFLAGS += $(ADDITIONAL_LDFLAGS)
+JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
-.PHONY: libpd csharplib cpplib javalib install uninstall clean clobber
+.PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
 
 libpd: $(LIBPD)
 
@@ -184,8 +216,16 @@ $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${
 	cp $(PDJAVA_NATIVE) libs/
 
 $(PDJAVA_JAR): $(PDJAVA_NATIVE) $(PDJAVA_JAR_CLASSES)
-	javac -d $(PDJAVA_BUILD) $(PDJAVA_JAR_CLASSES)
+	javac -classpath java -d $(PDJAVA_BUILD) $(PDJAVA_JAR_CLASSES)
 	jar -cvf $(PDJAVA_JAR) -C $(PDJAVA_BUILD) org/puredata/
+
+javadoc: $(PDJAVA_JAR_CLASSES)
+	javadoc -d $(PDJAVA_DOC) -sourcepath java org.puredata.core
+
+javasrc: $(PDJAVA_SRC)
+
+$(PDJAVA_SRC): $(PDJAVA_JAR_FILES)
+	jar -cvf $(PDJAVA_SRC) $(PDJAVA_SRC_FILES) -C java org
 
 csharplib: $(PDCSHARP)
 
@@ -194,12 +234,13 @@ $(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 
 clean:
 	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
-	rm -f ${PD_UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
+	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(PDCSHARP) $(PDJAVA_NATIVE) $(PDJAVA_JAR)
-	rm -f libs/`basename $(PDJAVA_NATIVE)`
-	rm -rf $(PDJAVA_BUILD)
+	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF)
+	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
+	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
+	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
 
 # optional install headers & libs based on build type: UTIL=true and/or windows
 install:
@@ -214,9 +255,9 @@ install:
 	fi
 	install -d $(libdir)
 	install -m 755 $(LIBPD) $(libdir)
-	if [ -e ${LIBPD:.$(SOLIB_EXT)=.def} ]; then install -m 755 ${LIBPD:.$(SOLIB_EXT)=.def} $(libdir); fi
-	if [ -e ${LIBPD:.$(SOLIB_EXT)=.lib} ]; then install -m 755 ${LIBPD:.$(SOLIB_EXT)=.lib} $(libdir); fi
+	if [ -e '$(LIBPD_IMPLIB)' ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
+	if [ -e '$(LIBPD_DEF)' ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
 uninstall:
 	rm -rf $(includedir)/libpd
-	rm -f $(libdir)/`basename $(LIBPD)`
+	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_IMPLIB)` $(libdir)/`basename $(LIBPD_DEF)`

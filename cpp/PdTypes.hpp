@@ -58,7 +58,7 @@ class Patch {
         /// get the patch filename
         std::string filename() const {return _filename;}
 
-        /// get the parent path for the file
+        /// get the parent dir path for the file
         std::string path() const {return _path;}
 
         /// get the unique instance $0 ID as a string
@@ -341,7 +341,7 @@ struct FinishMessage {
             dest(dest), msg(msg) {}
 };
 
-/// /section Pd stream interface midi objects
+/// \section Pd stream interface midi objects
 /// ref: http://www.gweep.net/~prefect/eng/reference/protocol/midispec.html
 
 /// send a note on event (set vel = 0 for noteoff)

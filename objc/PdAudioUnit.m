@@ -7,6 +7,8 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import "PdAudioUnit.h"
 #import "PdBase.h"
@@ -16,24 +18,22 @@
 static const AudioUnitElement kInputElement = 1;
 static const AudioUnitElement kOutputElement = 0;
 
-@interface PdAudioUnit () {
-@private
-	BOOL _inputEnabled;
-	BOOL _initialized;
-	int _blockSizeAsLog;
-}
+@interface PdAudioUnit ()
 
-- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled;
+// create and start the audio unit
+- (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate
+                     numberChannels:(int)numChannels
+                     inputEnabled:(BOOL)inputEnabled;
+
+// stop and release the audio unit
 - (void)destroyAudioUnit;
+
+// create basic RemoteIO audio unit description
 - (AudioComponentDescription)ioDescription;
+
 @end
 
 @implementation PdAudioUnit
-
-//@synthesize audioUnit = audioUnit_;
-//@synthesize active = active_;
-
-#pragma mark - Init / Dealloc
 
 - (instancetype)init {
 	self = [super init];
@@ -47,23 +47,6 @@ static const AudioUnitElement kOutputElement = 0;
 
 - (void)dealloc {
 	[self destroyAudioUnit];
-}
-
-#pragma mark - Public Methods
-
-- (void)setActive:(BOOL)active {
-	if (!_initialized) {
-		return;
-	}
-	if (active == _active) {
-		return;
-	}
-	if (active) {
-		AU_RETURN_IF_ERROR(AudioOutputUnitStart(_audioUnit));
-	} else {
-		AU_RETURN_IF_ERROR(AudioOutputUnitStop(_audioUnit));
-	}
-	_active = active;
 }
 
 - (int)configureWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
@@ -83,9 +66,9 @@ static const AudioUnitElement kOutputElement = 0;
 		AU_LOG(@"Audio Unit not initialized");
 		return;
 	}
-	
+
 	UInt32 sizeASBD = sizeof(AudioStreamBasicDescription);
-	
+
 	if (_inputEnabled) {
 		AudioStreamBasicDescription inputStreamDescription;
 		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
@@ -107,7 +90,7 @@ static const AudioUnitElement kOutputElement = 0;
 	} else {
 		AU_LOG(@"no input ASBD");
 	}
-	
+
 	AudioStreamBasicDescription outputStreamDescription;
 	memset(&outputStreamDescription, 0, sizeASBD);
 	AU_RETURN_IF_ERROR(AudioUnitGetProperty(_audioUnit,
@@ -147,7 +130,28 @@ static const AudioUnitElement kOutputElement = 0;
 	return description;
 }
 
-#pragma mark - AURenderCallback
+#pragma mark Overridden Getters/Setters
+
+- (AURenderCallback)renderCallback {
+	return AudioRenderCallback;
+}
+
+- (void)setActive:(BOOL)active {
+	if (!_initialized) {
+		return;
+	}
+	if (active == _active) {
+		return;
+	}
+	if (active) {
+		AU_RETURN_IF_ERROR(AudioOutputUnitStart(_audioUnit));
+	} else {
+		AU_RETURN_IF_ERROR(AudioOutputUnitStop(_audioUnit));
+	}
+	_active = active;
+}
+
+#pragma mark AURenderCallback
 
 static OSStatus AudioRenderCallback(void *inRefCon,
                                     AudioUnitRenderActionFlags *ioActionFlags,
@@ -155,10 +159,10 @@ static OSStatus AudioRenderCallback(void *inRefCon,
                                     UInt32 inBusNumber,
                                     UInt32 inNumberFrames,
                                     AudioBufferList *ioData) {
-	
+
 	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
 	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
-	
+
 	if (pdAudioUnit->_inputEnabled) {
 		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kInputElement, inNumberFrames, ioData);
 	}
@@ -169,23 +173,7 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	return noErr;
 }
 
-
-- (AURenderCallback)renderCallback {
-	return AudioRenderCallback;
-}
-
-#pragma mark - Private
-
-- (void)destroyAudioUnit {
-	if (!_initialized) {
-		return;
-	}
-	self.active = NO;
-	_initialized = NO;
-	AU_RETURN_IF_ERROR(AudioUnitUninitialize(_audioUnit));
-	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
-	AU_LOGV(@"destroyed audio unit");
-}
+#pragma mark Private
 
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate numberChannels:(int)numChannels inputEnabled:(BOOL)inputEnabled {
 	[self destroyAudioUnit];
@@ -234,6 +222,17 @@ static OSStatus AudioRenderCallback(void *inRefCon,
 	_initialized = YES;
 	AU_LOGV(@"initialized audio unit");
 	return true;
+}
+
+- (void)destroyAudioUnit {
+	if (!_initialized) {
+		return;
+	}
+	self.active = NO;
+	_initialized = NO;
+	AU_RETURN_IF_ERROR(AudioUnitUninitialize(_audioUnit));
+	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
+	AU_LOGV(@"destroyed audio unit");
 }
 
 - (AudioComponentDescription)ioDescription {

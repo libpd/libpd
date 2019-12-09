@@ -5,7 +5,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="libpd/libs"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="javatests"/>
+	<classpathentry kind="src" path="samples/java/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="libs/easymock-3.0.jar"/>

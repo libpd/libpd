@@ -20,8 +20,8 @@ public interface PdMidiReceiver extends PdMidiListener {
   /**
    * receives one raw MIDI byte from pd
    * 
-   * @param port
-   * @param value
+   * @param port raw MIDI port index, usually 0
+   * @param value raw MIDI byte value 0-255
    */
   void receiveMidiByte(int port, int value);
 }

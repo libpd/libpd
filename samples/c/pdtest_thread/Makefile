@@ -12,7 +12,7 @@ else
   else # assume Linux
     SOLIB_EXT = so
     PLATFORM = linux
-	LDFLAGS += -lpthread
+    LDFLAGS += -lpthread
   endif
 endif
 

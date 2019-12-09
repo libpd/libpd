@@ -174,6 +174,14 @@
 		306DBE6116BC6710007CF226 /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
 		306DBE6216BC6710007CF226 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
 		306DBE6316BC6710007CF226 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
+		307207C6216CB462004A907B /* g_editor_extras.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207C5216CB462004A907B /* g_editor_extras.c */; };
+		307207C7216CB462004A907B /* g_editor_extras.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207C5216CB462004A907B /* g_editor_extras.c */; };
+		307207C8216CB462004A907B /* g_editor_extras.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207C5216CB462004A907B /* g_editor_extras.c */; };
+		307207C9216CB462004A907B /* g_editor_extras.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207C5216CB462004A907B /* g_editor_extras.c */; };
+		307207CB216CB470004A907B /* g_undo.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207CA216CB470004A907B /* g_undo.c */; };
+		307207CC216CB470004A907B /* g_undo.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207CA216CB470004A907B /* g_undo.c */; };
+		307207CD216CB470004A907B /* g_undo.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207CA216CB470004A907B /* g_undo.c */; };
+		307207CE216CB470004A907B /* g_undo.c in Sources */ = {isa = PBXBuildFile; fileRef = 307207CA216CB470004A907B /* g_undo.c */; };
 		3088883216BCB4A400781682 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		3088883316BCB4A400781682 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		3088883416BCB4A400781682 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
@@ -520,6 +528,8 @@
 		306DBE5116BC6710007CF226 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		306DBE5416BC6710007CF226 /* z_queued.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_queued.c; sourceTree = "<group>"; };
 		306DBE5516BC6710007CF226 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
+		307207C5216CB462004A907B /* g_editor_extras.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = g_editor_extras.c; sourceTree = "<group>"; };
+		307207CA216CB470004A907B /* g_undo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = g_undo.c; sourceTree = "<group>"; };
 		3088882C16BCB4A400781682 /* z_print_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_print_util.c; sourceTree = "<group>"; };
 		3088882D16BCB4A400781682 /* z_print_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_print_util.h; sourceTree = "<group>"; };
 		30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_vexp_fun.c; sourceTree = "<group>"; };
@@ -715,6 +725,7 @@
 				0E82A00912EEFDED0053280E /* g_canvas.h */,
 				30EAFA2B1CBB89DC005D1916 /* g_clone.c */,
 				0E82A00A12EEFDEE0053280E /* g_editor.c */,
+				307207C5216CB462004A907B /* g_editor_extras.c */,
 				0E82A00B12EEFDEE0053280E /* g_graph.c */,
 				0E82A00C12EEFDEE0053280E /* g_guiconnect.c */,
 				0E82A00D12EEFDEE0053280E /* g_hdial.c */,
@@ -729,6 +740,7 @@
 				0E82A01612EEFDEE0053280E /* g_text.c */,
 				0E82A01712EEFDEE0053280E /* g_toggle.c */,
 				0E82A01812EEFDEE0053280E /* g_traversal.c */,
+				307207CA216CB470004A907B /* g_undo.c */,
 				0E82A01912EEFDEE0053280E /* g_vdial.c */,
 				0E82A01A12EEFDEE0053280E /* g_vslider.c */,
 				0E82A01B12EEFDEE0053280E /* g_vumeter.c */,
@@ -1020,7 +1032,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1092,6 +1104,7 @@
 				30377F461866680A0026ED3E /* x_array.c in Sources */,
 				119013781486450C00086F19 /* g_text.c in Sources */,
 				119013791486450C00086F19 /* g_toggle.c in Sources */,
+				307207CC216CB470004A907B /* g_undo.c in Sources */,
 				1190137A1486450C00086F19 /* g_traversal.c in Sources */,
 				1190137B1486450C00086F19 /* g_vdial.c in Sources */,
 				1190137C1486450C00086F19 /* g_vslider.c in Sources */,
@@ -1119,6 +1132,7 @@
 				119013911486450C00086F19 /* x_arithmetic.c in Sources */,
 				119013921486450C00086F19 /* x_connective.c in Sources */,
 				119013931486450C00086F19 /* x_gui.c in Sources */,
+				307207C7216CB462004A907B /* g_editor_extras.c in Sources */,
 				119013941486450C00086F19 /* x_interface.c in Sources */,
 				119013951486450C00086F19 /* x_list.c in Sources */,
 				119013961486450C00086F19 /* x_midi.c in Sources */,
@@ -1190,6 +1204,7 @@
 				30C3D2C11FAA1FCC00C67F08 /* x_array.c in Sources */,
 				30C3D2C21FAA1FCC00C67F08 /* g_text.c in Sources */,
 				30C3D2C31FAA1FCC00C67F08 /* g_toggle.c in Sources */,
+				307207CE216CB470004A907B /* g_undo.c in Sources */,
 				30C3D2C41FAA1FCC00C67F08 /* g_traversal.c in Sources */,
 				30C3D2C51FAA1FCC00C67F08 /* g_vdial.c in Sources */,
 				30C3D2C61FAA1FCC00C67F08 /* g_vslider.c in Sources */,
@@ -1217,6 +1232,7 @@
 				30C3D2DC1FAA1FCC00C67F08 /* x_arithmetic.c in Sources */,
 				30C3D2DD1FAA1FCC00C67F08 /* x_connective.c in Sources */,
 				30C3D2DE1FAA1FCC00C67F08 /* x_gui.c in Sources */,
+				307207C9216CB462004A907B /* g_editor_extras.c in Sources */,
 				30C3D2DF1FAA1FCC00C67F08 /* x_interface.c in Sources */,
 				30C3D2E01FAA1FCC00C67F08 /* x_list.c in Sources */,
 				30C3D2E11FAA1FCC00C67F08 /* x_midi.c in Sources */,
@@ -1267,6 +1283,7 @@
 				30C3D31C1FAA200100C67F08 /* g_canvas.c in Sources */,
 				30C3D31D1FAA200100C67F08 /* g_editor.c in Sources */,
 				30C3D31E1FAA200100C67F08 /* g_graph.c in Sources */,
+				307207CD216CB470004A907B /* g_undo.c in Sources */,
 				30C3D31F1FAA200100C67F08 /* g_guiconnect.c in Sources */,
 				30C3D3201FAA200100C67F08 /* g_hdial.c in Sources */,
 				30C3D3211FAA200100C67F08 /* lrshift~.c in Sources */,
@@ -1339,6 +1356,7 @@
 				30C3D3641FAA200100C67F08 /* PdMidiDispatcher.m in Sources */,
 				30C3D3651FAA200100C67F08 /* ringbuffer.c in Sources */,
 				30C3D3661FAA200100C67F08 /* z_queued.c in Sources */,
+				307207C8216CB462004A907B /* g_editor_extras.c in Sources */,
 				30C3D3671FAA200100C67F08 /* z_print_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1368,6 +1386,7 @@
 				0E82A05212EEFDEE0053280E /* g_canvas.c in Sources */,
 				0E82A05412EEFDEE0053280E /* g_editor.c in Sources */,
 				0E82A05512EEFDEE0053280E /* g_graph.c in Sources */,
+				307207CB216CB470004A907B /* g_undo.c in Sources */,
 				0E82A05612EEFDEE0053280E /* g_guiconnect.c in Sources */,
 				0E82A05712EEFDEE0053280E /* g_hdial.c in Sources */,
 				30CEFE4B1A6A5EDC000E3BAE /* lrshift~.c in Sources */,
@@ -1440,6 +1459,7 @@
 				30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 				306DBE5816BC6710007CF226 /* ringbuffer.c in Sources */,
 				306DBE6016BC6710007CF226 /* z_queued.c in Sources */,
+				307207C6216CB462004A907B /* g_editor_extras.c in Sources */,
 				3088883216BCB4A400781682 /* z_print_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1451,8 +1471,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1481,8 +1501,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1526,7 +1546,6 @@
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -1549,7 +1568,6 @@
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Release;
 		};
@@ -1561,11 +1579,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = NO;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
@@ -1609,11 +1629,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = NO;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
@@ -1650,8 +1672,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1682,8 +1704,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1731,7 +1753,6 @@
 				PRODUCT_NAME = "pd-ios-multi";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -1756,7 +1777,6 @@
 				PRODUCT_NAME = "pd-ios-multi";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
 			};
 			name = Release;
 		};

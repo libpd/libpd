@@ -9,26 +9,38 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2013, 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import <Foundation/Foundation.h>
 
-@interface PdFile : NSObject {
-	NSValue *fileReference_;
-	int dollarZero_;
-	NSString *baseName_;
-	NSString *pathName_;
-}
+@interface PdFile : NSObject
 
-@property (nonatomic, strong, readonly) NSValue *fileReference; //< underlying t_pd pointer
-@property (nonatomic, assign, readonly) int dollarZero;   //< unique $0 argument assigned by pd
-@property (nonatomic, copy, readonly) NSString *baseName; //< stored file base name
-@property (nonatomic, copy, readonly) NSString *pathName; //< stored file path name
+/// Underlying t_pd pointer
+@property (nonatomic, strong, readonly) NSValue *fileReference;
 
-/// open a pd file/patch and return a representative PdFile object
+/// Unique $0 argument assigned by pd
+@property (nonatomic, assign, readonly) int dollarZero;
+
+/// Stored file base name
+@property (nonatomic, copy, readonly) NSString *baseName;
+
+/// Stored file path name
+@property (nonatomic, copy, readonly) NSString *pathName;
+
+/// Open a pd file/patch and return a representative PdFile object
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName;
 
-- (id)openNewInstance; //< open a new instance of an existing PdFile
-- (bool)isValid;       //< is the file reference valid? (aka non-nil)
-- (void)closeFile;     //< close an opened pd file (also called in dealloc)
+/// Open a pd file/patch, returns YES on success
+- (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName;
+
+/// Open a new instance of an existing PdFile
+- (id)openNewInstance;
+
+/// Is the file reference valid? (aka non-nil)
+- (bool)isValid;
+
+/// Close an opened pd file (also called in dealloc)
+- (void)closeFile;
 
 @end

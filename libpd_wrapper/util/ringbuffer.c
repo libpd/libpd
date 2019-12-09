@@ -26,6 +26,7 @@
     #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
             OSAtomicCompareAndSwap32Barrier(oldval, newval, ptr)
   #elif defined(_WIN32) || defined(_WIN64) // win api atomics
+    #include <windows.h>
     #define SYNC_FETCH(ptr) InterlockedOr(ptr, 0)
     #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
             InterlockedCompareExchange(ptr, oldval, newval)

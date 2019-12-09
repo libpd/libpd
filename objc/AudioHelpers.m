@@ -1,5 +1,5 @@
 //
-//  AudioDebug.m
+//  AudioHelpers.m
 //  libpd
 //
 //  Created on 18/10/11.
@@ -7,11 +7,13 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import "AudioHelpers.h"
 #import <AudioToolbox/AudioToolbox.h>
 
-#pragma mark - Audio Unit / Audio Session Debugging
+#pragma mark Audio Unit / Audio Session Debugging
 
 #define UNDEFINED_BAD_CATEGORY_ERROR -12986
 
@@ -85,7 +87,7 @@ NSString *AUStatusCodeAsString(OSStatus status) {
 	}
 }
 
-#pragma mark - Math Helpers
+#pragma mark Math Helpers
 
 BOOL floatsAreEqual(Float64 f1, Float64 f2) {
 	return ((fabs(f1 - f2) < 0.0001) ? YES : NO);

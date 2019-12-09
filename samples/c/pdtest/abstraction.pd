@@ -1,0 +1,8 @@
+#N canvas 351 72 352 157 10;
+#X obj 69 107 print;
+#X obj 69 54 f \$0;
+#X obj 69 26 loadbang;
+#X msg 69 80 abstraction \$1 says "hello world";
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;

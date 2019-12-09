@@ -11,9 +11,9 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Pure Data as an embeddable audio synthesis library.</description>
 		<releaseNotes>
-			Update to Pd version 0.47-1.
+			Rewrite of API.
 		</releaseNotes>
-		<copyright>Copyright 2012 - 2016</copyright>
+		<copyright>Copyright 2012 - 2018</copyright>
 		<tags>C# .NET Mono audio sound</tags>
 	</metadata>
 	<files>

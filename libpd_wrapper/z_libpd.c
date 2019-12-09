@@ -41,19 +41,21 @@ int sys_pollgui(void);
 
 // (optional) built in pd externals setup functions
 #ifdef LIBPD_EXTRA
-  void bob_tilde_setup();
-  void bonk_tilde_setup();
-  void choice_setup();
-  void fiddle_tilde_setup();
-  void loop_tilde_setup();
-  void lrshift_tilde_setup();
-  void pique_setup();
-  void sigmund_tilde_setup();
-  void stdout_setup();
+  void bob_tilde_setup(void);
+  void bonk_tilde_setup(void);
+  void choice_setup(void);
+  void fiddle_tilde_setup(void);
+  void loop_tilde_setup(void);
+  void lrshift_tilde_setup(void);
+  void pique_setup(void);
+  void sigmund_tilde_setup(void);
+  void stdout_setup(void);
 #endif
 
-static t_atom *argv = NULL, *curr;
-static int argm = 0, argc;
+static PERTHREAD t_atom *argv = NULL;
+static PERTHREAD t_atom *curr = NULL;
+static PERTHREAD int argm = 0;
+static PERTHREAD int argc = 0;
 
 static void *get_object(const char *s) {
   t_pd *x = gensym(s)->s_thing;
@@ -67,13 +69,11 @@ int libpd_init(void) {
   initialized = 1;
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
-  sys_printhook = (t_printhook) libpd_printhook;
   // are all these settings necessary?
   sys_externalschedlib = 0;
   sys_printtostderr = 0;
   sys_usestdpath = 0; // don't use pd_extrapath, only sys_searchpath
   sys_debuglevel = 0;
-  sys_verbose = 0;
   sys_noloadbang = 0;
   sys_hipriority = 0;
   sys_nmidiin = 0;
@@ -89,6 +89,7 @@ int libpd_init(void) {
   libpdreceive_setup();
   sys_set_audio_api(API_DUMMY);
   STUFF->st_searchpath = NULL;
+  sys_libdir = gensym("");
 #ifdef LIBPD_EXTRA
   bob_tilde_setup();
   bonk_tilde_setup();
@@ -200,7 +201,7 @@ static const t_sample sample_to_short = SHRT_MAX,
   int i, j, k; \
   t_sample *p0, *p1; \
   sys_lock(); \
-  sys_microsleep(0); \
+  sys_pollgui(); \
   for (i = 0; i < ticks; i++) { \
     for (j = 0, p0 = STUFF->st_soundin; j < DEFDACBLKSIZE; j++, p0++) { \
       for (k = 0, p1 = p0; k < STUFF->st_inchannels; k++, p1 += DEFDACBLKSIZE) \
@@ -221,15 +222,15 @@ static const t_sample sample_to_short = SHRT_MAX,
   sys_unlock(); \
   return 0;
 
-int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
+int libpd_process_short(const int ticks, const short *inBuffer, short *outBuffer) {
   PROCESS(* short_to_sample, * sample_to_short)
 }
 
-int libpd_process_float(int ticks, const float *inBuffer, float *outBuffer) {
+int libpd_process_float(const int ticks, const float *inBuffer, float *outBuffer) {
   PROCESS(,)
 }
 
-int libpd_process_double(int ticks, const double *inBuffer, double *outBuffer) {
+int libpd_process_double(const int ticks, const double *inBuffer, double *outBuffer) {
   PROCESS(,)
 }
  
@@ -260,7 +261,7 @@ int libpd_read_array(float *dest, const char *name, int offset, int n) {
   return 0;
 }
 
-int libpd_write_array(const char *name, int offset, float *src, int n) {
+int libpd_write_array(const char *name, int offset, const float *src, int n) {
   sys_lock();
   MEMCPY((vec++)->w_float, *src++)
   sys_unlock();
@@ -366,7 +367,7 @@ float libpd_get_float(t_atom *a) {
   return (a)->a_w.w_float;
 }
 
-char *libpd_get_symbol(t_atom *a) {
+const char *libpd_get_symbol(t_atom *a) {
   return (a)->a_w.w_symbol->s_name;
 }
 
@@ -375,7 +376,7 @@ t_atom *libpd_next_atom(t_atom *a) {
 }
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
-  libpd_printhook = hook;
+  sys_printhook = (t_printhook) hook;
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {
@@ -632,6 +633,15 @@ int libpd_num_instances(void) {
 #else
   return 1;
 #endif
+}
+
+void libpd_set_verbose(int verbose) {
+  if (verbose < 0) verbose = 0;
+  sys_verbose = verbose;
+}
+
+int libpd_get_verbose(void) {
+  return sys_verbose;
 }
 
 // dummy routines needed because we don't use s_file.c

@@ -1,0 +1,3 @@
+#N canvas 0 23 352 157 10;
+#X text 58 34 test if clone works in libpd;
+#X obj 81 68 clone abstraction 4;

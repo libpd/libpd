@@ -13,15 +13,15 @@
  
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using LibPDBinding.Native;
+using System;
 
 namespace LibPDBinding
 {
 	public static partial class LibPD
 	{
 		#region Send Midi
-		[DllImport(DllName, EntryPoint="libpd_noteon", CallingConvention = CallingConvention)]
-		private static extern  int noteon(int channel, int pitch, int velocity) ;
-		
+
 		/// <summary>
 		/// sends a note on event to pd
 		/// </summary>
@@ -32,15 +32,13 @@ namespace LibPDBinding
 		/// <param name="velocity">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendNoteOn(int channel, int pitch, int velocity)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendNoteOn()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendNoteOn (int channel, int pitch, int velocity)
 		{
-			return noteon(channel, pitch, velocity);
+			return Midi.noteon (channel, pitch, velocity);
 		}
 
-
-		[DllImport(DllName, EntryPoint="libpd_controlchange", CallingConvention = CallingConvention)]
-		private static extern  int controlchange(int channel, int controller, int value) ;
 
 		/// <summary>
 		/// sends a control change event to pd
@@ -52,15 +50,13 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendControlChange(int channel, int controller, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendControlChange()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendControlChange (int channel, int controller, int value)
 		{
-			return controlchange(channel, controller, value);
+			return Midi.controlchange (channel, controller, value);
 		}
-		
-		
-		[DllImport(DllName, EntryPoint="libpd_programchange", CallingConvention = CallingConvention)]
-		private static extern  int programchange(int channel, int value) ;
+
 
 		/// <summary>
 		/// sends a program change event to Pd
@@ -70,15 +66,13 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendProgramChange(int channel, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendProgramChange()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendProgramChange (int channel, int value)
 		{
-			return programchange(channel, value);
+			return Midi.programchange (channel, value);
 		}
-		
-	
-		[DllImport(DllName, EntryPoint="libpd_pitchbend", CallingConvention = CallingConvention)]
-		private static extern  int pitchbend(int channel, int value) ;
+
 
 		/// <summary>
 		/// sends a pitch bend event to pd
@@ -89,15 +83,13 @@ namespace LibPDBinding
 		///            -8192..8191 (note that Pd has some offset bug in its pitch
 		///            bend objects, but libpd corrects for this) </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendPitchbend(int channel, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendPitchbend()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendPitchbend (int channel, int value)
 		{
-			return pitchbend(channel, value);
+			return Midi.pitchbend (channel, value);
 		}
-		
-	
-		[DllImport(DllName, EntryPoint="libpd_aftertouch", CallingConvention = CallingConvention)]
-		private static extern  int aftertouch(int channel, int value) ;
+
 
 		/// <summary>
 		/// sends an aftertouch event to pd
@@ -107,16 +99,14 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendAftertouch(int channel, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendAftertouch()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendAftertouch (int channel, int value)
 		{
-			return aftertouch(channel, value);
+			return Midi.aftertouch (channel, value);
 		}
-		
-	
-		[DllImport(DllName, EntryPoint="libpd_polyaftertouch", CallingConvention = CallingConvention)]
-		private static extern  int polyaftertouch(int channel, int pitch, int value) ;
-		
+
+
 		/// <summary>
 		/// sends a polyphonic aftertouch event to pd
 		/// </summary>
@@ -127,16 +117,14 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendPolyAftertouch(int channel, int pitch, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendPolyAftertouch()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendPolyAftertouch (int channel, int pitch, int value)
 		{
-			return polyaftertouch(channel, pitch, value);
+			return Midi.polyaftertouch (channel, pitch, value);
 		}
 
-		
-		[DllImport(DllName, EntryPoint="libpd_midibyte", CallingConvention = CallingConvention)]
-		private static extern  int midibyte(int port, int value) ;
-		
+
 		/// <summary>
 		/// sends one raw MIDI byte to pd
 		/// </summary>
@@ -145,15 +133,13 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0xff </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendMidiByte(int port, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendMidiByte()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendMidiByte (int port, int value)
 		{
-			return midibyte(port, value);
+			return Midi.midibyte (port, value);
 		}
-		
-		
-		[DllImport(DllName, EntryPoint="libpd_sysex", CallingConvention = CallingConvention)]
-		private static extern  int sysex(int port, int value) ;
+
 
 		/// <summary>
 		/// sends one byte of a sysex message to pd
@@ -163,16 +149,14 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0x7f </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendSysex(int port, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendSysex()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendSysex (int port, int value)
 		{
-			return sysex(port, value);
+			return Midi.sysex (port, value);
 		}
-		
-		
-		[DllImport(DllName, EntryPoint="libpd_sysrealtime", CallingConvention = CallingConvention)]
-		private static extern  int sysrealtime(int port, int value) ;
-		
+
+
 		/// <summary>
 		/// sends one byte to the realtimein object of pd
 		/// </summary>
@@ -181,12 +165,13 @@ namespace LibPDBinding
 		/// <param name="value">
 		///            0..0xff </param>
 		/// <returns> error code, 0 on success </returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static int SendSysRealtime(int port, int value)
+		[Obsolete("Use LibPDBinding.Managed.Midi.SendSysRealtime()")]
+		[MethodImpl (MethodImplOptions.Synchronized)]
+		public static int SendSysRealtime (int port, int value)
 		{
-			return sysrealtime(port, value);
+			return Midi.sysrealtime (port, value);
 		}
-		
+
 		#endregion Send Midi
 		
 	}

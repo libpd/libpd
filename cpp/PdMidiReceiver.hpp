@@ -20,6 +20,8 @@ class PdMidiReceiver {
 
     public:
 
+        virtual ~PdMidiReceiver() {}
+
         /// receive a MIDI note on
         virtual void receiveNoteOn(const int channel, const int pitch, const int velocity) {}
         
