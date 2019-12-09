@@ -167,6 +167,10 @@ _You can also search for packages in Msys2 with `pacman -S -s <searchterm>`._
 
 Once the packages are installed, you should now be ready to build libpd.
 
+Note: For 64 bit Windows, build Pd with the following additional C flags to ensure long integers are the correct length:
+
+    make ADDITIONAL_CFLAGS='-DPD_LONGINTTYPE="long long"'
+
 C++
 ---
 
