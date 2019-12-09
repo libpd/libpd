@@ -189,8 +189,10 @@ PDJAVA_JAR = libs/libpd.jar
 PDJAVA_SRC = libs/libpd-sources.jar
 PDJAVA_DOC = javadoc
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
-         -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
+CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY \
+         -I./libpd_wrapper -I./libpd_wrapper/util \
+         -I./pure-data/src \
+         $(PLATFORM_CFLAGS) \
          $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
          $(ADDITIONAL_CFLAGS)
 LDFLAGS += $(ADDITIONAL_LDFLAGS)
