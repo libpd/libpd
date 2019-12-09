@@ -76,7 +76,7 @@ EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
 /// buffer allocation failed
 EXTERN int libpd_queued_init();
 
-/// frees the queued ringbuffers
+/// free the queued ringbuffers
 EXTERN void libpd_queued_release();
 
 /// process and dispatch received messages in message ringbuffer

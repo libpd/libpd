@@ -45,7 +45,8 @@ EXTERN void *libpd_openfile(const char *name, const char *dir);
 /// close a patch by patch handle pointer
 EXTERN void libpd_closefile(void *p);
 
-/// returns the $0 id of the patch handle pointer
+/// get the $0 id of the patch handle pointer
+/// returns $0 value or 0 if the patch is non-existent
 EXTERN int libpd_getdollarzero(void *p);
 
 /* audio processing */
@@ -90,7 +91,8 @@ EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
 
 /* array access */
 
-/// returns the size of an array by name or negative error code if non-existent
+/// get the size of an array by name
+/// returns size or negative error code if non-existent
 EXTERN int libpd_arraysize(const char *name);
 
 /// read n values from named src array and write into dest starting at an offset
@@ -159,13 +161,13 @@ EXTERN int libpd_finish_message(const char *recv, const char *msg);
 
 /* sending compound messages: atom array */
 
-/// write a float value to the given t_atom
+/// write a float value to the given atom
 EXTERN void libpd_set_float(t_atom *a, float x);
 
-/// write a symbol value to the given t_atom
+/// write a symbol value to the given atom
 EXTERN void libpd_set_symbol(t_atom *a, const char *symbol);
 
-/// send an t_atom array of a given length as a list to a destination receiver
+/// send an atom array of a given length as a list to a destination receiver
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send [list 1 2 bar( to [r foo] on the next tick with:
 ///     t_atom v[3];
@@ -175,7 +177,7 @@ EXTERN void libpd_set_symbol(t_atom *a, const char *symbol);
 ///     libpd_list("foo", 3, v);
 EXTERN int libpd_list(const char *recv, int argc, t_atom *argv);
 
-/// send a t_atom array of a given length as a typed message to a destination
+/// send a atom array of a given length as a typed message to a destination
 /// receiver, returns 0 on success or -1 if receiver name is non-existent
 /// ex: send [; pd dsp 1( on the next tick with:
 ///     t_atom v[1];
@@ -195,7 +197,8 @@ EXTERN void *libpd_bind(const char *recv);
 /// unsubscribe and free a source receiver object created by libpd_bind()
 EXTERN void libpd_unbind(void *p);
 
-/// returns 1 if a source receiver object exists with a given name, otherwise 0
+/// check if a source receiver object exists with a given name
+/// returns 1 if the receiver exists, otherwise 0
 EXTERN int libpd_exists(const char *recv);
 
 /// print receive hook signature, s is the string to be printed
@@ -273,20 +276,20 @@ EXTERN void libpd_set_listhook(const t_libpd_listhook hook);
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_messagehook(const t_libpd_messagehook hook);
 
-/// returns 1 if the atom is a float type
+/// check if an atom is a float type: 0 or 1
 /// note: no NULL check is performed
 EXTERN int libpd_is_float(t_atom *a);
 
-/// returns 1 if the atom is a symbol type
+/// check if an atom is a symbol type: 0 or 1
 /// note: no NULL check is performed
 EXTERN int libpd_is_symbol(t_atom *a);
 
-/// returns float value of given atom
+/// get the float value of an atom
 /// note: no NULL or type checks are performed
 EXTERN float libpd_get_float(t_atom *a);
 
-/// returns symbol value of given atom
 /// note: no NULL or type checks are performed
+/// get symbol value of an atom
 EXTERN const char *libpd_get_symbol(t_atom *a);
 
 /// increment to the next atom in an atom vector
