@@ -223,6 +223,15 @@ int libpd_process_double(const int ticks, const double *inBuffer, double *outBuf
   t_garray *garray = (t_garray *) pd_findbyclass(gensym(name), garray_class); \
   if (!garray) {sys_unlock(); return -1;} \
 
+int libpd_arrayexists(const char *name) {
+  int retval;
+  sys_lock();
+  t_garray *garray = (t_garray *) pd_findbyclass(gensym(name), garray_class);
+  retval = (garray != NULL);
+  sys_unlock();
+  return retval;
+}
+
 int libpd_arraysize(const char *name) {
   int retval;
   sys_lock();
@@ -230,6 +239,14 @@ int libpd_arraysize(const char *name) {
   retval = garray_npoints(garray);
   sys_unlock();
   return retval;
+}
+
+int libpd_resize_array(const char *name, long size) {
+  sys_lock();
+  GETARRAY
+  garray_resize_long(garray, size);
+  sys_unlock();
+  return 0;
 }
 
 #define MEMCPY(_x, _y) \

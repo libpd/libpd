@@ -36,7 +36,16 @@ EXTERN int libpd_process_float(const int ticks,
 EXTERN int libpd_process_double(const int ticks,
     const double *inBuffer, double *outBuffer);
 
+/// check if an array with a given name exists
+/// returns 1 if the array exists, otherwise 0
+EXTERN int libpd_arrayexists(const char *name);
+
 EXTERN int libpd_arraysize(const char *name);
+
+/// (re)size an array by name; sizes <= 0 are clipped to 1
+/// returns 0 on success or negative error code if non-existent
+EXTERN int libpd_resize_array(const char *name, long size);
+
 // The parameters of the next two functions are inspired by memcpy.
 EXTERN int libpd_read_array(float *dest, const char *src, int offset, int n);
 EXTERN int libpd_write_array(const char *dest, int offset, const float *src, int n);
