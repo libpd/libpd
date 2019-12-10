@@ -36,10 +36,6 @@ EXTERN int libpd_process_float(const int ticks,
 EXTERN int libpd_process_double(const int ticks,
     const double *inBuffer, double *outBuffer);
 
-/// check if an array with a given name exists
-/// returns 1 if the array exists, otherwise 0
-EXTERN int libpd_arrayexists(const char *name);
-
 EXTERN int libpd_arraysize(const char *name);
 
 /// (re)size an array by name; sizes <= 0 are clipped to 1
