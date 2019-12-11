@@ -88,8 +88,22 @@ EXTERN int libpd_process_double(const int ticks,
 ///     size = libpd_blocksize() * (in/out)channels
 /// returns 0 on success
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
-    
+
+/// process non-interleaved short samples from inBuffer -> libpd -> outBuffer
+/// copies buffer contents to/from libpd without striping
+/// buffer sizes are based on a single tick and # of channels where:
+///     size = libpd_blocksize() * (in/out)channels
+/// float samples are converted to short by multiplying by 32767 and casting,
+/// so any values received from Pd patches beyond -1 to 1 will result in garbage
+/// note: for efficiency, does *not* clip input
+/// returns 0 on success
 EXTERN int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
+
+/// process non-interleaved double samples from inBuffer -> libpd -> outBuffer
+/// copies buffer contents to/from libpd without striping
+/// buffer sizes are based on a single tick and # of channels where:
+///     size = libpd_blocksize() * (in/out)channels
+/// returns 0 on success
 EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 
 /* array access */
