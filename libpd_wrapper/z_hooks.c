@@ -9,17 +9,64 @@
  */
  
 #include "z_hooks.h"
+#include <stdlib.h>
 
-t_libpd_banghook libpd_banghook = NULL;
-t_libpd_floathook libpd_floathook = NULL;
-t_libpd_symbolhook libpd_symbolhook = NULL;
-t_libpd_listhook libpd_listhook = NULL;
-t_libpd_messagehook libpd_messagehook = NULL;
+/* hooks */
 
-t_libpd_noteonhook libpd_noteonhook = NULL;
-t_libpd_controlchangehook libpd_controlchangehook = NULL;
-t_libpd_programchangehook libpd_programchangehook = NULL;
-t_libpd_pitchbendhook libpd_pitchbendhook = NULL;
-t_libpd_aftertouchhook libpd_aftertouchhook = NULL;
-t_libpd_polyaftertouchhook libpd_polyaftertouchhook = NULL;
-t_libpd_midibytehook libpd_midibytehook = NULL;
+// main instance hooks
+static t_libpdhooks libpd_mainhooks = {0};
+
+t_libpdhooks* libpdhooks_new(void) {
+  t_libpdhooks *hooks = calloc(1, sizeof(t_libpdhooks));
+  return hooks;
+}
+
+void libpdhooks_free(t_libpdhooks *hooks) {
+  if (hooks != libpd_mainhooks)
+    free(hooks);
+}
+
+/* instance */
+
+t_libpdinstance libpd_maininstance = {&pd_maininstance, &libpd_mainhooks};
+
+#ifdef PDINSTANCE
+
+PERTHREAD t_libpdinstance *libpd_this = &libpd_maininstance;
+t_libpdinstance **libpd_instances = NULL;
+
+void libpd_setinstance(t_libpdinstance *x) {
+  sys_lock();
+  libpd_this = x;
+  sys_unlock();
+}
+
+t_libpdinstance *libpdinstance_new(void) {
+  t_libpdinstance *x = calloc(1, sizeof(t_libpdinstance));
+  x->pd = pd_this;
+  x->hooks = libpdhooks_new();
+  libpd_this = x;
+  sys_lock();
+  libpd_instances = (t_libpdinstance **)resizebytes(libpd_instances,
+        pd_ninstances * sizeof(*libpd_instances),
+        (pd_ninstances+1) * sizeof(*libpd_instances));
+  libpd_instances[pd_ninstances] = x;
+  sys_unlock();
+  return x;
+}
+
+void libpdinstance_free(t_libpdinstance *x) {
+  int i;
+  sys_lock();
+  for (i = x->pd->pd_instanceno; i < pd_ninstances-1; i++)
+      libpd_instances[i] = libpd_instances[i+1];
+  libpd_instances = (t_libpdinstance **)resizebytes(libpd_instances,
+      pd_ninstances * sizeof(*libpd_instances),
+      (pd_ninstances-1) * sizeof(*libpd_instances));
+  sys_unlock();
+  libpd_setinstance(&libpd_maininstance);
+  libpdhooks_free(x->hooks);
+  free(x);
+}
+
+#endif /* PDINSTANCE */

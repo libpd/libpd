@@ -17,38 +17,38 @@
 #define CHANNEL ((CLAMP12BIT(port) << 4) | CLAMP4BIT(channel))
 
 void outmidi_noteon(int port, int channel, int pitch, int velo) {
-  if (libpd_noteonhook)
-    libpd_noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
+  if (libpd_mainhooks.noteonhook)
+    libpd_mainhooks.noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
 }
 
 void outmidi_controlchange(int port, int channel, int ctl, int value) {
-  if (libpd_controlchangehook)
-    libpd_controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
+  if (libpd_mainhooks.controlchangehook)
+    libpd_mainhooks.controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
 }
 
 void outmidi_programchange(int port, int channel, int value) {
-  if (libpd_programchangehook)
-    libpd_programchangehook(CHANNEL, CLAMP7BIT(value));
+  if (libpd_mainhooks.programchangehook)
+    libpd_mainhooks.programchangehook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_pitchbend(int port, int channel, int value) {
-  if (libpd_pitchbendhook)
-    libpd_pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
+  if (libpd_mainhooks.pitchbendhook)
+    libpd_mainhooks.pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
 }
 
 void outmidi_aftertouch(int port, int channel, int value) {
-  if (libpd_aftertouchhook)
-    libpd_aftertouchhook(CHANNEL, CLAMP7BIT(value));
+  if (libpd_mainhooks.aftertouchhook)
+    libpd_mainhooks.aftertouchhook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
-  if (libpd_polyaftertouchhook)
-    libpd_polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
+  if (libpd_mainhooks.polyaftertouchhook)
+    libpd_mainhooks.polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
 }
 
 void outmidi_byte(int port, int value) {
-  if (libpd_midibytehook)
-    libpd_midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
+  if (libpd_mainhooks.midibytehook)
+    libpd_mainhooks.midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
 }
 
 /* tell Pd gui that our list of MIDI APIs is empty */

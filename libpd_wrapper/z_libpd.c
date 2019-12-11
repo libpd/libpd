@@ -378,23 +378,23 @@ void libpd_set_printhook(const t_libpd_printhook hook) {
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {
-  libpd_banghook = hook;
+  libpd_this->hooks->banghook = hook;
 }
 
 void libpd_set_floathook(const t_libpd_floathook hook) {
-  libpd_floathook = hook;
+  libpd_this->hooks->floathook = hook;
 }
 
 void libpd_set_symbolhook(const t_libpd_symbolhook hook) {
-  libpd_symbolhook = hook;
+  libpd_this->hooks->symbolhook = hook;
 }
 
 void libpd_set_listhook(const t_libpd_listhook hook) {
-  libpd_listhook = hook;
+  libpd_this->hooks->listhook = hook;
 }
 
 void libpd_set_messagehook(const t_libpd_messagehook hook) {
-  libpd_messagehook = hook;
+  libpd_this->hooks->messagehook = hook;
 }
 
 int libpd_symbol(const char *recv, const char *sym) {
@@ -545,31 +545,31 @@ int libpd_sysrealtime(int port, int byte) {
 }
 
 void libpd_set_noteonhook(const t_libpd_noteonhook hook) {
-  libpd_noteonhook = hook;
+  libpd_this->hooks->noteonhook = hook;
 }
 
 void libpd_set_controlchangehook(const t_libpd_controlchangehook hook) {
-  libpd_controlchangehook = hook;
+  libpd_this->hooks->controlchangehook = hook;
 }
 
 void libpd_set_programchangehook(const t_libpd_programchangehook hook) {
-  libpd_programchangehook = hook;
+  libpd_this->hooks->programchangehook = hook;
 }
 
 void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook) {
-  libpd_pitchbendhook = hook;
+  libpd_this->hooks->pitchbendhook = hook;
 }
 
 void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook) {
-  libpd_aftertouchhook = hook;
+  libpd_this->hooks->aftertouchhook = hook;
 }
 
 void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
-  libpd_polyaftertouchhook = hook;
+  libpd_this->hooks->polyaftertouchhook = hook;
 }
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
-  libpd_midibytehook = hook;
+  libpd_this->hooks->midibytehook = hook;
 }
 
 int libpd_start_gui(char *path) {
@@ -594,32 +594,40 @@ void libpd_poll_gui(void) {
 
 t_pdinstance *libpd_new_instance(void) {
 #ifdef PDINSTANCE
-  return pdinstance_new();
+  pdinstance_new(); // sets pd_this
+  libpdinstance_new();
+  return pd_this;
 #else
-  return 0;
+  return NULL;
 #endif
 }
 
 void libpd_set_instance(t_pdinstance *x) {
 #ifdef PDINSTANCE
   pd_setinstance(x);
+  if (x == &pd_maininstance)
+    libpd_setinstance(&libpd_maininstance);
+  else
+    libpd_setinstance(libpd_instances[x->pd_instanceno]);
 #endif
 }
 
 void libpd_free_instance(t_pdinstance *x) {
 #ifdef PDINSTANCE
+  if (x == &pd_maininstance) {return;}
+  libpdinstance_free(libpd_instances[x->pd_instanceno]);
   pdinstance_free(x);
 #endif
 }
 
 t_pdinstance *libpd_this_instance(void) {
-  return pd_this;
+  return libpd_this->pd;
 }
 
 t_pdinstance *libpd_get_instance(int index) {
 #ifdef PDINSTANCE
-  if(index < 0 || index >= pd_ninstances) {return 0;}
-  return pd_instances[index];
+  if (index < 0 || index >= pd_ninstances) {return 0;}
+  return libpd_instances[index]->pd;
 #else
   return pd_this;
 #endif

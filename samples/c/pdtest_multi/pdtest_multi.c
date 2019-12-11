@@ -1,9 +1,9 @@
 /*
-  this tests pd's currently *experimental* multi instance support 
+  this tests libpd's multi instance support
 */
 #include <stdio.h>
 #include "z_libpd.h"
-#include "m_imp.h"
+
 #define TIMEUNITPERMSEC (32. * 441.)
 
 void pdprint(const char *s) {
@@ -23,20 +23,20 @@ int main(int argc, char **argv) {
     fprintf(stderr, "usage: %s file folder\n", argv[0]);
     return -1;
   }
-  
-  // maybe these two calls should be available per-instance somehow:
-  libpd_set_printhook(pdprint);   
-  libpd_set_noteonhook(pdnoteon);
 
   libpd_init();
     /* ... here we'd sure like to be able to have number of channels be
     per-instance.  The sample rate is still global within Pd but we might
     also consider relaxing that restrction. */
 
-  pd1 = libpd_new_instance();
-  pd2 = libpd_new_instance();
+  pd1 = libpd_this_instance(); // main instance (always valid)
+  pd2 = libpd_new_instance();  // create a second instance
 
-  libpd_set_instance(pd1); // talk to first pd instance
+  libpd_set_instance(pd1); // talk to first pd instance (redundant here)
+
+  // hooks for this instance
+  libpd_set_printhook(pdprint);
+  libpd_set_noteonhook(pdnoteon);
 
   libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
@@ -47,7 +47,9 @@ int main(int argc, char **argv) {
   // open patch       [; pd open file folder(
   libpd_openfile(argv[1], argv[2]);
 
-  libpd_set_instance(pd2);
+  libpd_set_instance(pd2); // talk to second pd instance
+  libpd_set_printhook(pdprint);
+  libpd_set_noteonhook(pdnoteon);
 
   libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
@@ -62,7 +64,7 @@ int main(int argc, char **argv) {
     and anyhow the symbols are global so they may affect multiple instances.
     However, if the messages change anything in the pd instance structure
     (DSP state; current time; list of all canvases n our instance) those
-    changes will apply to the current Pd nstance, so the earlier messages,
+    changes will apply to the current Pd instance, so the earlier messages,
     for instance, were sensitive to which was the current one. 
     
     Note also that I'm using the fact that $0 is set to 1003, 1004, ...
@@ -107,7 +109,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  libpd_free_instance(pd1);
+  //libpd_free_instance(pd1); // no need to free main instance
   libpd_free_instance(pd2);
 
   return 0;
