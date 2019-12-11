@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2013 Dan Wilcox (danomatika@gmail.com)
+ * Copyright (c) 2013-2019 libpd team
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -13,8 +14,7 @@
 
 /* hooks */
 
-// main instance hooks
-static t_libpdhooks libpd_mainhooks = {0};
+t_libpdhooks libpd_mainhooks = {0};
 
 t_libpdhooks* libpdhooks_new(void) {
   t_libpdhooks *hooks = calloc(1, sizeof(t_libpdhooks));
@@ -22,7 +22,7 @@ t_libpdhooks* libpdhooks_new(void) {
 }
 
 void libpdhooks_free(t_libpdhooks *hooks) {
-  if (hooks != libpd_mainhooks)
+  if (hooks != &libpd_mainhooks)
     free(hooks);
 }
 

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2013 Dan Wilcox (danomatika@gmail.com)
+ * Copyright (c) 2013-2019 libpd team
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -13,11 +14,10 @@
 
 #include "z_libpd.h"
 
-/* hooks */
-
-// the internal hooks
-// in a separate file so they can be used throughout the libpd_wrapper sources,
+// internal hooks, etc
 // do *not* include this file in a user-facing header
+
+/* hooks */
 
 typedef struct _libpdhooks {
 
@@ -38,6 +38,9 @@ typedef struct _libpdhooks {
   t_libpd_polyaftertouchhook polyaftertouchhook;
   t_libpd_midibytehook midibytehook;
 } t_libpdhooks;
+
+/// main instance hooks
+extern t_libpdhooks libpd_mainhooks;
 
 /// alloc new hooks struct and set all to NULL
 t_libpdhooks *libpdhooks_new(void);
