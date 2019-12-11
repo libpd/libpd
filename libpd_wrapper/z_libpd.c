@@ -249,6 +249,14 @@ int libpd_arraysize(const char *name) {
   return retval;
 }
 
+int libpd_resize_array(const char *name, long size) {
+  sys_lock();
+  GETARRAY
+  garray_resize_long(garray, size);
+  sys_unlock();
+  return 0;
+}
+
 #define MEMCPY(_x, _y) \
   GETARRAY \
   if (n < 0 || offset < 0 || offset + n > garray_npoints(garray)) return -2; \

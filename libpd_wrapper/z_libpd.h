@@ -112,6 +112,10 @@ EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 /// returns size or negative error code if non-existent
 EXTERN int libpd_arraysize(const char *name);
 
+/// (re)size an array by name; sizes <= 0 are clipped to 1
+/// returns 0 on success or negative error code if non-existent
+EXTERN int libpd_resize_array(const char *name, long size);
+
 /// read n values from named src array and write into dest starting at an offset
 /// note: performs no bounds checking on dest
 /// returns 0 on success or a negative error code if the array is non-existent
