@@ -58,7 +58,7 @@ class Patch {
         /// get the patch filename
         std::string filename() const {return _filename;}
 
-        /// get the parent path for the file
+        /// get the parent dir path for the file
         std::string path() const {return _path;}
 
         /// get the unique instance $0 ID as a string

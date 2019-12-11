@@ -57,6 +57,7 @@ public class IoUtils {
    * @param directory target directory
    * @return list of files that were unpacked, not including files that existed before
    * @throws IOException
+   * @throws SecurityException if zip resource has Path Traversal Vulnerability
    */
   public static List<File> extractZipResource(InputStream in, File directory) throws IOException {
     return extractZipResource(in, directory, false);
@@ -71,6 +72,7 @@ public class IoUtils {
    * @return list of files that were unpacked (if overwrite is false, this list won't include files
    *         that existed before)
    * @throws IOException
+   * @throws SecurityException if zip resource has Path Traversal Vulnerability
    */
   public static List<File> extractZipResource(InputStream in, File directory, boolean overwrite)
       throws IOException {
@@ -80,8 +82,17 @@ public class IoUtils {
     List<File> files = new ArrayList<File>();
     ZipEntry entry;
     directory.mkdirs();
+    String canonicalRoot = directory.getCanonicalPath();
     while ((entry = zin.getNextEntry()) != null) {
       File file = new File(directory, entry.getName());
+      if (!file.getCanonicalPath().startsWith(canonicalRoot)) {
+        // Ref: https://support.google.com/faqs/answer/9294009
+        throw new SecurityException("Zip Path Traversal Vulnerability: " +
+                    "Zip entry " + entry.getName() + " has " + 
+                    file.getCanonicalPath() + " as its target path. " + 
+                    "But it should not be outside target dir " + canonicalRoot);
+      }
+      
       files.add(file);
       if (overwrite || !file.exists()) {
         if (entry.isDirectory()) {

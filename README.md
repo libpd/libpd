@@ -167,6 +167,10 @@ _You can also search for packages in Msys2 with `pacman -S -s <searchterm>`._
 
 Once the packages are installed, you should now be ready to build libpd.
 
+Note: For 64 bit Windows, build Pd with the following additional C flags to ensure long integers are the correct length:
+
+    make ADDITIONAL_CFLAGS='-DPD_LONGINTTYPE="long long"'
+
 C++
 ---
 
@@ -267,7 +271,7 @@ Install the JDK either by downloading an installer package or by using one of th
 
 The wrapper can be built with MinGW. See the previous "Windows" section for instructions on setting up a MinGW-based build environment using Msys2.
 
-Install the JDK by downloading an installer package, then add the path to JDK/bin to your $PATH shell variable and the JDK path to $JAVA_HOME (optional). If the JDK is installed to `C:\Program Files\Java\jdk1.8.0_152`, add the following to your ~/.bash_profile:
+Install the JDK by downloading an installer package, then add the path to JDK/bin to your $PATH shell variable and the JDK path to $JAVA_HOME (optional). If the JDK is installed to `C:\Program Files\Java\jdk1.8.0_152`, add the following to your \~/.bash_profile:
 
     # add JDK bin path
     export PATH=$PATH:'C:\Program Files\Java\jdk1.8.0_152\bin'

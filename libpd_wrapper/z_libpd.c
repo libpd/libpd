@@ -90,6 +90,8 @@ int libpd_init(void) {
   sys_set_audio_api(API_DUMMY);
   STUFF->st_searchpath = NULL;
   sys_libdir = gensym("");
+  post("pd %d.%d.%d%s", PD_MAJOR_VERSION, PD_MINOR_VERSION,
+    PD_BUGFIX_VERSION, PD_TEST_VERSION);
 #ifdef LIBPD_EXTRA
   bob_tilde_setup();
   bonk_tilde_setup();
@@ -167,6 +169,36 @@ int libpd_init_audio(int inChannels, int outChannels, int sampleRate) {
 static const t_sample sample_to_short = SHRT_MAX,
                       short_to_sample = 1.0 / (t_sample) SHRT_MAX;
 
+#define PROCESS_RAW(_x, _y) \
+  size_t n_in = STUFF->st_inchannels * DEFDACBLKSIZE; \
+  size_t n_out = STUFF->st_outchannels * DEFDACBLKSIZE; \
+  t_sample *p; \
+  size_t i; \
+  sys_lock(); \
+  sys_microsleep(0); \
+  for (p = STUFF->st_soundin, i = 0; i < n_in; i++) { \
+    *p++ = *inBuffer++ _x; \
+  } \
+  memset(STUFF->st_soundout, 0, n_out * sizeof(t_sample)); \
+  SCHED_TICK(pd_this->pd_systime + STUFF->st_time_per_dsp_tick); \
+  for (p = STUFF->st_soundout, i = 0; i < n_out; i++) { \
+    *outBuffer++ = *p++ _y; \
+  } \
+  sys_unlock(); \
+  return 0; 
+
+int libpd_process_raw(const float *inBuffer, float *outBuffer) {
+  PROCESS_RAW(,)
+}
+
+int libpd_process_raw_short(const short *inBuffer, short *outBuffer) {
+  PROCESS_RAW(* short_to_sample, * sample_to_short)
+}
+
+int libpd_process_raw_double(const double *inBuffer, double *outBuffer) {
+  PROCESS_RAW(,)
+}
+
 #define PROCESS(_x, _y) \
   int i, j, k; \
   t_sample *p0, *p1; \
@@ -202,25 +234,6 @@ int libpd_process_float(const int ticks, const float *inBuffer, float *outBuffer
 
 int libpd_process_double(const int ticks, const double *inBuffer, double *outBuffer) {
   PROCESS(,)
-}
-
-int libpd_process_raw(const float *inBuffer, float *outBuffer) {
-  size_t n_in = STUFF->st_inchannels * DEFDACBLKSIZE;
-  size_t n_out = STUFF->st_outchannels * DEFDACBLKSIZE;
-  t_sample *p;
-  size_t i;
-  sys_lock();
-  sys_pollgui();
-  for (p = STUFF->st_soundin, i = 0; i < n_in; i++) {
-    *p++ = *inBuffer++;
-  }
-  memset(STUFF->st_soundout, 0, n_out * sizeof(t_sample));
-  SCHED_TICK(pd_this->pd_systime + STUFF->st_time_per_dsp_tick);
-  for (p = STUFF->st_soundout, i = 0; i < n_out; i++) {
-    *outBuffer++ = *p++;
-  }
-  sys_unlock();
-  return 0;
 }
  
 #define GETARRAY \

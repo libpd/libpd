@@ -88,6 +88,9 @@ EXTERN int libpd_process_double(const int ticks,
 ///     size = libpd_blocksize() * (in/out)channels
 /// returns 0 on success
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
+    
+EXTERN int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
+EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 
 /* array access */
 
