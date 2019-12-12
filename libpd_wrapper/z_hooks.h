@@ -39,9 +39,6 @@ typedef struct _libpdhooks {
   t_libpd_midibytehook midibytehook;
 } t_libpdhooks;
 
-/// main instance hooks
-extern t_libpdhooks libpd_mainhooks;
-
 /// alloc new hooks struct and set all to NULL
 t_libpdhooks *libpdhooks_new(void);
 
@@ -51,7 +48,7 @@ void libpdhooks_free(t_libpdhooks *hooks);
 
 /* instance */
 
-typedef struct t_libpdinstance {
+typedef struct _libpdinstance {
   t_pdinstance *pd;
   t_libpdhooks *hooks;
 } t_libpdinstance;
@@ -67,15 +64,13 @@ extern PERTHREAD t_libpdinstance *libpd_this;
 /// available instances
 extern t_libpdinstance **libpd_instances;
 
-/// set the current instance
+/// set the current libpd and pd instance: libpd_this/pd_this
 void libpd_setinstance(t_libpdinstance *x);
 
-/// create a new instance, sets x->pd = pd_this
-/// this will be in addition to the main instance
+/// create a new instance & sets libpd_this/pd_this
 t_libpdinstance *libpdinstance_new(void);
 
-/// frees an instance, does not free x->pd
-/// does nothing if x is the main instance
+/// frees an instance, sets libpd_this/pd_this to main instances
 void libpdinstance_free(t_libpdinstance *x);
 
 #else

@@ -471,16 +471,19 @@ EXTERN void libpd_poll_gui(void);
 
 /* multiple instances */
 
-/// create a new pd instance
+/// create a new pd instance & set as current
+/// note: use this in place of pdinstance_new()
 /// returns new instance or NULL when libpd is not compiled with PDINSTANCE
 EXTERN t_pdinstance *libpd_new_instance(void);
 
 /// set the current pd instance
 /// subsequent libpd calls will affect this instance only
+/// note: use this in place of pd_setinstance()
 /// does nothing when libpd is not compiled with PDINSTANCE
 EXTERN void libpd_set_instance(t_pdinstance *p);
 
 /// free a pd instance
+/// note: use this in place of pdinstance_free()
 /// does nothing when libpd is not compiled with PDINSTANCE
 EXTERN void libpd_free_instance(t_pdinstance *p);
 
@@ -488,7 +491,7 @@ EXTERN void libpd_free_instance(t_pdinstance *p);
 EXTERN t_pdinstance *libpd_this_instance(void);
 
 /// get a pd instance by index
-/// returns NULL if index is out of bounds or "this" instance when libpd is not
+/// returns NULL if index is out of bounds or main instance when libpd is not
 /// compiled with PDINSTANCE
 EXTERN t_pdinstance *libpd_get_instance(int index);
 

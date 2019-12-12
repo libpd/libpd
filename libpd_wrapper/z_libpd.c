@@ -601,9 +601,8 @@ void libpd_poll_gui(void) {
 
 t_pdinstance *libpd_new_instance(void) {
 #ifdef PDINSTANCE
-  pdinstance_new(); // sets pd_this
-  libpdinstance_new();
-  return pd_this;
+  libpdinstance_new(); // sets pd_this & libpd_this
+  return libpd_this->pd;
 #else
   return NULL;
 #endif
@@ -611,19 +610,13 @@ t_pdinstance *libpd_new_instance(void) {
 
 void libpd_set_instance(t_pdinstance *p) {
 #ifdef PDINSTANCE
-  pd_setinstance(p);
-  if (p == &pd_maininstance)
-    libpd_setinstance(&libpd_maininstance);
-  else
-    libpd_setinstance(libpd_instances[p->pd_instanceno]);
+  libpd_setinstance(libpd_instances[p->pd_instanceno]);
 #endif
 }
 
 void libpd_free_instance(t_pdinstance *p) {
 #ifdef PDINSTANCE
-  if (p == &pd_maininstance) {return;}
   libpdinstance_free(libpd_instances[p->pd_instanceno]);
-  pdinstance_free(p);
 #endif
 }
 

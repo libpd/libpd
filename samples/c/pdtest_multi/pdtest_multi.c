@@ -29,10 +29,10 @@ int main(int argc, char **argv) {
     per-instance.  The sample rate is still global within Pd but we might
     also consider relaxing that restrction. */
 
-  pd1 = libpd_this_instance(); // main instance (always valid)
-  pd2 = libpd_new_instance();  // create a second instance
+  pd1 = libpd_new_instance(); // create an instance
+  pd2 = libpd_new_instance(); // create a second instance
 
-  libpd_set_instance(pd1); // talk to first pd instance (redundant here)
+  libpd_set_instance(pd1); // talk to first pd instance
 
   // hooks for this instance
   libpd_set_printhook(pdprint);
@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  //libpd_free_instance(pd1); // no need to free main instance
+  libpd_free_instance(pd1);
   libpd_free_instance(pd2);
 
   return 0;

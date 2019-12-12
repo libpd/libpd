@@ -17,38 +17,38 @@
 #define CHANNEL ((CLAMP12BIT(port) << 4) | CLAMP4BIT(channel))
 
 void outmidi_noteon(int port, int channel, int pitch, int velo) {
-  if (libpd_mainhooks.noteonhook)
-    libpd_mainhooks.noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
+  if (libpd_maininstance.hooks->noteonhook)
+    libpd_maininstance.hooks->noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
 }
 
 void outmidi_controlchange(int port, int channel, int ctl, int value) {
-  if (libpd_mainhooks.controlchangehook)
-    libpd_mainhooks.controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
+  if (libpd_maininstance.hooks->controlchangehook)
+    libpd_maininstance.hooks->controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
 }
 
 void outmidi_programchange(int port, int channel, int value) {
-  if (libpd_mainhooks.programchangehook)
-    libpd_mainhooks.programchangehook(CHANNEL, CLAMP7BIT(value));
+  if (libpd_maininstance.hooks->programchangehook)
+    libpd_maininstance.hooks->programchangehook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_pitchbend(int port, int channel, int value) {
-  if (libpd_mainhooks.pitchbendhook)
-    libpd_mainhooks.pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
+  if (libpd_maininstance.hooks->pitchbendhook)
+    libpd_maininstance.hooks->pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
 }
 
 void outmidi_aftertouch(int port, int channel, int value) {
-  if (libpd_mainhooks.aftertouchhook)
-    libpd_mainhooks.aftertouchhook(CHANNEL, CLAMP7BIT(value));
+  if (libpd_maininstance.hooks->aftertouchhook)
+    libpd_maininstance.hooks->aftertouchhook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
-  if (libpd_mainhooks.polyaftertouchhook)
-    libpd_mainhooks.polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
+  if (libpd_maininstance.hooks->polyaftertouchhook)
+    libpd_maininstance.hooks->polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
 }
 
 void outmidi_byte(int port, int value) {
-  if (libpd_mainhooks.midibytehook)
-    libpd_mainhooks.midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
+  if (libpd_maininstance.hooks->midibytehook)
+    libpd_maininstance.hooks->midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
 }
 
 /* tell Pd GUI that our list of MIDI APIs is empty */
