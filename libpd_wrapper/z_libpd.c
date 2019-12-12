@@ -416,7 +416,7 @@ int libpd_exists(const char *recv) {
 }
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
-  sys_printhook = (t_printhook) hook;
+  STUFF->st_printhook = (t_printhook) hook;
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {

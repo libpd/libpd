@@ -22,7 +22,7 @@
 typedef struct _libpdhooks {
 
   // messages
-  // no libpd_printhook as libpd_set_printhook() sets internal sys_printhook
+  // no printhook as libpd_set_printhook() sets internal STUFF->st_printhook
   t_libpd_banghook banghook;
   t_libpd_floathook floathook;
   t_libpd_symbolhook symbolhook;

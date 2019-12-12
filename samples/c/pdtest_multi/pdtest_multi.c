@@ -6,12 +6,20 @@
 
 #define TIMEUNITPERMSEC (32. * 441.)
 
-void pdprint(const char *s) {
-  printf("%s", s);
+void pdprint1(const char *s) {
+  printf("pd1: %s", s);
 }
 
-void pdnoteon(int ch, int pitch, int vel) {
-  printf("noteon: %d %d %d\n", ch, pitch, vel);
+void pdprint2(const char *s) {
+  printf("pd2: %s", s);
+}
+
+void pdnoteon1(int ch, int pitch, int vel) {
+  printf("pd1 noteon: %d %d %d\n", ch, pitch, vel);
+}
+
+void pdnoteon2(int ch, int pitch, int vel) {
+  printf("pd2 noteon: %d %d %d\n", ch, pitch, vel);
 }
 
 int main(int argc, char **argv) {
@@ -35,8 +43,8 @@ int main(int argc, char **argv) {
   libpd_set_instance(pd1); // talk to first pd instance
 
   // hooks for this instance
-  libpd_set_printhook(pdprint);
-  libpd_set_noteonhook(pdnoteon);
+  libpd_set_printhook(pdprint1);
+  libpd_set_noteonhook(pdnoteon1);
 
   libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
@@ -48,8 +56,8 @@ int main(int argc, char **argv) {
   libpd_openfile(argv[1], argv[2]);
 
   libpd_set_instance(pd2); // talk to second pd instance
-  libpd_set_printhook(pdprint);
-  libpd_set_noteonhook(pdnoteon);
+  libpd_set_printhook(pdprint2);
+  libpd_set_noteonhook(pdnoteon2);
 
   libpd_init_audio(1, 2, srate);
   // compute audio    [; pd dsp 1(
