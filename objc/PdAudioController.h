@@ -7,12 +7,11 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
-//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//  Updated 2018, 2020 Dan Wilcox <danomatika@gmail.com>
 //
 
-#import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 #import "PdAudioUnit.h"
+#import <AVFoundation/AVFoundation.h>
 
 /// PdAudioStatus is used to indicate success, failure, or that parameters had
 /// to be adjusted in order to work.
@@ -27,17 +26,30 @@ typedef enum PdAudioStatus {
 /// interruptions and provides high level configuration methods.
 @interface PdAudioController : NSObject
 
-/// Read only properties that are set by the configure methods
+// Read only properties that are set by the configure methods
+
+/// desired sample rate, may be different from session rate
 @property (nonatomic, readonly) int sampleRate;
-@property (nonatomic, readonly) int numberChannels;
+
+/// number of input channels, may not match number of session inputs
+@property (nonatomic, readonly) int inputChannels;
+
+/// number of output channels, may not match number of session inputs
+@property (nonatomic, readonly) int outputChannels;
+
+/// is the audio input stream enabled?
 @property (nonatomic, readonly) BOOL inputEnabled;
+
+/// is audio mixing with other apps enabled?
 @property (nonatomic, readonly) BOOL mixingEnabled;
+
+/// number of pd ticks per buffer size, computed from session buffer duration
 @property (nonatomic, readonly) int ticksPerBuffer;
 
-/// Read only access to the underlying pd audio unit
+/// read only access to the underlying pd audio unit
 @property (nonatomic, strong, readonly) PdAudioUnit *audioUnit;
 
-/// Check or set the active status of the audio unit
+/// check or set the active status of the audio unit
 @property (nonatomic, getter=isActive) BOOL active;
 
 /// Init with default pd audio unit.
@@ -68,11 +80,24 @@ typedef enum PdAudioStatus {
                                     inputEnabled:(BOOL)inputEnabled
                                    mixingEnabled:(BOOL)mixingEnabled;
 
+/// Configure the audio with the specified samplerate, as well as number of
+/// input and output channels. If inputChannels = 0, the input will be disabled.
+///
+/// Specifying inputChannels = 0 uses the Playback AVAudioSession category
+/// while setting inputChannels > 0 uses the PlaybackAndRecord category.
+///
+/// Specifying mixingEnabled = YES will allow the app to continue playing audio
+/// along with other apps (such as Music).
+- (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
+                                   inputChannels:(int)inputChannels
+                                  outputChannels:(int)outputChannels
+                                   mixingEnabled:(BOOL)mixingEnabled;
+
 /// Configure audio for ambient use, without input channels.
 ///
 /// Specifying mixingEnabled = YES will allow the app to continue playing audio
 /// along with other apps (such as Music) and uses the Ambient AVAudioSession
-/// category, while setting NO uses the SoloAmboent category.
+/// category, while setting NO uses the SoloAmbient category.
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
                                  numberChannels:(int)numChannels
                                   mixingEnabled:(BOOL)mixingEnabled;
@@ -86,7 +111,7 @@ typedef enum PdAudioStatus {
 /// provided.
 - (PdAudioStatus)configureTicksPerBuffer:(int)ticksPerBuffer;
 
-/// Print current settings to the console.
+/// Print info on the audio session and audio unit to the console.
 - (void)print;
 
 /// Returns the default audio session options when configuring for playback:
