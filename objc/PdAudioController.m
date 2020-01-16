@@ -33,6 +33,7 @@
 
 /// set audio session category
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
+                                  outputs:(BOOL)hasOutputs
                                 isAmbient:(BOOL)isAmbient
                              allowsMixing:(BOOL)allowsMixing;
 
@@ -93,6 +94,7 @@
 		return PdAudioError;
 	}
 	status |= [self selectCategoryWithInputs:inputEnabled
+	                                 outputs:(outputChannels > 0)
 	                               isAmbient:NO
 	                            allowsMixing:mixingEnabled];
 	if (status == PdAudioError) {
@@ -113,6 +115,7 @@
 		return PdAudioError;
 	}
 	status |= [self selectCategoryWithInputs:NO
+	                                 outputs:(numberChannels > 0)
 	                               isAmbient:YES
 	                            allowsMixing:mixingEnabled];
 	if (status == PdAudioError) {
@@ -266,6 +269,7 @@
 }
 
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
+                                  outputs:(BOOL)hasOutputs
                                 isAmbient:(BOOL)isAmbient
                              allowsMixing:(BOOL)allowsMixing {
 	NSString *category;
@@ -277,7 +281,12 @@
 
 	// set category
 	if (!isAmbient) {
-		category = hasInputs ? AVAudioSessionCategoryPlayAndRecord : AVAudioSessionCategoryPlayback;
+		if (!hasOutputs) {
+			category = AVAudioSessionCategoryRecord;
+		}
+		else {
+			category = hasInputs ? AVAudioSessionCategoryPlayAndRecord : AVAudioSessionCategoryPlayback;
+		}
 	}
 	else {
 		category = allowsMixing ? AVAudioSessionCategoryAmbient : AVAudioSessionCategorySoloAmbient;

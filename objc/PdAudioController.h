@@ -86,6 +86,8 @@ typedef enum PdAudioStatus {
 /// Specifying inputChannels = 0 uses the Playback AVAudioSession category
 /// while setting inputChannels > 0 uses the PlaybackAndRecord category.
 ///
+/// Specifying outputChannels = 0 uses the Record AVAudioSession category.
+///
 /// Specifying mixingEnabled = YES will allow the app to continue playing audio
 /// along with other apps (such as Music).
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
