@@ -16,7 +16,7 @@
 #import "PdBase.h"
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface PdAudioController ()
+@interface PdAudioController (Internal)
 
 @property (nonatomic, readwrite) int sampleRate;
 @property (nonatomic, readwrite) int inputChannels;
