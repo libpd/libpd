@@ -69,19 +69,21 @@ typedef enum PdAudioStatus {
 @property (nonatomic, assign) BOOL defaultToSpeaker;
 
 /// use Bluetooth HFP (Hands-Free Profile)?
-/// note: this is *older* 8k samplerate 1 channel io, think headset/earpiece
+/// note: this is *older* 8k samplerate 1 channel IO, ie. headset/earpiece
 /// note: this may override allowBluetoothA2DP if both are set
 /// applied to categories: Record, PlayAndRecord
 @property (nonatomic, assign) BOOL allowBluetooth;
 
 /// use Bluetooth A2DP (Advanced Audio Distribution Profile)?
-/// note: this is higher-quality and stereo
+/// note: this is higher-quality and stereo, ie. jambox/headphones/earbuds
 /// note: this may be overridden by allowBluetooth if both are set
-/// applied to categories: PlayAndRecord
+/// applied to categories: PlayAndRecord,
+/// always supported for output-only categories: Playback, Ambient, SoloAmbient
 @property (nonatomic, assign) BOOL allowBluetoothA2DP;
 
 /// use AirPlay?
-/// applied to categories: PlayAndRecord
+/// applied to categories: PlayAndRecord,
+/// always supported for output-only categories: Playback, Ambient, SoloAmbient
 @property (nonatomic, assign) BOOL allowAirPlay;
 
 /// Init with default pd audio unit.
@@ -106,14 +108,14 @@ typedef enum PdAudioStatus {
 ///
 /// Uses the Record AVAudioSession category.
 - (PdAudioStatus)configureRecordWithSampleRate:(int)sampleRate
-                                 numberChannels:(int)numChannels;
+                                 inputChannels:(int)inputChannels;
 
 /// Configure audio for ambient use, without input channels.
 ///
 /// If mixWithOthers = YES, uses the Ambient AVAudioSession category, while NO
 /// uses the SoloAmbient category.
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
-                                 numberChannels:(int)numChannels;
+                                 outputChannels:(int)outputChannels;
 
 /// Configure audio for more advanced multi route port configuration,
 /// see Apple docs. Note: does not allow Bluetooth or AirPlay.

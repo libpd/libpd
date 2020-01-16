@@ -73,14 +73,6 @@ static const AudioUnitElement kAUOutputElement = 0;
 }
 
 - (int)configureWithSampleRate:(Float64)sampleRate
-                numberChannels:(int)numChannels
-                  inputEnabled:(BOOL)inputEnabled {
-	return [self configureWithSampleRate:sampleRate
-	                       inputChannels:(inputEnabled ? numChannels : 0)
-	                      outputChannels:numChannels];
-}
-
-- (int)configureWithSampleRate:(Float64)sampleRate
                  inputChannels:(int)inputChannels
                 outputChannels:(int)outputChannels {
 	BOOL wasActive = self.isActive;
@@ -103,6 +95,14 @@ static const AudioUnitElement kAUOutputElement = 0;
 	[PdBase computeAudio:YES];
 	self.active = wasActive;
 	return 0;
+}
+
+- (int)configureWithSampleRate:(Float64)sampleRate
+                numberChannels:(int)numChannels
+                  inputEnabled:(BOOL)inputEnabled {
+	return [self configureWithSampleRate:sampleRate
+	                       inputChannels:(inputEnabled ? numChannels : 0)
+	                      outputChannels:numChannels];
 }
 
 - (void)print {

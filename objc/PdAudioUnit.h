@@ -84,15 +84,6 @@
 /// is the audio input stream enabled?
 @property (nonatomic, assign, readonly) BOOL inputEnabled;
 
-/// Configure audio unit with preferred sample rate, number of channels, and
-/// whether to enable the input stream. This is an expensive process and will
-/// stop the audio unit before any reconstruction, causing a momentary pause in
-/// audio and UI if run from the main thread.
-/// Returns zero on success, ie. OSStatus noErr.
-- (int)configureWithSampleRate:(Float64)sampleRate
-                numberChannels:(int)numChannels
-                  inputEnabled:(BOOL)inputEnabled;
-
 /// Configure audio unit with preferred sample rate and number of input and
 /// output channels. This is an expensive process and will stop the audio unit
 /// before any reconstruction, causing a momentary pause in audio and UI if run
@@ -101,6 +92,17 @@
 - (int)configureWithSampleRate:(Float64)sampleRate
                  inputChannels:(int)inputChannels
                 outputChannels:(int)outputChannels;
+
+/// Note: legacy method kept for compatibility
+///
+/// Configure audio unit with preferred sample rate, number of channels, and
+/// whether to enable the input stream. This is an expensive process and will
+/// stop the audio unit before any reconstruction, causing a momentary pause in
+/// audio and UI if run from the main thread.
+/// Returns zero on success, ie. OSStatus noErr.
+- (int)configureWithSampleRate:(Float64)sampleRate
+                numberChannels:(int)numChannels
+                  inputEnabled:(BOOL)inputEnabled;
 
 /// Print info on the audio unit settings to the console
 - (void)print;

@@ -112,9 +112,9 @@
 }
 
 - (PdAudioStatus)configureRecordWithSampleRate:(int)sampleRate
-                                numberChannels:(int)numberChannels {
+                                inputChannels:(int)inputChannels {
 	AVAudioSessionCategory category = AVAudioSessionCategoryRecord;
-	if (numberChannels < 1) {
+	if (inputChannels < 1) {
 		AU_LOG(@"*** ERROR *** %@ requires at least 1 output channel", category);
 		return PdAudioError;
 	}
@@ -126,7 +126,7 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self configureAudioUnitWithInputChannels:numberChannels
+	status |= [self configureAudioUnitWithInputChannels:inputChannels
 	                                     outputChannels:0
 	                                       inputEnabled:YES];
 	AU_LOGV(@"configuration finished: status %d", status);
@@ -134,12 +134,12 @@
 }
 
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
-                                 numberChannels:(int)numberChannels {
+                                 outputChannels:(int)outputChannels {
 	AVAudioSessionCategory category = AVAudioSessionCategorySoloAmbient;
 	if (self.mixWithOthers) {
 		category = AVAudioSessionCategoryAmbient;
 	}
-	if (numberChannels < 1) {
+	if (outputChannels < 1) {
 		AU_LOG(@"*** ERROR *** %@ requires at least 1 output channel", category);
 		return PdAudioError;
 	}
@@ -152,7 +152,7 @@
 		return PdAudioError;
 	}
 	status |= [self configureAudioUnitWithInputChannels:0
-	                                     outputChannels:numberChannels
+	                                     outputChannels:outputChannels
 	                                       inputEnabled:NO];
 	AU_LOGV(@"configuration finished: status %d", status);
 	return status;
@@ -186,13 +186,6 @@
 	return status;
 }
 
-- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
-                                 numberChannels:(int)numberChannels
-                                  mixingEnabled:(BOOL)mixingEnabled {
-	_mixWithOthers = mixingEnabled;
-	return [self configureAmbientWithSampleRate:sampleRate numberChannels:numberChannels];
-}
-
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                   numberChannels:(int)numberChannels
                                     inputEnabled:(BOOL)inputEnabled
@@ -201,6 +194,13 @@
 	return [self configurePlaybackWithSampleRate:sampleRate
 	                               inputChannels:(inputEnabled ? numberChannels : 0)
 	                              outputChannels:numberChannels];
+}
+
+- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
+                                 numberChannels:(int)numberChannels
+                                  mixingEnabled:(BOOL)mixingEnabled {
+	_mixWithOthers = mixingEnabled;
+	return [self configureAmbientWithSampleRate:sampleRate outputChannels:numberChannels];
 }
 
 // Note about the magic 0.5 added to numberFrames:
