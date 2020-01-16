@@ -52,7 +52,7 @@
 }
 
 - (instancetype)init {
-	self = [self initWithAudioUnit:[[PdAudioUnit alloc] init]];
+	self = [self initWithAudioUnit:[PdAudioUnit defaultAudioUnit]];
 	return self;
 }
 

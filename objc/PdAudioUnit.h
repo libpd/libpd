@@ -20,8 +20,13 @@
 /// actual audio session and the audio unit attempts to set up sample rate
 /// conversion and buffering automatically.
 ///
+/// As of libpd 0.12, this is bridged to AU v3. If you are subclassing, you may
+/// need to implement the initWithComponentDescription:options:error designated
+/// initializer. If you want to expose this as an AU v3 plugin, you will need
+/// to implement a factory function and expose it to iOS (see Apple docs).
+///
 /// For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
-@interface PdAudioUnit : NSObject {
+@interface PdAudioUnit : AUAudioUnitV2Bridge  {
 @protected
 	AudioUnit _audioUnit;    ///< the underlying audio unit instance
 	BOOL _initialized;       ///< has the audio unit been successfully inited?
@@ -84,6 +89,19 @@
 /// is the audio input stream enabled?
 @property (nonatomic, assign, readonly) BOOL inputEnabled;
 
+/// Creates a default instance of PdAudioUnit.
++ (instancetype)defaultAudioUnit;
+
+/// This is the designated init for the Audio Unit V2 to V3 bridge.
+///
+/// To manually create a default instance, use:
+/// * description: PdAudioUnit.defaultIODescription
+/// * options: 0
+/// * outError: nil
+- (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription
+                                     options:(AudioComponentInstantiationOptions)options
+                                       error:(NSError **)outError;
+
 /// Configure audio unit with preferred sample rate and number of input and
 /// output channels. This is an expensive process and will stop the audio unit
 /// before any reconstruction, causing a momentary pause in audio and UI if run
@@ -111,5 +129,8 @@
 /// Default format: 32 bit, floating point, linear PCM, interleaved
 - (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate
                                   numberChannels:(UInt32)numChannels;
+
+/// Create default RemoteIO audio unit description
++ (AudioComponentDescription)defaultIODescription;
 
 @end

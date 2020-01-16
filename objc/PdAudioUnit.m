@@ -41,9 +41,6 @@ static const AudioUnitElement kAUOutputElement = 0;
 /// release buffers, if allocated
 - (void)clearBuffers;
 
-/// create default RemoteIO audio unit description
-+ (AudioComponentDescription)defaultIODescription;
-
 @end
 
 @implementation PdAudioUnit {
@@ -56,8 +53,16 @@ static const AudioUnitElement kAUOutputElement = 0;
 @synthesize inputChannels = _inputChannels;
 @synthesize outputChannels = _outputChannels;
 
-- (instancetype)init {
-	self = [super init];
++ (instancetype)defaultAudioUnit {
+	return [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
+                                                     options:0
+                                                       error:nil];
+}
+
+- (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription
+                                     options:(AudioComponentInstantiationOptions)options
+                                       error:(NSError **)outError {
+	self = [super initWithComponentDescription:componentDescription options:options error:outError];
 	if (self) {
 		_initialized = NO;
 		_active = NO;
@@ -174,6 +179,16 @@ static const AudioUnitElement kAUOutputElement = 0;
 	description.mChannelsPerFrame = numberChannels;
 	description.mBitsPerChannel = sizeof(Float32) * 8;
 	
+	return description;
+}
+
++ (AudioComponentDescription)defaultIODescription {
+	AudioComponentDescription description;
+	description.componentType = kAudioUnitType_Output;
+	description.componentSubType = kAudioUnitSubType_RemoteIO;
+	description.componentManufacturer = kAudioUnitManufacturer_Apple;
+	description.componentFlags = 0;
+	description.componentFlagsMask = 0;
 	return description;
 }
 
@@ -382,16 +397,6 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		_outputRingBuffer = NULL;
 	}
 	AU_LOGV(@"cleared buffers");
-}
-
-+ (AudioComponentDescription)defaultIODescription {
-	AudioComponentDescription description;
-	description.componentType = kAudioUnitType_Output;
-	description.componentSubType = kAudioUnitSubType_RemoteIO;
-	description.componentManufacturer = kAudioUnitManufacturer_Apple;
-	description.componentFlags = 0;
-	description.componentFlagsMask = 0;
-	return description;
 }
 
 @end
