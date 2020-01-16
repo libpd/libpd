@@ -53,15 +53,15 @@ typedef enum PdAudioStatus {
 // active, see Apple docs for category and category options info
 
 /// is audio mixing with other apps enabled? (default YES)
-/// applied to categories: PlayAndRecord, Playback
+/// applied to categories: PlayAndRecord, Playback, MultiRoute
 @property (nonatomic, assign) BOOL mixWithOthers;
 
 /// duck (ie. lower) audio output from other apps while active?
-/// applied to categories: Ambient, PlayAndRecord, Playback
+/// applied to categories: Ambient, PlayAndRecord, Playback, MultiRoute
 @property (nonatomic, assign) BOOL duckOthers;
 
 /// interrupt another app in AVAudioSessionModeSpokenAudio mode while active?
-/// applied to categories: PlayAndRecord, Playback
+/// applied to categories: PlayAndRecord, Playback, MultiRoute
 @property (nonatomic, assign) BOOL interruptSpokenAudioAndMixWithOthers;
 
 /// output to speaker instead of receiver (earpiece)?  (default YES)
@@ -114,6 +114,13 @@ typedef enum PdAudioStatus {
 /// uses the SoloAmbient category.
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
                                  numberChannels:(int)numChannels;
+
+/// Configure audio for more advanced multi route port configuration,
+/// see Apple docs. Note: does not allow Bluetooth or AirPlay.
+/// Uses the MultiRoute AVAudioSession category.
+- (PdAudioStatus)configureMultiRouteWithSampleRate:(int)sampleRate
+                                     inputChannels:(int)inputChannels
+                                    outputChannels:(int)outputChannels;
 
 /// Note: legacy method kept for compatibility
 ///
@@ -194,6 +201,11 @@ typedef enum PdAudioStatus {
 /// when configuring.
 /// Override if you want to customize option handling.
 - (AVAudioSessionCategoryOptions)ambientOptions;
+
+/// Returns the default audio session options when configuring for multi route
+/// use, can mix with other apps, allows more advanced port configuration.
+/// Override if you want to customize option handling.
+- (AVAudioSessionCategoryOptions)multiRouteOptions;
 
 /// Helper to add to the current audio session category options.
 /// Returns YES on success.

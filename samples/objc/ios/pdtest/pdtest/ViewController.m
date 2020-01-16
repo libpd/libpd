@@ -54,6 +54,7 @@
 
 	// configure a typical audio session with 2 output channels
 	self.audioController = [[PdAudioController alloc] init];
+	//self.audioController.mixWithOthers = NO; // this app's audio only
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
 	//self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
 	//self.audioController.allowAirPlay = YES; // allow AirPlay
