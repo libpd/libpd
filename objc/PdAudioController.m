@@ -34,8 +34,7 @@
 /// set audio session category
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
                                   outputs:(BOOL)hasOutputs
-                                isAmbient:(BOOL)isAmbient
-                             allowsMixing:(BOOL)allowsMixing;
+                                isAmbient:(BOOL)isAmbient;
 
 /// configure audio unit
 - (PdAudioStatus)configureAudioUnitWithInputChannels:(int)inputChannels
@@ -44,7 +43,9 @@
 
 @end
 
-@implementation PdAudioController
+@implementation PdAudioController {
+	BOOL _optionsChanged; ///< have the audio session options changed?
+}
 
 - (instancetype)init {
 	self = [self initWithAudioUnit:[[PdAudioUnit alloc] init]];
@@ -54,6 +55,8 @@
 - (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit {
 	self = [super init];
 	if (self) {
+		_mixWithOthers = YES;
+		_defaultToSpeaker = YES;
 		NSError *error = nil;
 		[self setupNotifications];
 		[AVAudioSession.sharedInstance setActive:YES error:&error];
@@ -70,19 +73,8 @@
 }
 
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
-                                  numberChannels:(int)numChannels
-                                    inputEnabled:(BOOL)inputEnabled
-                                   mixingEnabled:(BOOL)mixingEnabled {
-	return [self configurePlaybackWithSampleRate:sampleRate
-                                   inputChannels:(inputEnabled ? numChannels : 0)
-                                  outputChannels:numChannels
-                                   mixingEnabled:mixingEnabled];
-}
-
-- (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                    inputChannels:(int)inputChannels
-                                  outputChannels:(int)outputChannels
-                                   mixingEnabled:(BOOL)mixingEnabled {
+                                  outputChannels:(int)outputChannels {
 	PdAudioStatus status = PdAudioOK;
 	BOOL inputEnabled = (inputChannels > 0);
 	if (inputEnabled && !AVAudioSession.sharedInstance.inputAvailable) {
@@ -95,8 +87,7 @@
 	}
 	status |= [self selectCategoryWithInputs:inputEnabled
 	                                 outputs:(outputChannels > 0)
-	                               isAmbient:NO
-	                            allowsMixing:mixingEnabled];
+	                               isAmbient:NO];
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
@@ -107,17 +98,30 @@
 	return status;
 }
 
-- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
-                                 numberChannels:(int)numberChannels
-                                  mixingEnabled:(BOOL)mixingEnabled {
+- (PdAudioStatus)configureRecordWithSampleRate:(int)sampleRate
+                                numberChannels:(int)numberChannels {
 	PdAudioStatus status = [self updateSampleRate:sampleRate];
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	status |= [self selectCategoryWithInputs:NO
-	                                 outputs:(numberChannels > 0)
-	                               isAmbient:YES
-	                            allowsMixing:mixingEnabled];
+	status |= [self selectCategoryWithInputs:YES outputs:NO isAmbient:NO];
+	if (status == PdAudioError) {
+		return PdAudioError;
+	}
+	status |= [self configureAudioUnitWithInputChannels:numberChannels
+	                                     outputChannels:0
+	                                       inputEnabled:YES];
+	AU_LOGV(@"configuration finished: status %d", status);
+	return status;
+}
+
+- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
+                                 numberChannels:(int)numberChannels {
+	PdAudioStatus status = [self updateSampleRate:sampleRate];
+	if (status == PdAudioError) {
+		return PdAudioError;
+	}
+	status |= [self selectCategoryWithInputs:NO outputs:numberChannels isAmbient:YES];
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
@@ -126,6 +130,23 @@
 	                                       inputEnabled:NO];
 	AU_LOGV(@"configuration finished: status %d", status);
 	return status;
+}
+
+- (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
+                                 numberChannels:(int)numberChannels
+                                  mixingEnabled:(BOOL)mixingEnabled {
+	_mixWithOthers = mixingEnabled;
+	return [self configureAmbientWithSampleRate:sampleRate numberChannels:numberChannels];
+}
+
+- (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
+                                  numberChannels:(int)numberChannels
+                                    inputEnabled:(BOOL)inputEnabled
+                                   mixingEnabled:(BOOL)mixingEnabled {
+	_mixWithOthers = mixingEnabled;
+	return [self configurePlaybackWithSampleRate:sampleRate
+	                               inputChannels:(inputEnabled ? numberChannels : 0)
+	                              outputChannels:numberChannels];
 }
 
 // Note about the magic 0.5 added to numberFrames:
@@ -169,11 +190,51 @@
 }
 
 - (AVAudioSessionCategoryOptions)playbackOptions {
-	return 0;
+	AVAudioSessionCategoryOptions options = 0;
+	if (self.mixWithOthers) {
+		options |= AVAudioSessionCategoryOptionMixWithOthers;
+	}
+	if (self.duckOthers) {
+		options |= AVAudioSessionCategoryOptionDuckOthers;
+	}
+	if (self.interruptSpokenAudioAndMixWithOthers) {
+		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
+	}
+	return options;
 }
 
 - (AVAudioSessionCategoryOptions)playAndRecordOptions {
-	return AVAudioSessionCategoryOptionDefaultToSpeaker;
+	AVAudioSessionCategoryOptions options = 0;
+	if (self.mixWithOthers) {
+		options |= AVAudioSessionCategoryOptionMixWithOthers;
+	}
+	if (self.duckOthers) {
+		options |= AVAudioSessionCategoryOptionDuckOthers;
+	}
+	if (self.interruptSpokenAudioAndMixWithOthers) {
+		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
+	}
+	if (self.defaultToSpeaker) {
+		options |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+	}
+	if (self.allowBluetooth) {
+		options |= AVAudioSessionCategoryOptionAllowBluetooth;
+	}
+	if (self.allowBluetoothA2DP) {
+		options |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+	}
+	if (self.allowAirPlay) {
+		options |= AVAudioSessionCategoryOptionAllowAirPlay;
+	}
+	return options;
+}
+
+- (AVAudioSessionCategoryOptions)recordOptions {
+	AVAudioSessionCategoryOptions options = 0;
+	if (self.allowBluetooth) {
+		options |= AVAudioSessionCategoryOptionAllowBluetooth;
+	}
+	return options;
 }
 
 - (AVAudioSessionCategoryOptions)soloAmbientOptions {
@@ -181,7 +242,11 @@
 }
 
 - (AVAudioSessionCategoryOptions)ambientOptions {
-	return 0;
+	AVAudioSessionCategoryOptions options = 0;
+	if (self.duckOthers) {
+		options |= AVAudioSessionCategoryOptionDuckOthers;
+	}
+	return options;
 }
 
 + (BOOL)addSessionOptions:(AVAudioSessionCategoryOptions)options {
@@ -191,8 +256,7 @@
 
 + (BOOL)setSessionOptions:(AVAudioSessionCategoryOptions)options {
 	NSError *error;
-	NSString *const category = AVAudioSession.sharedInstance.category;
-	if(![AVAudioSession.sharedInstance setCategory:category
+	if (![AVAudioSession.sharedInstance setCategory:AVAudioSession.sharedInstance.category
 	                                   withOptions:options error:&error]) {
 		AU_LOG(@"error setting audio session options: %@", error.localizedDescription);
 		return NO;
@@ -202,9 +266,13 @@
 
 #pragma mark Overridden Getters/Setters
 
+// make sure option changes are applied on restart
 - (void)setActive:(BOOL)active {
 	self.audioUnit.active = active;
 	_active = self.audioUnit.isActive;
+	if (_optionsChanged) {
+		[self updateAudioSessionOptions];
+	}
 }
 
 - (int)ticksPerBuffer {
@@ -213,6 +281,48 @@
 	_ticksPerBuffer = round((bufferDuration * self.sampleRate) /
 	                        (NSTimeInterval)PdBase.getBlockSize);
 	return _ticksPerBuffer;
+}
+
+- (void)setMixWithOthers:(BOOL)mixWithOthers {
+	if (_mixWithOthers == mixWithOthers) {return;}
+	_mixWithOthers = mixWithOthers;
+	[self updateAudioSessionOptions];
+}
+
+- (void)setDuckOthers:(BOOL)duckOthers {
+	if (_duckOthers == duckOthers) {return;}
+	_duckOthers = duckOthers;
+	[self updateAudioSessionOptions];
+}
+
+- (void)setInterruptSpokenAudioAndMixWithOthers:(BOOL)interruptSpokenAudioAndMixWithOthers {
+	if (_interruptSpokenAudioAndMixWithOthers == interruptSpokenAudioAndMixWithOthers) {return;}
+	_interruptSpokenAudioAndMixWithOthers = interruptSpokenAudioAndMixWithOthers;
+	[self updateAudioSessionOptions];
+}
+
+- (void)setDefaultToSpeaker:(BOOL)defaultToSpeaker {
+	if (_mixWithOthers == defaultToSpeaker) {return;}
+	_defaultToSpeaker = defaultToSpeaker;
+	[self updateAudioSessionOptions];
+}
+
+- (void)setAllowBluetooth:(BOOL)allowBluetooth {
+	if (_allowBluetooth == allowBluetooth) {return;}
+	_allowBluetooth = allowBluetooth;
+	[self updateAudioSessionOptions];
+}
+
+- (void)setAllowBluetoothA2DP:(BOOL)allowBluetoothA2DP {
+	if (_allowBluetoothA2DP == allowBluetoothA2DP) {return;}
+	_allowBluetoothA2DP = allowBluetoothA2DP;
+	[self updateAudioSessionOptions];
+}
+
+- (void)setAllowAirPlay:(BOOL)allowAirPlay {
+	if (_allowAirPlay == allowAirPlay) {return;}
+	_allowAirPlay = allowAirPlay;
+	[self updateAudioSessionOptions];
 }
 
 #pragma mark Notifications
@@ -240,13 +350,18 @@
 	else if (type == AVAudioSessionInterruptionTypeEnded) {
 		NSUInteger option = [dict[AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
 		// TODO: always resume for now, do we really need to handle the ShouldResume hint?
-//		if (option == AVAudioSessionInterruptionOptionShouldResume) {
+#ifdef 1
+		self.active = _active; // retrigger
+		AU_LOGV(@"ended interruption");
+#else
+		if (option == AVAudioSessionInterruptionOptionShouldResume) {
 			self.active = _active; // retrigger
 			AU_LOGV(@"ended interruption");
-//		} else {
-//			AU_LOGV(@"still interrupted");
-//		}
+		} else {
+			AU_LOGV(@"still interrupted");
+		}
 	}
+#endif
 }
 
 #pragma mark Private
@@ -270,8 +385,7 @@
 
 - (PdAudioStatus)selectCategoryWithInputs:(BOOL)hasInputs
                                   outputs:(BOOL)hasOutputs
-                                isAmbient:(BOOL)isAmbient
-                             allowsMixing:(BOOL)allowsMixing {
+                                isAmbient:(BOOL)isAmbient {
 	NSString *category;
 	OSStatus status;
 	if (hasInputs && isAmbient) {
@@ -289,7 +403,7 @@
 		}
 	}
 	else {
-		category = allowsMixing ? AVAudioSessionCategoryAmbient : AVAudioSessionCategorySoloAmbient;
+		category = _mixWithOthers ? AVAudioSessionCategoryAmbient : AVAudioSessionCategorySoloAmbient;
 	}
 	NSError *error = nil;
 	[AVAudioSession.sharedInstance setCategory:category error:&error];
@@ -301,9 +415,6 @@
 	// configure options
 	if ([category isEqualToString:AVAudioSessionCategoryPlayback]) {
 		AVAudioSessionCategoryOptions options = [self playbackOptions];
-		if (allowsMixing) {
-			options = AVAudioSessionCategoryOptionMixWithOthers | options;
-		}
 		if (options) {
 			if (![AVAudioSession.sharedInstance setCategory:category
 			                                      withOptions:options
@@ -316,10 +427,7 @@
 	}
 	else if ([category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
 		AVAudioSessionCategoryOptions options = [self playAndRecordOptions];
-		if (allowsMixing) {
-			options = AVAudioSessionCategoryOptionMixWithOthers | options;
-		}
-		if(options) {
+		if (options) {
 			if (![AVAudioSession.sharedInstance setCategory:category
 			                                      withOptions:options
 			                                            error:&error]) {
@@ -341,7 +449,7 @@
 			}
 		}
 	}
-	else if([category isEqualToString:AVAudioSessionCategoryAmbient]) {
+	else if ([category isEqualToString:AVAudioSessionCategoryAmbient]) {
 		AVAudioSessionCategoryOptions options = [self ambientOptions];
 		if (options) {
 			if (![AVAudioSession.sharedInstance setCategory:category
@@ -354,7 +462,6 @@
 		}
 	}
 
-	_mixingEnabled = allowsMixing;
 	return PdAudioOK;
 }
 
@@ -367,6 +474,35 @@
 	return [self.audioUnit configureWithSampleRate:self.sampleRate
 	                                 inputChannels:(inputEnabled ? inputChannels : 0)
 	                                outputChannels:outputChannels] ? PdAudioError : PdAudioOK;
+}
+
+- (void)updateAudioSessionOptions {
+	if (!self.isActive) {
+		// can't change now
+		_optionsChanged = YES;
+		return;
+	}
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	AVAudioSessionCategoryOptions options = 0;
+	if ([session.category isEqualToString:AVAudioSessionCategoryPlayback]) {
+		options = [self playbackOptions];
+	}
+	if ([session.category isEqualToString:AVAudioSessionCategoryPlayAndRecord]) {
+		options = [self playAndRecordOptions];
+	}
+	if ([session.category isEqualToString:AVAudioSessionCategoryRecord]) {
+		options = [self recordOptions];
+	}
+	if ([session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
+		options = [self soloAmbientOptions];
+	}
+	if ([session.category isEqualToString:AVAudioSessionCategoryAmbient]) {
+		options = [self ambientOptions];
+	}
+	if (options) {
+		[PdAudioController addSessionOptions:options];
+	}
+	_optionsChanged = NO;
 }
 
 @end

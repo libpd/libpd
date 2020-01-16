@@ -123,16 +123,17 @@ static const AudioUnitElement kAUOutputElement = 0;
 		                   &inputStreamDescription,
 		                   &size));
 		AU_LOG(@"input stream:");
-		AU_LOG(@"  mSampleRate: %g", inputStreamDescription.mSampleRate);
-		AU_LOG(@"  mChannelsPerFrame: %d", inputStreamDescription.mChannelsPerFrame);
-		AU_LOGV(@"  mFormatID: %lu", inputStreamDescription.mFormatID);
-		AU_LOGV(@"  mFormatFlags: %lu", inputStreamDescription.mFormatFlags);
-		AU_LOGV(@"  mBytesPerPacket: %lu", inputStreamDescription.mBytesPerPacket);
-		AU_LOGV(@"  mFramesPerPacket: %lu", inputStreamDescription.mFramesPerPacket);
-		AU_LOGV(@"  mBytesPerFrame: %lu", inputStreamDescription.mBytesPerFrame);
-		AU_LOGV(@"  mBitsPerChannel: %lu", inputStreamDescription.mBitsPerChannel);
-	} else {
-		AU_LOG(@"no input stream");
+		AU_LOG(@"  sample rate: %g", inputStreamDescription.mSampleRate);
+		AU_LOG(@"  channels: %d", inputStreamDescription.mChannelsPerFrame);
+		AU_LOGV(@"  format ID: %lu", inputStreamDescription.mFormatID);
+		AU_LOGV(@"  format flags: %lu", inputStreamDescription.mFormatFlags);
+		AU_LOGV(@"  bytes per packet: %lu", inputStreamDescription.mBytesPerPacket);
+		AU_LOGV(@"  frames per packet: %lu", inputStreamDescription.mFramesPerPacket);
+		AU_LOGV(@"  bytes per frame: %lu", inputStreamDescription.mBytesPerFrame);
+		AU_LOGV(@"  bits per channel: %lu", inputStreamDescription.mBitsPerChannel);
+	}
+	else {
+		AU_LOG(@"input stream: none");
 	}
 
 	AudioStreamBasicDescription outputStreamDescription;
@@ -143,15 +144,20 @@ static const AudioUnitElement kAUOutputElement = 0;
 	                   kAUOutputElement,
 	                   &outputStreamDescription,
 	                   &size));
-	AU_LOG(@"output stream:");
-	AU_LOG(@"  mSampleRate: %g", outputStreamDescription.mSampleRate);
-	AU_LOG(@"  mChannelsPerFrame: %d", outputStreamDescription.mChannelsPerFrame);
-	AU_LOGV(@"  mFormatID: %lu", outputStreamDescription.mFormatID);
-	AU_LOGV(@"  mFormatFlags: %lu", outputStreamDescription.mFormatFlags);
-	AU_LOGV(@"  mBytesPerPacket: %lu", outputStreamDescription.mBytesPerPacket);
-	AU_LOGV(@"  mFramesPerPacket: %lu", outputStreamDescription.mFramesPerPacket);
-	AU_LOGV(@"  mBytesPerFrame: %lu", outputStreamDescription.mBytesPerFrame);
-	AU_LOGV(@"  mBitsPerChannel: %lu", outputStreamDescription.mBitsPerChannel);
+	if (outputStreamDescription.mSampleRate > 0) {
+		AU_LOG(@"output stream:");
+		AU_LOG(@"  sample rate: %g", outputStreamDescription.mSampleRate);
+		AU_LOG(@"  channels: %d", outputStreamDescription.mChannelsPerFrame);
+		AU_LOGV(@"  format ID: %lu", outputStreamDescription.mFormatID);
+		AU_LOGV(@"  format flags: %lu", outputStreamDescription.mFormatFlags);
+		AU_LOGV(@"  bytes per packet: %lu", outputStreamDescription.mBytesPerPacket);
+		AU_LOGV(@"  frames per packet: %lu", outputStreamDescription.mFramesPerPacket);
+		AU_LOGV(@"  bytes per frame: %lu", outputStreamDescription.mBytesPerFrame);
+		AU_LOGV(@"  bits per channel: %lu", outputStreamDescription.mBitsPerChannel);
+	}
+	else {
+		AU_LOG(@"output stream: none");
+	}
 }
 
 // sets the format to 32 bit, floating point, linear PCM, interleaved

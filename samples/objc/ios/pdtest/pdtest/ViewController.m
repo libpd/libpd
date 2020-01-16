@@ -54,10 +54,12 @@
 
 	// configure a typical audio session with 2 output channels
 	self.audioController = [[PdAudioController alloc] init];
+	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
+	//self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
+	//self.audioController.allowAirPlay = YES; // allow AirPlay
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
-																  numberChannels:2
-																	inputEnabled:YES
-																   mixingEnabled:YES];
+	                                                               inputChannels:2
+	                                                              outputChannels:2];
 	if (status == PdAudioError) {
 		NSLog(@"Error! Could not configure PdAudioController");
 	} else if (status == PdAudioPropertyChanged) {
@@ -69,7 +71,7 @@
 	// log actual settings
 	[self.audioController print];
 
-	// set AppDelegate as PdRecieverDelegate to receive messages from pd
+	// set AppDelegate as PdReceiverDelegate to receive messages from pd
 	[PdBase setDelegate:self];
 	[PdBase setMidiDelegate:self]; // for midi too
 
