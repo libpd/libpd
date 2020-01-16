@@ -23,7 +23,7 @@ static const int kAUDefaultMaxFrames = 4096;
 static const AudioUnitElement kAUInputElement = 1;
 static const AudioUnitElement kAUOutputElement = 0;
 
-@interface PdAudioUnit (Internal)
+@interface PdAudioUnit ()
 
 /// create and start the audio unit
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate

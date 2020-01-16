@@ -16,7 +16,7 @@
 #import "PdBase.h"
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface PdAudioController (Internal)
+@interface PdAudioController ()
 
 @property (nonatomic, readwrite) int sampleRate;
 @property (nonatomic, readwrite) int inputChannels;
@@ -265,20 +265,23 @@
 	if (self.duckOthers) {
 		options |= AVAudioSessionCategoryOptionDuckOthers;
 	}
-	if (self.interruptSpokenAudioAndMixWithOthers) {
-		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
-	}
 	if (self.defaultToSpeaker) {
 		options |= AVAudioSessionCategoryOptionDefaultToSpeaker;
 	}
 	if (self.allowBluetooth) {
 		options |= AVAudioSessionCategoryOptionAllowBluetooth;
 	}
-	if (self.allowBluetoothA2DP) {
-		options |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+	if (self.interruptSpokenAudioAndMixWithOthers) {
+		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
 	}
-	if (self.allowAirPlay) {
-		options |= AVAudioSessionCategoryOptionAllowAirPlay;
+	if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10, 0, 0}]) {
+		// iOS 10+
+		if (self.allowBluetoothA2DP) {
+			options |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+		}
+		if (self.allowAirPlay) {
+			options |= AVAudioSessionCategoryOptionAllowAirPlay;
+		}
 	}
 	return options;
 }
