@@ -481,6 +481,7 @@
 }
 
 - (void)updateSessionCategoryOptions {
+	if (!self.audioUnit) {return;}
 	if (!self.isActive) {
 		// can't change now
 		_optionsChanged = YES;
