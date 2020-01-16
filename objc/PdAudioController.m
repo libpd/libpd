@@ -274,8 +274,7 @@
 	if (self.interruptSpokenAudioAndMixWithOthers) {
 		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
 	}
-	if ([NSProcessInfo.processInfo isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10, 0, 0}]) {
-		// iOS 10+
+	if (@available(iOS 10.0, *)) {
 		if (self.allowBluetoothA2DP) {
 			options |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
 		}
