@@ -261,19 +261,34 @@ static OSStatus audioRenderCallback(void *inRefCon,
 
 #pragma mark AudioUnitPropertyListener
 
-// reinit buffers if frame size changes
+// reinit buffers if frame size changes or sample rate changes
 static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitPropertyID inID,
                                     AudioUnitScope inScope, AudioUnitElement inElement) {
 	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
 	if (inID == kAudioUnitProperty_MaximumFramesPerSlice) {
 		UInt32 frames, size = sizeof(frames);
-		AudioUnitGetProperty(inUnit, inID, inScope, inElement, &frames, &size);
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &frames, &size));
 		if (frames != pdAudioUnit->_maxFrames) {
 			pdAudioUnit->_maxFrames = frames;
 			AU_LOGV(@"max frames property changed: %d", frames);
 			[pdAudioUnit initBuffersWithInputChannels:pdAudioUnit->_inputChannels
 			                           outputChannels:pdAudioUnit->_outputChannels];
 		}
+	}
+	else if (inID == kAudioUnitProperty_SampleRate) {
+		Float64 sr = 0;
+		UInt32 size = sizeof(sr);
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &sr, &size));
+		if (sr != pdAudioUnit->_sampleRate) {
+			pdAudioUnit->_sampleRate = sr;
+			AU_LOGV(@"sample rate property changed: %d", frames);
+			[pdAudioUnit initBuffersWithInputChannels:pdAudioUnit->_inputChannels
+			                           outputChannels:pdAudioUnit->_outputChannels];
+			[PdBase openAudioWithSampleRate:sr
+			                  inputChannels:pdAudioUnit->_inputChannels
+			                 outputChannels:pdAudioUnit->_outputChannels];
+		}
+
 	}
 }
 
@@ -332,6 +347,10 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                                      kAudioUnitProperty_MaximumFramesPerSlice,
 	                                                      &propertyChangedCallback,
 	                                                      (__bridge void *)self));
+	AU_RETURN_FALSE_IF_ERROR(AudioUnitAddPropertyListener(_audioUnit,
+	                                                      kAudioUnitProperty_SampleRate,
+	                                                      &propertyChangedCallback,
+	                                                      (__bridge void *)self));
 
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitInitialize(_audioUnit));
 	_initialized = YES;
@@ -351,6 +370,10 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                                               kAudioUnitProperty_MaximumFramesPerSlice,
 	                                                               &propertyChangedCallback,
 	                                                               (__bridge void *)self));
+	AU_RETURN_IF_ERROR(AudioUnitRemovePropertyListenerWithUserData(_audioUnit,
+	                                                      kAudioUnitProperty_SampleRate,
+	                                                      &propertyChangedCallback,
+	                                                      (__bridge void *)self));
 	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
 	AU_LOGV(@"cleared audio unit");
 }
