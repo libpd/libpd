@@ -56,6 +56,7 @@
 	self.audioController = [[PdAudioController alloc] init];
 	//self.audioController.mixWithOthers = NO; // this app's audio only
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
+	//self.audioController.allowBluetooth = YES; // allow hands free Bluetooth
 	//self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
 	//self.audioController.allowAirPlay = YES; // allow AirPlay
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
@@ -68,6 +69,7 @@
 	} else {
 		NSLog(@"Audio Configuration successful.");
 	}
+	//[PdAudioController addSessionOptions:AVAudioSessionCategoryOptionAllowBluetooth];
 
 	// log actual settings
 	[self.audioController print];

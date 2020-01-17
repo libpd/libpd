@@ -66,7 +66,7 @@ static const AudioUnitElement kAUOutputElement = 0;
 	if (self) {
 		_initialized = NO;
 		_active = NO;
-		_blockSizeAsLog = log2int(PdBase.getBlockSize);
+		_blockFramesAsLog = log2int([PdBase getBlockSize]);
 		_maxFrames = kAUDefaultMaxFrames;
 	}
 	return self;
@@ -227,8 +227,8 @@ static OSStatus audioRenderCallback(void *inRefCon,
 	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
 	UInt32 auBufferSize = ioData->mBuffers[0].mDataByteSize;
 
-	// this is a faster way of computing (inNumberFrames / blockSize)
-	int ticks = inNumberFrames >> pdAudioUnit->_blockSizeAsLog;
+	// this is a faster way of computing (inNumberFrames / blockFrames)
+	int ticks = inNumberFrames >> pdAudioUnit->_blockFramesAsLog;
 
 	// render input samples
 	if (pdAudioUnit->_inputEnabled) {
@@ -261,10 +261,10 @@ static OSStatus audioRenderCallback(void *inRefCon,
 
 #pragma mark AudioUnitPropertyListener
 
-// reinit buffers if frame size changes or sample rate changes
 static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitPropertyID inID,
                                     AudioUnitScope inScope, AudioUnitElement inElement) {
 	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
+	if (!pdAudioUnit->_initialized) {return;}
 	if (inID == kAudioUnitProperty_MaximumFramesPerSlice) {
 		UInt32 frames, size = sizeof(frames);
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &frames, &size));
@@ -276,12 +276,13 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		}
 	}
 	else if (inID == kAudioUnitProperty_SampleRate) {
+		// audio unit sr has changed, so fall back in worst case
 		Float64 sr = 0;
 		UInt32 size = sizeof(sr);
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &sr, &size));
-		if (sr != pdAudioUnit->_sampleRate) {
+		if (!floatsAreEqual(pdAudioUnit->_sampleRate, sr)) {
 			pdAudioUnit->_sampleRate = sr;
-			AU_LOGV(@"sample rate property changed: %d", frames);
+			AU_LOG(@"*** WARNING *** audio unit sample rate property changed: %g", sr);
 			[pdAudioUnit initBuffersWithInputChannels:pdAudioUnit->_inputChannels
 			                           outputChannels:pdAudioUnit->_outputChannels];
 			[PdBase openAudioWithSampleRate:sr
@@ -371,9 +372,10 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                                               &propertyChangedCallback,
 	                                                               (__bridge void *)self));
 	AU_RETURN_IF_ERROR(AudioUnitRemovePropertyListenerWithUserData(_audioUnit,
-	                                                      kAudioUnitProperty_SampleRate,
-	                                                      &propertyChangedCallback,
-	                                                      (__bridge void *)self));
+	                                                               kAudioUnitProperty_SampleRate,
+	                                                               &propertyChangedCallback,
+	                                                               (__bridge void *)self));
+
 	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
 	AU_LOGV(@"cleared audio unit");
 }
@@ -385,8 +387,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	[self clearBuffers];
 	_inputChannels = inputChannels;
 	_outputChannels = outputChannels;
-	_inputBlockSize = inputFrameSize * PdBase.getBlockSize;
-	_outputBlockSize = outputFrameSize * PdBase.getBlockSize;
+	_inputBlockSize = inputFrameSize * [PdBase getBlockSize];
+	_outputBlockSize = outputFrameSize * [PdBase getBlockSize];
 
 	UInt32 size = sizeof(_maxFrames);
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
@@ -395,11 +397,12 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                              &_maxFrames,
 	                                              &size));
 
-	if (_sampleRate != AVAudioSession.sharedInstance.sampleRate) {
+	if (!floatsAreEqual(_sampleRate, AVAudioSession.sharedInstance.sampleRate)) {
 		AU_LOGV(@"sample rate conversion: pd %g session %g",
 		        self.sampleRate, AVAudioSession.sharedInstance.sampleRate);
-		_inputRingBuffer = rb_create(inputFrameSize * _maxFrames);
-		_outputRingBuffer = rb_create(outputFrameSize * _maxFrames);
+		// buffer sizes *must* be multiple of 256
+		_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
+		_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));
 		AU_LOGV(@"initialized buffers: inputs %d outputs %d max frames %d",
 		        inputChannels, outputChannels, _maxFrames);
 	}

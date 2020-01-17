@@ -32,7 +32,7 @@
 	BOOL _initialized;       ///< has the audio unit been successfully inited?
 
 	// these are precomputed for use in the render callback
-	UInt32 _blockSizeAsLog;  ///< log(blockSize) for fast bitshift division
+	UInt32 _blockFramesAsLog;///< log(blockFrames) for fast bitshift division
 	UInt32 _inputBlockSize;  ///< pd input block size in bytes
 	UInt32 _outputBlockSize; ///< pd output block size in bytes
 	UInt32 _maxFrames;       ///< max buffer size in frames
