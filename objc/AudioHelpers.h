@@ -57,6 +57,24 @@ return false;\
 }\
 } while (0)
 
+/// Check if the audio unit had an error, and if so print it, dispose the audio unit, and return.
+#define AU_DISPOSE_IF_ERROR(status, audioUnit) do {\
+if(status) {\
+AudioComponentInstanceDispose(audioUnit);\
+NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
+return;\
+}\
+} while (0)
+
+/// Check if the audio unit had an error, and if so print it, dispose the audio unit, and return false.
+#define AU_DISPOSE_FALSE_IF_ERROR(status, audioUnit) do {\
+if(status) {\
+AudioComponentInstanceDispose(audioUnit);\
+NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
+return false;\
+}\
+} while (0)
+
 #pragma mark Math Helpers
 
 /// Returns YES if floats are equal within 0.0001.
