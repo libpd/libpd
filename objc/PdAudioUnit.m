@@ -20,8 +20,8 @@
 // https://developer.apple.com/library/content/qa/qa1606/_index.html
 static const int kAUDefaultMaxFrames = 4096;
 
-static const AudioUnitElement kAUInputElement = 1;
-static const AudioUnitElement kAUOutputElement = 0;
+static const AudioUnitElement kRemoteIOElement_Input = 1;
+static const AudioUnitElement kRemoteIOElement_Output = 0;
 
 @interface PdAudioUnit ()
 
@@ -119,12 +119,11 @@ static const AudioUnitElement kAUOutputElement = 0;
 
 	UInt32 size = sizeof(AudioStreamBasicDescription);
 	if (_inputEnabled) {
-		AudioStreamBasicDescription inputStreamDescription;
-		memset (&inputStreamDescription, 0, sizeof(inputStreamDescription));
+		AudioStreamBasicDescription inputStreamDescription = {0};
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(_audioUnit,
 		                   kAudioUnitProperty_StreamFormat,
 		                   kAudioUnitScope_Output,
-		                   kAUInputElement,
+		                   kRemoteIOElement_Input,
 		                   &inputStreamDescription,
 		                   &size));
 		AU_LOG(@"input stream:");
@@ -141,12 +140,11 @@ static const AudioUnitElement kAUOutputElement = 0;
 		AU_LOG(@"input stream: none");
 	}
 
-	AudioStreamBasicDescription outputStreamDescription;
-	memset(&outputStreamDescription, 0, size);
+	AudioStreamBasicDescription outputStreamDescription = {0};
 	AU_RETURN_IF_ERROR(AudioUnitGetProperty(_audioUnit,
 	                   kAudioUnitProperty_StreamFormat,
 	                   kAudioUnitScope_Input,
-	                   kAUOutputElement,
+	                   kRemoteIOElement_Output,
 	                   &outputStreamDescription,
 	                   &size));
 	if (outputStreamDescription.mSampleRate > 0) {
@@ -167,9 +165,7 @@ static const AudioUnitElement kAUOutputElement = 0;
 
 // sets the format to 32 bit, floating point, linear PCM, interleaved
 - (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate numberChannels:(UInt32)numberChannels {
-	AudioStreamBasicDescription description;
-	memset(&description, 0, sizeof(description));
-	
+	AudioStreamBasicDescription description = {0};
 	description.mSampleRate = sampleRate;
 	description.mFormatID = kAudioFormatLinearPCM;
 	description.mFormatFlags = kAudioFormatFlagsNativeFloatPacked;
@@ -178,7 +174,6 @@ static const AudioUnitElement kAUOutputElement = 0;
 	description.mBytesPerFrame = numberChannels * sizeof(Float32);
 	description.mChannelsPerFrame = numberChannels;
 	description.mBitsPerChannel = sizeof(Float32) * 8;
-	
 	return description;
 }
 
@@ -232,7 +227,7 @@ static OSStatus audioRenderCallback(void *inRefCon,
 
 	// render input samples
 	if (pdAudioUnit->_inputEnabled) {
-		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kAUInputElement, inNumberFrames, ioData);
+		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kRemoteIOElement_Input, inNumberFrames, ioData);
 	}
 
 	// buffer and process pd ticks one by one
@@ -303,13 +298,13 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
 	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &_audioUnit));
 
-	AudioStreamBasicDescription streamDescription;
+	AudioStreamBasicDescription streamDescription = {0};
 	if (_inputEnabled && inputChannels > 0) {
 		UInt32 enableInput = 1;
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
 		                                               kAudioOutputUnitProperty_EnableIO,
 		                                               kAudioUnitScope_Input,
-		                                               kAUInputElement,
+		                                               kRemoteIOElement_Input,
 		                                               &enableInput,
 		                                               sizeof(enableInput)), _audioUnit);
 
@@ -318,7 +313,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
 		                                               kAudioUnitProperty_StreamFormat,
 		                                               kAudioUnitScope_Output,
-		                                               kAUInputElement,
+		                                               kRemoteIOElement_Input,
 		                                               &streamDescription,
 		                                               sizeof(streamDescription)), _audioUnit);
 	}
@@ -329,7 +324,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
 		                                               kAudioUnitProperty_StreamFormat,
 		                                               kAudioUnitScope_Input,
-		                                               kAUOutputElement,
+		                                               kRemoteIOElement_Output,
 		                                               &streamDescription,
 		                                               sizeof(streamDescription)), _audioUnit);
 	}
@@ -340,7 +335,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
 	                                               kAudioUnitProperty_SetRenderCallback,
 	                                               kAudioUnitScope_Input,
-	                                               kAUOutputElement,
+	                                               kRemoteIOElement_Output,
 	                                               &callbackStruct,
 	                                               sizeof(callbackStruct)), _audioUnit);
 
@@ -393,7 +388,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	UInt32 size = sizeof(_maxFrames);
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
 	                                              kAudioUnitProperty_MaximumFramesPerSlice,
-	                                              kAudioUnitScope_Global, kAUOutputElement,
+	                                              kAudioUnitScope_Global, kRemoteIOElement_Output,
 	                                              &_maxFrames,
 	                                              &size));
 
