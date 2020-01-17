@@ -284,7 +284,6 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			                  inputChannels:pdAudioUnit->_inputChannels
 			                 outputChannels:pdAudioUnit->_outputChannels];
 		}
-
 	}
 }
 
@@ -298,7 +297,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
 	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &_audioUnit));
 
-	AudioStreamBasicDescription streamDescription = {0};
+	// RemoteIO input stream is disabled by default
 	if (_inputEnabled && inputChannels > 0) {
 		UInt32 enableInput = 1;
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
@@ -309,6 +308,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		                                               sizeof(enableInput)), _audioUnit);
 
 		// output scope because we're defining the output of the input element _to_ our render callback
+		AudioStreamBasicDescription streamDescription = {0};
 		streamDescription = [self ASBDForSampleRate:sampleRate numberChannels:inputChannels];
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
 		                                               kAudioUnitProperty_StreamFormat,
@@ -318,8 +318,10 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		                                               sizeof(streamDescription)), _audioUnit);
 	}
 
-	// input scope because we're defining the input of the output element _from_ our render callback
+	// RemoteIO output stream is enabled by default
 	if (outputChannels > 0) {
+		// input scope because we're defining the input of the output element _from_ our render callback
+		AudioStreamBasicDescription streamDescription = {0};
 		streamDescription = [self ASBDForSampleRate:sampleRate numberChannels:outputChannels];
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
 		                                               kAudioUnitProperty_StreamFormat,
@@ -327,6 +329,15 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		                                               kRemoteIOElement_Output,
 		                                               &streamDescription,
 		                                               sizeof(streamDescription)), _audioUnit);
+	}
+	else {
+		UInt32 enableOutput = 1;
+		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
+		                                               kAudioOutputUnitProperty_EnableIO,
+		                                               kAudioUnitScope_Output,
+		                                               kRemoteIOElement_Output,
+		                                               &enableOutput,
+		                                               sizeof(enableOutput)), _audioUnit);
 	}
 	
 	AURenderCallbackStruct callbackStruct;
