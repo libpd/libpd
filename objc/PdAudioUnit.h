@@ -32,10 +32,12 @@
 	BOOL _initialized;       ///< has the audio unit been successfully inited?
 
 	// these are precomputed for use in the render callback
-	UInt32 _blockFramesAsLog;///< log(blockFrames) for fast bitshift division
-	UInt32 _inputBlockSize;  ///< pd input block size in bytes
-	UInt32 _outputBlockSize; ///< pd output block size in bytes
-	UInt32 _maxFrames;       ///< max buffer size in frames
+	UInt32 _blockFrames;      ///< pd block size in frames
+	UInt32 _blockFramesAsLog; ///< log(blockFrames) for fast bitshift division
+	UInt32 _inputFrameSize;   ///< pd input frame size in bytes
+	UInt32 _inputBlockSize;   ///< pd input block size in bytes
+	UInt32 _outputBlockSize;  ///< pd output block size in bytes
+	UInt32 _maxFrames;        ///< max buffer size in frames
 
 	// underlying property ivars for subclass access
 	Float64 _sampleRate;
@@ -74,6 +76,11 @@
 
 /// is the audio unit active?
 @property (nonatomic, getter=isActive) BOOL active;
+
+/// is the audio unit buffering samples?
+/// this is to handle variable buffer sizes due to sample rate conversion
+/// when 1 samaple rate is not a multiple of the other, ie. 44.1k : 48k
+@property (nonatomic, getter=isBuffering) BOOL buffering;
 
 // Read only properties that are set by the configure methods
 

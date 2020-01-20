@@ -66,7 +66,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	if (self) {
 		_initialized = NO;
 		_active = NO;
-		_blockFramesAsLog = log2int([PdBase getBlockSize]);
+		_blockFrames = [PdBase getBlockSize];
+		_blockFramesAsLog = log2int(_blockFrames);
 		_maxFrames = kAUDefaultMaxFrames;
 	}
 	return self;
@@ -208,6 +209,10 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	_active = active;
 }
 
+- (BOOL)isBuffering {
+	return (_inputRingBuffer || _outputRingBuffer);
+}
+
 #pragma mark AURenderCallback
 
 // note: access ivars directly to avoid slower method calls in audio thread
@@ -218,36 +223,64 @@ static OSStatus audioRenderCallback(void *inRefCon,
                                     UInt32 inNumberFrames,
                                     AudioBufferList *ioData) {
 
-	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
+	PdAudioUnit *pd = (__bridge PdAudioUnit *)inRefCon;
 	Float32 *auBuffer = (Float32 *)ioData->mBuffers[0].mData;
-	UInt32 auBufferSize = ioData->mBuffers[0].mDataByteSize;
-
-	// this is a faster way of computing (inNumberFrames / blockFrames)
-	int ticks = inNumberFrames >> pdAudioUnit->_blockFramesAsLog;
-
-	// render input samples
-	if (pdAudioUnit->_inputEnabled) {
-		AudioUnitRender(pdAudioUnit->_audioUnit, ioActionFlags, inTimeStamp, kRemoteIOElement_Input, inNumberFrames, ioData);
-	}
 
 	// buffer and process pd ticks one by one
-	if (pdAudioUnit->_inputRingBuffer || pdAudioUnit->_outputRingBuffer) {
+	if (pd->_inputRingBuffer || pd->_outputRingBuffer) {
+
+		// output buffer info from ioData
+		UInt32 outputBufferSize = ioData->mBuffers[0].mDataByteSize;
+		UInt32 outputFrames = inNumberFrames;
+		UInt32 outputChannels = ioData->mBuffers[0].mNumberChannels;
+
+		// input buffer info from ioData *after* rendering input samples
+		UInt32 inputBufferSize = outputBufferSize;
+		UInt32 inputFrames = inNumberFrames;
+		UInt32 inputChannels = 0;
+
+		// render input samples
+		// note: input buffer *may* be different from output buffer due to sr conversion,
+		//       so reset ioData info to original output values
+		if (pd->_inputEnabled) {
+			AudioUnitRender(pd->_audioUnit, ioActionFlags, inTimeStamp, kRemoteIOElement_Input, inNumberFrames, ioData);
+			inputBufferSize = ioData->mBuffers[0].mDataByteSize;
+			inputFrames = inputBufferSize / (pd->_inputFrameSize);
+			inputChannels = ioData->mBuffers[0].mNumberChannels;
+			ioData->mBuffers[0].mDataByteSize = outputBufferSize;
+			ioData->mBuffers[0].mNumberChannels = outputChannels;
+		}
 
 		// audio unit -> input ring buffer
-		rb_write_to_buffer(pdAudioUnit->_inputRingBuffer, 1, auBuffer, auBufferSize);
+		UInt32 framesAvailable = (UInt32)rb_available_to_read(pd->_inputRingBuffer) / pd->_inputFrameSize;
+		while (inputFrames + framesAvailable < outputFrames) {
+			// pad input buffer to make sure we have enough blocks to fill auBuffer,
+			// this should hopefully only happen when the audio unit is started
+			rb_write_value_to_buffer(pd->_inputRingBuffer, 0, pd->_inputBlockSize);
+			framesAvailable += pd->_blockFrames;
+		}
+		rb_write_to_buffer(pd->_inputRingBuffer, 1, auBuffer, inputBufferSize);
 
 		// input ring buffer -> pd -> output ring buffer
 		char *copy = (char *)auBuffer;
-		while (rb_available_to_read(pdAudioUnit->_outputRingBuffer) < auBufferSize) {
-			rb_read_from_buffer(pdAudioUnit->_inputRingBuffer, copy, pdAudioUnit->_inputBlockSize);
+		while (rb_available_to_read(pd->_outputRingBuffer) < outputBufferSize) {
+			rb_read_from_buffer(pd->_inputRingBuffer, copy, pd->_inputBlockSize);
 			[PdBase processFloatWithInputBuffer:(float *)copy outputBuffer:(float *)copy ticks:1];
-			rb_write_to_buffer(pdAudioUnit->_outputRingBuffer, 1, copy, pdAudioUnit->_outputBlockSize);
+			rb_write_to_buffer(pd->_outputRingBuffer, 1, copy, pd->_outputBlockSize);
 		}
 
 		// output ring buffer -> audio unit
-		rb_read_from_buffer(pdAudioUnit->_outputRingBuffer, (char *)auBuffer, auBufferSize);
+		rb_read_from_buffer(pd->_outputRingBuffer, (char *)auBuffer, outputBufferSize);
 	}
 	else { // straight process: audio unit -> pd -> audio unit
+
+		// render input samples
+		if (pd->_inputEnabled) {
+			AudioUnitRender(pd->_audioUnit, ioActionFlags, inTimeStamp, kRemoteIOElement_Input, inNumberFrames, ioData);
+		}
+
+		// this is a faster way of computing (inNumberFrames / pd->_blockFrames)
+		int ticks = inNumberFrames >> pd->_blockFramesAsLog;
 		[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
 	}
 
@@ -258,16 +291,16 @@ static OSStatus audioRenderCallback(void *inRefCon,
 
 static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitPropertyID inID,
                                     AudioUnitScope inScope, AudioUnitElement inElement) {
-	PdAudioUnit *pdAudioUnit = (__bridge PdAudioUnit *)inRefCon;
-	if (!pdAudioUnit->_initialized) {return;}
+	PdAudioUnit *pd = (__bridge PdAudioUnit *)inRefCon;
+	if (!pd->_initialized) {return;}
 	if (inID == kAudioUnitProperty_MaximumFramesPerSlice) {
+		// buffer size changed, probably due to new input or output route
 		UInt32 frames, size = sizeof(frames);
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &frames, &size));
-		if (frames != pdAudioUnit->_maxFrames) {
-			pdAudioUnit->_maxFrames = frames;
+		if (frames != pd->_maxFrames) {
+			pd->_maxFrames = frames;
 			AU_LOGV(@"max frames property changed: %d", frames);
-			[pdAudioUnit initBuffersWithInputChannels:pdAudioUnit->_inputChannels
-			                           outputChannels:pdAudioUnit->_outputChannels];
+			[pd initBuffersWithInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
 		}
 	}
 	else if (inID == kAudioUnitProperty_SampleRate) {
@@ -275,14 +308,39 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		Float64 sr = 0;
 		UInt32 size = sizeof(sr);
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &sr, &size));
-		if (!floatsAreEqual(pdAudioUnit->_sampleRate, sr)) {
-			pdAudioUnit->_sampleRate = sr;
+		if (!floatsAreEqual(pd->_sampleRate, sr)) {
+			pd->_sampleRate = sr;
 			AU_LOG(@"*** WARNING *** audio unit sample rate property changed: %g", sr);
-			[pdAudioUnit initBuffersWithInputChannels:pdAudioUnit->_inputChannels
-			                           outputChannels:pdAudioUnit->_outputChannels];
+			[pd initBuffersWithInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
 			[PdBase openAudioWithSampleRate:sr
-			                  inputChannels:pdAudioUnit->_inputChannels
-			                 outputChannels:pdAudioUnit->_outputChannels];
+			                  inputChannels:pd->_inputChannels
+			                 outputChannels:pd->_outputChannels];
+		}
+	}
+	else if (inID == kAudioUnitProperty_StreamFormat) {
+		// audio unit input or output channels have changed, so fall back in worst case
+		AudioStreamBasicDescription streamFormat = {0};
+		UInt32 size = sizeof(streamFormat);
+		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &streamFormat, &size));
+		if (inElement == kRemoteIOElement_Input && inScope == kAudioUnitScope_Output) {
+			if (pd->_inputChannels != streamFormat.mChannelsPerFrame) {
+				AU_LOG(@"*** WARNING *** audio unit input channels changed: %d", streamFormat.mChannelsPerFrame);
+				[pd initBuffersWithInputChannels:streamFormat.mChannelsPerFrame outputChannels:pd->_outputChannels];
+				[PdBase openAudioWithSampleRate:pd->_sampleRate
+								  inputChannels:streamFormat.mChannelsPerFrame
+								 outputChannels:pd->_outputChannels];
+
+			}
+		}
+		else if (inElement == kRemoteIOElement_Output && inScope == kAudioUnitScope_Input) {
+			if (pd->_outputChannels != streamFormat.mChannelsPerFrame) {
+				AU_LOG(@"*** WARNING *** audio unit output channels changed: %d", streamFormat.mChannelsPerFrame);
+				[pd initBuffersWithInputChannels:pd->_inputChannels outputChannels:streamFormat.mChannelsPerFrame];
+				[PdBase openAudioWithSampleRate:pd->_sampleRate
+								  inputChannels:pd->_inputChannels
+								 outputChannels:streamFormat.mChannelsPerFrame];
+
+			}
 		}
 	}
 }
@@ -358,6 +416,10 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                                       kAudioUnitProperty_SampleRate,
 	                                                       &propertyChangedCallback,
 	                                                       (__bridge void *)self), _audioUnit);
+	AU_DISPOSE_FALSE_IF_ERROR(AudioUnitAddPropertyListener(_audioUnit,
+	                                                       kAudioUnitProperty_StreamFormat,
+	                                                       &propertyChangedCallback,
+	                                                       (__bridge void *)self), _audioUnit);
 
 	AU_DISPOSE_FALSE_IF_ERROR(AudioUnitInitialize(_audioUnit), _audioUnit);
 	_initialized = YES;
@@ -381,20 +443,26 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                                                kAudioUnitProperty_SampleRate,
 	                                                                &propertyChangedCallback,
 	                                                                (__bridge void *)self), _audioUnit);
+	AU_DISPOSE_IF_ERROR(AudioUnitRemovePropertyListenerWithUserData(_audioUnit,
+	                                                                kAudioUnitProperty_StreamFormat,
+	                                                                &propertyChangedCallback,
+	                                                                (__bridge void *)self), _audioUnit);
 
 	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
 	AU_LOGV(@"cleared audio unit");
 }
 
 - (BOOL)initBuffersWithInputChannels:(int)inputChannels outputChannels:(int)outputChannels {
+	AVAudioSession *session = AVAudioSession.sharedInstance;
 	int inputFrameSize = inputChannels * sizeof(Float32);
 	int outputFrameSize = outputChannels * sizeof(Float32);
 
 	[self clearBuffers];
 	_inputChannels = inputChannels;
 	_outputChannels = outputChannels;
-	_inputBlockSize = inputFrameSize * [PdBase getBlockSize];
-	_outputBlockSize = outputFrameSize * [PdBase getBlockSize];
+	_inputBlockSize = inputFrameSize * _blockFrames;
+	_outputBlockSize = outputFrameSize * _blockFrames;
+	_inputFrameSize = inputFrameSize;
 
 	UInt32 size = sizeof(_maxFrames);
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
@@ -403,17 +471,18 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                              &_maxFrames,
 	                                              &size));
 
-	if (!floatsAreEqual(_sampleRate, AVAudioSession.sharedInstance.sampleRate)) {
-		AU_LOGV(@"sample rate conversion: pd %g session %g",
-		        self.sampleRate, AVAudioSession.sharedInstance.sampleRate);
-		// buffer sizes *must* be multiple of 256
-		_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
-		_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));
-		AU_LOGV(@"initialized buffers: inputs %d outputs %d max frames %d",
-		        inputChannels, outputChannels, _maxFrames);
-	}
-	else {
-		AU_LOGV(@"sample rate conversion: not needed");
+	// if one sample rate is *not* a multiple of the other (44.1k : 48k),
+	// assume sample rate conversion buffering is needed as audio unit IO buffer
+	// sizes *may* be variable
+	if (!floatsAreEqual(_sampleRate, session.sampleRate)) {
+		int rem = fmod(_sampleRate, (int)session.sampleRate);
+		if (rem != 0 && rem != MIN(_sampleRate, session.sampleRate)) {
+			// note: ring buffer sizes *must* be multiple of 256!
+			_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
+			_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));
+			AU_LOGV(@"initialized sample rate conversion buffers: inputs %d outputs %d max frames %d",
+					inputChannels, outputChannels, _maxFrames);
+		}
 	}
 
 	return YES;
