@@ -475,8 +475,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	// assume sample rate conversion buffering is needed as audio unit IO buffer
 	// sizes *may* be variable
 	if (!floatsAreEqual(_sampleRate, session.sampleRate)) {
-		int rem = fmod(_sampleRate, (int)session.sampleRate);
-		if (rem != 0 && rem != MIN(_sampleRate, session.sampleRate)) {
+		int rem = fmod(MIN(_sampleRate, session.sampleRate), MAX(_sampleRate, session.sampleRate));
+		if (rem != 0 && rem == (int)MIN(_sampleRate, session.sampleRate)) {
 			// note: ring buffer sizes *must* be multiple of 256!
 			_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
 			_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));

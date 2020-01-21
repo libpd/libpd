@@ -79,7 +79,7 @@
 
 /// is the audio unit buffering samples?
 /// this is to handle variable buffer sizes due to sample rate conversion
-/// when 1 samaple rate is not a multiple of the other, ie. 44.1k : 48k
+/// when 1 sample rate is not a multiple of the other, ie. 44.1k : 48k
 @property (nonatomic, getter=isBuffering) BOOL buffering;
 
 // Read only properties that are set by the configure methods
