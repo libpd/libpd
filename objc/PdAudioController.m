@@ -549,20 +549,14 @@
 	NSError *error = nil;
 	AVAudioSession *session = AVAudioSession.sharedInstance;
 	PdAudioStatus ret = PdAudioOK;
-
-	// inputs
-	AU_LOGV(@"session input channels: %d", session.inputNumberOfChannels);
+	AU_LOGV(@"session channels: inputs %d outputs %d",
+	    session.inputNumberOfChannels, session.outputNumberOfChannels);
 	if (_autoInputChannels) {
 		inputChannels = (int)session.inputNumberOfChannels;
 	}
-
-	// outputs
-	AU_LOGV(@"session output channels: %d", session.outputNumberOfChannels);
 	if (_autoOutputChannels) {
 		outputChannels = (int)session.outputNumberOfChannels;
 	}
-
-	// stereo min?
 	if (self.preferStereo) {
 		if (inputChannels > 0) {
 			inputChannels = (int)MAX(inputChannels, 2);
@@ -571,15 +565,12 @@
 			outputChannels = (int)MAX(outputChannels, 2);
 		}
 	}
-
 	if (_inputChannels != inputChannels || _outputChannels != outputChannels) {
 		ret = PdAudioPropertyChanged;
-		AU_LOGV(@"channels changed: inputs %d -> %d outputs %d -> %d",
-				_inputChannels, inputChannels, _outputChannels, outputChannels);
 	}
 	_inputChannels = inputChannels;
 	_outputChannels = outputChannels;
-
+	AU_LOGV(@"channels: inputs %d outputs %d", _inputChannels, _outputChannels);
 	return ret;
 }
 
