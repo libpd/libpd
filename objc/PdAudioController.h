@@ -89,9 +89,6 @@ typedef enum PdAudioStatus {
 
 // Other options applied only during configuration.
 
-/// activate the audio session on configuration? (default YES)
-@property (nonatomic, assign) BOOL activateOnConfigure;
-
 /// prefer stereo over mono input/output (default YES)
 ///
 /// ensures a minimum of stereo IO as some routes (mono mic -> built-in

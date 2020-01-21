@@ -66,7 +66,6 @@
 	if (self) {
 		_mixWithOthers = YES;
 		_defaultToSpeaker = YES;
-		_activateOnConfigure = YES;
 		_preferStereo = YES;
 		[self setupNotifications];
 		self.audioUnit = audioUnit;
@@ -516,15 +515,13 @@
 	}
 
 	// activate
-	if (self.activateOnConfigure) {
-		[session setActive:YES error:&error];
-		if (error) {
-			AU_LOG(@"*** ERROR *** could not activate session: %@",
-			    AVStatusCodeAsString((int)error.code));
-			return PdAudioError;
-		}
-		AU_LOGV(@"session activated");
+	[session setActive:YES error:&error];
+	if (error) {
+		AU_LOG(@"*** ERROR *** could not activate session: %@",
+			AVStatusCodeAsString((int)error.code));
+		return PdAudioError;
 	}
+	AU_LOGV(@"session activated");
 
 	return PdAudioOK;
 }
