@@ -18,8 +18,10 @@
 /// or define it in "Other C Flags" build settings.
 //#define AU_DEBUG_VERBOSE
 
-/// Returns name of the const value associated with the OSStatus as a string.
+/// Returns AVAudioSession OSStatus error code as a string.
 extern NSString *AVStatusCodeAsString(OSStatus status);
+
+/// Returns the AudioUnit OSStatus error code as a string.
 extern NSString *AUStatusCodeAsString(OSStatus status);
 
 /// Log debug info along with the class, function and line number.
@@ -36,14 +38,14 @@ NSLog((@"%s[%d] " nslog_string), __func__, __LINE__, ##__VA_ARGS__);\
 
 /// A debug check, which will only log if the value is non-zero.
 #define AU_LOG_IF_ERROR(value, nslog_string, ...) do {\
-if(value) {\
+if (value) {\
 NSLog((@"*** ERROR *** %s[%d] " nslog_string), __func__, __LINE__, ##__VA_ARGS__);\
 }\
 } while (0)
 
 /// Check if the audio unit had an error, and if so print it and return.
 #define AU_RETURN_IF_ERROR(status) do {\
-if(status) {\
+if (status) {\
 NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
 return;\
 }\
@@ -51,7 +53,7 @@ return;\
 
 /// Check if the audio unit had an error, and if so print it and return false.
 #define AU_RETURN_FALSE_IF_ERROR(status) do {\
-if(status) {\
+if (status) {\
 NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
 return false;\
 }\
@@ -59,7 +61,7 @@ return false;\
 
 /// Check if the audio unit had an error, and if so print it, dispose the audio unit, and return.
 #define AU_DISPOSE_IF_ERROR(status, audioUnit) do {\
-if(status) {\
+if (status) {\
 AudioComponentInstanceDispose(audioUnit);\
 NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
 return;\
@@ -68,7 +70,7 @@ return;\
 
 /// Check if the audio unit had an error, and if so print it, dispose the audio unit, and return false.
 #define AU_DISPOSE_FALSE_IF_ERROR(status, audioUnit) do {\
-if(status) {\
+if (status) {\
 AudioComponentInstanceDispose(audioUnit);\
 NSLog(@"*** ERROR *** %s[%d] status code =  %@", __func__, __LINE__, AUStatusCodeAsString(status));\
 return false;\

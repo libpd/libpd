@@ -15,32 +15,38 @@
 
 #pragma mark Audio Unit / Audio Session Debugging
 
-#define UNDEFINED_BAD_CATEGORY_ERROR -12986
-
 NSString *AVStatusCodeAsString(OSStatus status) {
 	switch (status) {
-		case kAudioSessionNoError:
-			return @"kAudioSessionNoError";
-		case kAudioSessionNotInitialized:
-			return @"kAudioSessionNotInitialized";
-		case kAudioSessionAlreadyInitialized:
-			return @"kAudioSessionAlreadyInitialized";
-		case kAudioSessionInitializationError:
-			return @"kAudioSessionInitializationError";
-		case kAudioSessionBadPropertySizeError:
-			return @"kAudioSessionBadPropertySizeError";
-		case kAudioSessionNotActiveError:
-			return @"kAudioSessionNotActiveError";
-		case kAudioServicesNoHardwareError:
-			return @"kAudioServicesNoHardwareError";
-		case kAudioSessionNoCategorySet:
-			return @"kAudioSessionNoCategorySet";
-		case kAudioSessionIncompatibleCategory:
-			return @"kAudioSessionIncompatibleCategory";
-		case kAudioSessionUnspecifiedError:
-			return @"kAudioSessionUnspecifiedError";
-		case UNDEFINED_BAD_CATEGORY_ERROR:
-			return [NSString stringWithFormat:@"unknown error code %d, but known to be related to a bad audio session category setting", (int)status];
+		case AVAudioSessionErrorCodeNone:
+			return @"AVAudioSessionErrorCodeNone";
+		case AVAudioSessionErrorCodeMediaServicesFailed:
+			return @"AVAudioSessionErrorCodeMediaServicesFailed";
+		case AVAudioSessionErrorCodeIsBusy:
+			return @"AVAudioSessionErrorCodeIsBusy";
+		case AVAudioSessionErrorCodeIncompatibleCategory:
+			return @"AVAudioSessionErrorCodeIncompatibleCategory";
+		case AVAudioSessionErrorCodeCannotInterruptOthers:
+			return @"AVAudioSessionErrorCodeCannotInterruptOthers";
+		case AVAudioSessionErrorCodeMissingEntitlement:
+			return @"AVAudioSessionErrorCodeMissingEntitlement";
+		case AVAudioSessionErrorCodeSiriIsRecording:
+			return @"AVAudioSessionErrorCodeSiriIsRecording";
+		case AVAudioSessionErrorCodeCannotStartPlaying:
+			return @"AVAudioSessionErrorCodeCannotStartPlaying";
+		case AVAudioSessionErrorCodeCannotStartRecording:
+			return @"AVAudioSessionErrorCodeCannotStartRecording";
+		case AVAudioSessionErrorCodeBadParam:
+			return @"AVAudioSessionErrorCodeBadParam";
+		case AVAudioSessionErrorCodeInsufficientPriority:
+			return @"AVAudioSessionErrorCodeInsufficientPriority";
+		case AVAudioSessionErrorCodeResourceNotAvailable:
+			return @"AVAudioSessionErrorCodeResourceNotAvailable";
+		case AVAudioSessionErrorCodeUnspecified:
+			return @"AVAudioSessionErrorCodeUnspecified";
+		case AVAudioSessionErrorCodeExpiredSession:
+			return @"AVAudioSessionErrorCodeExpiredSession";
+		case AVAudioSessionErrorCodeSessionNotActive:
+			return @"AVAudioSessionErrorCodeSessionNotActive";
 		default:
 			return [NSString stringWithFormat:@"unknown error code %d", (int)status];
 	}

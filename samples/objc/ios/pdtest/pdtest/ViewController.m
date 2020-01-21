@@ -56,20 +56,25 @@
 	self.audioController = [[PdAudioController alloc] init];
 	//self.audioController.mixWithOthers = NO; // this app's audio only
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
-	//self.audioController.allowBluetooth = YES; // allow hands free Bluetooth
-	//self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
+	self.audioController.allowBluetooth = YES; // allow hands free Bluetooth
+	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
 	//self.audioController.allowAirPlay = YES; // allow AirPlay
+	//self.audioController.preferStereo = NO; // allow mono
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
 	                                                               inputChannels:2
 	                                                              outputChannels:2];
 	if (status == PdAudioError) {
-		NSLog(@"Error! Could not configure PdAudioController");
+		NSLog(@"Error: could not configure PdAudioController");
 	} else if (status == PdAudioPropertyChanged) {
-		NSLog(@"Warning: some of the audio parameters were not accceptable.");
+		NSLog(@"Warning: some of the audio properties were changed during configuration");
 	} else {
-		NSLog(@"Audio Configuration successful.");
+		NSLog(@"Audio configuration successful");
 	}
-	//[PdAudioController addSessionOptions:AVAudioSessionCategoryOptionAllowBluetooth];
+
+	// other AVAudioSession configurations can be done manually (see the Apple docs)
+	// for example, force voice chat mode: enable echo cancelation, Bluetooth, and default to speaker output
+	// this works for the PlayAndRecord category only, ie. playback with input and output channels > 0
+	//[AVAudioSession.sharedInstance setMode:AVAudioSessionModeVoiceChat error:nil];
 
 	// log actual settings
 	[self.audioController print];

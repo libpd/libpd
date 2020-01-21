@@ -23,7 +23,8 @@ typedef enum PdAudioStatus {
 
 /// PdAudioController: A class for managing a PdAudioUnit instance within iOS
 /// by using the AVFoundation and Audio Services APIs. Handles phone
-/// interruptions and provides high level configuration methods.
+/// interruptions and provides high level configuration methods by wrapping
+/// relevant AVAudioSession methods.
 @interface PdAudioController : NSObject
 
 /// check or set the active status of the audio unit
@@ -86,6 +87,18 @@ typedef enum PdAudioStatus {
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
 @property (nonatomic, assign) BOOL allowAirPlay;
 
+// Other options applied only during configuration.
+
+/// activate the audio session on configuration? (default YES)
+@property (nonatomic, assign) BOOL activateOnConfigure;
+
+/// prefer stereo over mono input/output (default YES)
+///
+/// ensures a minimum of stereo IO as some routes (mono mic -> built-in
+/// speaker) don't seem to like mismatched sessions (ie. 1 input and 2 outputs),
+/// this also seems to enable automatic mixdown to mono for some outputs
+@property (nonatomic, assign) BOOL preferStereo;
+
 /// Init with default pd audio unit.
 - (instancetype)init;
 
@@ -100,6 +113,12 @@ typedef enum PdAudioStatus {
 ///
 /// Specifying inputChannels = 0 uses the Playback AVAudioSession category
 /// while setting inputChannels > 0 uses the PlaybackAndRecord category.
+///
+/// A channel value == -1 will use the current channel number(s) from
+/// the audio session and automatically change them when the active audio
+/// session route changes.
+///
+/// Note: Sets min stereo channels by default, see preferStereo property
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                    inputChannels:(int)inputChannels
                                   outputChannels:(int)outputChannels;
@@ -107,6 +126,10 @@ typedef enum PdAudioStatus {
 /// Configure audio for recording, without output channels.
 ///
 /// Uses the Record AVAudioSession category.
+///
+/// A channel value == -1 will use the current maximum channel number(s) from
+/// the audio session and automatically change them when the active audio
+/// session route changes.
 - (PdAudioStatus)configureRecordWithSampleRate:(int)sampleRate
                                  inputChannels:(int)inputChannels;
 
@@ -114,12 +137,20 @@ typedef enum PdAudioStatus {
 ///
 /// If mixWithOthers = YES, uses the Ambient AVAudioSession category, while NO
 /// uses the SoloAmbient category.
+///
+/// A channel value == -1 will use the current channel number(s) from
+/// the audio session and automatically change them when the active audio
+/// session route changes.
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
                                  outputChannels:(int)outputChannels;
 
 /// Configure audio for more advanced multi route port configuration,
 /// see Apple docs. Note: does not allow Bluetooth or AirPlay.
 /// Uses the MultiRoute AVAudioSession category.
+///
+/// A channel value == -1 will use the current channel number(s) from
+/// the audio session and automatically change them when the active audio
+/// session route changes.
 - (PdAudioStatus)configureMultiRouteWithSampleRate:(int)sampleRate
                                      inputChannels:(int)inputChannels
                                     outputChannels:(int)outputChannels;
@@ -138,6 +169,10 @@ typedef enum PdAudioStatus {
 /// Specifying inputEnabled = YES uses the PlayAndRecord AVAudioSession category
 /// while setting NO uses the Playback category.
 ///
+/// A channel value == -1 will use the current channel number(s) from
+/// the audio session and automatically change them when the active audio
+/// session route changes.
+///
 /// MixingEnabled = YES will allow the app to continue playing audio
 /// along with other apps (such as Music), also sets the mixWithOthers property.
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
@@ -148,6 +183,10 @@ typedef enum PdAudioStatus {
 /// Note: legacy method kept for compatibility
 ///
 /// Configure audio for ambient use, without input channels.
+///
+/// A channel value == -1 will use the current channel number(s) from
+/// the audio session and automatically change them when the active audio
+/// session route changes.
 ///
 /// Specifying mixingEnabled = YES will allow the app to continue playing audio
 /// along with other apps (such as Music) and uses the Ambient AVAudioSession

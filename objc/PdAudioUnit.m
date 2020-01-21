@@ -496,8 +496,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	if (_outputRingBuffer) {
 		rb_free(_outputRingBuffer);
 		_outputRingBuffer = NULL;
+		AU_LOGV(@"cleared buffers");
 	}
-	AU_LOGV(@"cleared buffers");
 }
 
 @end
