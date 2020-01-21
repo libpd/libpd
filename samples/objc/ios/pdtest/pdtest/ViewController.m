@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 
+#import <AVKit/AVKit.h>
 #import "AppDelegate.h"
 #import "PdAudioController.h"
 #import "PdFile.h"
@@ -24,6 +25,15 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
+	// add audio route picker button to view
+	if (@available(iOS 11.0, *)) {
+		AVRoutePickerView *pickerView = [[AVRoutePickerView alloc] initWithFrame:self.routePickerContainer.bounds];
+		[self.routePickerContainer addSubview:pickerView];
+	}
+	else { // AVRoutePickerView not available before iOS 11
+		self.routePickerContainer.hidden = YES;
+	}
 
 	// setup and run tests
 	[self setupPd];

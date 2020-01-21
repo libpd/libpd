@@ -20,6 +20,7 @@
 		302110E31AE7095200DFFAF8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 302110D81AE7095200DFFAF8 /* Default@2x.png */; };
 		302110E41AE7095200DFFAF8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 302110DA1AE7095200DFFAF8 /* InfoPlist.strings */; };
 		302110E71AE7095200DFFAF8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 302110E01AE7095200DFFAF8 /* main.m */; };
+		309FA25723D71FE700D6ABF2 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309FA25223D71FE700D6ABF2 /* AVKit.framework */; };
 		30EF3CD11AE76AE600E3DB68 /* libpd-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */; };
 		F41438CC1F72684400E7BCAE /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F41438CA1F72684400E7BCAE /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
@@ -75,6 +76,7 @@
 		302110DF1AE7095200DFFAF8 /* pdtest-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "pdtest-Prefix.pch"; path = "pdtest/pdtest-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		302110E01AE7095200DFFAF8 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = pdtest/main.m; sourceTree = SOURCE_ROOT; };
 		30507F852350A81D007226D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Base.lproj/Storyboard.storyboard; sourceTree = "<group>"; };
+		309FA25223D71FE700D6ABF2 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 				3011358216A6F3E4005421C7 /* AudioToolbox.framework in Frameworks */,
 				3011358016A6F3E0005421C7 /* AVFoundation.framework in Frameworks */,
 				3011355016A6ECD1005421C7 /* UIKit.framework in Frameworks */,
+				309FA25723D71FE700D6ABF2 /* AVKit.framework in Frameworks */,
 				3011355216A6ECD1005421C7 /* Foundation.framework in Frameworks */,
 				3011355416A6ECD1005421C7 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -117,6 +120,7 @@
 		3011354E16A6ECD1005421C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				309FA25223D71FE700D6ABF2 /* AVKit.framework */,
 				3011358116A6F3E4005421C7 /* AudioToolbox.framework */,
 				3011357F16A6F3E0005421C7 /* AVFoundation.framework */,
 				3011354F16A6ECD1005421C7 /* UIKit.framework */,
@@ -418,7 +422,8 @@
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MARKETING_VERSION = 2.0;
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -439,7 +444,8 @@
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MARKETING_VERSION = 2.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

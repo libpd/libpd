@@ -12,6 +12,9 @@
 
 @interface ViewController : UIViewController <PdReceiverDelegate, PdMidiReceiverDelegate>
 
+/// route picker view container
+@property (weak, nonatomic) IBOutlet UIView *routePickerContainer;
+
 // setup the Pd audio controller, etc
 - (void)setupPd;
 
