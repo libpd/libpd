@@ -460,6 +460,7 @@
 }
 
 - (void)routeChanged:(NSNotification *)notification {
+	if (self.ignoreRouteChanges) {return;}
 	BOOL reconfigure = NO;
 	NSDictionary *dict = notification.userInfo;
 	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];

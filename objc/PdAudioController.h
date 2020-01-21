@@ -96,6 +96,13 @@ typedef enum PdAudioStatus {
 /// this also seems to enable automatic mixdown to mono for some outputs
 @property (nonatomic, assign) BOOL preferStereo;
 
+/// ignore audio session route changes (default NO)
+///
+/// by default, the audio controller will reconfigure the audio unit whenever
+/// an IO device is changes, use this to override if you have your own custom
+/// route change handling
+@property (nonatomic, assign) BOOL ignoreRouteChanges;
+
 /// Init with default pd audio unit.
 - (instancetype)init;
 
