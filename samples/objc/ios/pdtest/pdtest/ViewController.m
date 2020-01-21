@@ -3,7 +3,7 @@
 //  pdtest
 //
 //  Created by Dan Wilcox on 1/16/13.
-//  Copyright (c) 2013 libpd. All rights reserved.
+//  Copyright (c) 2013, 2020 libpd team. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -30,6 +30,7 @@
 	if (@available(iOS 11.0, *)) {
 		AVRoutePickerView *pickerView = [[AVRoutePickerView alloc] initWithFrame:self.routePickerContainer.bounds];
 		[self.routePickerContainer addSubview:pickerView];
+		self.routePickerContainer.backgroundColor = UIColor.clearColor;
 	}
 	else { // AVRoutePickerView not available before iOS 11
 		self.routePickerContainer.hidden = YES;
@@ -74,11 +75,11 @@
 	                                                               inputChannels:2
 	                                                              outputChannels:2];
 	if (status == PdAudioError) {
-		NSLog(@"Error: could not configure PdAudioController");
+		NSLog(@"could not configure audio");
 	} else if (status == PdAudioPropertyChanged) {
-		NSLog(@"Warning: some of the audio properties were changed during configuration");
+		NSLog(@"some of the audio properties were changed during configuration");
 	} else {
-		NSLog(@"Audio configuration successful");
+		NSLog(@"audio configuration successful");
 	}
 
 	// other AVAudioSession configurations can be done manually (see the Apple docs)
@@ -97,7 +98,7 @@
 	[PdBase subscribe:@"fromPD"];
 
 	// add search path
-	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [NSBundle mainBundle].bundlePath]];
+	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", NSBundle.mainBundle.bundlePath]];
 
 	// turn on dsp
 	self.audioController.active = YES;
@@ -111,7 +112,8 @@
 	NSLog(@"-- BEGIN Patch Test");
 
 	// open patch
-	self.patch = [PdFile openFileNamed:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", [NSBundle mainBundle].bundlePath]];
+	self.patch = [PdFile openFileNamed:@"test.pd"
+								  path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
 	NSLog(@"%@", self.patch);
 
 	// close patch
