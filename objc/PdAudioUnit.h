@@ -13,23 +13,23 @@
 #import <Foundation/Foundation.h>
 #import "AudioUnit/AudioUnit.h"
 
-/// PdAudioUnit: object that operates pd's audio input and output through an
-/// Audio Unit. The parameters can be changed after it has been instatiated with
-/// a configure method, which will cause the underlying audio unit to be
-/// reconstructed. The internal pd sample rate may be different then that of the
-/// actual audio session and the audio unit attempts to set up sample rate
-/// conversion and buffering automatically.
+/// PdAudioUnit: operates pd's audio input and output through an AudioUnit
 ///
-/// As of libpd 0.12, this is bridged to AU v3. If you are subclassing, you may
-/// need to implement the initWithComponentDescription:options:error designated
-/// initializer. If you want to expose this as an AU v3 plugin, you will need
-/// to implement a factory function and expose it to iOS (see Apple docs).
+/// parameters can be changed after instantiation with a configure method which
+/// will cause the underlying audio unit to be reconstructed
 ///
-/// For debugging, AU_DEBUG_VERBOSE can be defined to print extra information.
-@interface PdAudioUnit : AUAudioUnitV2Bridge  {
+/// the internal pd sample rate may be different then that of the actual audio
+/// session and the audio unit attempts to set up sample rate conversion and
+/// buffering automatically.
+///
+/// as of libpd 0.12 this is bridged to AudioUnit V3, however multi instance
+/// support is not yet finished for this to work as a separate plugin
+///
+/// for debugging, AU_DEBUG_VERBOSE can be defined to print extra information
+@interface PdAudioUnit : AUAudioUnitV2Bridge {
 @protected
-	AudioUnit _audioUnit;    ///< the underlying audio unit instance
-	BOOL _initialized;       ///< has the audio unit been successfully inited?
+	AudioUnit _audioUnit;     ///< the underlying audio unit instance
+	BOOL _initialized;        ///< has the audio unit been successfully inited?
 
 	// these are precomputed for use in the render callback
 	UInt32 _blockFrames;      ///< pd block size in frames
@@ -46,15 +46,13 @@
 	int _outputChannels;
 }
 
-/// A reference to the audio unit which can be used to query or set other
-/// properties.
+/// underlying audio unit which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
 
-/// A reference to the audio unit callback function. Override the getter method
-/// if you want to subclass PdAudioUnit and implement your own custom sample
-/// rendering.
+/// audio unit callback function reference, override the getter method if you
+/// want to subclass PdAudioUnit and implement your own custom sample rendering
 ///
-/// In your custom PdAudioUnit subclass .m:
+/// in your custom PdAudioUnit subclass .m:
 ///
 /// // your custom render callback
 /// static OSStatus myRenderCallback(void *inRefCon,
@@ -82,9 +80,12 @@
 /// when 1 sample rate is not a multiple of the other, ie. 44.1k : 48k
 @property (nonatomic, getter=isBuffering) BOOL buffering;
 
-// Read only properties that are set by the configure methods
 
-/// sample rate, buffering is performed if this does not match the session rate
+#pragma mark Read Only Configuration Properties
+
+// read only properties set by the configure methods
+
+/// sample rate, may not match the current session sample rate
 @property (nonatomic, assign, readonly) Float64 sampleRate;
 
 /// number of input channels, may not match number of session inputs
@@ -96,12 +97,14 @@
 /// is the audio input stream enabled?
 @property (nonatomic, assign, readonly) BOOL inputEnabled;
 
-/// Creates a default instance of PdAudioUnit.
+#pragma mark Initialization
+
+/// creates a default instance of PdAudioUnit.
 + (instancetype)defaultAudioUnit;
 
-/// This is the designated init for the Audio Unit V2 to V3 bridge.
+/// this is the designated init for the AudioUnit V2 to V3 bridge
 ///
-/// To manually create a default instance, use:
+/// to manually create a default instance, use:
 /// * description: PdAudioUnit.defaultIODescription
 /// * options: 0
 /// * outError: nil
@@ -109,35 +112,45 @@
                                      options:(AudioComponentInstantiationOptions)options
                                        error:(NSError **)outError;
 
-/// Configure audio unit with preferred sample rate and number of input and
-/// output channels. This is an expensive process and will stop the audio unit
-/// before any reconstruction, causing a momentary pause in audio and UI if run
-/// from the main thread.
-/// Returns zero on success, ie. OSStatus noErr.
+#pragma mark Configuration
+
+/// configure audio unit with preferred sample rate and number of input and
+/// output channels
+///
+/// note: this is an expensive process and will stop the audio unit before any
+/// reconstruction, causing a momentary pause in audio and UI if run from the
+/// main thread
+///
+/// returns zero on success, ie. OSStatus noErr
 - (int)configureWithSampleRate:(Float64)sampleRate
                  inputChannels:(int)inputChannels
                 outputChannels:(int)outputChannels;
 
-/// Note: legacy method kept for compatibility
+/// note: legacy method kept for compatibility
 ///
-/// Configure audio unit with preferred sample rate, number of channels, and
-/// whether to enable the input stream. This is an expensive process and will
-/// stop the audio unit before any reconstruction, causing a momentary pause in
-/// audio and UI if run from the main thread.
-/// Returns zero on success, ie. OSStatus noErr.
+/// configure audio unit with preferred sample rate, number of channels, and
+/// whether to enable the input stream
+///
+/// note: this is an expensive process and will stop the audio unit before any
+/// reconstruction, causing a momentary pause in audio and UI if run from the
+/// main thread
+///
+/// returns zero on success, ie. OSStatus noErr
 - (int)configureWithSampleRate:(Float64)sampleRate
                 numberChannels:(int)numChannels
                   inputEnabled:(BOOL)inputEnabled;
 
-/// Print info on the audio unit settings to the console
+#pragma mark Util
+
+/// print info on the audio unit settings to the console
 - (void)print;
 
-/// Called by configureWithSampleRate when setting up the internal audio unit.
-/// Default format: 32 bit, floating point, linear PCM, interleaved
+/// called by configureWithSampleRate when setting up the internal audio unit
+/// default format: 32 bit, floating point, linear PCM, interleaved
 - (AudioStreamBasicDescription)ASBDForSampleRate:(Float64)sampleRate
                                   numberChannels:(UInt32)numChannels;
 
-/// Create default RemoteIO audio unit description
+/// create default RemoteIO audio unit description
 + (AudioComponentDescription)defaultIODescription;
 
 @end

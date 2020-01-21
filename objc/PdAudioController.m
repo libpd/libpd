@@ -30,7 +30,7 @@
 /// set audio session category and apply options
 - (PdAudioStatus)configureSessionWithCategory:(AVAudioSessionCategory)category;
 
-/// trt to update the preferred session sample rate, sets ivars
+/// try to update the preferred session sample rate, sets ivars
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;
 
 /// check input and output channels, sets ivars,
@@ -56,6 +56,8 @@
 	BOOL _autoOutputChannels; ///< automatically reconfigure output channels?
 }
 
+#pragma mark Initialization
+
 - (instancetype)init {
 	self = [self initWithAudioUnit:[PdAudioUnit defaultAudioUnit]];
 	return self;
@@ -77,6 +79,8 @@
 	[self clearNotifications];
 	self.audioUnit = nil;
 }
+
+#pragma mark Configuration
 
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                    inputChannels:(int)inputChannels
@@ -247,18 +251,7 @@
 	return PdAudioOK;
 }
 
-- (void)print {
-	AVAudioSession *session = AVAudioSession.sharedInstance;
-	AU_LOG(@"----- audio session properties -----");
-	AU_LOG(@"category: %@", session.category);
-	AU_LOG(@"sample rate: %g", session.sampleRate);
-	AU_LOG(@"preferred sample rate: %g", session.preferredSampleRate);
-	AU_LOG(@"preferred IO buffer duration: %g", session.preferredIOBufferDuration);
-	AU_LOG(@"input available: %@", (session.inputAvailable ? @"YES" : @"NO"));
-	AU_LOG(@"input channels: %d", session.inputNumberOfChannels);
-	AU_LOG(@"output channels: %d", session.outputNumberOfChannels);
-	[self.audioUnit print];
-}
+#pragma mark Subclass Overrides
 
 - (AVAudioSessionCategoryOptions)playbackOptions {
 	AVAudioSessionCategoryOptions options = 0;
@@ -334,6 +327,21 @@
 		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
 	}
 	return options;
+}
+
+#pragma mark Util
+
+- (void)print {
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	AU_LOG(@"----- audio session properties -----");
+	AU_LOG(@"category: %@", session.category);
+	AU_LOG(@"sample rate: %g", session.sampleRate);
+	AU_LOG(@"preferred sample rate: %g", session.preferredSampleRate);
+	AU_LOG(@"preferred IO buffer duration: %g", session.preferredIOBufferDuration);
+	AU_LOG(@"input available: %@", (session.inputAvailable ? @"YES" : @"NO"));
+	AU_LOG(@"input channels: %d", session.inputNumberOfChannels);
+	AU_LOG(@"output channels: %d", session.outputNumberOfChannels);
+	[self.audioUnit print];
 }
 
 + (BOOL)addSessionOptions:(AVAudioSessionCategoryOptions)options {

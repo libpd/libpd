@@ -53,6 +53,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 @synthesize inputChannels = _inputChannels;
 @synthesize outputChannels = _outputChannels;
 
+#pragma mark Initialization
+
 + (instancetype)defaultAudioUnit {
 	return [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
                                                      options:0
@@ -77,6 +79,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	[self clearAudioUnit];
 	[self clearBuffers];
 }
+
+#pragma mark Configuration
 
 - (int)configureWithSampleRate:(Float64)sampleRate
                  inputChannels:(int)inputChannels
@@ -110,6 +114,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	                       inputChannels:(inputEnabled ? numChannels : 0)
 	                      outputChannels:numChannels];
 }
+
+#pragma mark Util
 
 - (void)print {
 	if (!_initialized) {
