@@ -80,7 +80,7 @@ typedef enum PdAudioStatus {
 @property (nonatomic, assign) BOOL allowBluetooth;
 
 /// use Bluetooth A2DP (Advanced Audio Distribution Profile)?
-/// note: this is stereo, ie. jambox/headphones/earbuds
+/// note: this is higher-quality stereo, ie. jambox
 /// note: this may be overridden by allowBluetooth if both are set
 /// applied to categories: PlayAndRecord,
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
@@ -101,13 +101,6 @@ typedef enum PdAudioStatus {
 /// speaker) don't seem to like mismatched sessions (ie. 1 input and 2 outputs),
 /// this also seems to enable automatic mixdown to mono for some outputs
 @property (nonatomic, assign) BOOL preferStereo;
-
-/// ignore audio session route changes (default NO)
-///
-/// by default, the audio controller will reconfigure the audio unit whenever
-/// an IO device is changes, use this to override if you have your own custom
-/// route change handling
-@property (nonatomic, assign) BOOL ignoreRouteChanges;
 
 #pragma mark Initialization
 
@@ -206,7 +199,7 @@ typedef enum PdAudioStatus {
 /// audio unit, which works with whatever number of frames it is provided
 - (PdAudioStatus)configureTicksPerBuffer:(int)ticksPerBuffer;
 
-#pragma mark Subclass Overrides
+#pragma mark Category Options
 
 /// returns combined audio session options when configuring for playback:
 /// audio output only, no input
@@ -255,5 +248,25 @@ typedef enum PdAudioStatus {
 /// helper to replace the current audio session category options
 /// returns YES on success
 + (BOOL)setSessionOptions:(AVAudioSessionCategoryOptions)options;
+
+#pragma mark Notifications
+
+/// audio session interruption notification handler
+/// called when the app's audio is interrupted by other apps or the os
+///
+/// the default implementation *always* restarts audio processing
+/// 
+/// override to implement custom handling
+- (void)interruptionOccurred:(NSNotification *)notification;
+
+/// audio session route change notification handler
+/// called when an input or output device is changed, ie. headphones unplugged
+///
+/// the default implementation updates the number of input and/or output
+/// channels to match the current session value if a configure method was called
+/// with a channel value of -1
+///
+/// override to implement custom handling
+- (void)routeChanged:(NSNotification *)notification;
 
 @end

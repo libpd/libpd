@@ -360,6 +360,87 @@
 	return YES;
 }
 
+#pragma mark Notifications
+
+- (void)setupNotifications {
+	[NSNotificationCenter.defaultCenter addObserver:self
+	                                       selector:@selector(interruptionOccurred:)
+	                                           name:AVAudioSessionInterruptionNotification
+	                                         object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self
+	                                       selector:@selector(routeChanged:)
+	                                           name:AVAudioSessionRouteChangeNotification
+	                                         object:nil];
+}
+
+- (void)clearNotifications {
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:AVAudioSessionInterruptionNotification
+	                                            object:nil];
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:AVAudioSessionRouteChangeNotification
+	                                            object:nil];
+}
+
+- (void)interruptionOccurred:(NSNotification *)notification {
+	NSDictionary *dict = notification.userInfo;
+	NSUInteger type = [dict[AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
+	if (type == AVAudioSessionInterruptionTypeBegan) {
+		self.audioUnit.active = NO; // leave _active unchanged
+		AU_LOGV(@"interrupted");
+	}
+	else if (type == AVAudioSessionInterruptionTypeEnded) {
+		// TODO: always resume for now, do we really need to handle the ShouldResume hint?
+#if 1
+		self.active = _active; // retrigger
+		AU_LOGV(@"ended interruption");
+#else
+		NSUInteger option = [dict[AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
+		if (option == AVAudioSessionInterruptionOptionShouldResume) {
+			self.active = _active; // retrigger
+			AU_LOGV(@"ended interruption");
+		}
+		else {
+			AU_LOGV(@"still interrupted");
+		}
+#endif
+	}
+}
+
+- (void)routeChanged:(NSNotification *)notification {
+	BOOL reconfigure = NO;
+	NSDictionary *dict = notification.userInfo;
+	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
+	if (reason == AVAudioSessionRouteChangeReasonNewDeviceAvailable) {
+		AU_LOGV(@"route changed: new device");
+		reconfigure = YES;
+	}
+	else if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
+		AU_LOGV(@"route changed: old device unavailable");
+		reconfigure = YES;
+	}
+	if (reconfigure) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			AU_LOGV(@"reconfiguring audio unit");
+			AVAudioSession *session = AVAudioSession.sharedInstance;
+			if ([self updateInputChannels:self->_inputChannels
+				           outputChannels:self->_outputChannels] == PdAudioPropertyChanged) {
+				BOOL inputEnabled = (self->_inputChannels > 0);
+				if (!session.inputAvailable ||
+					[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
+					[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
+					[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
+					inputEnabled = NO;
+				}
+				if ([self configureAudioUnitWithInputChannels:self->_inputChannels
+					                           outputChannels:self->_outputChannels
+					                             inputEnabled:inputEnabled] != PdAudioOK) {
+				}
+			}
+		});
+	}
+}
+
 #pragma mark Overridden Getters/Setters
 
 // make sure option changes are applied on restart
@@ -418,91 +499,6 @@
 	if (_allowAirPlay == allowAirPlay) {return;}
 	_allowAirPlay = allowAirPlay;
 	[self updateSessionCategoryOptions];
-}
-
-#pragma mark Notifications
-
-- (void)setupNotifications {
-	[NSNotificationCenter.defaultCenter addObserver:self
-	                                       selector:@selector(interruptionOccurred:)
-	                                           name:AVAudioSessionInterruptionNotification
-	                                         object:nil];
-	[NSNotificationCenter.defaultCenter addObserver:self
-	                                       selector:@selector(routeChanged:)
-	                                           name:AVAudioSessionRouteChangeNotification
-	                                         object:nil];
-}
-
-- (void)clearNotifications {
-	[NSNotificationCenter.defaultCenter removeObserver:self
-	                                              name:AVAudioSessionInterruptionNotification
-	                                            object:nil];
-	[NSNotificationCenter.defaultCenter removeObserver:self
-	                                              name:AVAudioSessionRouteChangeNotification
-	                                            object:nil];
-}
-
-- (void)interruptionOccurred:(NSNotification *)notification {
-	NSDictionary *dict = notification.userInfo;
-	NSUInteger type = [dict[AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
-	if (type == AVAudioSessionInterruptionTypeBegan) {
-		self.audioUnit.active = NO; // leave _active unchanged
-		AU_LOGV(@"interrupted");
-	}
-	else if (type == AVAudioSessionInterruptionTypeEnded) {
-		// TODO: always resume for now, do we really need to handle the ShouldResume hint?
-#if 1
-		self.active = _active; // retrigger
-		AU_LOGV(@"ended interruption");
-#else
-		NSUInteger option = [dict[AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
-		if (option == AVAudioSessionInterruptionOptionShouldResume) {
-			self.active = _active; // retrigger
-			AU_LOGV(@"ended interruption");
-		}
-		else {
-			AU_LOGV(@"still interrupted");
-		}
-#endif
-	}
-}
-
-- (void)routeChanged:(NSNotification *)notification {
-	if (self.ignoreRouteChanges) {return;}
-	BOOL reconfigure = NO;
-	NSDictionary *dict = notification.userInfo;
-	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
-	if (reason == AVAudioSessionRouteChangeReasonNewDeviceAvailable) {
-		AU_LOGV(@"route changed: new device");
-		reconfigure = YES;
-	}
-	else if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
-		AU_LOGV(@"route changed: old device unavailable");
-		reconfigure = YES;
-	}
-	if (reconfigure) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			AVAudioSession *session = AVAudioSession.sharedInstance;
-			AU_LOGV(@"session current route: inputs %d outputs %d",
-					session.inputNumberOfChannels, session.outputNumberOfChannels);
-			if ([self updateInputChannels:self->_inputChannels
-				           outputChannels:self->_outputChannels] == PdAudioPropertyChanged) {
-				AU_LOG(@"reconfiguring audio unit: inputs %d outputs %d",
-						self->_inputChannels, self->_outputChannels);
-				BOOL inputEnabled = (self->_inputChannels > 0);
-				if (!session.inputAvailable ||
-					[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
-					[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
-					[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
-					inputEnabled = NO;
-				}
-				if ([self configureAudioUnitWithInputChannels:self->_inputChannels
-					                           outputChannels:self->_outputChannels
-					                             inputEnabled:inputEnabled] != PdAudioOK) {
-				}
-			}
-		});
-	}
 }
 
 #pragma mark Private
