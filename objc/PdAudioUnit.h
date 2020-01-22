@@ -22,9 +22,10 @@
 /// session and the audio unit attempts to set up sample rate conversion and
 /// buffering automatically.
 ///
-/// as of libpd 0.12 this is bridged to AudioUnit V3, however multi instance
-/// support is not yet finished for this to work as a separate plugin to be
-/// loaded inside of a host
+/// as of libpd 0.12 this is bridged to AudioUnit v3 which should allow for
+/// adding a *single* instance of PdAudioUnit to an internal AUGraph, multi
+/// instance support is not yet finished for this to work as a separate plugin
+/// inside of an external host
 ///
 /// for debugging, AU_DEBUG_VERBOSE can be defined to print extra information
 @interface PdAudioUnit : AUAudioUnitV2Bridge {
