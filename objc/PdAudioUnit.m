@@ -13,7 +13,6 @@
 #import "PdAudioUnit.h"
 #import "PdBase.h"
 #import "AudioHelpers.h"
-#import <AVFoundation/AVFoundation.h>
 #include "ringbuffer.h"
 
 // default max io buffer size in frames, as outlined in
@@ -361,7 +360,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &ioDescription);
 	AU_RETURN_FALSE_IF_ERROR(AudioComponentInstanceNew(audioComponent, &_audioUnit));
 
-	// RemoteIO input stream is disabled by default
+	// RemoteIO internal input stream is disabled by default
 	if (_inputEnabled && inputChannels > 0) {
 		UInt32 enableInput = 1;
 		AU_DISPOSE_FALSE_IF_ERROR(AudioUnitSetProperty(_audioUnit,
@@ -382,7 +381,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		                                               sizeof(streamDescription)), _audioUnit);
 	}
 
-	// RemoteIO output stream is enabled by default
+	// RemoteIO internal output stream is enabled by default
 	if (outputChannels > 0) {
 		// input scope because we're defining the input of the output element _from_ our render callback
 		AudioStreamBasicDescription streamDescription = {0};
@@ -459,7 +458,6 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 }
 
 - (BOOL)initBuffersWithInputChannels:(int)inputChannels outputChannels:(int)outputChannels {
-	AVAudioSession *session = AVAudioSession.sharedInstance;
 	int inputFrameSize = inputChannels * sizeof(Float32);
 	int outputFrameSize = outputChannels * sizeof(Float32);
 
@@ -480,15 +478,38 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	// if one sample rate is *not* a multiple of the other (44.1k : 48k),
 	// assume sample rate conversion buffering is needed as audio unit IO buffer
 	// sizes *may* be variable
-	if (!floatsAreEqual(_sampleRate, session.sampleRate)) {
-		int rem = fmod(MIN(_sampleRate, session.sampleRate), MAX(_sampleRate, session.sampleRate));
-		if (rem != 0 && rem == (int)MIN(_sampleRate, session.sampleRate)) {
-			// note: ring buffer sizes *must* be multiple of 256!
-			_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
-			_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));
-			AU_LOGV(@"initialized sample rate conversion buffers: inputs %d outputs %d max frames %d",
-					inputChannels, outputChannels, _maxFrames);
-		}
+	BOOL buffer = NO;
+	size = sizeof(AudioStreamBasicDescription);
+	if (_inputEnabled) {
+		// read external input stream format *to* RemoteIO, ie. device -> RemoteIO
+		AudioStreamBasicDescription inputStreamDescription = {0};
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
+		                         kAudioUnitProperty_StreamFormat,
+		                         kAudioUnitScope_Input,
+		                         kRemoteIOElement_Input,
+		                         &inputStreamDescription,
+		                         &size));
+		buffer = (fmod(MAX(_sampleRate, inputStreamDescription.mSampleRate),
+					   MIN(_sampleRate, inputStreamDescription.mSampleRate)) > 0);
+	}
+	if (_outputChannels > 0) {
+		// read external output stream format *from* RemoteIO, ie. RemoteIO -> device
+		AudioStreamBasicDescription outputStreamDescription = {0};
+		AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
+		                         kAudioUnitProperty_StreamFormat,
+		                         kAudioUnitScope_Output,
+		                         kRemoteIOElement_Output,
+		                         &outputStreamDescription,
+		                         &size));
+		buffer |= (fmod(MAX(_sampleRate, outputStreamDescription.mSampleRate),
+						MIN(_sampleRate, outputStreamDescription.mSampleRate)) > 0);
+	}
+	if (buffer) {
+		// note: ring buffer sizes *must* be multiple of 256!
+		_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
+		_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));
+		AU_LOGV(@"initialized sample rate conversion buffers: inputs %d outputs %d max frames %d",
+		       inputChannels, outputChannels, _maxFrames);
 	}
 
 	return YES;

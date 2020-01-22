@@ -23,7 +23,8 @@
 /// buffering automatically.
 ///
 /// as of libpd 0.12 this is bridged to AudioUnit V3, however multi instance
-/// support is not yet finished for this to work as a separate plugin
+/// support is not yet finished for this to work as a separate plugin to be
+/// loaded inside of a host
 ///
 /// for debugging, AU_DEBUG_VERBOSE can be defined to print extra information
 @interface PdAudioUnit : AUAudioUnitV2Bridge {
@@ -76,10 +77,9 @@
 @property (nonatomic, getter=isActive) BOOL active;
 
 /// is the audio unit buffering samples?
-/// this is to handle variable buffer sizes due to sample rate conversion
-/// when 1 sample rate is not a multiple of the other, ie. 44.1k : 48k
+/// may be required to handle variable buffer sizes due to sample rate
+/// conversion, ie. 44.1k : 48k
 @property (nonatomic, getter=isBuffering) BOOL buffering;
-
 
 #pragma mark Read Only Configuration Properties
 
