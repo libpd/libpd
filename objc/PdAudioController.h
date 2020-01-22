@@ -210,7 +210,7 @@ typedef enum PdAudioStatus {
 
 /// returns combined audio session options when configuring for playback:
 /// audio output only, no input
-/// Playback is chosen when inputEnabled is NO and/or inputChannels = 0
+/// Playback is chosen when inputEnabled is NO and/or inputChannels is 0
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)playbackOptions;
 
@@ -228,13 +228,13 @@ typedef enum PdAudioStatus {
 
 /// returns  combined audio session options when configuring for ambient use,
 /// doesn't mix with other apps
-/// SoloAmbient is chosen with mixingEnabled is NO and/or mixWithOthers = NO
+/// SoloAmbient is chosen with mixingEnabled is NO and/or mixWithOthers is NO
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)soloAmbientOptions;
 
 /// returns combined audio session options when configuring for ambient use,
 /// mixes with other apps
-/// Ambient is chosen with mixingEnabled is YES and/or mixWithOthers = YES
+/// Ambient is chosen with mixingEnabled is YES and/or mixWithOthers is YES
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)ambientOptions;
 
