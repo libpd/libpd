@@ -103,7 +103,7 @@
 /// creates a default instance of PdAudioUnit.
 + (instancetype)defaultAudioUnit;
 
-/// this is the designated init for the AudioUnit V2 to V3 bridge
+/// this is the designated init for the AudioUnit v2 to v3 bridge
 ///
 /// to manually create a default instance, use:
 /// * description: PdAudioUnit.defaultIODescription
