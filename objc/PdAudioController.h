@@ -74,13 +74,13 @@ typedef enum PdAudioStatus {
 @property (nonatomic, assign) BOOL defaultToSpeaker;
 
 /// use Bluetooth HFP (Hands-Free Profile)?
-/// note: this is *older* 8k samplerate 1 channel IO, ie. headset/earpiece
+/// note: this is traditional 1 channel IO, ie. headset/earpiece
 /// note: this may override allowBluetoothA2DP if both are set
 /// applied to categories: Record, PlayAndRecord
 @property (nonatomic, assign) BOOL allowBluetooth;
 
 /// use Bluetooth A2DP (Advanced Audio Distribution Profile)?
-/// note: this is higher-quality and stereo, ie. jambox/headphones/earbuds
+/// note: this is stereo, ie. jambox/headphones/earbuds
 /// note: this may be overridden by allowBluetooth if both are set
 /// applied to categories: PlayAndRecord,
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
@@ -125,7 +125,7 @@ typedef enum PdAudioStatus {
 /// configure audio with the specified samplerate, as well as number of input
 /// and output channels
 ///
-/// if inputChannels == 0 uses the Playback AVAudioSession category and disables
+/// inputChannels 0 uses the Playback AVAudioSession category and disables
 /// the input, while > 0 uses the PlaybackAndRecord category
 ///
 /// a channel value of -1 will use the current channel number(s) from the audio
@@ -145,7 +145,7 @@ typedef enum PdAudioStatus {
 
 /// configure audio for ambient use, without input channels.
 ///
-/// mixWithOthers:YES uses the Ambient AVAudioSession category, while NO
+/// mixWithOthers YES uses the Ambient AVAudioSession category, while setting NO
 /// uses the SoloAmbient category
 ///
 /// a channel value of -1 will use the current channel number(s) from the audio
@@ -173,10 +173,10 @@ typedef enum PdAudioStatus {
 /// a channel value of -1 will use the current channel number(s) from the audio
 /// session and automatically change them when the active session route changes
 ///
-/// inputEnabled:YES uses the PlayAndRecord AVAudioSession category while
+/// inputEnabled YES uses the PlayAndRecord AVAudioSession category while
 /// setting NO uses the Playback category
 ///
-/// mixingEnabled:YES will allow the app to continue playing audio along with
+/// mixingEnabled YES will allow the app to continue playing audio along with
 /// other apps (such as Music), also sets the mixWithOthers property
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                   numberChannels:(int)numChannels
@@ -190,10 +190,10 @@ typedef enum PdAudioStatus {
 /// a channel value of -1 will use the current channel number(s) from the audio
 /// session and automatically change them when the active session route changes
 ///
-/// specifying mixingEnabled:YES will allow the app to continue playing audio
-/// along with other apps (such as Music) and uses the Ambient AVAudioSession
-/// category, while setting NO uses the SoloAmbient category, this also sets
-/// the mixWithOthers property
+/// mixingEnabled YES will allow the app to continue playing audio along with
+/// other apps (such as Music) and uses the Ambient AVAudioSession
+/// category while setting NO uses the SoloAmbient category, also sets the
+/// mixWithOthers property
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
                                  numberChannels:(int)numberChannels
                                   mixingEnabled:(BOOL)mixingEnabled;
@@ -210,31 +210,31 @@ typedef enum PdAudioStatus {
 
 /// returns combined audio session options when configuring for playback:
 /// audio output only, no input
-/// Playback is chosen when inputEnabled: NO and/or inputChannels = 0
+/// Playback is chosen when inputEnabled is NO and/or inputChannels = 0
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)playbackOptions;
 
 /// returns combined audio session options when configuring for playback:
 /// audio input and output
-/// PlayAndRecord is chosen when inputEnabled = YES and/or inputChannels > 0
+/// PlayAndRecord is chosen when inputEnabled is YES and/or inputChannels > 0
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)playAndRecordOptions;
 
 /// returns combined audio session options when configuring for playback:
 /// audio input only, no output
-/// record is chosen when inputEnabled = YES and outputChannels > 0
+/// record is chosen when inputEnabled is YES and outputChannels > 0
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)recordOptions;
 
 /// returns  combined audio session options when configuring for ambient use,
 /// doesn't mix with other apps
-/// SoloAmbient is chosen with mixingEnabled:NO and/or mixWithOthers = NO
+/// SoloAmbient is chosen with mixingEnabled is NO and/or mixWithOthers = NO
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)soloAmbientOptions;
 
 /// returns combined audio session options when configuring for ambient use,
 /// mixes with other apps
-/// Ambient is chosen with mixingEnabled:YES and/or mixWithOthers = YES
+/// Ambient is chosen with mixingEnabled is YES and/or mixWithOthers = YES
 /// override if you want to customize option handling
 - (AVAudioSessionCategoryOptions)ambientOptions;
 

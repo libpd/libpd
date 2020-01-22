@@ -117,6 +117,9 @@
 /// configure audio unit with preferred sample rate and number of input and
 /// output channels
 ///
+/// if inputChannels is 0, the input will be disabled
+/// if outputChannels is 0, the output will be disabled
+///
 /// note: this is an expensive process and will stop the audio unit before any
 /// reconstruction, causing a momentary pause in audio and UI if run from the
 /// main thread

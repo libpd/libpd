@@ -172,7 +172,7 @@
 /// main thread for anything UI-related otherwise there can be crashes or
 /// exceptions
 ///
-/// note: stops message polling if queue = NO
+/// note: stops message polling if queue is NO
 ///
 /// returns 0 on success or -1 if libpd was already initialized
 + (int)initializeWithQueue:(BOOL)queue;
@@ -270,7 +270,7 @@
 /// send a bang to a destination receiver
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send a bang to [s foo] on the next tick with:
-///     [PdBase sendBangToReceiver@:"foo"];
+///     [PdBase sendBangToReceiver:@"foo"];
 + (int)sendBangToReceiver:(NSString *)receiverName;
 
 /// send a float to a destination receiver
@@ -319,7 +319,7 @@
 /// returns an opaque receiver pointer or NULL on failure
 + (void *)subscribe:(NSString *)symbol;
 
-/// unsubscribe and free a source receiver object created by subscribe:
+/// unsubscribe and free a source receiver object created by subscribe
 + (void)unsubscribe:(void *)subscription;
 
 /// check if a source receiver object exists with a given name
@@ -336,7 +336,7 @@
 /// for most cases, however if you need lower latency look into calling
 /// receiveMessages: using a CADisplayLink of high resolution timer
 ///
-/// for lowest latency, you can disable queing with initializeWithQueue:NO
+/// for lowest latency, you can disable queing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
 /// directly which may require manual dispatch to main thread for UI handling
 ///
@@ -347,12 +347,12 @@
 /// setting to nil disconnects the existing delegate and turns off message
 /// polling if it's running
 /// note: call this from the main thread only
-/// set pollingEnabled:NO to process messages manually with receiveMessages:
+/// set pollingEnabled NO to process messages manually with receiveMessages
 + (void)setDelegate:(NSObject<PdReceiverDelegate> *)newDelegate
      pollingEnabled:(BOOL)pollingEnabled;
 
 /// process the message queue manually,
-/// only required if the respective delegate was set with pollingEnabled:NO
+/// only required if the respective delegate was set with pollingEnabled NO
 /// and queuing is enabled
 + (void)receiveMessages;
 
@@ -426,7 +426,7 @@
 /// for most cases, however if you need lower latency look into calling
 /// receiveMidiMessages: using a CADisplayLink of high resolution timer
 ///
-/// for lowest latency, you can disable queing with initializeWithQueue:NO
+/// for lowest latency, you can disable queing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
 /// directly which may require manual dispatch to main thread for UI handling
 ///
@@ -437,12 +437,12 @@
 /// setting to nil disconnects the existing delegate and turns off message
 /// polling if it's running
 /// note: call this from the main thread only
-/// set pollingEnabled:NO to process message queue manually with receiveMidi:
+/// set pollingEnabled NO to process message queue manually with receiveMidi
 + (void)setMidiDelegate:(NSObject<PdMidiReceiverDelegate> *)newDelegate
          pollingEnabled:(BOOL)pollingEnabled;
 
 /// Process the MIDI message queue manually,
-/// only required if the respective delegate was set with pollingEnabled:NO
+/// only required if the respective delegate was set with pollingEnabled NO
 /// and queuing is enabled
 + (void)receiveMidi;
 
