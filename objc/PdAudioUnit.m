@@ -501,8 +501,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		                         kRemoteIOElement_Output,
 		                         &outputStreamDescription,
 		                         &size));
-		buffer |= (fmod(MAX(_sampleRate, outputStreamDescription.mSampleRate),
-						MIN(_sampleRate, outputStreamDescription.mSampleRate)) > 0);
+		buffer = buffer || (fmod(MAX(_sampleRate, outputStreamDescription.mSampleRate),
+						         MIN(_sampleRate, outputStreamDescription.mSampleRate)) > 0);
 	}
 	if (buffer) {
 		// note: ring buffer sizes *must* be multiple of 256!
