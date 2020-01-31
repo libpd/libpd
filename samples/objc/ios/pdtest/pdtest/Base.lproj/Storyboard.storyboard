@@ -27,14 +27,44 @@
                                     <constraint firstAttribute="height" constant="40" id="oYa-DL-FTx"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Owd-BH-VHn">
+                                <rect key="frame" x="16" y="63" width="343" height="15"/>
+                                <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pd:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ant-mS-o0P">
+                                <rect key="frame" x="16" y="40" width="343" height="15"/>
+                                <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Out:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k2b-xt-RFT">
+                                <rect key="frame" x="16" y="86" width="343" height="15"/>
+                                <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Ant-mS-o0P" firstAttribute="leading" secondItem="M0R-WZ-31k" secondAttribute="leadingMargin" id="APZ-54-ZEY"/>
+                            <constraint firstItem="Ant-mS-o0P" firstAttribute="top" secondItem="Skb-fM-cGw" secondAttribute="bottom" constant="40" id="ARg-xL-RvZ"/>
+                            <constraint firstItem="Owd-BH-VHn" firstAttribute="top" secondItem="Ant-mS-o0P" secondAttribute="bottom" constant="8" id="Aw3-Aq-Umy"/>
+                            <constraint firstItem="Ant-mS-o0P" firstAttribute="trailing" secondItem="M0R-WZ-31k" secondAttribute="trailingMargin" id="II4-47-xRb"/>
+                            <constraint firstItem="k2b-xt-RFT" firstAttribute="leading" secondItem="M0R-WZ-31k" secondAttribute="leadingMargin" id="LK1-Ja-Re6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="k2b-xt-RFT" secondAttribute="trailing" id="Uf1-dK-pY3"/>
                             <constraint firstItem="i4J-rl-FxI" firstAttribute="top" secondItem="BI7-nq-RqI" secondAttribute="bottom" constant="20" id="ifj-dj-0ae"/>
+                            <constraint firstItem="Owd-BH-VHn" firstAttribute="leading" secondItem="M0R-WZ-31k" secondAttribute="leadingMargin" id="vLC-GS-wt9"/>
+                            <constraint firstItem="k2b-xt-RFT" firstAttribute="top" secondItem="Owd-BH-VHn" secondAttribute="bottom" constant="8" id="voT-Nq-22W"/>
                             <constraint firstItem="BI7-nq-RqI" firstAttribute="trailing" secondItem="M0R-WZ-31k" secondAttribute="trailingMargin" id="xBz-Nm-qCE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Owd-BH-VHn" secondAttribute="trailing" id="yrW-4d-SCU"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="inputLabel" destination="Owd-BH-VHn" id="nfA-oF-Odt"/>
+                        <outlet property="outputLabel" destination="k2b-xt-RFT" id="hda-Te-rKJ"/>
+                        <outlet property="pdLabel" destination="Ant-mS-o0P" id="llW-Od-rbo"/>
                         <outlet property="routePickerContainer" destination="BI7-nq-RqI" id="55I-oI-WVV"/>
                     </connections>
                 </viewController>

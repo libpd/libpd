@@ -12,6 +12,15 @@
 
 @interface ViewController : UIViewController <PdReceiverDelegate, PdMidiReceiverDelegate>
 
+/// pd audio unit info label
+@property (weak, nonatomic) IBOutlet UILabel *pdLabel;
+
+/// input info label
+@property (weak, nonatomic) IBOutlet UILabel *inputLabel;
+
+/// output info label
+@property (weak, nonatomic) IBOutlet UILabel *outputLabel;
+
 /// route picker view container
 @property (weak, nonatomic) IBOutlet UIView *routePickerContainer;
 

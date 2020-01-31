@@ -35,10 +35,15 @@
 	else { // AVRoutePickerView not available before iOS 11
 		self.routePickerContainer.hidden = YES;
 	}
+	[self setupNotifications];
 
 	// setup and run tests
 	[self setupPd];
 	[self testPd];
+}
+
+- (void)dealloc {
+	[self clearNotifications];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,7 +64,7 @@
 	NSLog(@"touch at %.f %.f with pitch: %d", pos.x, pos.y, pitch);
 }
 
-#pragma mark - Pd
+#pragma mark Pd
 
 - (void)setupPd {
 
@@ -90,6 +95,7 @@
 
 	// log actual settings
 	[self.audioController print];
+	[self updateInfoLabels];
 
 	// set AppDelegate as PdReceiverDelegate to receive messages from pd
 	[PdBase setDelegate:self];
@@ -139,7 +145,7 @@
 	NSArray *list = @[@1.23f, @"a symbol"];
 	[PdBase sendList:list toReceiver:@"toPd"];
 
-	// send a list to the $0 receiver ie $0-toOF
+	// send a list to the $0 receiver ie $0-toPd
 	[PdBase sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", self.patch.dollarZero]];
 
 	// send a message
@@ -235,7 +241,7 @@
 	[PdBase setMidiDelegate:self];
 }
 
-#pragma mark - PdRecieverDelegate
+#pragma mark PdRecieverDelegate
 
 // uncomment this to get print statements from pd
 - (void)receivePrint:(NSString *)message {
@@ -288,6 +294,53 @@
 
 - (void)receiveMidiByte:(int)byte forPort:(int)port{
 	NSLog(@"Midi Byte: %d 0x%X", port, byte);
+}
+
+#pragma mark Notifications
+
+- (void)setupNotifications {
+	[NSNotificationCenter.defaultCenter addObserver:self
+	                                       selector:@selector(routeChanged:)
+	                                           name:AVAudioSessionRouteChangeNotification
+	                                         object:nil];
+}
+
+- (void)clearNotifications {
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:AVAudioSessionRouteChangeNotification
+	                                            object:nil];
+}
+
+// update the info labels if the audio session route has changed, ie. device plugged-in
+- (void)routeChanged:(NSNotification *)notification {
+	NSDictionary *dict = notification.userInfo;
+	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
+	if (reason != AVAudioSessionRouteChangeReasonNewDeviceAvailable &&
+		reason != AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
+		return;
+	}
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self updateInfoLabels];
+	});
+}
+
+#pragma mark UI
+
+- (void)updateInfoLabels {
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	self.pdLabel.text = [NSString stringWithFormat:@"Pd:  in %d out %d sr %gk buf %@",
+	                     self.audioController.audioUnit.inputChannels,
+	                     self.audioController.audioUnit.outputChannels,
+	                     (self.audioController.audioUnit.sampleRate / 1000),
+						 (self.audioController.audioUnit.isBuffering ? @"y" : @"n")];
+	self.inputLabel.text = [NSString stringWithFormat:@"In:  %@ %ld %gk",
+	                        session.currentRoute.inputs[0].portName,
+	                        session.inputNumberOfChannels,
+	                        (session.sampleRate / 1000)];
+	self.outputLabel.text = [NSString stringWithFormat:@"Out: %@ %ld %gk",
+	                         session.currentRoute.outputs[0].portName,
+	                         session.outputNumberOfChannels,
+	                         (session.sampleRate / 1000)];
 }
 
 @end
