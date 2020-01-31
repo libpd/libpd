@@ -167,6 +167,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	else {
 		AU_LOG(@"output stream: none");
 	}
+	AU_LOG(@"buffering: %@", (self.isBuffering ? @"yes" : @"no"));
 }
 
 // sets the format to 32 bit, floating point, linear PCM, interleaved
