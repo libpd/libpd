@@ -84,19 +84,22 @@
 
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                    inputChannels:(int)inputChannels
-                                  outputChannels:(int)outputChannels {
+                                  outputChannels:(int)outputChannels
+                                    inputEnabled:(BOOL)inputEnabled {
 	PdAudioStatus status = PdAudioOK;
-	AVAudioSessionCategory category = AVAudioSessionCategoryPlayAndRecord;
-	BOOL inputEnabled = (inputChannels != 0);
+	AVAudioSessionCategory category = AVAudioSessionCategoryPlayback;
 	if (inputEnabled) {
+		category = AVAudioSessionCategoryPlayAndRecord;
 		if (!AVAudioSession.sharedInstance.inputAvailable) {
-			inputEnabled = NO;
 			status |= PdAudioPropertyChanged;
 			AU_LOG(@"*** WARN *** input not available", category);
 		}
+		if (outputChannels == 0) {
+			AU_LOG(@"*** ERROR *** %@ requires at least 1 input channel", category);
+			return PdAudioError;
+		}
 	}
 	else {
-		category = AVAudioSessionCategoryPlayback;
 		if (outputChannels == 0) {
 			AU_LOG(@"*** ERROR *** %@ requires at least 1 output channel", category);
 			return PdAudioError;
@@ -211,15 +214,17 @@
                                    mixingEnabled:(BOOL)mixingEnabled {
 	_mixWithOthers = mixingEnabled;
 	return [self configurePlaybackWithSampleRate:sampleRate
-	                               inputChannels:(inputEnabled ? numberChannels : 0)
-	                              outputChannels:numberChannels];
+	                               inputChannels:numberChannels
+	                              outputChannels:numberChannels
+	                                inputEnabled:(BOOL)inputEnabled];
 }
 
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
                                  numberChannels:(int)numberChannels
                                   mixingEnabled:(BOOL)mixingEnabled {
 	_mixWithOthers = mixingEnabled;
-	return [self configureAmbientWithSampleRate:sampleRate outputChannels:numberChannels];
+	return [self configureAmbientWithSampleRate:sampleRate
+	                             outputChannels:numberChannels];
 }
 
 // Note about the magic 0.5 added to numberFrames:

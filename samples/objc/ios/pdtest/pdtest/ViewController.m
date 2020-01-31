@@ -69,11 +69,12 @@
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
 	self.audioController.allowBluetooth = YES; // allow hands free Bluetooth
 	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
-	//self.audioController.allowAirPlay = YES; // allow AirPlay
+	self.audioController.allowAirPlay = YES; // allow AirPlay (output only before iOS 10)
 	//self.audioController.preferStereo = NO; // allow mono
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
 	                                                               inputChannels:2
-	                                                              outputChannels:2];
+	                                                              outputChannels:2
+	                                                                inputEnabled:YES];
 	if (status == PdAudioError) {
 		NSLog(@"could not configure audio");
 	} else if (status == PdAudioPropertyChanged) {

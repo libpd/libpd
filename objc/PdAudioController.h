@@ -120,14 +120,15 @@ typedef enum PdAudioStatus {
 /// configure audio with the specified samplerate, as well as number of input
 /// and output channels
 ///
-/// inputChannels 0 uses the Playback AVAudioSession category and disables
-/// the input, while > 0 uses the PlaybackAndRecord category
+/// inputEnabled YES uses the PlayAndRecord AVAudioSession category while
+/// setting NO uses the Playback category
 ///
 /// a channel value of -1 will use the current channel number(s) from the audio
 /// session and automatically change them when the active session route changes
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                    inputChannels:(int)inputChannels
-                                  outputChannels:(int)outputChannels;
+                                  outputChannels:(int)outputChannels
+                                    inputEnabled:(BOOL)inputEnabled;
 
 /// configure audio for recording, without output channels
 ///
