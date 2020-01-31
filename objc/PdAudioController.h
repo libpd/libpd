@@ -82,13 +82,15 @@ typedef enum PdAudioStatus {
 /// use Bluetooth A2DP (Advanced Audio Distribution Profile)?
 /// note: this is higher-quality stereo, ie. jambox
 /// note: this may be overridden by allowBluetooth if both are set
-/// applied to categories: PlayAndRecord,
+/// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
+/// available on iOS 10+
 @property (nonatomic, assign) BOOL allowBluetoothA2DP;
 
 /// use AirPlay?
-/// applied to categories: PlayAndRecord,
+/// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
+/// available on iSO 10+
 @property (nonatomic, assign) BOOL allowAirPlay;
 
 #pragma mark Other Configuration Properties
