@@ -634,6 +634,9 @@
 	_inputEnabled = inputEnabled;
 	_inputChannels = inputChannels;
 	_outputChannels = outputChannels;
+	if (!AVAudioSession.sharedInstance.inputAvailable) {
+		inputEnabled = NO;
+	}
 	return [self.audioUnit configureWithSampleRate:self.sampleRate
 	                                 inputChannels:(inputEnabled ? inputChannels : 0)
 	                                outputChannels:outputChannels
@@ -644,16 +647,9 @@
 	AVAudioSession *session = AVAudioSession.sharedInstance;
 	BOOL wasActive = self.audioUnit.isActive;
 	self.audioUnit.active = NO;
-	BOOL inputEnabled = _inputEnabled;
-	if (!session.inputAvailable ||
-		[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
-		[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
-		[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
-		inputEnabled = NO;
-	}
 	[self configureAudioUnitWithInputChannels:_inputChannels
 							   outputChannels:_outputChannels
-								 inputEnabled:inputEnabled];
+								 inputEnabled:_inputEnabled];
 	self.audioUnit.active = wasActive;
 }
 

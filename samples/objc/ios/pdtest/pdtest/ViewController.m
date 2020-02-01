@@ -77,7 +77,7 @@
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
 	self.audioController.allowBluetooth = YES; // allow hands free Bluetooth input/output
 	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth output
-	self.audioController.allowAirPlay = YES; // allow AirPlay (output only before iOS 10)
+	self.audioController.allowAirPlay = YES; // allow AirPlay (output only categories before iOS 10)
 	//self.audioController.preferStereo = NO; // allow mono
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
 	                                                               inputChannels:2
