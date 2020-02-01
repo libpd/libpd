@@ -42,6 +42,9 @@
                                       outputChannels:(int)outputChannels
                                         inputEnabled:(BOOL)inputEnabled;
 
+/// reconfigure audio unit with current channels, also checks if session input is enabled
+- (void)reconfigureAudioUnit;
+
 /// get current options for category
 - (AVAudioSessionCategoryOptions)optionsForSessionCategory:(AVAudioSessionCategory)category;
 
@@ -54,6 +57,8 @@
 	BOOL _optionsChanged;     ///< have the audio session options changed?
 	BOOL _autoInputChannels;  ///< automatically reconfigure input channels?
 	BOOL _autoOutputChannels; ///< automatically reconfigure output channels?
+	AVAudioSessionCategory _category;       ///< cached category
+	AVAudioSessionCategoryOptions _options; ///< cached options
 }
 
 #pragma mark Initialization
@@ -384,6 +389,10 @@
 	                                       selector:@selector(routeChanged:)
 	                                           name:AVAudioSessionRouteChangeNotification
 	                                         object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self
+	                                       selector:@selector(mediaServicesWereReset:)
+	                                           name:AVAudioSessionMediaServicesWereResetNotification
+	                                         object:nil];
 }
 
 - (void)clearNotifications {
@@ -392,6 +401,9 @@
 	                                            object:nil];
 	[NSNotificationCenter.defaultCenter removeObserver:self
 	                                              name:AVAudioSessionRouteChangeNotification
+	                                            object:nil];
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:AVAudioSessionMediaServicesWereResetNotification
 	                                            object:nil];
 }
 
@@ -436,24 +448,40 @@
 			AU_LOGV(@"route changed: override");
 			break;
 	}
-	AU_LOGV(@"reconfiguring audio unit");
-	AVAudioSession *session = AVAudioSession.sharedInstance;
-	if ([self updateInputChannels:self->_inputChannels
-				   outputChannels:self->_outputChannels] == PdAudioPropertyChanged) {
-		BOOL wasActive = self.audioUnit.isActive;
-		self.audioUnit.active = NO;
-		BOOL inputEnabled = self->_inputEnabled;
-		if (!session.inputAvailable ||
-			[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
-			[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
-			[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
-			inputEnabled = NO;
-		}
-		[self configureAudioUnitWithInputChannels:self->_inputChannels
-		                           outputChannels:self->_outputChannels
-		                             inputEnabled:inputEnabled];
-		self.audioUnit.active = wasActive;
+	if ([self updateInputChannels:_inputChannels
+				   outputChannels:_outputChannels] == PdAudioPropertyChanged) {
+		AU_LOGV(@"reconfiguring audio unit");
+		[self reconfigureAudioUnit];
 	}
+}
+
+- (void)mediaServicesWereReset:(NSNotification *)notification {
+	AU_LOGV(@"media services were reset");
+	if (!_category && !_options) {
+		return;
+	}
+	[self configureSessionWithCategory:_category];
+	if (self.active) {
+		// force options update and restart
+		_optionsChanged = YES;
+		self.active = _active;
+	}
+	else {
+		// manually reapply options
+		[PdAudioController setSessionOptions:_options];
+		_options = AVAudioSession.sharedInstance.categoryOptions;
+	}
+	AU_LOGV(@"reconfiguring audio unit");
+	[self updateInputChannels:_inputChannels outputChannels:_outputChannels];
+	[self reconfigureAudioUnit];
+}
+
+- (AVAudioSessionCategory)currentCategory {
+	return _category;
+}
+
+- (AVAudioSessionCategoryOptions)currentCategoryOptions {
+	return _options;
 }
 
 #pragma mark Overridden Getters/Setters
@@ -533,6 +561,8 @@
 	if (![PdAudioController setSessionOptions:options]) {
 		return PdAudioError;
 	}
+	_category = session.category;
+	_options = session.categoryOptions;
 
 	// activate
 	[session setActive:YES error:&error];
@@ -606,6 +636,23 @@
 	                              bufferingEnabled:self.bufferSamples] ? PdAudioError : PdAudioOK;
 }
 
+- (void)reconfigureAudioUnit {
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	BOOL wasActive = self.audioUnit.isActive;
+	self.audioUnit.active = NO;
+	BOOL inputEnabled = _inputEnabled;
+	if (!session.inputAvailable ||
+		[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
+		[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
+		[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
+		inputEnabled = NO;
+	}
+	[self configureAudioUnitWithInputChannels:_inputChannels
+							   outputChannels:_outputChannels
+								 inputEnabled:inputEnabled];
+	self.audioUnit.active = wasActive;
+}
+
 - (void)updateSessionCategoryOptions {
 	if (!self.audioUnit) {return;}
 	if (!self.isActive) {
@@ -618,6 +665,7 @@
 	if (options) {
 		[PdAudioController addSessionOptions:options];
 	}
+	_options = session.categoryOptions;
 	_optionsChanged = NO;
 }
 

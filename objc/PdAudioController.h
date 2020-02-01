@@ -283,4 +283,23 @@ typedef enum PdAudioStatus {
 /// override to implement custom handling
 - (void)routeChanged:(NSNotification *)notification;
 
+/// media services reset notification handler
+/// called when the iOS media services daemon is reset (rare)
+///
+/// the default implementation restarts the audio session with cached category
+/// and options and restarts the audio unit if processing was active
+///
+/// override to implement custom handling
+- (void)mediaServicesWereReset:(NSNotification *)notification;
+
+/// current cached audio session category,
+/// saved from the current audio session PdAudioController sets the category
+- (AVAudioSessionCategory)currentCategory;
+
+/// current cached audio session category options,
+/// saved from the current audio session PdAudioController sets/updates
+/// category options, so this will include any customizations made outside
+/// this class
+- (AVAudioSessionCategoryOptions)currentCategoryOptions;
+
 @end

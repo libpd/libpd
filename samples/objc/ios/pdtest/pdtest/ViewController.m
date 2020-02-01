@@ -244,7 +244,7 @@
 	[PdBase setMidiDelegate:self];
 }
 
-#pragma mark PdRecieverDelegate
+#pragma mark PdReceiverDelegate
 
 // uncomment this to get print statements from pd
 - (void)receivePrint:(NSString *)message {
@@ -353,9 +353,12 @@
 		case AVAudioSessionRouteChangeReasonOverride:
 			break;
 	}
-	// update the UI on the main thread, wait a little so audio changes have time to finalize
+	// update the UI on the main thread, wait a little so audio changes have time to finalize,
+	// don't update UI if backgrounded as this might cause the app to be terminated!
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-		[self updateInfoLabels];
+		if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive) {
+			[self updateInfoLabels];
+		}
 	});
 }
 

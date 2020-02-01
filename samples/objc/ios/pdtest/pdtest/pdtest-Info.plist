@@ -26,6 +26,10 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microphone</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
