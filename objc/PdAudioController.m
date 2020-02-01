@@ -390,6 +390,10 @@
 	                                           name:AVAudioSessionRouteChangeNotification
 	                                         object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self
+	                                       selector:@selector(silenceSecondaryAudio:)
+	                                           name:AVAudioSessionSilenceSecondaryAudioHintNotification
+	                                         object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self
 	                                       selector:@selector(mediaServicesWereReset:)
 	                                           name:AVAudioSessionMediaServicesWereResetNotification
 	                                         object:nil];
@@ -403,6 +407,9 @@
 	                                              name:AVAudioSessionRouteChangeNotification
 	                                            object:nil];
 	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:AVAudioSessionSilenceSecondaryAudioHintNotification
+	                                            object:nil];
+	[NSNotificationCenter.defaultCenter removeObserver:self
 	                                              name:AVAudioSessionMediaServicesWereResetNotification
 	                                            object:nil];
 }
@@ -411,24 +418,19 @@
 	NSDictionary *dict = notification.userInfo;
 	NSUInteger type = [dict[AVAudioSessionInterruptionTypeKey] unsignedIntegerValue];
 	if (type == AVAudioSessionInterruptionTypeBegan) {
-		self.audioUnit.active = NO; // leave _active unchanged
 		AU_LOGV(@"interrupted");
+		self.audioUnit.active = NO; // leave _active unchanged
 	}
 	else if (type == AVAudioSessionInterruptionTypeEnded) {
-		// TODO: always resume for now, do we really need to handle the ShouldResume hint?
-#if 1
-		self.active = _active; // retrigger
-		AU_LOGV(@"ended interruption");
-#else
 		NSUInteger option = [dict[AVAudioSessionInterruptionOptionKey] unsignedIntegerValue];
 		if (option == AVAudioSessionInterruptionOptionShouldResume) {
-			self.active = _active; // retrigger
 			AU_LOGV(@"ended interruption");
+			self.active = _active; // retrigger
 		}
 		else {
 			AU_LOGV(@"still interrupted");
+			self.active = _active; // retrigger
 		}
-#endif
 	}
 }
 
@@ -454,6 +456,8 @@
 		[self reconfigureAudioUnit];
 	}
 }
+
+- (void)silenceSecondaryAudio:(NSNotification *)notification {}
 
 - (void)mediaServicesWereReset:(NSNotification *)notification {
 	AU_LOGV(@"media services were reset");

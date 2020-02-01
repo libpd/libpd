@@ -283,6 +283,15 @@ typedef enum PdAudioStatus {
 /// override to implement custom handling
 - (void)routeChanged:(NSNotification *)notification;
 
+/// primary audio start/stop notification handler
+/// called when another app becomes the primary audio source and the app should
+/// mute secondary audio
+///
+/// the default implementation does nothing
+///
+/// override to implement custom handling
+- (void)silenceSecondaryAudio:(NSNotification *)notification;
+
 /// media services reset notification handler
 /// called when the iOS media services daemon is reset (rare)
 ///
