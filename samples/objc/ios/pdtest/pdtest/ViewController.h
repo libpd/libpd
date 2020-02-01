@@ -24,10 +24,13 @@
 /// route picker view container
 @property (weak, nonatomic) IBOutlet UIView *routePickerContainer;
 
-// setup the Pd audio controller, etc
+/// setup the Pd audio controller, etc
 - (void)setupPd;
 
-// run some Pd tests
+/// run some Pd tests
 - (void)testPd;
+
+/// update audio session info labels
+- (void)updateInfoLabels;
 
 @end

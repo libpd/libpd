@@ -68,12 +68,15 @@
 
 - (void)setupPd {
 
+	// note: define or uncomment AU_DEBUG_VERBOSE in AudioHelpers.h for verbose debug prints
+
 	// configure a typical audio session with 2 output channels
 	self.audioController = [[PdAudioController alloc] init];
+	// add/override some common session settings
 	//self.audioController.mixWithOthers = NO; // this app's audio only
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
-	self.audioController.allowBluetooth = YES; // allow hands free Bluetooth
-	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth
+	self.audioController.allowBluetooth = YES; // allow hands free Bluetooth input/output
+	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth output
 	self.audioController.allowAirPlay = YES; // allow AirPlay (output only before iOS 10)
 	//self.audioController.preferStereo = NO; // allow mono
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
@@ -296,6 +299,34 @@
 	NSLog(@"Midi Byte: %d 0x%X", port, byte);
 }
 
+#pragma mark UI
+
+- (void)updateInfoLabels {
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	self.pdLabel.text = [NSString stringWithFormat:@"Pd:  in %d out %d sr %gk",
+	                     self.audioController.audioUnit.inputChannels,
+	                     self.audioController.audioUnit.outputChannels,
+	                     (self.audioController.audioUnit.sampleRate / 1000)];
+	if (session.inputNumberOfChannels > 0) {
+		self.inputLabel.text = [NSString stringWithFormat:@"In:  %@ %d %gk",
+								[session.currentRoute.inputs.firstObject portName],
+								(int)session.inputNumberOfChannels,
+								(session.sampleRate / 1000)];
+	}
+	else {
+		self.inputLabel.text = @"In: none";
+	}
+	if (session.outputNumberOfChannels > 0) {
+		self.outputLabel.text = [NSString stringWithFormat:@"Out: %@ %d %gk",
+								 [session.currentRoute.outputs.firstObject portName],
+								 (int)session.outputNumberOfChannels,
+								 (session.sampleRate / 1000)];
+	}
+	else {
+		self.outputLabel.text = @"Out: none";
+	}
+}
+
 #pragma mark Notifications
 
 - (void)setupNotifications {
@@ -315,32 +346,17 @@
 - (void)routeChanged:(NSNotification *)notification {
 	NSDictionary *dict = notification.userInfo;
 	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
-	if (reason != AVAudioSessionRouteChangeReasonNewDeviceAvailable &&
-		reason != AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
-		return;
+	switch (reason) {
+		default: return;
+		case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+		case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+		case AVAudioSessionRouteChangeReasonOverride:
+			break;
 	}
-	dispatch_async(dispatch_get_main_queue(), ^{
+	// update the UI on the main thread, wait a little so audio changes have time to finalize
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 		[self updateInfoLabels];
 	});
-}
-
-#pragma mark UI
-
-- (void)updateInfoLabels {
-	AVAudioSession *session = AVAudioSession.sharedInstance;
-	self.pdLabel.text = [NSString stringWithFormat:@"Pd:  in %d out %d sr %gk buf %@",
-	                     self.audioController.audioUnit.inputChannels,
-	                     self.audioController.audioUnit.outputChannels,
-	                     (self.audioController.audioUnit.sampleRate / 1000),
-						 (self.audioController.audioUnit.isBuffering ? @"y" : @"n")];
-	self.inputLabel.text = [NSString stringWithFormat:@"In:  %@ %ld %gk",
-	                        session.currentRoute.inputs[0].portName,
-	                        session.inputNumberOfChannels,
-	                        (session.sampleRate / 1000)];
-	self.outputLabel.text = [NSString stringWithFormat:@"Out: %@ %ld %gk",
-	                         session.currentRoute.outputs[0].portName,
-	                         session.outputNumberOfChannels,
-	                         (session.sampleRate / 1000)];
 }
 
 @end

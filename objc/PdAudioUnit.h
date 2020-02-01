@@ -20,7 +20,7 @@
 ///
 /// the internal pd sample rate may be different then that of the actual audio
 /// session and the audio unit attempts to set up sample rate conversion and
-/// buffering automatically.
+/// buffering automatically
 ///
 /// as of libpd 0.12 this is bridged to AudioUnit v3 which should allow for
 /// adding a *single* instance of PdAudioUnit to an internal AUGraph, multi
@@ -77,11 +77,6 @@
 /// is the audio unit active?
 @property (nonatomic, getter=isActive) BOOL active;
 
-/// is the audio unit buffering samples?
-/// may be required to handle variable buffer sizes due to sample rate
-/// conversion, ie. 44.1k : 48k
-@property (nonatomic, getter=isBuffering) BOOL buffering;
-
 #pragma mark Read Only Configuration Properties
 
 // read only properties set by the configure methods
@@ -97,6 +92,11 @@
 
 /// is the audio input stream enabled?
 @property (nonatomic, assign, readonly) BOOL inputEnabled;
+
+/// is the audio unit buffering samples between input and output?
+/// may be required to handle variable buffer sizes due to sample rate
+/// conversion (44.1k : 48k) or very long buffer sizes (8k : 48k)
+@property (nonatomic, assign, readonly) BOOL bufferingEnabled;
 
 #pragma mark Initialization
 
@@ -121,6 +121,8 @@
 /// if inputChannels is 0, the input will be disabled
 /// if outputChannels is 0, the output will be disabled
 ///
+/// buffering is enabled by default
+///
 /// note: this is an expensive process and will stop the audio unit before any
 /// reconstruction, causing a momentary pause in audio and UI if run from the
 /// main thread
@@ -130,10 +132,28 @@
                  inputChannels:(int)inputChannels
                 outputChannels:(int)outputChannels;
 
+/// configure audio unit with preferred sample rate, number of input and
+/// output channels, and whether to enable buffering
+///
+/// if inputChannels is 0, the input will be disabled
+/// if outputChannels is 0, the output will be disabled
+///
+/// note: this is an expensive process and will stop the audio unit before any
+/// reconstruction, causing a momentary pause in audio and UI if run from the
+/// main thread
+///
+/// returns zero on success, ie. OSStatus noErr
+- (int)configureWithSampleRate:(Float64)sampleRate
+                 inputChannels:(int)inputChannels
+                outputChannels:(int)outputChannels
+              bufferingEnabled:(BOOL)bufferingEnabled;
+
 /// note: legacy method kept for compatibility
 ///
 /// configure audio unit with preferred sample rate, number of channels, and
 /// whether to enable the input stream
+///
+/// buffering is enabled by default
 ///
 /// note: this is an expensive process and will stop the audio unit before any
 /// reconstruction, causing a momentary pause in audio and UI if run from the

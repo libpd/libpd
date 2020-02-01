@@ -15,10 +15,6 @@
 #import "AudioHelpers.h"
 #include "ringbuffer.h"
 
-// default max io buffer size in frames, as outlined in
-// https://developer.apple.com/library/content/qa/qa1606/_index.html
-static const int kAUDefaultMaxFrames = 4096;
-
 static const AudioUnitElement kRemoteIOElement_Input = 1;
 static const AudioUnitElement kRemoteIOElement_Output = 0;
 
@@ -32,10 +28,9 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 /// stop and release the audio unit
 - (void)clearAudioUnit;
 
-/// allocate buffers if there is sr conversion between audio unit and session,
+/// update input & output channels, maxFrames, & (re)allocate buffers
 /// also sets buffer size & frame ivars
-- (BOOL)initBuffersWithInputChannels:(int)inputChannels
-                      outputChannels:(int)outputChannels;
+- (BOOL)updateInputChannels:(int)inputChannels outputChannels:(int)outputChannels;
 
 /// release buffers, if allocated
 - (void)clearBuffers;
@@ -65,11 +60,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
                                        error:(NSError **)outError {
 	self = [super initWithComponentDescription:componentDescription options:options error:outError];
 	if (self) {
-		_initialized = NO;
-		_active = NO;
 		_blockFrames = [PdBase getBlockSize];
 		_blockFramesAsLog = log2int(_blockFrames);
-		_maxFrames = kAUDefaultMaxFrames;
 	}
 	return self;
 }
@@ -83,19 +75,29 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 
 - (int)configureWithSampleRate:(Float64)sampleRate
                  inputChannels:(int)inputChannels
-                outputChannels:(int)outputChannels {
+				outputChannels:(int)outputChannels {
+	return [self configureWithSampleRate:sampleRate
+	                       inputChannels:inputChannels
+	                      outputChannels:outputChannels
+	                    bufferingEnabled:YES];
+}
+
+- (int)configureWithSampleRate:(Float64)sampleRate
+                 inputChannels:(int)inputChannels
+                outputChannels:(int)outputChannels
+              bufferingEnabled:(BOOL)bufferingEnabled {
 	BOOL wasActive = self.isActive;
 	_sampleRate = sampleRate;
 	_inputEnabled = (inputChannels > 0);
 	_inputChannels = inputChannels;
 	_outputChannels = outputChannels;
+	_bufferingEnabled = bufferingEnabled;
 	if (![self initAudioUnitWithSampleRate:_sampleRate
 	                         inputChannels:inputChannels
 	                        outputChannels:outputChannels]) {
 		return -1;
 	}
-	if (![self initBuffersWithInputChannels:_inputChannels
-	                         outputChannels:_outputChannels]) {
+	if (![self updateInputChannels:_inputChannels outputChannels:_outputChannels]) {
 		return -1;
 	}
 	[PdBase openAudioWithSampleRate:sampleRate
@@ -111,7 +113,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
                   inputEnabled:(BOOL)inputEnabled {
 	return [self configureWithSampleRate:sampleRate
 	                       inputChannels:(inputEnabled ? numChannels : 0)
-	                      outputChannels:numChannels];
+	                      outputChannels:numChannels
+	                    bufferingEnabled:YES];
 }
 
 #pragma mark Util
@@ -304,9 +307,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		UInt32 frames, size = sizeof(frames);
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &frames, &size));
 		if (frames != pd->_maxFrames) {
-			pd->_maxFrames = frames;
 			AU_LOGV(@"max frames property changed: %d", frames);
-			[pd initBuffersWithInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
+			[pd updateInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
 		}
 	}
 	else if (inID == kAudioUnitProperty_SampleRate) {
@@ -317,21 +319,21 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		if (!floatsAreEqual(pd->_sampleRate, sr)) {
 			pd->_sampleRate = sr;
 			AU_LOG(@"*** WARNING *** audio unit sample rate property changed: %g", sr);
-			[pd initBuffersWithInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
+			[pd updateInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
 			[PdBase openAudioWithSampleRate:sr
 			                  inputChannels:pd->_inputChannels
 			                 outputChannels:pd->_outputChannels];
 		}
 	}
 	else if (inID == kAudioUnitProperty_StreamFormat) {
-		// audio unit input or output channels have changed, so fall back in worst case
+		// audio unit internal input or output channels have changed, so fall back in worst case
 		AudioStreamBasicDescription streamFormat = {0};
 		UInt32 size = sizeof(streamFormat);
 		AU_RETURN_IF_ERROR(AudioUnitGetProperty(inUnit, inID, inScope, inElement, &streamFormat, &size));
 		if (inElement == kRemoteIOElement_Input && inScope == kAudioUnitScope_Output) {
 			if (pd->_inputChannels != streamFormat.mChannelsPerFrame) {
 				AU_LOG(@"*** WARNING *** audio unit input channels changed: %d", streamFormat.mChannelsPerFrame);
-				[pd initBuffersWithInputChannels:streamFormat.mChannelsPerFrame outputChannels:pd->_outputChannels];
+				[pd updateInputChannels:streamFormat.mChannelsPerFrame outputChannels:pd->_outputChannels];
 				[PdBase openAudioWithSampleRate:pd->_sampleRate
 								  inputChannels:streamFormat.mChannelsPerFrame
 								 outputChannels:pd->_outputChannels];
@@ -341,7 +343,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 		else if (inElement == kRemoteIOElement_Output && inScope == kAudioUnitScope_Input) {
 			if (pd->_outputChannels != streamFormat.mChannelsPerFrame) {
 				AU_LOG(@"*** WARNING *** audio unit output channels changed: %d", streamFormat.mChannelsPerFrame);
-				[pd initBuffersWithInputChannels:pd->_inputChannels outputChannels:streamFormat.mChannelsPerFrame];
+				[pd updateInputChannels:pd->_inputChannels outputChannels:streamFormat.mChannelsPerFrame];
 				[PdBase openAudioWithSampleRate:pd->_sampleRate
 								  inputChannels:pd->_inputChannels
 								 outputChannels:streamFormat.mChannelsPerFrame];
@@ -458,59 +460,39 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	AU_LOGV(@"cleared audio unit");
 }
 
-- (BOOL)initBuffersWithInputChannels:(int)inputChannels outputChannels:(int)outputChannels {
+- (BOOL)updateInputChannels:(int)inputChannels outputChannels:(int)outputChannels {
+	BOOL reallocate = (_inputChannels != inputChannels || _outputChannels != outputChannels);
 	int inputFrameSize = inputChannels * sizeof(Float32);
 	int outputFrameSize = outputChannels * sizeof(Float32);
 
-	[self clearBuffers];
 	_inputChannels = inputChannels;
 	_outputChannels = outputChannels;
 	_inputBlockSize = inputFrameSize * _blockFrames;
 	_outputBlockSize = outputFrameSize * _blockFrames;
 	_inputFrameSize = inputFrameSize;
 
+	UInt32 prevMaxFrames = _maxFrames;
 	UInt32 size = sizeof(_maxFrames);
 	AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
 	                                              kAudioUnitProperty_MaximumFramesPerSlice,
 	                                              kAudioUnitScope_Global, kRemoteIOElement_Output,
 	                                              &_maxFrames,
 	                                              &size));
+	reallocate = reallocate || (prevMaxFrames != _maxFrames);
 
-	// if one sample rate is *not* a multiple of the other (44.1k : 48k),
-	// assume sample rate conversion buffering is needed as audio unit IO buffer
-	// sizes *may* be variable
-	BOOL buffer = NO;
-	size = sizeof(AudioStreamBasicDescription);
-	if (_inputEnabled) {
-		// read external input stream format *to* RemoteIO, ie. device -> RemoteIO
-		AudioStreamBasicDescription inputStreamDescription = {0};
-		AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
-		                         kAudioUnitProperty_StreamFormat,
-		                         kAudioUnitScope_Input,
-		                         kRemoteIOElement_Input,
-		                         &inputStreamDescription,
-		                         &size));
-		buffer = (fmod(MAX(_sampleRate, inputStreamDescription.mSampleRate),
-					   MIN(_sampleRate, inputStreamDescription.mSampleRate)) > 0);
+	if (_bufferingEnabled) {
+		if (reallocate) {
+			[self clearBuffers];
+			// pad with one extra block
+			// note: ring buffer sizes *must* be multiple of 256!
+			_inputRingBuffer = rb_create(roundup(inputFrameSize * (_maxFrames + _blockFrames), 256));
+			_outputRingBuffer = rb_create(roundup(outputFrameSize * (_maxFrames + _blockFrames), 256));
+			AU_LOGV(@"initialized buffers: inputs %d outputs %d max frames %d",
+				   inputChannels, outputChannels, _maxFrames);
+		}
 	}
-	if (_outputChannels > 0) {
-		// read external output stream format *from* RemoteIO, ie. RemoteIO -> device
-		AudioStreamBasicDescription outputStreamDescription = {0};
-		AU_RETURN_FALSE_IF_ERROR(AudioUnitGetProperty(_audioUnit,
-		                         kAudioUnitProperty_StreamFormat,
-		                         kAudioUnitScope_Output,
-		                         kRemoteIOElement_Output,
-		                         &outputStreamDescription,
-		                         &size));
-		buffer = buffer || (fmod(MAX(_sampleRate, outputStreamDescription.mSampleRate),
-						         MIN(_sampleRate, outputStreamDescription.mSampleRate)) > 0);
-	}
-	if (buffer) {
-		// note: ring buffer sizes *must* be multiple of 256!
-		_inputRingBuffer = rb_create(roundup(inputFrameSize * _maxFrames, 256));
-		_outputRingBuffer = rb_create(roundup(outputFrameSize * _maxFrames, 256));
-		AU_LOGV(@"initialized sample rate conversion buffers: inputs %d outputs %d max frames %d",
-		       inputChannels, outputChannels, _maxFrames);
+	else {
+		[self clearBuffers];
 	}
 
 	return YES;

@@ -58,19 +58,27 @@
 
 #pragma mark Initialization
 
+- (void)setupWithAudioUnit:(PdAudioUnit *)audioUnit {
+	_mixWithOthers = YES;
+	_defaultToSpeaker = YES;
+	_preferStereo = YES;
+	_bufferSamples = YES;
+	[self setupNotifications];
+	self.audioUnit = audioUnit;
+}
+
 - (instancetype)init {
-	self = [self initWithAudioUnit:[PdAudioUnit defaultAudioUnit]];
+	self = [super init];
+	if (self) {
+		[self setupWithAudioUnit:[PdAudioUnit defaultAudioUnit]];
+	}
 	return self;
 }
 
 - (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit {
 	self = [super init];
 	if (self) {
-		_mixWithOthers = YES;
-		_defaultToSpeaker = YES;
-		_preferStereo = YES;
-		[self setupNotifications];
-		self.audioUnit = audioUnit;
+		[self setupWithAudioUnit:audioUnit];
 	}
 	return self;
 }
@@ -343,7 +351,7 @@
 	AU_LOG(@"sample rate: %g", session.sampleRate);
 	AU_LOG(@"preferred sample rate: %g", session.preferredSampleRate);
 	AU_LOG(@"preferred IO buffer duration: %g", session.preferredIOBufferDuration);
-	AU_LOG(@"input available: %@", (session.inputAvailable ? @"YES" : @"NO"));
+	AU_LOG(@"input available: %@", (session.inputAvailable ? @"yes" : @"no"));
 	AU_LOG(@"input channels: %d", session.inputNumberOfChannels);
 	AU_LOG(@"output channels: %d", session.outputNumberOfChannels);
 	[self.audioUnit print];
@@ -412,37 +420,39 @@
 	}
 }
 
+// reconfigure if input/output channels have changed
 - (void)routeChanged:(NSNotification *)notification {
-	BOOL reconfigure = NO;
 	NSDictionary *dict = notification.userInfo;
 	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
-	if (reason == AVAudioSessionRouteChangeReasonNewDeviceAvailable) {
-		AU_LOGV(@"route changed: new device");
-		reconfigure = YES;
+	switch (reason) {
+		default: return;
+		case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+			AU_LOGV(@"route changed: new device");
+			break;
+		case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+			AU_LOGV(@"route changed: old device unavailable");
+			break;
+		case AVAudioSessionRouteChangeReasonOverride:
+			AU_LOGV(@"route changed: override");
+			break;
 	}
-	else if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
-		AU_LOGV(@"route changed: old device unavailable");
-		reconfigure = YES;
-	}
-	if (reconfigure) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			AU_LOGV(@"reconfiguring audio unit");
-			AVAudioSession *session = AVAudioSession.sharedInstance;
-			if ([self updateInputChannels:self->_inputChannels
-				           outputChannels:self->_outputChannels] == PdAudioPropertyChanged) {
-				BOOL inputEnabled = (self->_inputChannels > 0);
-				if (!session.inputAvailable ||
-					[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
-					[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
-					[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
-					inputEnabled = NO;
-				}
-				if ([self configureAudioUnitWithInputChannels:self->_inputChannels
-					                           outputChannels:self->_outputChannels
-					                             inputEnabled:inputEnabled] != PdAudioOK) {
-				}
-			}
-		});
+	AU_LOGV(@"reconfiguring audio unit");
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	if ([self updateInputChannels:self->_inputChannels
+				   outputChannels:self->_outputChannels] == PdAudioPropertyChanged) {
+		BOOL wasActive = self.audioUnit.isActive;
+		self.audioUnit.active = NO;
+		BOOL inputEnabled = self->_inputEnabled;
+		if (!session.inputAvailable ||
+			[session.category isEqualToString:AVAudioSessionCategoryPlayback] ||
+			[session.category isEqualToString:AVAudioSessionCategoryAmbient] ||
+			[session.category isEqualToString:AVAudioSessionCategorySoloAmbient]) {
+			inputEnabled = NO;
+		}
+		[self configureAudioUnitWithInputChannels:self->_inputChannels
+		                           outputChannels:self->_outputChannels
+		                             inputEnabled:inputEnabled];
+		self.audioUnit.active = wasActive;
 	}
 }
 
@@ -592,7 +602,8 @@
 	_outputChannels = outputChannels;
 	return [self.audioUnit configureWithSampleRate:self.sampleRate
 	                                 inputChannels:(inputEnabled ? inputChannels : 0)
-	                                outputChannels:outputChannels] ? PdAudioError : PdAudioOK;
+	                                outputChannels:outputChannels
+	                              bufferingEnabled:self.bufferSamples] ? PdAudioError : PdAudioOK;
 }
 
 - (void)updateSessionCategoryOptions {

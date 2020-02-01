@@ -80,7 +80,7 @@ typedef enum PdAudioStatus {
 @property (nonatomic, assign) BOOL allowBluetooth;
 
 /// use Bluetooth A2DP (Advanced Audio Distribution Profile)?
-/// note: this is higher-quality stereo, ie. jambox
+/// note: this is higher-quality stereo output, ie. jambox
 /// note: this may be overridden by allowBluetooth if both are set
 /// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
@@ -103,6 +103,17 @@ typedef enum PdAudioStatus {
 /// speaker) don't seem to like mismatched sessions (ie. 1 input and 2 outputs),
 /// this also seems to enable automatic mixdown to mono for some outputs
 @property (nonatomic, assign) BOOL preferStereo;
+
+/// buffer samples between input and output? (default YES)
+///
+/// may be required to handle variable buffer sizes due to sample rate
+/// conversion (44.1k : 48k) or very long buffer sizes (8k : 48k)
+///
+/// buffering is not required if the sample rate matches that of the session
+/// or one is a multiple of the other, however sample rates can change as
+/// devices are connected / disconnected so it is safest to keep buffering on
+/// otherwise you may end up with click/stuttering audio
+@property (nonatomic, assign) BOOL bufferSamples;
 
 #pragma mark Initialization
 
@@ -258,7 +269,7 @@ typedef enum PdAudioStatus {
 /// called when the app's audio is interrupted by other apps or the os
 ///
 /// the default implementation *always* restarts audio processing
-/// 
+///
 /// override to implement custom handling
 - (void)interruptionOccurred:(NSNotification *)notification;
 
