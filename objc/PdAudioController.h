@@ -69,7 +69,7 @@ typedef enum PdAudioStatus {
 /// applied to categories: PlayAndRecord, Playback, MultiRoute
 @property (nonatomic, assign) BOOL interruptSpokenAudioAndMixWithOthers;
 
-/// output to speaker instead of receiver (earpiece)?  (default YES)
+/// output to speaker instead of receiver (earpiece)? (default YES)
 /// applied to categories: PlayAndRecord
 @property (nonatomic, assign) BOOL defaultToSpeaker;
 
@@ -188,7 +188,7 @@ typedef enum PdAudioStatus {
                                   mixingEnabled:(BOOL)mixingEnabled;
 
 /// configure the ticksPerBuffer parameter which will change the audio session
-/// IO buffer size, this can be done on the fly while audio is running.
+/// IO buffer size, this can be done on the fly while audio is running
 ///
 /// note: the audio session only accepts values that correspond to a number
 /// of frames that are a power of 2 and sometimes this value is ignored by the
