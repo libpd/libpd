@@ -485,7 +485,7 @@
 }
 
 - (void)setDefaultToSpeaker:(BOOL)defaultToSpeaker {
-	if (_mixWithOthers == defaultToSpeaker) {return;}
+	if (_defaultToSpeaker == defaultToSpeaker) {return;}
 	_defaultToSpeaker = defaultToSpeaker;
 	[self updateSessionCategoryOptions];
 }
@@ -602,7 +602,7 @@
 	AVAudioSession *session = AVAudioSession.sharedInstance;
 	AVAudioSessionCategoryOptions options = [self optionsForSessionCategory:session.category];
 	if (options) {
-		[PdAudioController addSessionOptions:options];
+		[PdAudioController setSessionOptions:options];
 	}
 	_options = session.categoryOptions;
 	_optionsChanged = NO;
