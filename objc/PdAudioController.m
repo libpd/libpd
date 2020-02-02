@@ -33,10 +33,6 @@
 /// try to update the preferred session sample rate, sets ivars
 - (PdAudioStatus)updateSampleRate:(int)sampleRate;
 
-/// check input and output channels, sets ivars,
-/// returns PdAudioPropertyChanged if either were changed
-- (PdAudioStatus)updateInputChannels:(int)inputChannels outputChannels:(int)outputChannels;
-
 /// configure audio unit, sets ivars
 - (PdAudioStatus)configureAudioUnitWithInputChannels:(int)inputChannels
                                       outputChannels:(int)outputChannels
@@ -54,9 +50,7 @@
 @end
 
 @implementation PdAudioController {
-	BOOL _optionsChanged;     ///< have the audio session options changed?
-	BOOL _autoInputChannels;  ///< automatically reconfigure input channels?
-	BOOL _autoOutputChannels; ///< automatically reconfigure output channels?
+	BOOL _optionsChanged; ///< have the audio session options changed?
 	AVAudioSessionCategory _category;       ///< cached category
 	AVAudioSessionCategoryOptions _options; ///< cached options
 }
@@ -107,19 +101,17 @@
 			status |= PdAudioPropertyChanged;
 			AU_LOG(@"*** WARN *** input not available", category);
 		}
-		if (outputChannels == 0) {
+		if (outputChannels < 1) {
 			AU_LOG(@"*** ERROR *** %@ requires at least 1 input channel", category);
 			return PdAudioError;
 		}
 	}
 	else {
-		if (outputChannels == 0) {
+		if (outputChannels < 1) {
 			AU_LOG(@"*** ERROR *** %@ requires at least 1 output channel", category);
 			return PdAudioError;
 		}
 	}
-	_autoInputChannels = (inputChannels < 0);
-	_autoOutputChannels = (outputChannels < 0);
 	status |= [self updateSampleRate:sampleRate];
 	if (status == PdAudioError) {
 		return PdAudioError;
@@ -128,9 +120,8 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	[self updateInputChannels:inputChannels outputChannels:outputChannels];
-	status |= [self configureAudioUnitWithInputChannels:_inputChannels
-	                                     outputChannels:_outputChannels
+	status |= [self configureAudioUnitWithInputChannels:inputChannels
+	                                     outputChannels:outputChannels
 	                                       inputEnabled:inputEnabled];
 	AU_LOGV(@"configuration finished: status %d", status);
 	return status;
@@ -139,7 +130,7 @@
 - (PdAudioStatus)configureRecordWithSampleRate:(int)sampleRate
                                 inputChannels:(int)inputChannels {
 	AVAudioSessionCategory category = AVAudioSessionCategoryRecord;
-	if (inputChannels == 0) {
+	if (inputChannels < 1) {
 		AU_LOG(@"*** ERROR *** %@ requires at least 1 output channel", category);
 		return PdAudioError;
 	}
@@ -151,11 +142,8 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	_autoInputChannels = (inputChannels < 0);
-	_autoOutputChannels = NO;
-	[self updateInputChannels:inputChannels outputChannels:0];
-	status |= [self configureAudioUnitWithInputChannels:_inputChannels
-	                                     outputChannels:_outputChannels
+	status |= [self configureAudioUnitWithInputChannels:inputChannels
+	                                     outputChannels:0
 	                                       inputEnabled:YES];
 	AU_LOGV(@"configuration finished: status %d", status);
 	return status;
@@ -167,7 +155,7 @@
 	if (self.mixWithOthers) {
 		category = AVAudioSessionCategoryAmbient;
 	}
-	if (outputChannels == 0) {
+	if (outputChannels < 1) {
 		AU_LOG(@"*** ERROR *** %@ requires at least 1 output channel", category);
 		return PdAudioError;
 	}
@@ -179,11 +167,8 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	_autoInputChannels = NO;
-	_autoOutputChannels = (_outputChannels < 0);
-	[self updateInputChannels:0 outputChannels:outputChannels];
-	status |= [self configureAudioUnitWithInputChannels:_inputChannels
-	                                     outputChannels:_outputChannels
+	status |= [self configureAudioUnitWithInputChannels:0
+	                                     outputChannels:outputChannels
 	                                       inputEnabled:NO];
 	AU_LOGV(@"configuration finished: status %d", status);
 	return status;
@@ -211,11 +196,8 @@
 	if (status == PdAudioError) {
 		return PdAudioError;
 	}
-	_autoInputChannels = (_inputChannels < 0);
-	_autoOutputChannels = (_outputChannels < 0);
-	[self updateInputChannels:inputChannels outputChannels:outputChannels];
-	status |= [self configureAudioUnitWithInputChannels:_inputChannels
-	                                     outputChannels:_outputChannels
+	status |= [self configureAudioUnitWithInputChannels:inputChannels
+	                                     outputChannels:outputChannels
 	                                       inputEnabled:inputEnabled];
 	AU_LOGV(@"configuration finished: status %d", status);
 	return status;
@@ -434,28 +416,7 @@
 	}
 }
 
-// reconfigure if input/output channels have changed
-- (void)routeChanged:(NSNotification *)notification {
-	NSDictionary *dict = notification.userInfo;
-	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
-	switch (reason) {
-		default: return;
-		case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
-			AU_LOGV(@"route changed: new device");
-			break;
-		case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
-			AU_LOGV(@"route changed: old device unavailable");
-			break;
-		case AVAudioSessionRouteChangeReasonOverride:
-			AU_LOGV(@"route changed: override");
-			break;
-	}
-	if ([self updateInputChannels:_inputChannels
-				   outputChannels:_outputChannels] == PdAudioPropertyChanged) {
-		AU_LOGV(@"reconfiguring audio unit");
-		[self reconfigureAudioUnit];
-	}
-}
+- (void)routeChanged:(NSNotification *)notification {}
 
 - (void)silenceSecondaryAudio:(NSNotification *)notification {}
 
@@ -476,7 +437,6 @@
 		_options = AVAudioSession.sharedInstance.categoryOptions;
 	}
 	AU_LOGV(@"reconfiguring audio unit");
-	[self updateInputChannels:_inputChannels outputChannels:_outputChannels];
 	[self reconfigureAudioUnit];
 }
 
@@ -599,18 +559,12 @@
 	return PdAudioOK;
 }
 
-- (PdAudioStatus)updateInputChannels:(int)inputChannels outputChannels:(int)outputChannels {
-	NSError *error = nil;
-	AVAudioSession *session = AVAudioSession.sharedInstance;
-	PdAudioStatus ret = PdAudioOK;
-	AU_LOGV(@"session channels: inputs %d outputs %d",
-	    session.inputNumberOfChannels, session.outputNumberOfChannels);
-	if (_autoInputChannels) {
-		inputChannels = (int)session.inputNumberOfChannels;
-	}
-	if (_autoOutputChannels) {
-		outputChannels = (int)session.outputNumberOfChannels;
-	}
+- (PdAudioStatus)configureAudioUnitWithInputChannels:(int)inputChannels
+                                      outputChannels:(int)outputChannels
+                                        inputEnabled:(BOOL)inputEnabled {
+	_inputEnabled = inputEnabled;
+	_inputChannels = inputChannels;
+	_outputChannels = outputChannels;
 	if (self.preferStereo) {
 		if (inputChannels > 0) {
 			inputChannels = (int)MAX(inputChannels, 2);
@@ -619,21 +573,6 @@
 			outputChannels = (int)MAX(outputChannels, 2);
 		}
 	}
-	if (_inputChannels != inputChannels || _outputChannels != outputChannels) {
-		ret = PdAudioPropertyChanged;
-	}
-	_inputChannels = inputChannels;
-	_outputChannels = outputChannels;
-	AU_LOGV(@"channels: inputs %d outputs %d", _inputChannels, _outputChannels);
-	return ret;
-}
-
-- (PdAudioStatus)configureAudioUnitWithInputChannels:(int)inputChannels
-                                      outputChannels:(int)outputChannels
-                                        inputEnabled:(BOOL)inputEnabled {
-	_inputEnabled = inputEnabled;
-	_inputChannels = inputChannels;
-	_outputChannels = outputChannels;
 	if (!AVAudioSession.sharedInstance.inputAvailable) {
 		inputEnabled = NO;
 	}

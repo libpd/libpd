@@ -133,9 +133,6 @@ typedef enum PdAudioStatus {
 ///
 /// inputEnabled YES uses the PlayAndRecord AVAudioSession category while
 /// setting NO uses the Playback category
-///
-/// a channel value of -1 will use the current channel number(s) from the audio
-/// session and automatically change them when the active session route changes
 - (PdAudioStatus)configurePlaybackWithSampleRate:(int)sampleRate
                                    inputChannels:(int)inputChannels
                                   outputChannels:(int)outputChannels
@@ -144,9 +141,6 @@ typedef enum PdAudioStatus {
 /// configure audio for recording, without output channels
 ///
 /// uses the Record AVAudioSession category
-///
-/// a channel value of -1 will use the current channel number(s) from the audio
-/// session and automatically change them when the active session route changes
 - (PdAudioStatus)configureRecordWithSampleRate:(int)sampleRate
                                  inputChannels:(int)inputChannels;
 
@@ -154,9 +148,6 @@ typedef enum PdAudioStatus {
 ///
 /// mixWithOthers YES uses the Ambient AVAudioSession category, while setting NO
 /// uses the SoloAmbient category
-///
-/// a channel value of -1 will use the current channel number(s) from the audio
-/// session and automatically change them when the active session route changes
 - (PdAudioStatus)configureAmbientWithSampleRate:(int)sampleRate
                                  outputChannels:(int)outputChannels;
 
@@ -164,9 +155,6 @@ typedef enum PdAudioStatus {
 ///
 /// uses the MultiRoute AVAudioSession category, see Apple docs
 /// note: does not allow Bluetooth or AirPlay
-///
-/// a channel value of -1 will use the current channel number(s) from the audio
-/// session and automatically change them when the active session route changes
 - (PdAudioStatus)configureMultiRouteWithSampleRate:(int)sampleRate
                                      inputChannels:(int)inputChannels
                                     outputChannels:(int)outputChannels;
@@ -176,9 +164,6 @@ typedef enum PdAudioStatus {
 /// configure the audio with the specified samplerate, as well as number of
 /// output channels (which will also be the number of input channels if input is
 /// enabled)
-///
-/// a channel value of -1 will use the current channel number(s) from the audio
-/// session and automatically change them when the active session route changes
 ///
 /// inputEnabled YES uses the PlayAndRecord AVAudioSession category while
 /// setting NO uses the Playback category
@@ -193,9 +178,6 @@ typedef enum PdAudioStatus {
 /// note: legacy method kept for compatibility
 ///
 /// configure audio for ambient use, without input channels
-///
-/// a channel value of -1 will use the current channel number(s) from the audio
-/// session and automatically change them when the active session route changes
 ///
 /// mixingEnabled YES will allow the app to continue playing audio along with
 /// other apps (such as Music) and uses the Ambient AVAudioSession
@@ -274,11 +256,10 @@ typedef enum PdAudioStatus {
 - (void)interruptionOccurred:(NSNotification *)notification;
 
 /// audio session route change notification handler
-/// called when an input or output device is changed, ie. headphones unplugged
+/// called when an input or output device is changed, the session category has
+/// been updated, etc
 ///
-/// the default implementation updates the number of input and/or output
-/// channels to match the current session value if a configure method was called
-/// with a channel value of -1
+/// the default implementation does nothing
 ///
 /// override to implement custom handling
 - (void)routeChanged:(NSNotification *)notification;
