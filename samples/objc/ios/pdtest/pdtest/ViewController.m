@@ -35,11 +35,13 @@
 	else { // AVRoutePickerView not available before iOS 11
 		self.routePickerContainer.hidden = YES;
 	}
-	[self setupNotifications];
 
 	// setup and run tests
 	[self setupPd];
 	[self testPd];
+
+	// setup audio and application state change notifications
+	[self setupNotifications];
 }
 
 - (void)dealloc {
@@ -334,12 +336,19 @@
 	                                       selector:@selector(routeChanged:)
 	                                           name:AVAudioSessionRouteChangeNotification
 	                                         object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self
+										   selector:@selector(didBecomeActive:)
+	                                           name:UIApplicationDidBecomeActiveNotification
+											 object:nil];
 }
 
 - (void)clearNotifications {
 	[NSNotificationCenter.defaultCenter removeObserver:self
 	                                              name:AVAudioSessionRouteChangeNotification
 	                                            object:nil];
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:UIApplicationDidBecomeActiveNotification
+												object:nil];
 }
 
 // update the info labels if the audio session route has changed, ie. device plugged-in
@@ -349,8 +358,13 @@
 	switch (reason) {
 		default: return;
 		case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+			NSLog(@"route changed: new device");
+			break;
 		case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+			NSLog(@"route changed: old device unavailable");
+			break;
 		case AVAudioSessionRouteChangeReasonOverride:
+			NSLog(@"route changed: override");
 			break;
 	}
 	// update the UI on the main thread, wait a little so audio changes have time to finalize,
@@ -360,6 +374,12 @@
 			[self updateInfoLabels];
 		}
 	});
+}
+
+/// update the info labels when the application becomes active again, this will handle the case
+/// where the audio route might have changed when the app was running in the background
+- (void)didBecomeActive:(NSNotification *)notification {
+	[self updateInfoLabels];
 }
 
 @end
