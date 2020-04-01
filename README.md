@@ -142,9 +142,7 @@ If you are running macOS 10.6 - 10.8, you will need to install Xcode from the Ma
 
 ### Windows
 
-libpd on Windows can be built with either MinGW or Cygwin which provide the core build requirements: a compiler chain & shell environment.
-
-It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
+libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
 
     http://www.msys2.org/
 
@@ -155,7 +153,7 @@ Msys2 provides both 32 and 64 bit MinGW and command shells which are used to com
 Note: Msys2 development seems to change frequently, so some of the package names
       below may have changed after this document was written.
 
-Open an Msys2 shell and install the compiler chain, autotools, & gettext via:
+Open an Msys2 shell and install the compiler chain & make via:
 
     # 32 bit
     pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang make
