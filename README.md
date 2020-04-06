@@ -327,7 +327,15 @@ The Python wrapper provides a "pylibpd" module mirroring the libpd C API. Build 
     cd python
     make
 
-See the sample programs in `samples/python`. Note, some samples require the "pyaudio" Portaudio library.
+See the sample programs in `samples/python`.
+
+### pyaudio
+
+Some samples require the "pyaudio" Portaudio library.
+
+If you install pyaudio with `pip`, you will need to install Portaudio first. On macOS, for example, you can install it with Homebrew:
+
+    brew install portaudio
 
 Building with CMake
 -------------------
