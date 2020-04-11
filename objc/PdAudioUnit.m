@@ -457,6 +457,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 	                                                                (__bridge void *)self), _audioUnit);
 
 	AU_RETURN_IF_ERROR(AudioComponentInstanceDispose(_audioUnit));
+	_audioUnit = nil;
 	AU_LOGV(@"cleared audio unit");
 }
 
