@@ -15,7 +15,7 @@ Pod::Spec.new do |spec|
                       'objc/**/*.{h,m}'
   spec.public_header_files = 'objc/**/*.{h}'
   spec.ios.deployment_target = '8.0'
-  spec.requires_arc = false
+  spec.requires_arc = true
   spec.frameworks = 'Foundation', 'AudioToolbox', 'AVFoundation'
   spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DLIBPD_EXTRA', '-fcommon'
   spec.exclude_files = 'pure-data/src/s_audio_alsa.h',
