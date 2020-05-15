@@ -146,7 +146,7 @@ libpd on Windows can be built with MinGW which provides the core build requireme
 
     http://www.msys2.org/
 
-Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
+Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage. _Do not skip the step which asks you to close and reopen the shell window._
 
 Msys2 provides both 32 and 64 bit MinGW and command shells which are used to compile for 32 or 64 bit, respectively. Due to how MinGW is designed, you cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
@@ -168,6 +168,8 @@ Once the packages are installed, you should now be ready to build libpd.
 Note: For 64 bit Windows, build Pd with the following additional C flags to ensure long integers are the correct length:
 
     make ADDITIONAL_CFLAGS='-DPD_LONGINTTYPE="long long"'
+
+If you run into strange errors such as `/bin/sh: cc: command not found`, you may have skipped the Msys2 install step asking you to close and reopen your shell window.
 
 C++
 ---
