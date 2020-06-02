@@ -201,10 +201,15 @@ JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
 .PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
 
-libpd: $(LIBPD)
+LIBPD_STATIC = libs/libpd.a
+
+libpd: $(LIBPD) $(LIBPD_STATIC)
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
+
+$(LIBPD_STATIC): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+	ar rcs $(LIBPD_STATIC) $^
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
@@ -240,6 +245,7 @@ clean:
 
 clobber: clean
 	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF)
+	rm -f $(LIBPD_STATIC)
 	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
 	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
