@@ -9,4 +9,4 @@ LDFLAGS = -L$(LIBPD_DIR)/libs -lpd
 .PHONY: clean clobber
 
 $(TARGET): $(SRC_FILES) test.pd
-	emcc $(CFLAGS) -o $(TARGET) $(SRC_FILES) --closure 1 -s USE_SDL=2 --preload-file test.pd $(LDFLAGS)
+	emcc $(CFLAGS) -o $(TARGET) $(SRC_FILES) --closure 1 -s USE_SDL=2 -s ERROR_ON_UNDEFINED_SYMBOLS=0 --preload-file test.pd $(LDFLAGS)
