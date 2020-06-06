@@ -16,7 +16,7 @@ first install and activate the emscripten environment. then
     cd ..
     mkdir build
     cd build
-    emconfigure cmake .. -DPD_UTILS:BOOL=OFF -DCMAKE_BUILD_TYPE=Release
+    emcmake cmake .. -DPD_UTILS:BOOL=OFF -DCMAKE_BUILD_TYPE=Release
     emmake make
     cd ../samples/emscripten/pdtest
     make
