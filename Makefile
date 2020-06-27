@@ -263,6 +263,7 @@ install:
 	fi
 	install -d $(libdir)
 	install -m 755 $(LIBPD) $(libdir)
+	install -m 755 $(LIBPD_STATIC) $(libdir)
 	if [ -e '$(LIBPD_IMPLIB)' ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
 	if [ -e '$(LIBPD_DEF)' ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
