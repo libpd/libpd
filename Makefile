@@ -161,6 +161,7 @@ ifeq ($(PORTAUDIO), true)
     endif
 endif
 
+
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
@@ -203,7 +204,13 @@ JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
 LIBPD_STATIC = libs/libpd.a
 
-libpd: $(LIBPD) $(LIBPD_STATIC)
+ifeq ($(BUILD_LIBPD_STATIC), true)
+  libpd: $(LIBPD_STATIC)
+else
+  libpd: $(LIBPD)
+endif
+
+#libpd: $(LIBPD) $(LIBPD_STATIC)
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
@@ -244,8 +251,7 @@ clean:
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF)
-	rm -f $(LIBPD_STATIC)
+	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF) $(LIBPD_STATIC)
 	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
 	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
@@ -262,8 +268,8 @@ install:
 		install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi
 	install -d $(libdir)
-	install -m 755 $(LIBPD) $(libdir)
-	install -m 755 $(LIBPD_STATIC) $(libdir)
+	if [ -e '$(LIBPD)' ]; then install -m 755 $(LIBPD) $(libdir); fi
+	if [ -e '$(LIBPD_STATIC)' ]; then install -m 755 $(LIBPD_STATIC) $(libdir); fi
 	if [ -e '$(LIBPD_IMPLIB)' ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
 	if [ -e '$(LIBPD_DEF)' ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
