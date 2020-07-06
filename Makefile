@@ -204,7 +204,7 @@ JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
 LIBPD_STATIC = libs/libpd.a
 
-ifeq ($(BUILD_LIBPD_STATIC), true)
+ifeq ($(STATIC), true)
   libpd: $(LIBPD_STATIC)
 else
   libpd: $(LIBPD)
