@@ -108,8 +108,6 @@ EXTERN void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook);
 EXTERN void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
-EXTERN void libpd_start_gui(const char *libdir);
-
 #ifdef __cplusplus
 }
 #endif

@@ -19,7 +19,6 @@
 #include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
-#include "g_canvas.h"
 
 #if PD_MINOR_VERSION < 46
 # define HAVE_SCHED_TICK_ARG
@@ -454,17 +453,4 @@ void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_midibytehook = hook;
-}
-
-void libpd_start_gui(const char *libdir)
-{
-    t_canvas *x;
-    for (x = pd_getcanvaslist(); x; x = x->gl_next)
-        canvas_vis(x, 0);
-    sys_nogui = 0;
-    sys_startgui(libdir);
-    for (x = pd_getcanvaslist(); x; x = x->gl_next)
-        if (strcmp(x->gl_name->s_name, "_float_template") &&
-            strcmp(x->gl_name->s_name, "_float_array_template"))
-                canvas_vis(x, 1);
 }

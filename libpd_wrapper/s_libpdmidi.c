@@ -52,10 +52,7 @@ void outmidi_byte(int port, int value) {
 }
 
 // The rest is not relevant to libpd.
-void sys_get_midi_apis(char *buf)
-{
-    strcpy(buf, "{}");
-}
+void sys_get_midi_apis(char *buf) {}
 void sys_listmididevs(void) {}
 void sys_get_midi_params(int *pnmidiindev, int *pmidiindev,
     int *pnmidioutdev, int *pmidioutdev) {}
