@@ -467,7 +467,9 @@ EXTERN void libpd_stop_gui(void);
 /// this is called automatically when using a libpd_process function,
 /// note: this also facilitates network message processing, etc so it can be
 ///       useful to call repeatedly when idle for more throughput
-EXTERN void libpd_poll_gui(void);
+///       Returns 1 if the poll found something, in which case it might be
+///       desirable to poll again, up to some reasonable limit.
+EXTERN int libpd_poll_gui(void);
 
 /* multiple instances */
 
