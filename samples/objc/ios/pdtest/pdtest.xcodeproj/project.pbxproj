@@ -19,13 +19,26 @@
 		302110E21AE7095200DFFAF8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 302110D71AE7095200DFFAF8 /* Default.png */; };
 		302110E31AE7095200DFFAF8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 302110D81AE7095200DFFAF8 /* Default@2x.png */; };
 		302110E41AE7095200DFFAF8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 302110DA1AE7095200DFFAF8 /* InfoPlist.strings */; };
-		302110E51AE7095200DFFAF8 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302110DC1AE7095200DFFAF8 /* ViewController.xib */; };
-		302110E61AE7095200DFFAF8 /* pdtest-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 302110DE1AE7095200DFFAF8 /* pdtest-Info.plist */; };
 		302110E71AE7095200DFFAF8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 302110E01AE7095200DFFAF8 /* main.m */; };
 		30EF3CD11AE76AE600E3DB68 /* libpd-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */; };
+		F41438CC1F72684400E7BCAE /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F41438CA1F72684400E7BCAE /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		30507F812350A816007226D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C3D36D1FAA200100C67F08;
+			remoteInfo = "libpd-ios-multi";
+		};
+		30507F832350A816007226D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C3D2FA1FAA1FCC00C67F08;
+			remoteInfo = "libpd-osx-multi";
+		};
 		30EF3CCD1AE7696300E3DB68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */;
@@ -58,10 +71,10 @@
 		302110D71AE7095200DFFAF8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = pdtest/Default.png; sourceTree = SOURCE_ROOT; };
 		302110D81AE7095200DFFAF8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "pdtest/Default@2x.png"; sourceTree = SOURCE_ROOT; };
 		302110DB1AE7095200DFFAF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
-		302110DD1AE7095200DFFAF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ViewController.xib; sourceTree = "<group>"; };
 		302110DE1AE7095200DFFAF8 /* pdtest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "pdtest-Info.plist"; path = "pdtest/pdtest-Info.plist"; sourceTree = SOURCE_ROOT; };
 		302110DF1AE7095200DFFAF8 /* pdtest-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "pdtest-Prefix.pch"; path = "pdtest/pdtest-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		302110E01AE7095200DFFAF8 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = pdtest/main.m; sourceTree = SOURCE_ROOT; };
+		30507F852350A81D007226D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Base.lproj/Storyboard.storyboard; sourceTree = "<group>"; };
 		30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,7 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				302110DA1AE7095200DFFAF8 /* InfoPlist.strings */,
-				302110DC1AE7095200DFFAF8 /* ViewController.xib */,
+				F41438CA1F72684400E7BCAE /* Storyboard.storyboard */,
 			);
 			name = en.lproj;
 			path = pdtest/en.lproj;
@@ -155,6 +168,8 @@
 			children = (
 				30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */,
 				30EF3CD01AE7696300E3DB68 /* libpd-osx.a */,
+				30507F822350A816007226D8 /* libpd-ios-multi.a */,
+				30507F842350A816007226D8 /* libpd-osx-multi.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -185,15 +200,16 @@
 		3011354216A6ECD1005421C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = libpd;
 			};
 			buildConfigurationList = 3011354516A6ECD1005421C7 /* Build configuration list for PBXProject "pdtest" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 3011354016A6ECD1005421C7;
 			productRefGroup = 3011354C16A6ECD1005421C7 /* Products */;
@@ -212,6 +228,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		30507F822350A816007226D8 /* libpd-ios-multi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-ios-multi.a";
+			remoteRef = 30507F812350A816007226D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30507F842350A816007226D8 /* libpd-osx-multi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpd-osx-multi.a";
+			remoteRef = 30507F832350A816007226D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -233,12 +263,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				302110E51AE7095200DFFAF8 /* ViewController.xib in Resources */,
 				302110E31AE7095200DFFAF8 /* Default@2x.png in Resources */,
-				302110E61AE7095200DFFAF8 /* pdtest-Info.plist in Resources */,
 				302110E21AE7095200DFFAF8 /* Default.png in Resources */,
 				301135B316A79729005421C7 /* pd in Resources */,
 				302110E41AE7095200DFFAF8 /* InfoPlist.strings in Resources */,
+				F41438CC1F72684400E7BCAE /* Storyboard.storyboard in Resources */,
 				302110E11AE7095200DFFAF8 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,12 +296,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		302110DC1AE7095200DFFAF8 /* ViewController.xib */ = {
+		F41438CA1F72684400E7BCAE /* Storyboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				302110DD1AE7095200DFFAF8 /* en */,
+				30507F852350A81D007226D8 /* Base */,
 			);
-			name = ViewController.xib;
+			name = Storyboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -282,26 +311,48 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../../objc;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -311,19 +362,40 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../../objc;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -333,14 +405,14 @@
 		3011357016A6ECD1005421C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
@@ -350,14 +422,14 @@
 		3011357116A6ECD1005421C7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;

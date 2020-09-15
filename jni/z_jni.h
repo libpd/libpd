@@ -395,3 +395,14 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
 }
 #endif
 #endif
+/* Header for class org_puredata_core_PdBaseLoader */
+
+#ifndef _Included_org_puredata_core_PdBaseLoader
+#define _Included_org_puredata_core_PdBaseLoader
+#ifdef __cplusplus
+extern "C" {
+#endif
+#ifdef __cplusplus
+}
+#endif
+#endif

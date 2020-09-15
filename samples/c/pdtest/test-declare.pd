@@ -1,0 +1,4 @@
+#N canvas 0 23 352 157 10;
+#X declare -stdpath foo -stdlib bar;
+#X obj 80 76 declare -stdpath foo -stdlib bar;
+#X text 58 34 test if -stdpath or -stdlib crash libpd;

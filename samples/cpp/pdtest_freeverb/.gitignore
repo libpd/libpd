@@ -1,0 +1,5 @@
+# build files
+libs
+src/*.o
+src/externals/*.o
+pdtest_freeverb

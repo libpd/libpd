@@ -152,7 +152,7 @@ def libpd_release():
 class PdManager:
   def __init__(self, inch, outch, srate, ticks):
     self.__ticks = ticks
-    self.__outbuf = array.array('h', '\x00\x00' * outch * libpd_blocksize())
+    self.__outbuf = array.array('h', b'\x00\x00' * outch * libpd_blocksize())
     libpd_compute_audio(1)
     libpd_init_audio(inch, outch, srate)
   def process(self, inbuf):
@@ -176,7 +176,7 @@ static PyObject *convertArgs(const char *dest, const char* sym,
   int j;
   for (j = 0; i < n; i++, j++) {
     t_atom *a = &args[j];
-    PyObject *x;
+    PyObject *x = NULL;
     if (libpd_is_float(a)) {
       x = PyFloat_FromDouble(libpd_get_float(a));
     } else if (libpd_is_symbol(a)) {

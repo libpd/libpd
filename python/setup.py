@@ -18,8 +18,7 @@ setup(name='pypdlib',
                   ],
                   include_dirs = [
                     '../libpd_wrapper',
-                    '../pure-data/src',
-                    '../pure-data/extra/expr~'
+                    '../pure-data/src'
                   ],
                   libraries = [
                     'm',
@@ -51,7 +50,9 @@ setup(name='pypdlib',
                     '../pure-data/src/g_array.c',
                     '../pure-data/src/g_bang.c',
                     '../pure-data/src/g_canvas.c',
+                    '../pure-data/src/g_clone.c',
                     '../pure-data/src/g_editor.c',
+                    '../pure-data/src/g_editor_extras.c',
                     '../pure-data/src/g_graph.c',
                     '../pure-data/src/g_guiconnect.c',
                     '../pure-data/src/g_hdial.c',
@@ -66,6 +67,7 @@ setup(name='pypdlib',
                     '../pure-data/src/g_text.c',
                     '../pure-data/src/g_toggle.c',
                     '../pure-data/src/g_traversal.c',
+                    '../pure-data/src/g_undo.c',
                     '../pure-data/src/g_vdial.c',
                     '../pure-data/src/g_vslider.c',
                     '../pure-data/src/g_vumeter.c',
@@ -80,7 +82,6 @@ setup(name='pypdlib',
                     '../pure-data/src/m_sched.c',
                     '../pure-data/src/s_audio.c',
                     '../pure-data/src/s_audio_dummy.c',
-                    '../pure-data/src/s_file.c',
                     '../pure-data/src/s_inter.c',
                     '../pure-data/src/s_loader.c',
                     '../pure-data/src/s_main.c',
@@ -100,12 +101,12 @@ setup(name='pypdlib',
                     '../pure-data/src/x_scalar.c',
                     '../pure-data/src/x_text.c',
                     '../pure-data/src/x_time.c',
+                    '../pure-data/src/x_vexp.c',
+                    '../pure-data/src/x_vexp_if.c',
+                    '../pure-data/src/x_vexp_fun.c',
                     '../pure-data/extra/bob~/bob~.c',
                     '../pure-data/extra/bonk~/bonk~.c', \
                     '../pure-data/extra/choice/choice.c', \
-                    '../pure-data/extra/expr~/vexp_fun.c', \
-                    '../pure-data/extra/expr~/vexp_if.c', \
-                    '../pure-data/extra/expr~/vexp.c', \
                     '../pure-data/extra/fiddle~/fiddle~.c', \
                     '../pure-data/extra/loop~/loop~.c', \
                     '../pure-data/extra/lrshift~/lrshift~.c', \

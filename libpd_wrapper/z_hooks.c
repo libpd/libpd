@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2013 Dan Wilcox (danomatika@gmail.com)
+ * Copyright (c) 2013-2019 libpd team
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -10,7 +11,6 @@
  
 #include "z_hooks.h"
 
-t_libpd_printhook libpd_printhook = NULL;
 t_libpd_banghook libpd_banghook = NULL;
 t_libpd_floathook libpd_floathook = NULL;
 t_libpd_symbolhook libpd_symbolhook = NULL;

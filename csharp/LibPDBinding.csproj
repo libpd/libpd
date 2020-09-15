@@ -1,14 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
-    <ProjectGuid>{56E27175-956F-4182-8A74-5DE0CC1FCDC2}</ProjectGuid>
+    <ProjectGuid>{C452F742-2653-4403-817B-136545EB5F1F}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>LibPDBinding</RootNamespace>
     <AssemblyName>LibPDBinding</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
@@ -38,27 +39,92 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Native\LibPDNativeMessaging.cs" />
-    <Compile Include="Native\LibPDNativeMethods.cs" />
-    <Compile Include="Native\LibPDNativeMidi.cs" />
+    <Compile Include="Hooks.cs" />
+    <Compile Include="LibPDNativeMessaging.cs" />
+    <Compile Include="LibPDNativeMethods.cs" />
+    <Compile Include="LibPDNativeMidi.cs" />
+    <Compile Include="Managed\Patch.cs" />
+    <Compile Include="Managed\PdProcessException.cs" />
+    <Compile Include="Managed\Pd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Managed\PdArray.cs" />
+    <Compile Include="Managed\Events\PrintEventArgs.cs" />
+    <Compile Include="Managed\Events\SymbolEventArgs.cs" />
+    <Compile Include="Managed\Events\FloatEventArgs.cs" />
+    <Compile Include="Managed\Events\BangEventArgs.cs" />
+    <Compile Include="Managed\Events\ListEventArgs.cs" />
+    <Compile Include="Managed\Events\MessageEventArgs.cs" />
+    <Compile Include="Managed\Data\IAtom.cs" />
+    <Compile Include="Managed\Data\Symbol.cs" />
+    <Compile Include="Managed\Data\Float.cs" />
+    <Compile Include="Managed\Messaging.cs" />
+    <Compile Include="Managed\Utils\MessageInvocation.cs" />
+    <Compile Include="Managed\Data\Bang.cs" />
+    <Compile Include="Managed\Midi.cs" />
+    <Compile Include="Managed\Events\NoteOnEventArgs.cs" />
+    <Compile Include="Managed\Events\ProgramChangeEventArgs.cs" />
+    <Compile Include="Managed\Events\ControlChangeEventArgs.cs" />
+    <Compile Include="Managed\Events\PolyAftertouchEventArgs.cs" />
+    <Compile Include="Managed\Events\MidiByteEventArgs.cs" />
+    <Compile Include="Managed\Events\PitchbendEventArgs.cs" />
+    <Compile Include="Managed\Events\AftertouchEventArgs.cs" />
+    <Compile Include="Native\Defines.cs" />
+    <Compile Include="Native\Midi.cs" />
+    <Compile Include="Native\Messaging.cs" />
+    <Compile Include="Native\General.cs" />
+    <Compile Include="Native\Audio.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LibPDBinding.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\libs\mingw32\libwinpthread-1.dll">
+      <Link>libwinpthread-1.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\libs\libpdcsharp.dll">
       <Link>libpdcsharp.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\libs\pthreadGC2.dll">
-      <Link>pthreadGC2.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Native" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Folder Include="Managed\Utils\" />
+    <Folder Include="Managed\Data\" />
+  </ItemGroup>
 </Project>

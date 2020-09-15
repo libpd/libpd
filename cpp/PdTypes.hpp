@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012-2017 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
@@ -15,6 +15,8 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <sstream>
 
 namespace pd {
 
@@ -22,52 +24,91 @@ namespace pd {
 
 /// a pd patch
 ///
-/// if you use the copy constructor/operator, keep in mind the libpd void* pointer
-/// patch handle is copied and problems can arise if one object is used to close
-/// a patch that other copies may be referring to
+/// if you use the copy constructor/operator, keep in mind the libpd void*
+/// pointer patch handle is copied and problems can arise if one object is used
+/// to close a patch that other copies may be referring to
 class Patch {
 
     public:
 
-        Patch();
-        Patch(const std::string& filename, const std::string& path);
-        Patch(void* handle, int dollarZero, const std::string& filename, const std::string& path);
+        Patch() :
+            _handle(NULL), _dollarZero(0), _dollarZeroStr("0"),
+            _filename(""), _path("") {}
 
-        /// data access
-        void* handle()                const    {return _handle;}
-        int dollarZero()              const    {return _dollarZero;}
-        std::string filename()        const    {return _filename;}
-        std::string path()            const    {return _path;}
+        Patch(const std::string& filename, const std::string& path) :
+            _handle(NULL), _dollarZero(0), _dollarZeroStr("0"),
+            _filename(filename), _path(path) {}
+        
+        Patch(void* handle, int dollarZero,
+              const std::string& filename,
+              const std::string& path) :
+            _handle(handle), _dollarZero(dollarZero),
+            _filename(filename), _path(path) {
+                std::stringstream itoa;
+                itoa << dollarZero;
+                _dollarZeroStr = itoa.str();
+            }
 
-        /// get dollarZero as a string
-        std::string dollarZeroStr()    const   {return _dollarZeroStr;}
+        /// get the raw pointer to the patch instance
+        void* handle() const {return _handle;}
+
+        /// get the unqiue instance $0 ID
+        int dollarZero() const {return _dollarZero;}
+
+        /// get the patch filename
+        std::string filename() const {return _filename;}
+
+        /// get the parent dir path for the file
+        std::string path() const {return _path;}
+
+        /// get the unique instance $0 ID as a string
+        std::string dollarZeroStr() const {return _dollarZeroStr;}
 
         /// is the patch pointer valid?
-        bool isValid() const;
+        bool isValid() const {return _handle != NULL;}
 
         /// clear patch pointer and dollar zero (does not close patch!)
         ///
         /// note: does not clear filename and path so the object can be reused
         //        for opening multiple instances
-        void clear();
+        void clear()  {
+            _handle = NULL;
+            _dollarZero = 0;
+            _dollarZeroStr = "0";
+        }
 
         /// copy constructor
-        Patch(const Patch& from);
+        Patch(const Patch& from) {
+            _handle = from._handle;
+            _dollarZero = from._dollarZero;
+            _dollarZeroStr = from._dollarZeroStr;
+            _filename = from._filename;
+            _path = from._path;
+        }
 
         /// copy operator
-        void operator=(const Patch& from);
+        void operator=(const Patch& from) {
+            _handle = from._handle;
+            _dollarZero = from._dollarZero;
+            _dollarZeroStr = from._dollarZeroStr;
+            _filename = from._filename;
+            _path = from._path;
+        }
 
-        /// print to ostream
-        friend std::ostream& operator<<(std::ostream& os, const Patch& from);
+        /// print info to ostream
+        friend std::ostream& operator<<(std::ostream& os, const Patch& from) {
+            return os << "Patch: \"" << from.filename() << "\" $0: "
+                      << from.dollarZeroStr() << " valid: " << from.isValid();
+        }
 
     private:
 
         void* _handle;              //< patch handle pointer
-        int _dollarZero;            //< the unique patch id, ie $0
+        int _dollarZero;            //< the unique $0 patch ID
         std::string _dollarZeroStr; //< $0 as a string
 
         std::string _filename;      //< filename
-        std::string _path;          //< full path
+        std::string _path;          //< full path to parent folder
 };
 
 /// \section Pd stream interface message objects
@@ -105,55 +146,157 @@ class List {
 
     public:
 
-        List();
+        List() {}
 
     /// \section Read
 
-        /// check type
-        bool isFloat(const unsigned int index) const;
-        bool isSymbol(const unsigned int index) const;
+        /// check if index is a float type
+        bool isFloat(const unsigned int index) const {
+            if(index < objects.size())
+                if(objects[index].type == List::FLOAT)
+                    return true;
+            return false;
+        }
 
-        /// get item as type
-        float getFloat(const unsigned int index) const;
-        std::string getSymbol(const unsigned int index) const;
+        /// check if index is a symbol type
+        bool isSymbol(const unsigned int index) const {
+            if(index < objects.size())
+                if(objects[index].type == List::SYMBOL)
+                    return true;
+            return false;
+        }
+
+        /// get index as a float
+        float getFloat(const unsigned int index) const {
+            if(!isFloat(index)) {
+                std::cerr << "Pd: List: object " << index
+                          << " is not a float"   << std::endl;
+                return 0;
+            }
+            return objects[index].value;
+        }
+
+        /// get index as a symbol
+        std::string getSymbol(const unsigned int index) const {
+            if(!isSymbol(index)) {
+                std::cerr << "Pd: List: object " << index
+                          << " is not a symbol"  << std::endl;
+                return "";
+            }
+            return objects[index].symbol;
+        }
 
     /// \section Write
+    ///
+    /// add elements to the list
+    ///
+    /// List list;
+    /// list.addSymbol("hello");
+    /// list.addFloat(1.23);
+    ///
 
-        /// add elements to the list
-        ///
-        /// List list;
-        /// list.addSymbol("hello");
-        /// list.addFloat(1.23);
-        ///
-        void addFloat(const float num);
-        void addSymbol(const std::string& symbol);
+        /// add a float to the list
+        void addFloat(const float num) {
+            MsgObject o;
+            o.type = List::FLOAT;
+            o.value = num;
+            objects.push_back(o);
+            typeString += 'f';
+        }
+
+        /// add a symbol to the list
+        void addSymbol(const std::string& symbol) {
+            MsgObject o;
+            o.type = List::SYMBOL;
+            o.symbol = symbol;
+            objects.push_back(o);
+            typeString += 's';
+        }
 
     /// \section Write Stream Interface
-
-        /// list << "hello" << 1.23;
+    ///
+    /// list << "hello" << 1.23;
+    ///
 
         /// add a float to the message
-        List& operator<<(const bool var);
-        List& operator<<(const int var);
-        List& operator<<(const float var);
-        List& operator<<(const double var);
+        List& operator<<(const bool var) {
+            addFloat((float) var);
+            return *this;
+        }
+
+        /// add a float to the message
+        List& operator<<(const int var) {
+            addFloat((float) var);
+            return *this;
+        }
+
+        /// add a float to the message
+        List& operator<<(const float var) {
+            addFloat((float) var);
+            return *this;
+        }
+
+        /// add a float to the message
+        List& operator<<(const double var) {
+            addFloat((float) var);
+            return *this;
+        }
 
         /// add a symbol to the message
-        List& operator<<(const char var);
-        List& operator<<(const char* var);
-        List& operator<<(const std::string& var);
+        List& operator<<(const char var) {
+            std::string s;
+            s = var;
+            addSymbol(s);
+            return *this;
+        }
+
+        /// add a symbol to the message
+        List& operator<<(const char* var) {
+            addSymbol((std::string) var);
+            return *this;
+        }
+
+        /// add a symbol to the message
+        List& operator<<(const std::string& var) {
+            addSymbol((std::string) var);
+            return *this;
+        }
 
     /// \section Util
 
-        const unsigned int len() const;   //< number of items
-        const std::string& types() const; //< OSC style type string ie "fsfs"
-        void clear();                     //< clear all objects
+        /// return number of items
+        const unsigned int len() const {return (unsigned int) objects.size();}
+
+        /// return OSC style type string ie "fsfs"
+        const std::string& types() const {return typeString;}
+
+        /// clear all objects
+        void clear() {
+            typeString = "";
+            objects.clear();
+        }
 
         /// get list as a string
-        std::string toString() const;
+        std::string toString() const {
+            std::string line;
+            std::stringstream itoa;
+            for(int i = 0; i < (int)objects.size(); ++i) {
+                if(isFloat(i)) {
+                    itoa << getFloat(i);
+                    line += itoa.str();
+                    itoa.str("");
+                }
+                else
+                    line += getSymbol(i);
+                line += " ";
+            }
+            return line;
+        }
 
         /// print to ostream
-        friend std::ostream& operator<<(std::ostream& os, const List& from);
+        friend std::ostream& operator<<(std::ostream& os, const List& from) {
+            return os << from.toString();
+        }
 
     private:
 
@@ -198,7 +341,7 @@ struct FinishMessage {
             dest(dest), msg(msg) {}
 };
 
-/// /section Pd stream interface midi objects
+/// \section Pd stream interface midi objects
 /// ref: http://www.gweep.net/~prefect/eng/reference/protocol/midispec.html
 
 /// send a note on event (set vel = 0 for noteoff)

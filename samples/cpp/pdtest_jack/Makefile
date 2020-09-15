@@ -12,40 +12,47 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
 
-ifeq ($(UNAME), Darwin)  # Mac
+ifeq ($(UNAME), Darwin) # Mac
   SOLIB_EXT = dylib
-  PDNATIVE_PLATFORM = mac
+  PLATFORM = mac
 else
-  ifeq ($(OS), Windows_NT)  # Windows, use Mingw
+  ifeq ($(OS), Windows_NT) # Windows, use Mingw
     SOLIB_EXT = dll
     SOLIB_PREFIX = 
-    PDNATIVE_PLATFORM = windows
-  else  # Assume Linux
+    PLATFORM = windows
+  else # assume Linux
     SOLIB_EXT = so
-    PDNATIVE_PLATFORM = linux
+    PLATFORM = linux
   endif
 endif
 
 LIBPD_DIR = ../../..
-LIBPD_CPP = $(LIBPD_DIR)/libs/libpdcpp.$(SOLIB_EXT)
+LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 
 SRC_FILES = src/PdObject.cpp src/main.cpp
 TARGET = pdtest_jack
 
-CXXFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/cpp -I./src -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
+CXXFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
+           -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp \
+           -I./src -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
 
 .PHONY: clean clobber
 
-$(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD_CPP)
-	g++ -o $(TARGET) $^ $(LIBPD_CPP) -ljack
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD_CPP) ./libs; fi
+$(TARGET): ${SRC_FILES:.cpp=.o} $(LIBPD)
+	g++ -o $(TARGET) $^ $(LIBPD) -ljack
+ifeq ($(PLATFORM), mac)
+	mkdir -p ./libs && cp $(LIBPD) ./libs
+endif
 
-$(LIBPD_CPP):
-	cd $(LIBPD_DIR) && make cpplib UTIL=true EXTRA=true
+$(LIBPD):
+	cd $(LIBPD_DIR) && make UTIL=true EXTRA=true
 
 clean:
 	rm -f src/*.o
 
 clobber: clean
 	rm -f $(TARGET)
-	if [ $(PDNATIVE_PLATFORM) == "mac" ]; then rm -rf ./libs; fi
+ifeq ($(PLATFORM), mac)
+	rm -rf ./libs
+endif
+	cd $(LIBPD_DIR) && make clobber

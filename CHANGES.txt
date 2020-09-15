@@ -1,3 +1,128 @@
+0.11.0: 2018 Sep
+
+* updated to pd vanilla 0.48-2
+* the libpd C core is now thread safe
+* support for multiple libpd instances is more or less working, see new
+  libpd_*_instance() api and pdtest_multi/pdtest_thread C samples,
+  note: language wrappers are not yet updated with the new APIs
+* libpd can now open a patch in the Pd vanilla GUI directly, see the new
+  libpd_startgui()/libpd_stopgui() functions and the pdtest_gui C sample
+* enable/query verbose printing with new libpd_set_verbose()/libpd_get_verbose()
+  functions (Pierre Guillot)
+* no longer build s_file.c as desktop settings have no real meaning for libpd,
+  this also fixes iOS build error due to system calls being removed in Xcode 9
+* libpd binaries built with MinGW now work in Visual Studio (see readme)
+* updated ringbuffer atomics macros to use C11 stdatomics.h if available,
+  this fixes deprecation warning on macOS 10.12
+* fixed possible crash due to stale printhook pointer (reported by Niall Moody)
+* fixed bug in libpd_sysex which masked 8 bit bytes, the MIDI spec allows 8 bit
+  bytes except for realtime messages
+* fixed [declare -stdpath] crash (reported by Pierre Guillot)
+
+* makefile: UTIL=true, EXTRA=true, LOCALE=false are now defaults
+* makefile: added MULTI option to build libpd with multiple instance support
+* makefile: installs libpd .def and .lib files on Windows
+* makefile: builds working pd.dll needed by externals on Windows (Spacechild1)
+* makefile: C++ headers are now conditionally installed if built with UTIL=true
+* makefile: use default optimzations from pd: fast math, loop unrolling, etc 
+* makefile: DEBUG option now sets "-O0 -g" instead of "-Wall"
+* makefile: "make install" now uses install command and sets permissions
+* makefile: fixed install bug when libdir doesn't exist (Wim Muskee)
+* makefile: added BSD build support (Luc Hondareyte)
+* makefile: added ADDITIONAL_LDFLAGS (Pierre Guillot)
+* makefile: added javadoc & javasrc targets (suggested by Pooya Moradi)
+
+* cmake: added CMakeLists.txt for cmake support (Diego Barrios Romero)
+
+* C: const int tick argument in libpd_process functions (Pierre Guillot)
+* C: const float src argument in libpd_write_array (Pierre Guillot)
+
+* C++: transitioned to all-header library and removed "cpplib" make target,
+       you may need to add `libpd_wrapper/util` to you include paths, this also
+       makes it possible to use libpd compiled by MinGW & C++ with Visual Studio
+
+* C#: added instance based API (Thomas Mayer)
+
+* Java: added PortAudio support, build using PORTAUDIO=true makefile option
+* Java: allow custom natives loading by implementing PdBaseLoader class (MGSX)
+* Java: fixed Windows pthread naming in PdBaseLoader (reported by Pooya Moradi)
+* Java: moved javatest to samples/java
+* Java: removed out of date dist/libpd.jar
+
+* ObjC: iOS 8 is now the min-deployment target, now using ARC, modernized syntax
+* ObjC: macOS Xcode project universal build by default
+* ObjC: added PdAudioController default category option methods for subclassing
+* ObjC: PdAudioController should always restart on audio interruption
+* ObjC: PdFile now checks for file existence before opening
+* ObjC: fixed cocoapods swift build by only exposing obj folder (Cerupcat)
+* ObjC: fixed PdAudioController playback stopping when another app starts
+        playing by setting MixWithOthers option for Playback category
+        (Alexander Randon)
+* ObjC: general source commenting & formatting improvements
+
+* added pdtest_freeverb C sample (a project with a working external!)
+* added pdtest_thread C sample (Pierre Guillot)
+* updated Xcode projects for Xcode 9
+* added Travis-CI support for C (Pierre Guillot)
+
+0.10.0: 2016 Sep
+
+* updated to pd vanilla 0.47-1
+* fixed divide by 0 when opening a patch by calling sys_startgui() in
+  libpd_init() (provided by Pierre Guillot)
+* added LIBPD_SETLOCALE define & makefile SETLOCALE option to explicitly set
+  "C" numeric locale in libpd_init() (Thomas Mayer)
+* C#: major updates to build system to support 64bit (thanks to Thomas Mayer!)
+  * mingw_build.bat -> mingw32_build_csharp.bat
+  * mingw_build64.bat -> mingw64_build_csharp.bat
+* C#: added NuGet packages for .NET and Mono (Thomas Mayer)
+* C#: added NAudio example (Thomas Mayer)
+* C++: removed C++11 version check for mutex, better to simply honor use of the
+       LIBPD_USE_STD_MUTEX define (Benjamin Porter)
+* python: fixed duplicate symbol error by setting -fcommon
+          when building (reported by David Glivar)
+
+0.9.2: 2016 Aug
+
+* ObjC: fixed bug where audio was not being routed to speaker when initing
+        AVAudioSession, also fixes possible session setup fail where the
+        PdAudioUnit will not run
+
+0.9.1: 2016 Jun
+
+* ObjC: fixed wrong selectors in PdMidiListener
+* ObjC: fixed AudioSessionSetProperty deprecations in PdAudioController
+* C++: simplified PdBase locking with _GUARD() macro
+* C++: added mutex lock()/unlock() functions, PdContext now protected,
+       mutex now private
+* Podspec: fixed duplicate symbol link error by adding -fcommon
+* Podspec: C++ layer no longer added by default
+* added mingw_build64 batch script
+
+0.9.0: 2016 May
+
+* updated to pd vanilla 0.47-0
+  * new clone object
+  * expr is now BSD licensed
+  * HAVE_ALLOCA_H no longer required
+* ringbuffer now uses OS-specific atomics
+* build cpplib with UTIL files since it always uses the ringbuffer
+* ObjC: added access to PdFile t_pd pointer, deprecation warning fixes
+* ObjC: fixed AVAudioSession method call on iOS 5 and below (diglesia)
+* C++: allow re-init without clearing current subscribers
+* Android: print concatenation layer added to jni (tkirshboim)
+* added audio api libs to pdtest_rtaudio
+
+0.8.3: 2015 Sep
+
+* CocoaPods podspec now actually works (thanks Yair Szarf!)
+
+0.8.2: 2015 Jul
+
+* added CocoaPods podspec file 
+* updated pure-data upstream branch which removes debug print
+* changed pure-data git submodule back to Pure Data sourceforge link
+
 0.8.1: 2015 Jun
 
 * ringbuffer bugfix to ensure compound messages do not cause a race condition

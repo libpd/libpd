@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * 
  * PdBase provides basic Java bindings for Pd.
@@ -49,33 +48,7 @@ public final class PdBase {
   private static PdMidiReceiver midiReceiver = null;
 
   static {
-    try {
-      Class<?> inner[] = Class.forName("android.os.Build").getDeclaredClasses();
-      // Now we know we're running on an Android device.
-      System.loadLibrary("pd");
-      int version = -1;
-      for (Class<?> c : inner) {
-        if (c.getCanonicalName().equals("android.os.Build.VERSION")) {
-          try {
-            version = c.getDeclaredField("SDK_INT").getInt(null);
-          } catch (Exception e) {
-            version = 3; // SDK_INT is not available for Cupcake.
-          }
-          break;
-        }
-      }
-      if (version >= 9) {
-        System.out.println("loading pdnativeopensl for Android");
-        System.loadLibrary("pdnativeopensl");
-      } else {
-        System.out.println("loading pdnative for Android");
-        System.loadLibrary("pdnative");
-      }
-    } catch (Exception e) {
-      // Now we know we aren't running on an Android device.
-      NativeLoader.loadLibrary("pthreadGC2", "windows");
-      NativeLoader.loadLibrary("pdnative");
-    }
+    PdBaseLoader.loaderHandler.load();
     initialize();
   }
 
@@ -108,16 +81,22 @@ public final class PdBase {
 
   /**
    * Adds a directory to the search path.
+   *
+   * @param s Directory path to add.
    */
   public native static void addToSearchPath(String s);
 
   /**
    * Sets the handler for receiving messages from Pd.
+   *
+   * @param receiver Receiver to use.
    */
   public native static void setReceiver(PdReceiver receiver);
 
   /**
    * Sets the handler for receiving MIDI events from Pd.
+   *
+   * @param receiver MIDI receiver to use.
    */
   public static void setMidiReceiver(PdMidiReceiver receiver) {
     midiReceiver = receiver;
@@ -128,7 +107,10 @@ public final class PdBase {
 
   /**
    * Sets up Pd audio; must be called before rendering audio with process or startAudio.
-   * 
+   *
+   * @param inputChannels Number of input channles
+   * @param outputChannels Number of output channels
+   * @param sampleRate Audio sample rate
    * @return error code, 0 on success
    */
   public static int openAudio(int inputChannels, int outputChannels, int sampleRate) {
@@ -137,7 +119,11 @@ public final class PdBase {
 
   /**
    * Sets up Pd audio; must be called before rendering audio with process or startAudio.
-   * 
+   *
+   * @param inputChannels Number of input channles
+   * @param outputChannels Number of output channels
+   * @param sampleRate Audio sample rate
+   * @param options Audio backend options, reserved for future use.
    * @return error code, 0 on success
    */
   public native static int openAudio(int inputChannels, int outputChannels, int sampleRate,
@@ -146,29 +132,38 @@ public final class PdBase {
   /**
    * Indicates whether the underlying binary implements audio, e.g., with OpenSL or PortAudio or
    * JACK.
+   *
+   * @return true there is an audio implementation
    */
   public native static boolean implementsAudio();
 
   /**
    * Indicates how the underlying binary implements audio, e.g., with OpenSL or PortAudio or JACK.
-   * Returns null if it doesn't implement audio.
+   *
+   * @return audio backend name or null if there is no audio implementation
    */
   public native static String audioImplementation();
 
   /**
    * Returns a sample rate recommendation, or a negative value if no recommendation is available.
+   *
+   * @return recommended sample rate
    */
   public native static int suggestSampleRate();
 
   /**
    * Returns a recommendation for the number of input channels, or a negative value if no
    * recommendation is available.
+   *
+   * @return recommended number of input channels
    */
   public native static int suggestInputChannels();
 
   /**
    * Returns a recommendation for the number of output channels, or a negative value if no
    * recommendation is available.
+   *
+   * @return recommended number of output channels
    */
   public native static int suggestOutputChannels();
 
@@ -179,23 +174,29 @@ public final class PdBase {
 
   /**
    * Starts audio rendering if implementsAudio is true, otherwise no-op.
+   *
+   * @return error code, 0 on success
    */
   public native static int startAudio();
 
   /**
    * Pauses audio rendering if implementsAudio is true, otherwise no-op.
+   *
+   * @return error code, 0 on success
    */
   public native static int pauseAudio();
 
   /**
    * Indicates whether audio is running if implementsAudio is true; returns false otherwise.
+   *
+   * @return true if audio is running
    */
   public native static boolean isRunning();
 
   /**
    * Reads a patch from a file.
    * 
-   * @param file
+   * @param file Patch to open
    * @return an integer handle that identifies this patch; this handle is the $0 value of the patch
    * @throws IOException thrown if the file doesn't exist or can't be opened
    */
@@ -243,6 +244,8 @@ public final class PdBase {
    * Note: Maintaining a DSP state that's separate from the state of the audio rendering thread
    * doesn't make much sense in libpd. In most applications, you probably just want to call
    * {@code computeAudio(true)} at the beginning and then forget that this method exists.
+   *
+   * @param state DSP state: true for on, false for off
    */
   public static void computeAudio(boolean state) {
     sendMessage("pd", "dsp", state ? 1 : 0);
@@ -509,6 +512,8 @@ public final class PdBase {
 
   /**
    * Returns the number of frames per Pd tick (currently 64).
+   *
+   * @return number of frames per Pd tick
    */
   public native static int blockSize();
 

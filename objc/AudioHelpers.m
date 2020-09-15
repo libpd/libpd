@@ -1,5 +1,5 @@
 //
-//  AudioDebug.m
+//  AudioHelpers.m
 //  libpd
 //
 //  Created on 18/10/11.
@@ -7,11 +7,13 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Updated 2018 Dan Wilcox <danomatika@gmail.com>
+//
 
 #import "AudioHelpers.h"
 #import <AudioToolbox/AudioToolbox.h>
 
-#pragma mark - Audio Unit / Audio Session Debugging
+#pragma mark Audio Unit / Audio Session Debugging
 
 #define UNDEFINED_BAD_CATEGORY_ERROR -12986
 
@@ -38,9 +40,9 @@ NSString *AVStatusCodeAsString(OSStatus status) {
 		case kAudioSessionUnspecifiedError:
 			return @"kAudioSessionUnspecifiedError";
 		case UNDEFINED_BAD_CATEGORY_ERROR:
-			return [NSString stringWithFormat:@"unknown error code %ld, but known to be related to a bad audio session category setting", status];
+			return [NSString stringWithFormat:@"unknown error code %d, but known to be related to a bad audio session category setting", (int)status];
 		default:
-			return [NSString stringWithFormat:@"unknown error code %ld", status];
+			return [NSString stringWithFormat:@"unknown error code %d", (int)status];
 	}
 }
 
@@ -81,11 +83,11 @@ NSString *AUStatusCodeAsString(OSStatus status) {
 		case kAudioUnitErr_Unauthorized:
 			return @"kAudioUnitErr_Unauthorized";
 		default:
-			return [NSString stringWithFormat:@"unknown error code %ld", status];
+			return [NSString stringWithFormat:@"unknown error code %d", (int)status];
 	}
 }
 
-#pragma mark - Math Helpers
+#pragma mark Math Helpers
 
 BOOL floatsAreEqual(Float64 f1, Float64 f2) {
 	return ((fabs(f1 - f2) < 0.0001) ? YES : NO);
@@ -99,4 +101,3 @@ int log2int(int x) {
 	}
 	return y;
 }
-

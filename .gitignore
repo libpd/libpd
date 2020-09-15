@@ -3,6 +3,7 @@
 libs/libpd.*
 libs/libpdcpp.*
 libs/libpdnative.*
+libs/pdnative.*
 
 # python
 python/pylibpd_wrap.c
@@ -32,11 +33,22 @@ libpd.xcodeproj/xcuserdata
 *.app
 
 # csharp
+samples/csharp/**/obj/*
+samples/csharp/**/bin/*
 csharp/obj/*
 csharp/bin/*
+libs/pd.*
 libs/libpd.*
 libs/libpdnative.*
 libs/libpdcsharp.*
+.vs/*
+*.suo
+*.csproj.user
+packages/*
+*.nupkg
 
 # java
 java-build/*
+javadoc
+libs/libpd-sources*
+*.coverage

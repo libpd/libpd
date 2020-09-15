@@ -37,22 +37,7 @@ void PdObject::receiveSymbol(const std::string& dest, const std::string& symbol)
 }
 
 void PdObject::receiveList(const std::string& dest, const List& list) {
-	cout << "CPP: list " << dest << ": ";
-	
-	// step through the list
-	for(int i = 0; i < list.len(); ++i) {
-		if(list.isFloat(i))
-			cout << list.getFloat(i) << " ";
-		else if(list.isSymbol(i))
-			cout << list.getSymbol(i) << " ";
-	}
-	
-	// you can also use the built in toString function or simply stream it out
-	// cout << list.toString();
-	// cout << list;
-	
-	// print an OSC-style type string
-	cout << list.types() << endl;
+	cout << "CPP: list " << dest << ": " << list << endl;
 }
 
 void PdObject::receiveMessage(const std::string& dest, const std::string& msg, const List& list) {
