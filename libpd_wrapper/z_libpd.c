@@ -119,9 +119,8 @@ void libpd_closefile(void *x) {
 }
 
 int libpd_getdollarzero(void *x) {
-  int dzero;
   pd_pushsym((t_pd *)x);
-  dzero = canvas_getdollarzero();
+  int dzero = canvas_getdollarzero();
   pd_popsym((t_pd *)x);
   return dzero;
 }
@@ -179,9 +178,8 @@ static const t_sample sample_to_short = SHRT_MAX,
   } \
   return 0;
 
-int libpd_process_short(const int ticks, const short *inBuffer,
-  short *outBuffer) {
-    PROCESS(* short_to_sample, * sample_to_short)
+int libpd_process_short(int ticks, const short *inBuffer, short *outBuffer) {
+  PROCESS(* short_to_sample, * sample_to_short)
 }
 
 int libpd_process_float(int ticks, const float *inBuffer, float *outBuffer) {
@@ -204,9 +202,9 @@ int libpd_arraysize(const char *name) {
 #define MEMCPY(_x, _y) \
   GETARRAY \
   if (n < 0 || offset < 0 || offset + n > garray_npoints(garray)) return -2; \
-  { t_word *vec = ((t_word *) garray_vec(garray)) + offset; \
+  t_word *vec = ((t_word *) garray_vec(garray)) + offset; \
   int i; \
-  for (i = 0; i < n; i++) _x = _y; }
+  for (i = 0; i < n; i++) _x = _y;
 
 int libpd_read_array(float *dest, const char *name, int offset, int n) {
   MEMCPY(*dest++, (vec++)->w_float)
