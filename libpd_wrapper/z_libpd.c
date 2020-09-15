@@ -473,14 +473,13 @@ static void glist_maybevis(t_glist *gl)
     }
 }
 
-int libpd_start_gui(const char *libdir)
+void libpd_start_gui(const char *libdir)
 {
     t_canvas *x;
     for (x = pd_getcanvaslist(); x; x = x->gl_next)
         canvas_vis(x, 0);
     sys_nogui = 0;
-    if (sys_startgui(libdir))
-        return -1;
+    sys_startgui(libdir);
     for (x = pd_getcanvaslist(); x; x = x->gl_next)
         if (strcmp(x->gl_name->s_name, "_float_template") &&
             strcmp(x->gl_name->s_name, "_float_array_template") &&
@@ -489,7 +488,6 @@ int libpd_start_gui(const char *libdir)
                     glist_maybevis(x);
                     canvas_vis(x, 1);
     }
-    return 0;
 }
 
 void sys_stopgui( void);
