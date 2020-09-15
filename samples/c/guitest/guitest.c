@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     }
 
     // init pd
-    int srate = 44100, foo;
+    int srate = 44100;
     libpd_set_printhook((t_libpd_printhook)pdprint);
     libpd_set_noteonhook((t_libpd_noteonhook)pdnoteon);
     libpd_init();
@@ -52,20 +52,16 @@ int main(int argc, char **argv) {
     void *file = libpd_openfile(argv[1], argv[2]);
 
     // now run pd
-    for (foo = 0; foo < 2; foo++)  /* note: doesn't yet work the second time */
-    {
-        printf("running nogui for 1000 ticks...\n");
 
-        runawhile(1);
+    printf("running nogui for 1000 ticks...\n");
 
-        printf("starting gui..\n");
-        libpd_start_gui("../../../pure-data/");
+    runawhile(1);
 
-        printf("running for 2000 more ticks...\n");
-        runawhile(2);
+    printf("starting gui..\n");
+    libpd_start_gui("../../../pure-data/");
 
-        libpd_stop_gui();
-    }
+    printf("running for 5000 more ticks...\n");
+    runawhile(5);
 
     printf("Closing and exiting\n");
     libpd_closefile(file);
