@@ -458,21 +458,6 @@ void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_midibytehook = hook;
 }
 
-    /* recursively deselect everything in a gobj "g", if it happens to be
-    a glist, in preparation for deselecting g itself in glist_dselect() */
-static void glist_maybevis(t_glist *gl)
-{
-    t_gobj *g;
-    for (g = gl->gl_list; g; g = g->g_next)
-        if (pd_class(&g->g_pd) == canvas_class)
-            glist_maybevis((t_glist *)g);
-    if (gl->gl_havewindow)
-    {
-        canvas_vis(gl, 0);
-        canvas_vis(gl, 1);
-    }
-}
-
 void libpd_start_gui(const char *libdir)
 {
     t_canvas *x;
@@ -484,10 +469,7 @@ void libpd_start_gui(const char *libdir)
         if (strcmp(x->gl_name->s_name, "_float_template") &&
             strcmp(x->gl_name->s_name, "_float_array_template") &&
                 strcmp(x->gl_name->s_name, "_text_template"))
-    {
-                    glist_maybevis(x);
                     canvas_vis(x, 1);
-    }
 }
 
 void sys_stopgui( void);
