@@ -3,7 +3,7 @@
 from distutils.core import setup, Extension
 
 setup(name='pypdlib',
-      version='0.2',
+      version='0.12',
       py_modules = [
         'pylibpd'
       ],
