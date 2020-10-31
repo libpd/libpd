@@ -78,7 +78,8 @@ PD_FILES = \
     pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
     pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
     pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c pure-data/src/s_inter.c \
-    pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
+    pure-data/src/s_loader.c pure-data/src/s_main.c \
+    pure-data/src/s_net.c pure-data/src/s_path.c \
     pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
     pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
     pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \

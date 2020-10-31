@@ -156,6 +156,10 @@
 		119013A01486450C00086F19 /* PdFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8C8DC91312007F000B9D7A /* PdFile.m */; };
 		119013A11486450C00086F19 /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
 		119013A71486450C00086F19 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+		302C6F43254CF3DC000C720D /* s_net.c in Sources */ = {isa = PBXBuildFile; fileRef = 302C6F42254CF3DC000C720D /* s_net.c */; };
+		302C6F44254CF3DC000C720D /* s_net.c in Sources */ = {isa = PBXBuildFile; fileRef = 302C6F42254CF3DC000C720D /* s_net.c */; };
+		302C6F45254CF3DC000C720D /* s_net.c in Sources */ = {isa = PBXBuildFile; fileRef = 302C6F42254CF3DC000C720D /* s_net.c */; };
+		302C6F46254CF3DC000C720D /* s_net.c in Sources */ = {isa = PBXBuildFile; fileRef = 302C6F42254CF3DC000C720D /* s_net.c */; };
 		30377F451866680A0026ED3E /* x_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 30377F421866680A0026ED3E /* x_array.c */; };
 		30377F461866680A0026ED3E /* x_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 30377F421866680A0026ED3E /* x_array.c */; };
 		30377F471866680A0026ED3E /* x_scalar.c in Sources */ = {isa = PBXBuildFile; fileRef = 30377F431866680A0026ED3E /* x_scalar.c */; };
@@ -519,6 +523,7 @@
 		110E6DD2147B838F00282ABC /* PdAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdAudioUnit.h; sourceTree = "<group>"; };
 		110E6DD3147B838F00282ABC /* PdAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdAudioUnit.m; sourceTree = "<group>"; };
 		119013AB1486450C00086F19 /* libpd-osx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-osx.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		302C6F42254CF3DC000C720D /* s_net.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_net.c; sourceTree = "<group>"; };
 		30377F421866680A0026ED3E /* x_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_array.c; sourceTree = "<group>"; };
 		30377F431866680A0026ED3E /* x_scalar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_scalar.c; sourceTree = "<group>"; };
 		30377F441866680A0026ED3E /* x_text.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_text.c; sourceTree = "<group>"; };
@@ -760,6 +765,7 @@
 				0E82A02B12EEFDEE0053280E /* s_inter.c */,
 				0E82A02C12EEFDEE0053280E /* s_loader.c */,
 				0E82A02D12EEFDEE0053280E /* s_main.c */,
+				302C6F42254CF3DC000C720D /* s_net.c */,
 				0E82A02E12EEFDEE0053280E /* s_path.c */,
 				0E82A02F12EEFDEE0053280E /* s_print.c */,
 				0E82A03012EEFDEE0053280E /* s_stuff.h */,
@@ -1064,6 +1070,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30CEFE4A1A6A5EDC000E3BAE /* loop~.c in Sources */,
+				302C6F44254CF3DC000C720D /* s_net.c in Sources */,
 				30CEFE3A1A6A5EDC000E3BAE /* bonk~.c in Sources */,
 				119013581486450C00086F19 /* d_arithmetic.c in Sources */,
 				30CEFE481A6A5EDC000E3BAE /* fiddle~.c in Sources */,
@@ -1164,6 +1171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30C3D29A1FAA1FCC00C67F08 /* loop~.c in Sources */,
+				302C6F46254CF3DC000C720D /* s_net.c in Sources */,
 				30C3D29B1FAA1FCC00C67F08 /* bonk~.c in Sources */,
 				30C3D29C1FAA1FCC00C67F08 /* d_arithmetic.c in Sources */,
 				30C3D29D1FAA1FCC00C67F08 /* fiddle~.c in Sources */,
@@ -1353,6 +1361,7 @@
 				30C3D3601FAA200100C67F08 /* PdDispatcher.m in Sources */,
 				30C3D3611FAA200100C67F08 /* AudioHelpers.m in Sources */,
 				30C3D3621FAA200100C67F08 /* PdAudioController.m in Sources */,
+				302C6F45254CF3DC000C720D /* s_net.c in Sources */,
 				30C3D3631FAA200100C67F08 /* PdAudioUnit.m in Sources */,
 				30C3D3641FAA200100C67F08 /* PdMidiDispatcher.m in Sources */,
 				30C3D3651FAA200100C67F08 /* ringbuffer.c in Sources */,
@@ -1456,6 +1465,7 @@
 				5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */,
 				110E6DD5147B838F00282ABC /* AudioHelpers.m in Sources */,
 				110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */,
+				302C6F43254CF3DC000C720D /* s_net.c in Sources */,
 				110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */,
 				30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 				306DBE5816BC6710007CF226 /* ringbuffer.c in Sources */,

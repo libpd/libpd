@@ -112,6 +112,7 @@ set(PD_SOURCES
     pure-data/src/s_inter.c
     pure-data/src/s_loader.c
     pure-data/src/s_main.c
+    pure-data/src/s_net.c
     pure-data/src/s_path.c
     pure-data/src/s_print.c
     pure-data/src/s_stuff.h
