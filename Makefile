@@ -1,5 +1,6 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
+STATICLIB_EXT = a
 LIBPD_IMPLIB =
 LIBPD_DEF =
 
@@ -162,7 +163,6 @@ ifeq ($(PORTAUDIO), true)
     endif
 endif
 
-
 # object files which are somehow generated but not from sources listed above,
 # there is probably a better fix but this works for now
 PD_EXTRA_OBJS = \
@@ -182,6 +182,7 @@ ifeq ($(OS), Windows_NT)
 else
 	LIBPD = libs/libpd.$(SOLIB_EXT)
 endif
+LIBPD_STATIC = libs/libpd.$(STATICLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
@@ -203,15 +204,12 @@ JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
 .PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
 
-LIBPD_STATIC = libs/libpd.a
-
+# static build as well as dynamic?
 ifeq ($(STATIC), true)
-  libpd: $(LIBPD_STATIC)
+  libpd: $(LIBPD) $(LIBPD_STATIC)
 else
   libpd: $(LIBPD)
 endif
-
-#libpd: $(LIBPD) $(LIBPD_STATIC)
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
@@ -252,7 +250,7 @@ clean:
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF) $(LIBPD_STATIC)
+	rm -f $(LIBPD) $(LIBPD_STATIC) $(LIBPD_IMPLIB) $(LIBPD_DEF)
 	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
 	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
@@ -263,10 +261,10 @@ install:
 	install -m 644 libpd_wrapper/z_libpd.h $(includedir)/libpd
 	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
 	if [ -e libpd_wrapper/util/z_queued.o ]; then \
-	    install -d $(includedir)/libpd/util; \
-	    install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
-	    install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
-		install -m 644 cpp/*hpp $(includedir)/libpd; \
+	  install -d $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
+	  install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi
 	install -d $(libdir)
 	if [ -e '$(LIBPD)' ]; then install -m 755 $(LIBPD) $(libdir); fi
@@ -276,4 +274,6 @@ install:
 
 uninstall:
 	rm -rf $(includedir)/libpd
-	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_IMPLIB)` $(libdir)/`basename $(LIBPD_DEF)`
+	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_STATIC)`
+	if [ -n '$(LIBPD_IMPLIB)' ]; then rm -f $(libdir)/`basename $(LIBPD_IMPLIB)`; fi
+	if [ -n '$(LIBPD_DEF)' ]; then rm -f $(libdir)/`basename $(LIBPD_DEF)`; fi

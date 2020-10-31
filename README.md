@@ -101,6 +101,7 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 * **EXTRA=true**: compile `pure-data/extra` externals which are then inited in libpd_init() (default)
 * **MULTI=true**: compile with multiple instance support
 * **DEBUG=true**: compile with debug symbols & no optimizations
+* **STATIC=true**: compile static library (in addition to shared library)
 * **LOCALE=false**: do not set the LC_NUMERIC number format to the default "C" locale\* (default)
 * **PORTAUDIO=true**: compile with portaudio support (currently JAVA jni only)
 * **JAVA_HOME=/path/to/jdk**: specify the path to the Java Development Kit
@@ -122,7 +123,7 @@ If you need to add custom search paths to the CFLAGS or LDFLAGS, you can specify
     make ADDITIONAL_CFLAGS="-I/usr/local/include" \
          ADDITIONAL_LDFLAGS="-L/usr/local/lib"
 
-Once libpd has built successfully, the compiled library will be found in the `libs` directory.
+Once libpd has built successfully, the compiled libraries will be found in the `libs` directory.
 
 ### Linux & BSD
 
