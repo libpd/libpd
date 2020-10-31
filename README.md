@@ -144,14 +144,13 @@ If you are running macOS 10.6 - 10.8, you will need to install Xcode from the Ma
 
 libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
 
-    http://www.msys2.org/
+    <http://www.msys2.org/>
 
 Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
 
 Msys2 provides both 32 and 64 bit MinGW and command shells which are used to compile for 32 or 64 bit, respectively. Due to how MinGW is designed, you cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
-Note: Msys2 development seems to change frequently, so some of the package names
-      below may have changed after this document was written.
+Note: Msys2 development seems to change frequently, so some of the package names below may have changed after this document was written.
 
 Open an Msys2 shell and install the compiler chain & make via:
 
@@ -168,6 +167,8 @@ Once the packages are installed, you should now be ready to build libpd.
 Note: For 64 bit Windows, build Pd with the following additional C flags to ensure long integers are the correct length:
 
     make ADDITIONAL_CFLAGS='-DPD_LONGINTTYPE="long long"'
+
+If you run into strange errors such as `/bin/sh: cc: command not found`, try closing and reopening your shell window before building again.
 
 C++
 ---
