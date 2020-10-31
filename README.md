@@ -331,6 +331,14 @@ The Python wrapper provides a "pylibpd" module mirroring the libpd C API. Build 
 
 See the sample programs in `samples/python`.
 
+If you have multiple versions of Python on your system, you can specify which is used to build the module via the PYTHON makefile option:
+
+    make PYTHON=python3
+
+If you are building for 64-bit Windows, you may need to set the additional MS_WIN64 flag:
+
+    make CFLAGS="-DMS_WIN64=1"
+
 ### pyaudio
 
 Some samples require the "pyaudio" Portaudio library.
