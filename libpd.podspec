@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "libpd"
-  spec.version = "0.11.0"
+  spec.version = "0.12.0"
 
   spec.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
                       'libpd_wrapper/**/*.{h,c}',
                       'objc/**/*.{h,m}'
   spec.public_header_files = 'objc/**/*.{h}'
-  spec.ios.deployment_target = '8.0'
+  spec.ios.deployment_target = '9.0'
   spec.requires_arc = true
   spec.frameworks = 'Foundation', 'AudioToolbox', 'AVFoundation'
   spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DLIBPD_EXTRA', '-fcommon'
