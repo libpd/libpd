@@ -13,7 +13,6 @@ try:
 except ImportError:
     pass
 
-
 import wave
 import pylibpd
 
@@ -55,4 +54,3 @@ if __name__ == '__main__':
   inp = dopts.get('-i', sys.stdin)
   outp = dopts.get('-o', sys.stdout)
   pdfilter(inp, outp, *args)
-

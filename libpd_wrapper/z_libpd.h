@@ -21,7 +21,7 @@ extern "C"
 
 /* initializing pd */
 
-/// initialize libpd, it is safe to call this more than once
+/// initialize libpd; it is safe to call this more than once
 /// returns 0 on success or -1 if libpd was already initialized
 /// note: sets SIGFPE handler to keep bad pd patches from crashing due to divide
 ///       by 0, set any custom handling after calling this function
@@ -33,7 +33,7 @@ EXTERN void libpd_clear_search_path(void);
 
 /// add a path to the libpd search paths
 /// relative paths are relative to the current working directory
-/// unlike desktop Pd, *no* search paths are set by default (ie. extra)
+/// unlike desktop pd, *no* search paths are set by default (ie. extra)
 EXTERN void libpd_add_to_search_path(const char *path);
 
 /* opening patches */
@@ -45,12 +45,13 @@ EXTERN void *libpd_openfile(const char *name, const char *dir);
 /// close a patch by patch handle pointer
 EXTERN void libpd_closefile(void *p);
 
-/// returns the $0 id of the patch handle pointer
+/// get the $0 id of the patch handle pointer
+/// returns $0 value or 0 if the patch is non-existent
 EXTERN int libpd_getdollarzero(void *p);
 
 /* audio processing */
 
-/// returns the block size of Pd
+/// return pd's fixed block size: the number of sample frames per 1 pd tick
 EXTERN int libpd_blocksize(void);
 
 /// initialize audio rendering
@@ -68,7 +69,7 @@ EXTERN int libpd_process_float(const int ticks,
 /// buffer sizes are based on # of ticks and channels where:
 ///     size = ticks * libpd_blocksize() * (in/out)channels
 /// float samples are converted to short by multiplying by 32767 and casting,
-/// so any values received from Pd patches beyond -1 to 1 will result in garbage
+/// so any values received from pd patches beyond -1 to 1 will result in garbage
 /// note: for efficiency, does *not* clip input
 /// returns 0 on success
 EXTERN int libpd_process_short(const int ticks,
@@ -88,10 +89,32 @@ EXTERN int libpd_process_double(const int ticks,
 /// returns 0 on success
 EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
 
+/// process non-interleaved short samples from inBuffer -> libpd -> outBuffer
+/// copies buffer contents to/from libpd without striping
+/// buffer sizes are based on a single tick and # of channels where:
+///     size = libpd_blocksize() * (in/out)channels
+/// float samples are converted to short by multiplying by 32767 and casting,
+/// so any values received from pd patches beyond -1 to 1 will result in garbage
+/// note: for efficiency, does *not* clip input
+/// returns 0 on success
+EXTERN int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
+
+/// process non-interleaved double samples from inBuffer -> libpd -> outBuffer
+/// copies buffer contents to/from libpd without striping
+/// buffer sizes are based on a single tick and # of channels where:
+///     size = libpd_blocksize() * (in/out)channels
+/// returns 0 on success
+EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
+
 /* array access */
 
-/// returns the size of an array by name or negative error code if non-existent
+/// get the size of an array by name
+/// returns size or negative error code if non-existent
 EXTERN int libpd_arraysize(const char *name);
+
+/// (re)size an array by name; sizes <= 0 are clipped to 1
+/// returns 0 on success or negative error code if non-existent
+EXTERN int libpd_resize_array(const char *name, long size);
 
 /// read n values from named src array and write into dest starting at an offset
 /// note: performs no bounds checking on dest
@@ -182,16 +205,16 @@ EXTERN int libpd_finish_message(const char *recv, const char *msg);
 
 /* sending compound messages: atom array */
 
-/// write a float value to the given t_atom
+/// write a float value to the given atom
 EXTERN void libpd_set_float(t_atom *a, float x);
 
-/// write a double value to the given t_atom
+/// write a double value to the given atom
 EXTERN void libpd_set_double(t_atom *v, double x);
 
-/// write a symbol value to the given t_atom
+/// write a symbol value to the given atom
 EXTERN void libpd_set_symbol(t_atom *a, const char *symbol);
 
-/// send an t_atom array of a given length as a list to a destination receiver
+/// send an atom array of a given length as a list to a destination receiver
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send [list 1 2 bar( to [r foo] on the next tick with:
 ///     t_atom v[3];
@@ -201,7 +224,7 @@ EXTERN void libpd_set_symbol(t_atom *a, const char *symbol);
 ///     libpd_list("foo", 3, v);
 EXTERN int libpd_list(const char *recv, int argc, t_atom *argv);
 
-/// send a t_atom array of a given length as a typed message to a destination
+/// send a atom array of a given length as a typed message to a destination
 /// receiver, returns 0 on success or -1 if receiver name is non-existent
 /// ex: send [; pd dsp 1( on the next tick with:
 ///     t_atom v[1];
@@ -221,7 +244,8 @@ EXTERN void *libpd_bind(const char *recv);
 /// unsubscribe and free a source receiver object created by libpd_bind()
 EXTERN void libpd_unbind(void *p);
 
-/// returns 1 if a source receiver object exists with a given name, otherwise 0
+/// check if a source receiver object exists with a given name
+/// returns 1 if the receiver exists, otherwise 0
 EXTERN int libpd_exists(const char *recv);
 
 /// print receive hook signature, s is the string to be printed
@@ -279,11 +303,11 @@ typedef void (*t_libpd_messagehook)(const char *recv, const char *msg,
     int argc, t_atom *argv);
 
 /// set the print receiver hook, prints to stdout by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_printhook(const t_libpd_printhook hook);
 
 /// set the bang receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 
 /// set the float receiver hook, NULL by default
@@ -301,34 +325,34 @@ EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
 EXTERN void libpd_set_doublehook(const t_libpd_doublehook hook);
 
 /// set the symbol receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_symbolhook(const t_libpd_symbolhook hook);
 
 /// set the list receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_listhook(const t_libpd_listhook hook);
 
 /// set the message receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_messagehook(const t_libpd_messagehook hook);
 
-/// returns 1 if the atom is a float type
+/// check if an atom is a float type: 0 or 1
 /// note: no NULL check is performed
 EXTERN int libpd_is_float(t_atom *a);
 
-/// returns 1 if the atom is a symbol type
+/// check if an atom is a symbol type: 0 or 1
 /// note: no NULL check is performed
 EXTERN int libpd_is_symbol(t_atom *a);
 
-/// returns float value of given atom
+/// get the float value of an atom
 /// note: no NULL or type checks are performed
 EXTERN float libpd_get_float(t_atom *a);
 
-/// returns double value of given atom
+/// returns the double value of an atom
 /// note: no NULL or type checks are performed
 EXTERN double libpd_get_double(t_atom *a);
 
-/// returns symbol value of given atom
+/// returns the symbol value of an atom
 /// note: no NULL or type checks are performed
 EXTERN const char *libpd_get_symbol(t_atom *a);
 
@@ -438,55 +462,57 @@ typedef void (*t_libpd_polyaftertouchhook)(int channel, int pitch, int value);
 typedef void (*t_libpd_midibytehook)(int port, int byte);
 
 /// set the MIDI note on hook to receive from [noteout] objects, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_noteonhook(const t_libpd_noteonhook hook);
 
 /// set the MIDI control change hook to receive from [ctlout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_controlchangehook(const t_libpd_controlchangehook hook);
 
 /// set the MIDI program change hook to receive from [pgmout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_programchangehook(const t_libpd_programchangehook hook);
 
 /// set the MIDI pitch bend hook to receive from [bendout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook);
 
 /// set the MIDI after touch hook to receive from [touchout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook);
 
 /// set the MIDI poly after touch hook to receive from [polytouchout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 
 /// set the raw MIDI byte hook to receive from [midiout] objects,
 /// NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
 /* GUI */
 
-/// open the current patches within a Pd vanilla GUI
-/// requires the path to Pd's main folder that contains bin/, tcl/, etc
+/// open the current patches within a pd vanilla GUI
+/// requires the path to pd's main folder that contains bin/, tcl/, etc
 /// for a macOS .app bundle: /path/to/Pd-#.#-#.app/Contents/Resources
 /// returns 0 on success
 EXTERN int libpd_start_gui(char *path);
 
-/// stop the Pd vanilla GUI
+/// stop the pd vanilla GUI
 EXTERN void libpd_stop_gui(void);
 
 /// manually update and handle any GUI messages
 /// this is called automatically when using a libpd_process function,
 /// note: this also facilitates network message processing, etc so it can be
 ///       useful to call repeatedly when idle for more throughput
-EXTERN void libpd_poll_gui(void);
+///       Returns 1 if the poll found something, in which case it might be
+///       desirable to poll again, up to some reasonable limit.
+EXTERN int libpd_poll_gui(void);
 
 /* multiple instances */
 

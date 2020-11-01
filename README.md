@@ -101,6 +101,7 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 * **EXTRA=true**: compile `pure-data/extra` externals which are then inited in libpd_init() (default)
 * **MULTI=true**: compile with multiple instance support
 * **DEBUG=true**: compile with debug symbols & no optimizations
+* **STATIC=true**: compile static library (in addition to shared library)
 * **LOCALE=false**: do not set the LC_NUMERIC number format to the default "C" locale\* (default)
 * **PORTAUDIO=true**: compile with portaudio support (currently JAVA jni only)
 * **JAVA_HOME=/path/to/jdk**: specify the path to the Java Development Kit
@@ -122,7 +123,7 @@ If you need to add custom search paths to the CFLAGS or LDFLAGS, you can specify
     make ADDITIONAL_CFLAGS="-I/usr/local/include" \
          ADDITIONAL_LDFLAGS="-L/usr/local/lib"
 
-Once libpd has built successfully, the compiled library will be found in the `libs` directory.
+Once libpd has built successfully, the compiled libraries will be found in the `libs` directory.
 
 ### Linux & BSD
 
@@ -142,20 +143,17 @@ If you are running macOS 10.6 - 10.8, you will need to install Xcode from the Ma
 
 ### Windows
 
-libpd on Windows can be built with either MinGW or Cygwin which provide the core build requirements: a compiler chain & shell environment.
+libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
 
-It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
-
-    http://www.msys2.org/
+    <http://www.msys2.org/>
 
 Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
 
 Msys2 provides both 32 and 64 bit MinGW and command shells which are used to compile for 32 or 64 bit, respectively. Due to how MinGW is designed, you cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
 
-Note: Msys2 development seems to change frequently, so some of the package names
-      below may have changed after this document was written.
+Note: Msys2 development seems to change frequently, so some of the package names below may have changed after this document was written.
 
-Open an Msys2 shell and install the compiler chain, autotools, & gettext via:
+Open an Msys2 shell and install the compiler chain & make via:
 
     # 32 bit
     pacman -S mingw-w64-i686-toolchain mingw-w64-i686-clang make
@@ -166,6 +164,12 @@ Open an Msys2 shell and install the compiler chain, autotools, & gettext via:
 _You can also search for packages in Msys2 with `pacman -S -s <searchterm>`._
 
 Once the packages are installed, you should now be ready to build libpd.
+
+Note: For 64 bit Windows, build Pd with the following additional C flags to ensure long integers are the correct length:
+
+    make ADDITIONAL_CFLAGS='-DPD_LONGINTTYPE="long long"'
+
+If you run into strange errors such as `/bin/sh: cc: command not found`, try closing and reopening your shell window before building again.
 
 C++
 ---
@@ -267,7 +271,7 @@ Install the JDK either by downloading an installer package or by using one of th
 
 The wrapper can be built with MinGW. See the previous "Windows" section for instructions on setting up a MinGW-based build environment using Msys2.
 
-Install the JDK by downloading an installer package, then add the path to JDK/bin to your $PATH shell variable and the JDK path to $JAVA_HOME (optional). If the JDK is installed to `C:\Program Files\Java\jdk1.8.0_152`, add the following to your ~/.bash_profile:
+Install the JDK by downloading an installer package, then add the path to JDK/bin to your $PATH shell variable and the JDK path to $JAVA_HOME (optional). If the JDK is installed to `C:\Program Files\Java\jdk1.8.0_152`, add the following to your \~/.bash_profile:
 
     # add JDK bin path
     export PATH=$PATH:'C:\Program Files\Java\jdk1.8.0_152\bin'
@@ -325,7 +329,23 @@ The Python wrapper provides a "pylibpd" module mirroring the libpd C API. Build 
     cd python
     make
 
-See the sample programs in `samples/python`. Note, some samples require the "pyaudio" Portaudio library.
+See the sample programs in `samples/python`.
+
+If you have multiple versions of Python on your system, you can specify which is used to build the module via the PYTHON makefile option:
+
+    make PYTHON=python3
+
+If you are building for 64-bit Windows, you may need to set the additional MS_WIN64 flag:
+
+    make CFLAGS="-DMS_WIN64=1"
+
+### pyaudio
+
+Some samples require the "pyaudio" Portaudio library.
+
+If you install pyaudio with `pip`, you will need to install Portaudio first. On macOS, for example, you can install it with Homebrew:
+
+    brew install portaudio
 
 Building with CMake
 -------------------

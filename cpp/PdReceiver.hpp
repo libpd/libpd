@@ -39,7 +39,7 @@ class PdReceiver {
         /// receive a list
         virtual void receiveList(const std::string& dest, const List& list) {}
 
-        /// receive a named message ie. sent from a message box [; dest msg arg1 arg2 arg3... <
+        /// receive a named message ie. sent from a message box [; dest msg arg1 arg2 arg3(
         virtual void receiveMessage(const std::string& dest, const std::string& msg, const List& list) {}
 };
 

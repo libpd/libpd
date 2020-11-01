@@ -27,7 +27,9 @@ CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -O3
 
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
 	gcc -o $(TARGET) $^ $(LIBPD) $(LDFLAGS)
-	if [ $(PLATFORM) == "mac" ]; then mkdir -p ./libs && cp $(LIBPD) ./libs; fi
+ifeq ($(PLATFORM), mac)
+	mkdir -p ./libs && cp $(LIBPD) ./libs
+endif
 
 $(LIBPD):
 	cd ../../.. && make MULTI=true
@@ -37,5 +39,7 @@ clean:
 
 clobber: clean
 	rm -f $(TARGET)
-	if [ $(PLATFORM) == "mac" ]; then rm -rf ./libs; fi
+ifeq ($(PLATFORM), mac)
+	rm -rf ./libs
+endif
 	cd $(LIBPD_DIR) && make clobber

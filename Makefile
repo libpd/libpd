@@ -1,5 +1,6 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
+STATICLIB_EXT = a
 LIBPD_IMPLIB =
 LIBPD_DEF =
 
@@ -78,7 +79,8 @@ PD_FILES = \
     pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
     pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
     pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c pure-data/src/s_inter.c \
-    pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
+    pure-data/src/s_loader.c pure-data/src/s_main.c \
+    pure-data/src/s_net.c pure-data/src/s_path.c \
     pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
     pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
     pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
@@ -180,6 +182,7 @@ ifeq ($(OS), Windows_NT)
 else
 	LIBPD = libs/libpd.$(SOLIB_EXT)
 endif
+LIBPD_STATIC = libs/libpd.$(STATICLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
@@ -189,8 +192,10 @@ PDJAVA_JAR = libs/libpd.jar
 PDJAVA_SRC = libs/libpd-sources.jar
 PDJAVA_DOC = javadoc
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./pure-data/src \
-         -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS) \
+CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY \
+         -I./libpd_wrapper -I./libpd_wrapper/util \
+         -I./pure-data/src \
+         $(PLATFORM_CFLAGS) \
          $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
          $(ADDITIONAL_CFLAGS)
 LDFLAGS += $(ADDITIONAL_LDFLAGS)
@@ -199,10 +204,18 @@ JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
 .PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
 
-libpd: $(LIBPD)
+# static build as well as dynamic?
+ifeq ($(STATIC), true)
+  libpd: $(LIBPD) $(LIBPD_STATIC)
+else
+  libpd: $(LIBPD)
+endif
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
+
+$(LIBPD_STATIC): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+	ar rcs $(LIBPD_STATIC) $^
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
@@ -237,7 +250,7 @@ clean:
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF)
+	rm -f $(LIBPD) $(LIBPD_STATIC) $(LIBPD_IMPLIB) $(LIBPD_DEF)
 	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
 	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
@@ -248,16 +261,19 @@ install:
 	install -m 644 libpd_wrapper/z_libpd.h $(includedir)/libpd
 	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
 	if [ -e libpd_wrapper/util/z_queued.o ]; then \
-	    install -d $(includedir)/libpd/util; \
-	    install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
-	    install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
-		install -m 644 cpp/*hpp $(includedir)/libpd; \
+	  install -d $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
+	  install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi
 	install -d $(libdir)
-	install -m 755 $(LIBPD) $(libdir)
+	if [ -e '$(LIBPD)' ]; then install -m 755 $(LIBPD) $(libdir); fi
+	if [ -e '$(LIBPD_STATIC)' ]; then install -m 755 $(LIBPD_STATIC) $(libdir); fi
 	if [ -e '$(LIBPD_IMPLIB)' ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
 	if [ -e '$(LIBPD_DEF)' ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
 uninstall:
 	rm -rf $(includedir)/libpd
-	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_IMPLIB)` $(libdir)/`basename $(LIBPD_DEF)`
+	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_STATIC)`
+	if [ -n '$(LIBPD_IMPLIB)' ]; then rm -f $(libdir)/`basename $(LIBPD_IMPLIB)`; fi
+	if [ -n '$(LIBPD_DEF)' ]; then rm -f $(libdir)/`basename $(LIBPD_DEF)`; fi

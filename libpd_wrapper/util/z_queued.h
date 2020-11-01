@@ -19,11 +19,11 @@ extern "C"
 #endif
 
 /// set the queued print receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_printhook(const t_libpd_printhook hook);
 
 /// set the queued bang receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_banghook(const t_libpd_banghook hook);
 
 /// set the queued float receiver hook, NULL by default
@@ -43,43 +43,43 @@ EXTERN void libpd_set_queued_floathook(const t_libpd_floathook hook);
 EXTERN void libpd_set_queued_doublehook(const t_libpd_doublehook hook);
 
 /// set the queued symbol receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook);
 
 /// set the queued list receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_listhook(const t_libpd_listhook hook);
 
 /// set the queued typed message receiver hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_messagehook(const t_libpd_messagehook hook);
 
 /// set the queued MIDI note on hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_noteonhook(const t_libpd_noteonhook hook);
 
 /// set the queued MIDI control change hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_controlchangehook(const t_libpd_controlchangehook hook);
 
 /// set the queued MIDI program change hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_programchangehook(const t_libpd_programchangehook hook);
 
 /// set the queued MIDI pitch bend hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_pitchbendhook(const t_libpd_pitchbendhook hook);
 
 /// set the queued MIDI after touch hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_aftertouchhook(const t_libpd_aftertouchhook hook);
 
 /// set the queued MIDI poly after touch hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook hook);
 
 /// set the queued raw MIDI byte hook, NULL by default
-/// note: avoid calling this while DSP is running
+/// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
 
 /// initialize libpd and the queued ringbuffers, use in place of libpd_init()
@@ -88,7 +88,7 @@ EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
 /// buffer allocation failed
 EXTERN int libpd_queued_init();
 
-/// frees the queued ringbuffers
+/// free the queued ringbuffers
 EXTERN void libpd_queued_release();
 
 /// process and dispatch received messages in message ringbuffer

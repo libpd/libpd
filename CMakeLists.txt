@@ -48,9 +48,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MACOSX_RPATH ON)
 
 foreach (_BUILD_TYPE RELEASE DEBUG)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${PROJECT_SOURCE_DIR}/libs)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${PROJECT_SOURCE_DIR}/libs)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${PROJECT_SOURCE_DIR}/libs)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
 endforeach()
 
 set(PD_SOURCES
@@ -112,6 +112,7 @@ set(PD_SOURCES
     pure-data/src/s_inter.c
     pure-data/src/s_loader.c
     pure-data/src/s_main.c
+    pure-data/src/s_net.c
     pure-data/src/s_path.c
     pure-data/src/s_print.c
     pure-data/src/s_stuff.h
@@ -240,8 +241,8 @@ endif()
 target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
 if(NOT MSVC AND NOT APPLE)
-    find_library(MATH_LIB m)
-    target_link_libraries(libpd PUBLIC ${MATH_LIB})
+    find_library(M m)
+    target_link_libraries(libpd PUBLIC ${M_LIBRARIES})
 endif()
 
 if(PD_BUILD_C_EXAMPLES)

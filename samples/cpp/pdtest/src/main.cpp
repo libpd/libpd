@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
 	// send functions
 	pd.sendNoteOn(midiChan, 60);
 	pd.sendControlChange(midiChan, 0, 64);
-	pd.sendProgramChange(midiChan, 100);   // note: pgm num range is 1 - 128
+	pd.sendProgramChange(midiChan, 100);   // note: [pgmin] range is 1 - 128
 	pd.sendPitchBend(midiChan, 2000);   // note: libpd uses -8192 - 8192 while [bendin] returns 0 - 16383,
                                         // so sending a val of 2000 gives 10192 in pd
 	pd.sendAftertouch(midiChan, 100);

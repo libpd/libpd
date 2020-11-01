@@ -3,11 +3,12 @@
 //  pdtest
 //
 //  Created by Dan Wilcox on 1/16/13.
-//  Copyright (c) 2013 libpd. All rights reserved.
+//  Copyright (c) 2013, 2020 libpd team. All rights reserved.
 //
 
 #import "ViewController.h"
 
+#import <AVKit/AVKit.h>
 #import "AppDelegate.h"
 #import "PdAudioController.h"
 #import "PdFile.h"
@@ -25,9 +26,26 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
+	// add audio route picker button to view
+	if (@available(iOS 11.0, *)) {
+		AVRoutePickerView *pickerView = [[AVRoutePickerView alloc] initWithFrame:self.routePickerContainer.bounds];
+		[self.routePickerContainer addSubview:pickerView];
+		self.routePickerContainer.backgroundColor = UIColor.clearColor;
+	}
+	else { // AVRoutePickerView not available before iOS 11
+		self.routePickerContainer.hidden = YES;
+	}
+
 	// setup and run tests
 	[self setupPd];
 	[self testPd];
+
+	// setup audio and application state change notifications
+	[self setupNotifications];
+}
+
+- (void)dealloc {
+	[self clearNotifications];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,28 +66,43 @@
 	NSLog(@"touch at %.f %.f with pitch: %d", pos.x, pos.y, pitch);
 }
 
-#pragma mark - Pd
+#pragma mark Pd
 
 - (void)setupPd {
 
+	// note: define or uncomment AU_DEBUG_VERBOSE in AudioHelpers.h for verbose debug prints
+
 	// configure a typical audio session with 2 output channels
 	self.audioController = [[PdAudioController alloc] init];
+	// add/override some common session settings
+	//self.audioController.mixWithOthers = NO; // this app's audio only
+	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
+	self.audioController.allowBluetooth = YES; // allow hands free Bluetooth input/output
+	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth output
+	self.audioController.allowAirPlay = YES; // allow AirPlay (output only categories before iOS 10)
+	//self.audioController.preferStereo = NO; // allow mono
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
-																  numberChannels:2
-																	inputEnabled:YES
-																   mixingEnabled:YES];
+	                                                               inputChannels:2
+	                                                              outputChannels:2
+	                                                                inputEnabled:YES];
 	if (status == PdAudioError) {
-		NSLog(@"Error! Could not configure PdAudioController");
+		NSLog(@"could not configure audio");
 	} else if (status == PdAudioPropertyChanged) {
-		NSLog(@"Warning: some of the audio parameters were not accceptable.");
+		NSLog(@"some of the audio properties were changed during configuration");
 	} else {
-		NSLog(@"Audio Configuration successful.");
+		NSLog(@"audio configuration successful");
 	}
+
+	// other AVAudioSession configurations can be done manually (see the Apple docs)
+	// for example, force voice chat mode: enable echo cancelation, Bluetooth, and default to speaker output
+	// this works for the PlayAndRecord category only, ie. playback with input and output channels > 0
+	//[AVAudioSession.sharedInstance setMode:AVAudioSessionModeVoiceChat error:nil];
 
 	// log actual settings
 	[self.audioController print];
+	[self updateInfoLabels];
 
-	// set AppDelegate as PdRecieverDelegate to receive messages from pd
+	// set AppDelegate as PdReceiverDelegate to receive messages from pd
 	[PdBase setDelegate:self];
 	[PdBase setMidiDelegate:self]; // for midi too
 
@@ -77,7 +110,7 @@
 	[PdBase subscribe:@"fromPD"];
 
 	// add search path
-	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", [NSBundle mainBundle].bundlePath]];
+	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", NSBundle.mainBundle.bundlePath]];
 
 	// turn on dsp
 	self.audioController.active = YES;
@@ -91,7 +124,8 @@
 	NSLog(@"-- BEGIN Patch Test");
 
 	// open patch
-	self.patch = [PdFile openFileNamed:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", [NSBundle mainBundle].bundlePath]];
+	self.patch = [PdFile openFileNamed:@"test.pd"
+								  path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
 	NSLog(@"%@", self.patch);
 
 	// close patch
@@ -116,7 +150,7 @@
 	NSArray *list = @[@1.23f, @"a symbol"];
 	[PdBase sendList:list toReceiver:@"toPd"];
 
-	// send a list to the $0 receiver ie $0-toOF
+	// send a list to the $0 receiver ie $0-toPd
 	[PdBase sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", self.patch.dollarZero]];
 
 	// send a message
@@ -212,7 +246,7 @@
 	[PdBase setMidiDelegate:self];
 }
 
-#pragma mark - PdRecieverDelegate
+#pragma mark PdReceiverDelegate
 
 // uncomment this to get print statements from pd
 - (void)receivePrint:(NSString *)message {
@@ -265,6 +299,87 @@
 
 - (void)receiveMidiByte:(int)byte forPort:(int)port{
 	NSLog(@"Midi Byte: %d 0x%X", port, byte);
+}
+
+#pragma mark UI
+
+- (void)updateInfoLabels {
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	self.pdLabel.text = [NSString stringWithFormat:@"Pd:  in %d out %d sr %gk",
+	                     self.audioController.audioUnit.inputChannels,
+	                     self.audioController.audioUnit.outputChannels,
+	                     (self.audioController.audioUnit.sampleRate / 1000)];
+	if (session.inputNumberOfChannels > 0) {
+		self.inputLabel.text = [NSString stringWithFormat:@"In:  %@ %d %gk",
+								[session.currentRoute.inputs.firstObject portName],
+								(int)session.inputNumberOfChannels,
+								(session.sampleRate / 1000)];
+	}
+	else {
+		self.inputLabel.text = @"In: none";
+	}
+	if (session.outputNumberOfChannels > 0) {
+		self.outputLabel.text = [NSString stringWithFormat:@"Out: %@ %d %gk",
+								 [session.currentRoute.outputs.firstObject portName],
+								 (int)session.outputNumberOfChannels,
+								 (session.sampleRate / 1000)];
+	}
+	else {
+		self.outputLabel.text = @"Out: none";
+	}
+}
+
+#pragma mark Notifications
+
+- (void)setupNotifications {
+	[NSNotificationCenter.defaultCenter addObserver:self
+	                                       selector:@selector(routeChanged:)
+	                                           name:AVAudioSessionRouteChangeNotification
+	                                         object:nil];
+	[NSNotificationCenter.defaultCenter addObserver:self
+										   selector:@selector(didBecomeActive:)
+	                                           name:UIApplicationDidBecomeActiveNotification
+											 object:nil];
+}
+
+- (void)clearNotifications {
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:AVAudioSessionRouteChangeNotification
+	                                            object:nil];
+	[NSNotificationCenter.defaultCenter removeObserver:self
+	                                              name:UIApplicationDidBecomeActiveNotification
+												object:nil];
+}
+
+// update the info labels if the audio session route has changed, ie. device plugged-in
+- (void)routeChanged:(NSNotification *)notification {
+	NSDictionary *dict = notification.userInfo;
+	NSUInteger reason = [dict[AVAudioSessionRouteChangeReasonKey] unsignedIntegerValue];
+	switch (reason) {
+		default: return;
+		case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+			NSLog(@"route changed: new device");
+			break;
+		case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+			NSLog(@"route changed: old device unavailable");
+			break;
+		case AVAudioSessionRouteChangeReasonOverride:
+			NSLog(@"route changed: override");
+			break;
+	}
+	// update the UI on the main thread, wait a little so audio changes have time to finalize,
+	// don't update UI if backgrounded as this might cause the app to be terminated!
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive) {
+			[self updateInfoLabels];
+		}
+	});
+}
+
+/// update the info labels when the application becomes active again, this will handle the case
+/// where the audio route might have changed when the app was running in the background
+- (void)didBecomeActive:(NSNotification *)notification {
+	[self updateInfoLabels];
 }
 
 @end
