@@ -121,7 +121,7 @@ void libpd_add_to_search_path(const char *path) {
   STUFF->st_searchpath = namelist_append(STUFF->st_searchpath, path, 0);
   sys_unlock();
 }
-  
+
 void *libpd_openfile(const char *name, const char *dir) {
   void *retval;
   sys_lock();
@@ -222,7 +222,7 @@ int libpd_process_double(const int ticks, const double *inBuffer, double *outBuf
     *outBuffer++ = *p++ _y; \
   } \
   sys_unlock(); \
-  return 0; 
+  return 0;
 
 int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   PROCESS_RAW(,)
@@ -235,7 +235,7 @@ int libpd_process_raw_short(const short *inBuffer, short *outBuffer) {
 int libpd_process_raw_double(const double *inBuffer, double *outBuffer) {
   PROCESS_RAW(,)
 }
- 
+
 #define GETARRAY \
   t_garray *garray = (t_garray *) pd_findbyclass(gensym(name), garray_class); \
   if (!garray) {sys_unlock(); return -1;} \
