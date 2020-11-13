@@ -458,7 +458,7 @@ EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 /// requires the path to pd's main folder that contains bin/, tcl/, etc
 /// for a macOS .app bundle: /path/to/Pd-#.#-#.app/Contents/Resources
 /// returns 0 on success
-EXTERN int libpd_start_gui(char *path);
+EXTERN int libpd_start_gui(const char *path);
 
 /// stop the pd vanilla GUI
 EXTERN void libpd_stop_gui(void);
