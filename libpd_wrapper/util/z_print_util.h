@@ -35,8 +35,8 @@ EXTERN void libpd_set_concatenated_printhook(const t_libpd_printhook hook);
 ///     libpd_set_printhook(libpd_print_concatenator);
 ///     or
 ///     libpd_set_concatenated_printhook(your_print_handler);
-/// note: the char pointer argument is only good for the duration of the print 
-///       callback; if you intend to use the argument after the callback has 
+/// note: the char pointer argument is only good for the duration of the print
+///       callback; if you intend to use the argument after the callback has
 ///       returned, you need to make a defensive copy
 EXTERN void libpd_print_concatenator(const char *s);
 
