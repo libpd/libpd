@@ -10,6 +10,7 @@ python/pylibpd_wrap.c
 python/pylibpd.py
 python/MANIFEST
 python/build
+python/installed.txt
 *.o
 *.so
 *.class

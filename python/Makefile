@@ -1,4 +1,4 @@
-# override via: make PYTHON=python3, etc
+# override via: make PYTHON=python3.9, etc
 PYTHON = python
 
 # detect platform
@@ -15,13 +15,23 @@ else
   endif
 endif
 
+# keep track of installed files in order to remove them later
+INSTALLED = installed.txt
+
 .PHONY: build install clean clobber
+
+all: build
 
 build:
 	$(PYTHON) setup.py build
 
 install:
-	$(PYTHON) setup.py install
+	$(PYTHON) setup.py install --record $(INSTALLED)
+
+# use tr to handle spaces in file names
+uninstall:
+	tr '\n' '\0' < $(INSTALLED) | xargs -0 rm -vf --
+	rm -f $(INSTALLED)
 
 clean:
 	$(PYTHON) setup.py clean

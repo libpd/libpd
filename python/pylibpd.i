@@ -58,8 +58,8 @@ int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 
 int libpd_arraysize(const char *name);
 int libpd_resize_array(const char *name, long size);
-int libpd_read_array(float *dest, const char *name, int offset, int n);
-int libpd_write_array(const char *name, int offset, const float *src, int n);
+int libpd_read_array(float *outBuffer, const char *name, int offset, int n);
+int libpd_write_array(const char *name, int offset, const float *inBuffer, int n);
 
 /* sending messages to pd */
 
@@ -112,12 +112,12 @@ SET_CALLBACK(message)
 
 /* sending MIDI messages to pd */
 
-int libpd_noteon(int channel, int pitchannel, int velocity);
+int libpd_noteon(int channel, int pitch, int velocity);
 int libpd_controlchange(int channel, int controller, int value);
 int libpd_programchange(int channel, int value);
 int libpd_pitchbend(int channel, int value);
 int libpd_aftertouch(int channel, int value);
-int libpd_polyaftertouch(int channel, int pitchannel, int value);
+int libpd_polyaftertouch(int channel, int pitch, int value);
 int libpd_midibyte(int port, int byte);
 int libpd_sysex(int port, int byte);
 int libpd_sysrealtime(int port, int byte);
@@ -193,7 +193,7 @@ def libpd_close_patch(dz):
 __libpd_subscriptions = {}
 
 def libpd_subscribe(recv):
-  if not __libpd_subscriptions.has_key(recv):
+  if recv not in __libpd_subscriptions:
     __libpd_subscriptions[recv] = __libpd_bind(recv)
 
 def libpd_unsubscribe(recv):
@@ -214,11 +214,11 @@ def libpd_release():
 class PdManager:
   def __init__(self, inChannels, outChannels, sampleRate, ticks):
     self.__ticks = ticks
-    self.__outbuf = array.array('h', b'\x00\x00' * outch * libpd_blocksize())
+    self.__outbuf = array.array('b', '\x00\x00'.encode() * outChannels * libpd_blocksize())
     libpd_compute_audio(1)
     libpd_init_audio(inChannels, outChannels, sampleRate)
-  def process(self, inbuf):
-    libpd_process_short(self.__ticks, inbuf, self.__outbuf)
+  def process(self, inBuffer):
+    libpd_process_short(self.__ticks, inBuffer, self.__outbuf)
     return self.__outbuf
 %}
 
