@@ -4,7 +4,7 @@ SRC_FILES = pdtest_gui.c
 TARGET = pdtest_gui.html
 
 CFLAGS = -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper -O3
-LDFLAGS = -L$(LIBPD_DIR)/libs -lpd
+LDFLAGS = -L$(LIBPD_DIR)/build/libs -lpd
 
 .PHONY: clean clobber
 
