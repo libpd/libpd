@@ -27,7 +27,7 @@ extern "C"
 /// ie. line "hello 123" is sent in 3 parts -> "hello", " ", "123\n"
 
 /// assign the pointer to your print handler
-EXTERN void libpd_set_concatenated_printhook(const t_libpd_printhook hook);
+EXPORT void libpd_set_concatenated_printhook(const t_libpd_printhook hook);
 
 /// assign this function pointer to libpd_printhook or libpd_queued_printhook,
 /// depending on whether you're using queued messages, to intercept and
@@ -38,7 +38,7 @@ EXTERN void libpd_set_concatenated_printhook(const t_libpd_printhook hook);
 /// note: the char pointer argument is only good for the duration of the print
 ///       callback; if you intend to use the argument after the callback has
 ///       returned, you need to make a defensive copy
-EXTERN void libpd_print_concatenator(const char *s);
+EXPORT void libpd_print_concatenator(const char *s);
 
 #ifdef __cplusplus
 }
