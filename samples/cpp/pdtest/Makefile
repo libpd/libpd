@@ -40,7 +40,7 @@ ifeq ($(PLATFORM), mac)
 	mkdir -p ./libs && cp $(LIBPD) ./libs
 endif
 
-static: CXXFLAGS += -DBUILD_STATIC
+static: CXXFLAGS += -DLIBPD_STATIC
 static: ${SRC_FILES:.cpp=.o} $(LIBPD_DIR)/libs/libpd.a
 	g++ -o $(TARGET) $^ $(LDLIBS)
 

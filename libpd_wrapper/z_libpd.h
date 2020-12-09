@@ -20,7 +20,7 @@ extern "C"
 #include "m_pd.h"
 
 #ifndef EXPORT
-# ifdef BUILD_STATIC
+# ifdef LIBPD_STATIC
 #  define EXPORT /* Leave blank: friendly with static linking */
 # else
 #  define EXPORT EXTERN
