@@ -1506,6 +1506,7 @@
 				);
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
+				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Debug;
 		};
@@ -1534,6 +1535,7 @@
 				);
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
+				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Release;
 		};
@@ -1715,6 +1717,7 @@
 				);
 				PRODUCT_NAME = "pd-osx-multi";
 				SDKROOT = macosx;
+				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Debug;
 		};
@@ -1745,6 +1748,7 @@
 				);
 				PRODUCT_NAME = "pd-osx-multi";
 				SDKROOT = macosx;
+				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Release;
 		};
