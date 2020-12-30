@@ -880,7 +880,7 @@ public:
     /// sizes <= 0 are clipped to 1
     /// returns true on success, false on failure
     bool resizeArray(const std::string &name, long size) {
-        int ret = libpd_resize_array(name.c_str());
+        int ret = libpd_resize_array(name.c_str(), size);
         if(ret < 0) {
             std::cerr << "Pd: Cannot resize unknown array \"" << name << "\""
                       << std::endl;
