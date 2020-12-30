@@ -1,6 +1,6 @@
-0.12.0 2020 Nov
+0.12.0 2020 Dec 29
 
-* updated to pd vanilla 0.51-3
+* updated to pd vanilla 0.51-4
 * switched pure-data submodule to github
 * only build -arch i386 on macOS 10.13 and lower
 
