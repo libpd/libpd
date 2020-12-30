@@ -195,10 +195,10 @@ class PdBase {
     /// note: raw does not interlace the buffers
     ///
 
-        /// process one pd tick, writes raw float data to/from buffers
+        /// process float buffers for a given number of ticks
         /// returns false on error
-        bool processRaw(const float *inBuffer, float *outBuffer) {
-            return libpd_process_raw(inBuffer, outBuffer) == 0;
+        bool processFloat(int ticks, const float *inBuffer, float *outBuffer) {
+            return libpd_process_float(ticks, inBuffer, outBuffer) == 0;
         }
 
         /// process short buffers for a given number of ticks
@@ -207,18 +207,29 @@ class PdBase {
             return libpd_process_short(ticks, inBuffer, outBuffer) == 0;
         }
 
-        /// process float buffers for a given number of ticks
-        /// returns false on error
-        bool processFloat(int ticks, const float *inBuffer, float *outBuffer) {
-            bool ret = libpd_process_float(ticks, inBuffer, outBuffer) == 0;
-            return ret;
-        }
-
         /// process double buffers for a given number of ticks
         /// returns false on error
         bool processDouble(int ticks, const double *inBuffer,
                                             double *outBuffer) {
             return libpd_process_double(ticks, inBuffer, outBuffer) == 0;
+        }
+
+        /// process one pd tick, writes raw float data to/from buffers
+        /// returns false on error
+        bool processRaw(const float *inBuffer, float *outBuffer) {
+            return libpd_process_raw(inBuffer, outBuffer) == 0;
+        }
+
+        /// process one pd tick, writes raw short data to/from buffers
+        /// returns false on error
+        bool processRawShort(const short *inBuffer, short *outBuffer) {
+            return libpd_process_raw_short(inBuffer, outBuffer) == 0;
+        }
+
+        /// process one pd tick, writes raw double data to/from buffers
+        /// returns false on error
+        bool processRawDouble(const double *inBuffer, double *outBuffer) {
+            return libpd_process_raw_double(inBuffer, outBuffer) == 0;
         }
 
     /// \section Audio Processing Control
@@ -839,13 +850,26 @@ class PdBase {
         /// get the size of a pd array
         /// returns 0 if array not found
         int arraySize(const std::string& name) {
-            int len = libpd_arraysize(name.c_str());;
+            int len = libpd_arraysize(name.c_str());
             if(len < 0) {
                 std::cerr << "Pd: Cannot get size of unknown array \""
                      << name << "\"" << std::endl;
                 return 0;
             }
             return len;
+        }
+
+        /// (re)size a pd array
+        /// sizes <= 0 are clipped to 1
+        /// returns true on success, false on failure
+        bool resizeArray(const std::string& name, long size) {
+            int ret = libpd_resize_array(name.c_str());
+            if(ret < 0) {
+                std::cerr << "Pd: Cannot resize unknown array \""
+                     << name << "\"" << std::endl;
+                return false;
+            }
+            return true;
         }
 
         /// read from a pd array
@@ -895,7 +919,6 @@ class PdBase {
             }
             return true;
         }
-
 
         /// write to a pd array
         ///
