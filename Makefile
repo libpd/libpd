@@ -3,22 +3,33 @@ SOLIB_PREFIX = lib
 STATICLIB_EXT = a
 LIBPD_IMPLIB =
 LIBPD_DEF =
+PLATFORM_ARCH ?= $(shell $(CC) -dumpmachine | sed -e 's,-.*,,')
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -arch x86_64 -DHAVE_LIBDL \
+  PLATFORM_CFLAGS = -DHAVE_LIBDL \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
-  LDFLAGS = -arch x86_64 -dynamiclib -ldl -Wl,-no_compact_unwind
+  LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
+  ifeq ($(FAT_LIB), true)
+    # macOS universal "fat" lib compilation
+    MAC_VER = $(shell sw_vers -productVersion | cut -f1 -f2 -d.)
+    ifeq ($(shell expr $(MAC_VER) \<= 10.13), 1)
+      # universal1: macOS 10.6 - 10.13
+      FAT_ARCHS ?= -arch i386 -arch x86_64
+    endif
+    ifeq ($(shell expr $(MAC_VER) \>= 11.0), 1)
+      # universal2: macOS 11.0+
+      FAT_ARCHS ?= -arch arm64 -arch x86_64
+    endif
+    FAT_ARCHS ?= -arch $(PLATFORM_ARCH)
+    PLATFORM_CFLAGS += $(FAT_ARCHS)
+    LDFLAGS += $(FAT_ARCHS)
+  endif
   CSHARP_LDFLAGS = $(LDFLAGS)
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
-  FAT_LIB := $(shell expr `sw_vers -productVersion | cut -f2 -d.` \<= 10.13)
-  ifeq ($(FAT_LIB), 1) # macOS 10.14+ does not build i386
-    PLATFORM_CFLAGS += -arch i386
-    LDFLAGS += -arch i386
-  endif
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC ?= gcc
@@ -27,7 +38,6 @@ else
     LIBPD_IMPLIB = libs/libpd.lib
     LIBPD_DEF = libs/libpd.def
     PDNATIVE_PLATFORM = windows
-    PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
@@ -38,7 +48,6 @@ else
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Linux or *BSD
     SOLIB_EXT = so
-    PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC
     LDFLAGS = -shared -Wl,-Bsymbolic
     ifeq ($(UNAME), Linux)
@@ -56,6 +65,7 @@ else
   endif
 endif
 
+PDNATIVE_ARCH = $(shell echo $(PLATFORM_ARCH) | sed -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
 PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 
 PD_FILES = \

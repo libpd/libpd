@@ -2,9 +2,10 @@
 
 * updated to pd vanilla 0.51-4
 * switched pure-data submodule to github
-* only build -arch i386 on macOS 10.13 and lower
 
-* Makefile: added STATIC option to build a static libpd.a (clwe)
+* Makefile: added FAT_LIB option to build universal "fat" libs on macOS
+* Makefile: added STATIC option to build a static libpd.a (clwe),
+            note: still requires updates to the pd core to work on all platforms
 * Makefile: fixed install when LIBPD_IMPLIB or LIBPD_DEF are empty (Sou Bunnbu)
 * Makefile: build libpd sources before pure-data (IOhannes Zmoelnig)
 * Makefile: use POSIX-compliant shell-syntax (IOhannes Zmoelnig)

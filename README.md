@@ -81,7 +81,7 @@ Core build requirments:
 
 Note: The various language wrappers may have additional requirements.
 
-Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & Mac OSX and has the following targets:
+Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & macOS and has the following targets:
 
 * **libpd**: build the libpd C core, default if no target is specified
 * **csharplib**: build libpdcsharp
@@ -102,6 +102,7 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 * **MULTI=true**: compile with multiple instance support
 * **DEBUG=true**: compile with debug symbols & no optimizations
 * **STATIC=true**: compile static library (in addition to shared library)
+* **FAT_LIB=true**: compile universal "fat" lib with multiple architectures (macOS only)
 * **LOCALE=false**: do not set the LC_NUMERIC number format to the default "C" locale\* (default)
 * **PORTAUDIO=true**: compile with portaudio support (currently JAVA jni only)
 * **JAVA_HOME=/path/to/jdk**: specify the path to the Java Development Kit
@@ -133,13 +134,26 @@ Install the core build requirements using your distribution's package manager. F
 
 ### macOS
 
-macOS is built on top of a BSD system and the bash commandline can be accessed with the Terminal application in the /Applications/Utility directory.
+macOS is built on top of a BSD system and the bash or zsh commandline can be accessed with the Terminal application in the /Applications/Utility directory.
+
+#### Xcode
 
 The clang compiler and associated tools are provided by Apple. If you are running macOS 10.9+, you *do not* need to install the full Xcode application and can install the Commandline Tools Package only by running the following:
 
     xcode-select --install
 
 If you are running macOS 10.6 - 10.8, you will need to install Xcode from the Mac App Store or downloaded from <http://developer.apple.com>
+
+#### Fat Libs
+
+By building with the `FAT_LIB=true` Makefile option, libpd will be compiled with support for multiple architectures depending on the detected system version:
+
+* macOS <= 10.13: i386 (32 bit Intel) & x86_64 (64 bit Intel)
+* macOS >= 11.0: arm64 (64 bit Arm) & x86_64 (64 bit Intel)
+
+To override autodetection, specify the `-arch` flags directly using the `FAT_ARCHS` Makefile option:
+
+        make FAT_LIB=true FAT_ARCHS="-arch i386 -arch x86_64"
 
 ### Windows
 
