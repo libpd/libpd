@@ -212,7 +212,7 @@ LDFLAGS += $(ADDITIONAL_LDFLAGS)
 CSHARP_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
-.PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
+.PHONY: libpd csharplib javalib javadoc javasrc install uninstall clean clobber
 
 # static build as well as dynamic?
 ifeq ($(STATIC), true)
