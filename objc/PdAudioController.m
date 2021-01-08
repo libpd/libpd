@@ -99,7 +99,7 @@
 		category = AVAudioSessionCategoryPlayAndRecord;
 		if (!AVAudioSession.sharedInstance.inputAvailable) {
 			status |= PdAudioPropertyChanged;
-			AU_LOG(@"*** WARN *** input not available", category);
+			AU_LOG(@"*** WARN *** %@ input not available", category);
 		}
 		if (outputChannels < 1) {
 			AU_LOG(@"*** ERROR *** %@ requires at least 1 input channel", category);
@@ -184,7 +184,7 @@
 		if (!AVAudioSession.sharedInstance.inputAvailable) {
 			inputEnabled = NO;
 			status |= PdAudioPropertyChanged;
-			AU_LOG(@"*** WARN *** input not available", category);
+			AU_LOG(@"*** WARN *** %@ input not available", category);
 		}
 	}
 	status |= [self updateSampleRate:sampleRate];
