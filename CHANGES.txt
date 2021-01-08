@@ -1,5 +1,7 @@
 0.12.1 2021 Jan 08
 
+* added pd~ core external to build
+
 * Cocoapods: fixed build error due pd~/binarymsg.c (reported by David Plans)
 * Cocoapods: added basic macos platform support
 
