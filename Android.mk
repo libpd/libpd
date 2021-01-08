@@ -145,6 +145,19 @@ LOCAL_SHARED_LIBRARIES := pd
 include $(BUILD_SHARED_LIBRARY)
 
 
+# Build libpd_tilde.so
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := pd_tilde
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
+LOCAL_CFLAGS := -DPD
+LOCAL_SRC_FILES := pure-data/extra/pd~/pdsched.c pure-data/extra/pd~/pd~.c
+LOCAL_SHARED_LIBRARIES := pd
+
+include $(BUILD_SHARED_LIBRARY)
+
+
 # Build libpique.so
 
 include $(CLEAR_VARS)

@@ -105,6 +105,7 @@ PD_EXTRA_FILES = \
     pure-data/extra/choice/choice.c \
     pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c \
     pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c \
+    pure-data/extra/pd~/pdsched.c pure-data/extra/pd~/pd~.c \
     pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
 
 LIBPD_UTILS = \
