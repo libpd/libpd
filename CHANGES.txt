@@ -1,4 +1,9 @@
-0.12.1 TBA
+0.12.1 2021 Jan 08
+
+* Cocoapods: fixed build error due pd~/binarymsg.c (reported by David Plans)
+* Cocoapods: added basic macos platform support
+
+* ObjC: fixed conversion, unused variable, and format string warnings
 
 * C++: added resizeArray(), processRawShort(), & processRawDouble() wrappers
 * C++: general header formatting refresh
