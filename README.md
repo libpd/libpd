@@ -329,7 +329,7 @@ _Note: libpd is tested with the release versions of Xcode. It is recommended tha
 
 ### CocoaPods
 
-If you are using Xcode to build iOS apps, you can use [CocoaPods](https://cocoapods.org)to add libpd to your project.
+If you are using Xcode to build iOS apps, you can use [CocoaPods](https://cocoapods.org) to add libpd to your project.
 
 Use the following in your CocoaPods podfile:
 

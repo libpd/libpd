@@ -40,6 +40,6 @@ Pod::Spec.new do |spec|
                        'pure-data/src/s_entry.c',
                        'pure-data/src/s_watchdog.c',
                        'pure-data/src/u_pdreceive.c',
-                       'pure-data/src/u_pdsend.c',
-                       'pure-data/extra/pd~/binarymsg.c'
+                       'pure-data/src/u_pdsend.c'
+    spec.preserve_paths = 'pure-data/extra/pd~/binarymsg.c'
 end
