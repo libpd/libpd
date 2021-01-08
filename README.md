@@ -335,6 +335,10 @@ Use the following in your CocoaPods podfile:
 
     pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
 
+To specify a stable version tag, use the `:tag` option:
+
+    pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true, :tag => '0.12.1'
+
 Python
 ------
 
