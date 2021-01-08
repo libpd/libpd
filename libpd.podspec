@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'libpd'
-  spec.version = '0.12.0'
+  spec.version = '0.12.1'
 
   spec.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
@@ -75,13 +75,6 @@ Pod::Spec.new do |spec|
 
   # exclude ios-only audio implementation
   spec.macos.exclude_files = 'objc/PdAudioController.*{h,m}',
-                           'objc/PdAudioUnit.*{h,m}',
-                           'objc/AudioHelpers.*{h,m}'
-
-  # pd~/binarymsg.c is included directly by pd~.c so should not be built,
-  # but cocoapods doesn't have a way to handle this so we rename it to a .h
-  # spec.prepare_command = <<-CMD
-  #   mv pure-data/extra/pd~/binarymsg.c pure-data/extra/pd~/binarymsg.h
-  #   sed -i 's/binarymsg.c/binarymsg.h/g' pure-data/extra/pd~/pd~.c
-  # CMD
+                             'objc/PdAudioUnit.*{h,m}',
+                             'objc/AudioHelpers.*{h,m}'
 end
