@@ -8,8 +8,8 @@ option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
 if (MSVC)
-    set(CMAKE_THREAD_LIBS_INIT "path/to/pthreads.dl" CACHE PATH "Path to pthreads library binary")
-    set(PTHREADS_INCLUDE_DIR "path/to/pthreads.h" CACHE PATH "Path to the pthreads library header files")
+    set(CMAKE_THREAD_LIBS_INIT CACHE PATH "Path to pthreads library binary")
+    set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to the pthreads library header files")
     # We need pthreads.
     # Please provide the path to the pthreads library include path and
     # the path to the pthread library by specifying the following arguments
