@@ -8,13 +8,13 @@ option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
 if (MSVC)
-    set(CMAKE_THREAD_LIBS_INIT CACHE PATH "Path to pthreads library binary")
-    set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to the pthreads library header files")
+    set(CMAKE_THREAD_LIBS_INIT CACHE PATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
+    set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to folder with pthreads library header files (ex. C:/src/vcpkg/packages/pthreads_x64-windows/include)")
     # We need pthreads.
     # Please provide the path to the pthreads library include path and
     # the path to the pthread library by specifying the following arguments
     # on the CMake command-line:
-    # -DCMAKE_THREAD_LIBS_INIT:PATH=<path to library, either MSVC (for example pthreadVC2.lib) or GNUC version>
+    # -DCMAKE_THREAD_LIBS_INIT:PATH=<path to library, either MSVC (for example pthreadVC3.lib) or GNUC version>
     # -DPTHREADS_INCLUDE_DIR:PATH=<path to the pthread header files>
     if (NOT CMAKE_THREAD_LIBS_INIT OR NOT PTHREADS_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide a path to the pthreads library and its headers.")
