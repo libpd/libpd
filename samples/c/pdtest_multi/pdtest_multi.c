@@ -23,18 +23,16 @@ int main(int argc, char **argv) {
     fprintf(stderr, "usage: %s file folder\n", argv[0]);
     return -1;
   }
+
+  libpd_init();
   
   // maybe these two calls should be available per-instance somehow:
   libpd_set_printhook(pdprint);   
   libpd_set_noteonhook(pdnoteon);
 
-  libpd_init();
-    /* ... here we'd sure like to be able to have number of channels be
-    per-instance.  The sample rate is still global within Pd but we might
-    also consider relaxing that restrction. */
-
   pd1 = libpd_new_instance();
   pd2 = libpd_new_instance();
+  printf("%d instances\n", libpd_num_instances());
 
   libpd_set_instance(pd1); // talk to first pd instance
 
@@ -58,14 +56,7 @@ int main(int argc, char **argv) {
   // open patch       [; pd open file folder(
   libpd_openfile(argv[1], argv[2]);
 
-    /* the following two messages can be sent without setting the pd instance
-    and anyhow the symbols are global so they may affect multiple instances.
-    However, if the messages change anything in the pd instance structure
-    (DSP state; current time; list of all canvases n our instance) those
-    changes will apply to the current Pd nstance, so the earlier messages,
-    for instance, were sensitive to which was the current one. 
-    
-    Note also that I'm using the fact that $0 is set to 1003, 1004, ...
+    /* Note that I'm using the fact that $0 is set to 1003, 1004, ...
     as patches are opened, it would be better to open the patches with 
     settable $1, etc parameters to libpd_openfile().  */
 

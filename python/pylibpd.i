@@ -2,7 +2,7 @@
  * Basic Python bindings for libpd
  *
  * Copyright (c) 2010 Peter Brinkmann (peter.brinkmann@gmail.com)
- * Updated 2013 Dan Wilcox (danomatika@gmail.com)
+ * Updated 2013,2020 Dan Wilcox (danomatika@gmail.com)
  *
  * For information on usage and redistribution, and for a DISCLAIMER OF
  * ALL WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -10,70 +10,88 @@
 
 %module pylibpd
 
-void libpd_clear_search_path();
-void libpd_add_to_search_path(const char *dir);
+/* initializing pd */
 
-int libpd_blocksize();
-int libpd_init_audio(int inch, int outch, int srate);
+// libpd_init() in %init
+void libpd_clear_search_path(void);
+void libpd_add_to_search_path(const char *path);
+
+/* opening patches */
+
+%rename(__libpd_openfile) libpd_openfile;
+%rename(__libpd_closefile) libpd_closefile;
+%rename(__libpd_getdollarzero) libpd_getdollarzero;
+void *libpd_openfile(const char *name, const char *dir);
+void libpd_closefile(void *p);
+int libpd_getdollarzero(void *p);
+
+/* audio processing */
+
+int libpd_blocksize(void);
+int libpd_init_audio(int inChannels, int outChannels, int sampleRate);
 
 #define TYPEMAPS(t) \
-%typemap(in) t *inb { \
+%typemap(in) t *inBuffer { \
   Py_ssize_t dummy; \
   if (PyObject_AsReadBuffer($input, (const void **)&$1, &dummy)) return NULL; \
 } \
-%typemap(in) t *outb { \
+%typemap(in) t *outBuffer { \
   Py_ssize_t dummy; \
   if (PyObject_AsWriteBuffer($input, (void **)&$1, &dummy)) return NULL; \
 }
 TYPEMAPS(float)
 TYPEMAPS(short)
 TYPEMAPS(double)
-int libpd_process_raw(float *inb, float *outb);
-int libpd_process_float(int ticks, float *inb, float *outb);
-int libpd_process_short(int ticks, short *inb, short *outb);
-int libpd_process_double(int ticks, double *inb, double *outb);
+
+int libpd_process_float(const int ticks,
+    const float *inBuffer, float *outBuffer);
+int libpd_process_short(const int ticks,
+    const short *inBuffer, short *outBuffer);
+int libpd_process_double(const int ticks,
+    const double *inBuffer, double *outBuffer);
+
+int libpd_process_raw(const float *inBuffer, float *outBuffer);
+int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
+int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
+
+/* array access */
 
 int libpd_arraysize(const char *name);
-int libpd_read_array(float *outb, const char *src, int offset, int n);
-int libpd_write_array(const char *dest, int offset, float *inb, int n);
+int libpd_resize_array(const char *name, long size);
+int libpd_read_array(float *outBuffer, const char *name, int offset, int n);
+int libpd_write_array(const char *name, int offset, const float *inBuffer, int n);
 
-int libpd_bang(const char *dest);
-int libpd_float(const char *dest, float val);
-int libpd_symbol(const char *dest, const char *sym);
+/* sending messages to pd */
+
+int libpd_bang(const char *recv);
+int libpd_float(const char *recv, float x);
+int libpd_symbol(const char *recv, const char *symbol);
 
 %rename(__libpd_start_message) libpd_start_message;
 %rename(__libpd_add_float) libpd_add_float;
 %rename(__libpd_add_symbol) libpd_add_symbol;
 %rename(__libpd_finish_list) libpd_finish_list;
 %rename(__libpd_finish_message) libpd_finish_message;
-int libpd_start_message(int);
-void libpd_add_float(float);
-void libpd_add_symbol(const char *);
-int libpd_finish_list(const char *);
-int libpd_finish_message(const char *, const char *);
+int libpd_start_message(int maxlen);
+void libpd_add_float(float x);
+void libpd_add_symbol(const char *symbol);
+int libpd_finish_list(const char *recv);
+int libpd_finish_message(const char *recv, const char *msg);
 
-int libpd_exists(const char *sym);
+/* sending compound messages: atom array */
+
+// probably need to be wrapped manually due to t_atom
+//void libpd_set_float(t_atom *a, float x);
+//int libpd_list(const char *recv, int argc, t_atom *argv);
+//int libpd_message(const char *recv, const char *msg, int argc, t_atom *argv);
+
+/* receiving messages from pd */
+
 %rename(__libpd_bind) libpd_bind;
 %rename(__libpd_unbind) libpd_unbind;
-void *libpd_bind(const char *sym);
+void *libpd_bind(const char *recv);
 void libpd_unbind(void *p);
-
-%rename(__libpd_openfile) libpd_openfile;
-%rename(__libpd_closefile) libpd_closefile;
-%rename(__libpd_getdollarzero) libpd_getdollarzero;
-void *libpd_openfile(const char *, const char *);
-void libpd_closefile(void *);
-int libpd_getdollarzero(void *);
-
-int libpd_noteon(int ch, int n, int v);
-int libpd_controlchange(int ch, int n, int v);
-int libpd_programchange(int ch, int p);
-int libpd_pitchbend(int ch, int b);
-int libpd_aftertouch(int ch, int v);
-int libpd_polyaftertouch(int ch, int n, int v);
-int libpd_midibyte(int p, int b);
-int libpd_sysex(int p, int b);
-int libpd_sysrealtime(int p, int b);
+int libpd_exists(const char *recv);
 
 #define SET_CALLBACK(s) \
   int libpd_set_##s##_callback(PyObject *callback);
@@ -85,6 +103,27 @@ SET_CALLBACK(symbol)
 SET_CALLBACK(list)
 SET_CALLBACK(message)
 
+// probably need to be wrapped manually due to t_atom
+//int libpd_is_float(t_atom *a);
+//int libpd_is_symbol(t_atom *a);
+//float libpd_get_float(t_atom *a);
+//const char *libpd_get_symbol(t_atom *a);
+//t_atom *libpd_next_atom(t_atom *a);
+
+/* sending MIDI messages to pd */
+
+int libpd_noteon(int channel, int pitch, int velocity);
+int libpd_controlchange(int channel, int controller, int value);
+int libpd_programchange(int channel, int value);
+int libpd_pitchbend(int channel, int value);
+int libpd_aftertouch(int channel, int value);
+int libpd_polyaftertouch(int channel, int pitch, int value);
+int libpd_midibyte(int port, int byte);
+int libpd_sysex(int port, int byte);
+int libpd_sysrealtime(int port, int byte);
+
+/* receiving MIDI messages from pd */
+
 SET_CALLBACK(noteon)
 SET_CALLBACK(controlchange)
 SET_CALLBACK(programchange)
@@ -92,6 +131,29 @@ SET_CALLBACK(pitchbend)
 SET_CALLBACK(aftertouch)
 SET_CALLBACK(polyaftertouch)
 SET_CALLBACK(midibyte)
+
+/* GUI */
+
+int libpd_start_gui(char *path);
+void libpd_stop_gui(void);
+int libpd_poll_gui(void);
+
+/* multiple instances */
+
+// probably need to be handled manually due to t_pdinstance?
+//t_pdinstance *libpd_new_instance(void);
+//void libpd_set_instance(t_pdinstance *p);
+//void libpd_free_instance(t_pdinstance *p);
+//t_pdinstance *libpd_this_instance(void);
+//t_pdinstance *libpd_get_instance(int index);
+//int libpd_num_instances(void);
+
+/* log level */
+
+void libpd_set_verbose(int verbose);
+int libpd_get_verbose(void);
+
+/* manual bindings */
 
 %pythoncode %{
 import array
@@ -108,16 +170,16 @@ def __process_args(args):
           return -1
   return 0
 
-def libpd_list(dest, *args):
-  return __process_args(args) or __libpd_finish_list(dest)
+def libpd_list(recv, *args):
+  return __process_args(args) or __libpd_finish_list(recv)
 
-def libpd_message(dest, sym, *args):
-  return __process_args(args) or __libpd_finish_message(dest, sym)
+def libpd_message(recv, symbol, *args):
+  return __process_args(args) or __libpd_finish_message(recv, symbol)
 
 __libpd_patches = {}
 
-def libpd_open_patch(patch, dir = '.'):
-  ptr = __libpd_openfile(patch, dir)
+def libpd_open_patch(patchannel, dir = '.'):
+  ptr = __libpd_openfile(patchannel, dir)
   if not ptr:
     raise IOError("unable to open patch: %s/%s" % (dir, patch))
   dz = __libpd_getdollarzero(ptr)
@@ -130,13 +192,13 @@ def libpd_close_patch(dz):
 
 __libpd_subscriptions = {}
 
-def libpd_subscribe(sym):
-  if not __libpd_subscriptions.has_key(sym):
-    __libpd_subscriptions[sym] = __libpd_bind(sym)
+def libpd_subscribe(recv):
+  if recv not in __libpd_subscriptions:
+    __libpd_subscriptions[recv] = __libpd_bind(recv)
 
-def libpd_unsubscribe(sym):
-  __libpd_unbind(__libpd_subscriptions[sym])
-  del __libpd_subscriptions[sym]
+def libpd_unsubscribe(recv):
+  __libpd_unbind(__libpd_subscriptions[recv])
+  del __libpd_subscriptions[recv]
 
 def libpd_compute_audio(flag):
   libpd_message('pd', 'dsp', flag)
@@ -150,13 +212,13 @@ def libpd_release():
   __libpd_subscriptions.clear()
 
 class PdManager:
-  def __init__(self, inch, outch, srate, ticks):
+  def __init__(self, inChannels, outChannels, sampleRate, ticks):
     self.__ticks = ticks
-    self.__outbuf = array.array('h', b'\x00\x00' * outch * libpd_blocksize())
+    self.__outbuf = array.array('b', '\x00\x00'.encode() * outChannels * libpd_blocksize())
     libpd_compute_audio(1)
-    libpd_init_audio(inch, outch, srate)
-  def process(self, inbuf):
-    libpd_process_short(self.__ticks, inbuf, self.__outbuf)
+    libpd_init_audio(inChannels, outChannels, sampleRate)
+  def process(self, inBuffer):
+    libpd_process_short(self.__ticks, inBuffer, self.__outbuf)
     return self.__outbuf
 %}
 
@@ -164,14 +226,14 @@ class PdManager:
 #include "z_libpd.h"
 #include "util/z_print_util.h"
 
-static PyObject *convertArgs(const char *dest, const char* sym,
+static PyObject *convertArgs(const char *recv, const char *symbol,
                               int n, t_atom *args) {
-  int i = (sym) ? 2 : 1;
+  int i = (symbol) ? 2 : 1;
   n += i;
   PyObject *result = PyTuple_New(n);
-  PyTuple_SetItem(result, 0, PyString_FromString(dest));
-  if (sym) {
-    PyTuple_SetItem(result, 1, PyString_FromString(sym));
+  PyTuple_SetItem(result, 0, PyString_FromString(recv));
+  if (symbol) {
+    PyTuple_SetItem(result, 1, PyString_FromString(symbol));
   }
   int j;
   for (j = 0; i < n; i++, j++) {
@@ -210,30 +272,31 @@ static void pylibpd_##s args1 { \
 }
 
 MAKE_CALLBACK(print, (const char *s), Py_BuildValue, ("(s)", s))
-MAKE_CALLBACK(bang, (const char *dest), Py_BuildValue, ("(s)", dest))
-MAKE_CALLBACK(float, (const char *dest, float val),
-    Py_BuildValue, ("(sf)", dest, val))
-MAKE_CALLBACK(symbol, (const char *dest, const char *sym),
-    Py_BuildValue, ("(ss)", dest, sym))
-MAKE_CALLBACK(list, (const char *dest, int n, t_atom *pd_args),
-    convertArgs, (dest, NULL, n, pd_args))
+MAKE_CALLBACK(bang, (const char *recv), Py_BuildValue, ("(s)", recv))
+MAKE_CALLBACK(float, (const char *recv, float x),
+    Py_BuildValue, ("(sf)", recv, x))
+MAKE_CALLBACK(symbol, (const char *recv, const char *symbol),
+    Py_BuildValue, ("(ss)", recv, symbol))
+MAKE_CALLBACK(list, (const char *recv, int n, t_atom *pd_args),
+    convertArgs, (recv, NULL, n, pd_args))
 MAKE_CALLBACK(message,
-    (const char *dest, const char *sym, int n, t_atom *pd_args),
-    convertArgs, (dest, sym, n, pd_args))
-MAKE_CALLBACK(noteon, (int ch, int n, int v),
-    Py_BuildValue, ("(iii)", ch, n, v))
-MAKE_CALLBACK(controlchange, (int ch, int c, int v),
-    Py_BuildValue, ("(iii)", ch, c, v))
-MAKE_CALLBACK(programchange, (int ch, int pgm),
-    Py_BuildValue, ("(ii)", ch, pgm))
-MAKE_CALLBACK(pitchbend, (int ch, int bend),
-    Py_BuildValue, ("(ii)", ch, bend))
-MAKE_CALLBACK(aftertouch, (int ch, int v),
-    Py_BuildValue, ("(ii)", ch, v))
-MAKE_CALLBACK(polyaftertouch, (int ch, int n, int v),
-    Py_BuildValue, ("(iii)", ch, n, v))
-MAKE_CALLBACK(midibyte, (int p, int b),
-    Py_BuildValue, ("(ii)", p, b))
+    (const char *recv, const char *symbol, int n, t_atom *pd_args),
+    convertArgs, (recv, symbol, n, pd_args))
+
+MAKE_CALLBACK(noteon, (int channel, int pitch, int velocity),
+    Py_BuildValue, ("(iii)", channel, pitch, velocity))
+MAKE_CALLBACK(controlchange, (int channel, int controller, int velocity),
+    Py_BuildValue, ("(iii)", channel, controller, velocity))
+MAKE_CALLBACK(programchange, (int channel, int value),
+    Py_BuildValue, ("(ii)", channel, value))
+MAKE_CALLBACK(pitchbend, (int channel, int value),
+    Py_BuildValue, ("(ii)", channel, value))
+MAKE_CALLBACK(aftertouch, (int channel, int velocity),
+    Py_BuildValue, ("(ii)", channel, velocity))
+MAKE_CALLBACK(polyaftertouch, (int channel, int pitch, int velocity),
+    Py_BuildValue, ("(iii)", channel, pitch, velocity))
+MAKE_CALLBACK(midibyte, (int port, int byte),
+    Py_BuildValue, ("(ii)", port, byte))
 
 %}
 
@@ -257,4 +320,3 @@ ASSIGN_CALLBACK(midibyte)
 
 libpd_init();
 %}
-

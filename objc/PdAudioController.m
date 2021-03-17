@@ -99,7 +99,7 @@
 		category = AVAudioSessionCategoryPlayAndRecord;
 		if (!AVAudioSession.sharedInstance.inputAvailable) {
 			status |= PdAudioPropertyChanged;
-			AU_LOG(@"*** WARN *** input not available", category);
+			AU_LOG(@"*** WARN *** %@ input not available", category);
 		}
 		if (outputChannels < 1) {
 			AU_LOG(@"*** ERROR *** %@ requires at least 1 input channel", category);
@@ -184,7 +184,7 @@
 		if (!AVAudioSession.sharedInstance.inputAvailable) {
 			inputEnabled = NO;
 			status |= PdAudioPropertyChanged;
-			AU_LOG(@"*** WARN *** input not available", category);
+			AU_LOG(@"*** WARN *** %@ input not available", category);
 		}
 	}
 	status |= [self updateSampleRate:sampleRate];
@@ -339,8 +339,8 @@
 	AU_LOG(@"preferred sample rate: %g", session.preferredSampleRate);
 	AU_LOG(@"preferred IO buffer duration: %g", session.preferredIOBufferDuration);
 	AU_LOG(@"input available: %@", (session.inputAvailable ? @"yes" : @"no"));
-	AU_LOG(@"input channels: %d", session.inputNumberOfChannels);
-	AU_LOG(@"output channels: %d", session.outputNumberOfChannels);
+	AU_LOG(@"input channels: %d", (int)session.inputNumberOfChannels);
+	AU_LOG(@"output channels: %d", (int)session.outputNumberOfChannels);
 	[self.audioUnit print];
 }
 
@@ -545,7 +545,7 @@
 	NSError *error = nil;
 	[session setPreferredSampleRate:sampleRate error:&error];
 	if (error) {
-		AU_LOG(@"*** ERROR *** could not set session sample rate to %g: %@",
+		AU_LOG(@"*** ERROR *** could not set session sample rate to %d: %@",
 		       sampleRate, AVStatusCodeAsString((int)error.code));
 		return PdAudioError;
 	}
@@ -583,7 +583,6 @@
 }
 
 - (void)reconfigureAudioUnit {
-	AVAudioSession *session = AVAudioSession.sharedInstance;
 	BOOL wasActive = self.audioUnit.isActive;
 	self.audioUnit.active = NO;
 	[self configureAudioUnitWithInputChannels:_inputChannels

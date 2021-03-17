@@ -1,10 +1,23 @@
-0.12.0 2020 Nov
+0.12.1 2021 Jan 08
 
-* updated to pd vanilla 0.51-2
+* added pd~ core external to build
+
+* Cocoapods: fixed build error due pd~/binarymsg.c (reported by David Plans)
+* Cocoapods: added basic macos platform support
+
+* ObjC: fixed conversion, unused variable, and format string warnings
+
+* C++: added resizeArray(), processRawShort(), & processRawDouble() wrappers
+* C++: general header formatting refresh
+
+0.12.0 2020 Dec 30
+
+* updated to pd vanilla 0.51-4
 * switched pure-data submodule to github
-* only build -arch i386 on macOS 10.13 and lower
 
-* Makefile: added STATIC option to build a static libpd.a (clwe)
+* Makefile: added FAT_LIB option to build universal "fat" libs on macOS
+* Makefile: added STATIC option to build a static libpd.a (clwe),
+            note: still requires updates to the pd core to work on all platforms
 * Makefile: fixed install when LIBPD_IMPLIB or LIBPD_DEF are empty (Sou Bunnbu)
 * Makefile: build libpd sources before pure-data (IOhannes Zmoelnig)
 * Makefile: use POSIX-compliant shell-syntax (IOhannes Zmoelnig)
@@ -36,7 +49,7 @@
     properties, ie. Bluetooth, AirPlay, etc
   - added PdAudioController convenience support for configuring Record and
     MultiRoute categories
-  - PdAUdioUnit uses the basic AudioUnit v2 to v3 bridge (single instance only)
+  - PdAudioUnit uses the basic AudioUnit v2 to v3 bridge (single instance only)
   - PdBase message queuing can now be overridden by new
     initializeWithQueue: class method
   - formatting improvements and documentation porting from z_libpd.h

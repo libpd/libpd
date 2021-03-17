@@ -8,7 +8,7 @@
  * See https://github.com/libpd/libpd/wiki for documentation
  *
  */
- 
+
 #include "z_hooks.h"
 
 t_libpd_banghook libpd_banghook = NULL;
