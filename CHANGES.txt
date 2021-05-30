@@ -2,6 +2,11 @@
 
 * fixed pd~ core external sources not included in libpd.xcodeproj
 
+* CMake updates (Max Neupert, Clemens Wegener):
+  - update CMakeLists.txt with vars for pthread paths
+  - min version now 2.8.12
+  - fixed math library not found 
+
 0.12.1 2021 Jan 08
 
 * added pd~ core external to build
