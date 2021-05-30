@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'libpd'
-  spec.version = '0.12.1'
+  spec.version = '0.12.2'
 
   spec.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
