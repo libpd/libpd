@@ -85,6 +85,13 @@ typedef enum PdAudioStatus {
 /// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
 /// available on iOS 10+
+///
+/// for some devices, it has been found that setting the mode to videoRecording
+/// results in this option being used more reliably after the app is started:
+///
+///     pdAudioController.allowBluetoothA2DP = YES;
+///     pdAudioController.mode = AVAudioSessionModeVideoRecording;
+///     [pdAudioController configurePlaybackWithSampleRate:48000 ...];
 @property (nonatomic, assign) BOOL allowBluetoothA2DP;
 
 /// use AirPlay?
