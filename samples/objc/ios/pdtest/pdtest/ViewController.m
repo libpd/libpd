@@ -81,6 +81,7 @@
 	self.audioController.allowBluetoothA2DP = YES; // allow stereo Bluetooth output
 	self.audioController.allowAirPlay = YES; // allow AirPlay (output only categories before iOS 10)
 	//self.audioController.preferStereo = NO; // allow mono
+	//self.audioController.mode = AVAudioSessionModeVideoRecording; // set custom mode, depends on category
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
 	                                                               inputChannels:2
 	                                                              outputChannels:2

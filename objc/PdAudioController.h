@@ -93,6 +93,7 @@ typedef enum PdAudioStatus {
 /// available on iSO 10+
 @property (nonatomic, assign) BOOL allowAirPlay;
 
+
 #pragma mark Other Configuration Properties
 
 // other options applied only during configuration
@@ -114,6 +115,11 @@ typedef enum PdAudioStatus {
 /// devices are connected / disconnected so it is safest to keep buffering on
 /// otherwise you may end up with click/stuttering audio
 @property (nonatomic, assign) BOOL bufferSamples;
+
+/// set desired audio session mode to apply on configuration (default Default)
+/// note: certain category options may be overridden by setting the mode, see
+///       the Apple docs
+@property (nonatomic, assign) AVAudioSessionMode mode;
 
 #pragma mark Initialization
 
@@ -244,6 +250,10 @@ typedef enum PdAudioStatus {
 /// helper to replace the current audio session category options
 /// returns YES on success
 + (BOOL)setSessionOptions:(AVAudioSessionCategoryOptions)options;
+
+/// helper to set the currrent audio session mode
+/// returns YES on success
++ (BOOL)setSessionMode:(AVAudioSessionMode)mode;
 
 #pragma mark Notifications
 

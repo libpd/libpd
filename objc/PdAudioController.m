@@ -62,6 +62,7 @@
 	_defaultToSpeaker = YES;
 	_preferStereo = YES;
 	_bufferSamples = YES;
+	_mode = AVAudioSessionModeDefault;
 	[self setupNotifications];
 	self.audioUnit = audioUnit;
 }
@@ -360,6 +361,17 @@
 	return YES;
 }
 
++ (BOOL)setSessionMode:(AVAudioSessionMode)mode {
+    NSError *error;
+    AVAudioSession *session = AVAudioSession.sharedInstance;
+    if (![session setMode:mode error:&error]) {
+        AU_LOG(@"*** ERROR *** could not set %@ mode: %@",
+               mode, AVStatusCodeAsString((int)error.code));
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark Notifications
 
 - (void)setupNotifications {
@@ -513,16 +525,13 @@
 - (PdAudioStatus)configureSessionWithCategory:(AVAudioSessionCategory)category {
 	NSError *error = nil;
 	AVAudioSession *session = AVAudioSession.sharedInstance;
-
-	// category
-	[session setCategory:category error:&error];
-	if (error) {
-		AU_LOG(@"*** ERROR *** could not set %@: %@", category,
-		    AVStatusCodeAsString((int)error.code));
-		return PdAudioError;
-	}
 	AVAudioSessionCategoryOptions options = [self optionsForSessionCategory:category];
-	if (![PdAudioController setSessionOptions:options]) {
+
+	// set category, mode, & options
+	[session setCategory:category mode:self.mode options:options error:&error];
+	if (error) {
+		AU_LOG(@"*** ERROR *** could not set %@ %@: %@", category, self.mode,
+		    AVStatusCodeAsString((int)error.code));
 		return PdAudioError;
 	}
 	_category = session.category;
