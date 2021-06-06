@@ -1,3 +1,7 @@
+0.13.0 TBA
+
+* ObjC: added basic audio session mode handling to PdAudioController
+
 0.12.2 2021 May 31
 
 * fixed pd~ core external sources not included in libpd.xcodeproj
