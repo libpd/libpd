@@ -83,9 +83,9 @@
 		110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD1147B838F00282ABC /* PdAudioController.m */; };
 		110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD2147B838F00282ABC /* PdAudioUnit.h */; };
 		110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD3147B838F00282ABC /* PdAudioUnit.m */; };
-		119013511486450C00086F19 /* PdBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0AA12EEFE5E0053280E /* PdBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		119013521486450C00086F19 /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		119013531486450C00086F19 /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		119013511486450C00086F19 /* PdBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0AA12EEFE5E0053280E /* PdBase.h */; };
+		119013521486450C00086F19 /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
+		119013531486450C00086F19 /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; };
 		119013581486450C00086F19 /* d_arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF412EEFDED0053280E /* d_arithmetic.c */; };
 		119013591486450C00086F19 /* d_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF512EEFDED0053280E /* d_array.c */; };
 		1190135A1486450C00086F19 /* d_ctl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF612EEFDED0053280E /* d_ctl.c */; };
@@ -198,9 +198,9 @@
 		30ABBFCF1CA8A67000E3722F /* x_vexp.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC81CA8A67000E3722F /* x_vexp.c */; };
 		30ABBFD01CA8A67000E3722F /* x_vexp.h in Headers */ = {isa = PBXBuildFile; fileRef = 30ABBFC91CA8A67000E3722F /* x_vexp.h */; };
 		30ABBFD11CA8A67000E3722F /* x_vexp.h in Headers */ = {isa = PBXBuildFile; fileRef = 30ABBFC91CA8A67000E3722F /* x_vexp.h */; };
-		30C3D2901FAA1FCC00C67F08 /* PdBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0AA12EEFE5E0053280E /* PdBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		30C3D2911FAA1FCC00C67F08 /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		30C3D2921FAA1FCC00C67F08 /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30C3D2901FAA1FCC00C67F08 /* PdBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E82A0AA12EEFE5E0053280E /* PdBase.h */; };
+		30C3D2911FAA1FCC00C67F08 /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
+		30C3D2921FAA1FCC00C67F08 /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; };
 		30C3D2931FAA1FCC00C67F08 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
 		30C3D2941FAA1FCC00C67F08 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* ringbuffer.h */; };
 		30C3D2951FAA1FCC00C67F08 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
@@ -1534,6 +1534,7 @@
 				);
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Debug;
@@ -1563,6 +1564,7 @@
 				);
 				PRODUCT_NAME = "pd-osx";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Release;
@@ -1745,6 +1747,7 @@
 				);
 				PRODUCT_NAME = "pd-osx-multi";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Debug;
@@ -1776,6 +1779,7 @@
 				);
 				PRODUCT_NAME = "pd-osx-multi";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				VALID_ARCHS = "i386 x86_64 arm64";
 			};
 			name = Release;

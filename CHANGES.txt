@@ -1,4 +1,7 @@
-0.13.0 TBA
+0.12.3 TBA
+
+* libpd.xcodeproj macOS targets no longer install static lib or copy public
+  headers to avoid creating generic archives instead of app archives
 
 * ObjC: added basic audio session mode handling to PdAudioController
 
@@ -16,7 +19,7 @@
 * added pd~ core external to build
 
 * Cocoapods: fixed build error due pd~/binarymsg.c (reported by David Plans)
-* Cocoapods: added basic macos platform support
+* Cocoapods: added basic macOS platform support
 
 * ObjC: fixed conversion, unused variable, and format string warnings
 
