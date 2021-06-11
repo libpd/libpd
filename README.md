@@ -3,7 +3,7 @@ libpd
 
 [Pure Data](http://puredata.info) as an embeddable audio synthesis library
 
-Copyright (c) Peter Brinkmann & the libpd team 2010-2020
+Copyright (c) Peter Brinkmann & the libpd team 2010-2021
 
 Documentation
 -------------
