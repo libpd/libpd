@@ -8,7 +8,9 @@ PD_SRC_FILES := \
   pure-data/src/d_fft_fftsg.c \
   pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
   pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
-  pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
+  pure-data/src/d_soundfile.c pure-data/src/d_soundfile_aiff.c \
+  pure-data/src/d_soundfile_caf.c pure-data/src/d_soundfile_next.c \
+  pure-data/src/d_soundfile_wave.c pure-data/src/d_ugen.c \
   pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
   pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
   pure-data/src/g_editor_extras.c \
