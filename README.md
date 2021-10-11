@@ -41,6 +41,7 @@ Note: If your version of git does not support "--recurse-submodules", you can ru
 For most uses, it is recommended to check out the latest stable release version via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
 
     git checkout 0.8.3
+    git submodule update
 
 The master branch contains the latest libpd development and can be considered *generally* stable. However, we make no guarantees. :)
 
