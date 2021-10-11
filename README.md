@@ -161,7 +161,7 @@ To override autodetection, specify the `-arch` flags directly using the `FAT_ARC
 
 libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
 
-    <http://www.msys2.org/>
+<http://www.msys2.org/>
 
 Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
 
