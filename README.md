@@ -27,11 +27,13 @@ The preferred method to download libpd is to use git.
 
 The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
 
-To download libpd & checkout the pure-data submodule do the following:
+To download libpd & check out the pure-data submodule, do the following:
 
     git clone --recurse-submodules https://github.com/libpd/libpd.git
     
-You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources. If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
+You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources.
+
+Note: If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
 
     cd libpd
     git submodule update --init --recursive
