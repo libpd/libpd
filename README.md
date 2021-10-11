@@ -323,7 +323,7 @@ The Xcode project builds the following targets:
 * **libpd-ios-multi**: libpd for iOS with multiple instance support
 * **libpd-osx-multi**: libpd for macOS with multiple instance support
 
-For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
+For detailed instructions, see [Working with libpd in Xcode](https://github.com/libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 
 If you are unfamiliar with how static libraries work or how to use them in Xcode, see [this useful tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial).
 
