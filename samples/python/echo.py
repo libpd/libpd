@@ -1,6 +1,4 @@
 import pyaudio
-import wave
-import sys
 from pylibpd import *
 
 p = pyaudio.PyAudio()
@@ -23,9 +21,8 @@ libpd_open_patch('echo.pd')
 while 1:
     data = stream.read(bs)
     outp = m.process(data)
-    stream.write(outp)
+    stream.write(bytes(outp))
 
 stream.close()
 p.terminate()
 libpd_release()
-

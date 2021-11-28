@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#! /usr/bin/python
 
 from distutils.core import setup, Extension
 
 setup(name='pypdlib',
-      version='0.2',
+      version='0.12',
       py_modules = [
         'pylibpd'
       ],
@@ -85,6 +85,7 @@ setup(name='pypdlib',
                     '../pure-data/src/s_inter.c',
                     '../pure-data/src/s_loader.c',
                     '../pure-data/src/s_main.c',
+                    '../pure-data/src/s_net.c',
                     '../pure-data/src/s_path.c',
                     '../pure-data/src/s_print.c',
                     '../pure-data/src/s_utf8.c',
@@ -110,6 +111,8 @@ setup(name='pypdlib',
                     '../pure-data/extra/fiddle~/fiddle~.c', \
                     '../pure-data/extra/loop~/loop~.c', \
                     '../pure-data/extra/lrshift~/lrshift~.c', \
+                    '../pure-data/extra/pd~/pdsched.c', \
+                    '../pure-data/extra/pd~/pd~.c', \
                     '../pure-data/extra/pique/pique.c', \
                     '../pure-data/extra/sigmund~/sigmund~.c', \
                     '../pure-data/extra/stdout/stdout.c'

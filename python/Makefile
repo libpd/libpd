@@ -1,31 +1,40 @@
-# Note:  If you are using a Mac with Xcode 4 or later and you run into problems
-#        related to building for PPC, you will need to set processor
-#        architecture flags before running make:
-#           export ARCHFLAGS="-arch i386 -arch x86_64"
-#           make
-#        Background: Xcode 4 removed support for PPC, but the Python
-#        distutils still think they're supposed to build for PPC,
-#        causing the build to fail with a most unhelpful error message.
+# override via: make PYTHON=python3.9, etc
+PYTHON = python
 
 # detect platform
 UNAME = $(shell uname)
 
 ifeq ($(UNAME), Darwin)  # Mac
   # fix duplicate symbol error by allowing common blocks, silence some warnings
-  export CFLAGS = -fcommon \
+  export CFLAGS := $(CFLAGS) -fcommon \
                   -Wno-unused-variable -Wno-unused-function -Wno-unused-label
+else
+  ifeq ($(OS), Windows_NT) # Windows, use Mingw
+    export CFLAGS := $(CFLAGS) -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL
+    export LDFLAGS := $(LDFLAGS) -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
+  endif
 endif
+
+# keep track of installed files in order to remove them later
+INSTALLED = installed.txt
 
 .PHONY: build install clean clobber
 
+all: build
+
 build:
-	python setup.py build
+	$(PYTHON) setup.py build
 
 install:
-	python setup.py install
+	$(PYTHON) setup.py install --record $(INSTALLED)
+
+# use tr to handle spaces in file names
+uninstall:
+	tr '\n' '\0' < $(INSTALLED) | xargs -0 rm -vf --
+	rm -f $(INSTALLED)
 
 clean:
-	python setup.py clean
+	$(PYTHON) setup.py clean
 
 clobber:
 	rm -rfv build

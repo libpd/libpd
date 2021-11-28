@@ -48,6 +48,7 @@ int sys_pollgui(void);
   void fiddle_tilde_setup(void);
   void loop_tilde_setup(void);
   void lrshift_tilde_setup(void);
+  void pd_tilde_setup(void);
   void pique_setup(void);
   void sigmund_tilde_setup(void);
   void stdout_setup(void);
@@ -99,6 +100,7 @@ int libpd_init(void) {
   fiddle_tilde_setup();
   loop_tilde_setup();
   lrshift_tilde_setup();
+  pd_tilde_setup();
   pique_setup();
   sigmund_tilde_setup();
   stdout_setup();
@@ -121,7 +123,7 @@ void libpd_add_to_search_path(const char *path) {
   STUFF->st_searchpath = namelist_append(STUFF->st_searchpath, path, 0);
   sys_unlock();
 }
-  
+
 void *libpd_openfile(const char *name, const char *dir) {
   void *retval;
   sys_lock();
@@ -212,7 +214,7 @@ int libpd_process_double(const int ticks, const double *inBuffer, double *outBuf
   t_sample *p; \
   size_t i; \
   sys_lock(); \
-  sys_microsleep(0); \
+  sys_pollgui(); \
   for (p = STUFF->st_soundin, i = 0; i < n_in; i++) { \
     *p++ = *inBuffer++ _x; \
   } \
@@ -222,7 +224,7 @@ int libpd_process_double(const int ticks, const double *inBuffer, double *outBuf
     *outBuffer++ = *p++ _y; \
   } \
   sys_unlock(); \
-  return 0; 
+  return 0;
 
 int libpd_process_raw(const float *inBuffer, float *outBuffer) {
   PROCESS_RAW(,)
@@ -235,7 +237,7 @@ int libpd_process_raw_short(const short *inBuffer, short *outBuffer) {
 int libpd_process_raw_double(const double *inBuffer, double *outBuffer) {
   PROCESS_RAW(,)
 }
- 
+
 #define GETARRAY \
   t_garray *garray = (t_garray *) pd_findbyclass(gensym(name), garray_class); \
   if (!garray) {sys_unlock(); return -1;} \
@@ -582,7 +584,7 @@ void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
   libpd_this->hooks->midibytehook = hook;
 }
 
-int libpd_start_gui(char *path) {
+int libpd_start_gui(const char *path) {
   int retval;
   sys_lock();
   retval = sys_startgui(path);
@@ -596,10 +598,12 @@ void libpd_stop_gui(void) {
   sys_unlock();
 }
 
-void libpd_poll_gui(void) {
+int libpd_poll_gui(void) {
+  int retval;
   sys_lock();
-  sys_pollgui();
+  retval = sys_pollgui();
   sys_unlock();
+  return (retval);
 }
 
 t_pdinstance *libpd_new_instance(void) {

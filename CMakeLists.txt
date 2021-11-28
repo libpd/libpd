@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.11)
+cmake_minimum_required (VERSION 2.8.12)
 project (libpd C)
 
 option(PD_UTILS  "Compile utilities" ON)
@@ -8,13 +8,13 @@ option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
 option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
 
 if (MSVC)
-    option(CMAKE_THREAD_LIBS_INIT "Path to pthreads library")
-    option(PTHREADS_INCLUDE_DIR   "Path to the pthreads library header files")
+    set(CMAKE_THREAD_LIBS_INIT CACHE PATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
+    set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to folder with pthreads library header files (ex. C:/src/vcpkg/packages/pthreads_x64-windows/include)")
     # We need pthreads.
     # Please provide the path to the pthreads library include path and
     # the path to the pthread library by specifying the following arguments
     # on the CMake command-line:
-    # -DCMAKE_THREAD_LIBS_INIT:PATH=<path to library, either MSVC (for example pthreadVC2.lib) or GNUC version>
+    # -DCMAKE_THREAD_LIBS_INIT:PATH=<path to library, either MSVC (for example pthreadVC3.lib) or GNUC version>
     # -DPTHREADS_INCLUDE_DIR:PATH=<path to the pthread header files>
     if (NOT CMAKE_THREAD_LIBS_INIT OR NOT PTHREADS_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide a path to the pthreads library and its headers.")
@@ -48,9 +48,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MACOSX_RPATH ON)
 
 foreach (_BUILD_TYPE RELEASE DEBUG)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${PROJECT_SOURCE_DIR}/libs)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${PROJECT_SOURCE_DIR}/libs)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${PROJECT_SOURCE_DIR}/libs)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
 endforeach()
 
 set(PD_SOURCES
@@ -112,6 +112,7 @@ set(PD_SOURCES
     pure-data/src/s_inter.c
     pure-data/src/s_loader.c
     pure-data/src/s_main.c
+    pure-data/src/s_net.c
     pure-data/src/s_path.c
     pure-data/src/s_print.c
     pure-data/src/s_stuff.h
@@ -143,6 +144,8 @@ set(PD_EXTRA_SOURCES
     pure-data/extra/fiddle~/fiddle~.c
     pure-data/extra/loop~/loop~.c
     pure-data/extra/lrshift~/lrshift~.c
+    pure-data/extra/pd~/pdsched.c
+    pure-data/extra/pd~/pd~.c
     pure-data/extra/pique/pique.c
     pure-data/extra/sigmund~/sigmund~.c
     pure-data/extra/stdout/stdout.c
@@ -240,14 +243,15 @@ endif()
 target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
 if(NOT MSVC AND NOT APPLE)
-    find_library(MATH_LIB m)
-    target_link_libraries(libpd PUBLIC ${MATH_LIB})
+    find_library(M m)
+    target_link_libraries(libpd PUBLIC ${M_LIBRARIES})
 endif()
 
 if(PD_BUILD_C_EXAMPLES)
     macro(ADD_EXAMPLE name)
         add_executable(${name} samples/c/${name}/${name}.c)
         target_link_libraries(${name} PUBLIC libpd)
+        target_link_libraries(${name} PUBLIC m)
         if(DEFINED CMAKE_DEBUG_POSTFIX)
             set_target_properties(${name} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
         endif()

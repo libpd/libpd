@@ -15,7 +15,7 @@ screen = pygame.display.set_mode(SCREENSIZE)
 
 m = PdManager(1, 2, pygame.mixer.get_init()[0], 1)
 patch = libpd_open_patch('funtest.pd', '.')
-print "$0: ", patch
+print("$0: ", patch)
 
 # this is basically a dummy since we are not actually going to read from the mic
 inbuf = array.array('h', range(BLOCKSIZE))

@@ -33,7 +33,7 @@ EXTERN void libpd_clear_search_path(void);
 
 /// add a path to the libpd search paths
 /// relative paths are relative to the current working directory
-/// unlike desktop Pd, *no* search paths are set by default (ie. extra)
+/// unlike desktop pd, *no* search paths are set by default (ie. extra)
 EXTERN void libpd_add_to_search_path(const char *path);
 
 /* opening patches */
@@ -51,7 +51,7 @@ EXTERN int libpd_getdollarzero(void *p);
 
 /* audio processing */
 
-/// returns the block size of Pd
+/// return pd's fixed block size: the number of sample frames per 1 pd tick
 EXTERN int libpd_blocksize(void);
 
 /// initialize audio rendering
@@ -69,7 +69,7 @@ EXTERN int libpd_process_float(const int ticks,
 /// buffer sizes are based on # of ticks and channels where:
 ///     size = ticks * libpd_blocksize() * (in/out)channels
 /// float samples are converted to short by multiplying by 32767 and casting,
-/// so any values received from Pd patches beyond -1 to 1 will result in garbage
+/// so any values received from pd patches beyond -1 to 1 will result in garbage
 /// note: for efficiency, does *not* clip input
 /// returns 0 on success
 EXTERN int libpd_process_short(const int ticks,
@@ -94,7 +94,7 @@ EXTERN int libpd_process_raw(const float *inBuffer, float *outBuffer);
 /// buffer sizes are based on a single tick and # of channels where:
 ///     size = libpd_blocksize() * (in/out)channels
 /// float samples are converted to short by multiplying by 32767 and casting,
-/// so any values received from Pd patches beyond -1 to 1 will result in garbage
+/// so any values received from pd patches beyond -1 to 1 will result in garbage
 /// note: for efficiency, does *not* clip input
 /// returns 0 on success
 EXTERN int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
@@ -454,20 +454,22 @@ EXTERN void libpd_set_midibytehook(const t_libpd_midibytehook hook);
 
 /* GUI */
 
-/// open the current patches within a Pd vanilla GUI
-/// requires the path to Pd's main folder that contains bin/, tcl/, etc
+/// open the current patches within a pd vanilla GUI
+/// requires the path to pd's main folder that contains bin/, tcl/, etc
 /// for a macOS .app bundle: /path/to/Pd-#.#-#.app/Contents/Resources
 /// returns 0 on success
-EXTERN int libpd_start_gui(char *path);
+EXTERN int libpd_start_gui(const char *path);
 
-/// stop the Pd vanilla GUI
+/// stop the pd vanilla GUI
 EXTERN void libpd_stop_gui(void);
 
 /// manually update and handle any GUI messages
 /// this is called automatically when using a libpd_process function,
 /// note: this also facilitates network message processing, etc so it can be
 ///       useful to call repeatedly when idle for more throughput
-EXTERN void libpd_poll_gui(void);
+/// returns 1 if the poll found something, in which case it might be desirable
+/// to poll again, up to some reasonable limit
+EXTERN int libpd_poll_gui(void);
 
 /* multiple instances */
 

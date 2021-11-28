@@ -39,6 +39,7 @@ int main(int argc, char **argv) {
 
   pd1 = libpd_new_instance(); // create an instance
   pd2 = libpd_new_instance(); // create a second instance
+  printf("%d instances\n", libpd_num_instances());
 
   libpd_set_instance(pd1); // talk to first pd instance
 

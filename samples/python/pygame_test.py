@@ -11,7 +11,7 @@ pygame.mixer.init(frequency=SAMPLERATE)
 
 m = PdManager(1, 2, SAMPLERATE, 1)
 patch = libpd_open_patch('bloopy.pd', '.')
-print "$0: ", patch
+print("$0: ", patch)
 
 # this is basically a dummy since we are not actually going to read from the mic
 inbuf = array.array('h', range(BLOCKSIZE))

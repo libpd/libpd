@@ -24,7 +24,8 @@ PD_SRC_FILES := \
   pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
   pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c \
   pure-data/src/s_inter.c \
-  pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
+  pure-data/src/s_loader.c pure-data/src/s_main.c \
+  pure-data/src/s_net.c pure-data/src/s_path.c \
   pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
   pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
   pure-data/src/x_gui.c pure-data/src/x_list.c pure-data/src/x_midi.c \
@@ -139,6 +140,19 @@ LOCAL_MODULE := sigmund_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/sigmund~/sigmund~.c
+LOCAL_SHARED_LIBRARIES := pd
+
+include $(BUILD_SHARED_LIBRARY)
+
+
+# Build libpd_tilde.so
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := pd_tilde
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
+LOCAL_CFLAGS := -DPD
+LOCAL_SRC_FILES := pure-data/extra/pd~/pdsched.c pure-data/extra/pd~/pd~.c
 LOCAL_SHARED_LIBRARIES := pd
 
 include $(BUILD_SHARED_LIBRARY)
