@@ -1,17 +1,17 @@
 /*
-  this tests libpd's multi instance support
+  This tests libpd's multi instance support by creating two Pd instances and
+  running them simultaneously.  The test patch has a phasor~ object - in one
+  instance it runs forward, and in the other, backward.
 */
 #include <stdio.h>
 #include "z_libpd.h"
 
-#define TIMEUNITPERMSEC (32. * 441.)
-
 void pdprint1(const char *s) {
-  printf("pd1: %s", s);
+  printf("%s", s);
 }
 
 void pdprint2(const char *s) {
-  printf("pd2: %s", s);
+  printf("%s", s);
 }
 
 void pdnoteon1(int ch, int pitch, int vel) {
@@ -24,18 +24,21 @@ void pdnoteon2(int ch, int pitch, int vel) {
 
 int main(int argc, char **argv) {
   t_pdinstance *pd1, *pd2;
-  int srate = 44100;
+  int srate = 48000;
   float inbuf[64], outbuf[128];  // one input channel, two output channels
                                  // block size 64, one tick per buffer
-  if (argc < 3) {
-    fprintf(stderr, "usage: %s file folder\n", argv[0]);
-    return -1;
+  char *filename = "test.pd", *dirname = ".";
+
+  // accept overrides from the commandline:
+  // $ pdtest_multi file.pd ../dir
+  if (argc > 1) {
+    filename = argv[1];
+  }
+  if (argc > 2) {
+    dirname = argv[2];
   }
 
   libpd_init();
-    /* ... here we'd sure like to be able to have number of channels be
-    per-instance.  The sample rate is still global within Pd but we might
-    also consider relaxing that restrction. */
 
   pd1 = libpd_new_instance(); // create an instance
   pd2 = libpd_new_instance(); // create a second instance
@@ -43,7 +46,7 @@ int main(int argc, char **argv) {
 
   libpd_set_instance(pd1); // talk to first pd instance
 
-  // hooks for this instance
+  // set hooks for this instance
   libpd_set_printhook(pdprint1);
   libpd_set_noteonhook(pdnoteon1);
 
@@ -54,25 +57,22 @@ int main(int argc, char **argv) {
   libpd_finish_message("pd", "dsp");
 
   // open patch       [; pd open file folder(
-  libpd_openfile(argv[1], argv[2]);
+  libpd_openfile(filename, dirname);
 
-  libpd_set_instance(pd2); // talk to second pd instance
+  // repeat this all for the second instance
+  libpd_set_instance(pd2);
   libpd_set_printhook(pdprint2);
   libpd_set_noteonhook(pdnoteon2);
-
   libpd_init_audio(1, 2, srate);
-  // compute audio    [; pd dsp 1(
-  libpd_start_message(1); // one entry in list
+  libpd_start_message(1);
   libpd_add_float(1.0f);
   libpd_finish_message("pd", "dsp");
-
-  // open patch       [; pd open file folder(
-  libpd_openfile(argv[1], argv[2]);
+  libpd_openfile(filename, dirname);
 
     /* the following two messages can be sent without setting the pd instance
     and anyhow the symbols are global so they may affect multiple instances.
     However, if the messages change anything in the pd instance structure
-    (DSP state; current time; list of all canvases n our instance) those
+    (DSP state; current time; list of all canvases in our instance) those
     changes will apply to the current Pd instance, so the earlier messages,
     for instance, were sensitive to which was the current one. 
     
@@ -80,42 +80,37 @@ int main(int argc, char **argv) {
     as patches are opened, it would be better to open the patches with 
     settable $1, etc parameters to libpd_openfile().  */
 
+  // [; pd frequency 480 (
   libpd_set_instance(pd1);
-  // [; pd frequency 1 (
-  libpd_start_message(1); // one entry in list
-  libpd_add_float(1.0f);
-  fprintf(stderr, "x 1\n");
+  libpd_start_message(1);
+  libpd_add_float(480.0f);
   libpd_finish_message("frequency", "float");
-  fprintf(stderr, "x 2\n");
 
+  // [; pd frequency -480 (
   libpd_set_instance(pd2);
-  // [; pd frequency 2 (
-  libpd_start_message(1); // one entry in list
-  libpd_add_float(2.0f);
-  fprintf(stderr, "x 3\n");
+  libpd_start_message(1);
+  libpd_add_float(-480.0f);
   libpd_finish_message("frequency", "float");
-  fprintf(stderr, "x 4\n");
 
-  // now run pd for ten seconds (logical time)
+  // now run pd for 3 ticks
   int i, j;
   for (i = 0; i < 3; i++) {
-    // fill inbuf here
+
     libpd_set_instance(pd1);
     libpd_process_float(1, inbuf, outbuf);
-    if (i < 2)
-    {
-        for (j = 0; j < 8; j++)
-            printf("%f ", outbuf[j]);
-        printf("\n");
+    printf("instance 1, tick %d:\n", i);
+    for (j = 0; j < 8; j++) {
+      printf("%f ", outbuf[j]);
     }
+    printf("... \n");
+
     libpd_set_instance(pd2);
     libpd_process_float(1, inbuf, outbuf);
-    if (i < 2)
-    {
-        for (j = 0; j < 8; j++)
-            printf("%f ", outbuf[j]);
-        printf("\n");
+    printf("instance 2, tick %d:\n", i);
+    for (j = 0; j < 8; j++) {
+      printf("%f ", outbuf[j]);
     }
+    printf("... \n");
   }
 
   libpd_free_instance(pd1);
