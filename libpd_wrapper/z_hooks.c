@@ -45,8 +45,8 @@ t_libpdinstance *libpdinstance_new(void) {
   sys_lock();
   x->hooks = libpdhooks_new();
   libpd_instances = (t_libpdinstance **)resizebytes(libpd_instances,
-        pd_ninstances - 1 * sizeof(*libpd_instances),
-        (pd_ninstances) * sizeof(*libpd_instances));
+        pd_ninstances * sizeof(*libpd_instances),
+        (pd_ninstances+1) * sizeof(*libpd_instances));
   libpd_instances[pd_ninstances] = x;
   sys_unlock();
   x->pd = pdinstance_new();// increments pd_ninstances
