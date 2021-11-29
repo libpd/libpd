@@ -65,7 +65,7 @@ extern PERTHREAD t_libpdinstance *libpd_this;
 extern t_libpdinstance **libpd_instances;
 
 /// set the current libpd and pd instance: libpd_this/pd_this
-void libpd_setinstance(t_libpdinstance *x);
+void libpdinstance_set(t_libpdinstance *x);
 
 /// create a new instance & sets libpd_this/pd_this
 t_libpdinstance *libpdinstance_new(void);

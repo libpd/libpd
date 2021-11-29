@@ -35,7 +35,7 @@ t_libpdinstance libpd_maininstance = {&pd_maininstance, &libpd_mainhooks};
 PERTHREAD t_libpdinstance *libpd_this = &libpd_maininstance;
 t_libpdinstance **libpd_instances = NULL;
 
-void libpd_setinstance(t_libpdinstance *x) {
+void libpdinstance_set(t_libpdinstance *x) {
   pd_setinstance(x->pd);
   libpd_this = x;
 }

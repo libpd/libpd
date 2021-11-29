@@ -620,7 +620,7 @@ t_pdinstance *libpd_new_instance(void) {
 
 void libpd_set_instance(t_pdinstance *p) {
 #ifdef PDINSTANCE
-  libpd_setinstance(libpd_instances[p->pd_instanceno]);
+  libpdinstance_set(libpd_instances[p->pd_instanceno]);
 #endif
 }
 
