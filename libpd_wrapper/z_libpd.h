@@ -476,7 +476,7 @@ EXTERN int libpd_poll_gui(void);
 /// create a new pd instance and set as current
 /// note: use this in place of pdinstance_new()
 /// returns new instance or NULL when libpd is not compiled with PDINSTANCE
-EXTERN t_pdinstance *libpd_new_instance();
+EXTERN t_pdinstance *libpd_new_instance(void);
 
 /// set the current pd instance
 /// subsequent libpd calls will affect this instance only
