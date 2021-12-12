@@ -473,33 +473,38 @@ EXTERN int libpd_poll_gui(void);
 
 /* multiple instances */
 
-/// create a new pd instance & set as current
+/// create a new pd instance and set as current
 /// note: use this in place of pdinstance_new()
 /// returns new instance or NULL when libpd is not compiled with PDINSTANCE
-EXTERN t_pdinstance *libpd_new_instance(void);
+EXTERN t_pdinstance *libpd_new_instance();
 
 /// set the current pd instance
 /// subsequent libpd calls will affect this instance only
 /// note: use this in place of pd_setinstance()
 /// does nothing when libpd is not compiled with PDINSTANCE
-EXTERN void libpd_set_instance(t_pdinstance *p);
+EXTERN void libpd_set_instance(t_pdinstance *pd);
 
-/// free a pd instance
+/// free a pd instance and set main instance as current
 /// note: use this in place of pdinstance_free()
 /// does nothing when libpd is not compiled with PDINSTANCE
-EXTERN void libpd_free_instance(t_pdinstance *p);
+EXTERN void libpd_free_instance(t_pdinstance *pd);
 
 /// get the current pd instance
 EXTERN t_pdinstance *libpd_this_instance(void);
 
-/// get a pd instance by index
-/// returns NULL if index is out of bounds or main instance when libpd is not
-/// compiled with PDINSTANCE
-EXTERN t_pdinstance *libpd_get_instance(int index);
+/// get the main pd instance, always valid
+EXTERN t_pdinstance *libpd_main_instance(void);
 
-/// get the number of pd instances
+/// get the number of pd instances, including the main instance
 /// returns number or 1 when libpd is not compiled with PDINSTANCE
 EXTERN int libpd_num_instances(void);
+
+/// set optional per-instance user data
+/// note: data is not freed by libpd
+EXTERN void libpd_set_instancedata(t_pdinstance *pd, void *data);
+
+/// get per-instance user data
+EXTERN void* libpd_get_instancedata(t_pdinstance *pd);
 
 /* log level */
 

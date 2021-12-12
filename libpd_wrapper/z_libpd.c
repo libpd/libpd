@@ -64,9 +64,11 @@ static void *get_object(const char *s) {
   return x;
 }
 
+// note: could we use pd_this instead?
+static int s_initialized = 0;
+
 // this is called instead of sys_main() to start things
 int libpd_init(void) {
-  static int s_initialized = 0;
   if (s_initialized) return -1; // only allow init once (for now)
   s_initialized = 1;
   signal(SIGFPE, SIG_IGN);
@@ -86,6 +88,7 @@ int libpd_init(void) {
   STUFF->st_soundin = NULL;
   STUFF->st_soundout = NULL;
   STUFF->st_schedblocksize = DEFDACBLKSIZE;
+  STUFF->st_imp = &libpd_mainimp;
   sys_init_fdpoll();
   libpdreceive_setup();
   STUFF->st_searchpath = NULL;
@@ -420,31 +423,34 @@ int libpd_exists(const char *recv) {
   return retval;
 }
 
+// when setting hooks, use mainimp if pd is not yet inited
+#define IMP (s_initialized ? libpdimp_this() : &libpd_mainimp)
+
 void libpd_set_printhook(const t_libpd_printhook hook) {
-  if (!pd_this) // set default hook
+  if (!s_initialized) // set default hook
     sys_printhook = (t_printhook)hook;
   else // set instance hook
     STUFF->st_printhook = (t_printhook)hook;
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {
-  libpd_this->hooks->banghook = hook;
+  IMP->i_hooks->h_banghook = hook;
 }
 
 void libpd_set_floathook(const t_libpd_floathook hook) {
-  libpd_this->hooks->floathook = hook;
+  IMP->i_hooks->h_floathook = hook;
 }
 
 void libpd_set_symbolhook(const t_libpd_symbolhook hook) {
-  libpd_this->hooks->symbolhook = hook;
+  IMP->i_hooks->h_symbolhook = hook;
 }
 
 void libpd_set_listhook(const t_libpd_listhook hook) {
-  libpd_this->hooks->listhook = hook;
+  IMP->i_hooks->h_listhook = hook;
 }
 
 void libpd_set_messagehook(const t_libpd_messagehook hook) {
-  libpd_this->hooks->messagehook = hook;
+  IMP->i_hooks->h_messagehook = hook;
 }
 
 int libpd_is_float(t_atom *a) {
@@ -560,31 +566,31 @@ int libpd_sysrealtime(int port, int byte) {
 }
 
 void libpd_set_noteonhook(const t_libpd_noteonhook hook) {
-  libpd_this->hooks->noteonhook = hook;
+  IMP->i_hooks->h_noteonhook = hook;
 }
 
 void libpd_set_controlchangehook(const t_libpd_controlchangehook hook) {
-  libpd_this->hooks->controlchangehook = hook;
+  IMP->i_hooks->h_controlchangehook = hook;
 }
 
 void libpd_set_programchangehook(const t_libpd_programchangehook hook) {
-  libpd_this->hooks->programchangehook = hook;
+  IMP->i_hooks->h_programchangehook = hook;
 }
 
 void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook) {
-  libpd_this->hooks->pitchbendhook = hook;
+  IMP->i_hooks->h_pitchbendhook = hook;
 }
 
 void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook) {
-  libpd_this->hooks->aftertouchhook = hook;
+  IMP->i_hooks->h_aftertouchhook = hook;
 }
 
 void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
-  libpd_this->hooks->polyaftertouchhook = hook;
+  IMP->i_hooks->h_polyaftertouchhook = hook;
 }
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
-  libpd_this->hooks->midibytehook = hook;
+  IMP->i_hooks->h_midibytehook = hook;
 }
 
 int libpd_start_gui(const char *path) {
@@ -609,38 +615,36 @@ int libpd_poll_gui(void) {
   return (retval);
 }
 
-t_pdinstance *libpd_new_instance(void) {
+t_pdinstance *libpd_new_instance(void *data) {
 #ifdef PDINSTANCE
-  libpdinstance_new(); // sets pd_this & libpd_this
-  return libpd_this->pd;
+  t_pdinstance *pd = pdinstance_new();
+  pd->pd_stuff->st_imp = libpdimp_new();
+  return pd;
 #else
   return NULL;
 #endif
 }
 
-void libpd_set_instance(t_pdinstance *p) {
+void libpd_set_instance(t_pdinstance *pd) {
 #ifdef PDINSTANCE
-  libpdinstance_set(libpd_instances[p->pd_instanceno]);
+  pd_setinstance(pd);
 #endif
 }
 
-void libpd_free_instance(t_pdinstance *p) {
+void libpd_free_instance(t_pdinstance *pd) {
 #ifdef PDINSTANCE
-  libpdinstance_free(libpd_instances[p->pd_instanceno]);
+  if (pd == &pd_maininstance) return;
+  libpdimp_free(pd->pd_stuff->st_imp);
+  pdinstance_free(pd);
 #endif
 }
 
 t_pdinstance *libpd_this_instance(void) {
-  return libpd_this->pd;
+  return pd_this;
 }
 
-t_pdinstance *libpd_get_instance(int index) {
-#ifdef PDINSTANCE
-  if (index < 0 || index >= pd_ninstances) {return 0;}
-  return libpd_instances[index]->pd;
-#else
-  return pd_this;
-#endif
+t_pdinstance *libpd_main_instance(void) {
+  return &pd_maininstance;
 }
 
 int libpd_num_instances(void) {
@@ -649,6 +653,14 @@ int libpd_num_instances(void) {
 #else
   return 1;
 #endif
+}
+
+void libpd_set_instancedata(t_pdinstance *pd, void *data) {
+  libpdimp_this()->i_data = data;
+}
+
+void* libpd_get_instancedata(t_pdinstance *pd) {
+  return libpdimp_this()->i_data;
 }
 
 void libpd_set_verbose(int verbose) {

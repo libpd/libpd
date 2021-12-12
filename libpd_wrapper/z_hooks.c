@@ -11,6 +11,7 @@
 
 #include "z_hooks.h"
 #include <stdlib.h>
+#include "s_stuff.h"
 
 /* hooks */
 
@@ -28,45 +29,20 @@ void libpdhooks_free(t_libpdhooks *hooks) {
 
 /* instance */
 
-t_libpdinstance libpd_maininstance = {&pd_maininstance, &libpd_mainhooks};
+t_libpdimp libpd_mainimp = {&libpd_mainhooks, NULL};
 
-#ifdef PDINSTANCE
-
-PERTHREAD t_libpdinstance *libpd_this = &libpd_maininstance;
-t_libpdinstance **libpd_instances = NULL;
-
-void libpdinstance_set(t_libpdinstance *x) {
-  pd_setinstance(x->pd);
-  libpd_this = x;
+t_libpdimp* libpdimp_new(void) {
+  t_libpdimp *imp = calloc(1, sizeof(t_libpdimp));
+  imp->i_hooks = libpdhooks_new();
+  return imp;
 }
 
-t_libpdinstance *libpdinstance_new(void) {
-  t_libpdinstance *x = (t_libpdinstance *)calloc(1, sizeof(t_libpdinstance));
-  sys_lock();
-  x->hooks = libpdhooks_new();
-  libpd_instances = (t_libpdinstance **)resizebytes(libpd_instances,
-        pd_ninstances * sizeof(*libpd_instances),
-        (pd_ninstances+1) * sizeof(*libpd_instances));
-  libpd_instances[pd_ninstances] = x;
-  sys_unlock();
-  x->pd = pdinstance_new();// increments pd_ninstances
-  libpd_this = x;
-  return x;
+void libpdimp_free(t_libpdimp *imp) {
+  if (imp == &libpd_mainimp) return;
+  libpdhooks_free(imp->i_hooks);
+  free(imp);
 }
 
-void libpdinstance_free(t_libpdinstance *x) {
-  int i;
-  libpd_this = &libpd_maininstance;
-  sys_lock();
-  for (i = x->pd->pd_instanceno; i < pd_ninstances-1; i++)
-      libpd_instances[i] = libpd_instances[i+1];
-  libpd_instances = (t_libpdinstance **)resizebytes(libpd_instances,
-      pd_ninstances * sizeof(*libpd_instances),
-      (pd_ninstances-1) * sizeof(*libpd_instances));
-  sys_unlock();
-  pdinstance_free(x->pd); // decrements pd_ninstances
-  libpdhooks_free(x->hooks);
-  free(x);
+t_libpdimp* libpdimp_this(void) {
+  return STUFF->st_imp;
 }
-
-#endif /* PDINSTANCE */

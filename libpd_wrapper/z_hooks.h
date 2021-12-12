@@ -22,21 +22,21 @@
 typedef struct _libpdhooks {
 
   // messages
-  // no printhook as libpd_set_printhook() sets internal STUFF->st_printhook
-  t_libpd_banghook banghook;
-  t_libpd_floathook floathook;
-  t_libpd_symbolhook symbolhook;
-  t_libpd_listhook listhook;
-  t_libpd_messagehook messagehook;
+  // no h_printhook as libpd_set_printhook() sets internal STUFF->st_printhook
+  t_libpd_banghook h_banghook;
+  t_libpd_floathook h_floathook;
+  t_libpd_symbolhook h_symbolhook;
+  t_libpd_listhook h_listhook;
+  t_libpd_messagehook h_messagehook;
 
   // MIDI
-  t_libpd_noteonhook noteonhook;
-  t_libpd_controlchangehook controlchangehook;
-  t_libpd_programchangehook programchangehook;
-  t_libpd_pitchbendhook pitchbendhook;
-  t_libpd_aftertouchhook aftertouchhook;
-  t_libpd_polyaftertouchhook polyaftertouchhook;
-  t_libpd_midibytehook midibytehook;
+  t_libpd_noteonhook h_noteonhook;
+  t_libpd_controlchangehook h_controlchangehook;
+  t_libpd_programchangehook h_programchangehook;
+  t_libpd_pitchbendhook h_pitchbendhook;
+  t_libpd_aftertouchhook h_aftertouchhook;
+  t_libpd_polyaftertouchhook h_polyaftertouchhook;
+  t_libpd_midibytehook h_midibytehook;
 } t_libpdhooks;
 
 /// alloc new hooks struct and set all to NULL
@@ -48,36 +48,23 @@ void libpdhooks_free(t_libpdhooks *hooks);
 
 /* instance */
 
-typedef struct _libpdinstance {
-  t_pdinstance *pd;
-  t_libpdhooks *hooks;
-} t_libpdinstance;
+/// libpd per-instance implementation data
+typedef struct _libpdimp {
+  t_libpdhooks *i_hooks; /* event hooks */
+  void *i_data;          /* user data, default NULL */
+} t_libpdimp;
 
-/// main instance, always valid
-extern t_libpdinstance libpd_maininstance;
+/// main instance implementation data, always valid
+extern t_libpdimp libpd_mainimp;
 
-#ifdef PDINSTANCE
+/// alloc new instance implementation data
+t_libpdimp* libpdimp_new(void);
 
-/// current instance
-extern PERTHREAD t_libpdinstance *libpd_this;
+/// free instance implementation data
+/// does nothing if imp is libpd_mainimp
+void libpdimp_free(t_libpdimp *imp);
 
-/// available instances
-extern t_libpdinstance **libpd_instances;
-
-/// set the current libpd and pd instance: libpd_this/pd_this
-void libpdinstance_set(t_libpdinstance *x);
-
-/// create a new instance & sets libpd_this/pd_this
-t_libpdinstance *libpdinstance_new(void);
-
-/// frees an instance, sets libpd_this/pd_this to main instances
-void libpdinstance_free(t_libpdinstance *x);
-
-#else
-
-/// current instance
-#define libpd_this (&libpd_maininstance)
-
-#endif /* PDINSTANCE */
+/// get current instance implementation data
+t_libpdimp* libpdimp_this(void);
 
 #endif
