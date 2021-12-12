@@ -88,7 +88,7 @@ int libpd_init(void) {
   STUFF->st_soundin = NULL;
   STUFF->st_soundout = NULL;
   STUFF->st_schedblocksize = DEFDACBLKSIZE;
-  STUFF->st_imp = &libpd_mainimp;
+  STUFF->st_impdata = &libpd_mainimp;
   sys_init_fdpoll();
   libpdreceive_setup();
   STUFF->st_searchpath = NULL;
@@ -618,7 +618,7 @@ int libpd_poll_gui(void) {
 t_pdinstance *libpd_new_instance(void *data) {
 #ifdef PDINSTANCE
   t_pdinstance *pd = pdinstance_new();
-  pd->pd_stuff->st_imp = libpdimp_new();
+  pd->pd_stuff->st_impdata = libpdimp_new();
   return pd;
 #else
   return NULL;
@@ -634,7 +634,7 @@ void libpd_set_instance(t_pdinstance *pd) {
 void libpd_free_instance(t_pdinstance *pd) {
 #ifdef PDINSTANCE
   if (pd == &pd_maininstance) return;
-  libpdimp_free(pd->pd_stuff->st_imp);
+  libpdimp_free(pd->pd_stuff->st_impdata);
   pdinstance_free(pd);
 #endif
 }

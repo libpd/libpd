@@ -44,5 +44,5 @@ void libpdimp_free(t_libpdimp *imp) {
 }
 
 t_libpdimp* libpdimp_this(void) {
-  return STUFF->st_imp;
+  return STUFF->st_impdata;
 }
