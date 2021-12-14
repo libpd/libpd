@@ -5,13 +5,14 @@
 */
 #include <stdio.h>
 #include "z_libpd.h"
+#include "z_print_util.h"
 
 void pdprint1(const char *s) {
-  printf("%s", s);
+  printf("pd1 %s\n", s);
 }
 
 void pdprint2(const char *s) {
-  printf("%s", s);
+  printf("pd2 %s\n", s);
 }
 
 void pdnoteon1(int ch, int pitch, int vel) {
@@ -47,7 +48,7 @@ int main(int argc, char **argv) {
   libpd_set_instance(pd1); // talk to first pd instance
 
   // set hooks for this instance
-  libpd_set_printhook(pdprint1);
+  libpd_set_concatenated_printhook(pdprint1);
   libpd_set_noteonhook(pdnoteon1);
 
   libpd_init_audio(1, 2, srate);
@@ -61,7 +62,7 @@ int main(int argc, char **argv) {
 
   // repeat this all for the second instance
   libpd_set_instance(pd2);
-  libpd_set_printhook(pdprint2);
+  libpd_set_concatenated_printhook(pdprint2);
   libpd_set_noteonhook(pdnoteon2);
   libpd_init_audio(1, 2, srate);
   libpd_start_message(1);
