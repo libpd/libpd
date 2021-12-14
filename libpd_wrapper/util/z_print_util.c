@@ -38,15 +38,6 @@ void libpd_concatenated_stuff_free(void) {
   if(CONCAT_STUFF) free(CONCAT_STUFF);
 }
 
-void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
-  libpd_concatenated_stuff_new();
-  if (CONCAT_STUFF) {
-    CONCAT_HOOK = hook;
-    CONCAT_BUFLEN = 0;
-    libpd_set_printhook(libpd_print_concatenator);
-  }
-}
-
 void libpd_print_concatenator(const char *s) {
   if (!CONCAT_STUFF || !CONCAT_HOOK) return;
 
@@ -71,3 +62,13 @@ void libpd_print_concatenator(const char *s) {
     CONCAT_BUFLEN = 0;
   }
 }
+
+void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
+  libpd_concatenated_stuff_new();
+  if (CONCAT_STUFF) {
+    CONCAT_HOOK = hook;
+    CONCAT_BUFLEN = 0;
+    libpd_set_printhook(libpd_print_concatenator);
+  }
+}
+
