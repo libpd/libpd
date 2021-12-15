@@ -615,7 +615,7 @@ int libpd_poll_gui(void) {
   return (retval);
 }
 
-t_pdinstance *libpd_new_instance(void *data) {
+t_pdinstance *libpd_new_instance(void) {
 #ifdef PDINSTANCE
   t_pdinstance *pd = pdinstance_new();
   pd->pd_stuff->st_impdata = libpdimp_new();
