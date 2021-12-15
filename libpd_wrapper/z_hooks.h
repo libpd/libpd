@@ -52,6 +52,7 @@ void libpdhooks_free(t_libpdhooks *hooks);
 typedef struct _libpdimp {
   t_libpdhooks *i_hooks; /* event hooks */
   void *i_concat_stuff; /* concatenated print data, default NULL */
+  void *i_queued_stuff; /* concatenated queued data, default NULL */
   void *i_data;          /* user data, default NULL */
 } t_libpdimp;
 

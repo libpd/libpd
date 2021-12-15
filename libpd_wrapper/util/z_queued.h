@@ -22,6 +22,11 @@ extern "C"
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_printhook(const t_libpd_printhook hook);
 
+/// set the queued print receiver hook, NULL by default
+/// concatenate full lines before sending to the printhook
+/// note: do not call this while DSP is running
+EXTERN void libpd_set_concatenated_queued_printhook(const t_libpd_printhook hook);
+
 /// set the queued bang receiver hook, NULL by default
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_banghook(const t_libpd_banghook hook);
@@ -69,15 +74,6 @@ EXTERN void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook
 /// set the queued raw MIDI byte hook, NULL by default
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
-
-/// initialize libpd and the queued ringbuffers, use in place of libpd_init()
-/// this is safe to call more than once
-/// returns 0 on success, -1 if libpd was already initialized, or -2 if ring
-/// buffer allocation failed
-EXTERN int libpd_queued_init();
-
-/// free the queued ringbuffers
-EXTERN void libpd_queued_release();
 
 /// process and dispatch received messages in message ringbuffer
 EXTERN void libpd_queued_receive_pd_messages();
