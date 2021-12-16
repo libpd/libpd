@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <pthread.h>
 #include "z_libpd.h"
+#include "util/z_print_util.h"
 
 #define LIBPD_TEST_NINSTANCES   4
 #define LIBPD_TEST_NLOOPS       16
@@ -30,11 +31,17 @@ typedef struct l_instance
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+void pdprint(const char *s)
+{
+    printf("pd %s\n", s);
+}
+
 static void* libpd_instance_doinit(t_libpd_instance* inst)
 {
     inst->l_pd = libpd_new_instance();
     libpd_set_instance(inst->l_pd);
     assert(inst->l_pd && "pd instance can't be allocated.");
+    libpd_set_concatenated_printhook(pdprint);
     libpd_init_audio((int)inst->l_ninputs, (int)inst->l_noutputs, (int)inst->l_samplerate);
     return NULL;
 }
