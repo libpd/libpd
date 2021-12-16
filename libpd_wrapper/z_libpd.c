@@ -655,11 +655,11 @@ int libpd_num_instances(void) {
 #endif
 }
 
-void libpd_set_instancedata(t_pdinstance *pd, void *data) {
+void libpd_set_instancedata(void *data) {
   libpdimp_this()->i_data = data;
 }
 
-void* libpd_get_instancedata(t_pdinstance *pd) {
+void* libpd_get_instancedata(void) {
   return libpdimp_this()->i_data;
 }
 

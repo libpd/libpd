@@ -501,10 +501,10 @@ EXTERN int libpd_num_instances(void);
 
 /// set optional per-instance user data
 /// note: data is not freed by libpd
-EXTERN void libpd_set_instancedata(t_pdinstance *pd, void *data);
+EXTERN void libpd_set_instancedata(void *data);
 
 /// get per-instance user data
-EXTERN void* libpd_get_instancedata(t_pdinstance *pd);
+EXTERN void* libpd_get_instancedata(void);
 
 /* log level */
 
