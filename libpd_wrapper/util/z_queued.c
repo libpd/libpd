@@ -256,73 +256,85 @@ void libpd_queued_stuff_new(void);
 void libpd_set_queued_printhook(const t_libpd_printhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_printhook = hook;
+  libpd_set_printhook(internal_printhook);
 }
 
-extern void libpd_print_concatenator(const char *s);
 void libpd_set_concatenated_queued_printhook(const t_libpd_printhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  libpd_set_concatenated_printhook(hook);
-  QUEUED_STUFF->q_printhook = libpd_print_concatenator;
+  QUEUED_STUFF->q_printhook = hook;
+  libpd_set_concatenated_printhook(internal_printhook);
 }
 
 void libpd_set_queued_banghook(const t_libpd_banghook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_banghook = hook;
+  libpd_set_banghook(internal_banghook);
 }
 
 void libpd_set_queued_floathook(const t_libpd_floathook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_floathook = hook;
+  libpd_set_floathook(internal_floathook);
 }
 
 void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_symbolhook = hook;
+  libpd_set_symbolhook(internal_symbolhook);
 }
 
 void libpd_set_queued_listhook(const t_libpd_listhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_listhook = hook;
+  libpd_set_listhook(internal_listhook);
 }
 
 void libpd_set_queued_messagehook(const t_libpd_messagehook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_messagehook = hook;
+  libpd_set_messagehook(internal_messagehook);
 }
 
 void libpd_set_queued_noteonhook(const t_libpd_noteonhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_noteonhook = hook;
+  libpd_set_noteonhook(internal_noteonhook);
 }
 
 void libpd_set_queued_controlchangehook(const t_libpd_controlchangehook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_controlchangehook = hook;
+  libpd_set_controlchangehook(internal_controlchangehook);
 }
 
 void libpd_set_queued_programchangehook(const t_libpd_programchangehook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_programchangehook = hook;
+  libpd_set_programchangehook(internal_programchangehook);
 }
 
 void libpd_set_queued_pitchbendhook(const t_libpd_pitchbendhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_pitchbendhook = hook;
+  libpd_set_pitchbendhook(internal_pitchbendhook);
 }
 
 void libpd_set_queued_aftertouchhook(const t_libpd_aftertouchhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_aftertouchhook = hook;
+  libpd_set_aftertouchhook(internal_aftertouchhook);
 }
 
 void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_polyaftertouchhook = hook;
+  libpd_set_polyaftertouchhook(internal_polyaftertouchhook);
 }
 
 void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_midibytehook = hook;
+  libpd_set_midibytehook(internal_midibytehook);
 }
 
 void libpd_queued_stuff_new() {
@@ -343,21 +355,6 @@ void libpd_queued_stuff_new() {
     libpdimp_this()->i_queued_stuff = NULL;
     return;
   }
-
-  libpd_set_printhook(internal_printhook);
-  libpd_set_banghook(internal_banghook);
-  libpd_set_floathook(internal_floathook);
-  libpd_set_symbolhook(internal_symbolhook);
-  libpd_set_listhook(internal_listhook);
-  libpd_set_messagehook(internal_messagehook);
-
-  libpd_set_noteonhook(internal_noteonhook);
-  libpd_set_controlchangehook(internal_controlchangehook);
-  libpd_set_programchangehook(internal_programchangehook);
-  libpd_set_pitchbendhook(internal_pitchbendhook);
-  libpd_set_aftertouchhook(internal_aftertouchhook);
-  libpd_set_polyaftertouchhook(internal_polyaftertouchhook);
-  libpd_set_midibytehook(internal_midibytehook);
 }
 
 void libpd_queued_stuff_free() {
