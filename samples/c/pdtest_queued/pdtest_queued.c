@@ -13,36 +13,32 @@
 #define NLOOPS       16
 #define NINSTANCES   2
 
-typedef struct _instance
+typedef struct _queued_instance
 {
-    t_pdinstance*       i_pd;
-    pthread_t           i_thd;
-    char                i_terminated;
-} t_instance;
+    t_pdinstance*   i_pd;
+    pthread_t       i_thd;
+    char            i_terminated;
+    int             i_id;
+} t_queued_instance;
 
-//////////////////////////////////////////////////////////////////////////////////////////////
 
-void pdprint1(const char *s) {
-    printf("pd1 %s\n", s);
-}
+///////////////////////////////////////////////////////////////////////////////
 
-void pdprint2(const char *s) {
-    printf("pd2 %s\n", s);
-}
-
-void pdfloat1(const char *recv, float x)
+void pdprint(const char *s)
 {
-    printf("f1 %s %f\n", recv, x);
+    int id = ((t_queued_instance*)libpd_get_instancedata())->i_id;
+    printf("pd_%d %s\n", id, s);
 }
 
-void pdfloat2(const char *recv, float x)
+void pdfloat(const char *recv, float x)
 {
-    printf("f2 %s %f\n", recv, x);
+    int id = ((t_queued_instance*)libpd_get_instancedata())->i_id;
+    printf("pd_%d %s %f\n", id, recv, x);
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
-static void* instance_perform(t_instance* inst)
+static void* instance_perform(t_queued_instance* inst)
 {
     size_t i;
     float inbuf[64], outbuf[128];  // one input channel, two output channels
@@ -56,14 +52,14 @@ static void* instance_perform(t_instance* inst)
     return NULL;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char **argv)
 {
+    t_queued_instance instances[NINSTANCES];
     size_t i;
     char still_running = 1;
     int srate = 48000;
-    t_instance instances[NINSTANCES];
     char *filename = "test.pd", *dirname = ".";
 
     if (argc > 1) {
@@ -83,21 +79,23 @@ int main(int argc, char **argv)
 
     /* init the instances */
     for(i = 0; i < NINSTANCES; ++i) {
+        /* create pd instance: */
         instances[i].i_pd = libpd_new_instance();
-        libpd_set_instance(instances[i].i_pd);
+        /* set the new instance as the current one: */
+        libpd_set_instance(instances[i].i_pd); 
+        /* set id=1 for the first instance, id=2 for the second one: */
+        instances[i].i_id = i + 1;
+        /* allow to find the "queued_instance" from the pd instance: */
+        libpd_set_instancedata(&instances[i]);
+        /* set the hooks: */
+        libpd_set_concatenated_queued_printhook(pdprint);
+        libpd_set_queued_floathook(pdfloat);
+        /* receive "TestChannel" messages from Pd: */
         libpd_bind("TestChannel");
+
         libpd_init_audio(1, 2, srate);
         libpd_openfile(filename, dirname);
     }
-
-    /* set the hooks */
-    libpd_set_instance(instances[0].i_pd);
-    libpd_set_concatenated_queued_printhook(pdprint1);
-    libpd_set_queued_floathook(pdfloat1);
-
-    libpd_set_instance(instances[1].i_pd);
-    libpd_set_concatenated_queued_printhook(pdprint2);
-    libpd_set_queued_floathook(pdfloat2);
 
     /* run the instances */
     for(i = 0; i < NINSTANCES; ++i) {
