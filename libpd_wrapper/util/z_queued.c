@@ -368,6 +368,12 @@ void libpd_queued_stuff_free() {
   libpdimp_this()->i_queued_stuff = NULL;
 }
 
+int libpd_queued_init() {
+  return libpd_init();
+}
+
+void libpd_queued_release() {}
+
 void libpd_queued_receive_pd_messages() {
   size_t available = rb_available_to_read(QUEUED_STUFF->pd_receive_buffer);
   if (!available) return;

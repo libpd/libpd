@@ -75,6 +75,15 @@ EXTERN void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook);
 
+///////////////////////////////////////////////////////////////////////////////////
+/// the two following functions are deprecated, but kept for compatibility reasons:
+/// libpd_queued_init() only initializes libpd; just use libpd_init() instead
+EXTERN int libpd_queued_init();
+
+/// libpd_queued_release() doesn't do anything anymore
+EXTERN void libpd_queued_release();
+///////////////////////////////////////////////////////////////////////////////////
+
 /// process and dispatch received messages in message ringbuffer
 EXTERN void libpd_queued_receive_pd_messages();
 
