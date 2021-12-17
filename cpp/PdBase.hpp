@@ -1066,11 +1066,15 @@ protected:
         bool init(const int numInChannels, const int numOutChannels,
                   const int sampleRate, bool queued) {
 
+            // init libpd, should only be called once!
+            if(!bLibPdInited) {
+                libpd_init();
+                bLibPdInited = true;
+            }
             // attach callbacks
             bQueued = queued;
             if(queued) {
-                libpd_set_queued_printhook(libpd_print_concatenator);
-                libpd_set_concatenated_printhook(_print);
+                libpd_set_concatenated_queued_printhook(_print);
 
                 libpd_set_queued_banghook(_bang);
                 libpd_set_queued_floathook(_float);
@@ -1085,15 +1089,8 @@ protected:
                 libpd_set_queued_aftertouchhook(_aftertouch);
                 libpd_set_queued_polyaftertouchhook(_polyaftertouch);
                 libpd_set_queued_midibytehook(_midibyte);
-                
-                // init libpd, should only be called once!
-                if(!bLibPdInited) {
-                    libpd_queued_init();
-                    bLibPdInited = true;
-                }
             }
             else {
-                libpd_set_printhook(libpd_print_concatenator);
                 libpd_set_concatenated_printhook(_print);
 
                 libpd_set_banghook(_bang);
@@ -1109,12 +1106,6 @@ protected:
                 libpd_set_aftertouchhook(_aftertouch);
                 libpd_set_polyaftertouchhook(_polyaftertouch);
                 libpd_set_midibytehook(_midibyte);
-
-                // init libpd, should only be called once!
-                if(!bLibPdInited) {
-                    libpd_init();
-                    bLibPdInited = true;
-                }
             }
 
             // init audio
@@ -1135,8 +1126,7 @@ protected:
             if(bInited) {
                 computeAudio(false);
                 if(bQueued) {
-                    libpd_set_queued_printhook(NULL);
-                    libpd_set_concatenated_printhook(NULL);
+                    libpd_set_concatenated_queued_printhook(NULL);
 
                     libpd_set_queued_banghook(NULL);
                     libpd_set_queued_floathook(NULL);
@@ -1151,11 +1141,8 @@ protected:
                     libpd_set_queued_aftertouchhook(NULL);
                     libpd_set_queued_polyaftertouchhook(NULL);
                     libpd_set_queued_midibytehook(NULL);
-
-                    libpd_queued_release();
                 }
                 else {
-                    libpd_set_printhook(NULL);
                     libpd_set_concatenated_printhook(NULL);
 
                     libpd_set_banghook(NULL);
