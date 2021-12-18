@@ -197,10 +197,10 @@ static NSTimer *midiPollTimer;
 }
 
 + (int)initializeWithQueue:(BOOL)queue {
+	int ret = libpd_init();
 	if (queue) {
 		queued = YES;
-		libpd_set_queued_printhook(libpd_print_concatenator);
-		libpd_set_concatenated_printhook(printHook);
+		libpd_set_concatenated_queued_printhook(printHook);
 
 		libpd_set_queued_banghook(bangHook);
 		libpd_set_queued_floathook(floatHook);
@@ -215,14 +215,11 @@ static NSTimer *midiPollTimer;
 		libpd_set_queued_aftertouchhook(aftertouchHook);
 		libpd_set_queued_polyaftertouchhook(polyAftertouchHook);
 		libpd_set_queued_midibytehook(midiByteHook);
-
-		return libpd_queued_init();
 	}
 	else {
 		[PdBase stopMessagesTimer];
 		[PdBase stopMidiTimer];
 		queued = NO;
-		libpd_set_printhook(libpd_print_concatenator);
 		libpd_set_concatenated_printhook(printHook);
 
 		libpd_set_banghook(bangHook);
@@ -238,9 +235,8 @@ static NSTimer *midiPollTimer;
 		libpd_set_aftertouchhook(aftertouchHook);
 		libpd_set_polyaftertouchhook(polyAftertouchHook);
 		libpd_set_midibytehook(midiByteHook);
-
-		return libpd_init();
 	}
+	return ret;
 }
 
 + (BOOL)isQueued {
