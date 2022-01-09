@@ -68,6 +68,10 @@ set(PD_SOURCES
     pure-data/src/d_osc.c
     pure-data/src/d_resample.c
     pure-data/src/d_soundfile.c
+    pure-data/src/d_soundfile_aiff.c
+    pure-data/src/d_soundfile_caf.c
+    pure-data/src/d_soundfile_next.c
+    pure-data/src/d_soundfile_wave.c
     pure-data/src/d_ugen.c
     pure-data/src/g_all_guis.c
     pure-data/src/g_all_guis.h
@@ -122,6 +126,7 @@ set(PD_SOURCES
     pure-data/src/x_arithmetic.c
     pure-data/src/x_array.c
     pure-data/src/x_connective.c
+    pure-data/src/x_file.c
     pure-data/src/x_gui.c
     pure-data/src/x_interface.c
     pure-data/src/x_list.c

@@ -1,3 +1,7 @@
+0.13.0 TBA
+
+* updated to pd vanilla 0.52-0
+
 0.12.3 2021 Jun 12
 
 * libpd.xcodeproj macOS targets no longer install static lib or copy public

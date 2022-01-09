@@ -27,11 +27,13 @@ The preferred method to download libpd is to use git.
 
 The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
 
-To download libpd & checkout the pure-data submodule do the following:
+To download libpd & check out the pure-data submodule, do the following:
 
     git clone --recurse-submodules https://github.com/libpd/libpd.git
     
-You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources. If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
+You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources.
+
+Note: If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
 
     cd libpd
     git submodule update --init --recursive
@@ -39,6 +41,7 @@ You should now have a `libpd` directory and the `libpd/pure-data` directory shou
 For most uses, it is recommended to check out the latest stable release version via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
 
     git checkout 0.8.3
+    git submodule update
 
 The master branch contains the latest libpd development and can be considered *generally* stable. However, we make no guarantees. :)
 
@@ -159,7 +162,7 @@ To override autodetection, specify the `-arch` flags directly using the `FAT_ARC
 
 libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
 
-    <http://www.msys2.org/>
+<http://www.msys2.org/>
 
 Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
 
@@ -321,7 +324,7 @@ The Xcode project builds the following targets:
 * **libpd-ios-multi**: libpd for iOS with multiple instance support
 * **libpd-osx-multi**: libpd for macOS with multiple instance support
 
-For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
+For detailed instructions, see [Working with libpd in Xcode](https://github.com/libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 
 If you are unfamiliar with how static libraries work or how to use them in Xcode, see [this useful tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial).
 

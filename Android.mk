@@ -8,7 +8,9 @@ PD_SRC_FILES := \
   pure-data/src/d_fft_fftsg.c \
   pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
   pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
-  pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
+  pure-data/src/d_soundfile.c pure-data/src/d_soundfile_aiff.c \
+  pure-data/src/d_soundfile_caf.c pure-data/src/d_soundfile_next.c \
+  pure-data/src/d_soundfile_wave.c pure-data/src/d_ugen.c \
   pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
   pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
   pure-data/src/g_editor_extras.c \
@@ -28,6 +30,7 @@ PD_SRC_FILES := \
   pure-data/src/s_net.c pure-data/src/s_path.c \
   pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
   pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
+  pure-data/src/x_file.c \
   pure-data/src/x_gui.c pure-data/src/x_list.c pure-data/src/x_midi.c \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_array.c \
   pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c \
