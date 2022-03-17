@@ -1,5 +1,9 @@
 0.13.0 TBA
 
+* fixed clone unauthenticated git protocol error by moving to https submodule
+  urls (reported by Ricardo de Amorim), run the following after updating a repo:
+  git submodule sync --recursive && git submodule update --init
+
 * updated to pd vanilla 0.52-0
 
 0.12.3 2021 Jun 12
