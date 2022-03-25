@@ -49,6 +49,7 @@ Pod::Spec.new do |spec|
   spec.macos.libraries = 'dl'
 
   # exclude backends and utils not relevant to libpd
+  # also exclude libpd files included with the puredata source itself for now (until parity)
   spec.exclude_files = 'pure-data/src/s_audio_alsa.h',
                        'pure-data/src/s_audio_alsa.c',
                        'pure-data/src/s_audio_alsamm.c',
@@ -71,7 +72,20 @@ Pod::Spec.new do |spec|
                        'pure-data/src/s_entry.c',
                        'pure-data/src/s_watchdog.c',
                        'pure-data/src/u_pdreceive.c',
-                       'pure-data/src/u_pdsend.c'
+                       'pure-data/src/u_pdsend.c',
+                       'pure-data/src/x_libpdreceive.h',
+                       'pure-data/src/x_libpdreceive.c',
+                       'pure-data/src/z_ringbuffer.h',
+                       'pure-data/src/z_ringbuffer.c',
+                       'pure-data/src/z_queued.c',
+                       'pure-data/src/z_queued.h',
+                       'pure-data/src/z_print_util.c',
+                       'pure-data/src/z_print_util.h',
+                       'pure-data/src/z_hooks.c',
+                       'pure-data/src/z_hooks.h',
+                       'pure-data/src/s_libpdmidi.c',
+                       'pure-data/src/z_libpd.c',
+                       'pure-data/src/z_libpd.h'
 
   # exclude ios-only audio implementation
   spec.macos.exclude_files = 'objc/PdAudioController.*{h,m}',
