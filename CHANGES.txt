@@ -3,6 +3,8 @@
 * fixed clone unauthenticated git protocol error by moving to https submodule
   urls (reported by Ricardo de Amorim), run the following after updating a repo:
   git submodule sync --recursive && git submodule update --init
+* updated podspec to exclude libpd files included with puredata source itself
+  for now (Ricardo de Amorim)
 
 * updated to pd vanilla 0.52-0
 
