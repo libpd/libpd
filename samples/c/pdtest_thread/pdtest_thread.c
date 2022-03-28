@@ -9,10 +9,11 @@
 #include "z_libpd.h"
 
 #define LIBPD_TEST_NINSTANCES   4
-#define LIBPD_TEST_NLOOPS       16
+#define LIBPD_TEST_NLOOPS       8
 
 typedef struct l_instance
 {
+    int                 l_id;
     t_pdinstance*       l_pd;
     size_t              l_blocksize;
     size_t              l_samplerate;
@@ -30,10 +31,25 @@ typedef struct l_instance
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+// print output will often be mixed between threads since they execute concurrently,
+// but we print anyway for testing...
+void libpd_instance_print(const char *s) {
+    printf("%s", s);
+}
+
+void libpd_instance_noteon(int ch, int pitch, int vel) {
+    printf("noteon: %d %d %d\n", ch, pitch, vel);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 static void* libpd_instance_doinit(t_libpd_instance* inst)
 {
     inst->l_pd = libpd_new_instance();
     libpd_set_instance(inst->l_pd);
+    libpd_set_printhook(libpd_instance_print);
+    libpd_set_noteonhook(libpd_instance_noteon);
     assert(inst->l_pd && "pd instance can't be allocated.");
     libpd_init_audio((int)inst->l_ninputs, (int)inst->l_noutputs, (int)inst->l_samplerate);
     return NULL;
@@ -42,7 +58,6 @@ static void* libpd_instance_doinit(t_libpd_instance* inst)
 static void libpd_instance_init(t_libpd_instance* inst,
                                 size_t blksize, size_t samplerate, size_t nins, size_t nouts)
 {
-    
     inst->l_blocksize   = blksize;
     inst->l_samplerate  = samplerate;
     inst->l_ninputs     = nins;
@@ -168,19 +183,26 @@ static void libpd_instance_open(t_libpd_instance* inst, const char *file, const 
 static void* libpd_instance_doperform(t_libpd_instance* inst)
 {
     size_t i;
+    int ticks = (int)(inst->l_blocksize / (size_t)64);
     libpd_set_instance(inst->l_pd);
-    libpd_process_float((int)(inst->l_blocksize / (size_t)64), inst->l_inputs, inst->l_outputs);
+    libpd_process_float(ticks, inst->l_inputs, inst->l_outputs);
     for(i = 0; i < inst->l_blocksize; ++i) {
         int result   = (int)inst->l_outputs[i];
         int expected = i%2 ? ((i-1)/2)%64 * -1 : (i/2)%64;
-        assert(result == expected && "DSP results are wrong"); }
+        assert(result == expected && "DSP results are wrong");
+    }
+    printf("instance %d, ticks %d: ", inst->l_id, ticks);
+    for (i = 0; i < 8; i++) {
+      printf("%d ", (int)inst->l_outputs[i]);
+    }
+    printf("... \n");
     return NULL;
 }
 
 static void libpd_instance_perform(t_libpd_instance* inst)
 {
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_doperform, inst) &&
-           "libpd_instance_perform thread creation error.");
+           "libpd_instance_perform thread creation error");
     pthread_join(inst->l_thd, NULL);
 }
 
@@ -196,7 +218,8 @@ static void* multi_instance_run(t_libpd_instance* inst)
     libpd_instance_open(inst, test_file, test_folder);
     libpd_instance_dsp_start(inst);
     for(i = 0; i < LIBPD_TEST_NLOOPS; ++i) {
-        libpd_instance_perform(inst); }
+        libpd_instance_perform(inst);
+    }
     libpd_instance_dsp_stop(inst);
     libpd_instance_close(inst);
     
@@ -230,6 +253,7 @@ int main(int argc, char **argv)
         
     for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i)
     {
+        instance[i].l_id = i+1;
         assert(!pthread_create(threads+i, NULL, (void *)multi_instance_run, instance+i) &&
                "multi_instance_run thread creation error.");
     }
