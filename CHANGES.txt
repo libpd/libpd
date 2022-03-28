@@ -5,8 +5,10 @@
   git submodule sync --recursive && git submodule update --init
 * updated podspec to exclude libpd files included with puredata source itself
   for now (Ricardo de Amorim)
+* fixed bad readme link to wiki
 
-* updated to pd vanilla 0.52-0
+* updated to pd vanilla 0.52-2
+* update language wrappers for new pd source files
 
 0.12.3 2021 Jun 12
 
