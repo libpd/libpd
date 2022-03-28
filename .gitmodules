@@ -1,6 +1,6 @@
 [submodule "jni/opensl_stream"]
 	path = jni/opensl_stream
-	url = git://github.com/nettoyeurny/opensl_stream.git
+	url = https://github.com/nettoyeurny/opensl_stream.git
 [submodule "pure-data"]
 	path = pure-data
-	url = git://github.com/pure-data/pure-data
+	url = https://github.com/pure-data/pure-data.git
