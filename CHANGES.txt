@@ -1,14 +1,20 @@
 0.13.0 TBA
 
-* fixed clone unauthenticated git protocol error by moving to https submodule
-  urls (reported by Ricardo de Amorim), run the following after updating a repo:
-  git submodule sync --recursive && git submodule update --init
-* updated podspec to exclude libpd files included with puredata source itself
-  for now (Ricardo de Amorim)
-* fixed bad readme link to wiki
-
 * updated to pd vanilla 0.52-2
-* update language wrappers for new pd source files
+
+* C: print and midi hooks finally per-instance (!)
+* C: added libpd_set_instancedata() & libpd_get_instancedata() for optional
+     per-instance user data storage 
+* C: fixed libpdinstance_new() memory issue
+
+* Cocoapods: fixed clone unauthenticated git protocol error by moving to https
+             submodule urls (reported by Ricardo de Amorim), run the following
+             after updating a repo:
+             git submodule sync --recursive && git submodule update --init
+* Cocoapods: updated podspec to exclude libpd files included with puredata
+             source itself for now (Ricardo de Amorim)
+
+* various readme updates and clarifications
 
 0.12.3 2021 Jun 12
 
