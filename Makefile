@@ -53,7 +53,7 @@ else
     ifeq ($(UNAME), Linux)
       PDNATIVE_PLATFORM = linux
       JAVA_HOME ?= /usr/lib/jvm/default-java
-      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -DHAVE_LIBDL
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -I"$(JAVA_HOME)/include" -DHAVE_LIBDL
       LDFLAGS += -ldl
     else ifeq ($(UNAME), FreeBSD)
       PDNATIVE_PLATFORM = FreeBSD
@@ -118,7 +118,7 @@ LIBPD_UTILS = \
 
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
-    java/org/puredata/core/PdBaseloader.java \
+    java/org/puredata/core/PdBaseLoader.java \
     java/org/puredata/core/NativeLoader.java \
     java/org/puredata/core/PdListener.java \
     java/org/puredata/core/PdMidiListener.java \
