@@ -1,5 +1,5 @@
 # override via: make PYTHON=python3.9, etc
-PYTHON = python
+PYTHON = python3
 
 # detect platform
 UNAME = $(shell uname)
