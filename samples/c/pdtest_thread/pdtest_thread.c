@@ -1,5 +1,6 @@
 /*
-  this tests pd's currently *experimental* multi instance support 
+  This tests pd's multi instance support by running multiple instances
+  concurrently within individiual threads.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,9 +32,8 @@ typedef struct l_instance
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// print output will often be mixed between threads since they execute concurrently,
-// but we print anyway for testing...
-void libpd_instance_print(const char *s) {
+// print output will often be mixed between threads, but we print anyway for testing...
+void libpd_instance_print(const char* s) {
     printf("%s", s);
 }
 
@@ -50,7 +50,7 @@ static void* libpd_instance_doinit(t_libpd_instance* inst)
     libpd_set_instance(inst->l_pd);
     libpd_set_printhook(libpd_instance_print);
     libpd_set_noteonhook(libpd_instance_noteon);
-    assert(inst->l_pd && "pd instance can't be allocated.");
+    assert(inst->l_pd && "pd instance can't be allocated");
     libpd_init_audio((int)inst->l_ninputs, (int)inst->l_noutputs, (int)inst->l_samplerate);
     return NULL;
 }
@@ -66,11 +66,11 @@ static void libpd_instance_init(t_libpd_instance* inst,
     
     assert(blksize && nins && nouts && "block size, number of inputs and number of outputs must be positives");
     inst->l_inputs      = (t_sample *)malloc(blksize * nins * sizeof(*inst->l_inputs));
-    assert(inst->l_inputs && "inputs can't be allocated.");
+    assert(inst->l_inputs && "inputs can't be allocated");
     inst->l_outputs      = (t_sample *)malloc(blksize * nouts * sizeof(*inst->l_outputs));
-    assert(inst->l_outputs && "outputs can't be allocated.");
+    assert(inst->l_outputs && "outputs can't be allocated");
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_doinit, inst) &&
-           "libpd_instance_init thread creation error.");
+           "libpd_instance_init thread creation error");
     pthread_join(inst->l_thd, NULL);
 }
 
@@ -81,14 +81,15 @@ static void* libpd_instance_dofree(t_libpd_instance* inst)
 {
     libpd_set_instance(inst->l_pd);
     if(inst->l_pd) {
-        libpd_free_instance(inst->l_pd); }
+        libpd_free_instance(inst->l_pd);
+    }
     return NULL;
 }
 
 static void libpd_instance_free(t_libpd_instance* inst)
 {
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_dofree, inst) &&
-           "thread creation error.");
+           "thread creation error");
     pthread_join(inst->l_thd, NULL);
     if(inst->l_inputs)
     {
@@ -119,7 +120,7 @@ static void* libpd_instance_dodsp_start(t_libpd_instance* inst)
 static void libpd_instance_dsp_start(t_libpd_instance* inst)
 {
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_dodsp_start, inst) &&
-           "libpd_instance_dsp_start thread creation error.");
+           "libpd_instance_dsp_start thread creation error");
     pthread_join(inst->l_thd, NULL);
 }
 
@@ -135,7 +136,7 @@ static void* libpd_instance_dodsp_stop(t_libpd_instance* inst)
 static void libpd_instance_dsp_stop(t_libpd_instance* inst)
 {
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_dodsp_stop, inst) &&
-           "libpd_instance_dsp_stop thread creation error.");
+           "libpd_instance_dsp_stop thread creation error");
     pthread_join(inst->l_thd, NULL);
 }
 
@@ -153,7 +154,7 @@ static void* libpd_instance_doclose(t_libpd_instance* inst)
 static void libpd_instance_close(t_libpd_instance* inst)
 {
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_doclose, inst) &&
-           "libpd_instance_close thread creation error.");
+           "libpd_instance_close thread creation error");
     pthread_join(inst->l_thd, NULL);
     inst->l_patch = NULL;
 }
@@ -169,11 +170,12 @@ static void* libpd_instance_doopen(t_libpd_instance* inst)
 static void libpd_instance_open(t_libpd_instance* inst, const char *file, const char *folder)
 {
     if(inst->l_patch) {
-        libpd_instance_close(inst); }
+        libpd_instance_close(inst);
+    }
     strncpy(inst->l_file, file, MAXPDSTRING);
     strncpy(inst->l_folder, folder, MAXPDSTRING);
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_doopen, inst) &&
-           "libpd_instance_open thread creation error.");
+           "libpd_instance_open thread creation error");
     pthread_join(inst->l_thd, NULL);
 }
 
@@ -192,7 +194,7 @@ static void* libpd_instance_doperform(t_libpd_instance* inst)
         assert(result == expected && "DSP results are wrong");
     }
     printf("instance %d, ticks %d: ", inst->l_id, ticks);
-    for (i = 0; i < 8; i++) {
+    for(i = 0; i < 8; i++) {
       printf("%d ", (int)inst->l_outputs[i]);
     }
     printf("... \n");
@@ -236,7 +238,7 @@ int main(int argc, char **argv)
     pthread_t threads[LIBPD_TEST_NINSTANCES];
     t_libpd_instance instance[LIBPD_TEST_NINSTANCES];
     
-    if (argc < 3) {
+    if(argc < 3) {
         fprintf(stderr, "usage: %s file folder\n", argv[0]);
         return -1;
     }
@@ -251,14 +253,12 @@ int main(int argc, char **argv)
     assert("PDTHREADS undefined");
 #endif
         
-    for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i)
-    {
+    for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i) {
         instance[i].l_id = i+1;
         assert(!pthread_create(threads+i, NULL, (void *)multi_instance_run, instance+i) &&
-               "multi_instance_run thread creation error.");
+               "multi_instance_run thread creation error");
     }
-    for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i)
-    {
+    for(i = 0; i < LIBPD_TEST_NINSTANCES; ++i) {
         pthread_join(threads[i], NULL);
     }
     return 0;
