@@ -145,8 +145,10 @@ int libpd_poll_gui(void);
 //void libpd_set_instance(t_pdinstance *p);
 //void libpd_free_instance(t_pdinstance *p);
 //t_pdinstance *libpd_this_instance(void);
-//t_pdinstance *libpd_get_instance(int index);
+//t_pdinstance *libpd_main_instance(void);
 //int libpd_num_instances(void);
+//void libpd_set_instancedata(void *data);
+//void* libpd_get_instancedata(void);
 
 /* log level */
 
