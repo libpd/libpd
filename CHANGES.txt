@@ -10,6 +10,14 @@
 * updated to pd vanilla 0.52-2
 * update language wrappers for new pd source files
 
+* Java: fixed build by filename typo fix and adding $(JAVA_HOME)/include to
+        Linux search paths (funkyfourier)
+
+* Python: Makefile now builds with python3 (Shakeed Alireza)
+
+* CMake: fixed libm variable name (Jean-Michaël Celerier)
+* CMake: removed unnecessary BSymbolic flag on Windows (Jean-Michaël Celerier)
+
 0.12.3 2021 Jun 12
 
 * libpd.xcodeproj macOS targets no longer install static lib or copy public
