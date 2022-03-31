@@ -8,7 +8,7 @@
 * fixed bad readme link to wiki
 
 * updated to pd vanilla 0.52-2
-* update language wrappers for new pd source files
+* updated language wrappers for new pd source files
 
 * Java: fixed build by filename typo fix and adding $(JAVA_HOME)/include to
         Linux search paths (funkyfourier)
