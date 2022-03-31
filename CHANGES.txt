@@ -14,6 +14,14 @@
 * Cocoapods: updated podspec to exclude libpd files included with puredata
              source itself for now (Ricardo de Amorim)
 
+* Java: fixed build by filename typo fix and adding $(JAVA_HOME)/include to
+        Linux search paths (funkyfourier)
+
+* Python: Makefile now builds with python3 (Shakeed Alireza)
+
+* CMake: fixed libm variable name (Jean-Michaël Celerier)
+* CMake: removed unnecessary BSymbolic flag on Windows (Jean-Michaël Celerier)
+
 * various readme updates and clarifications
 
 0.12.3 2021 Jun 12
