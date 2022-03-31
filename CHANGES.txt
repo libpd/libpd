@@ -1,6 +1,28 @@
 0.13.0 TBA
 
-* updated to pd vanilla 0.52-0
+* updated to pd vanilla 0.52-2
+
+* C: print and midi hooks finally per-instance (!)
+* C: added libpd_set_instancedata() & libpd_get_instancedata() for optional
+     per-instance user data storage 
+* C: fixed libpdinstance_new() memory issue
+
+* Cocoapods: fixed clone unauthenticated git protocol error by moving to https
+             submodule urls (reported by Ricardo de Amorim), run the following
+             after updating a repo:
+             git submodule sync --recursive && git submodule update --init
+* Cocoapods: updated podspec to exclude libpd files included with puredata
+             source itself for now (Ricardo de Amorim)
+
+* Java: fixed build by filename typo fix and adding $(JAVA_HOME)/include to
+        Linux search paths (funkyfourier)
+
+* Python: Makefile now builds with python3 (Shakeed Alireza)
+
+* CMake: fixed libm variable name (Jean-Michaël Celerier)
+* CMake: removed unnecessary BSymbolic flag on Windows (Jean-Michaël Celerier)
+
+* various readme updates and clarifications
 
 0.12.3 2021 Jun 12
 
