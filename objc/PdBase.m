@@ -200,7 +200,7 @@ static NSTimer *midiPollTimer;
 	int ret = libpd_init();
 	if (queue) {
 		queued = YES;
-		libpd_set_concatenated_queued_printhook(printHook);
+		libpd_set_queued_printhook(printHook);
 
 		libpd_set_queued_banghook(bangHook);
 		libpd_set_queued_floathook(floatHook);
@@ -220,7 +220,7 @@ static NSTimer *midiPollTimer;
 		[PdBase stopMessagesTimer];
 		[PdBase stopMidiTimer];
 		queued = NO;
-		libpd_set_concatenated_printhook(printHook);
+		libpd_set_printhook(printHook);
 
 		libpd_set_banghook(bangHook);
 		libpd_set_floathook(floatHook);

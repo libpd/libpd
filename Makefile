@@ -112,7 +112,6 @@ PD_EXTRA_FILES = \
     pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
 
 LIBPD_UTILS = \
-    libpd_wrapper/util/z_print_util.c \
     libpd_wrapper/util/z_queued.c \
     libpd_wrapper/util/ringbuffer.c
 
@@ -276,7 +275,6 @@ install:
 	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
 	if [ -e libpd_wrapper/util/z_queued.o ]; then \
 	  install -d $(includedir)/libpd/util; \
-	  install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
 	  install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
 	  install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi

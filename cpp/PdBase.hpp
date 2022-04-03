@@ -1074,7 +1074,7 @@ protected:
             // attach callbacks
             bQueued = queued;
             if(queued) {
-                libpd_set_concatenated_queued_printhook(_print);
+                libpd_set_queued_printhook(_print);
 
                 libpd_set_queued_banghook(_bang);
                 libpd_set_queued_floathook(_float);
@@ -1091,7 +1091,7 @@ protected:
                 libpd_set_queued_midibytehook(_midibyte);
             }
             else {
-                libpd_set_concatenated_printhook(_print);
+                libpd_set_printhook(_print);
 
                 libpd_set_banghook(_bang);
                 libpd_set_floathook(_float);
@@ -1126,7 +1126,7 @@ protected:
             if(bInited) {
                 computeAudio(false);
                 if(bQueued) {
-                    libpd_set_concatenated_queued_printhook(NULL);
+                    libpd_set_queued_printhook(NULL);
 
                     libpd_set_queued_banghook(NULL);
                     libpd_set_queued_floathook(NULL);
@@ -1143,7 +1143,7 @@ protected:
                     libpd_set_queued_midibytehook(NULL);
                 }
                 else {
-                    libpd_set_concatenated_printhook(NULL);
+                    libpd_set_printhook(NULL);
 
                     libpd_set_banghook(NULL);
                     libpd_set_floathook(NULL);

@@ -22,11 +22,6 @@ extern "C"
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_printhook(const t_libpd_printhook hook);
 
-/// set the queued print receiver hook, NULL by default
-/// concatenate full lines before sending to the printhook
-/// note: do not call this while DSP is running
-EXTERN void libpd_set_concatenated_queued_printhook(const t_libpd_printhook hook);
-
 /// set the queued bang receiver hook, NULL by default
 /// note: do not call this while DSP is running
 EXTERN void libpd_set_queued_banghook(const t_libpd_banghook hook);

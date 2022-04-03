@@ -8,7 +8,6 @@
 #include <assert.h>
 #include <pthread.h>
 #include "z_libpd.h"
-#include "util/z_print_util.h"
 
 #define LIBPD_TEST_NINSTANCES   4
 #define LIBPD_TEST_NLOOPS       8
@@ -34,11 +33,12 @@ typedef struct l_instance
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 void libpd_instance_print(const char* s) {
-    printf("%s\n", s);
+    printf("instance %d %s\n", ((t_libpd_instance*)libpd_get_instancedata())->l_id, s);
 }
 
 void libpd_instance_noteon(int ch, int pitch, int vel) {
-    printf("noteon: %d %d %d\n", ch, pitch, vel);
+    printf("instance %d noteon: %d %d %d\n", 
+           ((t_libpd_instance*)libpd_get_instancedata())->l_id, ch, pitch, vel);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,8 +48,9 @@ static void* libpd_instance_doinit(t_libpd_instance* inst)
 {
     inst->l_pd = libpd_new_instance();
     libpd_set_instance(inst->l_pd);
+    libpd_set_instancedata(inst);
     assert(inst->l_pd && "pd instance can't be allocated.");
-    libpd_set_concatenated_printhook(libpd_instance_print);
+    libpd_set_printhook(libpd_instance_print);
     libpd_set_noteonhook(libpd_instance_noteon);
     libpd_init_audio((int)inst->l_ninputs, (int)inst->l_noutputs, (int)inst->l_samplerate);
     return NULL;

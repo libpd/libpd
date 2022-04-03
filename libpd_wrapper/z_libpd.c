@@ -425,12 +425,43 @@ int libpd_exists(const char *recv) {
 
 // when setting hooks, use mainimp if pd is not yet inited
 #define IMP (s_initialized ? libpdimp_this() : &libpd_mainimp)
+#define LINEBUFFER (IMP->i_hooks->h_print_linebuffer)
+#define LINEBUFLEN (IMP->i_hooks->h_print_linebuflen)
+
+static void libpd_print_linehook(const char *s) {
+  int len = (int) strlen(s);
+  if (!IMP->i_hooks->h_printhook) return;
+
+  LINEBUFFER[LINEBUFLEN] = '\0';
+
+  while (LINEBUFLEN + len >= PRINT_LINE_SIZE) {
+    int d = PRINT_LINE_SIZE - 1 - LINEBUFLEN;
+    strncat(LINEBUFFER, s, d);
+    IMP->i_hooks->h_printhook(LINEBUFFER);
+    s += d;
+    len -= d;
+    LINEBUFLEN = 0;
+    LINEBUFFER[0] = '\0';
+  }
+
+  strncat(LINEBUFFER, s, len);
+  LINEBUFLEN += len;
+
+  if (LINEBUFLEN > 0 && LINEBUFFER[LINEBUFLEN - 1] == '\n') {
+    LINEBUFFER[LINEBUFLEN - 1] = '\0';
+    IMP->i_hooks->h_printhook(LINEBUFFER);
+    LINEBUFLEN = 0;
+  }
+}
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
   if (!s_initialized) // set default hook
     sys_printhook = (t_printhook)hook;
-  else // set instance hook
-    STUFF->st_printhook = (t_printhook)hook;
+  else { // set instance hook
+    STUFF->st_printhook = (t_printhook)libpd_print_linehook;
+    IMP->i_hooks->h_printhook = hook;
+    LINEBUFLEN = 0;
+  }
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {

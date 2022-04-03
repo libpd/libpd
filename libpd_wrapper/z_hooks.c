@@ -37,12 +37,10 @@ t_libpdimp* libpdimp_new(void) {
   return imp;
 }
 
-extern void libpd_concatenated_stuff_free(void);
 extern void libpd_queued_stuff_free(void);
 
 void libpdimp_free(t_libpdimp *imp) {
   if (imp == &libpd_mainimp) return;
-  libpd_concatenated_stuff_free();
   libpd_queued_stuff_free();
   libpdhooks_free(imp->i_hooks);
   free(imp);

@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         /* allow to find the "queued_instance" from the pd instance: */
         libpd_set_instancedata(&instances[i]);
         /* set the hooks: */
-        libpd_set_concatenated_queued_printhook(pdprint);
+        libpd_set_queued_printhook(pdprint);
         libpd_set_queued_floathook(pdfloat);
         /* receive "TestChannel" messages from Pd: */
         libpd_bind("TestChannel");

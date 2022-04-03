@@ -184,7 +184,7 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_initialize
   floatClass = LIBPD_CLASS_REF("java/lang/Float");
   floatInit = (*env)->GetMethodID(env, floatClass, "<init>", "(F)V");
 
-  libpd_set_concatenated_queued_printhook(java_printhook);
+  libpd_set_queued_printhook(java_printhook);
 
   libpd_set_queued_banghook(java_sendBang);
   libpd_set_queued_floathook(java_sendFloat);

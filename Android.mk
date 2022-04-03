@@ -38,7 +38,7 @@ PD_SRC_FILES := \
   pure-data/src/x_vexp_fun.c libpd_wrapper/s_libpdmidi.c \
   libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
   libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
-  libpd_wrapper/z_hooks.c libpd_wrapper/util/z_print_util.c
+  libpd_wrapper/z_hooks.c
 PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
   $(LOCAL_PATH)/libpd_wrapper/util
 PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w

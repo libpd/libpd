@@ -14,7 +14,6 @@
 #include <string.h>
 #include "z_hooks.h"
 #include "ringbuffer.h"
-#include "z_print_util.h"
 
 #define BUFFER_SIZE 16384
 
@@ -257,12 +256,6 @@ void libpd_set_queued_printhook(const t_libpd_printhook hook) {
   if (!QUEUED_STUFF) libpd_queued_stuff_new();
   QUEUED_STUFF->q_printhook = hook;
   libpd_set_printhook(internal_printhook);
-}
-
-void libpd_set_concatenated_queued_printhook(const t_libpd_printhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_printhook = hook;
-  libpd_set_concatenated_printhook(internal_printhook);
 }
 
 void libpd_set_queued_banghook(const t_libpd_banghook hook) {

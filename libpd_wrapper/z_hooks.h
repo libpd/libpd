@@ -19,10 +19,12 @@
 
 /* hooks */
 
+#define PRINT_LINE_SIZE 2048
+
 typedef struct _libpdhooks {
 
   // messages
-  // no h_printhook as libpd_set_printhook() sets internal STUFF->st_printhook
+  t_libpd_printhook h_printhook;
   t_libpd_banghook h_banghook;
   t_libpd_floathook h_floathook;
   t_libpd_symbolhook h_symbolhook;
@@ -37,6 +39,9 @@ typedef struct _libpdhooks {
   t_libpd_aftertouchhook h_aftertouchhook;
   t_libpd_polyaftertouchhook h_polyaftertouchhook;
   t_libpd_midibytehook h_midibytehook;
+
+  char h_print_linebuffer[PRINT_LINE_SIZE];
+  int h_print_linebuflen;
 } t_libpdhooks;
 
 /// alloc new hooks struct and set all to NULL
@@ -51,8 +56,7 @@ void libpdhooks_free(t_libpdhooks *hooks);
 /// libpd per-instance implementation data
 typedef struct _libpdimp {
   t_libpdhooks *i_hooks; /* event hooks */
-  void *i_concat_stuff; /* concatenated print data, default NULL */
-  void *i_queued_stuff; /* concatenated queued data, default NULL */
+  void *i_queued_stuff; /* queued data, default NULL */
   void *i_data;          /* user data, default NULL */
 } t_libpdimp;
 
