@@ -13,6 +13,7 @@
 #define __Z_HOOKS_H__
 
 #include "z_libpd.h"
+#include "util/ringbuffer.h"
 
 // internal hooks, etc
 // do *not* include this file in a user-facing header
@@ -42,6 +43,26 @@ typedef struct _libpdhooks {
 
   char h_print_linebuffer[PRINT_LINE_SIZE];
   int h_print_linebuflen;
+  
+  // QUEUED HOOKS
+  t_libpd_printhook h_queued_printhook;
+  t_libpd_banghook h_queued_banghook;
+  t_libpd_floathook h_queued_floathook;
+  t_libpd_symbolhook h_queued_symbolhook;
+  t_libpd_listhook h_queued_listhook;
+  t_libpd_messagehook h_queued_messagehook;
+
+  t_libpd_noteonhook h_queued_noteonhook;
+  t_libpd_controlchangehook h_queued_controlchangehook;
+  t_libpd_programchangehook h_queued_programchangehook;
+  t_libpd_pitchbendhook h_queued_pitchbendhook;
+  t_libpd_aftertouchhook h_queued_aftertouchhook;
+  t_libpd_polyaftertouchhook h_queued_polyaftertouchhook;
+  t_libpd_midibytehook h_queued_midibytehook;
+
+  ring_buffer *h_queued_pdbuffer;
+  ring_buffer *h_queued_midibuffer;
+  char *h_queued_tmpbuffer;
 } t_libpdhooks;
 
 /// alloc new hooks struct and set all to NULL
@@ -56,7 +77,6 @@ void libpdhooks_free(t_libpdhooks *hooks);
 /// libpd per-instance implementation data
 typedef struct _libpdimp {
   t_libpdhooks *i_hooks; /* event hooks */
-  void *i_queued_stuff; /* queued data, default NULL */
   void *i_data;          /* user data, default NULL */
 } t_libpdimp;
 

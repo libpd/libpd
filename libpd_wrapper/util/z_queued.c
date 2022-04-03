@@ -13,30 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "z_hooks.h"
-#include "ringbuffer.h"
 
 #define BUFFER_SIZE 16384
-
-typedef struct _queued_stuff {
-  t_libpd_printhook q_printhook;
-  t_libpd_banghook q_banghook;
-  t_libpd_floathook q_floathook;
-  t_libpd_symbolhook q_symbolhook;
-  t_libpd_listhook q_listhook;
-  t_libpd_messagehook q_messagehook;
-
-  t_libpd_noteonhook q_noteonhook;
-  t_libpd_controlchangehook q_controlchangehook;
-  t_libpd_programchangehook q_programchangehook;
-  t_libpd_pitchbendhook q_pitchbendhook;
-  t_libpd_aftertouchhook q_aftertouchhook;
-  t_libpd_polyaftertouchhook q_polyaftertouchhook;
-  t_libpd_midibytehook q_midibytehook;
-
-  ring_buffer *pd_receive_buffer;
-  ring_buffer *midi_receive_buffer;
-  char temp_buffer[BUFFER_SIZE];
-} t_queued_stuff;
 
 typedef struct _pd_params {
   enum {
@@ -63,43 +41,42 @@ typedef struct _midi_params {
 #define S_MIDI_PARAMS sizeof(midi_params)
 #define S_ATOM sizeof(t_atom)
 
-#define QUEUED_STUFF ((t_queued_stuff *)(libpdimp_this()->i_queued_stuff))
-
+#define HOOKS (libpdimp_this()->i_hooks)
 static void receive_print(pd_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_printhook) {
-    QUEUED_STUFF->q_printhook(*buffer);
+  if (HOOKS->h_queued_printhook) {
+    HOOKS->h_queued_printhook(*buffer);
   }
   *buffer += p->argc;
 }
 
 static void receive_bang(pd_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_banghook) {
-    QUEUED_STUFF->q_banghook(p->src);
+  if (HOOKS->h_queued_banghook) {
+    HOOKS->h_queued_banghook(p->src);
   }
 }
 
 static void receive_float(pd_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_floathook) {
-    QUEUED_STUFF->q_floathook(p->src, p->x);
+  if (HOOKS->h_queued_floathook) {
+    HOOKS->h_queued_floathook(p->src, p->x);
   }
 }
 
 static void receive_symbol(pd_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_symbolhook) {
-    QUEUED_STUFF->q_symbolhook(p->src, p->sym);
+  if (HOOKS->h_queued_symbolhook) {
+    HOOKS->h_queued_symbolhook(p->src, p->sym);
   }
 }
 
 static void receive_list(pd_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_listhook) {
-    QUEUED_STUFF->q_listhook(p->src, p->argc, (t_atom *) *buffer);
+  if (HOOKS->h_queued_listhook) {
+    HOOKS->h_queued_listhook(p->src, p->argc, (t_atom *) *buffer);
   }
   *buffer += p->argc * S_ATOM;
 }
 
 static void receive_message(pd_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_messagehook) {
-    QUEUED_STUFF->q_messagehook(p->src, p->sym, p->argc, (t_atom *) *buffer);
+  if (HOOKS->h_queued_messagehook) {
+    HOOKS->h_queued_messagehook(p->src, p->sym, p->argc, (t_atom *) *buffer);
   }
   *buffer += p->argc * S_ATOM;
 }
@@ -112,39 +89,39 @@ static void internal_printhook(const char *s) {
   int rest = len % LIBPD_WORD_ALIGN;
   if (rest) rest = LIBPD_WORD_ALIGN - rest;
   int total = len + rest;
-  if (rb_available_to_write(QUEUED_STUFF->pd_receive_buffer) >= S_PD_PARAMS + total) {
+  if (rb_available_to_write(HOOKS->h_queued_pdbuffer) >= S_PD_PARAMS + total) {
     pd_params p = {LIBPD_PRINT, NULL, 0.0f, NULL, total};
-    rb_write_to_buffer(QUEUED_STUFF->pd_receive_buffer, 3,
+    rb_write_to_buffer(HOOKS->h_queued_pdbuffer, 3,
         (const char *)&p, S_PD_PARAMS, s, len, padding, rest);
   }
 }
 
 static void internal_banghook(const char *src) {
-  if (rb_available_to_write(QUEUED_STUFF->pd_receive_buffer) >= S_PD_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_pdbuffer) >= S_PD_PARAMS) {
     pd_params p = {LIBPD_BANG, src, 0.0f, NULL, 0};
-    rb_write_to_buffer(QUEUED_STUFF->pd_receive_buffer, 1, (const char *)&p, S_PD_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_pdbuffer, 1, (const char *)&p, S_PD_PARAMS);
   }
 }
 
 static void internal_floathook(const char *src, float x) {
-  if (rb_available_to_write(QUEUED_STUFF->pd_receive_buffer) >= S_PD_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_pdbuffer) >= S_PD_PARAMS) {
     pd_params p = {LIBPD_FLOAT, src, x, NULL, 0};
-    rb_write_to_buffer(QUEUED_STUFF->pd_receive_buffer, 1, (const char *)&p, S_PD_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_pdbuffer, 1, (const char *)&p, S_PD_PARAMS);
   }
 }
 
 static void internal_symbolhook(const char *src, const char *sym) {
-  if (rb_available_to_write(QUEUED_STUFF->pd_receive_buffer) >= S_PD_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_pdbuffer) >= S_PD_PARAMS) {
     pd_params p = {LIBPD_SYMBOL, src, 0.0f, sym, 0};
-    rb_write_to_buffer(QUEUED_STUFF->pd_receive_buffer, 1, (const char *)&p, S_PD_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_pdbuffer, 1, (const char *)&p, S_PD_PARAMS);
   }
 }
 
 static void internal_listhook(const char *src, int argc, t_atom *argv) {
   int n = argc * S_ATOM;
-  if (rb_available_to_write(QUEUED_STUFF->pd_receive_buffer) >= S_PD_PARAMS + n) {
+  if (rb_available_to_write(HOOKS->h_queued_pdbuffer) >= S_PD_PARAMS + n) {
     pd_params p = {LIBPD_LIST, src, 0.0f, NULL, argc};
-    rb_write_to_buffer(QUEUED_STUFF->pd_receive_buffer, 2,
+    rb_write_to_buffer(HOOKS->h_queued_pdbuffer, 2,
         (const char *)&p, S_PD_PARAMS, (const char *)argv, n);
   }
 }
@@ -152,210 +129,197 @@ static void internal_listhook(const char *src, int argc, t_atom *argv) {
 static void internal_messagehook(const char *src, const char* sym,
     int argc, t_atom *argv) {
   int n = argc * S_ATOM;
-  if (rb_available_to_write(QUEUED_STUFF->pd_receive_buffer) >= S_PD_PARAMS + n) {
+  if (rb_available_to_write(HOOKS->h_queued_pdbuffer) >= S_PD_PARAMS + n) {
     pd_params p = {LIBPD_MESSAGE, src, 0.0f, sym, argc};
-    rb_write_to_buffer(QUEUED_STUFF->pd_receive_buffer, 2,
+    rb_write_to_buffer(HOOKS->h_queued_pdbuffer, 2,
         (const char *)&p, S_PD_PARAMS, (const char *)argv, n);
   }
 }
 
 static void receive_noteon(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_noteonhook) {
-    QUEUED_STUFF->q_noteonhook(p->midi1, p->midi2, p->midi3);
+  if (HOOKS->h_queued_noteonhook) {
+    HOOKS->h_queued_noteonhook(p->midi1, p->midi2, p->midi3);
   }
 }
 
 static void receive_controlchange(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_controlchangehook) {
-    QUEUED_STUFF->q_controlchangehook(p->midi1, p->midi2, p->midi3);
+  if (HOOKS->h_queued_controlchangehook) {
+    HOOKS->h_queued_controlchangehook(p->midi1, p->midi2, p->midi3);
   }
 }
 
 static void receive_programchange(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_programchangehook) {
-    QUEUED_STUFF->q_programchangehook(p->midi1, p->midi2);
+  if (HOOKS->h_queued_programchangehook) {
+    HOOKS->h_queued_programchangehook(p->midi1, p->midi2);
   }
 }
 
 static void receive_pitchbend(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_pitchbendhook) {
-    QUEUED_STUFF->q_pitchbendhook(p->midi1, p->midi2);
+  if (HOOKS->h_queued_pitchbendhook) {
+    HOOKS->h_queued_pitchbendhook(p->midi1, p->midi2);
   }
 }
 
 static void receive_aftertouch(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_aftertouchhook) {
-    QUEUED_STUFF->q_aftertouchhook(p->midi1, p->midi2);
+  if (HOOKS->h_queued_aftertouchhook) {
+    HOOKS->h_queued_aftertouchhook(p->midi1, p->midi2);
   }
 }
 
 static void receive_polyaftertouch(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_polyaftertouchhook) {
-    QUEUED_STUFF->q_polyaftertouchhook(p->midi1, p->midi2, p->midi3);
+  if (HOOKS->h_queued_polyaftertouchhook) {
+    HOOKS->h_queued_polyaftertouchhook(p->midi1, p->midi2, p->midi3);
   }
 }
 
 static void receive_midibyte(midi_params *p, char **buffer) {
-  if (QUEUED_STUFF->q_midibytehook) {
-    QUEUED_STUFF->q_midibytehook(p->midi1, p->midi2);
+  if (HOOKS->h_queued_midibytehook) {
+    HOOKS->h_queued_midibytehook(p->midi1, p->midi2);
   }
 }
 
 static void internal_noteonhook(int channel, int pitch, int velocity) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_NOTEON, channel, pitch, velocity};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 static void internal_controlchangehook(int channel, int controller, int value) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_CONTROLCHANGE, channel, controller, value};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 static void internal_programchangehook(int channel, int value) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_PROGRAMCHANGE, channel, value, 0};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 static void internal_pitchbendhook(int channel, int value) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_PITCHBEND, channel, value, 0};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 static void internal_aftertouchhook(int channel, int value) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_AFTERTOUCH, channel, value, 0};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 static void internal_polyaftertouchhook(int channel, int pitch, int value) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_POLYAFTERTOUCH, channel, pitch, value};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 static void internal_midibytehook(int port, int byte) {
-  if (rb_available_to_write(QUEUED_STUFF->midi_receive_buffer) >= S_MIDI_PARAMS) {
+  if (rb_available_to_write(HOOKS->h_queued_midibuffer) >= S_MIDI_PARAMS) {
     midi_params p = {LIBPD_MIDIBYTE, port, byte, 0};
-    rb_write_to_buffer(QUEUED_STUFF->midi_receive_buffer, 1, (const char *)&p, S_MIDI_PARAMS);
+    rb_write_to_buffer(HOOKS->h_queued_midibuffer, 1, (const char *)&p, S_MIDI_PARAMS);
   }
 }
 
 void libpd_queued_stuff_new(void);
 
 void libpd_set_queued_printhook(const t_libpd_printhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_printhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_printhook = hook;
   libpd_set_printhook(internal_printhook);
 }
 
 void libpd_set_queued_banghook(const t_libpd_banghook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_banghook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_banghook = hook;
   libpd_set_banghook(internal_banghook);
 }
 
 void libpd_set_queued_floathook(const t_libpd_floathook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_floathook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_floathook = hook;
   libpd_set_floathook(internal_floathook);
 }
 
 void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_symbolhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_symbolhook = hook;
   libpd_set_symbolhook(internal_symbolhook);
 }
 
 void libpd_set_queued_listhook(const t_libpd_listhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_listhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_listhook = hook;
   libpd_set_listhook(internal_listhook);
 }
 
 void libpd_set_queued_messagehook(const t_libpd_messagehook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_messagehook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_messagehook = hook;
   libpd_set_messagehook(internal_messagehook);
 }
 
 void libpd_set_queued_noteonhook(const t_libpd_noteonhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_noteonhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_noteonhook = hook;
   libpd_set_noteonhook(internal_noteonhook);
 }
 
 void libpd_set_queued_controlchangehook(const t_libpd_controlchangehook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_controlchangehook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_controlchangehook = hook;
   libpd_set_controlchangehook(internal_controlchangehook);
 }
 
 void libpd_set_queued_programchangehook(const t_libpd_programchangehook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_programchangehook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_programchangehook = hook;
   libpd_set_programchangehook(internal_programchangehook);
 }
 
 void libpd_set_queued_pitchbendhook(const t_libpd_pitchbendhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_pitchbendhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_pitchbendhook = hook;
   libpd_set_pitchbendhook(internal_pitchbendhook);
 }
 
 void libpd_set_queued_aftertouchhook(const t_libpd_aftertouchhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_aftertouchhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_aftertouchhook = hook;
   libpd_set_aftertouchhook(internal_aftertouchhook);
 }
 
 void libpd_set_queued_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_polyaftertouchhook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_polyaftertouchhook = hook;
   libpd_set_polyaftertouchhook(internal_polyaftertouchhook);
 }
 
 void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook) {
-  if (!QUEUED_STUFF) libpd_queued_stuff_new();
-  QUEUED_STUFF->q_midibytehook = hook;
+  libpd_queued_stuff_new();
+  HOOKS->h_queued_midibytehook = hook;
   libpd_set_midibytehook(internal_midibytehook);
 }
 
 void libpd_queued_stuff_new() {
-  if (QUEUED_STUFF) return; /* already allocated */
-  libpdimp_this()->i_queued_stuff = calloc(1, sizeof(t_queued_stuff));
-  if (!QUEUED_STUFF) return;
-
-  QUEUED_STUFF->pd_receive_buffer = rb_create(BUFFER_SIZE);
-  if (!QUEUED_STUFF->pd_receive_buffer) {
-    free(QUEUED_STUFF);
-    libpdimp_this()->i_queued_stuff = NULL;
-    return;
-  }
-
-  QUEUED_STUFF->midi_receive_buffer = rb_create(BUFFER_SIZE);
-  if (!QUEUED_STUFF->midi_receive_buffer) {
-    free(QUEUED_STUFF);
-    libpdimp_this()->i_queued_stuff = NULL;
-    return;
-  }
+  if (HOOKS->h_queued_pdbuffer) return; // already created
+  HOOKS->h_queued_pdbuffer = rb_create(BUFFER_SIZE);
+  HOOKS->h_queued_midibuffer = rb_create(BUFFER_SIZE);
+  HOOKS->h_queued_tmpbuffer = calloc(1, BUFFER_SIZE);
 }
 
 void libpd_queued_stuff_free() {
-  if (!QUEUED_STUFF) return; /* was not allocated */
-  rb_free(QUEUED_STUFF->pd_receive_buffer);
-  rb_free(QUEUED_STUFF->midi_receive_buffer);
-  free(QUEUED_STUFF);
-  libpdimp_this()->i_queued_stuff = NULL;
+  if (HOOKS->h_queued_pdbuffer) rb_free(HOOKS->h_queued_pdbuffer);
+  if (HOOKS->h_queued_midibuffer) rb_free(HOOKS->h_queued_midibuffer);
+  if (HOOKS->h_queued_tmpbuffer) free(HOOKS->h_queued_tmpbuffer);
+  HOOKS->h_queued_pdbuffer = HOOKS->h_queued_midibuffer = NULL;
+  HOOKS->h_queued_tmpbuffer = NULL;
 }
 
 int libpd_queued_init() {
@@ -365,11 +329,11 @@ int libpd_queued_init() {
 void libpd_queued_release() {}
 
 void libpd_queued_receive_pd_messages() {
-  size_t available = rb_available_to_read(QUEUED_STUFF->pd_receive_buffer);
+  size_t available = rb_available_to_read(HOOKS->h_queued_pdbuffer);
   if (!available) return;
-  rb_read_from_buffer(QUEUED_STUFF->pd_receive_buffer, QUEUED_STUFF->temp_buffer, (int) available);
-  char *end = QUEUED_STUFF->temp_buffer + available;
-  char *buffer = QUEUED_STUFF->temp_buffer;
+  rb_read_from_buffer(HOOKS->h_queued_pdbuffer, HOOKS->h_queued_tmpbuffer, (int) available);
+  char *end = HOOKS->h_queued_tmpbuffer + available;
+  char *buffer = HOOKS->h_queued_tmpbuffer;
   while (buffer < end) {
     pd_params *p = (pd_params *)buffer;
     buffer += S_PD_PARAMS;
@@ -405,11 +369,11 @@ void libpd_queued_receive_pd_messages() {
 }
 
 void libpd_queued_receive_midi_messages() {
-  size_t available = rb_available_to_read(QUEUED_STUFF->midi_receive_buffer);
+  size_t available = rb_available_to_read(HOOKS->h_queued_midibuffer);
   if (!available) return;
-  rb_read_from_buffer(QUEUED_STUFF->midi_receive_buffer, QUEUED_STUFF->temp_buffer, (int) available);
-  char *end = QUEUED_STUFF->temp_buffer + available;
-  char *buffer = QUEUED_STUFF->temp_buffer;
+  rb_read_from_buffer(HOOKS->h_queued_midibuffer, HOOKS->h_queued_tmpbuffer, (int) available);
+  char *end = HOOKS->h_queued_tmpbuffer + available;
+  char *buffer = HOOKS->h_queued_tmpbuffer;
   while (buffer < end) {
     midi_params *p = (midi_params *)buffer;
     buffer += S_MIDI_PARAMS;
