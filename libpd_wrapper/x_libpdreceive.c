@@ -17,8 +17,8 @@
 static t_class *libpdrec_class;
 
 typedef struct _libpdrec {
-    t_object x_obj;
-    t_symbol *x_sym;
+  t_object x_obj;
+  t_symbol *x_sym;
 } t_libpdrec;
 
 static void libpdrecbang(t_libpdrec *x) {
