@@ -8,8 +8,6 @@ Copyright (c) Peter Brinkmann & the libpd team 2010-2021
 Documentation
 -------------
 
-See our website and book at <http://libpd.cc>
-
 For documentation of libpd, see the wiki: <https://github.com/libpd/libpd/wiki>
 
 If you are using [Processing](http://processing.org), iOS, or Android, see our companion repositories:
