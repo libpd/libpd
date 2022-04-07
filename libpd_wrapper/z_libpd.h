@@ -78,6 +78,7 @@ EXTERN int libpd_process_short(const int ticks,
 /// process interleaved double samples from inBuffer -> libpd -> outBuffer
 /// buffer sizes are based on # of ticks and channels where:
 ///     size = ticks * libpd_blocksize() * (in/out)channels
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 /// returns 0 on success
 EXTERN int libpd_process_double(const int ticks,
     const double *inBuffer, double *outBuffer);
@@ -103,6 +104,7 @@ EXTERN int libpd_process_raw_short(const short *inBuffer, short *outBuffer);
 /// copies buffer contents to/from libpd without striping
 /// buffer sizes are based on a single tick and # of channels where:
 ///     size = libpd_blocksize() * (in/out)channels
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 /// returns 0 on success
 EXTERN int libpd_process_raw_double(const double *inBuffer, double *outBuffer);
 
@@ -131,6 +133,7 @@ EXTERN int libpd_write_array(const char *name, int offset,
 
 /// read n values from named src array and write into dest starting at an offset
 /// note: performs no bounds checking on dest
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 /// returns 0 on success or a negative error code if the array is non-existent
 /// or offset + n exceeds range of array
 /// double-precision variant of libpd_read_array()
@@ -139,6 +142,7 @@ EXTERN int libpd_read_array_double(double *dest, const char *src,
 
 /// read n values from src and write into named dest array starting at an offset
 /// note: performs no bounds checking on src
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 /// returns 0 on success or a negative error code if the array is non-existent
 /// or offset + n exceeds range of array
 /// double-precision variant of libpd_write_array()
@@ -159,6 +163,7 @@ EXTERN int libpd_float(const char *recv, float x);
 
 /// send a double to a destination receiver
 /// ex: libpd_double("foo", 1.1) will send a 1.1 to [s foo] on the next tick
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 /// returns 0 on success or -1 if receiver name is non-existent
 EXTERN int libpd_double(const char *recv, double x);
 
@@ -179,6 +184,7 @@ EXTERN int libpd_start_message(int maxlen);
 EXTERN void libpd_add_float(float x);
 
 /// add a double to the current message in progress
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 EXTERN void libpd_add_double(double x);
 
 /// add a symbol to the current message in progress
@@ -210,6 +216,7 @@ EXTERN int libpd_finish_message(const char *recv, const char *msg);
 EXTERN void libpd_set_float(t_atom *a, float x);
 
 /// write a double value to the given atom
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 EXTERN void libpd_set_double(t_atom *v, double x);
 
 /// write a symbol value to the given atom
@@ -261,6 +268,7 @@ typedef void (*t_libpd_banghook)(const char *recv);
 typedef void (*t_libpd_floathook)(const char *recv, float x);
 
 /// double receive hook signature, recv is the source receiver name
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 typedef void (*t_libpd_doublehook)(const char *recv, double x);
 
 /// symbol receive hook signature, recv is the source receiver name
@@ -316,6 +324,7 @@ EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 /// note: you can either have a float receiver hook, or a double receiver
 ///       hook (see below), but not both.
 ///       calling this, will automatically unset the double receiver hook
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
 
 /// set the double receiver hook, NULL by default
@@ -323,6 +332,7 @@ EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
 /// note: you can either have a double receiver hook, or a float receiver
 ///       hook (see above), but not both.
 ///       calling this, will automatically unset the float receiver hook
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 EXTERN void libpd_set_doublehook(const t_libpd_doublehook hook);
 
 /// set the symbol receiver hook, NULL by default
@@ -351,6 +361,7 @@ EXTERN float libpd_get_float(t_atom *a);
 
 /// returns the double value of an atom
 /// note: no NULL or type checks are performed
+/// note: only full-precision when compiled with PD_FLOATSIZE=64
 EXTERN double libpd_get_double(t_atom *a);
 
 /// returns the symbol value of an atom
