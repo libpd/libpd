@@ -27,8 +27,20 @@ EXTERN void libpd_set_queued_printhook(const t_libpd_printhook hook);
 EXTERN void libpd_set_queued_banghook(const t_libpd_banghook hook);
 
 /// set the queued float receiver hook, NULL by default
-/// note: do not call this while DSP is running
+/// note: avoid calling this while DSP is running
+/// note: you can either have a queued float receiver hook, or a queued
+///       double receiver hook (see below), but not both.
+///       calling this, will automatically unset the queued double receiver
+///       hook
 EXTERN void libpd_set_queued_floathook(const t_libpd_floathook hook);
+
+/// set the queued double receiver hook, NULL by default
+/// note: avoid calling this while DSP is running
+/// note: you can either have a queued double receiver hook, or a queued
+///       float receiver hook (see above), but not both.
+///       calling this, will automatically unset the queued float receiver
+///       hook
+EXTERN void libpd_set_queued_doublehook(const t_libpd_doublehook hook);
 
 /// set the queued symbol receiver hook, NULL by default
 /// note: do not call this while DSP is running

@@ -18,6 +18,7 @@
 t_libpd_printhook libpd_queued_printhook = NULL;
 t_libpd_banghook libpd_queued_banghook = NULL;
 t_libpd_floathook libpd_queued_floathook = NULL;
+t_libpd_doublehook libpd_queued_doublehook = NULL;
 t_libpd_symbolhook libpd_queued_symbolhook = NULL;
 t_libpd_listhook libpd_queued_listhook = NULL;
 t_libpd_messagehook libpd_queued_messagehook = NULL;
@@ -36,7 +37,7 @@ typedef struct _pd_params {
     LIBPD_SYMBOL, LIBPD_LIST, LIBPD_MESSAGE,
   } type;
   const char *src;
-  float x;
+  t_float x;
   const char *sym;
   int argc;
 } pd_params;
@@ -74,7 +75,10 @@ static void receive_bang(pd_params *p, char **buffer) {
 
 static void receive_float(pd_params *p, char **buffer) {
   if (libpd_queued_floathook) {
-    libpd_queued_floathook(p->src, p->x);
+    libpd_queued_floathook(p->src, (float)p->x);
+  }
+  if (libpd_queued_doublehook) {
+    libpd_queued_doublehook(p->src, (double)p->x);
   }
 }
 
@@ -120,9 +124,9 @@ static void internal_banghook(const char *src) {
   }
 }
 
-static void internal_floathook(const char *src, float x) {
+static void internal_doublehook(const char *src, double x) {
   if (rb_available_to_write(pd_receive_buffer) >= S_PD_PARAMS) {
-    pd_params p = {LIBPD_FLOAT, src, x, NULL, 0};
+    pd_params p = {LIBPD_FLOAT, src, (t_float)x, NULL, 0};
     rb_write_to_buffer(pd_receive_buffer, 1, (const char *)&p, S_PD_PARAMS);
   }
 }
@@ -254,6 +258,11 @@ void libpd_set_queued_banghook(const t_libpd_banghook hook) {
 
 void libpd_set_queued_floathook(const t_libpd_floathook hook) {
   libpd_queued_floathook = hook;
+  libpd_queued_doublehook = 0;
+}
+void libpd_set_queued_doublehook(const t_libpd_doublehook hook) {
+  libpd_queued_floathook = 0;
+  libpd_queued_doublehook = hook;
 }
 
 void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook) {
@@ -308,7 +317,7 @@ int libpd_queued_init() {
 
   libpd_set_printhook(internal_printhook);
   libpd_set_banghook(internal_banghook);
-  libpd_set_floathook(internal_floathook);
+  libpd_set_doublehook(internal_doublehook);
   libpd_set_symbolhook(internal_symbolhook);
   libpd_set_listhook(internal_listhook);
   libpd_set_messagehook(internal_messagehook);
