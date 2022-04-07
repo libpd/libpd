@@ -1,14 +1,21 @@
 0.13.0 TBA
 
-* fixed clone unauthenticated git protocol error by moving to https submodule
-  urls (reported by Ricardo de Amorim), run the following after updating a repo:
-  git submodule sync --recursive && git submodule update --init
-* updated podspec to exclude libpd files included with puredata source itself
-  for now (Ricardo de Amorim)
-* fixed bad readme link to wiki
-
 * updated to pd vanilla 0.52-2
-* updated language wrappers for new pd source files
+
+* fixed bad readme link to wiki
+* removed defunct libpd.cc link for now
+
+* C: added double precision support: libpd_read_array_double(),
+     libpd_write_array_double(), libpd_double(), libpd_add_double(),
+     libpd_set_double(), t_libpd_doublehook, libpd_set_doublehook(),
+     libpd_get_double() (IOhannes Zmoelnig)
+
+* Cocoapods: fixed clone unauthenticated git protocol error by moving to https
+             submodule urls (reported by Ricardo de Amorim), run the following
+             after updating a repo:
+             git submodule sync --recursive && git submodule update --init
+* Cocoapods: updated podspec to exclude libpd files included with puredata
+             source itself for now (Ricardo de Amorim)
 
 * Java: fixed build by filename typo fix and adding $(JAVA_HOME)/include to
         Linux search paths (funkyfourier)
@@ -17,6 +24,8 @@
 
 * CMake: fixed libm variable name (Jean-Michaël Celerier)
 * CMake: removed unnecessary BSymbolic flag on Windows (Jean-Michaël Celerier)
+
+* various readme updates and clarifications
 
 0.12.3 2021 Jun 12
 
