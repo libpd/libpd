@@ -434,23 +434,23 @@ void libpd_set_printhook(const t_libpd_printhook hook) {
 }
 
 void libpd_set_banghook(const t_libpd_banghook hook) {
-  IMP->i_hooks->h_banghook = hook;
+  IMP->i_hooks.h_banghook = hook;
 }
 
 void libpd_set_floathook(const t_libpd_floathook hook) {
-  IMP->i_hooks->h_floathook = hook;
+  IMP->i_hooks.h_floathook = hook;
 }
 
 void libpd_set_symbolhook(const t_libpd_symbolhook hook) {
-  IMP->i_hooks->h_symbolhook = hook;
+  IMP->i_hooks.h_symbolhook = hook;
 }
 
 void libpd_set_listhook(const t_libpd_listhook hook) {
-  IMP->i_hooks->h_listhook = hook;
+  IMP->i_hooks.h_listhook = hook;
 }
 
 void libpd_set_messagehook(const t_libpd_messagehook hook) {
-  IMP->i_hooks->h_messagehook = hook;
+  IMP->i_hooks.h_messagehook = hook;
 }
 
 int libpd_is_float(t_atom *a) {
@@ -566,31 +566,31 @@ int libpd_sysrealtime(int port, int byte) {
 }
 
 void libpd_set_noteonhook(const t_libpd_noteonhook hook) {
-  IMP->i_hooks->h_noteonhook = hook;
+  IMP->i_hooks.h_noteonhook = hook;
 }
 
 void libpd_set_controlchangehook(const t_libpd_controlchangehook hook) {
-  IMP->i_hooks->h_controlchangehook = hook;
+  IMP->i_hooks.h_controlchangehook = hook;
 }
 
 void libpd_set_programchangehook(const t_libpd_programchangehook hook) {
-  IMP->i_hooks->h_programchangehook = hook;
+  IMP->i_hooks.h_programchangehook = hook;
 }
 
 void libpd_set_pitchbendhook(const t_libpd_pitchbendhook hook) {
-  IMP->i_hooks->h_pitchbendhook = hook;
+  IMP->i_hooks.h_pitchbendhook = hook;
 }
 
 void libpd_set_aftertouchhook(const t_libpd_aftertouchhook hook) {
-  IMP->i_hooks->h_aftertouchhook = hook;
+  IMP->i_hooks.h_aftertouchhook = hook;
 }
 
 void libpd_set_polyaftertouchhook(const t_libpd_polyaftertouchhook hook) {
-  IMP->i_hooks->h_polyaftertouchhook = hook;
+  IMP->i_hooks.h_polyaftertouchhook = hook;
 }
 
 void libpd_set_midibytehook(const t_libpd_midibytehook hook) {
-  IMP->i_hooks->h_midibytehook = hook;
+  IMP->i_hooks.h_midibytehook = hook;
 }
 
 int libpd_start_gui(const char *path) {

@@ -40,21 +40,14 @@ typedef struct _libpdhooks {
   t_libpd_midibytehook h_midibytehook;
 } t_libpdhooks;
 
-/// alloc new hooks struct and set all to NULL
-t_libpdhooks *libpdhooks_new(void);
-
-/// free a hooks struct
-/// does nothing if hooks are from the main instance
-void libpdhooks_free(t_libpdhooks *hooks);
-
 /* instance */
 
 /// libpd per-instance implementation data
 typedef struct _libpdimp {
-  t_libpdhooks *i_hooks; /* event hooks */
-  void *i_queued;        /* queued data, default NULL */
-  void *i_print_util;    /* print util data, default NULL */
-  void *i_data;          /* user data, default NULL */
+  t_libpdhooks i_hooks; /* event hooks */
+  void *i_queued;       /* queued data, default NULL */
+  void *i_print_util;   /* print util data, default NULL */
+  void *i_data;         /* user data, default NULL */
 } t_libpdimp;
 
 /// main instance implementation data, always valid
