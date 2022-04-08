@@ -13,6 +13,7 @@
 #define __Z_HOOKS_H__
 
 #include "z_libpd.h"
+#include "s_stuff.h"
 
 // internal hooks, etc
 // do *not* include this file in a user-facing header
@@ -67,6 +68,6 @@ t_libpdimp* libpdimp_new(void);
 void libpdimp_free(t_libpdimp *imp);
 
 /// get current instance implementation data
-t_libpdimp* libpdimp_this(void);
+#define LIBPDSTUFF ((t_libpdimp *)(STUFF->st_impdata))
 
 #endif

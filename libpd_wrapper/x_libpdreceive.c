@@ -59,7 +59,7 @@ static void *libpdreceive_donew(t_symbol *s) {
   t_libpdrec *x;
   x = (t_libpdrec *)pd_new(libpdrec_class);
   x->x_sym = s;
-  x->x_hooks = libpdimp_this()->i_hooks;
+  x->x_hooks = LIBPDSTUFF->i_hooks;
   pd_bind(&x->x_obj.ob_pd, s);
   return x;
 }

@@ -27,7 +27,7 @@ typedef struct _queued_stuff {
   char temp_buffer[BUFFER_SIZE];
 } queued_stuff;
 
-#define QUEUEDSTUFF ((queued_stuff *)(libpdimp_this()->i_queued))
+#define QUEUEDSTUFF ((queued_stuff *)(LIBPDSTUFF->i_queued))
 
 typedef struct _pd_params {
   enum {
@@ -322,7 +322,7 @@ int libpd_queued_init() {
   libpd_set_polyaftertouchhook(internal_polyaftertouchhook);
   libpd_set_midibytehook(internal_midibytehook);
 
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (!imp->i_queued) {
     queued_stuff *queued = (queued_stuff *)calloc(1, sizeof(queued_stuff));
     if(!queued) goto cleanup;
@@ -339,7 +339,7 @@ cleanup:
 }
 
 void libpd_queued_release() {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp->i_queued) {
     queued_stuff *queued = (queued_stuff *)imp->i_queued;
     if (queued->pd_receive_buffer) rb_free(queued->pd_receive_buffer);

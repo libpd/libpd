@@ -11,7 +11,6 @@
 
 #include "z_hooks.h"
 #include <stdlib.h>
-#include "s_stuff.h"
 
 /* hooks */
 
@@ -41,8 +40,4 @@ void libpdimp_free(t_libpdimp *imp) {
   if (imp == &libpd_mainimp) return;
   libpdhooks_free(imp->i_hooks);
   free(imp);
-}
-
-t_libpdimp* libpdimp_this(void) {
-  return STUFF->st_impdata;
 }

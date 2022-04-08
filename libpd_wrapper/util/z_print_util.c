@@ -26,7 +26,7 @@ typedef struct _print_util {
 #define PRINT_LINE_SIZE 2048
 
 void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (hook) {
     if (!imp->i_print_util) {
       imp->i_print_util = calloc(1, sizeof(print_util));
@@ -44,7 +44,7 @@ void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
 }
 
 void libpd_print_concatenator(const char *s) {
-  print_util *util = (print_util *)libpdimp_this()->i_print_util;
+  print_util *util = (print_util *)LIBPDSTUFF->i_print_util;
   if (!util) return;
 
   util->concat_buf[util->concat_len] = '\0';

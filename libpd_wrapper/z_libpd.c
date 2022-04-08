@@ -20,7 +20,7 @@
 #include "z_libpd.h"
 #include "x_libpdreceive.h"
 #include "z_hooks.h"
-#include "s_stuff.h"
+//#include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
 
@@ -424,7 +424,7 @@ int libpd_exists(const char *recv) {
 }
 
 // when setting hooks, use mainimp if pd is not yet inited
-#define IMP (s_initialized ? libpdimp_this() : &libpd_mainimp)
+#define IMP (s_initialized ? LIBPDSTUFF : &libpd_mainimp)
 
 void libpd_set_printhook(const t_libpd_printhook hook) {
   if (!s_initialized) // set default hook
@@ -656,11 +656,11 @@ int libpd_num_instances(void) {
 }
 
 void libpd_set_instancedata(void *data) {
-  libpdimp_this()->i_data = data;
+  LIBPDSTUFF->i_data = data;
 }
 
 void* libpd_get_instancedata() {
-  return libpdimp_this()->i_data;
+  return LIBPDSTUFF->i_data;
 }
 
 void libpd_set_verbose(int verbose) {

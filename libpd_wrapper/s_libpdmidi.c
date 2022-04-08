@@ -17,43 +17,43 @@
 #define CHANNEL ((CLAMP12BIT(port) << 4) | CLAMP4BIT(channel))
 
 void outmidi_noteon(int port, int channel, int pitch, int velo) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_noteonhook)
     imp->i_hooks->h_noteonhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(velo));
 }
 
 void outmidi_controlchange(int port, int channel, int ctl, int value) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_controlchangehook)
     imp->i_hooks->h_controlchangehook(CHANNEL, CLAMP7BIT(ctl), CLAMP7BIT(value));
 }
 
 void outmidi_programchange(int port, int channel, int value) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_programchangehook)
     imp->i_hooks->h_programchangehook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_pitchbend(int port, int channel, int value) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_pitchbendhook)
     imp->i_hooks->h_pitchbendhook(CHANNEL, CLAMP14BIT(value) - 8192); // remove offset
 }
 
 void outmidi_aftertouch(int port, int channel, int value) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_aftertouchhook)
     imp->i_hooks->h_aftertouchhook(CHANNEL, CLAMP7BIT(value));
 }
 
 void outmidi_polyaftertouch(int port, int channel, int pitch, int value) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_polyaftertouchhook)
     imp->i_hooks->h_polyaftertouchhook(CHANNEL, CLAMP7BIT(pitch), CLAMP7BIT(value));
 }
 
 void outmidi_byte(int port, int value) {
-  t_libpdimp *imp = libpdimp_this();
+  t_libpdimp *imp = LIBPDSTUFF;
   if (imp && imp->i_hooks->h_midibytehook)
     imp->i_hooks->h_midibytehook(CLAMP12BIT(port), CLAMP8BIT(value));
 }
