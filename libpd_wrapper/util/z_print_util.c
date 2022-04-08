@@ -17,26 +17,24 @@
 
 #include "../z_hooks.h"
 
+#define PRINT_LINE_SIZE 2048
+
 typedef struct _print_util {
   t_libpd_printhook concat_printhook;
-  char *concat_buf; /* line buffer */
-  int concat_len; /* current line len */
+  char concat_buf[PRINT_LINE_SIZE]; /* line buffer */
+  int concat_len;                   /* current line len */
 } print_util;
-
-#define PRINT_LINE_SIZE 2048
 
 void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
   t_libpdimp *imp = LIBPDSTUFF;
   if (hook) {
     if (!imp->i_print_util) {
       imp->i_print_util = calloc(1, sizeof(print_util));
-      ((print_util *)imp->i_print_util)->concat_buf = calloc(1, PRINT_LINE_SIZE);
     }
     ((print_util *)imp->i_print_util)->concat_printhook = hook;
   }
   else {
     if (imp->i_print_util) {
-      free(((print_util *)imp->i_print_util)->concat_buf);
       free(imp->i_print_util);
       imp->i_print_util = NULL;
     }

@@ -304,6 +304,12 @@ void libpd_set_queued_midibytehook(const t_libpd_midibytehook hook) {
   QUEUEDSTUFF->hooks.h_midibytehook = hook;
 }
 
+static void queued_stuff_free(void *p) {
+  queued_stuff *queued = (queued_stuff *)p;
+  if (queued->pd_receive_buffer) rb_free(queued->pd_receive_buffer);
+  if (queued->midi_receive_buffer) rb_free(queued->midi_receive_buffer);
+}
+
 int libpd_queued_init() {
   int ret = libpd_init();
 
@@ -331,6 +337,7 @@ int libpd_queued_init() {
     queued->midi_receive_buffer = rb_create(BUFFER_SIZE);
     if (!queued->midi_receive_buffer) goto cleanup;
     imp->i_queued = (void *)queued;
+    imp->i_queued_freehook = queued_stuff_free;
   }
   return ret;
 cleanup:
@@ -341,10 +348,9 @@ cleanup:
 void libpd_queued_release() {
   t_libpdimp *imp = LIBPDSTUFF;
   if (imp->i_queued) {
-    queued_stuff *queued = (queued_stuff *)imp->i_queued;
-    if (queued->pd_receive_buffer) rb_free(queued->pd_receive_buffer);
-    if (queued->midi_receive_buffer) rb_free(queued->midi_receive_buffer);
+    queued_stuff_free(imp->i_queued);
     imp->i_queued = NULL;
+    imp->i_queued_freehook = NULL;
   }
 }
 

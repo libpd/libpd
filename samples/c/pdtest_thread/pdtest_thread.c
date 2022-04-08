@@ -50,7 +50,7 @@ static void* libpd_instance_doinit(t_libpd_instance* inst)
 {
     inst->l_pd = libpd_new_instance();
     libpd_set_instance(inst->l_pd);
-    libpd_set_instancedata(inst);
+    libpd_set_instancedata(inst, NULL);
     assert(inst->l_pd && "pd instance can't be allocated");
     libpd_set_printhook(libpd_print_concatenator);
     libpd_set_concatenated_printhook(libpd_instance_print);

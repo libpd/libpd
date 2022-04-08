@@ -23,5 +23,8 @@ t_libpdimp* libpdimp_new(void) {
 
 void libpdimp_free(t_libpdimp *imp) {
   if (imp == &libpd_mainimp) return;
+  if (imp->i_queued) imp->i_queued_freehook(imp->i_queued);
+  if (imp->i_print_util) free(imp->i_print_util);
+  if (imp->i_data && imp->i_data_freehook) imp->i_data_freehook(imp->i_data);
   free(imp);
 }

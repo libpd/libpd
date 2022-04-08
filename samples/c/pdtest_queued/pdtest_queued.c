@@ -93,7 +93,7 @@ int main(int argc, char **argv)
         /* set id=1 for the first instance, id=2 for the second one: */
         instances[i].i_id = i + 1;
         /* allow to find the "queued_instance" from the pd instance: */
-        libpd_set_instancedata(&instances[i]);
+        libpd_set_instancedata(&instances[i], NULL);
         /* set the hooks: */
         libpd_set_queued_printhook(libpd_print_concatenator);
         libpd_set_concatenated_printhook(pdprint);

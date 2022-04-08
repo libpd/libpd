@@ -48,6 +48,8 @@ typedef struct _libpdimp {
   void *i_queued;       /* queued data, default NULL */
   void *i_print_util;   /* print util data, default NULL */
   void *i_data;         /* user data, default NULL */
+  t_libpd_freehook i_queued_freehook; /* i_queued free, default NULL */
+  t_libpd_freehook i_data_freehook;   /* i_data free, default NULL */
 } t_libpdimp;
 
 /// main instance implementation data, always valid

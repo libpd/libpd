@@ -655,8 +655,9 @@ int libpd_num_instances(void) {
 #endif
 }
 
-void libpd_set_instancedata(void *data) {
+void libpd_set_instancedata(void *data, t_libpd_freehook freehook) {
   LIBPDSTUFF->i_data = data;
+  LIBPDSTUFF->i_data_freehook = freehook;
 }
 
 void* libpd_get_instancedata() {

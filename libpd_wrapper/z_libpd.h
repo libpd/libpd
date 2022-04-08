@@ -499,9 +499,12 @@ EXTERN t_pdinstance *libpd_main_instance(void);
 /// returns number or 1 when libpd is not compiled with PDINSTANCE
 EXTERN int libpd_num_instances(void);
 
-/// set optional per-instance user data
-/// note: data is not freed by libpd
-EXTERN void libpd_set_instancedata(void *data);
+/// per-instance data free hook signature
+typedef void (*t_libpd_freehook)(void *data);
+
+/// set per-instance user data and optional free hook
+/// note: if non-NULL, freehook is called by libpd_free_instance()
+EXTERN void libpd_set_instancedata(void *data, t_libpd_freehook freehook);
 
 /// get per-instance user data
 EXTERN void* libpd_get_instancedata(void);
