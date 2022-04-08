@@ -124,13 +124,13 @@ public:
 /// \section Opening Patches
 
     /// open a patch file (aka somefile.pd) at a specified parent dir path
-    /// returns a Patch object
+    /// returns a pd::Patch object
     ///
-    /// use Patch::isValid() to check if a patch was opened successfully:
+    /// use pd::Patch::isValid() to check if a patch was opened successfully:
     ///
-    ///     Patch p1 = pd.openPatch("somefile.pd", "/some/dir/path/");
+    ///     pd::Patch p1 = pd.openPatch("somefile.pd", "/some/dir/path/");
     ///     if(!p1.isValid()) {
-    ///         cout << "aww ... p1 couldn't be opened" << std::endl;
+    ///         std::cout << "aww ... p1 couldn't be opened" << std::endl;
     ///     }
     virtual pd::Patch openPatch(const std::string &patch,
                                 const std::string &path) {
@@ -149,11 +149,11 @@ public:
     /// object
     ///
     ///     // open an instance of "somefile.pd"
-    ///     Patch p2("somefile.pd", "/some/path"); // set file and path
+    ///     pd::Patch p2("somefile.pd", "/some/path"); // set file and path
     ///     pd.openPatch(p2);
     ///
     ///     // open a new instance of "somefile.pd"
-    ///     Patch p3 = pd.openPatch(p2);
+    ///     pd::Patch p3 = pd.openPatch(p2);
     ///
     ///     // p2 and p3 refer to 2 different instances of "somefile.pd"
     ///
@@ -308,7 +308,7 @@ public:
 /// call these in a loop somewhere in order to receive waiting messages
 /// or midi data which are then sent to your PdReceiver & PdMidiReceiver
 ///
-/// *do not* use if initied with queued = false
+/// *do not* use if inited with queued = false
 
     /// process waiting messages
     virtual void receiveMessages() {
@@ -476,19 +476,19 @@ public:
         context.curMsgLen = 0;
     }
 
-    /// send a list using the PdBase List type
+    /// send a list using the pd::List type
     ///
-    ///     List list;
+    ///     pd::List list;
     ///     list.addSymbol("hello");
     ///     list.addFloat(1.23);
-    ///     pd.sstd::endlist("test", list);
+    ///     pd.sendList("test", list);
     ///
     /// sends [list hello 1.23( -> [r test]
     ///
     /// stream operators work as well:
     ///
     ///     list << "hello" << 1.23;
-    ///     pd.sstd::endlist("test", list);
+    ///     pd.sendList("test", list);
     ///
     virtual void sendList(const std::string &dest, const pd::List &list) {
         PdContext &context = PdContext::instance();
@@ -509,7 +509,7 @@ public:
         finishList(dest);
     }
 
-    /// send a message using the PdBase List type
+    /// send a message using the pd::List type
     ///
     ///     pd::List list;
     ///     list.addSymbol("hello");
@@ -669,7 +669,7 @@ public:
 
 /// \section Stream Interface for Compound Messages
 ///
-/// pd << StartMessage() << 100 << 1.2 << "a symbol" << FinishList("test");
+/// pd << pd::StartMessage() << 100 << 1.2 << "a symbol" << pd::FinishList("test");
 ///
 
     /// start a compound message
@@ -750,10 +750,10 @@ public:
 
 /// \section Stream Interface for MIDI
 ///
-/// pd << NoteOn(64) << NoteOn(64, 60) << NoteOn(64, 60, 1);
-/// pd << ControlChange(100, 64) << ProgramChange(100, 1);
-/// pd << Aftertouch(127, 1) << PolyAftertouch(64, 127, 1);
-/// pd << PitchBend(2000, 1);
+/// pd << pd::NoteOn(64) << NoteOn(64, 60) << pd::NoteOn(64, 60, 1);
+/// pd << pd::ControlChange(100, 64) << pd::ProgramChange(100, 1);
+/// pd << pd::Aftertouch(127, 1) << pd::PolyAftertouch(64, 127, 1);
+/// pd << pd::PitchBend(2000, 1);
 ///
 
     /// send a MIDI note on
@@ -794,8 +794,8 @@ public:
 
 /// \section Stream Interface for Raw Bytes
 ///
-/// pd << StartMidi() << 0xEF << 0x45 << Finish();
-/// pd << StartSysex() << 0xE7 << 0x45 << 0x56 << 0x17 << Finish();
+/// pd << pd::StartMidi() << 0xEF << 0x45 << pd::Finish();
+/// pd << pd::StartSysex() << 0xE7 << 0x45 << 0x56 << 0x17 << pd::Finish();
 ///
 
     /// start a raw byte MIDI message
@@ -898,7 +898,7 @@ public:
     ///
     /// calling without setting readLen and offset reads the whole array:
     ///
-    /// vector<float> array1;
+    /// std::vector<float> array1;
     /// readArray("array1", array1);
     ///
     virtual bool readArray(const std::string &name,
@@ -1005,7 +1005,7 @@ public:
         return PdContext::instance().isInited();
     }
 
-    /// is the global pd instance using the ringerbuffer queue
+    /// is the global pd instance using the ringbuffer queue
     /// for message padding?
     bool isQueued() {
         return PdContext::instance().isQueued();
@@ -1191,26 +1191,26 @@ protected:
 
     /// \section Variables
 
-        bool bMsgInProgress;    //< is a compound message being constructed?
-        int maxMsgLen;          //< maximum allowed message length
-        int curMsgLen;          //< the length of the current message
+        bool bMsgInProgress;    ///< is a compound message being constructed?
+        int maxMsgLen;          ///< maximum allowed message length
+        int curMsgLen;          ///< the length of the current message
 
         /// compound message status
         PdBase::MsgType msgType;
 
-        int midiPort;   //< target midi port
+        int midiPort;   ///< target midi port
 
-        std::map<std::string,void*> sources;    //< subscribed sources
+        std::map<std::string,void*> sources;    ///< subscribed sources
 
-        pd::PdReceiver *receiver;               //< the message receiver
-        pd::PdMidiReceiver *midiReceiver;       //< the midi receiver
+        pd::PdReceiver *receiver;               ///< the message receiver
+        pd::PdMidiReceiver *midiReceiver;       ///< the midi receiver
 
     private:
 
-        bool bInited; //< is this pd context inited?
-        bool bQueued; //< is this context using the libpd_queued ringbuffer?
+        bool bInited; ///< is this pd context inited?
+        bool bQueued; ///< is this context using the libpd_queued ringbuffer?
 
-        unsigned int numBases; //< number of pd base objects
+        unsigned int numBases; ///< number of pd base objects
 
         // hide all the constructors, copy functions here
         PdContext() {                      // cannot create
