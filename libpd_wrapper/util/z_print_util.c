@@ -14,38 +14,57 @@
 #include <stdlib.h>
 #include <string.h>
 
-t_libpd_printhook libpd_concatenated_printhook = NULL;
+#include "../z_hooks.h"
+
+typedef struct _print_util {
+  t_libpd_printhook concat_printhook;
+  char *concat_buf; /* line buffer */
+  int concat_len; /* current line len */
+} print_util;
 
 #define PRINT_LINE_SIZE 2048
 
 void libpd_set_concatenated_printhook(const t_libpd_printhook hook) {
-  libpd_concatenated_printhook = hook;
+  t_libpdimp *imp = libpdimp_this();
+  if (hook) {
+    if (!imp->i_print_util) {
+      imp->i_print_util = calloc(1, sizeof(print_util));
+      ((print_util *)imp->i_print_util)->concat_buf = calloc(1, PRINT_LINE_SIZE);
+    }
+    ((print_util *)imp->i_print_util)->concat_printhook = hook;
+  }
+  else {
+    if (imp->i_print_util) {
+      free(((print_util *)imp->i_print_util)->concat_buf);
+      free(imp->i_print_util);
+      imp->i_print_util = NULL;
+    }
+  }
 }
 
 void libpd_print_concatenator(const char *s) {
-  if (!libpd_concatenated_printhook) return;
+  print_util *util = (print_util *)libpdimp_this()->i_print_util;
+  if (!util) return;
 
-  static char concatenated_print_line[PRINT_LINE_SIZE];
-  static int len_line = 0;
-  concatenated_print_line[len_line] = '\0';
+  util->concat_buf[util->concat_len] = '\0';
 
-  int len = (int) strlen(s);
-  while (len_line + len >= PRINT_LINE_SIZE) {
-    int d = PRINT_LINE_SIZE - 1 - len_line;
-    strncat(concatenated_print_line, s, d);
-    libpd_concatenated_printhook(concatenated_print_line);
+  int len = (int)strlen(s);
+  while (util->concat_len + len >= PRINT_LINE_SIZE) {
+    int d = PRINT_LINE_SIZE - 1 - util->concat_len;
+    strncat(util->concat_buf, s, d);
+    util->concat_printhook(util->concat_buf);
     s += d;
     len -= d;
-    len_line = 0;
-    concatenated_print_line[0] = '\0';
+    util->concat_len = 0;
+    util->concat_buf[0] = '\0';
   }
 
-  strncat(concatenated_print_line, s, len);
-  len_line += len;
+  strncat(util->concat_buf, s, len);
+  util->concat_len += len;
 
-  if (len_line > 0 && concatenated_print_line[len_line - 1] == '\n') {
-    concatenated_print_line[len_line - 1] = '\0';
-    libpd_concatenated_printhook(concatenated_print_line);
-    len_line = 0;
+  if (util->concat_len > 0 && util->concat_buf[util->concat_len - 1] == '\n') {
+    util->concat_buf[util->concat_len - 1] = '\0';
+    util->concat_printhook(util->concat_buf);
+    util->concat_len = 0;
   }
 }

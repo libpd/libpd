@@ -51,6 +51,8 @@ void libpdhooks_free(t_libpdhooks *hooks);
 /// libpd per-instance implementation data
 typedef struct _libpdimp {
   t_libpdhooks *i_hooks; /* event hooks */
+  void *i_queued;        /* queued data, default NULL */
+  void *i_print_util;    /* print util data, default NULL */
   void *i_data;          /* user data, default NULL */
 } t_libpdimp;
 
