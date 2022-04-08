@@ -38,8 +38,8 @@ LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 SRC_FILES = src/PdObject.cpp src/main.cpp src/RtAudio.cpp
 TARGET = pdtest_rtaudio
 
-CXXFLAGS += -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src \
-            -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp \
+CXXFLAGS += -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/libpd_wrapper/util \
+            -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/cpp \
             -I./src -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
 
 .PHONY: clean clobber

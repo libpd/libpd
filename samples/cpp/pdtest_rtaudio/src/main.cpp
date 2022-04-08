@@ -34,7 +34,7 @@ void init(){
    unsigned int bufferFrames = 128;
 
    // init pd
-   if(!lpd.init(0, 2, sampleRate)) {
+   if(!lpd.init(0, 2, sampleRate, true)) {
       std::cerr << "Could not init pd" << std::endl;
       exit(1);
    }

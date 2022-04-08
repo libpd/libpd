@@ -65,7 +65,7 @@ void init(){
    sampleRate = jack_get_sample_rate(client);
 
    // init pd
-   if(!lpd.init(0, 2, sampleRate)) {
+   if(!lpd.init(0, 2, sampleRate, true)) {
       std::cerr << "Could not init pd" << std::endl;
       exit(1);
    }
@@ -95,12 +95,11 @@ void init(){
    }
 }
 
-
 int main (int argc, char *argv[]) {
    init();
 
    // keep the program alive until it's killed with Ctrl+C
-   while(1){
+   while(1) {
       lpd.receiveMessages();
       lpd.sendFloat("FromCpp", 578);
       usleep(100);

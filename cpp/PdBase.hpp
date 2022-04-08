@@ -308,6 +308,7 @@ public:
 /// call these in a loop somewhere in order to receive waiting messages
 /// or midi data which are then sent to your PdReceiver & PdMidiReceiver
 ///
+/// *do not* use if initied with queued = false
 
     /// process waiting messages
     virtual void receiveMessages() {
@@ -1069,6 +1070,8 @@ protected:
             // attach callbacks
             bQueued = queued;
             if(queued) {
+                libpd_queued_init();
+
                 libpd_set_queued_printhook(libpd_print_concatenator);
                 libpd_set_concatenated_printhook(_print);
 
@@ -1085,14 +1088,10 @@ protected:
                 libpd_set_queued_aftertouchhook(_aftertouch);
                 libpd_set_queued_polyaftertouchhook(_polyaftertouch);
                 libpd_set_queued_midibytehook(_midibyte);
-                
-                // init libpd, should only be called once!
-                if(!bLibPdInited) {
-                    libpd_queued_init();
-                    bLibPdInited = true;
-                }
             }
             else {
+                libpd_init();
+
                 libpd_set_printhook(libpd_print_concatenator);
                 libpd_set_concatenated_printhook(_print);
 
@@ -1109,12 +1108,6 @@ protected:
                 libpd_set_aftertouchhook(_aftertouch);
                 libpd_set_polyaftertouchhook(_polyaftertouch);
                 libpd_set_midibytehook(_midibyte);
-
-                // init libpd, should only be called once!
-                if(!bLibPdInited) {
-                    libpd_init();
-                    bLibPdInited = true;
-                }
             }
 
             // init audio
@@ -1214,15 +1207,13 @@ protected:
 
     private:
 
-        bool bLibPdInited; //< has libpd_init be called?
-        bool bInited;      //< is this pd context inited?
+        bool bInited; //< is this pd context inited?
         bool bQueued; //< is this context using the libpd_queued ringbuffer?
 
         unsigned int numBases; //< number of pd base objects
 
         // hide all the constructors, copy functions here
         PdContext() {                      // cannot create
-            bLibPdInited = false;
             bInited = false;
             bQueued = false;
             numBases = false;
