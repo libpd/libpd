@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <pthread.h>
 #include "z_libpd.h"
+#include "z_print_util.h"
 
 #define LIBPD_TEST_NINSTANCES   4
 #define LIBPD_TEST_NLOOPS       8
@@ -32,13 +33,14 @@ typedef struct l_instance
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// print output will often be mixed between threads, but we print anyway for testing...
 void libpd_instance_print(const char* s) {
-    printf("%s", s);
+    int id = ((t_libpd_instance*)libpd_get_instancedata())->l_id;
+    printf("pd%d: %s\n", id, s);
 }
 
 void libpd_instance_noteon(int ch, int pitch, int vel) {
-    printf("noteon: %d %d %d\n", ch, pitch, vel);
+    int id = ((t_libpd_instance*)libpd_get_instancedata())->l_id;
+    printf("pd%d noteon: %d %d %d\n", id, ch, pitch, vel);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,9 +50,11 @@ static void* libpd_instance_doinit(t_libpd_instance* inst)
 {
     inst->l_pd = libpd_new_instance();
     libpd_set_instance(inst->l_pd);
-    libpd_set_printhook(libpd_instance_print);
-    libpd_set_noteonhook(libpd_instance_noteon);
+    libpd_set_instancedata(inst);
     assert(inst->l_pd && "pd instance can't be allocated");
+    libpd_set_printhook(libpd_print_concatenator);
+    libpd_set_concatenated_printhook(libpd_instance_print);
+    libpd_set_noteonhook(libpd_instance_noteon);
     libpd_init_audio((int)inst->l_ninputs, (int)inst->l_noutputs, (int)inst->l_samplerate);
     return NULL;
 }
@@ -91,14 +95,12 @@ static void libpd_instance_free(t_libpd_instance* inst)
     assert(!pthread_create(&inst->l_thd, NULL, (void *)libpd_instance_dofree, inst) &&
            "thread creation error");
     pthread_join(inst->l_thd, NULL);
-    if(inst->l_inputs)
-    {
+    if(inst->l_inputs) {
         free(inst->l_inputs);
         inst->l_inputs = NULL;
         inst->l_ninputs = 0;
     }
-    if(inst->l_outputs)
-    {
+    if(inst->l_outputs) {
         free(inst->l_outputs);
         inst->l_outputs = NULL;
         inst->l_noutputs = 0;
