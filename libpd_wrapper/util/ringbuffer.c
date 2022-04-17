@@ -29,7 +29,7 @@
     #include <windows.h>
     #define SYNC_FETCH(ptr) InterlockedOr(ptr, 0)
     #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
-            InterlockedCompareExchange(ptr, oldval, newval)
+            InterlockedCompareExchange(ptr, newval, oldval)
   #else // gcc atomics
     #define SYNC_FETCH(ptr) __sync_fetch_and_or(ptr, 0)
     #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
