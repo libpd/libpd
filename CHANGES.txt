@@ -7,6 +7,12 @@
      per-instance user data storage 
 * C: fixed libpdinstance_new() memory issue
 
+* C++: add pd::PdBase per-instance support
+       note: when compiled with PDINSTANCE defined, PdBase calls
+             libpd_set_instance() internally so existing projects which use the
+             libpd_*_instance() functions manually may need to be updated
+* C++: fixed pd::List.toString() trailing whitespace
+
 * Cocoapods: fixed clone unauthenticated git protocol error by moving to https
              submodule urls (reported by Ricardo de Amorim), run the following
              after updating a repo:
