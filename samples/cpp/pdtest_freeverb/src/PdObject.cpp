@@ -38,7 +38,7 @@ void PdObject::receiveList(const std::string &dest, const pd::List &list) {
 }
 
 void PdObject::receiveMessage(const std::string &dest, const std::string &msg, const pd::List &list) {
-	std::cout << "CPP: message " << dest << ": " << msg << " " << list.toString() << list.types() << std::endl;
+	std::cout << "CPP: message " << dest << ": " << msg << " " << list.toString() << " " << list.types() << std::endl;
 }
 
 //--------------------------------------------------------------

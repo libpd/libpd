@@ -38,10 +38,15 @@ void PdObject::receiveList(const std::string &dest, const pd::List &list) {
 	
 	// step through the list
 	for(int i = 0; i < list.len(); ++i) {
-		if(list.isFloat(i))
-			std::cout << list.getFloat(i) << " ";
-		else if(list.isSymbol(i))
-			std::cout << list.getSymbol(i) << " ";
+		if(list.isFloat(i)) {
+			std::cout << list.getFloat(i);
+		}
+		else if(list.isSymbol(i)) {
+			std::cout << list.getSymbol(i);
+		}
+		if(i < list.len()-1) {
+			std::cout << " ";
+		}
 	}
 	
 	// you can also use the built in toString function or simply stream it out
@@ -49,11 +54,11 @@ void PdObject::receiveList(const std::string &dest, const pd::List &list) {
 	// std::cout << list;
 	
 	// print an OSC-style type string
-	std::cout << list.types() << std::endl;
+	std::cout << " " << list.types() << std::endl;
 }
 
 void PdObject::receiveMessage(const std::string &dest, const std::string &msg, const pd::List &list) {
-	std::cout << "CPP: message " << dest << ": " << msg << " " << list.toString() << list.types() << std::endl;
+	std::cout << "CPP: message " << dest << ": " << msg << " " << list.toString() << " " << list.types() << std::endl;
 }
 
 //--------------------------------------------------------------
