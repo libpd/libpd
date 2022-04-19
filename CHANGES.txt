@@ -1,13 +1,19 @@
 0.13.0 TBA
 
 * updated to pd vanilla 0.52-2
+* fixed bad readme link to wiki
+* removed defunct libpd.cc link for now
 
 * C: print and midi hooks finally per-instance (!)
+* C: added double precision support: libpd_read_array_double(),
+     libpd_write_array_double(), libpd_double(), libpd_add_double(),
+     libpd_set_double(), t_libpd_doublehook, libpd_set_doublehook(),
+     libpd_get_double() (IOhannes Zmoelnig)
 * C: added libpd_set_instancedata() & libpd_get_instancedata() for optional
-     per-instance user data storage 
+     per-instance user data storage
 * C: fixed libpdinstance_new() memory issue
 
-* C++: add pd::PdBase per-instance support
+* C++: added pd::PdBase per-instance support
        note: when compiled with PDINSTANCE defined, PdBase calls
              libpd_set_instance() internally so existing projects which use the
              libpd_*_instance() functions manually may need to be updated

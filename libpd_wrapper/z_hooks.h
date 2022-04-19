@@ -26,6 +26,7 @@ typedef struct _libpdhooks {
   // no h_printhook as libpd_set_printhook() sets internal STUFF->st_printhook
   t_libpd_banghook h_banghook;
   t_libpd_floathook h_floathook;
+  t_libpd_doublehook h_doublehook;
   t_libpd_symbolhook h_symbolhook;
   t_libpd_listhook h_listhook;
   t_libpd_messagehook h_messagehook;

@@ -8,8 +8,6 @@ Copyright (c) Peter Brinkmann & the libpd team 2010-2021
 Documentation
 -------------
 
-See our website and book at <http://libpd.cc>
-
 For documentation of libpd, see the wiki: <https://github.com/libpd/libpd/wiki>
 
 If you are using [Processing](http://processing.org), iOS, or Android, see our companion repositories:
@@ -25,7 +23,7 @@ The preferred method to download libpd is to use git.
 
 **Do not download libpd as a zip or tar.gz file from GitHub.**
 
-The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
+The "Download ZIP" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
 
 To download libpd & check out the pure-data submodule, do the following:
 
@@ -281,8 +279,8 @@ Install the JDK via your distributions package manager.
 
 Install the JDK either by downloading an installer package or by using one of the open source package managers for macOS:
 
-* homebrew: <https://brew.sh> (recommended)
-* macports: <https://www.macports.org>
+* Homebrew: <https://brew.sh> (recommended)
+* MacPorts: <https://www.macports.org>
 
 ### Windows
 

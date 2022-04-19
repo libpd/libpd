@@ -35,7 +35,7 @@ typedef struct _pd_params {
     LIBPD_SYMBOL, LIBPD_LIST, LIBPD_MESSAGE,
   } type;
   const char *src;
-  float x;
+  t_float x;
   const char *sym;
   int argc;
 } pd_params;
@@ -69,7 +69,10 @@ static void receive_bang(pd_params *p, char **buffer) {
 
 static void receive_float(pd_params *p, char **buffer) {
   if (QUEUEDSTUFF->hooks.h_floathook) {
-    QUEUEDSTUFF->hooks.h_floathook(p->src, p->x);
+    QUEUEDSTUFF->hooks.h_floathook(p->src, (float)p->x);
+  }
+  if (QUEUEDSTUFF->hooks.h_doublehook) {
+    QUEUEDSTUFF->hooks.h_doublehook(p->src, (double)p->x);
   }
 }
 
@@ -121,6 +124,14 @@ static void internal_floathook(const char *src, float x) {
   queued_stuff *queued = QUEUEDSTUFF;
   if (rb_available_to_write(queued->pd_receive_buffer) >= S_PD_PARAMS) {
     pd_params p = {LIBPD_FLOAT, src, x, NULL, 0};
+    rb_write_to_buffer(queued->pd_receive_buffer, 1, (const char *)&p, S_PD_PARAMS);
+  }
+}
+
+static void internal_doublehook(const char *src, double x) {
+  queued_stuff *queued = QUEUEDSTUFF;
+  if (rb_available_to_write(queued->pd_receive_buffer) >= S_PD_PARAMS) {
+    pd_params p = {LIBPD_FLOAT, src, (t_float)x, NULL, 0};
     rb_write_to_buffer(queued->pd_receive_buffer, 1, (const char *)&p, S_PD_PARAMS);
   }
 }
@@ -262,6 +273,12 @@ void libpd_set_queued_banghook(const t_libpd_banghook hook) {
 
 void libpd_set_queued_floathook(const t_libpd_floathook hook) {
   QUEUEDSTUFF->hooks.h_floathook = hook;
+  QUEUEDSTUFF->hooks.h_doublehook = NULL;
+}
+
+void libpd_set_queued_doublehook(const t_libpd_doublehook hook) {
+  QUEUEDSTUFF->hooks.h_floathook = NULL;
+  QUEUEDSTUFF->hooks.h_doublehook = hook;
 }
 
 void libpd_set_queued_symbolhook(const t_libpd_symbolhook hook) {
@@ -315,7 +332,7 @@ int libpd_queued_init() {
 
   libpd_set_printhook(internal_printhook);
   libpd_set_banghook(internal_banghook);
-  libpd_set_floathook(internal_floathook);
+  libpd_set_doublehook(internal_doublehook);
   libpd_set_symbolhook(internal_symbolhook);
   libpd_set_listhook(internal_listhook);
   libpd_set_messagehook(internal_messagehook);
