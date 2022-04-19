@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012-2012 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
@@ -286,9 +286,12 @@ public:
                 line += itoa.str();
                 itoa.str("");
             }
-            else
+            else {
                 line += getSymbol(i);
-            line += " ";
+            }
+            if(i < (int)objects.size()-1) {
+                line += " ";
+            }
         }
         return line;
     }
