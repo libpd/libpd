@@ -63,6 +63,10 @@ t_libpdimp* libpdimp_new(void);
 void libpdimp_free(t_libpdimp *imp);
 
 /// get current instance implementation data
-#define LIBPDSTUFF ((t_libpdimp *)(STUFF->st_impdata))
+#ifdef PDINSTANCE
+  #define LIBPDSTUFF ((t_libpdimp *)(STUFF->st_impdata))
+#else
+  #define LIBPDSTUFF ((t_libpdimp *)&libpd_mainimp)
+#endif
 
 #endif
