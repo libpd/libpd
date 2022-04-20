@@ -154,6 +154,12 @@ ifeq ($(MULTI), true)
     MULTI_CFLAGS = -DPDINSTANCE -DPDTHREADS
 endif
 
+# conditional double-precision support
+DOUBLE_CFLAGS =
+ifeq ($(DOUBLE), true)
+    DOUBLE_CFLAGS = -DPD_FLOATSIZE=64
+endif
+
 # conditional optimizations or debug settings
 OPT_CFLAGS = -ffast-math -funroll-loops -fomit-frame-pointer -O3
 ifeq ($(DEBUG), true)
@@ -210,8 +216,8 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY \
          -I./libpd_wrapper -I./libpd_wrapper/util \
          -I./pure-data/src \
          $(PLATFORM_CFLAGS) \
-         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
-         $(ADDITIONAL_CFLAGS)
+         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(DOUBLE_CFLAGS) \
+         $(LOCALE_CFLAGS) $(ADDITIONAL_CFLAGS)
 LDFLAGS += $(ADDITIONAL_LDFLAGS)
 CSHARP_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
