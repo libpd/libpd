@@ -327,9 +327,11 @@ static int libpd_dofloat(const char *recv, t_float x) {
   sys_unlock();
   return 0;
 }
+
 int libpd_float(const char *recv, float x) {
   return libpd_dofloat(recv, x);
 }
+
 int libpd_double(const char *recv, double x) {
   return libpd_dofloat(recv, x);
 }
@@ -368,6 +370,7 @@ int libpd_start_message(int maxlen) {
 void libpd_add_float(float x) {
   ADD_ARG(SETFLOAT);
 }
+
 void libpd_add_double(double x) {
   ADD_ARG(SETFLOAT);
 }
@@ -468,6 +471,7 @@ void libpd_set_floathook(const t_libpd_floathook hook) {
   IMP->i_hooks.h_floathook = hook;
   IMP->i_hooks.h_doublehook = NULL;
 }
+
 void libpd_set_doublehook(const t_libpd_doublehook hook) {
   IMP->i_hooks.h_floathook = NULL;
   IMP->i_hooks.h_doublehook = hook;
