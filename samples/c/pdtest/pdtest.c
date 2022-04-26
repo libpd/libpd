@@ -1,3 +1,6 @@
+/*
+  test libpd by running a patch in a loop
+*/
 #include <stdio.h>
 #include "z_libpd.h"
 
@@ -30,7 +33,7 @@ int main(int argc, char **argv) {
   libpd_finish_message("pd", "dsp");
 
   // open patch       [; pd open file folder(
-  if(!libpd_openfile(argv[1], argv[2]))
+  if (!libpd_openfile(argv[1], argv[2]))
     return -1;
 
   // now run pd for ten seconds (logical time)
@@ -44,4 +47,3 @@ int main(int argc, char **argv) {
     printf("%g\n", outbuf[i]);
   return 0;
 }
-
