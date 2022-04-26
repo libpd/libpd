@@ -23,7 +23,10 @@ int main(int argc, char **argv) {
   }
 
   // check if double-precision
+  // note: for printing t_float size this file is built with PD_FLOATSIZE,
+  // otherwise it's fine to leave it off in client code
   printf("double-precision %d\n", (int)(sizeof(t_float)/8));
+  printf("float size %d\n", (int)PD_FLOATSIZE);
 
   // init pd
   int srate = 44100;
