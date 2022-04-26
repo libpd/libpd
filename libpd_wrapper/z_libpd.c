@@ -20,7 +20,6 @@
 #include "z_libpd.h"
 #include "x_libpdreceive.h"
 #include "z_hooks.h"
-//#include "s_stuff.h"
 #include "m_imp.h"
 #include "g_all_guis.h"
 

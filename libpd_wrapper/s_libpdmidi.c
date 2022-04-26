@@ -3,7 +3,6 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
 
 #include "m_pd.h"
-#include "s_stuff.h"
 #include "z_libpd.h"
 #include "z_hooks.h"
 
