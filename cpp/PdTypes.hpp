@@ -169,7 +169,7 @@ public:
     /// get index as a float
     float getFloat(const unsigned int index) const {
         if(!isFloat(index)) {
-            std::cerr << "Pd: List: object " << index << " is not a float"
+            std::cerr << "Pd: List object " << index << " is not a float"
                       << std::endl;
             return 0;
         }
@@ -179,7 +179,7 @@ public:
     /// get index as a symbol
     std::string getSymbol(const unsigned int index) const {
         if(!isSymbol(index)) {
-            std::cerr << "Pd: List: object " << index << " is not a symbol" 
+            std::cerr << "Pd: List object " << index << " is not a symbol"
                       << std::endl;
             return "";
         }
