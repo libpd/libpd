@@ -24,6 +24,15 @@
 #include "m_imp.h"
 #include "g_all_guis.h"
 
+// pd_init() doesn't call socket_init() which is needed on windows for
+// libpd_start_gui() to work
+#if (defined(_WIN32) || defined(_WIN64)) && PD_MINOR_VERSION > 50
+# include "s_net.h"
+# define SOCKET_INIT socket_init();
+#else
+# define SOCKET_INIT
+#endif
+
 #if PD_MINOR_VERSION < 46
 # define HAVE_SCHED_TICK_ARG
 #endif
@@ -90,6 +99,7 @@ int libpd_init(void) {
   libpdreceive_setup();
   STUFF->st_searchpath = NULL;
   sys_libdir = gensym("");
+  SOCKET_INIT
   post("pd %d.%d.%d%s", PD_MAJOR_VERSION, PD_MINOR_VERSION,
     PD_BUGFIX_VERSION, PD_TEST_VERSION);
 #ifdef LIBPD_EXTRA
