@@ -192,7 +192,7 @@ Double-Precision Support
 
 By default, libpd computes numbers and samples internally as single-precision 32-bit floats. This is fast and good enough for most general usage. If you are working with small numbers beyond 6 decimal points, however, you will need a higher degree of precision.
 
-To enable double-precision 64-bit floating point support, build libpd and your program with `-DPD_FLOATSIZE=64` in the CFLAGS. The libpd makefile provides the `DOUBLE` makefile variable:
+To enable double-precision 64-bit floating point support, build libpd with `-DPD_FLOATSIZE=64` in the CFLAGS. The libpd makefile provides the `DOUBLE` makefile variable for this:
 
     make DOUBLE=true
 

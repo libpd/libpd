@@ -522,7 +522,7 @@ public:
     /// start a compound list or message
     virtual void startMessage() {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not start message, message in progress"
+            std::cerr << "Pd: cannot start message, message in progress"
                       << std::endl;
             return;
         }
@@ -536,17 +536,17 @@ public:
     /// add a float to the current compound list or message
     virtual void addFloat(const float num) {
         if(!bMsgInProgress) {
-            std::cerr << "Pd: Can not add float, message not in progress"
+            std::cerr << "Pd: cannot add float, message not in progress"
                       << std::endl;
             return;
         }
         if(msgType != MSG) {
-            std::cerr << "Pd: Can not add float, midi byte stream in progress"
+            std::cerr << "Pd: cannot add float, midi byte stream in progress"
                       << std::endl;
             return;
         }
         if(curMsgLen+1 >= maxMsgLen) {
-            std::cerr << "Pd: Can not add float, max message len of "
+            std::cerr << "Pd: cannot add float, max message len of "
                       << maxMsgLen << " reached" << std::endl;
             return;
         }
@@ -558,17 +558,17 @@ public:
     /// add a symbol to the current compound list or message
     virtual void addSymbol(const std::string &symbol) {
         if(!bMsgInProgress) {
-            std::cerr << "Pd: Can not add symbol, message not in progress"
+            std::cerr << "Pd: cannot add symbol, message not in progress"
                       << std::endl;
             return;
         }
         if(msgType != MSG) {
-            std::cerr << "Pd: Can not add symbol, midi byte stream in progress"
+            std::cerr << "Pd: cannot add symbol, midi byte stream in progress"
                       << std::endl;
             return;
         }
         if(curMsgLen+1 >= maxMsgLen) {
-            std::cerr << "Pd: Can not add symbol, max message len of "
+            std::cerr << "Pd: cannot add symbol, max message len of "
                       << maxMsgLen << " reached" << std::endl;
             return;
         }
@@ -580,12 +580,12 @@ public:
     /// finish and send as a list
     virtual void finishList(const std::string &dest) {
         if(!bMsgInProgress) {
-            std::cerr << "Pd: Can not finish list, "
+            std::cerr << "Pd: cannot finish list, "
                       << "message not in progress" << std::endl;
             return;
         }
         if(msgType != MSG) {
-            std::cerr << "Pd: Can not finish list, "
+            std::cerr << "Pd: cannot finish list, "
                       << "midi byte stream in progress" << std::endl;
             return;
         }
@@ -599,12 +599,12 @@ public:
     virtual void finishMessage(const std::string &dest,
                                const std::string &msg) {
         if(!bMsgInProgress) {
-            std::cerr << "Pd: Can not finish message, "
+            std::cerr << "Pd: cannot finish message, "
                       << "message not in progress" << std::endl;
             return;
         }
         if(msgType != MSG) {
-            std::cerr << "Pd: Can not finish message, "
+            std::cerr << "Pd: cannot finish message, "
                       << "midi byte stream in progress" << std::endl;
             return;
         }
@@ -630,7 +630,7 @@ public:
     ///
     virtual void sendList(const std::string &dest, const pd::List &list) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not send list, message in progress"
+            std::cerr << "Pd: cannot send list, message in progress"
                       << std::endl;
             return;
         }
@@ -665,7 +665,7 @@ public:
                              const std::string &msg,
                              const pd::List &list = pd::List()) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not send message, message in progress"
+            std::cerr << "Pd: cannot send message, message in progress"
                       << std::endl;
             return;
         }
@@ -784,7 +784,7 @@ public:
     /// send a bang message
     PdBase& operator<<(const pd::Bang &var) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not send Bang, message in progress"
+            std::cerr << "Pd: cannot send Bang, message in progress"
                       << std::endl;
             return *this;
         }
@@ -795,7 +795,7 @@ public:
     /// send a float message
     PdBase& operator<<(const pd::Float &var) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not send Float, message in progress"
+            std::cerr << "Pd: cannot send Float, message in progress"
                       << std::endl;
             return *this;
         }
@@ -806,7 +806,7 @@ public:
     /// send a symbol message
     PdBase& operator<<(const pd::Symbol &var) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not send Symbol, message in progress"
+            std::cerr << "Pd: cannot send Symbol, message in progress"
                       << std::endl;
             return *this;
         }
@@ -947,7 +947,7 @@ public:
     /// start a raw byte MIDI message
     PdBase& operator<<(const pd::StartMidi &var) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not start MidiByte stream, "
+            std::cerr << "Pd: cannot start MidiByte stream, "
                       << "message in progress" << std::endl;
             return *this;
         }
@@ -960,7 +960,7 @@ public:
     /// start a raw byte MIDI sysex message
     PdBase& operator<<(const pd::StartSysex &var) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not start Sysex stream, "
+            std::cerr << "Pd: cannot start Sysex stream, "
                       << "message in progress" << std::endl;
             return *this;
         }
@@ -973,7 +973,7 @@ public:
     /// start a raw byte MIDI realtime message
     PdBase& operator<<(const pd::StartSysRealTime &var) {
         if(bMsgInProgress) {
-            std::cerr << "Pd: Can not start SysRealRime stream, "
+            std::cerr << "Pd: cannot start SysRealRime stream, "
                       << "message in progress" << std::endl;
             return *this;
         }
@@ -986,12 +986,12 @@ public:
     /// finish and send a raw byte MIDI message
     PdBase& operator<<(const pd::Finish &var) {
         if(!bMsgInProgress) {
-            std::cerr << "Pd: Can not finish midi byte stream, "
+            std::cerr << "Pd: cannot finish midi byte stream, "
                       << "stream not in progress" << std::endl;
             return *this;
         }
         if(msgType == MSG) {
-            std::cerr << "Pd: Can not finish midi byte stream, "
+            std::cerr << "Pd: cannot finish midi byte stream, "
                       << "message in progress" << std::endl;
             return *this;
         }
@@ -1013,7 +1013,7 @@ public:
         PDBASE_SETINSTANCE
         int len = libpd_arraysize(name.c_str());
         if(len < 0) {
-            std::cerr << "Pd: Cannot get size of unknown array \""
+            std::cerr << "Pd: cannot get size of unknown array \""
                       << name << "\"" << std::endl;
             return 0;
         }
@@ -1027,7 +1027,7 @@ public:
         PDBASE_SETINSTANCE
         int ret = libpd_resize_array(name.c_str(), size);
         if(ret < 0) {
-            std::cerr << "Pd: Cannot resize unknown array \"" << name << "\""
+            std::cerr << "Pd: cannot resize unknown array \"" << name << "\""
                       << std::endl;
             return false;
         }
@@ -1051,7 +1051,7 @@ public:
         PDBASE_SETINSTANCE
         int len = libpd_arraysize(name.c_str());
         if(len < 0) {
-            std::cerr << "Pd: Cannot read unknown array \"" << name << "\""
+            std::cerr << "Pd: cannot read unknown array \"" << name << "\""
                       << std::endl;
             return false;
         }
@@ -1061,13 +1061,13 @@ public:
         }
         // check read len
         else if(readLen > len) {
-            std::cerr << "Pd: Given read len " << readLen << " > len "
+            std::cerr << "Pd: given read len " << readLen << " > len "
                       << len << " of array \"" << name << "\"" << std::endl;
             return false;
         }
         // check offset
-        if(offset+readLen > len) {
-            std::cerr << "Pd: Given read len and offset > len " << readLen
+        if(offset + readLen > len) {
+            std::cerr << "Pd: given read len and offset > len " << readLen
                       << " of array \"" << name << "\"" << std::endl;
             return false;
         }
@@ -1095,7 +1095,7 @@ public:
         PDBASE_SETINSTANCE
         int len = libpd_arraysize(name.c_str());
         if(len < 0) {
-            std::cerr << "Pd: Cannot write to unknown array \"" << name << "\""
+            std::cerr << "Pd: cannot write to unknown array \"" << name << "\""
                       << std::endl;
             return false;
         }
@@ -1107,14 +1107,14 @@ public:
 
         // check write len
         else if(writeLen > len) {
-            std::cerr << "Pd: Given write len " << writeLen << " > len " << len
+            std::cerr << "Pd: given write len " << writeLen << " > len " << len
                       << " of array \"" << name << "\"" << std::endl;
             return false;
         }
 
         // check offset
         if(offset+writeLen > len) {
-            std::cerr << "Pd: Given write len and offset > len " << writeLen
+            std::cerr << "Pd: given write len and offset > len " << writeLen
                       << " of array \"" << name << "\"" << std::endl;
             return false;
         }
@@ -1133,7 +1133,7 @@ public:
         PDBASE_SETINSTANCE
         int len = libpd_arraysize(name.c_str());
         if(len < 0) {
-            std::cerr << "Pd: Cannot clear unknown array \""
+            std::cerr << "Pd: cannot clear unknown array \""
                       << name << "\"" << std::endl;
             return;
         }
