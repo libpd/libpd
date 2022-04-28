@@ -106,10 +106,8 @@ namespace LibPDBindingTest
 				"print: bang\n",
 				"print: 0\n",
 				"print: 42\n",
-				"print: symbol",
-				" ",
-				"don't panic",
-				"\n",
+				"print: symbol\n",
+				"don't panic\n",
 			};
 			
 			var i = 0;

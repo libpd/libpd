@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using LibPDBinding.Managed.Data;
 using LibPDBinding.Managed.Utils;
+using System;
+using System.Collections.Generic;
 
 namespace LibPDBinding.Managed.Events
 {

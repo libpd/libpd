@@ -26,7 +26,6 @@
 #X obj 304 170 osc~ 440;
 #X obj 301 328 s foo;
 #X msg 402 216 hello;
-#X obj 451 161 metro 1000;
 #X obj 464 102 loadbang;
 #X obj 97 340 midiout;
 #X obj 97 315 midiin;
@@ -54,6 +53,5 @@
 #X connect 21 0 20 2;
 #X connect 23 0 22 0;
 #X connect 24 0 23 0;
-#X connect 25 0 24 0;
-#X connect 27 0 26 0;
-#X connect 27 1 26 1;
+#X connect 26 0 25 0;
+#X connect 26 1 25 1;

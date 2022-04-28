@@ -1,5 +1,5 @@
-using System;
 using LibPDBinding.Native;
+using System;
 
 namespace LibPDBinding.Managed
 {
@@ -9,10 +9,12 @@ namespace LibPDBinding.Managed
 	public sealed class Patch : IDisposable
 	{
 		readonly IntPtr _handle;
+		readonly Pd _pd;
 
-		internal Patch (IntPtr handle)
+		internal Patch (IntPtr handle, Pd pd)
 		{
 			_handle = handle;
+			_pd = pd;
 			DollarZero = General.getdollarzero (_handle);
 		}
 
@@ -29,6 +31,7 @@ namespace LibPDBinding.Managed
 
 		void Dispose (bool disposing)
 		{
+			_pd.Activate ();
 			General.closefile (_handle);
 		}
 

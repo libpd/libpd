@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using LibPDBinding.Managed.Data;
 using LibPDBinding.Managed.Events;
 using LibPDBinding.Managed.Utils;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace LibPDBinding.Managed
 {
@@ -12,8 +12,11 @@ namespace LibPDBinding.Managed
 	/// </summary>
 	public sealed class Messaging : IDisposable
 	{
-		internal Messaging ()
+		readonly Pd _pd;
+
+		internal Messaging (Pd pd)
 		{
+			_pd = pd;
 			SetupHooks ();
 		}
 
@@ -30,6 +33,7 @@ namespace LibPDBinding.Managed
 
 		void Dispose (bool disposing)
 		{
+			_pd.Activate ();
 			foreach (IntPtr pointer in _bindings.Values) {
 				Native.Messaging.unbind (pointer);
 			}
@@ -52,6 +56,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Send (string receiver, string message, params IAtom[] atoms)
 		{
+			_pd.Activate ();
 			MessageInvocation.SendMessage (receiver, message, atoms);
 		}
 
@@ -63,6 +68,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Send (string receiver, params IAtom[] atoms)
 		{
+			_pd.Activate ();
 			if (atoms.Length == 1) {
 				MessageInvocation.Send (receiver, atoms [0]);
 				return;
@@ -78,6 +84,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Send (string receiver, Bang bang)
 		{
+			_pd.Activate ();
 			MessageInvocation.SendBang (receiver);
 		}
 
@@ -88,6 +95,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Bind (string receiver)
 		{
+			_pd.Activate ();
 			if (_bindings.ContainsKey (receiver)) {
 				return;
 			}
@@ -102,6 +110,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void Unbind (string receiver)
 		{
+			_pd.Activate ();
 			IntPtr pointer;
 			if (!_bindings.TryGetValue (receiver, out pointer)) {
 				return;
@@ -154,7 +163,7 @@ namespace LibPDBinding.Managed
 
 		/// <summary>
 		/// Occurs when print is called in Pd.
-		/// </summary>
+		/// </summary>		
 		public event EventHandler<PrintEventArgs> Print;
 		/// <summary>
 		/// Occurs when a Bang message is received on a subscribed receiver.
@@ -187,7 +196,8 @@ namespace LibPDBinding.Managed
 		void SetupHooks ()
 		{
 			PrintHook = new LibPDPrintHook (RaisePrintEvent);
-			Native.Messaging.set_printhook (PrintHook);
+			Native.Messaging.set_printhook (Native.Messaging.print_concatenator);
+			Native.Messaging.set_concatenated_printhook (PrintHook);
 
 			BangHook = new LibPDBangHook (RaiseBangEvent);
 			Native.Messaging.set_banghook (BangHook);

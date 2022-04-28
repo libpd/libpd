@@ -3,20 +3,14 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  * 
- * 
- * Created by SharpDevelop.
- * User: Tebjan Halm
- * Date: 11.04.2012
- * Time: 07:01
- * 
  */
 
+using LibPDBinding.Native;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using LibPDBinding.Native;
 
 namespace LibPDBinding
 {
@@ -65,7 +59,7 @@ namespace LibPDBinding
 		/// in a particular thread, then the subscriber method is responsible for posting 
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Print")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Print")]
 		public static event LibPDPrint Print = delegate{};
 		
 		/// <summary>
@@ -75,7 +69,7 @@ namespace LibPDBinding
 		/// in a particular thread, then the subscriber method is responsible for posting 
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Bang")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Bang")]
 		public static event LibPDBang Bang = delegate{};
 		
 		/// <summary>
@@ -85,7 +79,7 @@ namespace LibPDBinding
 		/// in a particular thread, then the subscriber method is responsible for posting 
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Float")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Float")]
 		public static event LibPDFloat Float = delegate{};
 		
 		/// <summary>
@@ -95,7 +89,7 @@ namespace LibPDBinding
 		/// in a particular thread, then the subscriber method is responsible for posting 
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Symbol")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Symbol")]
 		public static event LibPDSymbol Symbol = delegate{};
 		
 		/// <summary>
@@ -106,7 +100,7 @@ namespace LibPDBinding
 		/// in a particular thread, then the subscriber method is responsible for posting 
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.List")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.List")]
 		public static event LibPDList List = delegate{};
 		
 		/// <summary>
@@ -117,7 +111,7 @@ namespace LibPDBinding
 		/// in a particular thread, then the subscriber method is responsible for posting 
 		/// those calls to the appropriate synchronization context.
 		/// </summary>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Message")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Message")]
 		public static event LibPDMessage Message = delegate{};
 
 		private static void RaisePrintEvent (string e)
@@ -200,7 +194,7 @@ namespace LibPDBinding
 		/// <param name="symbol"> </param>
 		/// <returns> true on success </returns>
 		[MethodImpl (MethodImplOptions.Synchronized)]
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Subscribe()")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Subscribe()")]
 		public static bool Subscribe (string sym)
 		{
 			if (String.IsNullOrEmpty (sym))
@@ -241,7 +235,7 @@ namespace LibPDBinding
 		/// <param name="recv">
 		///            symbol associated with receiver </param>
 		/// <returns> error code, 0 on success </returns>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Send()")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Send()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendBang (string recv)
 		{
@@ -256,7 +250,7 @@ namespace LibPDBinding
 		///            symbol associated with receiver </param>
 		/// <param name="x"> </param>
 		/// <returns> error code, 0 on success </returns>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Send()")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Send()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendFloat (string recv, float x)
 		{
@@ -270,7 +264,7 @@ namespace LibPDBinding
 		///            symbol associated with receiver </param>
 		/// <param name="sym"> </param>
 		/// <returns> error code, 0 on success </returns>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Send()")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Send()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendSymbol (string recv, string sym)
 		{
@@ -285,7 +279,7 @@ namespace LibPDBinding
 		/// <param name="message"> </param>
 		/// <param name="args"> list of arguments of type Integer, Float, or String </param>
 		/// <returns> error code, 0 on success </returns>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Send()")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Send()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendMessage (string receiver, string message, params object[] args)
 		{
@@ -310,7 +304,7 @@ namespace LibPDBinding
 		/// <param name="receiver"> </param>
 		/// <param name="args"> list of arguments of type Integer, Float, or String </param>
 		/// <returns> error code, 0 on success </returns>
-		[Obsolete("Use LibPDBinding.Managed.Messaging.Send()")]
+		[Obsolete ("Use LibPDBinding.Managed.Messaging.Send()")]
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static int SendList (string receiver, params object[] args)
 		{
