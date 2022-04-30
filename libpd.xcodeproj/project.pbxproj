@@ -442,6 +442,26 @@
 		7E2D79EC266459400042689B /* pdsched.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E6266459400042689B /* pdsched.c */; };
 		7E2D79ED266459400042689B /* pdsched.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E6266459400042689B /* pdsched.c */; };
 		7E2D79EE266459400042689B /* pdsched.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E6266459400042689B /* pdsched.c */; };
+		7EB18894281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
+		7EB18895281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
+		7EB18896281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
+		7EB18897281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
+		7EB18898281DA79E0099A401 /* d_soundfile_next.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18891281DA79E0099A401 /* d_soundfile_next.c */; };
+		7EB18899281DA79E0099A401 /* d_soundfile_next.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18891281DA79E0099A401 /* d_soundfile_next.c */; };
+		7EB1889A281DA79E0099A401 /* d_soundfile_next.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18891281DA79E0099A401 /* d_soundfile_next.c */; };
+		7EB1889B281DA79E0099A401 /* d_soundfile_next.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18891281DA79E0099A401 /* d_soundfile_next.c */; };
+		7EB1889C281DA79E0099A401 /* d_soundfile_aiff.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */; };
+		7EB1889D281DA79E0099A401 /* d_soundfile_aiff.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */; };
+		7EB1889E281DA79E0099A401 /* d_soundfile_aiff.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */; };
+		7EB1889F281DA79E0099A401 /* d_soundfile_aiff.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */; };
+		7EB188A0281DA79E0099A401 /* d_soundfile_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18893281DA79E0099A401 /* d_soundfile_wave.c */; };
+		7EB188A1281DA79E0099A401 /* d_soundfile_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18893281DA79E0099A401 /* d_soundfile_wave.c */; };
+		7EB188A2281DA79E0099A401 /* d_soundfile_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18893281DA79E0099A401 /* d_soundfile_wave.c */; };
+		7EB188A3281DA79E0099A401 /* d_soundfile_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18893281DA79E0099A401 /* d_soundfile_wave.c */; };
+		7EB188A5281DA7BF0099A401 /* x_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB188A4281DA7BF0099A401 /* x_file.c */; };
+		7EB188A6281DA7BF0099A401 /* x_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB188A4281DA7BF0099A401 /* x_file.c */; };
+		7EB188A7281DA7BF0099A401 /* x_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB188A4281DA7BF0099A401 /* x_file.c */; };
+		7EB188A8281DA7BF0099A401 /* x_file.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB188A4281DA7BF0099A401 /* x_file.c */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -568,6 +588,11 @@
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
 		7E2D79E5266459400042689B /* pd~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "pd~.c"; path = "pure-data/extra/pd~/pd~.c"; sourceTree = SOURCE_ROOT; };
 		7E2D79E6266459400042689B /* pdsched.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pdsched.c; path = "pure-data/extra/pd~/pdsched.c"; sourceTree = SOURCE_ROOT; };
+		7EB18890281DA79E0099A401 /* d_soundfile_caf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_caf.c; sourceTree = "<group>"; };
+		7EB18891281DA79E0099A401 /* d_soundfile_next.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_next.c; sourceTree = "<group>"; };
+		7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_aiff.c; sourceTree = "<group>"; };
+		7EB18893281DA79E0099A401 /* d_soundfile_wave.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_wave.c; sourceTree = "<group>"; };
+		7EB188A4281DA7BF0099A401 /* x_file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_file.c; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libpd-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libpd-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -731,6 +756,10 @@
 				0E82A00012EEFDED0053280E /* d_osc.c */,
 				0E82A00112EEFDED0053280E /* d_resample.c */,
 				0E82A00212EEFDED0053280E /* d_soundfile.c */,
+				7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */,
+				7EB18890281DA79E0099A401 /* d_soundfile_caf.c */,
+				7EB18891281DA79E0099A401 /* d_soundfile_next.c */,
+				7EB18893281DA79E0099A401 /* d_soundfile_wave.c */,
 				0E82A00312EEFDED0053280E /* d_ugen.c */,
 				0E82A00412EEFDED0053280E /* g_all_guis.c */,
 				0E82A00512EEFDED0053280E /* g_all_guis.h */,
@@ -784,6 +813,7 @@
 				0E82A03312EEFDEE0053280E /* x_acoustics.c */,
 				0E82A03412EEFDEE0053280E /* x_arithmetic.c */,
 				0E82A03512EEFDEE0053280E /* x_connective.c */,
+				7EB188A4281DA7BF0099A401 /* x_file.c */,
 				0E82A03612EEFDEE0053280E /* x_gui.c */,
 				0E82A03712EEFDEE0053280E /* x_interface.c */,
 				0E82A03812EEFDEE0053280E /* x_list.c */,
@@ -1102,6 +1132,7 @@
 				1190135D1486450C00086F19 /* d_fft.c in Sources */,
 				119013601486450C00086F19 /* d_filter.c in Sources */,
 				119013611486450C00086F19 /* d_global.c in Sources */,
+				7EB188A1281DA79E0099A401 /* d_soundfile_wave.c in Sources */,
 				119013621486450C00086F19 /* d_math.c in Sources */,
 				119013631486450C00086F19 /* d_misc.c in Sources */,
 				119013641486450C00086F19 /* d_osc.c in Sources */,
@@ -1114,6 +1145,7 @@
 				30CEFE4E1A6A5EDC000E3BAE /* pique.c in Sources */,
 				1190136A1486450C00086F19 /* g_bang.c in Sources */,
 				30CEFE3C1A6A5EDC000E3BAE /* choice.c in Sources */,
+				7EB18899281DA79E0099A401 /* d_soundfile_next.c in Sources */,
 				1190136B1486450C00086F19 /* g_canvas.c in Sources */,
 				1190136C1486450C00086F19 /* g_editor.c in Sources */,
 				30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */,
@@ -1149,6 +1181,7 @@
 				119013851486450C00086F19 /* m_pd.c in Sources */,
 				119013861486450C00086F19 /* m_sched.c in Sources */,
 				119013871486450C00086F19 /* s_audio.c in Sources */,
+				7EB188A6281DA7BF0099A401 /* x_file.c in Sources */,
 				119013881486450C00086F19 /* s_audio_dummy.c in Sources */,
 				1190138A1486450C00086F19 /* s_inter.c in Sources */,
 				1190138B1486450C00086F19 /* s_loader.c in Sources */,
@@ -1169,10 +1202,12 @@
 				119013971486450C00086F19 /* x_misc.c in Sources */,
 				119013981486450C00086F19 /* x_net.c in Sources */,
 				1190139A1486450C00086F19 /* x_time.c in Sources */,
+				7EB18895281DA79E0099A401 /* d_soundfile_caf.c in Sources */,
 				1190139B1486450C00086F19 /* s_libpdmidi.c in Sources */,
 				1190139C1486450C00086F19 /* x_libpdreceive.c in Sources */,
 				30DDEC341A69B0DF00532EE8 /* d_fft_fftsg.c in Sources */,
 				1190139D1486450C00086F19 /* z_libpd.c in Sources */,
+				7EB1889D281DA79E0099A401 /* d_soundfile_aiff.c in Sources */,
 				30377F4A1866680A0026ED3E /* x_text.c in Sources */,
 				1190139F1486450C00086F19 /* PdBase.m in Sources */,
 				30377F481866680A0026ED3E /* x_scalar.c in Sources */,
@@ -1205,6 +1240,7 @@
 				30C3D2A31FAA1FCC00C67F08 /* d_fft.c in Sources */,
 				30C3D2A41FAA1FCC00C67F08 /* d_filter.c in Sources */,
 				30C3D2A51FAA1FCC00C67F08 /* d_global.c in Sources */,
+				7EB188A3281DA79E0099A401 /* d_soundfile_wave.c in Sources */,
 				30C3D2A61FAA1FCC00C67F08 /* d_math.c in Sources */,
 				30C3D2A71FAA1FCC00C67F08 /* d_misc.c in Sources */,
 				30C3D2A81FAA1FCC00C67F08 /* d_osc.c in Sources */,
@@ -1217,6 +1253,7 @@
 				30C3D2AF1FAA1FCC00C67F08 /* pique.c in Sources */,
 				30C3D2B01FAA1FCC00C67F08 /* g_bang.c in Sources */,
 				30C3D2B11FAA1FCC00C67F08 /* choice.c in Sources */,
+				7EB1889B281DA79E0099A401 /* d_soundfile_next.c in Sources */,
 				30C3D2B21FAA1FCC00C67F08 /* g_canvas.c in Sources */,
 				30C3D2B31FAA1FCC00C67F08 /* g_editor.c in Sources */,
 				30C3D2B41FAA1FCC00C67F08 /* bob~.c in Sources */,
@@ -1252,6 +1289,7 @@
 				30C3D2D01FAA1FCC00C67F08 /* m_pd.c in Sources */,
 				30C3D2D11FAA1FCC00C67F08 /* m_sched.c in Sources */,
 				30C3D2D21FAA1FCC00C67F08 /* s_audio.c in Sources */,
+				7EB188A8281DA7BF0099A401 /* x_file.c in Sources */,
 				30C3D2D31FAA1FCC00C67F08 /* s_audio_dummy.c in Sources */,
 				30C3D2D41FAA1FCC00C67F08 /* s_inter.c in Sources */,
 				30C3D2D51FAA1FCC00C67F08 /* s_loader.c in Sources */,
@@ -1272,10 +1310,12 @@
 				30C3D2E21FAA1FCC00C67F08 /* x_misc.c in Sources */,
 				30C3D2E31FAA1FCC00C67F08 /* x_net.c in Sources */,
 				30C3D2E41FAA1FCC00C67F08 /* x_time.c in Sources */,
+				7EB18897281DA79E0099A401 /* d_soundfile_caf.c in Sources */,
 				30C3D2E51FAA1FCC00C67F08 /* s_libpdmidi.c in Sources */,
 				30C3D2E61FAA1FCC00C67F08 /* x_libpdreceive.c in Sources */,
 				30C3D2E71FAA1FCC00C67F08 /* d_fft_fftsg.c in Sources */,
 				30C3D2E81FAA1FCC00C67F08 /* z_libpd.c in Sources */,
+				7EB1889F281DA79E0099A401 /* d_soundfile_aiff.c in Sources */,
 				30C3D2E91FAA1FCC00C67F08 /* x_text.c in Sources */,
 				30C3D2EA1FAA1FCC00C67F08 /* PdBase.m in Sources */,
 				30C3D2EB1FAA1FCC00C67F08 /* x_scalar.c in Sources */,
@@ -1303,6 +1343,7 @@
 				30C3D30F1FAA200100C67F08 /* d_fft.c in Sources */,
 				30C3D3101FAA200100C67F08 /* x_array.c in Sources */,
 				30C3D3111FAA200100C67F08 /* d_filter.c in Sources */,
+				7EB188A7281DA7BF0099A401 /* x_file.c in Sources */,
 				30C3D3121FAA200100C67F08 /* d_global.c in Sources */,
 				30C3D3131FAA200100C67F08 /* d_math.c in Sources */,
 				30C3D3141FAA200100C67F08 /* d_misc.c in Sources */,
@@ -1322,6 +1363,7 @@
 				30C3D3211FAA200100C67F08 /* lrshift~.c in Sources */,
 				30C3D3221FAA200100C67F08 /* g_hslider.c in Sources */,
 				30C3D3231FAA200100C67F08 /* choice.c in Sources */,
+				7EB18896281DA79E0099A401 /* d_soundfile_caf.c in Sources */,
 				30C3D3241FAA200100C67F08 /* g_io.c in Sources */,
 				30C3D3251FAA200100C67F08 /* g_mycanvas.c in Sources */,
 				30C3D3261FAA200100C67F08 /* g_numbox.c in Sources */,
@@ -1338,11 +1380,13 @@
 				30C3D3311FAA200100C67F08 /* g_vslider.c in Sources */,
 				30C3D3321FAA200100C67F08 /* g_vumeter.c in Sources */,
 				30C3D3331FAA200100C67F08 /* m_atom.c in Sources */,
+				7EB1889E281DA79E0099A401 /* d_soundfile_aiff.c in Sources */,
 				30C3D3341FAA200100C67F08 /* fiddle~.c in Sources */,
 				30C3D3351FAA200100C67F08 /* m_binbuf.c in Sources */,
 				30C3D3361FAA200100C67F08 /* m_class.c in Sources */,
 				30C3D3371FAA200100C67F08 /* m_conf.c in Sources */,
 				30C3D3381FAA200100C67F08 /* m_glob.c in Sources */,
+				7EB1889A281DA79E0099A401 /* d_soundfile_next.c in Sources */,
 				7E2D79E9266459400042689B /* pd~.c in Sources */,
 				30C3D3391FAA200100C67F08 /* m_memory.c in Sources */,
 				30C3D33A1FAA200100C67F08 /* m_obj.c in Sources */,
@@ -1389,6 +1433,7 @@
 				30C3D3621FAA200100C67F08 /* PdAudioController.m in Sources */,
 				302C6F45254CF3DC000C720D /* s_net.c in Sources */,
 				30C3D3631FAA200100C67F08 /* PdAudioUnit.m in Sources */,
+				7EB188A2281DA79E0099A401 /* d_soundfile_wave.c in Sources */,
 				30C3D3641FAA200100C67F08 /* PdMidiDispatcher.m in Sources */,
 				30C3D3651FAA200100C67F08 /* ringbuffer.c in Sources */,
 				30C3D3661FAA200100C67F08 /* z_queued.c in Sources */,
@@ -1409,6 +1454,7 @@
 				0E82A04312EEFDEE0053280E /* d_fft.c in Sources */,
 				30377F451866680A0026ED3E /* x_array.c in Sources */,
 				0E82A04612EEFDEE0053280E /* d_filter.c in Sources */,
+				7EB188A5281DA7BF0099A401 /* x_file.c in Sources */,
 				0E82A04712EEFDEE0053280E /* d_global.c in Sources */,
 				0E82A04812EEFDEE0053280E /* d_math.c in Sources */,
 				0E82A04912EEFDEE0053280E /* d_misc.c in Sources */,
@@ -1428,6 +1474,7 @@
 				30CEFE4B1A6A5EDC000E3BAE /* lrshift~.c in Sources */,
 				0E82A05812EEFDEE0053280E /* g_hslider.c in Sources */,
 				30CEFE3B1A6A5EDC000E3BAE /* choice.c in Sources */,
+				7EB18894281DA79E0099A401 /* d_soundfile_caf.c in Sources */,
 				0E82A05912EEFDEE0053280E /* g_io.c in Sources */,
 				0E82A05A12EEFDEE0053280E /* g_mycanvas.c in Sources */,
 				0E82A05B12EEFDEE0053280E /* g_numbox.c in Sources */,
@@ -1444,11 +1491,13 @@
 				0E82A06412EEFDEE0053280E /* g_vslider.c in Sources */,
 				0E82A06512EEFDEE0053280E /* g_vumeter.c in Sources */,
 				0E82A06612EEFDEE0053280E /* m_atom.c in Sources */,
+				7EB1889C281DA79E0099A401 /* d_soundfile_aiff.c in Sources */,
 				30CEFE471A6A5EDC000E3BAE /* fiddle~.c in Sources */,
 				0E82A06712EEFDEE0053280E /* m_binbuf.c in Sources */,
 				0E82A06812EEFDEE0053280E /* m_class.c in Sources */,
 				0E82A06912EEFDEE0053280E /* m_conf.c in Sources */,
 				0E82A06B12EEFDEE0053280E /* m_glob.c in Sources */,
+				7EB18898281DA79E0099A401 /* d_soundfile_next.c in Sources */,
 				7E2D79E7266459400042689B /* pd~.c in Sources */,
 				0E82A06D12EEFDEE0053280E /* m_memory.c in Sources */,
 				0E82A06E12EEFDEE0053280E /* m_obj.c in Sources */,
@@ -1495,6 +1544,7 @@
 				110E6DD7147B838F00282ABC /* PdAudioController.m in Sources */,
 				302C6F43254CF3DC000C720D /* s_net.c in Sources */,
 				110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */,
+				7EB188A0281DA79E0099A401 /* d_soundfile_wave.c in Sources */,
 				30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
 				306DBE5816BC6710007CF226 /* ringbuffer.c in Sources */,
 				306DBE6016BC6710007CF226 /* z_queued.c in Sources */,
