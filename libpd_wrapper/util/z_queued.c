@@ -71,7 +71,7 @@ static void receive_float(pd_params *p, char **buffer) {
   if (QUEUEDSTUFF->hooks.h_floathook) {
     QUEUEDSTUFF->hooks.h_floathook(p->src, (float)p->x);
   }
-  if (QUEUEDSTUFF->hooks.h_doublehook) {
+  else if (QUEUEDSTUFF->hooks.h_doublehook) {
     QUEUEDSTUFF->hooks.h_doublehook(p->src, (double)p->x);
   }
 }

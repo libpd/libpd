@@ -29,7 +29,7 @@ static void libpdrecbang(t_libpdrec *x) {
 static void libpdrecfloat(t_libpdrec *x, t_float f) {
   if (x->x_hooks->h_floathook)
     (*x->x_hooks->h_floathook)(x->x_sym->s_name, f);
-  if (x->x_hooks->h_doublehook)
+  else if (x->x_hooks->h_doublehook)
     (*x->x_hooks->h_doublehook)(x->x_sym->s_name, f);
 }
 
