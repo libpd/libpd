@@ -103,6 +103,7 @@
     <Compile Include="Native\Defines.cs" />
     <Compile Include="Native\Midi.cs" />
     <Compile Include="Native\Messaging.cs" />
+    <Compile Include="Native\MultiInstance.cs" />
     <Compile Include="Native\General.cs" />
     <Compile Include="Native\Audio.cs" />
   </ItemGroup>
@@ -112,7 +113,7 @@
     </None>
     <None Include="LibPDBinding.nuspec">
       <SubType>Designer</SubType>
-    </None>
+  </None>
     <None Include="..\libs\mingw32\libwinpthread-1.dll">
       <Link>libwinpthread-1.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -120,7 +121,13 @@
     <None Include="..\libs\libpdcsharp.dll">
       <Link>libpdcsharp.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+	</None>
+  <!--
+    <None Include="..\libs\libpdcsharp.so">
+      <Link>libpdcsharp.so</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	-->
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>

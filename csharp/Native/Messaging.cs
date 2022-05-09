@@ -5,6 +5,12 @@ namespace LibPDBinding.Native
 {
 	static class Messaging
 	{
+		[DllImport (Defines.DllName, EntryPoint = "libpd_set_concatenated_printhook", CallingConvention = Defines.CallingConvention)]
+		public static extern void set_concatenated_printhook (LibPDPrintHook hook);
+
+		[DllImport (Defines.DllName, EntryPoint = "libpd_print_concatenator", CallingConvention = Defines.CallingConvention)]
+		public static extern void print_concatenator (string s);
+
 		[DllImport (Defines.DllName, EntryPoint = "libpd_set_printhook", CallingConvention = Defines.CallingConvention)]
 		public static extern void set_printhook (LibPDPrintHook hook);
 

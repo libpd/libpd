@@ -1,0 +1,26 @@
+#N canvas 1097 316 535 471 10;
+#X obj 50 42 r spam;
+#X obj 50 64 s eggs;
+#X obj 209 58 adc~;
+#X obj 208 132 dac~;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array array1 128 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 1 128 -1 200 140 1 0 0;
+#X restore 41 251 graph;
+#X obj 350 71 notein;
+#X obj 350 93 noteout;
+#X obj 430 240 r foo;
+#X obj 430 262 \$0;
+#X obj 430 284 s bar;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 2 1 3 1;
+#X connect 5 0 6 0;
+#X connect 5 1 6 1;
+#X connect 5 2 6 2;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
