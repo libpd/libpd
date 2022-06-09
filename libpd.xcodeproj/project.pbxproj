@@ -1546,6 +1546,7 @@
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Debug;
 		};
@@ -1568,6 +1569,7 @@
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Release;
 		};
@@ -1618,6 +1620,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = macosx;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Debug;
 		};
@@ -1665,6 +1668,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = macosx;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Release;
 		};
