@@ -9,38 +9,41 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
-//  Updated 2013, 2018 Dan Wilcox <danomatika@gmail.com>
+//  Updated 2013, 2018, 2020 Dan Wilcox <danomatika@gmail.com>
 //
 
 #import <Foundation/Foundation.h>
 
+/// Pd patch file pointer wrapper
 @interface PdFile : NSObject
 
-/// Underlying t_pd pointer
+/// underlying opaque patch handle pointer
 @property (nonatomic, strong, readonly) NSValue *fileReference;
 
-/// Unique $0 argument assigned by pd
+/// unique $0 id of the patch assigned by pd
 @property (nonatomic, assign, readonly) int dollarZero;
 
-/// Stored file base name
+/// stored patch filename
 @property (nonatomic, copy, readonly) NSString *baseName;
 
-/// Stored file path name
+/// stored parent dir path for the file
 @property (nonatomic, copy, readonly) NSString *pathName;
 
-/// Open a pd file/patch and return a representative PdFile object
-+ (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName;
+/// open a pd file/patch by filename and parent dir path
+/// returns representative PdFile on success or nil on failure
++ (instancetype)openFileNamed:(NSString *)baseName path:(NSString *)pathName;
 
-/// Open a pd file/patch, returns YES on success
+/// open a pd file/patch by filename and parent dir path,
+/// returns YES on success or NO on failure
 - (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName;
 
-/// Open a new instance of an existing PdFile
-- (id)openNewInstance;
+/// open a new instance of an existing PdFile on success or nil on failure
+- (instancetype)openNewInstance;
 
-/// Is the file reference valid? (aka non-nil)
+/// is the file reference valid, aka non-nil?
 - (bool)isValid;
 
-/// Close an opened pd file (also called in dealloc)
+/// close an opened pd file, also called in dealloc
 - (void)closeFile;
 
 @end

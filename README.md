@@ -3,12 +3,10 @@ libpd
 
 [Pure Data](http://puredata.info) as an embeddable audio synthesis library
 
-Copyright (c) Peter Brinkmann & the libpd team 2010-2018
+Copyright (c) Peter Brinkmann & the libpd team 2010-2021
 
 Documentation
 -------------
-
-See our website and book at <http://libpd.cc>
 
 For documentation of libpd, see the wiki: <https://github.com/libpd/libpd/wiki>
 
@@ -25,13 +23,15 @@ The preferred method to download libpd is to use git.
 
 **Do not download libpd as a zip or tar.gz file from GitHub.**
 
-The "Download zip" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
+The "Download ZIP" button may look like a good idea, but currently Github does not include submodule files when compiling zip files. This means the zip file is missing the main pd source files and you will not be able to build libpd, with errors such as: *No rule to make target pure-data/src/d_arithmetic.o* or *No such file or directory: pure-data/extra/bonk~/bonk~.c*.
 
-To download libpd & checkout the pure-data submodule do the following:
+To download libpd & check out the pure-data submodule, do the following:
 
     git clone --recurse-submodules https://github.com/libpd/libpd.git
     
-You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources. If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
+You should now have a `libpd` directory and the `libpd/pure-data` directory should contain the pd sources.
+
+Note: If your version of git does not support "--recurse-submodules", you can run the git submodule commands in the libpd directory itself after cloning:
 
     cd libpd
     git submodule update --init --recursive
@@ -39,6 +39,7 @@ You should now have a `libpd` directory and the `libpd/pure-data` directory shou
 For most uses, it is recommended to check out the latest stable release version via a git tag. For example, to switch to libpd version 0.8.3 after cloning:
 
     git checkout 0.8.3
+    git submodule update
 
 The master branch contains the latest libpd development and can be considered *generally* stable. However, we make no guarantees. :)
 
@@ -81,7 +82,7 @@ Core build requirments:
 
 Note: The various language wrappers may have additional requirements.
 
-Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & Mac OSX and has the following targets:
+Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, & macOS and has the following targets:
 
 * **libpd**: build the libpd C core, default if no target is specified
 * **csharplib**: build libpdcsharp
@@ -100,7 +101,10 @@ Makefile options allow for conditional compilation of libpd util and pd extra ex
 * **UTIL=true**: compile utilities in `libpd_wrapper/util` (default)
 * **EXTRA=true**: compile `pure-data/extra` externals which are then inited in libpd_init() (default)
 * **MULTI=true**: compile with multiple instance support
+* **DOUBLE=true**: compile with double-precision support
 * **DEBUG=true**: compile with debug symbols & no optimizations
+* **STATIC=true**: compile static library (in addition to shared library)
+* **FAT_LIB=true**: compile universal "fat" lib with multiple architectures (macOS only)
 * **LOCALE=false**: do not set the LC_NUMERIC number format to the default "C" locale\* (default)
 * **PORTAUDIO=true**: compile with portaudio support (currently JAVA jni only)
 * **JAVA_HOME=/path/to/jdk**: specify the path to the Java Development Kit
@@ -122,7 +126,7 @@ If you need to add custom search paths to the CFLAGS or LDFLAGS, you can specify
     make ADDITIONAL_CFLAGS="-I/usr/local/include" \
          ADDITIONAL_LDFLAGS="-L/usr/local/lib"
 
-Once libpd has built successfully, the compiled library will be found in the `libs` directory.
+Once libpd has built successfully, the compiled libraries will be found in the `libs` directory.
 
 ### Linux & BSD
 
@@ -132,7 +136,9 @@ Install the core build requirements using your distribution's package manager. F
 
 ### macOS
 
-macOS is built on top of a BSD system and the bash commandline can be accessed with the Terminal application in the /Applications/Utility directory.
+macOS is built on top of a BSD system and the bash or zsh commandline can be accessed with the Terminal application in the /Applications/Utility directory.
+
+#### Xcode
 
 The clang compiler and associated tools are provided by Apple. If you are running macOS 10.9+, you *do not* need to install the full Xcode application and can install the Commandline Tools Package only by running the following:
 
@@ -140,11 +146,22 @@ The clang compiler and associated tools are provided by Apple. If you are runnin
 
 If you are running macOS 10.6 - 10.8, you will need to install Xcode from the Mac App Store or downloaded from <http://developer.apple.com>
 
+#### Fat Libs
+
+By building with the `FAT_LIB=true` Makefile option, libpd will be compiled with support for multiple architectures depending on the detected system version:
+
+* macOS <= 10.13: i386 (32 bit Intel) & x86_64 (64 bit Intel)
+* macOS >= 11.0: arm64 (64 bit Arm) & x86_64 (64 bit Intel)
+
+To override autodetection, specify the `-arch` flags directly using the `FAT_ARCHS` Makefile option:
+
+        make FAT_LIB=true FAT_ARCHS="-arch i386 -arch x86_64"
+
 ### Windows
 
 libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
 
-    <http://www.msys2.org/>
+<http://www.msys2.org/>
 
 Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
 
@@ -169,6 +186,23 @@ Note: For 64 bit Windows, build Pd with the following additional C flags to ensu
     make ADDITIONAL_CFLAGS='-DPD_LONGINTTYPE="long long"'
 
 If you run into strange errors such as `/bin/sh: cc: command not found`, try closing and reopening your shell window before building again.
+
+Double-Precision Support
+------------------------
+
+By default, libpd computes numbers and samples internally as single-precision 32-bit floats. This is fast and good enough for most general usage. If you are working with small numbers beyond 6 decimal points, however, you will need a higher degree of precision.
+
+To enable double-precision 64-bit floating point support, build libpd with `-DPD_FLOATSIZE=64` in the CFLAGS. The libpd makefile provides the `DOUBLE` makefile variable for this:
+
+    make DOUBLE=true
+
+Now utilize the libpd API which use the double type, such as the libpd double hook, `libpd_add_double()`, and `libpd_process_double()`.
+
+To double-check your build, the following will print a 1 if double-precision support is enabled:
+
+```C
+printf("double-precision %d\n", (int)(sizeof(t_float)/8));
+```
 
 C++
 ---
@@ -263,8 +297,8 @@ Install the JDK via your distributions package manager.
 
 Install the JDK either by downloading an installer package or by using one of the open source package managers for macOS:
 
-* homebrew: <https://brew.sh> (recommended)
-* macports: <https://www.macports.org>
+* Homebrew: <https://brew.sh> (recommended)
+* MacPorts: <https://www.macports.org>
 
 ### Windows
 
@@ -306,7 +340,7 @@ The Xcode project builds the following targets:
 * **libpd-ios-multi**: libpd for iOS with multiple instance support
 * **libpd-osx-multi**: libpd for macOS with multiple instance support
 
-For detailed instructions, see [Working with libpd in Xcode](libpd/libpd/wiki/Working-with-libpd-in-Xcode)
+For detailed instructions, see [Working with libpd in Xcode](https://github.com/libpd/libpd/wiki/Working-with-libpd-in-Xcode)
 
 If you are unfamiliar with how static libraries work or how to use them in Xcode, see [this useful tutorial](http://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial).
 
@@ -314,11 +348,15 @@ _Note: libpd is tested with the release versions of Xcode. It is recommended tha
 
 ### CocoaPods
 
-If you are using Xcode to build iOS apps, you can use [CocoaPods](https://cocoapods.org)to add libpd to your project.
+If you are using Xcode to build iOS apps, you can use [CocoaPods](https://cocoapods.org) to add libpd to your project.
 
 Use the following in your CocoaPods podfile:
 
     pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true
+
+To specify a stable version tag, use the `:tag` option:
+
+    pod 'libpd', :git => 'https://github.com/libpd/libpd', :submodules => true, :tag => '0.12.1'
 
 Python
 ------
@@ -329,6 +367,14 @@ The Python wrapper provides a "pylibpd" module mirroring the libpd C API. Build 
     make
 
 See the sample programs in `samples/python`.
+
+If you have multiple versions of Python on your system, you can specify which is used to build the module via the PYTHON makefile option:
+
+    make PYTHON=python3
+
+If you are building for 64-bit Windows, you may need to set the additional MS_WIN64 flag:
+
+    make CFLAGS="-DMS_WIN64=1"
 
 ### pyaudio
 

@@ -1,23 +1,35 @@
 UNAME = $(shell uname)
 SOLIB_PREFIX = lib
+STATICLIB_EXT = a
 LIBPD_IMPLIB =
 LIBPD_DEF =
+PLATFORM_ARCH ?= $(shell $(CC) -dumpmachine | sed -e 's,-.*,,')
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
   PDNATIVE_SOLIB_EXT = jnilib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -arch x86_64 -DHAVE_LIBDL \
+  PLATFORM_CFLAGS = -DHAVE_LIBDL \
     -I/System/Library/Frameworks/JavaVM.framework/Headers
-  LDFLAGS = -arch x86_64 -dynamiclib -ldl -Wl,-no_compact_unwind
+  LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
+  ifeq ($(FAT_LIB), true)
+    # macOS universal "fat" lib compilation
+    MAC_VER = $(shell sw_vers -productVersion | cut -f1 -f2 -d.)
+    ifeq ($(shell expr $(MAC_VER) \<= 10.13), 1)
+      # universal1: macOS 10.6 - 10.13
+      FAT_ARCHS ?= -arch i386 -arch x86_64
+    endif
+    ifeq ($(shell expr $(MAC_VER) \>= 11.0), 1)
+      # universal2: macOS 11.0+
+      FAT_ARCHS ?= -arch arm64 -arch x86_64
+    endif
+    FAT_ARCHS ?= -arch $(PLATFORM_ARCH)
+    PLATFORM_CFLAGS += $(FAT_ARCHS)
+    LDFLAGS += $(FAT_ARCHS)
+  endif
   CSHARP_LDFLAGS = $(LDFLAGS)
   JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
-  FAT_LIB := $(shell expr `sw_vers -productVersion | cut -f2 -d.` \<= 10.13)
-  ifeq ($(FAT_LIB), 1) # macOS 10.14+ does not build i386
-    PLATFORM_CFLAGS += -arch i386
-    LDFLAGS += -arch i386
-  endif
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC ?= gcc
@@ -26,7 +38,6 @@ else
     LIBPD_IMPLIB = libs/libpd.lib
     LIBPD_DEF = libs/libpd.def
     PDNATIVE_PLATFORM = windows
-    PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DPD_INTERNAL \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
@@ -37,13 +48,12 @@ else
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Linux or *BSD
     SOLIB_EXT = so
-    PDNATIVE_ARCH = $(shell $(CC) -dumpmachine | sed -e 's,-.*,,' -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
     PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC
     LDFLAGS = -shared -Wl,-Bsymbolic
     ifeq ($(UNAME), Linux)
       PDNATIVE_PLATFORM = linux
       JAVA_HOME ?= /usr/lib/jvm/default-java
-      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -DHAVE_LIBDL
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -I"$(JAVA_HOME)/include" -DHAVE_LIBDL
       LDFLAGS += -ldl
     else ifeq ($(UNAME), FreeBSD)
       PDNATIVE_PLATFORM = FreeBSD
@@ -55,6 +65,7 @@ else
   endif
 endif
 
+PDNATIVE_ARCH = $(shell echo $(PLATFORM_ARCH) | sed -e 's,i[3456]86,x86,' -e 's,amd64,x86_64,')
 PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 
 PD_FILES = \
@@ -63,7 +74,9 @@ PD_FILES = \
     pure-data/src/d_fft_fftsg.c \
     pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
     pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
-    pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
+    pure-data/src/d_soundfile.c pure-data/src/d_soundfile_aiff.c \
+    pure-data/src/d_soundfile_caf.c pure-data/src/d_soundfile_next.c \
+    pure-data/src/d_soundfile_wave.c pure-data/src/d_ugen.c \
     pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
     pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
     pure-data/src/g_editor_extras.c \
@@ -78,9 +91,11 @@ PD_FILES = \
     pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
     pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
     pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c pure-data/src/s_inter.c \
-    pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
+    pure-data/src/s_loader.c pure-data/src/s_main.c \
+    pure-data/src/s_net.c pure-data/src/s_path.c \
     pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
     pure-data/src/x_arithmetic.c pure-data/src/x_array.c pure-data/src/x_connective.c \
+    pure-data/src/x_file.c \
     pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
     pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
     pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
@@ -93,6 +108,7 @@ PD_EXTRA_FILES = \
     pure-data/extra/choice/choice.c \
     pure-data/extra/fiddle~/fiddle~.c pure-data/extra/loop~/loop~.c \
     pure-data/extra/lrshift~/lrshift~.c pure-data/extra/pique/pique.c \
+    pure-data/extra/pd~/pdsched.c pure-data/extra/pd~/pd~.c \
     pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
 
 LIBPD_UTILS = \
@@ -102,7 +118,7 @@ LIBPD_UTILS = \
 
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
-    java/org/puredata/core/PdBaseloader.java \
+    java/org/puredata/core/PdBaseLoader.java \
     java/org/puredata/core/NativeLoader.java \
     java/org/puredata/core/PdListener.java \
     java/org/puredata/core/PdMidiListener.java \
@@ -136,6 +152,12 @@ endif
 MULTI_CFLAGS =
 ifeq ($(MULTI), true)
     MULTI_CFLAGS = -DPDINSTANCE -DPDTHREADS
+endif
+
+# conditional double-precision support
+DOUBLE_CFLAGS =
+ifeq ($(DOUBLE), true)
+    DOUBLE_CFLAGS = -DPD_FLOATSIZE=64
 endif
 
 # conditional optimizations or debug settings
@@ -180,6 +202,7 @@ ifeq ($(OS), Windows_NT)
 else
 	LIBPD = libs/libpd.$(SOLIB_EXT)
 endif
+LIBPD_STATIC = libs/libpd.$(STATICLIB_EXT)
 PDCSHARP = libs/libpdcsharp.$(SOLIB_EXT)
 
 PDJAVA_BUILD = java-build
@@ -193,18 +216,26 @@ CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY \
          -I./libpd_wrapper -I./libpd_wrapper/util \
          -I./pure-data/src \
          $(PLATFORM_CFLAGS) \
-         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(LOCALE_CFLAGS) \
-         $(ADDITIONAL_CFLAGS)
+         $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(DOUBLE_CFLAGS) \
+         $(LOCALE_CFLAGS) $(ADDITIONAL_CFLAGS)
 LDFLAGS += $(ADDITIONAL_LDFLAGS)
 CSHARP_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 JAVA_LDFLAGS += $(ADDITIONAL_LDFLAGS)
 
-.PHONY: libpd csharplib cpplib javalib javadoc javasrc install uninstall clean clobber
+.PHONY: libpd csharplib javalib javadoc javasrc install uninstall clean clobber
 
-libpd: $(LIBPD)
+# static build as well as dynamic?
+ifeq ($(STATIC), true)
+  libpd: $(LIBPD) $(LIBPD_STATIC)
+else
+  libpd: $(LIBPD)
+endif
 
 $(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
+
+$(LIBPD_STATIC): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+	ar rcs $(LIBPD_STATIC) $^
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
@@ -239,7 +270,7 @@ clean:
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
-	rm -f $(LIBPD) $(LIBPD_IMPLIB) $(LIBPD_DEF)
+	rm -f $(LIBPD) $(LIBPD_STATIC) $(LIBPD_IMPLIB) $(LIBPD_DEF)
 	rm -f $(PDCSHARP) ${PDCSHARP:.$(SOLIB_EXT)=.lib} ${PDCSHARP:.$(SOLIB_EXT)=.def}
 	rm -f $(PDJAVA_JAR) $(PDJAVA_NATIVE) libs/`basename $(PDJAVA_NATIVE)`
 	rm -rf $(PDJAVA_BUILD) $(PDJAVA_SRC) $(PDJAVA_DOC)
@@ -250,16 +281,19 @@ install:
 	install -m 644 libpd_wrapper/z_libpd.h $(includedir)/libpd
 	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
 	if [ -e libpd_wrapper/util/z_queued.o ]; then \
-	    install -d $(includedir)/libpd/util; \
-	    install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
-	    install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
-		install -m 644 cpp/*hpp $(includedir)/libpd; \
+	  install -d $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
+	  install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi
 	install -d $(libdir)
-	install -m 755 $(LIBPD) $(libdir)
+	if [ -e '$(LIBPD)' ]; then install -m 755 $(LIBPD) $(libdir); fi
+	if [ -e '$(LIBPD_STATIC)' ]; then install -m 755 $(LIBPD_STATIC) $(libdir); fi
 	if [ -e '$(LIBPD_IMPLIB)' ]; then install -m 755 $(LIBPD_IMPLIB) $(libdir); fi
 	if [ -e '$(LIBPD_DEF)' ]; then install -m 755 $(LIBPD_DEF) $(libdir); fi
 
 uninstall:
 	rm -rf $(includedir)/libpd
-	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_IMPLIB)` $(libdir)/`basename $(LIBPD_DEF)`
+	rm -f $(libdir)/`basename $(LIBPD)` $(libdir)/`basename $(LIBPD_STATIC)`
+	if [ -n '$(LIBPD_IMPLIB)' ]; then rm -f $(libdir)/`basename $(LIBPD_IMPLIB)`; fi
+	if [ -n '$(LIBPD_DEF)' ]; then rm -f $(libdir)/`basename $(LIBPD_DEF)`; fi

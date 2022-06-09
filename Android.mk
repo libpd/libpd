@@ -8,7 +8,9 @@ PD_SRC_FILES := \
   pure-data/src/d_fft_fftsg.c \
   pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
   pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
-  pure-data/src/d_soundfile.c pure-data/src/d_ugen.c \
+  pure-data/src/d_soundfile.c pure-data/src/d_soundfile_aiff.c \
+  pure-data/src/d_soundfile_caf.c pure-data/src/d_soundfile_next.c \
+  pure-data/src/d_soundfile_wave.c pure-data/src/d_ugen.c \
   pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
   pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
   pure-data/src/g_editor_extras.c \
@@ -24,9 +26,11 @@ PD_SRC_FILES := \
   pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
   pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c \
   pure-data/src/s_inter.c \
-  pure-data/src/s_loader.c pure-data/src/s_main.c pure-data/src/s_path.c \
+  pure-data/src/s_loader.c pure-data/src/s_main.c \
+  pure-data/src/s_net.c pure-data/src/s_path.c \
   pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
   pure-data/src/x_arithmetic.c pure-data/src/x_connective.c \
+  pure-data/src/x_file.c \
   pure-data/src/x_gui.c pure-data/src/x_list.c pure-data/src/x_midi.c \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_array.c \
   pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c \
@@ -35,8 +39,8 @@ PD_SRC_FILES := \
   libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
   libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
   libpd_wrapper/z_hooks.c libpd_wrapper/util/z_print_util.c
-PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/libpd_wrapper \
-  $(LOCAL_PATH)/libpd_wrapper/util
+PD_C_INCLUDES := $(LOCAL_PATH)/libpd_wrapper $(LOCAL_PATH)/libpd_wrapper/util \
+  $(LOCAL_PATH)/pure-data/src
 PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w
 PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
 PD_LDLIBS := -ldl -latomic
@@ -139,6 +143,19 @@ LOCAL_MODULE := sigmund_tilde
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
 LOCAL_CFLAGS := -DPD
 LOCAL_SRC_FILES := pure-data/extra/sigmund~/sigmund~.c
+LOCAL_SHARED_LIBRARIES := pd
+
+include $(BUILD_SHARED_LIBRARY)
+
+
+# Build libpd_tilde.so
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := pd_tilde
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/pure-data/src
+LOCAL_CFLAGS := -DPD
+LOCAL_SRC_FILES := pure-data/extra/pd~/pdsched.c pure-data/extra/pd~/pd~.c
 LOCAL_SHARED_LIBRARIES := pd
 
 include $(BUILD_SHARED_LIBRARY)

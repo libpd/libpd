@@ -9,7 +9,7 @@
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
-//  Updated 2013, 2018 Dan Wilcox <danomatika@gmail.com>
+//  Updated 2013, 2018, 2020 Dan Wilcox <danomatika@gmail.com>
 //
 
 #import "PdFile.h"
@@ -26,7 +26,7 @@
 
 #pragma mark Class Methods
 
-+ (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
++ (instancetype)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
 	PdFile *pdFile = [[self alloc] init];
 	if (pdFile) {
 		[pdFile openFile:baseName path:pathName];
@@ -58,7 +58,7 @@
 	return NO;
 }
 
-- (PdFile *)openNewInstance {
+- (instancetype)openNewInstance {
 	return [PdFile openFileNamed:self.baseName path:self.pathName];
 }
 

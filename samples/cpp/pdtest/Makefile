@@ -24,7 +24,7 @@ LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 SRC_FILES = src/PdObject.cpp src/main.cpp
 TARGET = pdtest
 
-CXXFLAGS += -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/libpd_wrapper \
+CXXFLAGS += -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src \
             -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp -I./src -O3
 
 .PHONY: clean clobber

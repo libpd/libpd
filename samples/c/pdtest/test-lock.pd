@@ -1,0 +1,16 @@
+#N canvas 590 160 347 161 10;
+#X obj 39 44 loadbang;
+#X obj 39 109 s foo;
+#X msg 39 76 symbol bar;
+#X text 129 40 see if this causes a deadlock when this patch is opened
+, f 29;
+#X obj 162 108 dac~;
+#X obj 162 84 osc~ 0.01;
+#X obj 230 84 osc~ 0.02;
+#X obj 91 109 r ka;
+#X obj 91 133 print;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 1;
+#X connect 7 0 8 0;

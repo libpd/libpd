@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#! /usr/bin/python
 
 from distutils.core import setup, Extension
 
 setup(name='pypdlib',
-      version='0.2',
+      version='0.12',
       py_modules = [
         'pylibpd'
       ],
@@ -45,6 +45,10 @@ setup(name='pypdlib',
                     '../pure-data/src/d_osc.c',
                     '../pure-data/src/d_resample.c',
                     '../pure-data/src/d_soundfile.c',
+                    '../pure-data/src/d_soundfile_aiff.c',
+                    '../pure-data/src/d_soundfile_caf.c',
+                    '../pure-data/src/d_soundfile_next.c',
+                    '../pure-data/src/d_soundfile_wave.c',
                     '../pure-data/src/d_ugen.c',
                     '../pure-data/src/g_all_guis.c',
                     '../pure-data/src/g_array.c',
@@ -85,6 +89,7 @@ setup(name='pypdlib',
                     '../pure-data/src/s_inter.c',
                     '../pure-data/src/s_loader.c',
                     '../pure-data/src/s_main.c',
+                    '../pure-data/src/s_net.c',
                     '../pure-data/src/s_path.c',
                     '../pure-data/src/s_print.c',
                     '../pure-data/src/s_utf8.c',
@@ -92,6 +97,7 @@ setup(name='pypdlib',
                     '../pure-data/src/x_array.c',
                     '../pure-data/src/x_arithmetic.c',
                     '../pure-data/src/x_connective.c',
+                    '../pure-data/src/x_file.c',
                     '../pure-data/src/x_gui.c',
                     '../pure-data/src/x_interface.c',
                     '../pure-data/src/x_list.c',
@@ -110,6 +116,8 @@ setup(name='pypdlib',
                     '../pure-data/extra/fiddle~/fiddle~.c', \
                     '../pure-data/extra/loop~/loop~.c', \
                     '../pure-data/extra/lrshift~/lrshift~.c', \
+                    '../pure-data/extra/pd~/pdsched.c', \
+                    '../pure-data/extra/pd~/pd~.c', \
                     '../pure-data/extra/pique/pique.c', \
                     '../pure-data/extra/sigmund~/sigmund~.c', \
                     '../pure-data/extra/stdout/stdout.c'

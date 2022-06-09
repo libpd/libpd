@@ -13,7 +13,6 @@ try:
 except ImportError:
     pass
 
-
 import wave
 import pylibpd
 
@@ -32,7 +31,7 @@ def pdfilter(inp, outp, patch, folder = '.'):
     outw.setnframes(n)
     p = pylibpd.libpd_open_patch(patch, folder)
     m = pylibpd.PdManager(ch, ch, sr, 1)
-    for i in xrange(n / 64):
+    for i in range(int(n / 64)):
       x = inw.readframes(64)
       y = m.process(x)
       outw.writeframesraw(y)
@@ -55,4 +54,3 @@ if __name__ == '__main__':
   inp = dopts.get('-i', sys.stdin)
   outp = dopts.get('-o', sys.stdout)
   pdfilter(inp, outp, *args)
-

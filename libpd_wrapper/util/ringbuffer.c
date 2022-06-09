@@ -29,7 +29,7 @@
     #include <windows.h>
     #define SYNC_FETCH(ptr) InterlockedOr(ptr, 0)
     #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
-            InterlockedCompareExchange(ptr, oldval, newval)
+            InterlockedCompareExchange(ptr, newval, oldval)
   #else // gcc atomics
     #define SYNC_FETCH(ptr) __sync_fetch_and_or(ptr, 0)
     #define SYNC_COMPARE_AND_SWAP(ptr, oldval, newval) \
@@ -104,7 +104,26 @@ int rb_write_to_buffer(ring_buffer *buffer, int n, ...) {
   va_end(args);
   SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
       write_idx);  // includes memory barrier
-  return 0; 
+  return 0;
+}
+
+int rb_write_value_to_buffer(ring_buffer *buffer, int value, int n) {
+  if (!buffer) return -1;
+  int write_idx = buffer->write_idx;  // No need for sync in writer thread.
+  int available = rb_available_to_write(buffer);
+  available -= n;
+  if (n < 0 || available < 0) return -1;
+  if (write_idx + n <= buffer->size) {
+    memset(buffer->buf_ptr + write_idx, value, n);
+  } else {
+    int d = buffer->size - write_idx;
+    memset(buffer->buf_ptr + write_idx, value, d);
+    memset(buffer->buf_ptr, value, n - d);
+  }
+  write_idx = (write_idx + n) % buffer->size;
+  SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx,
+    write_idx);  // includes memory barrier
+  return 0;
 }
 
 int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
@@ -123,5 +142,13 @@ int rb_read_from_buffer(ring_buffer *buffer, char *dest, int len) {
   }
   SYNC_COMPARE_AND_SWAP(&(buffer->read_idx), buffer->read_idx,
        (read_idx + len) % buffer->size);  // includes memory barrier
-  return 0; 
+  return 0;
+}
+
+// simply reset the indices
+void rb_clear_buffer(ring_buffer *buffer) {
+  if (buffer) {
+  SYNC_COMPARE_AND_SWAP(&(buffer->read_idx), buffer->read_idx, 0);
+  SYNC_COMPARE_AND_SWAP(&(buffer->write_idx), buffer->write_idx, 0);
+  }
 }

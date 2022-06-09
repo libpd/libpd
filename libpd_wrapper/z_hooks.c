@@ -8,11 +8,12 @@
  * See https://github.com/libpd/libpd/wiki for documentation
  *
  */
- 
+
 #include "z_hooks.h"
 
 t_libpd_banghook libpd_banghook = NULL;
 t_libpd_floathook libpd_floathook = NULL;
+t_libpd_doublehook libpd_doublehook = NULL;
 t_libpd_symbolhook libpd_symbolhook = NULL;
 t_libpd_listhook libpd_listhook = NULL;
 t_libpd_messagehook libpd_messagehook = NULL;

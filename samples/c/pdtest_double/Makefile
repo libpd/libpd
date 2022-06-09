@@ -18,10 +18,13 @@ endif
 LIBPD_DIR = ../../..
 LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 
-SRC_FILES = pdtest.c
-TARGET = pdtest
+SRC_FILES = pdtest_double.c
+TARGET = pdtest_double
 
-CFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src -O3
+# setting -DPD_FLOATSIZE=64 here is only needed for printing t_float size,
+# otherwise it's fine to leave it off in client code
+CFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src \
+         -DPD_FLOATSIZE=64 -O3
 
 .PHONY: clean clobber
 
@@ -32,7 +35,7 @@ ifeq ($(PLATFORM), mac)
 endif
 
 $(LIBPD):
-	cd $(LIBPD_DIR) && make
+	cd $(LIBPD_DIR) && make DOUBLE=true
 
 clean:
 	rm -f *.o
