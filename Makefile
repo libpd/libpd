@@ -282,7 +282,6 @@ install:
 	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
 	install -m 644 pure-data/src/m_imp.h $(includedir)/libpd
 	install -m 644 pure-data/src/g_canvas.h $(includedir)/libpd
-	install -m 644 pure-data/src/s_utf8.h $(includedir)/libpd
 	if [ -e libpd_wrapper/util/z_queued.o ]; then \
 	  install -d $(includedir)/libpd/util; \
 	  install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
