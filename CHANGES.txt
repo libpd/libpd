@@ -9,6 +9,7 @@
      libpd_write_array_double(), libpd_double(), libpd_add_double(),
      libpd_set_double(), t_libpd_doublehook, libpd_set_doublehook(),
      libpd_get_double() (IOhannes Zmoelnig)
+* C: call socket_init() during libpd_init() for Windows (reported by Ali Somay)
 
 * Cocoapods: fixed clone unauthenticated git protocol error by moving to https
              submodule urls (reported by Ricardo de Amorim), run the following
