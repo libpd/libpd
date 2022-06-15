@@ -21,6 +21,8 @@
              libpd_*_instance() functions manually may need to be updated
 * C++: fixed pd::List.toString() trailing whitespace
 
+* C#: added per-instance support (Thomas Mayer)
+
 * Cocoapods: fixed clone unauthenticated git protocol error by moving to https
              submodule urls (reported by Ricardo de Amorim), run the following
              after updating a repo:
