@@ -1,4 +1,5 @@
 from pylibpd import *
+from struct import unpack
 import array
 import pygame
 import numpy
@@ -48,7 +49,8 @@ while not quit:
 		for x in range(BUFFERSIZE):
 			# let's grab a new block from Pd each time we're out of BLOCKSIZE data
 			if x % BLOCKSIZE == 0:
-				outbuf = m.process(inbuf)
+				barray = m.process(inbuf)
+				outbuf = unpack('h'*(len(barray)//2),barray)
 			# de-interlace the data coming from libpd
 			samples[selector][x][0] = outbuf[(x % BLOCKSIZE) * 2]
 			samples[selector][x][1] = outbuf[(x % BLOCKSIZE) * 2 + 1]
