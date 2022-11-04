@@ -1,6 +1,6 @@
 0.13.0 TBA
 
-* updated to pd vanilla 0.52-2
+* updated to pd vanilla 0.53-0
 
 * fixed bad readme link to wiki
 * removed defunct libpd.cc link for now

@@ -13,19 +13,17 @@ PD_SRC_FILES := \
   pure-data/src/d_soundfile_wave.c pure-data/src/d_ugen.c \
   pure-data/src/g_all_guis.c pure-data/src/g_array.c pure-data/src/g_bang.c \
   pure-data/src/g_canvas.c pure-data/src/g_clone.c pure-data/src/g_editor.c \
-  pure-data/src/g_editor_extras.c \
-  pure-data/src/g_graph.c pure-data/src/g_guiconnect.c pure-data/src/g_hdial.c \
-  pure-data/src/g_hslider.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c \
-  pure-data/src/g_numbox.c pure-data/src/g_readwrite.c \
-  pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_template.c \
-  pure-data/src/g_text.c pure-data/src/g_toggle.c pure-data/src/g_traversal.c \
-  pure-data/src/g_undo.c \
-  pure-data/src/g_vdial.c pure-data/src/g_vslider.c pure-data/src/g_vumeter.c \
+  pure-data/src/g_editor_extras.c pure-data/src/g_graph.c \
+  pure-data/src/g_guiconnect.c pure-data/src/g_io.c pure-data/src/g_mycanvas.c \
+  pure-data/src/g_numbox.c pure-data/src/g_radio.c pure-data/src/g_readwrite.c \
+  pure-data/src/g_rtext.c pure-data/src/g_scalar.c pure-data/src/g_slider.c \
+  pure-data/src/g_template.c pure-data/src/g_text.c pure-data/src/g_toggle.c \
+  pure-data/src/g_traversal.c pure-data/src/g_undo.c pure-data/src/g_vumeter.c \
   pure-data/src/m_atom.c pure-data/src/m_binbuf.c pure-data/src/m_class.c \
   pure-data/src/m_conf.c pure-data/src/m_glob.c pure-data/src/m_memory.c \
   pure-data/src/m_obj.c pure-data/src/m_pd.c pure-data/src/m_sched.c \
   pure-data/src/s_audio.c pure-data/src/s_audio_dummy.c \
-  pure-data/src/s_inter.c \
+  pure-data/src/s_inter.c pure-data/src/s_inter_gui.c \
   pure-data/src/s_loader.c pure-data/src/s_main.c \
   pure-data/src/s_net.c pure-data/src/s_path.c \
   pure-data/src/s_print.c pure-data/src/s_utf8.c pure-data/src/x_acoustics.c \
