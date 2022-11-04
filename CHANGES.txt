@@ -1,4 +1,4 @@
-0.13.0 TBA
+0.13.0 2022 Nov 05
 
 * updated to pd vanilla 0.53-0
 
@@ -41,7 +41,8 @@
 * CMake: removed unnecessary BSymbolic flag on Windows (Jean-Michaël Celerier)
 
 * various readme updates and clarifications
-* added pdtest_double c sample
+* added pdtest_double and pdtest_queued c samples
+* added pdtest_multi cpp sample
 
 0.12.3 2021 Jun 12
 
