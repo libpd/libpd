@@ -155,7 +155,7 @@ By building with the `FAT_LIB=true` Makefile option, libpd will be compiled with
 
 To override autodetection, specify the `-arch` flags directly using the `FAT_ARCHS` Makefile option:
 
-        make FAT_LIB=true FAT_ARCHS="-arch i386 -arch x86_64"
+    make FAT_LIB=true FAT_ARCHS="-arch i386 -arch x86_64"
 
 ### Windows
 
@@ -227,6 +227,16 @@ C++
 The C++ wrapper is inspired by the Java wrapper and provides a PdBase class as well as listener, list, and message type classes. This is a header only library so you only need to include the `cpp` directory in your project. You also may need to add `libpd_wrapper/util` to you include paths.
 
 Sample programs are found in `samples/cpp`.
+
+### Multiple Instance Support
+
+By default, PdBase always wraps to the single main libpd instance, so it is recommended to only use one instance of PdBase.
+
+If `PDINSTANCE` is defined, each PdBase will wrap a separate libpd instance.
+
+To enable multiple instance support:
+* Build libpd with `make MULTI=true` or with CFLAGS `-DPDINSTANCE -DPDTHREADS`
+* Build the C++ program using PdBase.hpp with CPPFLAGS `-DPDINSTANCE`
 
 C\#
 --

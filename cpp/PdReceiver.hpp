@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2020 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012-2022 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL

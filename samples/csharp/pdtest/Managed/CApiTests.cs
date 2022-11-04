@@ -28,15 +28,14 @@ namespace LibPDBindingTest.Managed
 		[Test]
 		public virtual void LoadbangTest ()
 		{
-			_pd.Messaging.Bind ("foo");
 			string value = "";
 			_pd.Messaging.Print += delegate(object sender, PrintEventArgs e) {
-				value += e.Symbol.Value;
+				value = e.Symbol.Value;
 			};
 			using (Patch patch = _pd.LoadPatch (@"../../test_csharp.pd")) {
 				;
 			}
-			Assert.AreEqual("print: hello\n", value);
+			Assert.AreEqual("print: hello", value);
 		}
 
 		[Test]

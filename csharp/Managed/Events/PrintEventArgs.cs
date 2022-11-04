@@ -1,5 +1,5 @@
-﻿using System;
 using LibPDBinding.Managed.Data;
+using System;
 
 namespace LibPDBinding.Managed.Events
 {

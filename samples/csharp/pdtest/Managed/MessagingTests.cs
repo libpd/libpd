@@ -38,7 +38,7 @@ namespace LibPDBindingTest.Managed
 				value = args.Symbol.Value;
 			};
 			_pd.Messaging.Send ("foo", new Float (42));
-			Assert.AreEqual ("print: 42\n", value);
+			Assert.AreEqual ("print: 42", value);
 		}
 
 		[Test]
@@ -46,39 +46,42 @@ namespace LibPDBindingTest.Managed
 		{
 			string value = null;
 			_pd.Messaging.Print += delegate (object sender, PrintEventArgs args) {
-				value += args.Symbol.Value;
+				value = args.Symbol.Value;
 			};
-			_pd.Messaging.Send ("foo", new Bang());
-			Assert.AreEqual ("print: bang\n", value);
+			_pd.Messaging.Send ("foo", new Bang ());
+			Assert.AreEqual ("print: bang", value);
 		}
 
 		[Test]
-		public virtual void SendSymbolTest(){
+		public virtual void SendSymbolTest ()
+		{
 			string value = null;
 			_pd.Messaging.Print += delegate (object sender, PrintEventArgs args) {
-				value += args.Symbol.Value;
+				value = args.Symbol.Value;
 			};
 			_pd.Messaging.Send ("foo", new Symbol ("bar"));
-			Assert.AreEqual ("print: symbol bar\n", value);
+			Assert.AreEqual ("print: symbol bar", value);
 		}
 
 		[Test]
-		public virtual void SendListTest(){
+		public virtual void SendListTest ()
+		{
 			string value = null;
 			_pd.Messaging.Print += delegate (object sender, PrintEventArgs args) {
-				value += args.Symbol.Value;
+				value = args.Symbol.Value;
 			};
-			_pd.Messaging.Send ("foo", new Symbol("bar"), new Float(42));
-			Assert.AreEqual ("print: list bar 42\n", value);
+			_pd.Messaging.Send ("foo", new Symbol ("bar"), new Float (42));
+			Assert.AreEqual ("print: list bar 42", value);
 		}
 
 		[Test]
-		public virtual void ReceiveFloatTest(){
+		public virtual void ReceiveFloatTest ()
+		{
 			float value = 0;
 			string receiver = "spam";
 			_pd.Messaging.Bind (receiver);
 			_pd.Messaging.Float += delegate(object sender, FloatEventArgs e) {
-				if (e.Receiver == receiver){
+				if (e.Receiver == receiver) {
 					value = e.Float.Value;
 				}
 			};
@@ -88,12 +91,13 @@ namespace LibPDBindingTest.Managed
 		}
 
 		[Test]
-		public virtual void ReceiveSymbolTest(){
+		public virtual void ReceiveSymbolTest ()
+		{
 			string value = null;
 			string receiver = "spam";
 			_pd.Messaging.Bind (receiver);
 			_pd.Messaging.Symbol += delegate(object sender, SymbolEventArgs e) {
-				if (e.Receiver == receiver){
+				if (e.Receiver == receiver) {
 					value = e.Symbol.Value;
 				}
 			};
@@ -103,35 +107,37 @@ namespace LibPDBindingTest.Managed
 		}
 
 		[Test]
-		public virtual void ReceiveBangTest(){
+		public virtual void ReceiveBangTest ()
+		{
 			bool received = false;
 			string receiver = "spam";
 			_pd.Messaging.Bind (receiver);
 			_pd.Messaging.Bang += delegate(object sender, BangEventArgs e) {
-				if (e.Receiver == receiver){
+				if (e.Receiver == receiver) {
 					received = true;
 				}
 			};
-			_pd.Messaging.Send (receiver, new Bang());
+			_pd.Messaging.Send (receiver, new Bang ());
 			_pd.Messaging.Unbind (receiver);
 			Assert.IsTrue (received);
 		}
 
 		[Test]
-		public virtual void UnbindTest(){
+		public virtual void UnbindTest ()
+		{
 			int received = 0;
 			string receiver = "spam";
 			_pd.Messaging.Bind (receiver);
 			_pd.Messaging.Bang += delegate(object sender, BangEventArgs e) {
-				if (e.Receiver == receiver){
+				if (e.Receiver == receiver) {
 					received++;
 				}
 			};
-			_pd.Messaging.Send (receiver, new Bang());
-			_pd.Messaging.Send (receiver, new Bang());
+			_pd.Messaging.Send (receiver, new Bang ());
+			_pd.Messaging.Send (receiver, new Bang ());
 			Assert.AreEqual (2, received);
 			_pd.Messaging.Unbind (receiver);
-			_pd.Messaging.Send (receiver, new Bang());
+			_pd.Messaging.Send (receiver, new Bang ());
 			Assert.AreEqual (2, received);
 		}
 	}

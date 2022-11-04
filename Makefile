@@ -260,7 +260,7 @@ $(PDJAVA_SRC): $(PDJAVA_JAR_FILES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 clean:

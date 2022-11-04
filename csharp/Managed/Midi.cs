@@ -1,6 +1,6 @@
-﻿using System;
-using System.Runtime.CompilerServices;
 using LibPDBinding.Managed.Events;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace LibPDBinding.Managed
 {
@@ -9,8 +9,11 @@ namespace LibPDBinding.Managed
 	/// </summary>
 	public sealed class Midi : IDisposable
 	{
-		internal Midi ()
+		readonly Pd _pd;
+
+		internal Midi (Pd pd)
 		{
+			_pd = pd;
 			SetupHooks ();
 		}
 
@@ -88,6 +91,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendNoteOn (int channel, int pitch, int velocity)
 		{
+			_pd.Activate ();
 			Native.Midi.noteon (channel, pitch, velocity);
 		}
 
@@ -99,6 +103,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendProgramChange (int channel, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.programchange (channel, value);
 		}
 
@@ -111,6 +116,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendControlChange (int channel, int controller, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.controlchange (channel, controller, value);			
 		}
 
@@ -122,6 +128,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendPitchbend (int channel, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.pitchbend (channel, value);			
 		}
 
@@ -133,6 +140,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendAftertouch (int channel, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.aftertouch (channel, value);
 		}
 
@@ -145,6 +153,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendPolyAftertouch (int channel, int pitch, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.polyaftertouch (channel, pitch, value);
 		}
 
@@ -156,6 +165,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendMidiByte (int port, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.midibyte (port, value);
 		}
 
@@ -167,6 +177,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendSysex (int port, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.sysex (port, value);
 		}
 
@@ -178,6 +189,7 @@ namespace LibPDBinding.Managed
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public void SendSysRealtime (int port, int value)
 		{
+			_pd.Activate ();
 			Native.Midi.sysrealtime (port, value);
 		}
 

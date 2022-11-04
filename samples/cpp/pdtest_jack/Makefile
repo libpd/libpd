@@ -32,8 +32,8 @@ LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 SRC_FILES = src/PdObject.cpp src/main.cpp
 TARGET = pdtest_jack
 
-CXXFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src \
-           -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp \
+CXXFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/libpd_wrapper/util \
+           -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/cpp \
            -I./src -std=c++11 -DLIBPD_USE_STD_MUTEX -O3
 
 .PHONY: clean clobber
@@ -45,7 +45,7 @@ ifeq ($(PLATFORM), mac)
 endif
 
 $(LIBPD):
-	cd $(LIBPD_DIR) && make UTIL=true EXTRA=true
+	cd $(LIBPD_DIR) && make
 
 clean:
 	rm -f src/*.o

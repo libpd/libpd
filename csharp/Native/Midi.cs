@@ -52,5 +52,5 @@ namespace LibPDBinding.Native
 
 		[DllImport (Defines.DllName, EntryPoint = "libpd_set_midibytehook", CallingConvention = Defines.CallingConvention)]
 		public static extern void set_midibytehook (LibPDMidiByteHook hook);
-	}	
+	}
 }

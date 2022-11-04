@@ -20,21 +20,22 @@ RtAudio audio;
 pd::PdBase lpd;
 PdObject pdObject;
 
-int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames, double streamTime, RtAudioStreamStatus status, void *userData){
+int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
+   double streamTime, RtAudioStreamStatus status, void *userData) {
 
    // pass audio samples to/from libpd
-   int ticks = nBufferFrames / 64;
-   lpd.processFloat(ticks, (float *)inputBuffer, (float*)outputBuffer);
+   int ticks = nBufferFrames / libpd_blocksize();
+   lpd.processFloat(ticks, (float *)inputBuffer, (float *)outputBuffer);
 
    return 0;
 }
 
-void init(){
+void init() {
    unsigned int sampleRate = 44100;
    unsigned int bufferFrames = 128;
 
    // init pd
-   if(!lpd.init(0, 2, sampleRate)) {
+   if(!lpd.init(0, 2, sampleRate, true)) {
       std::cerr << "Could not init pd" << std::endl;
       exit(1);
    }
@@ -51,8 +52,8 @@ void init(){
    std::cout << patch << std::endl;
 
    // use the RtAudio API to connect to the default audio device
-   if(audio.getDeviceCount()==0){
-      std::cout << "There are no available sound devices." << std::endl;
+   if(audio.getDeviceCount() == 0) {
+      std::cout << "There are no available sound devices" << std::endl;
       exit(1);
    }
 
@@ -67,21 +68,21 @@ void init(){
       options.flags |= RTAUDIO_MINIMIZE_LATENCY; // CoreAudio doesn't seem to like this
    }
    try {
-      audio.openStream( &parameters, NULL, RTAUDIO_FLOAT32, sampleRate, &bufferFrames, &audioCallback, NULL, &options );
+      audio.openStream( &parameters, NULL, RTAUDIO_FLOAT32, sampleRate,
+         &bufferFrames, &audioCallback, NULL, &options );
       audio.startStream();
    }
-   catch(RtAudioError& e) {
+   catch(RtAudioError &e) {
       std::cerr << e.getMessage() << std::endl;
       exit(1);
    }
 }
 
-
-int main (int argc, char *argv[]) {
+int main(int argc, char **argv) {
    init();
 
    // keep the program alive until it's killed with Ctrl+C
-   while(1){
+   while(1) {
       lpd.receiveMessages();
       lpd.sendFloat("FromCpp", 578);
       usleep(100);

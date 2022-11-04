@@ -16,9 +16,6 @@
 #include "PdBase.hpp"
 #include "PdObject.h"
 
-using namespace std;
-using namespace pd;
-
 // Howdy gentle libpd user,
 //
 // This is just a simple test to make sure message passing in the libpd c++ layer
@@ -30,7 +27,7 @@ using namespace pd;
 int main(int argc, char **argv) {
 
 	// our pd engine
-	PdBase pd;
+	pd::PdBase pd;
 	
 	// one input channel, two output channels
 	// block size 64, one tick per buffer
@@ -49,7 +46,7 @@ int main(int argc, char **argv) {
 	//
 	int srate = 44100;
 	if(!pd.init(1, 2, srate, true)) {
-		cerr << "Could not init pd" << endl;
+		std::cerr << "Could not init pd" << std::endl;
 		exit(1);
 	}
     
@@ -70,19 +67,19 @@ int main(int argc, char **argv) {
 	pd.computeAudio(true);
 
 	
-	cout << endl << "BEGIN Patch Test" << endl;
+	std::cout << std::endl << "BEGIN Patch Test" << std::endl;
 	
 	// open patch
-	Patch patch = pd.openPatch("pd/test.pd", ".");
-	cout << patch << endl;
+	pd::Patch patch = pd.openPatch("pd/test.pd", ".");
+	std::cout << patch << std::endl;
 	
 	// close patch
 	pd.closePatch(patch);
-	cout << patch << endl;
+	std::cout << patch << std::endl;
 	
 	// open patch again
 	patch = pd.openPatch(patch);
-	cout << patch << endl;
+	std::cout << patch << std::endl;
 	
 	// process any received messages
 	//
@@ -91,10 +88,10 @@ int main(int argc, char **argv) {
 	pd.processFloat(1, inbuf, outbuf);
 	pd.receiveMessages();
 	
-	cout << "FINISH Patch Test" << endl;
+	std::cout << "FINISH Patch Test" << std::endl;
 	
 	
-	cout << endl << "BEGIN Message Test" << endl;
+	std::cout << std::endl << "BEGIN Message Test" << std::endl;
 	
 	// test basic atoms
 	pd.sendBang("fromCPP");
@@ -102,9 +99,9 @@ int main(int argc, char **argv) {
 	pd.sendSymbol("fromCPP", "test string");
     	
 	// stream interface
-	pd << Bang("fromCPP")
-		<< Float("fromCPP", 100)
-		<< Symbol("fromCPP", "test string");
+	pd << pd::Bang("fromCPP")
+		<< pd::Float("fromCPP", 100)
+		<< pd::Symbol("fromCPP", "test string");
 	
 	// send a list
 	pd.startMessage();
@@ -119,19 +116,19 @@ int main(int argc, char **argv) {
 	pd.finishList(patch.dollarZeroStr()+"-fromCPP");
 	
 	// send a list using the List object
-	List testList;
+	pd::List testList;
 	testList.addFloat(1.23);
 	testList.addSymbol("sent from a List object");
 	pd.sendList("fromCPP", testList);
 	pd.sendMessage("fromCPP", "msg", testList);
 
 	// stream interface for list
-	pd << StartMessage() << 1.23 << "sent from a streamed list" << FinishList("fromCPP");
+	pd << pd::StartMessage() << 1.23 << "sent from a streamed list" << pd::FinishList("fromCPP");
 	
-	cout << "FINISH Message Test" << endl;
+	std::cout << "FINISH Message Test" << std::endl;
 	
 	
-	cout << endl << "BEGIN MIDI Test" << endl;
+	std::cout << std::endl << "BEGIN MIDI Test" << std::endl;
 	
 	// send functions
 	pd.sendNoteOn(midiChan, 60);
@@ -146,28 +143,28 @@ int main(int argc, char **argv) {
 	pd.sendSysRealTime(0, 239);
 	
 	// stream
-	pd << NoteOn(midiChan, 60) << ControlChange(midiChan, 100, 64)
-		<< ProgramChange(midiChan, 100) << PitchBend(midiChan, 2000)
-		<< Aftertouch(midiChan, 100) << PolyAftertouch(midiChan, 64, 100)
-		<< StartMidi(0) << 239 << Finish()
-		<< StartSysex(0) << 239 << Finish()
-		<< StartSysRealTime(0) << 239 << Finish();
+	pd << pd::NoteOn(midiChan, 60) << pd::ControlChange(midiChan, 100, 64)
+		<< pd::ProgramChange(midiChan, 100) << pd::PitchBend(midiChan, 2000)
+		<< pd::Aftertouch(midiChan, 100) << pd::PolyAftertouch(midiChan, 64, 100)
+		<< pd::StartMidi(0) << 239 << pd::Finish()
+		<< pd::StartSysex(0) << 239 << pd::Finish()
+		<< pd::StartSysRealTime(0) << 239 << pd::Finish();
 	
-	cout << "FINISH MIDI Test" << endl;
+	std::cout << "FINISH MIDI Test" << std::endl;
 	
 	
-	cout << endl << "BEGIN Array Test" << endl;
+	std::cout << std::endl << "BEGIN Array Test" << std::endl;
 	
 	// array check length
-	cout << "array1 len: " << pd.arraySize("array1") << endl;
+	std::cout << "array1 len: " << pd.arraySize("array1") << std::endl;
 	
 	// read array
 	std::vector<float> array1;
 	pd.readArray("array1", array1);	// sets array to correct size
-	cout << "array1 ";
+	std::cout << "array1 ";
 	for(int i = 0; i < array1.size(); ++i)
-		cout << array1[i] << " ";
-	cout << endl;
+		std::cout << array1[i] << " ";
+	std::cout << std::endl;
 	
 	// write array
 	for(int i = 0; i < array1.size(); ++i)
@@ -176,27 +173,27 @@ int main(int argc, char **argv) {
 	
 	// ready array
 	pd.readArray("array1", array1);
-	cout << "array1 ";
+	std::cout << "array1 ";
 	for(int i = 0; i < array1.size(); ++i)
-		cout << array1[i] << " ";
-	cout << endl;
+		std::cout << array1[i] << " ";
+	std::cout << std::endl;
 	
 	// clear array
 	pd.clearArray("array1", 10);
 	
 	// ready array
 	pd.readArray("array1", array1);
-	cout << "array1 ";
+	std::cout << "array1 ";
 	for(int i = 0; i < array1.size(); ++i)
-		cout << array1[i] << " ";
-	cout << endl;
+		std::cout << array1[i] << " ";
+	std::cout << std::endl;
 
-	cout << "FINISH Array Test" << endl << endl;
+	std::cout << "FINISH Array Test" << std::endl << std::endl;
 
 	
-	cout << "BEGIN PD Test" << endl;
+	std::cout << "BEGIN PD Test" << std::endl;
 	pd.sendSymbol("fromCPP", "test");
-	cout << "FINISH PD Test" << endl << endl;
+	std::cout << "FINISH PD Test" << std::endl << std::endl;
 	
 	
 	// play a tone by sending a list
@@ -211,7 +208,7 @@ int main(int argc, char **argv) {
 	// you should see all the messages from pd print now
 	// since processFloat actually runs the pd dsp engine and the recieve
 	// functions pass messages to our PdObject
-	cout << "Processing PD" << endl;
+	std::cout << "Processing PD" << std::endl;
 	for(int i = 0; i < 10 * srate / 64; i++) {
 		// fill inbuf here
 		pd.processFloat(1, inbuf, outbuf);

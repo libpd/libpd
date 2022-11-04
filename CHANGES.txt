@@ -5,11 +5,25 @@
 * fixed bad readme link to wiki
 * removed defunct libpd.cc link for now
 
+* C: print and midi hooks finally per-instance (!)
 * C: added double precision support: libpd_read_array_double(),
      libpd_write_array_double(), libpd_double(), libpd_add_double(),
      libpd_set_double(), t_libpd_doublehook, libpd_set_doublehook(),
      libpd_get_double() (IOhannes Zmoelnig)
+* C: added libpd_set_instancedata() & libpd_get_instancedata() for optional
+     per-instance user data storage
+* C: added t_libpd_freehook type
+* C: fixed libpdinstance_new() memory issue
+* C: fixed ringbuffer mem barrier on Windows (Ali Somay)
 * C: call socket_init() during libpd_init() for Windows (reported by Ali Somay)
+
+* C++: added pd::PdBase per-instance support
+       note: when compiled with PDINSTANCE defined, PdBase calls
+             libpd_set_instance() internally so existing projects which use the
+             libpd_*_instance() functions manually may need to be updated
+* C++: fixed pd::List.toString() trailing whitespace
+
+* C#: added per-instance support (Thomas Mayer)
 
 * Cocoapods: fixed clone unauthenticated git protocol error by moving to https
              submodule urls (reported by Ricardo de Amorim), run the following
@@ -27,6 +41,7 @@
 * CMake: removed unnecessary BSymbolic flag on Windows (Jean-Michaël Celerier)
 
 * various readme updates and clarifications
+* added pdtest_double c sample
 
 0.12.3 2021 Jun 12
 

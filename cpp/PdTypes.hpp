@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012-2012 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
@@ -103,12 +103,12 @@ public:
 
 private:
 
-    void *_handle;              //< patch handle pointer
-    int _dollarZero;            //< the unique $0 patch ID
-    std::string _dollarZeroStr; //< $0 as a string
+    void *_handle;              ///< patch handle pointer
+    int _dollarZero;            ///< the unique $0 patch ID
+    std::string _dollarZeroStr; ///< $0 as a string
 
-    std::string _filename;      //< filename
-    std::string _path;          //< full path to parent folder
+    std::string _filename;      ///< filename
+    std::string _path;          ///< full path to parent folder
 };
 
 /// \section Pd stream interface message objects
@@ -116,7 +116,7 @@ private:
 /// bang event
 struct Bang {
 
-    const std::string dest; //< dest receiver name
+    const std::string dest; ///< dest receiver name
 
     explicit Bang(const std::string &dest) : dest(dest) {}
 };
@@ -124,8 +124,8 @@ struct Bang {
 /// float value
 struct Float {
 
-    const std::string dest; //< dest receiver name
-    const float num;        //< the float value
+    const std::string dest; ///< dest receiver name
+    const float num;        ///< the float value
 
     Float(const std::string &dest, const float num) :
         dest(dest), num(num) {}
@@ -134,8 +134,8 @@ struct Float {
 /// symbol value
 struct Symbol {
 
-    const std::string dest;   //< dest receiver name
-    const std::string symbol; //< the symbol value
+    const std::string dest;   ///< dest receiver name
+    const std::string symbol; ///< the symbol value
 
     Symbol(const std::string &dest, const std::string &symbol) :
         dest(dest), symbol(symbol) {}
@@ -286,9 +286,12 @@ public:
                 line += itoa.str();
                 itoa.str("");
             }
-            else
+            else {
                 line += getSymbol(i);
-            line += " ";
+            }
+            if(i < (int)objects.size()-1) {
+                line += " ";
+            }
         }
         return line;
     }
@@ -300,7 +303,7 @@ public:
 
 private:
 
-    std::string typeString; //< OSC style type string
+    std::string typeString; ///< OSC style type string
 
     // object type
     enum MsgType {
@@ -315,7 +318,7 @@ private:
         std::string symbol;
     };
 
-    std::vector<MsgObject> objects; //< list objects
+    std::vector<MsgObject> objects; ///< list objects
 };
 
 /// start a compound message
@@ -326,7 +329,7 @@ struct StartMessage {
 /// finish a compound message as a list
 struct FinishList {
 
-    const std::string dest; //< dest receiver name
+    const std::string dest; ///< dest receiver name
 
     explicit FinishList(const std::string &dest) : dest(dest) {}
 };
@@ -334,8 +337,8 @@ struct FinishList {
 /// finish a compound message as a typed message
 struct FinishMessage {
 
-    const std::string dest; //< dest receiver name
-    const std::string msg;  //< target msg at the dest
+    const std::string dest; ///< dest receiver name
+    const std::string msg;  ///< target msg at the dest
 
     FinishMessage(const std::string &dest, const std::string &msg) :
             dest(dest), msg(msg) {}
@@ -347,9 +350,9 @@ struct FinishMessage {
 /// send a note on event (set vel = 0 for noteoff)
 struct NoteOn {
 
-    const int channel;  //< channel (0 - 15 * dev#)
-    const int pitch;    //< pitch (0 - 127)
-    const int velocity; //< velocity (0 - 127)
+    const int channel;  ///< channel (0 - 15 * dev#)
+    const int pitch;    ///< pitch (0 - 127)
+    const int velocity; ///< velocity (0 - 127)
 
     NoteOn(const int channel, const int pitch, const int velocity=64) :
         channel(channel), pitch(pitch), velocity(velocity) {}
@@ -358,9 +361,9 @@ struct NoteOn {
 /// change a control value aka send a CC message
 struct ControlChange {
 
-    const int channel;    //< channel (0 - 15 * dev#)
-    const int controller; //< controller (0 - 127)
-    const int value;      //< value (0 - 127)
+    const int channel;    ///< channel (0 - 15 * dev#)
+    const int controller; ///< controller (0 - 127)
+    const int value;      ///< value (0 - 127)
 
     ControlChange(const int channel, const int controller, const int value) :
         channel(channel), controller(controller), value(value) {}
@@ -369,8 +372,8 @@ struct ControlChange {
 /// change a program value (ie an instrument)
 struct ProgramChange {
 
-    const int channel; //< channel (0 - 15 * dev#)
-    const int value;   //< value (0 - 127)
+    const int channel; ///< channel (0 - 15 * dev#)
+    const int value;   ///< value (0 - 127)
 
     ProgramChange(const int channel, const int value) :
         channel(channel), value(value) {}
@@ -379,8 +382,8 @@ struct ProgramChange {
 /// change the pitch bend value
 struct PitchBend {
 
-    const int channel; //< channel (0 - 15 * dev#)
-    const int value;   //< value (-8192 - 8192)
+    const int channel; ///< channel (0 - 15 * dev#)
+    const int value;   ///< value (-8192 - 8192)
 
     PitchBend(const int channel, const int value) :
         channel(channel), value(value) {}
@@ -389,8 +392,8 @@ struct PitchBend {
 /// change an aftertouch value
 struct Aftertouch {
 
-    const int channel; //< channel (0 - 15 * dev#)
-    const int value;   //< value (0 - 127)
+    const int channel; ///< channel (0 - 15 * dev#)
+    const int value;   ///< value (0 - 127)
 
     Aftertouch(const int channel, const int value) :
         channel(channel), value(value) {}
@@ -399,9 +402,9 @@ struct Aftertouch {
 /// change a poly aftertouch value
 struct PolyAftertouch {
 
-    const int channel; //< channel (0 - 15 * dev#)
-    const int pitch;   //< pitch (0 - 127)
-    const int value;   //< value (0 - 127)
+    const int channel; ///< channel (0 - 15 * dev#)
+    const int pitch;   ///< pitch (0 - 127)
+    const int value;   ///< value (0 - 127)
 
     PolyAftertouch(const int channel, const int pitch, const int value) :
         channel(channel), pitch(pitch), value(value) {}
@@ -410,9 +413,9 @@ struct PolyAftertouch {
 /// a raw midi byte
 struct MidiByte {
 
-    const int port; //< raw portmidi port
-                    //< see http://en.wikipedia.org/wiki/PortMidi
-    const unsigned char byte; //< the raw midi byte value
+    const int port; ///< raw portmidi port
+                    ///< see http://en.wikipedia.org/wiki/PortMidi
+    const unsigned char byte; ///< the raw midi byte value
 
     MidiByte(const int port, unsigned char byte) : port(port), byte(byte) {}
 };
@@ -420,7 +423,7 @@ struct MidiByte {
 /// start a raw midi byte stream
 struct StartMidi {
 
-    const int port; //< raw portmidi port
+    const int port; ///< raw portmidi port
 
     explicit StartMidi(const int port=0) : port(port) {}
 };
@@ -428,7 +431,7 @@ struct StartMidi {
 /// start a raw sysex byte stream
 struct StartSysex {
 
-    const int port; //< raw portmidi port
+    const int port; ///< raw portmidi port
 
     explicit StartSysex(const int port=0) : port(port) {}
 };
@@ -436,7 +439,7 @@ struct StartSysex {
 /// start a sys realtime byte stream
 struct StartSysRealTime {
 
-    const int port; //< raw portmidi port
+    const int port; ///< raw portmidi port
 
     explicit StartSysRealTime(const int port=0) : port(port) {}
 };

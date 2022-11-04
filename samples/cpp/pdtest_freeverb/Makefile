@@ -30,8 +30,8 @@ EXT_FILES = src/externals/freeverb~.c
 TARGET = pdtest_freeverb
 
 # make sure to define PD for freeverb~
-CFLAGS += -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src \
-          -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/cpp -I./src -DPD -O3
+CFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/libpd_wrapper/util \
+         -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/cpp -I./src -DPD -O3
 CXXFLAGS += $(CFLAGS) -std=c++11 -DLIBPD_USE_STD_MUTEX
 
 .PHONY: clean clobber
@@ -43,7 +43,7 @@ ifeq ($(PLATFORM), mac)
 endif
 
 $(LIBPD):
-	cd $(LIBPD_DIR) && make UTIL=true EXTRA=true
+	cd $(LIBPD_DIR) && make
 
 clean:
 	rm -f src/*.o

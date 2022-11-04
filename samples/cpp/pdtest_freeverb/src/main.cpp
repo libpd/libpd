@@ -21,16 +21,17 @@ pd::PdBase lpd;
 PdObject pdObject;
 
 // RtAudio audio sample callback
-int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames, double streamTime, RtAudioStreamStatus status, void *userData){
+int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
+   double streamTime, RtAudioStreamStatus status, void *userData) {
 
    // pass samples to/from libpd
-   int ticks = nBufferFrames / 64;
-   lpd.processFloat(ticks, (float *)inputBuffer, (float*)outputBuffer);
+   int ticks = nBufferFrames / libpd_blocksize();
+   lpd.processFloat(ticks, (float *)inputBuffer, (float *)outputBuffer);
 
    return 0;
 }
 
-void initAudio(){
+void initAudio() {
    unsigned int sampleRate = 44100;
    unsigned int bufferFrames = 128;
 
@@ -55,8 +56,8 @@ void initAudio(){
    std::cout << patch << std::endl;
 
    // use the RtAudio API to connect to the default audio device.
-   if(audio.getDeviceCount() == 0){
-      std::cout << "There are no available sound devices." << std::endl;
+   if(audio.getDeviceCount() == 0) {
+      std::cout << "There are no available sound devices" << std::endl;
       exit(1);
    }
 
@@ -71,7 +72,8 @@ void initAudio(){
       options.flags |= RTAUDIO_MINIMIZE_LATENCY; // CoreAudio doesn't seem to like this
    }
    try {
-      audio.openStream(&parameters, NULL, RTAUDIO_FLOAT32, sampleRate, &bufferFrames, &audioCallback, NULL, &options);
+      audio.openStream(&parameters, NULL, RTAUDIO_FLOAT32, sampleRate,
+         &bufferFrames, &audioCallback, NULL, &options);
       audio.startStream();
    }
    catch(RtAudioError& e) {
@@ -80,7 +82,7 @@ void initAudio(){
    }
 }
 
-int main (int argc, char *argv[]) {
+int main(int argc, char **argv) {
    initAudio();
 
    // keep the program alive until it's killed with Ctrl+C
