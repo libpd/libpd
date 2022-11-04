@@ -204,6 +204,23 @@ To double-check your build, the following will print a 1 if double-precision sup
 printf("double-precision %d\n", (int)(sizeof(t_float)/8));
 ```
 
+Loading Externals
+-----------------
+
+Libpd can load pre-compiled dynamic libraries of external objects in the same manner as desktop Pd if it is compiled with the `-ldl` LDFLAG. This is done by default in the Makefile. The main difference is that libpd does not inherit the same search paths by default, so paths outside of those specified by the loading patch with `[declare]` objects need to be added via libpd's "add to search path" function.
+
+### Multi-Instance Compatibility
+
+If libpd is compiled with multi-instance support via `make MULIT=true` and `-DPDINSTANCE -DPDTHREADS` are defined, it may have trouble loading dynamic externals which are compiled without them:
+
+```
+vbap.pd_linux: vbap.pd_linux: undefined symbol: pd_this
+ vbap
+... couldn't create
+```
+
+In this case, the vbap external needs to be recompiled with the `-DPDINSTANCE -DPDTHREADS` CFLAGS defined to add multi-instance support to match.
+
 C++
 ---
 
@@ -491,7 +508,7 @@ Windows / MSVC:
 
 ### Limitations
 
-Currently the CMake script is not capable of building the C# or the Java bindings. Please use the makefile for that.      
+Currently the CMake script is not capable of building the C# or the Java bindings. Please use the makefile for that.     
 
 Known Issues
 ------------

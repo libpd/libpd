@@ -1,6 +1,7 @@
 0.13.0 TBA
 
-* updated to pd vanilla 0.52-2
+* updated to pd vanilla 0.53-0
+
 * fixed bad readme link to wiki
 * removed defunct libpd.cc link for now
 
@@ -14,6 +15,7 @@
 * C: added t_libpd_freehook type
 * C: fixed libpdinstance_new() memory issue
 * C: fixed ringbuffer mem barrier on Windows (Ali Somay)
+* C: call socket_init() during libpd_init() for Windows (reported by Ali Somay)
 
 * C++: added pd::PdBase per-instance support
        note: when compiled with PDINSTANCE defined, PdBase calls
