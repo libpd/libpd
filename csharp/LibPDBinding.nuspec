@@ -11,9 +11,9 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Pure Data as an embeddable audio synthesis library.</description>
 		<releaseNotes>
-			Removed conflicting .NET dll.
+			Support for multiple distinct instances of libPd in the same process.
 		</releaseNotes>
-		<copyright>Copyright 2012 - 2018</copyright>
+		<copyright>Copyright 2012 - 2022</copyright>
 		<tags>C# .NET Mono audio sound</tags>
 	</metadata>
 	<files>
@@ -25,5 +25,7 @@
 		<file src="..\libs\mingw64\libwinpthread-1.dll" target="native\UnmanagedLibraries\Windows\x64\libwinpthread-1.dll" />
 		<!-- Linux -->
 		<file src="..\libs\libpdcsharp.amd64.so" target="native\UnmanagedLibraries\Linux\amd64\libpdcsharp.so" />
+		<file src="..\libs\libpdcsharp.i386.so" target="native\UnmanagedLibraries\Linux\i386\libpdcsharp.so" />
+		<file src="..\libs\libpdcsharp.armv7l.so" target="native\UnmanagedLibraries\Linux\armv7l\libpdcsharp.so" />
 	</files>
 </package>
