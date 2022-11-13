@@ -199,6 +199,8 @@ static NSTimer *midiPollTimer;
 + (int)initializeWithQueue:(BOOL)queue {
 	if (queue) {
 		queued = YES;
+		int ret = libpd_queued_init();
+
 		libpd_set_queued_printhook(libpd_print_concatenator);
 		libpd_set_concatenated_printhook(printHook);
 
@@ -216,7 +218,7 @@ static NSTimer *midiPollTimer;
 		libpd_set_queued_polyaftertouchhook(polyAftertouchHook);
 		libpd_set_queued_midibytehook(midiByteHook);
 
-		return libpd_queued_init();
+		return ret;
 	}
 	else {
 		[PdBase stopMessagesTimer];
