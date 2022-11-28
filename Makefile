@@ -7,11 +7,11 @@ PLATFORM_ARCH ?= $(shell $(CC) -dumpmachine | sed -e 's,-.*,,')
 
 ifeq ($(UNAME), Darwin)  # Mac
   SOLIB_EXT = dylib
-  PDNATIVE_SOLIB_EXT = jnilib
+  PDNATIVE_SOLIB_EXT = dylib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
   PLATFORM_CFLAGS = -DHAVE_LIBDL \
-    -I/System/Library/Frameworks/JavaVM.framework/Headers
+    -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
   LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
   ifeq ($(FAT_LIB), true)
     # macOS universal "fat" lib compilation
@@ -29,7 +29,7 @@ ifeq ($(UNAME), Darwin)  # Mac
     LDFLAGS += $(FAT_ARCHS)
   endif
   CSHARP_LDFLAGS = $(LDFLAGS)
-  JAVA_LDFLAGS = -framework JavaVM $(LDFLAGS)
+  JAVA_LDFLAGS = -framework JavaNativeFoundation $(LDFLAGS)
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
     CC ?= gcc
