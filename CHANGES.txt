@@ -1,3 +1,7 @@
+0.13.2 2022 Dec 16
+
+* updated to pd vanilla 0.53-1
+
 0.13.1 2022 Nov 13
 
 * whoops forgot to update Obj-C layer and Xcode project
