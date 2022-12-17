@@ -25,26 +25,26 @@ public:
     virtual ~PdReceiver() {}
 
     /// receive a print
-    virtual void print(const std::string &message) {}
+    virtual void print(const std::string &/*message*/) {}
 
     /// receive a bang
-    virtual void receiveBang(const std::string &dest) {}
+    virtual void receiveBang(const std::string &/*dest*/) {}
 
     /// receive a float
-    virtual void receiveFloat(const std::string &dest, float num) {}
+    virtual void receiveFloat(const std::string &/*dest*/, float /*num*/) {}
 
     /// receive a symbol
-    virtual void receiveSymbol(const std::string &dest,
-                               const std::string& symbol) {}
+    virtual void receiveSymbol(const std::string &/*dest*/,
+                               const std::string &/*symbol*/) {}
 
     /// receive a list
-    virtual void receiveList(const std::string &dest, const pd::List& list) {}
+    virtual void receiveList(const std::string &/*dest*/, const pd::List &/*list*/) {}
 
     /// receive a named message ie. sent from a message box like:
     /// [; dest msg arg1 arg2 arg3(
-    virtual void receiveMessage(const std::string &dest,
-                                const std::string &msg,
-                                const pd::List &list) {}
+    virtual void receiveMessage(const std::string &/*dest*/,
+                                const std::string &/*msg*/,
+                                const pd::List &/*list*/) {}
 };
 
 } // namespace
