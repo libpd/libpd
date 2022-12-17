@@ -50,10 +50,13 @@ public class NativeLoader {
 
   private static String determineOsArch(){
     final String arch = System.getProperty("os.arch").toLowerCase();
-    if (arch.indexOf("aarch64") != -1) return "arm64";
+    if (arch.indexOf("aarch64") != -1) {
+      return "arm64";
+    }
     if (arch.indexOf("64") != -1) {
       return "x86_64";
-    } else if (arch.indexOf("86") != -1) {
+    } 
+    if (arch.indexOf("86") != -1) {
       return "x86";
     }
     return arch;
