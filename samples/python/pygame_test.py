@@ -1,4 +1,5 @@
 from pylibpd import *
+from struct import unpack
 import array
 import pygame
 import numpy
@@ -25,6 +26,7 @@ samples = [pygame.sndarray.samples(s) for s in sounds]
 # we go into an infinite loop selecting alternate buffers and queueing them up
 # to be played each time we run short of a buffer
 selector = 0
+clock = pygame.time.Clock()
 while(1):
 	# we have run out of things to play, so queue up another buffer of data from Pd
 	if not ch.get_queue():
@@ -32,7 +34,8 @@ while(1):
 		for x in range(BUFFERSIZE):
 			# let's grab a new block from Pd each time we're out of BLOCKSIZE data
 			if x % BLOCKSIZE == 0:
-				outbuf = m.process(inbuf)
+				barray = m.process(inbuf)
+				outbuf = unpack('h'*(len(barray)//2),barray)
 			# de-interlace the data coming from libpd
 			samples[selector][x][0] = outbuf[(x % BLOCKSIZE) * 2]
 			samples[selector][x][1] = outbuf[(x % BLOCKSIZE) * 2 + 1]
@@ -40,5 +43,7 @@ while(1):
 		ch.queue(sounds[selector])
 		# next time we'll do the other buffer
 		selector = int(not selector)
+	# cap the framerate
+	clock.tick(40)
 
 libpd_release()
