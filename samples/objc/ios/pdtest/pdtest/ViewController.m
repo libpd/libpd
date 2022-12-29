@@ -324,24 +324,27 @@
 
 - (void)updateInfoLabels {
 	AVAudioSession *session = AVAudioSession.sharedInstance;
-	self.pdLabel.text = [NSString stringWithFormat:@"Pd:  in %d out %d sr %gk",
-	                     self.audioController.audioUnit.inputChannels,
-	                     self.audioController.audioUnit.outputChannels,
-	                     (self.audioController.audioUnit.sampleRate / 1000)];
+	self.pdLabel.text = [NSString stringWithFormat:
+		@"Pd:  in %d out %d sr %gk",
+		self.audioController.audioUnit.inputChannels,
+		self.audioController.audioUnit.outputChannels,
+		(self.audioController.audioUnit.sampleRate / 1000)];
 	if (session.inputNumberOfChannels > 0) {
-		self.inputLabel.text = [NSString stringWithFormat:@"In:  %@ %d %gk",
-								[session.currentRoute.inputs.firstObject portName],
-								(int)session.inputNumberOfChannels,
-								(session.sampleRate / 1000)];
+		self.inputLabel.text = [NSString stringWithFormat:
+			@"In:  %@ %d %gk",
+			[session.currentRoute.inputs.firstObject portName],
+			(int)session.inputNumberOfChannels,
+			(session.sampleRate / 1000)];
 	}
 	else {
 		self.inputLabel.text = @"In: none";
 	}
 	if (session.outputNumberOfChannels > 0) {
-		self.outputLabel.text = [NSString stringWithFormat:@"Out: %@ %d %gk",
-								 [session.currentRoute.outputs.firstObject portName],
-								 (int)session.outputNumberOfChannels,
-								 (session.sampleRate / 1000)];
+		self.outputLabel.text = [NSString stringWithFormat:
+			@"Out: %@ %d %gk",
+			[session.currentRoute.outputs.firstObject portName],
+			(int)session.outputNumberOfChannels,
+			(session.sampleRate / 1000)];
 	}
 	else {
 		self.outputLabel.text = @"Out: none";
@@ -356,9 +359,9 @@
 	                                           name:AVAudioSessionRouteChangeNotification
 	                                         object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self
-										   selector:@selector(didBecomeActive:)
+	                                       selector:@selector(didBecomeActive:)
 	                                           name:UIApplicationDidBecomeActiveNotification
-											 object:nil];
+	                                         object:nil];
 }
 
 - (void)clearNotifications {
@@ -367,7 +370,7 @@
 	                                            object:nil];
 	[NSNotificationCenter.defaultCenter removeObserver:self
 	                                              name:UIApplicationDidBecomeActiveNotification
-												object:nil];
+	                                            object:nil];
 }
 
 // update the info labels if the audio session route has changed, ie. device plugged-in

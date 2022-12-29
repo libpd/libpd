@@ -211,7 +211,7 @@
 /// returns 0 on success
 + (int)openAudioWithSampleRate:(int)samplerate
                  inputChannels:(int)inputChannels
-				outputChannels:(int)outputchannels;
+                outputChannels:(int)outputchannels;
 
 /// process interleaved float samples from inputBuffer -> libpd -> outputBuffer
 /// buffer sizes are based on # of ticks and channels where:
@@ -237,8 +237,8 @@
 ///     size = ticks * [PdBase getBlocksize]* (in/out)channels
 /// returns 0 on success
 + (int)processDoubleWithInputBuffer:(const double *)inputBuffer
-					   outputBuffer:(double *)outputBuffer
-					          ticks:(int)ticks;
+                       outputBuffer:(double *)outputBuffer
+                              ticks:(int)ticks;
 
 /// enable/disable DSP, aka turn audio processing on/off
 + (void)computeAudio:(BOOL)enable;
@@ -263,7 +263,7 @@
 /// returns 0 on success or a negative error code if the array is non-existent
 /// or offset + n exceeds range of array
 + (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName
-	  withOffset:(int)offset count:(int)n;
+      withOffset:(int)offset count:(int)n;
 
 #pragma mark Sending Messages to Pd
 

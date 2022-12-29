@@ -75,7 +75,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 
 - (int)configureWithSampleRate:(Float64)sampleRate
                  inputChannels:(int)inputChannels
-				outputChannels:(int)outputChannels {
+                outputChannels:(int)outputChannels {
 	return [self configureWithSampleRate:sampleRate
 	                       inputChannels:inputChannels
 	                      outputChannels:outputChannels
@@ -335,8 +335,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 				AU_LOG(@"*** WARNING *** audio unit input channels changed: %d", streamFormat.mChannelsPerFrame);
 				[pd updateInputChannels:streamFormat.mChannelsPerFrame outputChannels:pd->_outputChannels];
 				[PdBase openAudioWithSampleRate:pd->_sampleRate
-								  inputChannels:streamFormat.mChannelsPerFrame
-								 outputChannels:pd->_outputChannels];
+				                  inputChannels:streamFormat.mChannelsPerFrame
+				                 outputChannels:pd->_outputChannels];
 
 			}
 		}
@@ -345,8 +345,8 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 				AU_LOG(@"*** WARNING *** audio unit output channels changed: %d", streamFormat.mChannelsPerFrame);
 				[pd updateInputChannels:pd->_inputChannels outputChannels:streamFormat.mChannelsPerFrame];
 				[PdBase openAudioWithSampleRate:pd->_sampleRate
-								  inputChannels:pd->_inputChannels
-								 outputChannels:streamFormat.mChannelsPerFrame];
+				                  inputChannels:pd->_inputChannels
+				                 outputChannels:streamFormat.mChannelsPerFrame];
 
 			}
 		}
@@ -489,7 +489,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			_inputRingBuffer = rb_create(roundup(inputFrameSize * (_maxFrames + _blockFrames), 256));
 			_outputRingBuffer = rb_create(roundup(outputFrameSize * (_maxFrames + _blockFrames), 256));
 			AU_LOGV(@"initialized buffers: inputs %d outputs %d max frames %d",
-				   inputChannels, outputChannels, _maxFrames);
+			        inputChannels, outputChannels, _maxFrames);
 		}
 	}
 	else {

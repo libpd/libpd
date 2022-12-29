@@ -362,14 +362,14 @@
 }
 
 + (BOOL)setSessionMode:(AVAudioSessionMode)mode {
-    NSError *error;
-    AVAudioSession *session = AVAudioSession.sharedInstance;
-    if (![session setMode:mode error:&error]) {
-        AU_LOG(@"*** ERROR *** could not set %@ mode: %@",
-               mode, AVStatusCodeAsString((int)error.code));
-        return NO;
-    }
-    return YES;
+	NSError *error;
+	AVAudioSession *session = AVAudioSession.sharedInstance;
+	if (![session setMode:mode error:&error]) {
+		AU_LOG(@"*** ERROR *** could not set %@ mode: %@",
+		       mode, AVStatusCodeAsString((int)error.code));
+		return NO;
+	}
+	return YES;
 }
 
 #pragma mark Notifications
@@ -531,7 +531,7 @@
 	[session setCategory:category mode:self.mode options:options error:&error];
 	if (error) {
 		AU_LOG(@"*** ERROR *** could not set %@ %@: %@", category, self.mode,
-		    AVStatusCodeAsString((int)error.code));
+		       AVStatusCodeAsString((int)error.code));
 		return PdAudioError;
 	}
 	_category = session.category;
@@ -541,7 +541,7 @@
 	[session setActive:YES error:&error];
 	if (error) {
 		AU_LOG(@"*** ERROR *** could not activate session: %@",
-			AVStatusCodeAsString((int)error.code));
+		       AVStatusCodeAsString((int)error.code));
 		return PdAudioError;
 	}
 	AU_LOGV(@"session activated");
@@ -595,8 +595,8 @@
 	BOOL wasActive = self.audioUnit.isActive;
 	self.audioUnit.active = NO;
 	[self configureAudioUnitWithInputChannels:_inputChannels
-							   outputChannels:_outputChannels
-								 inputEnabled:_inputEnabled];
+	                           outputChannels:_outputChannels
+	                             inputEnabled:_inputEnabled];
 	self.audioUnit.active = wasActive;
 }
 
