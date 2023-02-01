@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.authors = 'Peter Brinkmann', 'Dan Wilcox', 'Rich Eakin', 'Miller Puckette (Pure Data)'
 
   spec.source = {
-    :git => 'https://github.com/libpd/libpd.git',
+    :git => 'https://github.com/surreal6/libpd.git',
     :tag => spec.version.to_s,
     :submodules => true
   }
