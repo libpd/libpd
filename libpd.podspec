@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
 
   spec.source = {
     :git => 'https://github.com/surreal6/libpd.git',
-    :tag => spec.version.to_s,
+    #:tag => spec.version.to_s,
     :submodules => true
   }
 
