@@ -3,4 +3,4 @@
 	url = https://github.com/surreal6/opensl_stream.git
 [submodule "pure-data"]
 	path = pure-data
-	url = https://github.com/pure-data/pure-data.git
+	url = https://github.com/surreal6/pure-data.git
