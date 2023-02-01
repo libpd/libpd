@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
   spec.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
   spec.summary = 'Pure Data embeddable audio synthesis library, useful as a sound engine in mobile phone apps, games, web pages, and art projects'
-  spec.homepage = 'https://github.com/libpd/libpd'
+  spec.homepage = 'https://github.com/surreal6/libpd'
   spec.authors = 'Peter Brinkmann', 'Dan Wilcox', 'Rich Eakin', 'Miller Puckette (Pure Data)'
 
   spec.source = {
