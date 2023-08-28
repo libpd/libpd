@@ -39,7 +39,7 @@ PD_SRC_FILES := \
   libpd_wrapper/z_hooks.c libpd_wrapper/util/z_print_util.c
 PD_C_INCLUDES := $(LOCAL_PATH)/libpd_wrapper $(LOCAL_PATH)/libpd_wrapper/util \
   $(LOCAL_PATH)/pure-data/src
-PD_CFLAGS := -DPD -DHAVE_UNISTD_H -DHAVE_LIBDL -DUSEAPI_DUMMY -w
+PD_CFLAGS := -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DHAVE_LIBDL -w
 PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast
 PD_LDLIBS := -ldl -latomic
 

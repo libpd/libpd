@@ -11,9 +11,11 @@ setup(name='pypdlib',
         Extension("_pylibpd",
                   define_macros = [
                     ('PD', 1),
-                    ('HAVE_UNISTD_H', 1),
-                    ('HAVE_LIBDL', 1),
                     ('USEAPI_DUMMY', 1),
+                    ('PD_INTERNAL', 1),
+                    ('HAVE_UNISTD_H', 1),
+                    ('HAVE_ALLOCA_H', 1),
+                    ('HAVE_LIBDL', 1),
                     ('LIBPD_EXTRA', 1)
                   ],
                   include_dirs = [
