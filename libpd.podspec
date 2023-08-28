@@ -38,7 +38,7 @@ Pod::Spec.new do |spec|
   spec.macos.deployment_target = '10.10'
 
   spec.requires_arc = true
-  spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DLIBPD_EXTRA', '-fcommon'
+  spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DPD_INTERNAL', '-DHAVE_UNISTD_H', '-DHAVE_ALLOCA_H', '-DHAVE_MACHINE_ENDIAN_H', '-DLIBPD_EXTRA', '-fcommon'
   spec.frameworks = 'Foundation'
 
   # frameworks for ios-only audio implementation
