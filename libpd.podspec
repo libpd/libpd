@@ -34,8 +34,8 @@ Pod::Spec.new do |spec|
 
   spec.public_header_files = 'objc/**/*.{h}'
 
-  spec.ios.deployment_target = '9.0'
-  spec.macos.deployment_target = '10.10'
+  spec.ios.deployment_target = '11.0'
+  spec.macos.deployment_target = '10.13'
 
   spec.requires_arc = true
   spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DPD_INTERNAL', '-DHAVE_UNISTD_H', '-DHAVE_ALLOCA_H', '-DHAVE_MACHINE_ENDIAN_H', '-DLIBPD_EXTRA', '-fcommon'

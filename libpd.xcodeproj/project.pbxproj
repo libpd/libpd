@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -52,7 +52,6 @@
 		0E82A07312EEFDEE0053280E /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
 		0E82A07512EEFDEE0053280E /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
 		0E82A07612EEFDEE0053280E /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
-		0E82A07712EEFDEE0053280E /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
 		0E82A07812EEFDEE0053280E /* s_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02E12EEFDEE0053280E /* s_path.c */; };
 		0E82A07912EEFDEE0053280E /* s_print.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02F12EEFDEE0053280E /* s_print.c */; };
 		0E82A07B12EEFDEE0053280E /* s_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03112EEFDEE0053280E /* s_utf8.c */; };
@@ -127,7 +126,6 @@
 		119013881486450C00086F19 /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
 		1190138A1486450C00086F19 /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
 		1190138B1486450C00086F19 /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
-		1190138C1486450C00086F19 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
 		1190138D1486450C00086F19 /* s_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02E12EEFDEE0053280E /* s_path.c */; };
 		1190138E1486450C00086F19 /* s_print.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02F12EEFDEE0053280E /* s_print.c */; };
 		1190138F1486450C00086F19 /* s_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03112EEFDEE0053280E /* s_utf8.c */; };
@@ -255,7 +253,6 @@
 		30C3D2D31FAA1FCC00C67F08 /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
 		30C3D2D41FAA1FCC00C67F08 /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
 		30C3D2D51FAA1FCC00C67F08 /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
-		30C3D2D61FAA1FCC00C67F08 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
 		30C3D2D71FAA1FCC00C67F08 /* s_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02E12EEFDEE0053280E /* s_path.c */; };
 		30C3D2D81FAA1FCC00C67F08 /* s_print.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02F12EEFDEE0053280E /* s_print.c */; };
 		30C3D2D91FAA1FCC00C67F08 /* x_vexp_fun.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC61CA8A67000E3722F /* x_vexp_fun.c */; };
@@ -351,7 +348,6 @@
 		30C3D33F1FAA200100C67F08 /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
 		30C3D3401FAA200100C67F08 /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
 		30C3D3411FAA200100C67F08 /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
-		30C3D3421FAA200100C67F08 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02D12EEFDEE0053280E /* s_main.c */; };
 		30C3D3431FAA200100C67F08 /* s_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02E12EEFDEE0053280E /* s_path.c */; };
 		30C3D3441FAA200100C67F08 /* s_print.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02F12EEFDEE0053280E /* s_print.c */; };
 		30C3D3451FAA200100C67F08 /* s_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03112EEFDEE0053280E /* s_utf8.c */; };
@@ -418,6 +414,10 @@
 		30FDBE7E1ACAF701008B02E9 /* bob~.c in Sources */ = {isa = PBXBuildFile; fileRef = 30FDBE7C1ACAF701008B02E9 /* bob~.c */; };
 		5828C8B51409C8C600F8B9AC /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
 		5828C8B61409C8C600F8B9AC /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
+		7E2C393A2A9D32E900891340 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2C39392A9D32E900891340 /* s_main.c */; };
+		7E2C393B2A9D32E900891340 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2C39392A9D32E900891340 /* s_main.c */; };
+		7E2C393C2A9D32E900891340 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2C39392A9D32E900891340 /* s_main.c */; };
+		7E2C393D2A9D32E900891340 /* s_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2C39392A9D32E900891340 /* s_main.c */; };
 		7E2D79E7266459400042689B /* pd~.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E5266459400042689B /* pd~.c */; };
 		7E2D79E8266459400042689B /* pd~.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E5266459400042689B /* pd~.c */; };
 		7E2D79E9266459400042689B /* pd~.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E5266459400042689B /* pd~.c */; };
@@ -511,7 +511,6 @@
 		0E82A02912EEFDEE0053280E /* s_audio_dummy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_audio_dummy.c; sourceTree = "<group>"; };
 		0E82A02B12EEFDEE0053280E /* s_inter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_inter.c; sourceTree = "<group>"; };
 		0E82A02C12EEFDEE0053280E /* s_loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_loader.c; sourceTree = "<group>"; };
-		0E82A02D12EEFDEE0053280E /* s_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_main.c; sourceTree = "<group>"; };
 		0E82A02E12EEFDEE0053280E /* s_path.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_path.c; sourceTree = "<group>"; };
 		0E82A02F12EEFDEE0053280E /* s_print.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_print.c; sourceTree = "<group>"; };
 		0E82A03012EEFDEE0053280E /* s_stuff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = s_stuff.h; sourceTree = "<group>"; };
@@ -578,6 +577,7 @@
 		30FDBE7C1ACAF701008B02E9 /* bob~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "bob~.c"; path = "pure-data/extra/bob~/bob~.c"; sourceTree = SOURCE_ROOT; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
+		7E2C39392A9D32E900891340 /* s_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_main.c; sourceTree = "<group>"; };
 		7E2D79E5266459400042689B /* pd~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "pd~.c"; path = "pure-data/extra/pd~/pd~.c"; sourceTree = SOURCE_ROOT; };
 		7E2D79E6266459400042689B /* pdsched.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pdsched.c; path = "pure-data/extra/pd~/pdsched.c"; sourceTree = SOURCE_ROOT; };
 		7EB18890281DA79E0099A401 /* d_soundfile_caf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_caf.c; sourceTree = "<group>"; };
@@ -797,7 +797,7 @@
 				0E82A02B12EEFDEE0053280E /* s_inter.c */,
 				7EF1A96B29207CA100859664 /* s_inter_gui.c */,
 				0E82A02C12EEFDEE0053280E /* s_loader.c */,
-				0E82A02D12EEFDEE0053280E /* s_main.c */,
+				7E2C39392A9D32E900891340 /* s_main.c */,
 				302C6F42254CF3DC000C720D /* s_net.c */,
 				0E82A02E12EEFDEE0053280E /* s_path.c */,
 				0E82A02F12EEFDEE0053280E /* s_print.c */,
@@ -1082,7 +1082,8 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "libpd" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1113,6 +1114,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E2C393B2A9D32E900891340 /* s_main.c in Sources */,
 				30CEFE4A1A6A5EDC000E3BAE /* loop~.c in Sources */,
 				302C6F44254CF3DC000C720D /* s_net.c in Sources */,
 				30CEFE3A1A6A5EDC000E3BAE /* bonk~.c in Sources */,
@@ -1177,7 +1179,6 @@
 				119013881486450C00086F19 /* s_audio_dummy.c in Sources */,
 				1190138A1486450C00086F19 /* s_inter.c in Sources */,
 				1190138B1486450C00086F19 /* s_loader.c in Sources */,
-				1190138C1486450C00086F19 /* s_main.c in Sources */,
 				1190138D1486450C00086F19 /* s_path.c in Sources */,
 				1190138E1486450C00086F19 /* s_print.c in Sources */,
 				30ABBFCB1CA8A67000E3722F /* x_vexp_fun.c in Sources */,
@@ -1220,6 +1221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E2C393D2A9D32E900891340 /* s_main.c in Sources */,
 				30C3D29A1FAA1FCC00C67F08 /* loop~.c in Sources */,
 				302C6F46254CF3DC000C720D /* s_net.c in Sources */,
 				30C3D29B1FAA1FCC00C67F08 /* bonk~.c in Sources */,
@@ -1284,7 +1286,6 @@
 				30C3D2D31FAA1FCC00C67F08 /* s_audio_dummy.c in Sources */,
 				30C3D2D41FAA1FCC00C67F08 /* s_inter.c in Sources */,
 				30C3D2D51FAA1FCC00C67F08 /* s_loader.c in Sources */,
-				30C3D2D61FAA1FCC00C67F08 /* s_main.c in Sources */,
 				30C3D2D71FAA1FCC00C67F08 /* s_path.c in Sources */,
 				30C3D2D81FAA1FCC00C67F08 /* s_print.c in Sources */,
 				30C3D2D91FAA1FCC00C67F08 /* x_vexp_fun.c in Sources */,
@@ -1356,6 +1357,7 @@
 				7EB18896281DA79E0099A401 /* d_soundfile_caf.c in Sources */,
 				30C3D3241FAA200100C67F08 /* g_io.c in Sources */,
 				30C3D3251FAA200100C67F08 /* g_mycanvas.c in Sources */,
+				7E2C393C2A9D32E900891340 /* s_main.c in Sources */,
 				30C3D3261FAA200100C67F08 /* g_numbox.c in Sources */,
 				30C3D3271FAA200100C67F08 /* g_readwrite.c in Sources */,
 				30C3D3281FAA200100C67F08 /* g_rtext.c in Sources */,
@@ -1387,7 +1389,6 @@
 				30C3D33F1FAA200100C67F08 /* s_audio_dummy.c in Sources */,
 				30C3D3401FAA200100C67F08 /* s_inter.c in Sources */,
 				30C3D3411FAA200100C67F08 /* s_loader.c in Sources */,
-				30C3D3421FAA200100C67F08 /* s_main.c in Sources */,
 				7E2D79ED266459400042689B /* pdsched.c in Sources */,
 				30C3D3431FAA200100C67F08 /* s_path.c in Sources */,
 				30C3D3441FAA200100C67F08 /* s_print.c in Sources */,
@@ -1466,6 +1467,7 @@
 				7EB18894281DA79E0099A401 /* d_soundfile_caf.c in Sources */,
 				0E82A05912EEFDEE0053280E /* g_io.c in Sources */,
 				0E82A05A12EEFDEE0053280E /* g_mycanvas.c in Sources */,
+				7E2C393A2A9D32E900891340 /* s_main.c in Sources */,
 				0E82A05B12EEFDEE0053280E /* g_numbox.c in Sources */,
 				0E82A05C12EEFDEE0053280E /* g_readwrite.c in Sources */,
 				0E82A05D12EEFDEE0053280E /* g_rtext.c in Sources */,
@@ -1497,7 +1499,6 @@
 				0E82A07312EEFDEE0053280E /* s_audio_dummy.c in Sources */,
 				0E82A07512EEFDEE0053280E /* s_inter.c in Sources */,
 				0E82A07612EEFDEE0053280E /* s_loader.c in Sources */,
-				0E82A07712EEFDEE0053280E /* s_main.c in Sources */,
 				7E2D79EB266459400042689B /* pdsched.c in Sources */,
 				0E82A07812EEFDEE0053280E /* s_path.c in Sources */,
 				0E82A07912EEFDEE0053280E /* s_print.c in Sources */,
@@ -1553,6 +1554,7 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -1561,12 +1563,10 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
-					"-DHAVE_LIBDL",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
+					"$(OTHER_CFLAGS)",
+					"-DHAVE_LIBPDL",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1585,18 +1585,17 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
-					"-DHAVE_LIBDL",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
+					"$(OTHER_CFLAGS)",
+					"-DHAVE_LIBPDL",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1623,12 +1622,8 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
-				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
-				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_CFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1646,12 +1641,8 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
-				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
-				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_CFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "pd-ios";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1674,14 +1665,16 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1694,17 +1687,20 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = ./libpd_wrapper;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DPD",
+					"-DPD_INTERNAL",
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_UNISTD_H",
+					"-DHAVE_ALLOCA_H",
+					"-DHAVE_MACHINE_ENDIAN_H",
 					"-DLIBPD_EXTRA",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -1725,13 +1721,15 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = NO;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1743,16 +1741,19 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = ./libpd_wrapper;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = (
 					"-DPD",
+					"-DPD_INTERNAL",
 					"-DUSEAPI_DUMMY",
 					"-DHAVE_UNISTD_H",
+					"-DHAVE_ALLOCA_H",
+					"-DHAVE_MACHINE_ENDIAN_H",
 					"-DLIBPD_EXTRA",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
@@ -1764,6 +1765,7 @@
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -1772,12 +1774,10 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
+					"$(OTHER_CFLAGS)",
 					"-DHAVE_LIBDL",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
 				);
@@ -1798,18 +1798,17 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DSTROOT = /tmp/libpd.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
+					"$(OTHER_CFLAGS)",
 					"-DHAVE_LIBDL",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
 				);
@@ -1838,11 +1837,9 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
+					"$(OTHER_CFLAGS)",
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
 				);
@@ -1863,11 +1860,9 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_CFLAGS = (
-					"-DPD",
-					"-DUSEAPI_DUMMY",
-					"-DHAVE_UNISTD_H",
-					"-DLIBPD_EXTRA",
+					"$(OTHER_CFLAGS)",
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
 				);
