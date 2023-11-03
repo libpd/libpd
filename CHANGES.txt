@@ -1,6 +1,6 @@
 0.14.0 2023 TBD
 
-* updated to pd vanilla 0.54-0
+* updated to pd vanilla 0.54-1
 
 * ObjC: updated min deployment target to iOS 11, macOS 10.13
 
@@ -10,7 +10,7 @@
 
 0.13.1 2022 Nov 13
 
-* whoops forgot to update Obj-C layer and Xcode project
+* whoops forgot to update ObjC layer and Xcode project
 
 0.13.0 2022 Nov 05
 
