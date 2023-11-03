@@ -1567,7 +1567,9 @@
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DHAVE_LIBPDL",
+					"-D_DARWIN_C_SOURCE",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-ldl",
@@ -1596,7 +1598,9 @@
 				OTHER_CFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DHAVE_LIBPDL",
+					"-D_DARWIN_C_SOURCE",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-ldl",
@@ -1780,6 +1784,7 @@
 					"-DHAVE_LIBDL",
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
+					"-D_DARWIN_C_SOURCE",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1811,6 +1816,7 @@
 					"-DHAVE_LIBDL",
 					"-DPDINSTANCE",
 					"-DPDTHREADS",
+					"-D_DARWIN_C_SOURCE",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

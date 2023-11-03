@@ -15,6 +15,7 @@ pd_defines = [
 
 if sys.platform.startswith('darwin'):
   pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
+  pd_defines.append(('_DARWIN_C_SOURCE', 1))
 else: # assume posix env...
   pd_defines.append(('HAVE_ENDIAN_H', 1))
 
