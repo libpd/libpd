@@ -2,7 +2,7 @@
 //  PdInstance.m
 //  libpd
 //
-//  Copyright (c) 2022 Dan Wilcox <danomatika@gmail.com>
+//  Copyright (c) 2023 Dan Wilcox <danomatika@gmail.com>
 //
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
@@ -204,8 +204,8 @@ static void midiByteHook(int port, int byte) {
 - (void)setupWithQueue:(BOOL)queue {
 	libpd_init();
 	#ifdef PDINSTANCE
-        instance = libpd_new_instance();
-    #endif
+		instance = libpd_new_instance();
+	#endif
 	libpd_set_instancedata((__bridge void *)(self), NULL);
 	if (queue) {
 		queued = YES;
@@ -346,14 +346,14 @@ static void midiByteHook(int port, int byte) {
 
 - (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset
               toArray:(float *)destinationArray count:(int)n {
-    PDBASE_SETINSTANCE
+	PDBASE_SETINSTANCE
 	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_read_array(destinationArray, name, offset, n);
 }
 
 - (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName
       withOffset:(int)offset count:(int)n {
-    PDBASE_SETINSTANCE
+	PDBASE_SETINSTANCE
 	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_write_array(name, offset, sourceArray, n);
 }
@@ -385,7 +385,7 @@ static void midiByteHook(int port, int byte) {
 
 - (int)sendMessage:(NSString *)message withArguments:(NSArray *)list
         toReceiver:(NSString *)receiverName {
-    PDBASE_SETINSTANCE
+	PDBASE_SETINSTANCE
 	if (libpd_start_message((int) list.count)) return -100;
 	encodeList(list);
 	return libpd_finish_message([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
