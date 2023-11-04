@@ -411,6 +411,16 @@ If you install pyaudio with `pip`, you will need to install Portaudio first. On 
 
     brew install portaudio
 
+
+Rust
+------
+
+There is currently a third party Rust wrapper for libpd called [libpd-rs](https://github.com/alisomay/libpd-rs) which is actively maintained.
+
+[libpd-rs](https://github.com/alisomay/libpd-rs) uses a [fork](https://github.com/alisomay/libpd/tree/libpdrs) of libpd which is frequently synchronized with upstream. 
+
+Please visit the [repository](https://github.com/alisomay/libpd-rs) for detailed information.
+
 Building with CMake
 -------------------
 
