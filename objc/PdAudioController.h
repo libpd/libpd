@@ -52,6 +52,9 @@ typedef enum PdAudioStatus {
 /// read only access to the underlying pd audio unit
 @property (nonatomic, strong, readonly) PdAudioUnit *audioUnit;
 
+/// read only access to audio unit pd instance
+@property (nonatomic, strong, readonly) PdInstance *instance;
+
 #pragma mark Audio Session Category Options
 
 // audio session category options applied by the configure methods and while
@@ -100,7 +103,6 @@ typedef enum PdAudioStatus {
 /// available on iSO 10+
 @property (nonatomic, assign) BOOL allowAirPlay;
 
-
 #pragma mark Other Configuration Properties
 
 // other options applied only during configuration
@@ -132,6 +134,9 @@ typedef enum PdAudioStatus {
 
 /// init with default pd audio unit
 - (instancetype)init;
+
+/// init default pd audio unit with specific pd instance
+- (instancetype)initWithInstance:(PdInstance *)instance;
 
 /// init with a custom pd audio unit
 ///

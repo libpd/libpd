@@ -75,6 +75,14 @@
 	return self;
 }
 
+- (instancetype)initWithInstance:(PdInstance *)instance {
+	self = [super init];
+	if (self) {
+		[self setupWithAudioUnit:[PdAudioUnit defaultAudioUnitWithInstance:instance]];
+	}
+	return self;
+}
+
 - (instancetype)initWithAudioUnit:(PdAudioUnit *)audioUnit {
 	self = [super init];
 	if (self) {
@@ -461,6 +469,10 @@
 }
 
 #pragma mark Overridden Getters/Setters
+
+- (PdInstance *)instance {
+	return self.audioUnit.instance;
+}
 
 // make sure option changes are applied on restart
 - (void)setActive:(BOOL)active {
