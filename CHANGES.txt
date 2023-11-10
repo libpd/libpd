@@ -1,4 +1,4 @@
-0.14.0 2023 2023 Nov 10
+0.14.0: 2023 2023 Nov 10
 
 * updated to pd vanilla 0.54-1
 
@@ -27,15 +27,15 @@
 
 * added a Rust section to the main README.md (Ali Somay)
 
-0.13.2 2022 Dec 16
+0.13.2: 2022 Dec 16
 
 * updated to pd vanilla 0.53-1
 
-0.13.1 2022 Nov 13
+0.13.1: 2022 Nov 13
 
 * whoops forgot to update ObjC layer and Xcode project
 
-0.13.0 2022 Nov 05
+0.13.0: 2022 Nov 05
 
 * updated to pd vanilla 0.53-0
 
@@ -81,7 +81,7 @@
 * added pdtest_double and pdtest_queued c samples
 * added pdtest_multi cpp sample
 
-0.12.3 2021 Jun 12
+0.12.3: 2021 Jun 12
 
 * libpd.xcodeproj macOS targets no longer install static lib or copy public
   headers to avoid creating generic archives instead of app archives
@@ -90,7 +90,7 @@
 * ObjC: added note about setting videoRecording mode when using
         allowBluetoothA2DP option (suggested by lwinged)
 
-0.12.2 2021 May 31
+0.12.2: 2021 May 31
 
 * fixed pd~ core external sources not included in libpd.xcodeproj
   (reported by d01101010m)
@@ -100,7 +100,7 @@
   - min version now 2.8.12
   - fixed math library not found 
 
-0.12.1 2021 Jan 08
+0.12.1: 2021 Jan 08
 
 * added pd~ core external to build
 
@@ -112,7 +112,7 @@
 * C++: added resizeArray(), processRawShort(), & processRawDouble() wrappers
 * C++: general header formatting refresh
 
-0.12.0 2020 Dec 30
+0.12.0: 2020 Dec 30
 
 * updated to pd vanilla 0.51-4
 * switched pure-data submodule to github
