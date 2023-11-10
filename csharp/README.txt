@@ -18,7 +18,7 @@ Change the properties for the files after including:
 
 Currently included binaries for:
 - Windows x86, amd64
-- Linux x86, amd64
+- Linux x86, amd64, armv7l
 
 For Windows x64 builds (not Any CPU on 64 bit systems) you must change
 the version of the managed dll as well:
