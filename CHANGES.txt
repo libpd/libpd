@@ -4,7 +4,28 @@
 
 * C: define _DARWIN_C_SOURCE with HAVE_MACHINE_ENDIAN_H to fix endianness
      warning on macOS, for now (hopefully not needed in future pd versions)
-* ObjC: updated min deployment target to iOS 11, macOS 10.13
+* C: added pdtest_portaudio example
+* C: added missing pdtest example gitignore
+
+* ObjC: modernized xcode projects, updated min deployment target to iOS 11 &
+        macOS 10.13
+* ObjC: enabled mac catalyst support (Seth Sandler)
+* ObjC: added auto io handling to iOS example
+
+* C++: fixed unused param, signed comparison, and ret type warnings (Mike Will)
+
+* C#: NuGet packaging updates (Thomas Mayer)
+* C#: MuliInstance -> MultiInstance example naming fix (Thomas Mayer)
+
+* Python: various updates and fixes to the pygame examples (Mike Will)
+
+* Java: updates for native arm64 support on macOS (funkyfourier)
+
+* Makefile: use JAVA_HOME on macOS instead of /System/... path,
+            link JavaNativeFoundation framework instead of JavaVM (funkyfourier)
+* Makefile: now install m_imp.h and g_canvas.h for externals (Tiago Rezende)
+
+* added a Rust section to the main README.md (Ali Somay)
 
 0.13.2 2022 Dec 16
 
