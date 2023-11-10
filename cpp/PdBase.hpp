@@ -820,7 +820,7 @@ public:
 ///
 
     /// start a compound message
-    PdBase& operator<<(const pd::StartMessage &var) {
+    PdBase& operator<<(const pd::StartMessage &) {
         startMessage();
         return *this;
     }
@@ -984,7 +984,7 @@ public:
     }
 
     /// finish and send a raw byte MIDI message
-    PdBase& operator<<(const pd::Finish &var) {
+    PdBase& operator<<(const pd::Finish &) {
         if(!bMsgInProgress) {
             std::cerr << "Pd: cannot finish midi byte stream, "
                       << "stream not in progress" << std::endl;
@@ -1072,7 +1072,7 @@ public:
             return false;
         }
         // resize if necessary
-        if(dest.size() != readLen) {
+        if(dest.size() != (std::size_t)readLen) {
             dest.resize(readLen, 0);
         }
         if(libpd_read_array(&dest[0], name.c_str(), offset, readLen) < 0) {

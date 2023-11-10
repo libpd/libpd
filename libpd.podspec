@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'libpd'
-  spec.version = '0.13.1'
+  spec.version = '0.14.0'
 
   spec.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
@@ -34,11 +34,14 @@ Pod::Spec.new do |spec|
 
   spec.public_header_files = 'objc/**/*.{h}'
 
-  spec.ios.deployment_target = '9.0'
-  spec.macos.deployment_target = '10.10'
+  spec.ios.deployment_target = '11.0'
+  spec.macos.deployment_target = '10.13'
 
   spec.requires_arc = true
-  spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DHAVE_UNISTD_H', '-DLIBPD_EXTRA', '-fcommon'
+  spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DPD_INTERNAL',
+                        '-DHAVE_UNISTD_H', '-DHAVE_ALLOCA_H',
+                        '-DHAVE_MACHINE_ENDIAN_H', '-D_DARWIN_C_SOURCE',
+                        '-DLIBPD_EXTRA', '-fcommon'
   spec.frameworks = 'Foundation'
 
   # frameworks for ios-only audio implementation

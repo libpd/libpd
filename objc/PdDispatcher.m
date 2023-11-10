@@ -58,7 +58,7 @@
 			[listenerMap removeObjectForKey:symbol];
 		}
 	}
-  return 0;
+	return 0;
 }
 
 - (void)removeAllListeners {
@@ -134,7 +134,6 @@
 }
 
 @end
-
 
 @implementation LoggingDispatcher
 

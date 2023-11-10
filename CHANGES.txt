@@ -1,6 +1,18 @@
+0.14.0 2023 2023 Nov 10
+
+* updated to pd vanilla 0.54-1
+
+* C: define _DARWIN_C_SOURCE with HAVE_MACHINE_ENDIAN_H to fix endianness
+     warning on macOS, for now (hopefully not needed in future pd versions)
+* ObjC: updated min deployment target to iOS 11, macOS 10.13
+
+0.13.2 2022 Dec 16
+
+* updated to pd vanilla 0.53-1
+
 0.13.1 2022 Nov 13
 
-* whoops forgot to update Obj-C layer and Xcode project
+* whoops forgot to update ObjC layer and Xcode project
 
 0.13.0 2022 Nov 05
 

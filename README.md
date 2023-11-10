@@ -3,7 +3,7 @@ libpd
 
 [Pure Data](http://puredata.info) as an embeddable audio synthesis library
 
-Copyright (c) Peter Brinkmann & the libpd team 2010-2022
+Copyright (c) Peter Brinkmann & the libpd team 2010-2023
 
 Documentation
 -------------
@@ -410,6 +410,16 @@ Some samples require the "pyaudio" Portaudio library.
 If you install pyaudio with `pip`, you will need to install Portaudio first. On macOS, for example, you can install it with Homebrew:
 
     brew install portaudio
+
+
+Rust
+------
+
+There is currently a third party Rust wrapper for libpd called [libpd-rs](https://github.com/alisomay/libpd-rs) which is actively maintained.
+
+[libpd-rs](https://github.com/alisomay/libpd-rs) uses a [fork](https://github.com/alisomay/libpd/tree/libpdrs) of libpd which is frequently synchronized with upstream. 
+
+Please visit the [repository](https://github.com/alisomay/libpd-rs) for detailed information.
 
 Building with CMake
 -------------------

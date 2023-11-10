@@ -52,7 +52,7 @@
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source;
 
 /// receive list, source is the source receiver name
-/// list is an NSArray whoes data can be inspected & accessed with:
+/// list is an NSArray whose data can be inspected & accessed with:
 ///     for (int i = 0; i < list.count; i++) {
 ///       id obj = list[i];
 ///       if ([obj isKindOfClass:NSNumber.class]) {
@@ -71,7 +71,7 @@
 /// function call like [delegate receiveMessage:@"bar"
 ///                               withArguments:@[@(1), @(2), @"a", @"b"]
 ///                                  fromSource:@"foo"]
-/// arguments is an NSArray whoes data can be inspected & accessed with:
+/// arguments is an NSArray whose data can be inspected & accessed with:
 ///     for (int i = 0; i < arguments.count; i++) {
 ///       id obj = arguments[i];
 ///       if ([obj isKindOfClass:NSNumber.class]) {
@@ -161,7 +161,7 @@
 
 #pragma mark Initializing Pd
 
-/// initialize with message queing, safe to call this more than once
+/// initialize with message queuing, safe to call this more than once
 /// returns 0 on success or -1 if libpd was already initialized
 + (int)initialize;
 
@@ -177,7 +177,7 @@
 /// returns 0 on success or -1 if libpd was already initialized
 + (int)initializeWithQueue:(BOOL)queue;
 
-/// returns whether pd was initialized with message queing
+/// returns whether pd was initialized with message queuing
 + (BOOL)isQueued;
 
 /// clear the pd search path for abstractions and externals
@@ -211,7 +211,7 @@
 /// returns 0 on success
 + (int)openAudioWithSampleRate:(int)samplerate
                  inputChannels:(int)inputChannels
-				outputChannels:(int)outputchannels;
+                outputChannels:(int)outputchannels;
 
 /// process interleaved float samples from inputBuffer -> libpd -> outputBuffer
 /// buffer sizes are based on # of ticks and channels where:
@@ -237,8 +237,8 @@
 ///     size = ticks * [PdBase getBlocksize]* (in/out)channels
 /// returns 0 on success
 + (int)processDoubleWithInputBuffer:(const double *)inputBuffer
-					   outputBuffer:(double *)outputBuffer
-					          ticks:(int)ticks;
+                       outputBuffer:(double *)outputBuffer
+                              ticks:(int)ticks;
 
 /// enable/disable DSP, aka turn audio processing on/off
 + (void)computeAudio:(BOOL)enable;
@@ -263,7 +263,7 @@
 /// returns 0 on success or a negative error code if the array is non-existent
 /// or offset + n exceeds range of array
 + (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName
-	  withOffset:(int)offset count:(int)n;
+      withOffset:(int)offset count:(int)n;
 
 #pragma mark Sending Messages to Pd
 
@@ -336,7 +336,7 @@
 /// for most cases, however if you need lower latency look into calling
 /// receiveMessages: using a CADisplayLink of high resolution timer
 ///
-/// for lowest latency, you can disable queing with initializeWithQueue NO
+/// for lowest latency, you can disable queuing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
 /// directly which may require manual dispatch to main thread for UI handling
 ///
@@ -426,7 +426,7 @@
 /// for most cases, however if you need lower latency look into calling
 /// receiveMidiMessages: using a CADisplayLink of high resolution timer
 ///
-/// for lowest latency, you can disable queing with initializeWithQueue NO
+/// for lowest latency, you can disable queuing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
 /// directly which may require manual dispatch to main thread for UI handling
 ///

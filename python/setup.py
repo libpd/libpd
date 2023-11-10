@@ -1,21 +1,32 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 
+import sys
 from distutils.core import setup, Extension
 
+pd_defines = [
+  ('PD', 1),
+  ('USEAPI_DUMMY', 1),
+  ('PD_INTERNAL', 1),
+  ('HAVE_UNISTD_H', 1),
+  ('HAVE_ALLOCA_H', 1),
+  ('HAVE_LIBDL', 1),
+  ('LIBPD_EXTRA', 1)
+]
+
+if sys.platform.startswith('darwin'):
+  pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
+  pd_defines.append(('_DARWIN_C_SOURCE', 1))
+else: # assume posix env...
+  pd_defines.append(('HAVE_ENDIAN_H', 1))
+
 setup(name='pypdlib',
-      version='0.12',
+      version='0.14.0',
       py_modules = [
         'pylibpd'
       ],
       ext_modules = [
-        Extension("_pylibpd",
-                  define_macros = [
-                    ('PD', 1),
-                    ('HAVE_UNISTD_H', 1),
-                    ('HAVE_LIBDL', 1),
-                    ('USEAPI_DUMMY', 1),
-                    ('LIBPD_EXTRA', 1)
-                  ],
+        Extension('_pylibpd',
+                  define_macros = pd_defines,
                   include_dirs = [
                     '../libpd_wrapper',
                     '../pure-data/src'

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2012 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2012-2022 Dan Wilcox <danomatika@gmail.com>
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
@@ -265,7 +265,7 @@ public:
 /// \section Util
 
     /// return number of items
-    const unsigned int len() const {return (unsigned int) objects.size();}
+    unsigned int len() const {return (unsigned int) objects.size();}
 
     /// return OSC style type string ie "fsfs"
     const std::string& types() const {return typeString;}

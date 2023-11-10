@@ -13,6 +13,9 @@
 #import "PdAudioController.h"
 #import "PdFile.h"
 
+// uncomment to update number of inputs & outputs on device changes
+//#define AUTO_IO
+
 @interface ViewController() {}
 
 @property (strong, nonatomic) PdAudioController *audioController;
@@ -72,7 +75,22 @@
 
 	// note: define or uncomment AU_DEBUG_VERBOSE in AudioHelpers.h for verbose debug prints
 
-	// configure a typical audio session with 2 output channels
+	// set required inputs & outputs...
+	int inputChannels = 2;
+	int outputChannels = 2;
+
+	// ... or use current hardware channels, also see routeChanged: for handling device changes
+	// note: set PlayAndRecord category so number of inputs will not be 0 when calling
+	//       AVAUdioSession.sharedInstance.inputNumberOfChannels the first time,
+	//       then setActive: so audio session updates its max channels
+	#ifdef AUTO_IO
+	[AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+	[AVAudioSession.sharedInstance setActive:YES error:nil];
+	inputChannels = (int)AVAudioSession.sharedInstance.maximumInputNumberOfChannels;
+	outputChannels = (int)AVAudioSession.sharedInstance.maximumOutputNumberOfChannels;
+	#endif
+
+	// configure a typical audio session with input and output
 	self.audioController = [[PdAudioController alloc] init];
 	// add/override some common session settings
 	//self.audioController.mixWithOthers = NO; // this app's audio only
@@ -83,8 +101,8 @@
 	//self.audioController.preferStereo = NO; // allow mono
 	//self.audioController.mode = AVAudioSessionModeVideoRecording; // set custom mode, depends on category
 	PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
-	                                                               inputChannels:2
-	                                                              outputChannels:2
+	                                                               inputChannels:inputChannels
+	                                                              outputChannels:outputChannels
 	                                                                inputEnabled:YES];
 	if (status == PdAudioError) {
 		NSLog(@"could not configure audio");
@@ -306,24 +324,27 @@
 
 - (void)updateInfoLabels {
 	AVAudioSession *session = AVAudioSession.sharedInstance;
-	self.pdLabel.text = [NSString stringWithFormat:@"Pd:  in %d out %d sr %gk",
-	                     self.audioController.audioUnit.inputChannels,
-	                     self.audioController.audioUnit.outputChannels,
-	                     (self.audioController.audioUnit.sampleRate / 1000)];
+	self.pdLabel.text = [NSString stringWithFormat:
+		@"Pd:  in %d out %d sr %gk",
+		self.audioController.audioUnit.inputChannels,
+		self.audioController.audioUnit.outputChannels,
+		(self.audioController.audioUnit.sampleRate / 1000)];
 	if (session.inputNumberOfChannels > 0) {
-		self.inputLabel.text = [NSString stringWithFormat:@"In:  %@ %d %gk",
-								[session.currentRoute.inputs.firstObject portName],
-								(int)session.inputNumberOfChannels,
-								(session.sampleRate / 1000)];
+		self.inputLabel.text = [NSString stringWithFormat:
+			@"In:  %@ %d %gk",
+			[session.currentRoute.inputs.firstObject portName],
+			(int)session.inputNumberOfChannels,
+			(session.sampleRate / 1000)];
 	}
 	else {
 		self.inputLabel.text = @"In: none";
 	}
 	if (session.outputNumberOfChannels > 0) {
-		self.outputLabel.text = [NSString stringWithFormat:@"Out: %@ %d %gk",
-								 [session.currentRoute.outputs.firstObject portName],
-								 (int)session.outputNumberOfChannels,
-								 (session.sampleRate / 1000)];
+		self.outputLabel.text = [NSString stringWithFormat:
+			@"Out: %@ %d %gk",
+			[session.currentRoute.outputs.firstObject portName],
+			(int)session.outputNumberOfChannels,
+			(session.sampleRate / 1000)];
 	}
 	else {
 		self.outputLabel.text = @"Out: none";
@@ -338,9 +359,9 @@
 	                                           name:AVAudioSessionRouteChangeNotification
 	                                         object:nil];
 	[NSNotificationCenter.defaultCenter addObserver:self
-										   selector:@selector(didBecomeActive:)
+	                                       selector:@selector(didBecomeActive:)
 	                                           name:UIApplicationDidBecomeActiveNotification
-											 object:nil];
+	                                         object:nil];
 }
 
 - (void)clearNotifications {
@@ -349,7 +370,7 @@
 	                                            object:nil];
 	[NSNotificationCenter.defaultCenter removeObserver:self
 	                                              name:UIApplicationDidBecomeActiveNotification
-												object:nil];
+	                                            object:nil];
 }
 
 // update the info labels if the audio session route has changed, ie. device plugged-in
@@ -368,6 +389,15 @@
 			NSLog(@"route changed: override");
 			break;
 	}
+
+	// update inputs and outputs on a route change?
+	#ifdef AUTO_IO
+	[self.audioController configurePlaybackWithSampleRate:self.audioController.sampleRate
+	                                        inputChannels:(int)AVAudioSession.sharedInstance.inputNumberOfChannels
+	                                       outputChannels:(int)AVAudioSession.sharedInstance.outputNumberOfChannels
+	                                         inputEnabled:YES];
+	#endif
+
 	// update the UI on the main thread, wait a little so audio changes have time to finalize,
 	// don't update UI if backgrounded as this might cause the app to be terminated!
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
