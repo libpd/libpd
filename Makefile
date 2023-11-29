@@ -10,7 +10,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_SOLIB_EXT = dylib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -DHAVE_MACHINE_ENDIAN_H -D_DARWIN_C_SOURCE -DHAVE_LIBDL \
+  PLATFORM_CFLAGS = -DHAVE_MACHINE_ENDIAN_H -D_DARWIN_C_SOURCE -DHAVE_LIBDL -DHAVE_ALLOCA_H \
     -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
   LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
   ifeq ($(FAT_LIB), true)
@@ -38,7 +38,7 @@ else
     LIBPD_IMPLIB = libs/libpd.lib
     LIBPD_DEF = libs/libpd.def
     PDNATIVE_PLATFORM = windows
-    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 \
+    PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 -DHAVE_ALLOCA_H \
       -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
     MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=$(LIBPD_DEF) \
@@ -53,7 +53,8 @@ else
     ifeq ($(UNAME), Linux)
       PDNATIVE_PLATFORM = linux
       JAVA_HOME ?= /usr/lib/jvm/default-java
-      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -I"$(JAVA_HOME)/include" -DHAVE_LIBDL
+      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -I"$(JAVA_HOME)/include" \
+        -DHAVE_ALLOCA_H -DHAVE_LIBDL
       LDFLAGS += -ldl
     else ifeq ($(UNAME), FreeBSD)
       PDNATIVE_PLATFORM = FreeBSD
@@ -210,7 +211,7 @@ PDJAVA_JAR = libs/libpd.jar
 PDJAVA_SRC = libs/libpd-sources.jar
 PDJAVA_DOC = javadoc
 
-CFLAGS = -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H \
+CFLAGS = -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H \
          -I./libpd_wrapper -I./libpd_wrapper/util \
          -I./pure-data/src \
          $(PLATFORM_CFLAGS) \
