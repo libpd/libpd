@@ -11,15 +11,15 @@ pd_defines = [
   ('LIBPD_EXTRA', 1)
 ]
 
-# replicate defines from libpd/Makeile PLATFORM_CFLAGS
+# replicate defines from libpd/Makefile PLATFORM_CFLAGS
 if sys.platform.startswith('darwin'):
   pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
   pd_defines.append(('_DARWIN_C_SOURCE', 1))
   pd_defines.append(('HAVE_LIBDL', 1))
-else if sys.platform.startswith('win32') or \
-        sys.platform.startswith('msys'):
-  # windows doesn't have these
+elif sys.platform.startswith('win32') or \
+  sys.platform.startswith('msys'):
+  pass # windows doesn't have these
 else: # assume posix env...
   pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_ENDIAN_H', 1))
