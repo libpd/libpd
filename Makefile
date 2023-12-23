@@ -10,7 +10,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_SOLIB_EXT = dylib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -DHAVE_MACHINE_ENDIAN_H -D_DARWIN_C_SOURCE -DHAVE_LIBDL \
+  PLATFORM_CFLAGS = -DHAVE_ALLOCA_H -DHAVE_MACHINE_ENDIAN_H -D_DARWIN_C_SOURCE -DHAVE_LIBDL \
     -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
   LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
   ifeq ($(FAT_LIB), true)
@@ -48,7 +48,7 @@ else
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Linux or *BSD
     SOLIB_EXT = so
-    PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC -DHAVE_ENDIAN_H
+    PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC -DHAVE_ALLOCA_H -DHAVE_ENDIAN_H
     LDFLAGS = -shared -Wl,-Bsymbolic
     ifeq ($(UNAME), Linux)
       PDNATIVE_PLATFORM = linux
@@ -210,7 +210,7 @@ PDJAVA_JAR = libs/libpd.jar
 PDJAVA_SRC = libs/libpd-sources.jar
 PDJAVA_DOC = javadoc
 
-CFLAGS = -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H \
+CFLAGS = -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H \
          -I./libpd_wrapper -I./libpd_wrapper/util \
          -I./pure-data/src \
          $(PLATFORM_CFLAGS) \

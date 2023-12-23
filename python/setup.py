@@ -8,16 +8,23 @@ pd_defines = [
   ('USEAPI_DUMMY', 1),
   ('PD_INTERNAL', 1),
   ('HAVE_UNISTD_H', 1),
-  ('HAVE_ALLOCA_H', 1),
-  ('HAVE_LIBDL', 1),
   ('LIBPD_EXTRA', 1)
 ]
 
+# replicate defines from libpd/Makeile PLATFORM_CFLAGS
 if sys.platform.startswith('darwin'):
+  pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
   pd_defines.append(('_DARWIN_C_SOURCE', 1))
+  pd_defines.append(('HAVE_LIBDL', 1))
+else if sys.platform.startswith('win32') or \
+        sys.platform.startswith('msys'):
+  # windows doesn't have these
 else: # assume posix env...
+  pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_ENDIAN_H', 1))
+  if sys.platform.startswith('linux'):
+    pd_defines.append(('HAVE_LIBDL', 1))
 
 setup(name='pypdlib',
       version='0.14.0',
