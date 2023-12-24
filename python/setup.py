@@ -10,21 +10,27 @@ pd_defines = [
   ('HAVE_UNISTD_H', 1),
   ('LIBPD_EXTRA', 1)
 ]
+pd_libraries = [
+  'm',
+  'pthread'
+]
 
-# replicate defines from libpd/Makefile PLATFORM_CFLAGS
+# replicate libpd/Makefile PLATFORM_CFLAGS & LDFLAGS
 if sys.platform.startswith('darwin'):
   pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
   pd_defines.append(('_DARWIN_C_SOURCE', 1))
   pd_defines.append(('HAVE_LIBDL', 1))
-elif sys.platform.startswith('win32') or \
-  sys.platform.startswith('msys'):
-  pass # windows doesn't have these
+  pd_libraries.append('dl')
+elif sys.platform.startswith('win32') or sys.platform.startswith('msys'):
+  # windows doesn't have alloca.h, endian.h, or libdl
+  pd_libraries.append('ws2_32') # winsock
 else: # assume posix env...
   pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_ENDIAN_H', 1))
   if sys.platform.startswith('linux'):
     pd_defines.append(('HAVE_LIBDL', 1))
+    pd_libraries.append('dl')
 
 setup(name='pypdlib',
       version='0.14.0',
@@ -40,7 +46,6 @@ setup(name='pypdlib',
                   ],
                   libraries = [
                     'm',
-                    'dl',
                     'pthread'
                   ],
                   sources = [
