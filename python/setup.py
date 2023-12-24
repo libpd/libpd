@@ -26,9 +26,9 @@ elif sys.platform.startswith('win32') or sys.platform.startswith('msys'):
   # windows doesn't have alloca.h, endian.h, or libdl
   pd_libraries.append('ws2_32') # winsock
 else: # assume posix env...
-  pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_ENDIAN_H', 1))
   if sys.platform.startswith('linux'):
+    pd_defines.append(('HAVE_ALLOCA_H', 1))
     pd_defines.append(('HAVE_LIBDL', 1))
     pd_libraries.append('dl')
 
