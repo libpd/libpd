@@ -44,10 +44,7 @@ setup(name='pypdlib',
                     '../libpd_wrapper',
                     '../pure-data/src'
                   ],
-                  libraries = [
-                    'm',
-                    'pthread'
-                  ],
+                  libraries = pd_libraries,
                   sources = [
                     'pylibpd.i',
                     '../libpd_wrapper/s_libpdmidi.c',
