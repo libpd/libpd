@@ -1,4 +1,14 @@
-0.14.0: 2023 2023 Nov 10
+0.14.1: 2023 Dec 24
+
+* Makefile: fixed HAVE_ALLOCA_H and HAVE_ENDIAN_H being defined for Windows
+            (reported by Davide Gagliardi)
+* Makefile: fixed libdl being linked on Windows, link winsock (Christof Ressi)
+* Makefile: do not define HAVE_ALLOCA_H or link libdl on BSD (Luc Hondareyte)
+
+* Python: updated setup.py to handle HAVE_ALLOCA_H, HAVE_ENDIAN_H, and libs
+          conditionally based on platform in order to match Makefile behavior
+
+0.14.0: 2023 Nov 10
 
 * updated to pd vanilla 0.54-1
 

@@ -411,7 +411,6 @@ If you install pyaudio with `pip`, you will need to install Portaudio first. On 
 
     brew install portaudio
 
-
 Rust
 ------
 
