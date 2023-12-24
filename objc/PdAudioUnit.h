@@ -12,6 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AudioUnit/AudioUnit.h"
+#import "PdInstance.h"
 
 /// PdAudioUnit: operates pd's audio input and output through an AudioUnit
 ///
@@ -50,6 +51,9 @@
 
 /// underlying audio unit which can be used to query or set other properties
 @property (nonatomic, readonly) AudioUnit audioUnit;
+
+/// underlying pd instance
+@property (nonatomic, strong, readonly) PdInstance *instance;
 
 /// audio unit callback function reference, override the getter method if you
 /// want to subclass PdAudioUnit and implement your own custom sample rendering
@@ -100,8 +104,11 @@
 
 #pragma mark Initialization
 
-/// creates a default instance of PdAudioUnit.
+/// create a default instance of PdAudioUnit
 + (instancetype)defaultAudioUnit;
+
+/// create a default instance of PdAudioUnit which uses a specificed pd instance
++ (instancetype)defaultAudioUnitWithInstance:(PdInstance *)instance;
 
 /// this is the designated init for the AudioUnit v2 to v3 bridge
 ///
