@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.12)
+cmake_minimum_required (VERSION 3.25)
 project (libpd C)
 
 option(PD_UTILS  "Compile utilities" ON)
@@ -42,11 +42,32 @@ else()
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-Bsymbolic")
     endif()
 endif()
-add_definitions(-DPD=1 -DUSEAPI_DUMMY=1)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MACOSX_RPATH ON)
 
+# Look for dependencies
+include(CheckLibraryExists)
+include(CheckIncludeFile)
+check_include_file(alloca.h HAVE_ALLOCA_H)
+check_include_file(endian.h HAVE_ENDIAN_H)
+check_include_file(machine/endian.h HAVE_MACHINE_ENDIAN_H)
+check_include_file(unistd.h HAVE_UNISTD_H)
+
+if(APPLE OR LINUX)
+  check_include_file(dlfcn.h HAVE_LIBDL)
+endif()
+
+find_package(Threads REQUIRED)
+
+if(NOT MSVC AND NOT APPLE)
+  check_library_exists(m pow "" HAVE_LIBM)
+  if(HAVE_LIBM)
+    set(M_LIBRARIES m)
+  endif()
+endif()
+
+# Build
 foreach (_BUILD_TYPE RELEASE DEBUG)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${_BUILD_TYPE} ${CMAKE_CURRENT_BINARY_DIR}/libs)
@@ -177,11 +198,6 @@ source_group(pdextra    FILES ${PD_EXTRA_SOURCES})
 source_group(libpd      FILES ${LIBPD_SOURCES})
 source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
-include_directories(libpd_wrapper)
-include_directories(pure-data/src)
-
-find_package(Threads REQUIRED)
-
 # create final list of source files
 set(SOURCE_FILES ${PD_SOURCES} ${LIBPD_SOURCES})
 if(PD_UTILS)
@@ -191,8 +207,18 @@ if(PD_EXTRA)
     list(APPEND SOURCE_FILES ${PD_EXTRA_SOURCES})
 endif()
 
+add_library(libpd_private_settings INTERFACE)
+add_library(libpd_public_settings INTERFACE)
 add_library(libpd_static STATIC ${SOURCE_FILES})
 add_library(libpd        SHARED ${SOURCE_FILES})
+target_link_libraries(libpd_static
+    PRIVATE libpd_private_settings
+    PUBLIC libpd_public_settings
+)
+target_link_libraries(libpd
+    PRIVATE libpd_private_settings
+    PUBLIC libpd_public_settings
+)
 
 # set the output library name for libpd depending on the settings
 set(LIBPD_OUTPUT_NAME     pd)
@@ -209,55 +235,50 @@ else()
 endif()
 set_target_properties(libpd            PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
 
-# add appropriate compile definitions
-set(LIBPD_COMPILE_DEFINITIONS PD_INTERNAL)
+target_compile_definitions(libpd_private_settings
+  INTERFACE
+    PD_INTERNAL=1
+)
 
-if(NOT MSVC)
-    list(APPEND LIBPD_COMPILE_DEFINITIONS HAVE_UNISTD_H=1)
-endif()
+target_compile_definitions(libpd_public_settings
+  INTERFACE
+    PD=1
+    USEAPI_DUMMY=1
+    $<$<BOOL:${APPLE}>:_DARWIN_C_SOURCE>
+    $<$<BOOL:${HAVE_ALLOCA_H}>:HAVE_ALLOCA_H=1>
+    $<$<BOOL:${HAVE_ENDIAN_H}>:HAVE_ENDIAN_H=1>
+    $<$<BOOL:${HAVE_LIBDL}>:HAVE_LIBDL=1>
+    $<$<BOOL:${HAVE_MACHINE_ENDIAN_H}>:HAVE_MACHINE_ENDIAN_H=1>
+    $<$<BOOL:${HAVE_UNISTD_H}>:HAVE_UNISTD_H=1>
+    $<$<BOOL:${PD_EXTRA}>:LIBPD_EXTRA=1>
+    $<$<BOOL:${PD_MULTI}>:PDINSTANCE=1 PDTHREADS=1>
+    $<$<NOT:$<BOOL:${PD_LOCALE}>>:LIBPD_NO_NUMERIC=1>
+)
 
-if(PD_EXTRA)
-    list(APPEND LIBPD_COMPILE_DEFINITIONS LIBPD_EXTRA=1)
-endif()
+target_include_directories(libpd_private_settings
+  INTERFACE
+    $<$<BOOL:${MSVC}>:${PTHREADS_INCLUDE_DIR}>
+)
 
-if(PD_MULTI)
-    list(APPEND LIBPD_COMPILE_DEFINITIONS PDINSTANCE=1 PDTHREADS=1)
-endif()
+target_include_directories(libpd_public_settings
+  INTERFACE
+    libpd_wrapper
+    pure-data/src
+)
 
-if(NOT PD_LOCALE)
-    list(APPEND LIBPD_COMPILE_DEFINITIONS LIBPD_NO_NUMERIC=1)
-endif()
-
-if(UNIX)
-    list(APPEND LIBPD_COMPILE_DEFINITIONS HAVE_LIBDL)
-    target_link_libraries(libpd PUBLIC ${CMAKE_DL_LIBS})
-endif()
-
-target_compile_definitions(libpd_static PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
-target_compile_definitions(libpd        PRIVATE ${LIBPD_COMPILE_DEFINITIONS})
-
-# link against necessary libraries
-if(MSVC)
-    target_link_libraries(libpd PUBLIC Ws2_32)
-    target_include_directories(libpd_static PUBLIC ${PTHREADS_INCLUDE_DIR})
-    target_include_directories(libpd        PUBLIC ${PTHREADS_INCLUDE_DIR})
-elseif(WIN32)
-    target_link_libraries(libpd PUBLIC -Wl,--export-all-symbols ws2_32 kernel32 -static-libgcc)
-endif()
-target_link_libraries(libpd PUBLIC ${CMAKE_THREAD_LIBS_INIT})
-
-if(NOT MSVC AND NOT APPLE)
-    find_library(M_LIBRARIES m)
-    if(M_LIBRARIES)
-      target_link_libraries(libpd PUBLIC ${M_LIBRARIES})
-    endif()
-endif()
+target_link_libraries(libpd
+  PUBLIC
+    $<$<BOOL:${MSVC}>:Ws2_32>
+    $<$<BOOL:${MINGW}>:-Wl,--export-all-symbols ws2_32 kernel32 -static-libgcc>
+    Threads::Threads
+    ${M_LIBRARIES}
+    ${CMAKE_DL_LIBS}
+)
 
 if(PD_BUILD_C_EXAMPLES)
     macro(ADD_EXAMPLE name)
         add_executable(${name} samples/c/${name}/${name}.c)
         target_link_libraries(${name} PUBLIC libpd)
-        target_link_libraries(${name} PUBLIC m)
         if(DEFINED CMAKE_DEBUG_POSTFIX)
             set_target_properties(${name} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
         endif()
