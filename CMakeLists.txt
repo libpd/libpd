@@ -9,6 +9,7 @@ option(PD_UTILS  "Compile utilities" ON)
 option(PD_EXTRA  "Compile extras" ON)
 option(PD_MULTI  "Compile with multiple instance support" OFF)
 option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
+option(PD_DEFINE_EXTERN "Define EXTERN to a custom string for special linking purposes" "")
 option(LIBPD_STATIC "Build static library" ON)
 option(LIBPD_SHARED "Build shared library" ON)
 cmake_dependent_option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF "LIBPD_SHARED" OFF)
@@ -264,6 +265,7 @@ target_compile_definitions(libpd_public_settings
   INTERFACE
     PD=1
     USEAPI_DUMMY=1
+   "$<$<BOOL:${PD_DEFINE_EXTERN}>:EXTERN=${PD_DEFINE_EXTERN}>"
     $<$<BOOL:${APPLE}>:_DARWIN_C_SOURCE>
     $<$<BOOL:${HAVE_ALLOCA_H}>:HAVE_ALLOCA_H=1>
     $<$<BOOL:${HAVE_ENDIAN_H}>:HAVE_ENDIAN_H=1>
