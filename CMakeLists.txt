@@ -50,6 +50,10 @@ else()
     endif()
 endif()
 
+if(NOT PROJECT_IS_TOP_LEVEL)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
+endif()
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MACOSX_RPATH ON)
 
