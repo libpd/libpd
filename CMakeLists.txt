@@ -1,11 +1,17 @@
 cmake_minimum_required (VERSION 3.25)
 project (libpd C)
 
+include(CMakeDependentOption)
+include(CheckLibraryExists)
+include(CheckIncludeFile)
+
 option(PD_UTILS  "Compile utilities" ON)
 option(PD_EXTRA  "Compile extras" ON)
 option(PD_MULTI  "Compile with multiple instance support" OFF)
 option(PD_LOCALE "Set the LC_NUMERIC number format to the default C locale" ON)
-option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF)
+option(LIBPD_STATIC "Build static library" ON)
+option(LIBPD_SHARED "Build shared library" ON)
+cmake_dependent_option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF "LIBPD_SHARED" OFF)
 
 if (MSVC)
     set(CMAKE_THREAD_LIBS_INIT CACHE PATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
@@ -47,8 +53,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MACOSX_RPATH ON)
 
 # Look for dependencies
-include(CheckLibraryExists)
-include(CheckIncludeFile)
 check_include_file(alloca.h HAVE_ALLOCA_H)
 check_include_file(endian.h HAVE_ENDIAN_H)
 check_include_file(machine/endian.h HAVE_MACHINE_ENDIAN_H)
@@ -198,6 +202,15 @@ source_group(pdextra    FILES ${PD_EXTRA_SOURCES})
 source_group(libpd      FILES ${LIBPD_SOURCES})
 source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
+# set the output library name for libpd depending on the settings
+set(LIBPD_OUTPUT_NAME     pd)
+if (WIN32)
+    set(LIBPD_OUTPUT_NAME libpd)
+endif()
+if (PD_MULTI)
+    set(LIBPD_OUTPUT_NAME ${LIBPD_OUTPUT_NAME}-multi)
+endif()
+
 # create final list of source files
 set(SOURCE_FILES ${PD_SOURCES} ${LIBPD_SOURCES})
 if(PD_UTILS)
@@ -209,31 +222,38 @@ endif()
 
 add_library(libpd_private_settings INTERFACE)
 add_library(libpd_public_settings INTERFACE)
-add_library(libpd_static STATIC ${SOURCE_FILES})
-add_library(libpd        SHARED ${SOURCE_FILES})
-target_link_libraries(libpd_static
-    PRIVATE libpd_private_settings
-    PUBLIC libpd_public_settings
-)
-target_link_libraries(libpd
-    PRIVATE libpd_private_settings
-    PUBLIC libpd_public_settings
-)
+if(LIBPD_STATIC)
+  add_library(libpd_static STATIC ${SOURCE_FILES})
+  target_link_libraries(libpd_static
+      PRIVATE libpd_private_settings
+      PUBLIC libpd_public_settings
+  )
 
-# set the output library name for libpd depending on the settings
-set(LIBPD_OUTPUT_NAME     pd)
-if (WIN32)
-    set(LIBPD_OUTPUT_NAME libpd)
+  if (WIN32)
+      set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME}-static)
+  else()
+      set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
+  endif()
 endif()
-if (PD_MULTI)
-    set(LIBPD_OUTPUT_NAME ${LIBPD_OUTPUT_NAME}-multi)
+
+if(LIBPD_SHARED)
+  add_library(libpd        SHARED ${SOURCE_FILES})
+  target_link_libraries(libpd
+      PRIVATE libpd_private_settings
+      PUBLIC libpd_public_settings
+  )
+  set_target_properties(libpd PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
+
+  target_link_libraries(libpd
+    PUBLIC
+      $<$<BOOL:${MSVC}>:Ws2_32>
+      $<$<BOOL:${MINGW}>:-Wl,--export-all-symbols ws2_32 kernel32 -static-libgcc>
+      Threads::Threads
+      ${M_LIBRARIES}
+      ${CMAKE_DL_LIBS}
+  )
 endif()
-if (WIN32)
-    set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME}-static)
-else()
-    set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
-endif()
-set_target_properties(libpd            PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
+
 
 target_compile_definitions(libpd_private_settings
   INTERFACE
@@ -264,15 +284,6 @@ target_include_directories(libpd_public_settings
   INTERFACE
     libpd_wrapper
     pure-data/src
-)
-
-target_link_libraries(libpd
-  PUBLIC
-    $<$<BOOL:${MSVC}>:Ws2_32>
-    $<$<BOOL:${MINGW}>:-Wl,--export-all-symbols ws2_32 kernel32 -static-libgcc>
-    Threads::Threads
-    ${M_LIBRARIES}
-    ${CMAKE_DL_LIBS}
 )
 
 if(PD_BUILD_C_EXAMPLES)
