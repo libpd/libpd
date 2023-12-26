@@ -36,6 +36,13 @@ EXTERN void libpd_clear_search_path(void);
 /// unlike desktop pd, *no* search paths are set by default (ie. extra)
 EXTERN void libpd_add_to_search_path(const char *path);
 
+/// add a path to the libpd help paths
+/// relative paths are relative to the current working directory
+/// this is triggered when calling help from pd gui.
+/// pd will search for files named <object name>-help.pd
+/// in linux typically that'd be /usr/lib/puredata/doc/5.reference
+EXTERN void libpd_add_to_help_path(const char *path);
+
 /* opening patches */
 
 /// open a patch by filename and parent dir path
