@@ -1,0 +1,173 @@
+name: Debian build
+
+on: push
+
+jobs:
+  debian:
+    name: Debian & Ubuntu
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.distro }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        pd_multi: [ON, OFF]
+        build_type: [Debug, Release]
+        distro: ["debian:bookworm", "ubuntu:lunar", "ubuntu:mantic"]
+        CC: [clang, gcc]
+
+    steps:
+      - name: Install git
+        run: |
+          apt-get update -qq
+          apt-get install -qq --force-yes git
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Dependencies
+        run: |
+          apt-get install -qq --force-yes cmake build-essential clang gcc
+
+      - name: Build
+        env:
+          CC: ${{ matrix.CC }}
+        run: |
+          cmake \
+            -S $PWD -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DPD_MULTI=${{ matrix.pd_multi }} \
+            -DPD_BUILD_C_EXAMPLES=ON
+          cmake --build build
+
+  win_msvc:
+    name: MSVC
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        pd_multi: [ON, OFF]
+        build_type: [Debug, Release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v2
+        with:
+          arch: x64
+
+      - name: Dependencies
+        shell: bash
+        run: |
+          choco install -y cmake
+
+      - name: Build
+        shell: bash
+        run: |
+          cmake \
+            -S $PWD -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DPD_MULTI=${{ matrix.pd_multi }} \
+            -DPD_BUILD_C_EXAMPLES=ON
+          cmake --build build
+
+  win_mingw:
+    name: MinGW
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pd_multi: [ON, OFF]
+        build_type: [Debug, Release]
+        platform: [
+          { sys: mingw64, env: x86_64 },
+          { sys: ucrt64,  env: ucrt-x86_64 },
+          { sys: clang64, env: clang-x86_64 }
+        ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Dependencies
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.platform.sys}}
+          update: true
+          pacboy: >-
+            cmake:p
+            toolchain:p
+
+      - name: Build
+        shell: msys2 {0}
+        run: |
+          cmake \
+            -S $PWD -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DPD_MULTI=${{ matrix.pd_multi }} \
+            -DPD_BUILD_C_EXAMPLES=ON
+          cmake --build build
+
+  mac:
+    name: macOS
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        pd_multi: [ON, OFF]
+        build_type: [Debug, Release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Dependencies
+        run: |
+          brew install cmake
+
+      - name: Build
+        run: |
+          cmake \
+            -S $PWD -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DPD_MULTI=${{ matrix.pd_multi }} \
+            -DPD_BUILD_C_EXAMPLES=ON
+          cmake --build build
+
+  bsd:
+    name: FreeBSD
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pd_multi: [ON, OFF]
+        build_type: [Debug, Release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          prepare: |
+            pkg install -y cmake
+
+          run: |
+            cmake \
+              -S $PWD -B build \
+              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -DPD_MULTI=${{ matrix.pd_multi }} \
+              -DPD_BUILD_C_EXAMPLES=ON
+            cmake --build build
