@@ -239,6 +239,9 @@ if(LIBPD_STATIC)
   else()
       set_target_properties(libpd_static PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
   endif()
+  set_target_properties(libpd_static PROPERTIES
+    UNITY_BUILD OFF
+  )
 endif()
 
 if(LIBPD_SHARED)
@@ -247,7 +250,10 @@ if(LIBPD_SHARED)
       PRIVATE libpd_private_settings
       PUBLIC libpd_public_settings
   )
-  set_target_properties(libpd PROPERTIES OUTPUT_NAME ${LIBPD_OUTPUT_NAME})
+  set_target_properties(libpd PROPERTIES
+    OUTPUT_NAME ${LIBPD_OUTPUT_NAME}
+    UNITY_BUILD OFF
+  )
 
   target_link_libraries(libpd
     PUBLIC
