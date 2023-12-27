@@ -15,15 +15,15 @@ option(LIBPD_SHARED "Build shared library" ON)
 cmake_dependent_option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF "LIBPD_SHARED" OFF)
 
 if (MSVC)
-    set(CMAKE_THREAD_LIBS_INIT CACHE PATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
+    set(PTHREADS_LIB CACHE PATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
     set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to folder with pthreads library header files (ex. C:/src/vcpkg/packages/pthreads_x64-windows/include)")
     # We need pthreads.
     # Please provide the path to the pthreads library include path and
     # the path to the pthread library by specifying the following arguments
     # on the CMake command-line:
-    # -DCMAKE_THREAD_LIBS_INIT:PATH=<path to library, either MSVC (for example pthreadVC3.lib) or GNUC version>
+    # -DPTHREADS_LIB:PATH=<path to library, either MSVC (for example pthreadVC3.lib) or GNUC version>
     # -DPTHREADS_INCLUDE_DIR:PATH=<path to the pthread header files>
-    if (NOT CMAKE_THREAD_LIBS_INIT OR NOT PTHREADS_INCLUDE_DIR)
+    if (NOT PTHREADS_LIB OR NOT PTHREADS_INCLUDE_DIR)
         message(FATAL_ERROR "Please provide a path to the pthreads library and its headers.")
     endif()
     # Prefer pthread implementation on platforms where multiple are available.
@@ -67,7 +67,9 @@ if(APPLE OR LINUX)
   check_include_file(dlfcn.h HAVE_LIBDL)
 endif()
 
-find_package(Threads REQUIRED)
+if(NOT MSVC)
+  find_package(Threads REQUIRED)
+endif()
 
 if(NOT MSVC AND NOT APPLE)
   check_library_exists(m pow "" HAVE_LIBM)
@@ -259,7 +261,8 @@ if(LIBPD_SHARED)
     PUBLIC
       $<$<BOOL:${MSVC}>:Ws2_32>
       $<$<BOOL:${MINGW}>:-Wl,--export-all-symbols ws2_32 kernel32 -static-libgcc>
-      Threads::Threads
+      $<IF:$<BOOL:${MSVC}>,${PTHREADS_LIB},Threads::Threads>
+
       ${M_LIBRARIES}
       ${CMAKE_DL_LIBS}
   )
@@ -301,6 +304,9 @@ target_include_directories(libpd_public_settings
 if(PD_BUILD_C_EXAMPLES)
     macro(ADD_EXAMPLE name)
         add_executable(${name} samples/c/${name}/${name}.c)
+        target_include_directories(${name} PRIVATE 
+          $<$<BOOL:${MSVC}>:${PTHREADS_INCLUDE_DIR}>
+        )
         target_link_libraries(${name} PUBLIC libpd)
         if(DEFINED CMAKE_DEBUG_POSTFIX)
             set_target_properties(${name} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})

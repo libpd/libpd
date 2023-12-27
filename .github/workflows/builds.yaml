@@ -1,4 +1,4 @@
-name: Debian build
+name: Builds
 
 on: push
 
@@ -47,34 +47,49 @@ jobs:
     name: MSVC
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         pd_multi: [ON, OFF]
         build_type: [Debug, Release]
+        arch: [x86, x64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
 
+      - name: Checkout pthread-win32
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+          repository: GerHobbelt/pthread-win32
+          path: pthread-win32
+
       - name: Set up Visual Studio shell
         uses: egor-tensin/vs-shell@v2
         with:
-          arch: x64
+          arch: ${{ matrix.arch }}
 
       - name: Dependencies
         shell: bash
         run: |
           choco install -y cmake
 
+      - name: Build Pthread
+        run: |
+          msbuild pthread-win32/windows/VS2022/pthread_lib.2022.vcxproj /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.arch }}
+
       - name: Build
         shell: bash
         run: |
+          export PTHREAD_STATIC_LIB=$(find pthread-win32/windows/VS2022/bin -name pthread_static_lib.lib)
           cmake \
-            -S $PWD -B build \
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -S $PWD -B build -G "Visual Studio 17 2022" -A ${{ matrix.arch }} \
             -DPD_MULTI=${{ matrix.pd_multi }} \
-            -DPD_BUILD_C_EXAMPLES=ON
-          cmake --build build
+            -DPD_BUILD_C_EXAMPLES=ON \
+            -DPTHREADS_LIB="$PTHREAD_STATIC_LIB" \
+            -DPTHREADS_INCLUDE_DIR=pthread-win32/
+          cmake --build build --config ${{ matrix.build_type }}
 
   win_mingw:
     name: MinGW
