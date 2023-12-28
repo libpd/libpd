@@ -4,7 +4,7 @@ on: push
 
 jobs:
   debian:
-    name: Debian & Ubuntu
+    name: Linux
     runs-on: ubuntu-latest
     container:
       image: ${{ matrix.distro }}
@@ -14,7 +14,7 @@ jobs:
       matrix:
         pd_multi: [ON, OFF]
         build_type: [Debug, Release]
-        distro: ["debian:bookworm", "ubuntu:lunar", "ubuntu:mantic"]
+        distro: ["debian:stable", "debian:testing", "ubuntu:lunar", "ubuntu:mantic"]
         CC: [clang, gcc]
 
     steps:
@@ -101,6 +101,7 @@ jobs:
         pd_multi: [ON, OFF]
         build_type: [Debug, Release]
         platform: [
+          { sys: mingw32, env: x86 },
           { sys: mingw64, env: x86_64 },
           { sys: ucrt64,  env: ucrt-x86_64 },
           { sys: clang64, env: clang-x86_64 }
