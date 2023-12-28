@@ -83,8 +83,9 @@ jobs:
         shell: bash
         run: |
           export PTHREAD_STATIC_LIB=$(find pthread-win32/windows/VS2022/bin -name pthread_static_lib.lib)
+          export ARCH=$(echo ${{ matrix.arch }} | sed 's/x86/Win32/')
           cmake \
-            -S $PWD -B build -G "Visual Studio 17 2022" -A ${{ matrix.arch }} \
+            -S $PWD -B build -G "Visual Studio 17 2022" -A $ARCH \
             -DPD_MULTI=${{ matrix.pd_multi }} \
             -DPD_BUILD_C_EXAMPLES=ON \
             -DPTHREADS_LIB="$PTHREAD_STATIC_LIB" \
