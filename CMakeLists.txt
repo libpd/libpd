@@ -15,7 +15,7 @@ option(LIBPD_SHARED "Build shared library" ON)
 cmake_dependent_option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF "LIBPD_SHARED" OFF)
 
 if (MSVC)
-    set(PTHREADS_LIB CACHE PATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
+    set(PTHREADS_LIB CACHE FILEPATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
     set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to folder with pthreads library header files (ex. C:/src/vcpkg/packages/pthreads_x64-windows/include)")
     # We need pthreads.
     # Please provide the path to the pthreads library include path and
