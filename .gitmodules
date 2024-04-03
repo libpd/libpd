@@ -4,3 +4,4 @@
 [submodule "pure-data"]
 	path = pure-data
 	url = https://github.com/pure-data/pure-data.git
+	branch = master
