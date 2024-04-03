@@ -3,5 +3,5 @@
 	url = https://github.com/nettoyeurny/opensl_stream.git
 [submodule "pure-data"]
 	path = pure-data
-	url = https://github.com/pure-data/pure-data.git
-	branch = master
+	url = https://github.com/Jonathhhan/pure-data.git
+	branch = emscripten
