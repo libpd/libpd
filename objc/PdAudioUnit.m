@@ -259,15 +259,16 @@ static OSStatus audioRenderCallback(void *inRefCon,
 			ioData->mBuffers[0].mDataByteSize = outputBufferSize;
 			ioData->mBuffers[0].mNumberChannels = outputChannels;
             
-            // audio unit -> input ring buffer
-            UInt32 framesAvailable = (UInt32)rb_available_to_read(pd->_inputRingBuffer) / pd->_inputFrameSize;
-            while (inputFrames + framesAvailable < outputFrames) {
-                // pad input buffer to make sure we have enough blocks to fill auBuffer,
-                // this should hopefully only happen when the audio unit is started
-                rb_write_value_to_buffer(pd->_inputRingBuffer, 0, pd->_inputBlockSize);
-                framesAvailable += pd->_blockFrames;
-            }
-            rb_write_to_buffer(pd->_inputRingBuffer, 1, auBuffer, inputBufferSize);
+			// audio unit -> input ring buffer
+			UInt32 framesAvailable = (UInt32)rb_available_to_read(pd->_inputRingBuffer) / pd->_inputFrameSize;
+			while (inputFrames + framesAvailable < outputFrames) {
+				// pad input buffer to make sure we have enough blocks to fill auBuffer,
+				// this should hopefully only happen when the audio unit is started
+				rb_write_value_to_buffer(pd->_inputRingBuffer, 0, pd->_inputBlockSize);
+				framesAvailable += pd->_blockFrames;
+		    	}
+			
+   			rb_write_to_buffer(pd->_inputRingBuffer, 1, auBuffer, inputBufferSize);
 		}
 
 		// input ring buffer -> pd -> output ring buffer
