@@ -88,7 +88,8 @@ Pod::Spec.new do |spec|
                        'pure-data/src/z_hooks.h',
                        'pure-data/src/s_libpdmidi.c',
                        'pure-data/src/z_libpd.c',
-                       'pure-data/src/z_libpd.h'
+                       'pure-data/src/z_libpd.h',
+                       'pure-data/src/m_dispatch_gen.c',
 
   # exclude ios-only audio implementation
   spec.macos.exclude_files = 'objc/PdAudioController.*{h,m}',
