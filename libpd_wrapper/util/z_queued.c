@@ -15,7 +15,7 @@
 #include <string.h>
 
 #include "../z_hooks.h"
-#include "ringbuffer.h"
+#include "z_ringbuffer.h"
 
 #define BUFFER_SIZE 16384
 

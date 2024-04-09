@@ -164,8 +164,8 @@ set(LIBPD_SOURCES
     libpd_wrapper/z_libpd.c
 )
 set(LIBPD_UTILS_SOURCES
-    libpd_wrapper/util/ringbuffer.c
-    libpd_wrapper/util/ringbuffer.h
+    libpd_wrapper/util/z_ringbuffer.c
+    libpd_wrapper/util/z_ringbuffer.h
     libpd_wrapper/util/z_print_util.c
     libpd_wrapper/util/z_print_util.h
     libpd_wrapper/util/z_queued.c

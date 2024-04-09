@@ -8,7 +8,7 @@
  *
  */
 
-#include "ringbuffer.h"
+#include "z_ringbuffer.h"
 
 #include <stdarg.h>
 #include <stdlib.h>

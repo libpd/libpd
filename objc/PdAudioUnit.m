@@ -13,7 +13,7 @@
 #import "PdAudioUnit.h"
 #import "PdBase.h"
 #import "AudioHelpers.h"
-#include "ringbuffer.h"
+#include "z_ringbuffer.h"
 
 static const AudioUnitElement kRemoteIOElement_Input = 1;
 static const AudioUnitElement kRemoteIOElement_Output = 0;

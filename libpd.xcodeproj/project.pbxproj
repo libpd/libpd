@@ -160,10 +160,10 @@
 		304C8EDB1860FA2D006D2159 /* z_hooks.h in Headers */ = {isa = PBXBuildFile; fileRef = 304C8ED91860FA2D006D2159 /* z_hooks.h */; };
 		30562D0818621366006C6949 /* z_hooks.c in Sources */ = {isa = PBXBuildFile; fileRef = 30562D0718621366006C6949 /* z_hooks.c */; };
 		30562D0918621366006C6949 /* z_hooks.c in Sources */ = {isa = PBXBuildFile; fileRef = 30562D0718621366006C6949 /* z_hooks.c */; };
-		306DBE5816BC6710007CF226 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* ringbuffer.c */; };
-		306DBE5916BC6710007CF226 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* ringbuffer.c */; };
-		306DBE5A16BC6710007CF226 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* ringbuffer.h */; };
-		306DBE5B16BC6710007CF226 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* ringbuffer.h */; };
+		306DBE5816BC6710007CF226 /* z_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* z_ringbuffer.c */; };
+		306DBE5916BC6710007CF226 /* z_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* z_ringbuffer.c */; };
+		306DBE5A16BC6710007CF226 /* z_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* z_ringbuffer.h */; };
+		306DBE5B16BC6710007CF226 /* z_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* z_ringbuffer.h */; };
 		306DBE6016BC6710007CF226 /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
 		306DBE6116BC6710007CF226 /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
 		306DBE6216BC6710007CF226 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
@@ -192,7 +192,7 @@
 		30C3D2911FAA1FCC00C67F08 /* PdDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5828C8B31409C8C600F8B9AC /* PdDispatcher.h */; };
 		30C3D2921FAA1FCC00C67F08 /* PdFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E8C8DC81312007F000B9D7A /* PdFile.h */; };
 		30C3D2931FAA1FCC00C67F08 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
-		30C3D2941FAA1FCC00C67F08 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* ringbuffer.h */; };
+		30C3D2941FAA1FCC00C67F08 /* z_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* z_ringbuffer.h */; };
 		30C3D2951FAA1FCC00C67F08 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
 		30C3D2961FAA1FCC00C67F08 /* z_hooks.h in Headers */ = {isa = PBXBuildFile; fileRef = 304C8ED91860FA2D006D2159 /* z_hooks.h */; };
 		30C3D2971FAA1FCC00C67F08 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
@@ -278,7 +278,7 @@
 		30C3D2ED1FAA1FCC00C67F08 /* PdDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828C8B41409C8C600F8B9AC /* PdDispatcher.m */; };
 		30C3D2EE1FAA1FCC00C67F08 /* x_vexp_if.c in Sources */ = {isa = PBXBuildFile; fileRef = 30ABBFC71CA8A67000E3722F /* x_vexp_if.c */; };
 		30C3D2EF1FAA1FCC00C67F08 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
-		30C3D2F01FAA1FCC00C67F08 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* ringbuffer.c */; };
+		30C3D2F01FAA1FCC00C67F08 /* z_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* z_ringbuffer.c */; };
 		30C3D2F11FAA1FCC00C67F08 /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
 		30C3D2F21FAA1FCC00C67F08 /* g_clone.c in Sources */ = {isa = PBXBuildFile; fileRef = 30EAFA2B1CBB89DC005D1916 /* g_clone.c */; };
 		30C3D2F31FAA1FCC00C67F08 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
@@ -293,7 +293,7 @@
 		30C3D3031FAA200100C67F08 /* PdAudioUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 110E6DD2147B838F00282ABC /* PdAudioUnit.h */; };
 		30C3D3041FAA200100C67F08 /* PdMidiDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 30E9358416ADA07E009BFE25 /* PdMidiDispatcher.h */; };
 		30C3D3051FAA200100C67F08 /* x_vexp.h in Headers */ = {isa = PBXBuildFile; fileRef = 30ABBFC91CA8A67000E3722F /* x_vexp.h */; };
-		30C3D3061FAA200100C67F08 /* ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* ringbuffer.h */; };
+		30C3D3061FAA200100C67F08 /* z_ringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5116BC6710007CF226 /* z_ringbuffer.h */; };
 		30C3D3071FAA200100C67F08 /* z_queued.h in Headers */ = {isa = PBXBuildFile; fileRef = 306DBE5516BC6710007CF226 /* z_queued.h */; };
 		30C3D3081FAA200100C67F08 /* z_print_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 3088882D16BCB4A400781682 /* z_print_util.h */; };
 		30C3D30A1FAA200100C67F08 /* d_arithmetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E829FF412EEFDED0053280E /* d_arithmetic.c */; };
@@ -382,7 +382,7 @@
 		30C3D3621FAA200100C67F08 /* PdAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD1147B838F00282ABC /* PdAudioController.m */; };
 		30C3D3631FAA200100C67F08 /* PdAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E6DD3147B838F00282ABC /* PdAudioUnit.m */; };
 		30C3D3641FAA200100C67F08 /* PdMidiDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E9358516ADA07E009BFE25 /* PdMidiDispatcher.m */; };
-		30C3D3651FAA200100C67F08 /* ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* ringbuffer.c */; };
+		30C3D3651FAA200100C67F08 /* z_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5016BC6710007CF226 /* z_ringbuffer.c */; };
 		30C3D3661FAA200100C67F08 /* z_queued.c in Sources */ = {isa = PBXBuildFile; fileRef = 306DBE5416BC6710007CF226 /* z_queued.c */; };
 		30C3D3671FAA200100C67F08 /* z_print_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 3088882C16BCB4A400781682 /* z_print_util.c */; };
 		30C3D3691FAA200100C67F08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
@@ -548,8 +548,8 @@
 		30377F441866680A0026ED3E /* x_text.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = x_text.c; sourceTree = "<group>"; };
 		304C8ED91860FA2D006D2159 /* z_hooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_hooks.h; sourceTree = "<group>"; };
 		30562D0718621366006C6949 /* z_hooks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_hooks.c; sourceTree = "<group>"; };
-		306DBE5016BC6710007CF226 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
-		306DBE5116BC6710007CF226 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
+		306DBE5016BC6710007CF226 /* z_ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_ringbuffer.c; sourceTree = "<group>"; };
+		306DBE5116BC6710007CF226 /* z_ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_ringbuffer.h; sourceTree = "<group>"; };
 		306DBE5416BC6710007CF226 /* z_queued.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z_queued.c; sourceTree = "<group>"; };
 		306DBE5516BC6710007CF226 /* z_queued.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = z_queued.h; sourceTree = "<group>"; };
 		307207C5216CB462004A907B /* g_editor_extras.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = g_editor_extras.c; sourceTree = "<group>"; };
@@ -725,8 +725,8 @@
 		306DBE4F16BC6710007CF226 /* util */ = {
 			isa = PBXGroup;
 			children = (
-				306DBE5016BC6710007CF226 /* ringbuffer.c */,
-				306DBE5116BC6710007CF226 /* ringbuffer.h */,
+				306DBE5016BC6710007CF226 /* z_ringbuffer.c */,
+				306DBE5116BC6710007CF226 /* z_ringbuffer.h */,
 				3088882C16BCB4A400781682 /* z_print_util.c */,
 				3088882D16BCB4A400781682 /* z_print_util.h */,
 				306DBE5416BC6710007CF226 /* z_queued.c */,
@@ -945,7 +945,7 @@
 				119013521486450C00086F19 /* PdDispatcher.h in Headers */,
 				119013531486450C00086F19 /* PdFile.h in Headers */,
 				30E9358716ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
-				306DBE5B16BC6710007CF226 /* ringbuffer.h in Headers */,
+				306DBE5B16BC6710007CF226 /* z_ringbuffer.h in Headers */,
 				306DBE6316BC6710007CF226 /* z_queued.h in Headers */,
 				304C8EDB1860FA2D006D2159 /* z_hooks.h in Headers */,
 				3088883516BCB4A400781682 /* z_print_util.h in Headers */,
@@ -961,7 +961,7 @@
 				30C3D2911FAA1FCC00C67F08 /* PdDispatcher.h in Headers */,
 				30C3D2921FAA1FCC00C67F08 /* PdFile.h in Headers */,
 				30C3D2931FAA1FCC00C67F08 /* PdMidiDispatcher.h in Headers */,
-				30C3D2941FAA1FCC00C67F08 /* ringbuffer.h in Headers */,
+				30C3D2941FAA1FCC00C67F08 /* z_ringbuffer.h in Headers */,
 				30C3D2951FAA1FCC00C67F08 /* z_queued.h in Headers */,
 				30C3D2961FAA1FCC00C67F08 /* z_hooks.h in Headers */,
 				30C3D2971FAA1FCC00C67F08 /* z_print_util.h in Headers */,
@@ -982,7 +982,7 @@
 				30C3D3031FAA200100C67F08 /* PdAudioUnit.h in Headers */,
 				30C3D3041FAA200100C67F08 /* PdMidiDispatcher.h in Headers */,
 				30C3D3051FAA200100C67F08 /* x_vexp.h in Headers */,
-				30C3D3061FAA200100C67F08 /* ringbuffer.h in Headers */,
+				30C3D3061FAA200100C67F08 /* z_ringbuffer.h in Headers */,
 				30C3D3071FAA200100C67F08 /* z_queued.h in Headers */,
 				30C3D3081FAA200100C67F08 /* z_print_util.h in Headers */,
 			);
@@ -1001,7 +1001,7 @@
 				110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */,
 				30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 				30ABBFD01CA8A67000E3722F /* x_vexp.h in Headers */,
-				306DBE5A16BC6710007CF226 /* ringbuffer.h in Headers */,
+				306DBE5A16BC6710007CF226 /* z_ringbuffer.h in Headers */,
 				306DBE6216BC6710007CF226 /* z_queued.h in Headers */,
 				3088883416BCB4A400781682 /* z_print_util.h in Headers */,
 			);
@@ -1211,7 +1211,7 @@
 				119013A11486450C00086F19 /* PdDispatcher.m in Sources */,
 				30ABBFCD1CA8A67000E3722F /* x_vexp_if.c in Sources */,
 				30E9358916ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
-				306DBE5916BC6710007CF226 /* ringbuffer.c in Sources */,
+				306DBE5916BC6710007CF226 /* z_ringbuffer.c in Sources */,
 				306DBE6116BC6710007CF226 /* z_queued.c in Sources */,
 				30EAFA2D1CBB89DC005D1916 /* g_clone.c in Sources */,
 				3088883316BCB4A400781682 /* z_print_util.c in Sources */,
@@ -1318,7 +1318,7 @@
 				30C3D2ED1FAA1FCC00C67F08 /* PdDispatcher.m in Sources */,
 				30C3D2EE1FAA1FCC00C67F08 /* x_vexp_if.c in Sources */,
 				30C3D2EF1FAA1FCC00C67F08 /* PdMidiDispatcher.m in Sources */,
-				30C3D2F01FAA1FCC00C67F08 /* ringbuffer.c in Sources */,
+				30C3D2F01FAA1FCC00C67F08 /* z_ringbuffer.c in Sources */,
 				30C3D2F11FAA1FCC00C67F08 /* z_queued.c in Sources */,
 				30C3D2F21FAA1FCC00C67F08 /* g_clone.c in Sources */,
 				30C3D2F31FAA1FCC00C67F08 /* z_print_util.c in Sources */,
@@ -1429,7 +1429,7 @@
 				30C3D3631FAA200100C67F08 /* PdAudioUnit.m in Sources */,
 				7EB188A2281DA79E0099A401 /* d_soundfile_wave.c in Sources */,
 				30C3D3641FAA200100C67F08 /* PdMidiDispatcher.m in Sources */,
-				30C3D3651FAA200100C67F08 /* ringbuffer.c in Sources */,
+				30C3D3651FAA200100C67F08 /* z_ringbuffer.c in Sources */,
 				30C3D3661FAA200100C67F08 /* z_queued.c in Sources */,
 				307207C8216CB462004A907B /* g_editor_extras.c in Sources */,
 				30C3D3671FAA200100C67F08 /* z_print_util.c in Sources */,
@@ -1539,7 +1539,7 @@
 				110E6DD9147B838F00282ABC /* PdAudioUnit.m in Sources */,
 				7EB188A0281DA79E0099A401 /* d_soundfile_wave.c in Sources */,
 				30E9358816ADA07E009BFE25 /* PdMidiDispatcher.m in Sources */,
-				306DBE5816BC6710007CF226 /* ringbuffer.c in Sources */,
+				306DBE5816BC6710007CF226 /* z_ringbuffer.c in Sources */,
 				306DBE6016BC6710007CF226 /* z_queued.c in Sources */,
 				307207C6216CB462004A907B /* g_editor_extras.c in Sources */,
 				3088883216BCB4A400781682 /* z_print_util.c in Sources */,

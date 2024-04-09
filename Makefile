@@ -112,7 +112,7 @@ PD_EXTRA_FILES = \
 LIBPD_UTILS = \
     libpd_wrapper/util/z_print_util.c \
     libpd_wrapper/util/z_queued.c \
-    libpd_wrapper/util/ringbuffer.c
+    libpd_wrapper/util/z_ringbuffer.c
 
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
@@ -192,7 +192,7 @@ prefix ?= /usr/local
 includedir ?= $(prefix)/include
 libdir ?= $(prefix)/lib
 
-JNI_FILE = libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
+JNI_FILE = libpd_wrapper/util/z_ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 ifeq ($(OS), Windows_NT)
