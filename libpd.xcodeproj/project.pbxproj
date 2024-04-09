@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -577,6 +577,7 @@
 		30FDBE7C1ACAF701008B02E9 /* bob~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "bob~.c"; path = "pure-data/extra/bob~/bob~.c"; sourceTree = SOURCE_ROOT; };
 		5828C8B31409C8C600F8B9AC /* PdDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdDispatcher.h; sourceTree = "<group>"; };
 		5828C8B41409C8C600F8B9AC /* PdDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdDispatcher.m; sourceTree = "<group>"; };
+		7E28435C2BC1E5EA00C04CE8 /* m_dispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = m_dispatch.h; sourceTree = "<group>"; };
 		7E2C39392A9D32E900891340 /* s_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_main.c; sourceTree = "<group>"; };
 		7E2D79E5266459400042689B /* pd~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "pd~.c"; path = "pure-data/extra/pd~/pd~.c"; sourceTree = SOURCE_ROOT; };
 		7E2D79E6266459400042689B /* pdsched.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pdsched.c; path = "pure-data/extra/pd~/pdsched.c"; sourceTree = SOURCE_ROOT; };
@@ -785,6 +786,7 @@
 				0E82A01D12EEFDEE0053280E /* m_binbuf.c */,
 				0E82A01E12EEFDEE0053280E /* m_class.c */,
 				0E82A01F12EEFDEE0053280E /* m_conf.c */,
+				7E28435C2BC1E5EA00C04CE8 /* m_dispatch.h */,
 				0E82A02112EEFDEE0053280E /* m_glob.c */,
 				0E82A02212EEFDEE0053280E /* m_imp.h */,
 				0E82A02312EEFDEE0053280E /* m_memory.c */,
