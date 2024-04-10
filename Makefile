@@ -10,8 +10,9 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_SOLIB_EXT = dylib
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
-  PLATFORM_CFLAGS = -DHAVE_ALLOCA_H -DHAVE_MACHINE_ENDIAN_H -D_DARWIN_C_SOURCE -DHAVE_LIBDL \
-    -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
+  PLATFORM_CFLAGS = -DHAVE_ALLOCA_H -DHAVE_LIBDL -DHAVE_MACHINE_ENDIAN_H \
+                    -D_DARWIN_C_SOURCE  \
+                    -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
   LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
   ifeq ($(FAT_LIB), true)
     # macOS universal "fat" lib compilation
@@ -39,21 +40,24 @@ else
     LIBPD_DEF = libs/libpd.def
     PDNATIVE_PLATFORM = windows
     PLATFORM_CFLAGS = -DWINVER=0x502 -DWIN32 -D_WIN32 \
-      -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
-    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 -static-libgcc
+                      -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/win32"
+    MINGW_LDFLAGS = -shared -Wl,--export-all-symbols -lws2_32 -lkernel32 \
+                    -static-libgcc
     LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=$(LIBPD_DEF) \
-      -Wl,--out-implib=$(LIBPD_IMPLIB)
+              -Wl,--out-implib=$(LIBPD_IMPLIB)
     CSHARP_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--output-def=libs/libpdcsharp.def \
-      -Wl,--out-implib=libs/libpdcsharp.lib
+                     -Wl,--out-implib=libs/libpdcsharp.lib
     JAVA_LDFLAGS = $(MINGW_LDFLAGS) -Wl,--kill-at
   else  # Linux or *BSD
     SOLIB_EXT = so
-    PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC -DHAVE_ENDIAN_H
+    PLATFORM_CFLAGS = -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -fPIC \
+                      -DHAVE_ENDIAN_H
     LDFLAGS = -shared -Wl,-Bsymbolic
     ifeq ($(UNAME), Linux)
       PDNATIVE_PLATFORM = linux
       JAVA_HOME ?= /usr/lib/jvm/default-java
-      PLATFORM_CFLAGS += -I"$(JAVA_HOME)/include/linux" -I"$(JAVA_HOME)/include" -DHAVE_ALLOCA_H -DHAVE_LIBDL
+      PLATFORM_CFLAGS += -DHAVE_ALLOCA_H -DHAVE_LIBDL \
+                         -I"$(JAVA_HOME)/include/linux" -I"$(JAVA_HOME)/include"
       LDFLAGS += -ldl
     else ifeq ($(UNAME), FreeBSD)
       PDNATIVE_PLATFORM = FreeBSD
@@ -71,9 +75,9 @@ PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 PD_FILES = \
     pure-data/src/d_arithmetic.c pure-data/src/d_array.c pure-data/src/d_ctl.c \
     pure-data/src/d_dac.c pure-data/src/d_delay.c pure-data/src/d_fft.c \
-    pure-data/src/d_fft_fftsg.c \
-    pure-data/src/d_filter.c pure-data/src/d_global.c pure-data/src/d_math.c \
-    pure-data/src/d_misc.c pure-data/src/d_osc.c pure-data/src/d_resample.c \
+    pure-data/src/d_fft_fftsg.c pure-data/src/d_filter.c \
+    pure-data/src/d_global.c pure-data/src/d_math.c pure-data/src/d_misc.c \
+    pure-data/src/d_osc.c pure-data/src/d_resample.c \
     pure-data/src/d_soundfile.c pure-data/src/d_soundfile_aiff.c \
     pure-data/src/d_soundfile_caf.c pure-data/src/d_soundfile_next.c \
     pure-data/src/d_soundfile_wave.c pure-data/src/d_ugen.c \
@@ -126,9 +130,7 @@ PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/utils/PdDispatcher.java
 
 # additional Java source jar files
-PDJAVA_SRC_FILES = \
-	.classpath \
-	.project
+PDJAVA_SRC_FILES = .classpath .project
 
 JNI_SOUND = jni/z_jni_plain.c
 
@@ -176,8 +178,8 @@ ifeq ($(PORTAUDIO), true)
     JAVA_LDFLAGS := $(JAVA_LDFLAGS) -lportaudio
     ifeq ($(UNAME), Darwin)  # Mac
         JAVA_LDFLAGS := $(JAVA_LDFLAGS) \
-                        -framework CoreAudio -framework AudioToolbox \
-                        -framework AudioUnit -framework CoreServices
+            -framework CoreAudio -framework AudioToolbox \
+            -framework AudioUnit -framework CoreServices
     endif
 endif
 
