@@ -11,7 +11,7 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
   PLATFORM_CFLAGS = -DHAVE_ALLOCA_H -DHAVE_LIBDL -DHAVE_MACHINE_ENDIAN_H \
-                    -D_DARWIN_C_SOURCE  \
+                    -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT \
                     -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
   LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
   ifeq ($(FAT_LIB), true)
