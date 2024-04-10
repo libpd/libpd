@@ -5,6 +5,7 @@
 * C: renamed ringbuffer to z_ringbuffer to match integration in upstream
      pure-data repo, this may require updating existing projects
 * C: added Emscripten support (via updates to pure-data)
+* C: increased max number of file descriptors on macOS to > 1024
 
 0.14.1: 2023 Dec 24
 
