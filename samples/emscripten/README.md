@@ -26,3 +26,15 @@ due to CORS restrictions, must be served on HTTP(S)
 python3 -m http.server 8080 &
 firefox http://localhost:8080/index.html   # click to play
 ```
+
+## custom gui
+
+tcl/tk pd-gui is not supported.
+you can make your own with SDL2.
+
+```
+cd samples/emscripten/pdtest_gui
+make
+python3 -m http.server 8080 &
+firefox http://localhost:8080/pdtest_gui.html  # click for sound
+```
