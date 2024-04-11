@@ -38,3 +38,8 @@ make
 python3 -m http.server 8080 &
 firefox http://localhost:8080/pdtest_gui.html  # click for sound
 ```
+
+## gem support
+
+Gem external support is highly experimental and almost certainly broken.
+you need to compile Gem to a static library with emscripten first.
