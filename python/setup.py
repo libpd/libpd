@@ -20,6 +20,8 @@ if sys.platform.startswith('darwin'):
   pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
   pd_defines.append(('_DARWIN_C_SOURCE', 1))
+  pd_defines.append(('_DARWIN_UNLIMITED_SELECT', 1))
+  pd_defines.append(('FD_SETSIZE', 10240))
   pd_defines.append(('HAVE_LIBDL', 1))
   pd_libraries.append('dl')
 elif sys.platform.startswith('win32') or sys.platform.startswith('msys'):

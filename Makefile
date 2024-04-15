@@ -11,9 +11,12 @@ ifeq ($(UNAME), Darwin)  # Mac
   PDNATIVE_PLATFORM = mac
   PDNATIVE_ARCH =
   PLATFORM_CFLAGS = -DHAVE_ALLOCA_H -DHAVE_LIBDL -DHAVE_MACHINE_ENDIAN_H \
-                    -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT \
                     -I"$(JAVA_HOME)/include/" -I"$(JAVA_HOME)/include/darwin/"
   LDFLAGS = -dynamiclib -ldl -Wl,-no_compact_unwind
+  # helps for machine/endian.h to be found
+  PLATFORM_CFLAGS += -D_DARWIN_C_SOURCE
+  # increase max allowed file descriptors
+  PLATFORM_CFLAGS += -D_DARWIN_UNLIMITED_SELECT -DFD_SETSIZE=10240
   ifeq ($(FAT_LIB), true)
     # macOS universal "fat" lib compilation
     MAC_VER = $(shell sw_vers -productVersion | cut -f1 -f2 -d.)
