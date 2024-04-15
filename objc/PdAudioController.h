@@ -100,6 +100,13 @@ typedef enum PdAudioStatus {
 /// available on iSO 10+
 @property (nonatomic, assign) BOOL allowAirPlay;
 
+/// this allows audio to continue on certain devices with the privacy feature
+/// that mutes the built-in microphone and interrupts the audio.
+/// This will continue the audio session but write 0s to the input buffer
+/// applied to categories: PlayAndRecord
+/// does not apply to sessions with no audio input.
+/// available on iOS 14.5+
+@property(nonatomic, assign) BOOL allowOverrideMutedMicrophoneInterruption;
 
 #pragma mark Other Configuration Properties
 
