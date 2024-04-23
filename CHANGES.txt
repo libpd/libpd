@@ -1,3 +1,13 @@
+0.15.0: TBD
+
+* updated to pd vanilla 0.55 (in development)
+
+* C: renamed ringbuffer to z_ringbuffer to match integration in upstream
+     pure-data repo, this may require updating existing projects
+* C: added Emscripten support (via updates to pure-data)
+* C: define _DARWIN_UNLIMITED_SELECT to increased max number of file
+     descriptors on macOS to > 1024
+
 0.14.1: 2023 Dec 24
 
 * Makefile: fixed HAVE_ALLOCA_H and HAVE_ENDIAN_H being defined for Windows

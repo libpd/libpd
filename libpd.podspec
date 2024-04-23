@@ -41,6 +41,7 @@ Pod::Spec.new do |spec|
   spec.compiler_flags = '-DPD', '-DUSEAPI_DUMMY', '-DPD_INTERNAL',
                         '-DHAVE_UNISTD_H', '-DHAVE_ALLOCA_H',
                         '-DHAVE_MACHINE_ENDIAN_H', '-D_DARWIN_C_SOURCE',
+                        '-D_DARWIN_UNLIMITED_SELECT', '-DFD_SETSIZE=10240',
                         '-DLIBPD_EXTRA', '-fcommon'
   spec.frameworks = 'Foundation'
 

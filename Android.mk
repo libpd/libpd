@@ -35,7 +35,7 @@ PD_SRC_FILES := \
   pure-data/src/x_text.c pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c \
   pure-data/src/x_vexp_fun.c libpd_wrapper/s_libpdmidi.c \
   libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
-  libpd_wrapper/util/ringbuffer.c libpd_wrapper/util/z_queued.c \
+  libpd_wrapper/util/z_ringbuffer.c libpd_wrapper/util/z_queued.c \
   libpd_wrapper/z_hooks.c libpd_wrapper/util/z_print_util.c
 PD_C_INCLUDES := $(LOCAL_PATH)/libpd_wrapper $(LOCAL_PATH)/libpd_wrapper/util \
   $(LOCAL_PATH)/pure-data/src

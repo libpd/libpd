@@ -41,6 +41,9 @@ else()
     if(NOT APPLE AND NOT WIN32)
         set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-Bsymbolic")
     endif()
+    if(APPLE)
+        set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -DFD_SETSIZE=10240")
+    endif()
 endif()
 add_definitions(-DPD=1 -DUSEAPI_DUMMY=1)
 
@@ -164,8 +167,8 @@ set(LIBPD_SOURCES
     libpd_wrapper/z_libpd.c
 )
 set(LIBPD_UTILS_SOURCES
-    libpd_wrapper/util/ringbuffer.c
-    libpd_wrapper/util/ringbuffer.h
+    libpd_wrapper/util/z_ringbuffer.c
+    libpd_wrapper/util/z_ringbuffer.h
     libpd_wrapper/util/z_print_util.c
     libpd_wrapper/util/z_print_util.h
     libpd_wrapper/util/z_queued.c
