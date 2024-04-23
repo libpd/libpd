@@ -591,4 +591,5 @@ public final class PdBase {
 
   private native static void unbindSymbol(long p);
 
+  public native static void setVerbose(boolean b);
 }
