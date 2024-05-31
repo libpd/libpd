@@ -42,6 +42,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	ring_buffer *_outputRingBuffer; ///< output buffer
 }
 
+@synthesize audioUnit = _audioUnit;
 @synthesize sampleRate = _sampleRate;
 @synthesize inputEnabled = _inputEnabled;
 @synthesize inputChannels = _inputChannels;
