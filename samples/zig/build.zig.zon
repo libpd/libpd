@@ -1,0 +1,24 @@
+.{
+    .name = "pdtest",
+    .version = "0.1.0",
+    .dependencies = .{
+        .libpd_zig = .{
+            .url = "https://github.com/myQwil/libpd_zig/archive/refs/tags/v0.1.1.tar.gz",
+            .hash = "12203d7d55afbd0715d67479b121ab8621b6db4c0c9c1a682a6584c7d877d1394720",
+        },
+        .raylib = .{
+            .url = "https://github.com/raysan5/raylib/archive/refs/tags/5.5.tar.gz",
+            .hash = "1220d93782859726c2c46a05450615b7edfc82b7319daac50cbc7c3345d660b022d7",
+        },
+        .raylib_zig = .{
+            .url = "https://github.com/Not-Nik/raylib-zig/archive/90109ff8041229ae8b615dca362f646586f20bd3.tar.gz",
+            .hash = "122062d2421175ba6bf89382c86621270e4883f1074ee4cc09da282e231bdef57328",
+        },
+    },
+    .paths = .{
+        "pd",
+        "src",
+        "build.zig",
+        "build.zig.zon",
+    },
+}
