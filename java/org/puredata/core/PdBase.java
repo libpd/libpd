@@ -563,6 +563,8 @@ public final class PdBase {
    */
   public native static int process(int ticks, double[] inBuffer, double[] outBuffer);
 
+  public native static void setVerbose(boolean b);
+
   private native static void initialize();
 
   private native static long openFile(String patch, String dir);
@@ -590,5 +592,4 @@ public final class PdBase {
   private native static long bindSymbol(String s);
 
   private native static void unbindSymbol(long p);
-
 }
