@@ -1,0 +1,17 @@
+.{
+    .name = "pdtest",
+    .version = "0.1.0",
+    .dependencies = .{
+        .raylib_zig = .{
+            .url = "https://github.com/Not-Nik/raylib-zig/archive/43d15b05c2b97cab30103fa2b46cff26e91619ec.tar.gz",
+            .hash = "12204a223b19043e17b79300413d02f60fc8004c0d9629b8d8072831e352a78bf212",
+        }
+    },
+    .paths = .{
+        "pd",
+        "src",
+        "build.zig",
+        "build.zig.zon",
+        "emcc.zig",
+    },
+}

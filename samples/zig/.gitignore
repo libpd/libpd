@@ -1,0 +1,7 @@
+# Zig folders
+.zig-cache/
+zig-cache/
+zig-out/
+
+# script-generated header
+src/m_pd.h
