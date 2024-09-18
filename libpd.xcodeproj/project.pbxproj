@@ -51,7 +51,6 @@
 		0E82A07212EEFDEE0053280E /* s_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02812EEFDEE0053280E /* s_audio.c */; };
 		0E82A07312EEFDEE0053280E /* s_audio_dummy.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02912EEFDEE0053280E /* s_audio_dummy.c */; };
 		0E82A07512EEFDEE0053280E /* s_inter.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02B12EEFDEE0053280E /* s_inter.c */; };
-		0E82A07612EEFDEE0053280E /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
 		0E82A07812EEFDEE0053280E /* s_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02E12EEFDEE0053280E /* s_path.c */; };
 		0E82A07912EEFDEE0053280E /* s_print.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02F12EEFDEE0053280E /* s_print.c */; };
 		0E82A07B12EEFDEE0053280E /* s_utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A03112EEFDEE0053280E /* s_utf8.c */; };
@@ -426,6 +425,11 @@
 		7E2D79EC266459400042689B /* pdsched.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E6266459400042689B /* pdsched.c */; };
 		7E2D79ED266459400042689B /* pdsched.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E6266459400042689B /* pdsched.c */; };
 		7E2D79EE266459400042689B /* pdsched.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E2D79E6266459400042689B /* pdsched.c */; };
+		7E57E2702C9B55500003F48A /* m_private_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E57E26F2C9B55500003F48A /* m_private_utils.h */; };
+		7E57E2712C9B55500003F48A /* m_private_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E57E26F2C9B55500003F48A /* m_private_utils.h */; };
+		7E57E2722C9B55500003F48A /* m_private_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E57E26F2C9B55500003F48A /* m_private_utils.h */; };
+		7E57E2732C9B55500003F48A /* m_private_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E57E26F2C9B55500003F48A /* m_private_utils.h */; };
+		7E57E2742C9B5EAB0003F48A /* s_loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E82A02C12EEFDEE0053280E /* s_loader.c */; };
 		7EB18894281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
 		7EB18895281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
 		7EB18896281DA79E0099A401 /* d_soundfile_caf.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EB18890281DA79E0099A401 /* d_soundfile_caf.c */; };
@@ -581,6 +585,7 @@
 		7E2C39392A9D32E900891340 /* s_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = s_main.c; sourceTree = "<group>"; };
 		7E2D79E5266459400042689B /* pd~.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "pd~.c"; path = "pure-data/extra/pd~/pd~.c"; sourceTree = SOURCE_ROOT; };
 		7E2D79E6266459400042689B /* pdsched.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pdsched.c; path = "pure-data/extra/pd~/pdsched.c"; sourceTree = SOURCE_ROOT; };
+		7E57E26F2C9B55500003F48A /* m_private_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = m_private_utils.h; sourceTree = "<group>"; };
 		7EB18890281DA79E0099A401 /* d_soundfile_caf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_caf.c; sourceTree = "<group>"; };
 		7EB18891281DA79E0099A401 /* d_soundfile_next.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_next.c; sourceTree = "<group>"; };
 		7EB18892281DA79E0099A401 /* d_soundfile_aiff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = d_soundfile_aiff.c; sourceTree = "<group>"; };
@@ -793,6 +798,7 @@
 				0E82A02412EEFDEE0053280E /* m_obj.c */,
 				0E82A02512EEFDEE0053280E /* m_pd.c */,
 				0E82A02612EEFDEE0053280E /* m_pd.h */,
+				7E57E26F2C9B55500003F48A /* m_private_utils.h */,
 				0E82A02712EEFDEE0053280E /* m_sched.c */,
 				0E82A02812EEFDEE0053280E /* s_audio.c */,
 				0E82A02912EEFDEE0053280E /* s_audio_dummy.c */,
@@ -949,6 +955,7 @@
 				306DBE6316BC6710007CF226 /* z_queued.h in Headers */,
 				304C8EDB1860FA2D006D2159 /* z_hooks.h in Headers */,
 				3088883516BCB4A400781682 /* z_print_util.h in Headers */,
+				7E57E2712C9B55500003F48A /* m_private_utils.h in Headers */,
 				30ABBFD11CA8A67000E3722F /* x_vexp.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -965,6 +972,7 @@
 				30C3D2951FAA1FCC00C67F08 /* z_queued.h in Headers */,
 				30C3D2961FAA1FCC00C67F08 /* z_hooks.h in Headers */,
 				30C3D2971FAA1FCC00C67F08 /* z_print_util.h in Headers */,
+				7E57E2732C9B55500003F48A /* m_private_utils.h in Headers */,
 				30C3D2981FAA1FCC00C67F08 /* x_vexp.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -980,6 +988,7 @@
 				30C3D3011FAA200100C67F08 /* z_hooks.h in Headers */,
 				30C3D3021FAA200100C67F08 /* PdAudioController.h in Headers */,
 				30C3D3031FAA200100C67F08 /* PdAudioUnit.h in Headers */,
+				7E57E2722C9B55500003F48A /* m_private_utils.h in Headers */,
 				30C3D3041FAA200100C67F08 /* PdMidiDispatcher.h in Headers */,
 				30C3D3051FAA200100C67F08 /* x_vexp.h in Headers */,
 				30C3D3061FAA200100C67F08 /* z_ringbuffer.h in Headers */,
@@ -999,6 +1008,7 @@
 				304C8EDA1860FA2D006D2159 /* z_hooks.h in Headers */,
 				110E6DD6147B838F00282ABC /* PdAudioController.h in Headers */,
 				110E6DD8147B838F00282ABC /* PdAudioUnit.h in Headers */,
+				7E57E2702C9B55500003F48A /* m_private_utils.h in Headers */,
 				30E9358616ADA07E009BFE25 /* PdMidiDispatcher.h in Headers */,
 				30ABBFD01CA8A67000E3722F /* x_vexp.h in Headers */,
 				306DBE5A16BC6710007CF226 /* z_ringbuffer.h in Headers */,
@@ -1440,6 +1450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E57E2742C9B5EAB0003F48A /* s_loader.c in Sources */,
 				0E82A03E12EEFDEE0053280E /* d_arithmetic.c in Sources */,
 				0E82A03F12EEFDEE0053280E /* d_array.c in Sources */,
 				0E82A04012EEFDEE0053280E /* d_ctl.c in Sources */,
@@ -1500,7 +1511,6 @@
 				0E82A07212EEFDEE0053280E /* s_audio.c in Sources */,
 				0E82A07312EEFDEE0053280E /* s_audio_dummy.c in Sources */,
 				0E82A07512EEFDEE0053280E /* s_inter.c in Sources */,
-				0E82A07612EEFDEE0053280E /* s_loader.c in Sources */,
 				7E2D79EB266459400042689B /* pdsched.c in Sources */,
 				0E82A07812EEFDEE0053280E /* s_path.c in Sources */,
 				0E82A07912EEFDEE0053280E /* s_print.c in Sources */,
