@@ -23,8 +23,7 @@ TARGET = pdtest_double
 
 # setting -DPD_FLOATSIZE=64 here is only needed for printing t_float size,
 # otherwise it's fine to leave it off in client code
-CFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src \
-         -DPD_FLOATSIZE=64 -O3
+CFLAGS = -I$(LIBPD_DIR)/pure-data/src -DPD_FLOATSIZE=64 -O3
 
 .PHONY: clean clobber
 

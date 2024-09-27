@@ -159,20 +159,20 @@ set(PD_EXTRA_SOURCES
 )
 
 set(LIBPD_SOURCES
-    libpd_wrapper/s_libpdmidi.c
-    libpd_wrapper/x_libpdreceive.c
-    libpd_wrapper/x_libpdreceive.h
-    libpd_wrapper/z_hooks.c
-    libpd_wrapper/z_hooks.h
-    libpd_wrapper/z_libpd.c
+    pure-data/src/s_libpdmidi.c
+    pure-data/src/x_libpdreceive.c
+    pure-data/src/x_libpdreceive.h
+    pure-data/src/z_hooks.c
+    pure-data/src/z_hooks.h
+    pure-data/src/z_libpd.c
 )
 set(LIBPD_UTILS_SOURCES
-    libpd_wrapper/util/z_ringbuffer.c
-    libpd_wrapper/util/z_ringbuffer.h
-    libpd_wrapper/util/z_print_util.c
-    libpd_wrapper/util/z_print_util.h
-    libpd_wrapper/util/z_queued.c
-    libpd_wrapper/util/z_queued.h
+    pure-data/src/z_ringbuffer.c
+    pure-data/src/z_ringbuffer.h
+    pure-data/src/z_print_util.c
+    pure-data/src/z_print_util.h
+    pure-data/src/z_queued.c
+    pure-data/src/z_queued.h
 )
 
 source_group(pd         FILES ${PD_SOURCES})
@@ -180,7 +180,6 @@ source_group(pdextra    FILES ${PD_EXTRA_SOURCES})
 source_group(libpd      FILES ${LIBPD_SOURCES})
 source_group(libpdutils FILES ${LIBPD_UTILS_SOURCES})
 
-include_directories(libpd_wrapper)
 include_directories(pure-data/src)
 
 find_package(Threads REQUIRED)
