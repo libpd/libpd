@@ -20,7 +20,7 @@ else
 endif
 
 LIBPD_DIR = ../../..
-LIBPD_CFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src
+LIBPD_CFLAGS = -I$(LIBPD_DIR)/pure-data/src
 LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
 
 SRC_FILES = pdtest_portaudio.c
