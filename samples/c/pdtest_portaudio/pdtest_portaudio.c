@@ -112,6 +112,19 @@ int main(int argc, char **argv) {
       fprintf(stderr, "portaudio open error: %s\n", Pa_GetErrorText(error));
       return -1;
   }
+  {
+    const PaDeviceInfo *info = Pa_GetDeviceInfo(inputdev);
+    if(info) {
+      printf("input dev:  %d %s\n", inputdev, info->name);
+    }
+  }
+  {
+    const PaDeviceInfo *info = Pa_GetDeviceInfo(outputdev);
+    if(info) {
+      printf("output dev: %d %s\n", outputdev, info->name);
+      printf("output cha: %d\n", outputchan);
+    }
+  }
 
   // init pd, match portaudio channels and samplerate
   libpd_set_printhook(pdprint);
