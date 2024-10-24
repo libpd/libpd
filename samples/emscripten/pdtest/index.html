@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>empd / pdtest</title>
+    <meta name="description" content="test of Pure-data compiled for web with Emscripten" />
+    <meta name="keywords" content="pure-data emscripten empd" />
+    <meta name="generator" content="emsripten" />
+    <style>
+      #play
+      {
+        font-size: 400%;
+        width: 1em;
+        height: 1em;
+        position: absolute;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border: 0;
+        padding: 0;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="play">&#x25b6;</div>
+    <script>
+      // audio autoplay
+      const audioContextList = [];
+      (function() {
+        self.AudioContext = new Proxy(self.AudioContext, {
+          construct(target, args) {
+            const result = new target(...args);
+            audioContextList.push(result);
+            return result;
+          }
+        });
+      })();
+      function resumeAudio() {
+        audioContextList.forEach(ctx => {
+          if (ctx.state !== "running") { ctx.resume(); }
+        });
+      }
+      [ "click", "contextmenu", "auxclick", "dblclick"
+      , "mousedown", "mouseup", "pointerup", "touchend"
+      , "keydown", "keyup"
+      ].forEach(name => document.addEventListener(name, resumeAudio));
+      // emscripten
+      var Module
+            = { preRun: []
+              , postRun: []
+              , print: function(e) {
+                  1<arguments.length&&(e=Array.prototype.slice.call(arguments).join(" "));
+                  console.log(e);
+                }
+              , printErr: function(e) {
+                  1<arguments.length&&(e=Array.prototype.slice.call(arguments).join(" "));
+                  console.error(e)
+                }
+              }
+            ;
+    </script>
+    <script async src="pdtest.js"></script>
+  </body>
+</html>
