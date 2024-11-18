@@ -191,20 +191,20 @@ set(PD_EXTRA_SOURCES
 )
 
 set(LIBPD_SOURCES
-    pure-data/src/s_libpdmidi.c
-    pure-data/src/x_libpdreceive.c
-    pure-data/src/x_libpdreceive.h
-    pure-data/src/z_hooks.c
-    pure-data/src/z_hooks.h
-    pure-data/src/z_libpd.c
+    libpd_wrapper/s_libpdmidi.c
+    libpd_wrapper/x_libpdreceive.c
+    libpd_wrapper/x_libpdreceive.h
+    libpd_wrapper/z_hooks.c
+    libpd_wrapper/z_hooks.h
+    libpd_wrapper/z_libpd.c
 )
 set(LIBPD_UTILS_SOURCES
-    pure-data/src/z_ringbuffer.c
-    pure-data/src/z_ringbuffer.h
-    pure-data/src/z_print_util.c
-    pure-data/src/z_print_util.h
-    pure-data/src/z_queued.c
-    pure-data/src/z_queued.h
+    libpd_wrapper/util/z_ringbuffer.c
+    libpd_wrapper/util/z_ringbuffer.h
+    libpd_wrapper/util/z_print_util.c
+    libpd_wrapper/util/z_print_util.h
+    libpd_wrapper/util/z_queued.c
+    libpd_wrapper/util/z_queued.h
 )
 
 source_group(pd         FILES ${PD_SOURCES})
@@ -300,6 +300,7 @@ target_include_directories(libpd_private_settings
 
 target_include_directories(libpd_public_settings
   INTERFACE
+    libpd_wrapper
     pure-data/src
 )
 

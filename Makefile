@@ -104,7 +104,9 @@ PD_FILES = \
     pure-data/src/x_gui.c pure-data/src/x_interface.c pure-data/src/x_list.c \
     pure-data/src/x_midi.c pure-data/src/x_misc.c pure-data/src/x_net.c \
     pure-data/src/x_scalar.c pure-data/src/x_text.c pure-data/src/x_time.c \
-    pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c pure-data/src/x_vexp_fun.c
+    pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c pure-data/src/x_vexp_fun.c \
+    libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
+    libpd_wrapper/z_hooks.c libpd_wrapper/z_libpd.c
 
 PD_EXTRA_FILES = \
     pure-data/extra/bob~/bob~.c pure-data/extra/bonk~/bonk~.c \
@@ -114,14 +116,10 @@ PD_EXTRA_FILES = \
     pure-data/extra/pd~/pdsched.c pure-data/extra/pd~/pd~.c \
     pure-data/extra/sigmund~/sigmund~.c pure-data/extra/stdout/stdout.c
 
-LIBPD_FILES = \
-    pure-data/src/s_libpdmidi.c pure-data/src/x_libpdreceive.c \
-    pure-data/src/z_hooks.c pure-data/src/z_libpd.c
-
 LIBPD_UTILS = \
-    pure-data/src/z_print_util.c \
-    pure-data/src/z_queued.c \
-    pure-data/src/z_ringbuffer.c
+    libpd_wrapper/util/z_print_util.c \
+    libpd_wrapper/util/z_queued.c \
+    libpd_wrapper/util/z_ringbuffer.c
 
 PDJAVA_JAR_CLASSES = \
     java/org/puredata/core/PdBase.java \
@@ -139,7 +137,7 @@ PDJAVA_SRC_FILES = .classpath .project
 
 JNI_SOUND = jni/z_jni_plain.c
 
-# conditional libpd util compilation
+# conditional libpd_wrapper/util compilation
 UTIL_FILES = $(LIBPD_UTILS)
 ifeq ($(UTIL), false)
     UTIL_FILES =
@@ -199,7 +197,7 @@ prefix ?= /usr/local
 includedir ?= $(prefix)/include
 libdir ?= $(prefix)/lib
 
-JNI_FILE = pure-data/src/z_ringbuffer.c pure-data/src/z_queued.c $(JNI_SOUND)
+JNI_FILE = libpd_wrapper/util/z_ringbuffer.c libpd_wrapper/util/z_queued.c $(JNI_SOUND)
 JNIH_FILE = jni/z_jni.h
 JAVA_BASE = java/org/puredata/core/PdBase.java
 ifeq ($(OS), Windows_NT)
@@ -218,6 +216,7 @@ PDJAVA_SRC = libs/libpd-sources.jar
 PDJAVA_DOC = javadoc
 
 CFLAGS = -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H \
+         -I./libpd_wrapper -I./libpd_wrapper/util \
          -I./pure-data/src \
          $(PLATFORM_CFLAGS) \
          $(OPT_CFLAGS) $(EXTRA_CFLAGS) $(MULTI_CFLAGS) $(DOUBLE_CFLAGS) \
@@ -235,10 +234,10 @@ else
   libpd: $(LIBPD)
 endif
 
-$(LIBPD): ${PD_FILES:.c=.o} ${LIBPD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+$(LIBPD): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(LIBPD) $^ $(LDFLAGS) -lm -lpthread
 
-$(LIBPD_STATIC): ${PD_FILES:.c=.o} ${LIBPD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
+$(LIBPD_STATIC): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 	ar rcs $(LIBPD_STATIC) $^
 
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
@@ -247,7 +246,7 @@ $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^
 	javah -o $@ -classpath java org.puredata.core.PdBase
 
-$(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
+$(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
 	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS)
 	cp $(PDJAVA_NATIVE) libs/
@@ -266,11 +265,11 @@ $(PDJAVA_SRC): $(PDJAVA_JAR_FILES)
 
 csharplib: $(PDCSHARP)
 
-$(PDCSHARP): ${PD_FILES:.c=.o} ${LIBPD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o}
+$(PDCSHARP): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o}
 	$(CC) -o $(PDCSHARP) $^ $(CSHARP_LDFLAGS) -lm -lpthread
 
 clean:
-	rm -f ${PD_FILES:.c=.o} ${LIBPD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
+	rm -f ${PD_FILES:.c=.o} ${PD_EXTRA_OBJS} ${JNI_FILE:.c=.o}
 	rm -f ${UTIL_FILES:.c=.o} ${PD_EXTRA_FILES:.c=.o}
 
 clobber: clean
@@ -282,14 +281,14 @@ clobber: clean
 # optional install headers & libs based on build type: UTIL=true and/or windows
 install:
 	install -d $(includedir)/libpd
-	install -m 644 pure-data/src/z_libpd.h $(includedir)/libpd
+	install -m 644 libpd_wrapper/z_libpd.h $(includedir)/libpd
 	install -m 644 pure-data/src/m_pd.h $(includedir)/libpd
 	install -m 644 pure-data/src/m_imp.h $(includedir)/libpd
 	install -m 644 pure-data/src/g_canvas.h $(includedir)/libpd
-	if [ -e pure-data/src/z_queued.o ]; then \
+	if [ -e libpd_wrapper/util/z_queued.o ]; then \
 	  install -d $(includedir)/libpd/util; \
-	  install -m 644 pure-data/src/z_print_util.h $(includedir)/libpd; \
-	  install -m 644 pure-data/src/z_queued.h $(includedir)/libpd; \
+	  install -m 644 libpd_wrapper/util/z_print_util.h $(includedir)/libpd/util; \
+	  install -m 644 libpd_wrapper/util/z_queued.h $(includedir)/libpd/util; \
 	  install -m 644 cpp/*hpp $(includedir)/libpd; \
 	fi
 	install -d $(libdir)
