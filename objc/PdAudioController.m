@@ -294,10 +294,10 @@
 		}
 	}
 	if (@available(iOS 14.5, *)) {
-        if (self.allowOverrideMutedMicrophoneInterruption) {
-            options |= AVAudioSessionCategoryOptionOverrideMutedMicrophoneInterruption;
-        }
-    }
+		if (self.overrideMutedMicrophoneInterruption) {
+			options |= AVAudioSessionCategoryOptionOverrideMutedMicrophoneInterruption;
+		}
+	}
 	return options;
 }
 
@@ -525,10 +525,10 @@
 	[self updateSessionCategoryOptions];
 }
 
--(void)setAllowOverrideMutedMicrophoneInterruption:(BOOL)allowOverrideMutedMicrophoneInterruption {
-    if (_allowOverrideMutedMicrophoneInterruption == allowOverrideMutedMicrophoneInterruption) {return;}
-    _allowOverrideMutedMicrophoneInterruption = allowOverrideMutedMicrophoneInterruption;
-    [self updateSessionCategoryOptions];
+- (void)setOverrideMutedMicrophoneInterruption:(BOOL)overrideMutedMicrophoneInterruption {
+	if (_overrideMutedMicrophoneInterruption == overrideMutedMicrophoneInterruption) {return;}
+	_overrideMutedMicrophoneInterruption = overrideMutedMicrophoneInterruption;
+	[self updateSessionCategoryOptions];
 }
 
 #pragma mark Private
