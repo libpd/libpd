@@ -54,6 +54,8 @@ The directory containing the sources of Pd Vanilla and it's standard externals. 
 
 ### libpd_wrapper
 
+**As of libpd 0.15 (pd 0.55-2), the core libpd files in `pure-data/src/z_*` are used instead. This directory will be removed in a future libpd version.**
+
 This directory contains the source files that make up the core of libpd.
 
 ### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln, .classpath, .project
@@ -136,7 +138,7 @@ Install the core build requirements using your distribution's package manager. F
 
 ### macOS
 
-macOS is built on top of a BSD system and the bash or zsh commandline can be accessed with the Terminal application in the /Applications/Utility directory.
+macOS is built on top of a BSD system and the bash or zsh commandline can be accessed with the Terminal application in the `/Applications/Utility` directory.
 
 #### Xcode
 
