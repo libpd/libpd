@@ -2,19 +2,14 @@
 
 * updated to pd vanilla 0.55-2
 
-!IMPORTANT!
-* C: transitioned building C sources in libpd_wrapper -> pure-data/src/z_* and
-     renamed ringbuffer to z_ringbuffer to match integration in upstream
+* C: renamed ringbuffer to z_ringbuffer to match integration in upstream
      pure-data repo, this may require updating existing projects
-     libpd_wrapper will likely be removed in the future
-
 * C: added Emscripten support (via updates to pure-data)
 * C: define _DARWIN_UNLIMITED_SELECT to increased max number of file
      descriptors on macOS to > 1024
 * C: portaudio sample now prints audio device info
 
-* ObjC: updated xcode projects for pd 0.55, updated ios min deployment target to
-        iOS 12
+* ObjC: updated xcode project for pd 0.5
 * ObjC: fixed warning by explictly synthesizing PdAudioController audioUnit
         property
 
