@@ -345,6 +345,14 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeFile
   // using long integer in case we're on a 64bit CPU
 }
 
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setVerbose
+(JNIEnv *env, jclass cls, jboolean b) {
+  int verbose = (b ? 1 : 0);
+  pthread_mutex_lock(&mutex);
+  libpd_set_verbose(verbose);
+  pthread_mutex_unlock(&mutex);
+}
+
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_getDollarZero
 (JNIEnv *env, jclass cls, jlong ptr) {
   pthread_mutex_lock(&mutex);

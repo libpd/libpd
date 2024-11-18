@@ -13,7 +13,7 @@
 #import "PdAudioUnit.h"
 #import "PdInstance.h"
 #import "AudioHelpers.h"
-#include "ringbuffer.h"
+#include "z_ringbuffer.h"
 
 static const AudioUnitElement kRemoteIOElement_Input = 1;
 static const AudioUnitElement kRemoteIOElement_Output = 0;
@@ -44,6 +44,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	ring_buffer *_outputRingBuffer; ///< output buffer
 }
 
+@synthesize audioUnit = _audioUnit;
 @synthesize sampleRate = _sampleRate;
 @synthesize inputEnabled = _inputEnabled;
 @synthesize inputChannels = _inputChannels;

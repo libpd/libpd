@@ -48,13 +48,23 @@ public class NativeLoader {
     detectSystem();
   }
 
-  private static void detectSystem() {
-    osArch = System.getProperty("os.arch").toLowerCase();
-    if (osArch.indexOf("64") != -1) {
-      osArch = "x86_64";
-    } else if (osArch.indexOf("86") != -1) {
-      osArch = "x86";
+  private static String determineOsArch(){
+    final String arch = System.getProperty("os.arch").toLowerCase();
+    if (arch.indexOf("aarch64") != -1) {
+      return "arm64";
     }
+    if (arch.indexOf("64") != -1) {
+      return "x86_64";
+    } 
+    if (arch.indexOf("86") != -1) {
+      return "x86";
+    }
+    return arch;
+  }
+
+  private static void detectSystem() {
+
+    osArch = determineOsArch();
 
     osName = System.getProperty("os.name").toLowerCase();
 

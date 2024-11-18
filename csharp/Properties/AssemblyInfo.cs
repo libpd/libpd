@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("LibPDBinding")]
-[assembly: AssemblyCopyright("Copyright 2012-2016, BSD License")]
+[assembly: AssemblyCopyright("Copyright 2012-2023, BSD License")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("0.11.1.*")]
-[assembly: AssemblyInformationalVersion("0.11.1")]
+[assembly: AssemblyVersion("0.14.0.*")]
+[assembly: AssemblyInformationalVersion("0.14.0")]

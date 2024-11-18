@@ -301,6 +301,11 @@
 			options |= AVAudioSessionCategoryOptionAllowAirPlay;
 		}
 	}
+	if (@available(iOS 14.5, *)) {
+		if (self.overrideMutedMicrophoneInterruption) {
+			options |= AVAudioSessionCategoryOptionOverrideMutedMicrophoneInterruption;
+		}
+	}
 	return options;
 }
 
@@ -529,6 +534,12 @@
 - (void)setAllowAirPlay:(BOOL)allowAirPlay {
 	if (_allowAirPlay == allowAirPlay) {return;}
 	_allowAirPlay = allowAirPlay;
+	[self updateSessionCategoryOptions];
+}
+
+- (void)setOverrideMutedMicrophoneInterruption:(BOOL)overrideMutedMicrophoneInterruption {
+	if (_overrideMutedMicrophoneInterruption == overrideMutedMicrophoneInterruption) {return;}
+	_overrideMutedMicrophoneInterruption = overrideMutedMicrophoneInterruption;
 	[self updateSessionCategoryOptions];
 }
 

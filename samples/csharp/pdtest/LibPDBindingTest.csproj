@@ -87,11 +87,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Managed\CApiTests.cs" />
-    <Compile Include="MuliInstance\MidiTests.cs" />
-    <Compile Include="MuliInstance\MessagingTests.cs" />
-    <Compile Include="MuliInstance\PdArrayTests.cs" />
-    <Compile Include="MuliInstance\AudioTests.cs" />
-    <Compile Include="MuliInstance\PdNumberOfInstancesTests.cs" />
+    <Compile Include="MultiInstance\MidiTests.cs" />
+    <Compile Include="MultiInstance\MessagingTests.cs" />
+    <Compile Include="MultiInstance\PdArrayTests.cs" />
+    <Compile Include="MultiInstance\AudioTests.cs" />
+    <Compile Include="MultiInstance\PdNumberOfInstancesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\LibPDBinding.csproj">

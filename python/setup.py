@@ -8,16 +8,31 @@ pd_defines = [
   ('USEAPI_DUMMY', 1),
   ('PD_INTERNAL', 1),
   ('HAVE_UNISTD_H', 1),
-  ('HAVE_ALLOCA_H', 1),
-  ('HAVE_LIBDL', 1),
   ('LIBPD_EXTRA', 1)
 ]
+pd_libraries = [
+  'm',
+  'pthread'
+]
 
+# replicate libpd/Makefile PLATFORM_CFLAGS & LDFLAGS
 if sys.platform.startswith('darwin'):
+  pd_defines.append(('HAVE_ALLOCA_H', 1))
   pd_defines.append(('HAVE_MACHINE_ENDIAN_H', 1))
   pd_defines.append(('_DARWIN_C_SOURCE', 1))
+  pd_defines.append(('_DARWIN_UNLIMITED_SELECT', 1))
+  pd_defines.append(('FD_SETSIZE', 10240))
+  pd_defines.append(('HAVE_LIBDL', 1))
+  pd_libraries.append('dl')
+elif sys.platform.startswith('win32') or sys.platform.startswith('msys'):
+  # windows doesn't have alloca.h, endian.h, or libdl
+  pd_libraries.append('ws2_32') # winsock
 else: # assume posix env...
   pd_defines.append(('HAVE_ENDIAN_H', 1))
+  if sys.platform.startswith('linux'):
+    pd_defines.append(('HAVE_ALLOCA_H', 1))
+    pd_defines.append(('HAVE_LIBDL', 1))
+    pd_libraries.append('dl')
 
 setup(name='pypdlib',
       version='0.14.0',
@@ -31,11 +46,7 @@ setup(name='pypdlib',
                     '../libpd_wrapper',
                     '../pure-data/src'
                   ],
-                  libraries = [
-                    'm',
-                    'dl',
-                    'pthread'
-                  ],
+                  libraries = pd_libraries,
                   sources = [
                     'pylibpd.i',
                     '../libpd_wrapper/s_libpdmidi.c',

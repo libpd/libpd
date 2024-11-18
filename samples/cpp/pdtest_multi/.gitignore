@@ -1,7 +1,7 @@
 # build files
 libs
 src/*.o
-pdtest
+pdtest_multi
 
 # xcode
 xcode/pdtest.app

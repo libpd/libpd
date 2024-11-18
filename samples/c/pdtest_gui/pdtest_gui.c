@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "z_libpd.h"
-#ifdef _WIN32
-#include "wintimeofday.h" // for gettimeofday()
-#endif
 
 #define NINSTANCES 2
 t_pdinstance *pdinstancevec[NINSTANCES];

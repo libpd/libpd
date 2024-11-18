@@ -1,20 +1,71 @@
-0.14.0 2023 TBD
+0.15.0: TBD
+
+* updated to pd vanilla 0.55-2
+
+* C: renamed ringbuffer to z_ringbuffer to match integration in upstream
+     pure-data repo, this may require updating existing projects
+* C: added Emscripten support (via updates to pure-data)
+* C: define _DARWIN_UNLIMITED_SELECT to increased max number of file
+     descriptors on macOS to > 1024
+* C: portaudio sample now prints audio device info
+
+* ObjC: updated xcode projects for pd 0.55 and xcode 15,
+        ios min deployment target now iOS 12
+* ObjC: fixed warning by explictly synthesizing PdAudioController audioUnit
+        property
+* ObjC: added PdAudioController overrideMutedMicrophoneInterruption option
+        (robertesler)
+
+* Java: added PdBase set_verbose() function (anvlkv)
+
+0.14.1: 2023 Dec 24
+
+* Makefile: fixed HAVE_ALLOCA_H and HAVE_ENDIAN_H being defined for Windows
+            (reported by Davide Gagliardi)
+* Makefile: fixed libdl being linked on Windows, link winsock (Christof Ressi)
+* Makefile: do not define HAVE_ALLOCA_H or link libdl on BSD (Luc Hondareyte)
+
+* Python: updated setup.py to handle HAVE_ALLOCA_H, HAVE_ENDIAN_H, and libs
+          conditionally based on platform in order to match Makefile behavior
+
+0.14.0: 2023 Nov 10
 
 * updated to pd vanilla 0.54-1
 
 * C: define _DARWIN_C_SOURCE with HAVE_MACHINE_ENDIAN_H to fix endianness
      warning on macOS, for now (hopefully not needed in future pd versions)
-* ObjC: updated min deployment target to iOS 11, macOS 10.13
+* C: added pdtest_portaudio example
+* C: added missing pdtest example gitignore
 
-0.13.2 2022 Dec 16
+* ObjC: modernized xcode projects, updated min deployment target to iOS 11 &
+        macOS 10.13
+* ObjC: enabled mac catalyst support (Seth Sandler)
+* ObjC: added auto io handling to iOS example
+
+* C++: fixed unused param, signed comparison, and ret type warnings (Mike Will)
+
+* C#: NuGet packaging updates (Thomas Mayer)
+* C#: MuliInstance -> MultiInstance example naming fix (Thomas Mayer)
+
+* Python: various updates and fixes to the pygame examples (Mike Will)
+
+* Java: updates for native arm64 support on macOS (funkyfourier)
+
+* Makefile: use JAVA_HOME on macOS instead of /System/... path,
+            link JavaNativeFoundation framework instead of JavaVM (funkyfourier)
+* Makefile: now install m_imp.h and g_canvas.h for externals (Tiago Rezende)
+
+* added a Rust section to the main README.md (Ali Somay)
+
+0.13.2: 2022 Dec 16
 
 * updated to pd vanilla 0.53-1
 
-0.13.1 2022 Nov 13
+0.13.1: 2022 Nov 13
 
 * whoops forgot to update ObjC layer and Xcode project
 
-0.13.0 2022 Nov 05
+0.13.0: 2022 Nov 05
 
 * updated to pd vanilla 0.53-0
 
@@ -60,7 +111,7 @@
 * added pdtest_double and pdtest_queued c samples
 * added pdtest_multi cpp sample
 
-0.12.3 2021 Jun 12
+0.12.3: 2021 Jun 12
 
 * libpd.xcodeproj macOS targets no longer install static lib or copy public
   headers to avoid creating generic archives instead of app archives
@@ -69,7 +120,7 @@
 * ObjC: added note about setting videoRecording mode when using
         allowBluetoothA2DP option (suggested by lwinged)
 
-0.12.2 2021 May 31
+0.12.2: 2021 May 31
 
 * fixed pd~ core external sources not included in libpd.xcodeproj
   (reported by d01101010m)
@@ -79,7 +130,7 @@
   - min version now 2.8.12
   - fixed math library not found 
 
-0.12.1 2021 Jan 08
+0.12.1: 2021 Jan 08
 
 * added pd~ core external to build
 
@@ -91,7 +142,7 @@
 * C++: added resizeArray(), processRawShort(), & processRawDouble() wrappers
 * C++: general header formatting refresh
 
-0.12.0 2020 Dec 30
+0.12.0: 2020 Dec 30
 
 * updated to pd vanilla 0.51-4
 * switched pure-data submodule to github

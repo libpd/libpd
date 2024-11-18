@@ -391,6 +391,14 @@ JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_bindSymbol
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    unbindSymbol
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setVerbose
+  (JNIEnv *, jclass, jboolean);
+
 #ifdef __cplusplus
 }
 #endif

@@ -3,7 +3,7 @@ libpd
 
 [Pure Data](http://puredata.info) as an embeddable audio synthesis library
 
-Copyright (c) Peter Brinkmann & the libpd team 2010-2022
+Copyright (c) Peter Brinkmann & the libpd team 2010-2023
 
 Documentation
 -------------
@@ -411,7 +411,6 @@ If you install pyaudio with `pip`, you will need to install Portaudio first. On 
 
     brew install portaudio
 
-
 Rust
 ------
 
@@ -444,7 +443,7 @@ One way to configure CMake is to use the [CMake GUI](https://cmake.org/runningcm
 
 In this step you can select the features to be included with `PD_EXTRA`, `PD_LOCALE`, `PD_MULTI` and `PD_UTILS` as described above. You can also enable building the C sample programs using `PD_BUILD_C_EXAMPLES`.
 
-When using Microsoft Visual Studio (MSVC), you will be requested to provide a path to the pthreads library and its headers using variables `CMAKE_THREAD_LIBS_INIT` and `PTHREADS_INCLUDE_DIR`.
+When using Microsoft Visual Studio (MSVC), you will be requested to provide a path to the pthreads library and its headers using variables `PTHREADS_LIB` and `PTHREADS_INCLUDE_DIR`.
 
 On macOS, you can define different deployment target and architectures from your current system using the variables `CMAKE_OSX_DEPLOYMENT_TARGET` and `CMAKE_OSX_ARCHITECTURES`.
 
