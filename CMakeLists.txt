@@ -300,7 +300,6 @@ target_include_directories(libpd_private_settings
 
 target_include_directories(libpd_public_settings
   INTERFACE
-    libpd_wrapper
     pure-data/src
 )
 
