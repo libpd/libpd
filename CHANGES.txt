@@ -1,12 +1,17 @@
 0.15.0: TBD
 
-* updated to pd vanilla 0.55 (in development)
+* updated to pd vanilla 0.55-2
 
 * C: renamed ringbuffer to z_ringbuffer to match integration in upstream
      pure-data repo, this may require updating existing projects
 * C: added Emscripten support (via updates to pure-data)
 * C: define _DARWIN_UNLIMITED_SELECT to increased max number of file
      descriptors on macOS to > 1024
+* C: portaudio sample now prints audio device info
+
+* ObjC: updated xcode project for pd 0.5
+* ObjC: fixed warning by explictly synthesizing PdAudioController audioUnit
+        property
 
 0.14.1: 2023 Dec 24
 
