@@ -36,11 +36,11 @@ if(WIN32)
 endif()
 if (MSVC)
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DHAVE_STRUCT_TIMESPEC")
-    add_compile_definitions("_CRT_SECURE_NO_WARNINGS")
-    add_compile_options("/wd4091 /wd4996")
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_options(/wd4091 /wd4996)
 
     # vcruntime_c11_stdatomic.h(36,24): error C2061: syntax error: identifier 'atomic_bool'
-    add_compile_options("/experimental:c11atomics")
+    add_compile_options(/experimental:c11atomics)
     if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
         # Select appropriate long int type on 64-bit Windows
         add_compile_definitions("PD_LONGINTTYPE=\"long long\"")
