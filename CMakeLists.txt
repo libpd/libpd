@@ -45,7 +45,7 @@ if (MSVC)
     add_compile_options(/experimental:c11atomics)
     if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
         # Select appropriate long int type on 64-bit Windows
-        add_compile_definitions("PD_LONGINTTYPE=\"long long\"")
+        add_compile_definitions("PD_LONGINTTYPE=long long")
     endif()
 else()
     set(CMAKE_C_FLAGS         "${CMAKE_C_FLAGS} -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast")
