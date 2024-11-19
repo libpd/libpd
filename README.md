@@ -54,6 +54,8 @@ The directory containing the sources of Pd Vanilla and it's standard externals. 
 
 ### libpd_wrapper
 
+**As of libpd 0.15 (pd 0.55-2), the core libpd files in `pure-data/src/z_*` are used instead. This directory will be removed in a future libpd version.**
+
 This directory contains the source files that make up the core of libpd.
 
 ### Android.mk, Makefile, libpd.xcodeproj, libpd_csharp.sln, .classpath, .project
@@ -98,7 +100,7 @@ Currently the main Makefile builds a dynamic lib on Windows (in MinGW), Linux, &
 
 Makefile options allow for conditional compilation of libpd util and pd extra externals sources into libpd as well as other options:
 
-* **UTIL=true**: compile utilities in `libpd_wrapper/util` (default)
+* **UTIL=true**: compile utilities such as `z_print_util` (default)
 * **EXTRA=true**: compile `pure-data/extra` externals which are then inited in libpd_init() (default)
 * **MULTI=true**: compile with multiple instance support
 * **DOUBLE=true**: compile with double-precision support
@@ -136,7 +138,7 @@ Install the core build requirements using your distribution's package manager. F
 
 ### macOS
 
-macOS is built on top of a BSD system and the bash or zsh commandline can be accessed with the Terminal application in the /Applications/Utility directory.
+macOS is built on top of a BSD system and the bash or zsh commandline can be accessed with the Terminal application in the `/Applications/Utility` directory.
 
 #### Xcode
 
@@ -224,7 +226,7 @@ In this case, the vbap external needs to be recompiled with the `-DPDINSTANCE -D
 C++
 ---
 
-The C++ wrapper is inspired by the Java wrapper and provides a PdBase class as well as listener, list, and message type classes. This is a header only library so you only need to include the `cpp` directory in your project. You also may need to add `libpd_wrapper/util` to you include paths.
+The C++ wrapper is inspired by the Java wrapper and provides a PdBase class as well as listener, list, and message type classes. This is a header only library so you only need to include the `cpp` directory in your project..
 
 Sample programs are found in `samples/cpp`.
 
