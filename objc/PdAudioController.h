@@ -21,8 +21,8 @@ typedef enum PdAudioStatus {
 	PdAudioPropertyChanged = 1 // some properties have changed to run correctly
 } PdAudioStatus;
 
-/// PdAudioController: a class for managing a PdAudioUnit instance within iOS
-/// by using the AVFoundation and Audio Services APIs, handles phone
+/// PdAudioController: simple class for managing a single PdAudioUnit instance
+/// within iOS by using the AVFoundation and Audio Services APIs, handles phone
 /// interruptions and provides high level configuration methods by wrapping
 /// relevant AVAudioSession methods
 @interface PdAudioController : NSObject
@@ -53,7 +53,8 @@ typedef enum PdAudioStatus {
 @property (nonatomic, strong, readonly) PdAudioUnit *audioUnit;
 
 /// read only access to audio unit pd instance
-@property (nonatomic, strong, readonly) PdInstance *instance;
+/// main pd instance in single-instance mode or a unique instance in multi-instance mode
+@property (nonatomic, strong, readonly) PdInstance *pd;
 
 #pragma mark Audio Session Category Options
 

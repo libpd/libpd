@@ -20,7 +20,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 
 @interface PdAudioUnit ()
 
-@property (nonatomic, readwrite) PdInstance *instance;
+@property (nonatomic, readwrite) PdInstance *pd;
 
 /// create and start the audio unit
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate
@@ -54,15 +54,21 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 
 + (instancetype)defaultAudioUnit {
 	PdAudioUnit *au = [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
-																options:0
+	                                                            options:0
                                                                   error:nil];
-	au.instance = [[PdInstance alloc] init];
+	#ifdef PDINSTANCE
+		au.pd = [[PdInstance alloc] init]; // queued
+	#else
+		au.pd = PdInstance.mainInstance;
+	#endif
 	return au;
 }
 
-+ (instancetype)defaultAudioUnitWithInstance:(PdInstance *)instance {
-	PdAudioUnit *au = [PdAudioUnit defaultAudioUnit];
-	au.instance = instance;
++ (instancetype)defaultAudioUnitWithInstance:(PdInstance *)pd {
+	PdAudioUnit *au = [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
+	                                                            options:0
+                                                                  error:nil];
+	au.pd = pd;
 	return au;
 }
 
@@ -111,10 +117,10 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	if (![self updateInputChannels:_inputChannels outputChannels:_outputChannels]) {
 		return -1;
 	}
-	[self.instance openAudioWithSampleRate:sampleRate
+	[self.pd openAudioWithSampleRate:sampleRate
 							 inputChannels:inputChannels
 							outputChannels:outputChannels];
-	[self.instance computeAudio:YES];
+	[self.pd computeAudio:YES];
 	self.active = wasActive;
 	return 0;
 }
@@ -285,7 +291,7 @@ static OSStatus audioRenderCallback(void *inRefCon,
 		char *copy = (char *)auBuffer;
 		while (rb_available_to_read(pd->_outputRingBuffer) < outputBufferSize) {
 			rb_read_from_buffer(pd->_inputRingBuffer, copy, pd->_inputBlockSize);
-			[pd->_instance processFloatWithInputBuffer:(float *)copy outputBuffer:(float *)copy ticks:1];
+			[pd->_pd processFloatWithInputBuffer:(float *)copy outputBuffer:(float *)copy ticks:1];
 			rb_write_to_buffer(pd->_outputRingBuffer, 1, copy, pd->_outputBlockSize);
 		}
 
@@ -301,7 +307,7 @@ static OSStatus audioRenderCallback(void *inRefCon,
 
 		// this is a faster way of computing (inNumberFrames / pd->_blockFrames)
 		int ticks = inNumberFrames >> pd->_blockFramesAsLog;
-		[pd->_instance processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
+		[pd->_pd processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
 	}
 
 	return noErr;
@@ -331,7 +337,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			pd->_sampleRate = sr;
 			AU_LOG(@"*** WARNING *** audio unit sample rate property changed: %g", sr);
 			[pd updateInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
-			[pd->_instance openAudioWithSampleRate:sr
+			[pd->_pd openAudioWithSampleRate:sr
 			                         inputChannels:pd->_inputChannels
 			                        outputChannels:pd->_outputChannels];
 		}
@@ -345,7 +351,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			if (pd->_inputChannels != streamFormat.mChannelsPerFrame) {
 				AU_LOG(@"*** WARNING *** audio unit input channels changed: %d", streamFormat.mChannelsPerFrame);
 				[pd updateInputChannels:streamFormat.mChannelsPerFrame outputChannels:pd->_outputChannels];
-				[pd->_instance openAudioWithSampleRate:pd->_sampleRate
+				[pd->_pd openAudioWithSampleRate:pd->_sampleRate
 				                         inputChannels:streamFormat.mChannelsPerFrame
 				                        outputChannels:pd->_outputChannels];
 
@@ -355,7 +361,7 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			if (pd->_outputChannels != streamFormat.mChannelsPerFrame) {
 				AU_LOG(@"*** WARNING *** audio unit output channels changed: %d", streamFormat.mChannelsPerFrame);
 				[pd updateInputChannels:pd->_inputChannels outputChannels:streamFormat.mChannelsPerFrame];
-				[pd->_instance openAudioWithSampleRate:pd->_sampleRate
+				[pd->_pd openAudioWithSampleRate:pd->_sampleRate
 				                         inputChannels:pd->_inputChannels
 				                        outputChannels:streamFormat.mChannelsPerFrame];
 

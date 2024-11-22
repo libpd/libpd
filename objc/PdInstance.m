@@ -2,22 +2,27 @@
 //  PdInstance.m
 //  libpd
 //
-//  Copyright (c) 2023 Dan Wilcox <danomatika@gmail.com>
+//  Copyright (c) 2024 Dan Wilcox <danomatika@gmail.com>
 //
 //  For information on usage and redistribution, and for a DISCLAIMER OF ALL
 //  WARRANTIES, see the file, "LICENSE.txt," in this distribution.
 //
+//  Adapted from original PdBase.m by Peter Brinkmann.
+//
 
 #import "PdInstance.h"
+#import "PdBase.h"
 #include "z_libpd.h"
 #include "z_queued.h"
 #include "z_print_util.h"
 
 #ifdef PDINSTANCE
-    #define PDBASE_SETINSTANCE libpd_set_instance(instance);
+    #define PDINSTANCE_SET libpd_set_instance(instance);
 #else
-    #define PDBASE_SETINSTANCE
+    #define PDINSTANCE_SET
 #endif
+
+//#define DEBUG_PDINSTANCE
 
 #pragma mark - List Conversion
 
@@ -34,7 +39,7 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 			NSString *str = [[NSString alloc] initWithCString:s encoding:NSUTF8StringEncoding];
 			[list addObject:str];
 		} else {
-			NSLog(@"PdBase: element type unsupported: %i", a->a_type);
+			NSLog(@"PdInstance: element type unsupported: %i", a->a_type);
 		}
 	}
 	return (NSArray *)list;
@@ -55,7 +60,7 @@ static void encodeList(NSArray *list) {
 				libpd_add_symbol([newString cStringUsingEncoding:NSUTF8StringEncoding]);
 			}
 		} else {
-			NSLog(@"PdBase: message not supported. %@", [object class]);
+			NSLog(@"PdInstance: message not supported. %@", [object class]);
 		}
 	}
 }
@@ -165,6 +170,8 @@ static void midiByteHook(int port, int byte) {
 
 #pragma mark -
 
+static PdInstance *s_mainInstance = nil; // global main instance
+
 @interface PdInstance () {
 	BOOL queued;
 	NSTimer *messagePollTimer;
@@ -175,8 +182,8 @@ static void midiByteHook(int port, int byte) {
 }
 
 // timer methods, same as receiveMessage & receiveMidi
-- (void)receiveMessagesTimer:(NSTimer*)theTimer;
-- (void)receiveMidiTimer:(NSTimer*)theTimer;
+- (void)receiveMessagesTimer:(NSTimer *)theTimer;
+- (void)receiveMidiTimer:(NSTimer *)theTimer;
 
 @end
 
@@ -201,15 +208,19 @@ static void midiByteHook(int port, int byte) {
 	return self;
 }
 
+// overwrites instance data
 - (void)setupWithQueue:(BOOL)queue {
+#ifdef DEBUG_PDINSTANCE
+	NSLog(@"PdInstance: setup %@", self);
+#endif
 	libpd_init();
 	#ifdef PDINSTANCE
 		instance = libpd_new_instance();
+		libpd_set_instance(instance);
+		libpd_set_instancedata((__bridge void *)(self), NULL);
 	#endif
-	libpd_set_instancedata((__bridge void *)(self), NULL);
-	if (queue) {
-		queued = YES;
-		PDBASE_SETINSTANCE
+	queued = queue;
+	if (queued) {
 		libpd_queued_init();
 
 		libpd_set_queued_printhook(libpd_print_concatenator);
@@ -230,9 +241,6 @@ static void midiByteHook(int port, int byte) {
 		libpd_set_queued_midibytehook(midiByteHook);
 	}
 	else {
-		[self stopMessagesTimer];
-		[self stopMidiTimer];
-		queued = NO;
 		libpd_set_printhook(libpd_print_concatenator);
 		libpd_set_concatenated_printhook(printHook);
 
@@ -252,24 +260,76 @@ static void midiByteHook(int port, int byte) {
 	}
 }
 
+- (void)dealloc {
+#ifdef DEBUG_PDINSTANCE
+	NSLog(@"PdInstance: dealloc %@", self);
+#endif
+	PDINSTANCE_SET
+	[self computeAudio:false];
+	[self stopMessagesTimer];
+	[self stopMidiTimer];
+	if (queued) {
+		libpd_set_queued_printhook(NULL);
+		libpd_set_concatenated_printhook(NULL);
+
+		libpd_set_queued_banghook(NULL);
+		libpd_set_queued_floathook(NULL);
+		libpd_set_queued_symbolhook(NULL);
+		libpd_set_queued_listhook(NULL);
+		libpd_set_queued_messagehook(NULL);
+
+		libpd_set_queued_noteonhook(NULL);
+		libpd_set_queued_controlchangehook(NULL);
+		libpd_set_queued_programchangehook(NULL);
+		libpd_set_queued_pitchbendhook(NULL);
+		libpd_set_queued_aftertouchhook(NULL);
+		libpd_set_queued_polyaftertouchhook(NULL);
+		libpd_set_queued_midibytehook(NULL);
+
+		libpd_queued_release();
+	}
+	else {
+		libpd_set_printhook(NULL);
+		libpd_set_concatenated_printhook(NULL);
+
+		libpd_set_banghook(NULL);
+		libpd_set_floathook(NULL);
+		libpd_set_symbolhook(NULL);
+		libpd_set_listhook(NULL);
+		libpd_set_messagehook(NULL);
+
+		libpd_set_noteonhook(NULL);
+		libpd_set_controlchangehook(NULL);
+		libpd_set_programchangehook(NULL);
+		libpd_set_pitchbendhook(NULL);
+		libpd_set_aftertouchhook(NULL);
+		libpd_set_polyaftertouchhook(NULL);
+		libpd_set_midibytehook(NULL);
+	}
+	#ifdef PDINSTANCE
+		libpd_set_instancedata(NULL, NULL);
+		libpd_free_instance(instance);
+	#endif
+}
+
 - (BOOL)isQueued {
 	return queued;
 }
 
-- (void)clearSearchPath {
-	PDBASE_SETINSTANCE
-	libpd_clear_search_path();
+- (void)addToSearchPath:(NSString *)path {
+	PDINSTANCE_SET
+	libpd_add_to_search_path([path cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
-- (void)addToSearchPath:(NSString *)path {
-	PDBASE_SETINSTANCE
-	libpd_add_to_search_path([path cStringUsingEncoding:NSUTF8StringEncoding]);
+- (void)clearSearchPath {
+	PDINSTANCE_SET
+	libpd_clear_search_path();
 }
 
 #pragma mark Opening Patches
 
 - (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	if (!baseName || !pathName) {
 		return NULL;
 	}
@@ -282,14 +342,14 @@ static void midiByteHook(int port, int byte) {
 }
 
 - (void)closeFile:(void *)x {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	if (x) {
 		libpd_closefile(x);
 	}
 }
 
 - (int)dollarZeroForFile:(void *)x {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_getdollarzero(x);
 }
 
@@ -302,58 +362,58 @@ static void midiByteHook(int port, int byte) {
 - (int)openAudioWithSampleRate:(int)samplerate
                  inputChannels:(int)inputChannels
                  outputChannels:(int)outputchannels {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_init_audio(inputChannels, outputchannels, samplerate);
 }
 
 - (int)processFloatWithInputBuffer:(const float *)inputBuffer
                       outputBuffer:(float *)outputBuffer
                              ticks:(int)ticks {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_process_float(ticks, inputBuffer, outputBuffer);
 }
 
 - (int)processShortWithInputBuffer:(const short *)inputBuffer
                       outputBuffer:(short *)outputBuffer
                              ticks:(int)ticks {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_process_short(ticks, inputBuffer, outputBuffer);
 }
 
 - (int)processDoubleWithInputBuffer:(const double *)inputBuffer
                        outputBuffer:(double *)outputBuffer
                               ticks:(int)ticks {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_process_double(ticks, inputBuffer, outputBuffer);
 }
 
 - (void)computeAudio:(BOOL)enable {
-	PDBASE_SETINSTANCE
-	[PdBase sendMessage:@"dsp" withArguments:@[@(enable)] toReceiver:@"pd"];
+	PDINSTANCE_SET
+	[self sendMessage:@"dsp" withArguments:@[@(enable)] toReceiver:@"pd"];
 }
 
 #pragma mark Array Access
 
 - (int)arraySizeForArrayNamed:(NSString *)arrayName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_arraysize([arrayName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (int)resizeArrayNamed:(NSString *)arrayName toSize:(long)size {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_resize_array([arrayName cStringUsingEncoding:NSUTF8StringEncoding], size);
 }
 
 - (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset
               toArray:(float *)destinationArray count:(int)n {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_read_array(destinationArray, name, offset, n);
 }
 
 - (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName
       withOffset:(int)offset count:(int)n {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
 	return libpd_write_array(name, offset, sourceArray, n);
 }
@@ -361,51 +421,51 @@ static void midiByteHook(int port, int byte) {
 #pragma mark Sending Messages to Pd
 
 - (int)sendBangToReceiver:(NSString *)receiverName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_bang([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (int)sendFloat:(float)value toReceiver:(NSString *)receiverName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_float([receiverName cStringUsingEncoding:NSUTF8StringEncoding], value);
 }
 
 - (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_symbol([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
-			[symbol cStringUsingEncoding:NSUTF8StringEncoding]);
+	                    [symbol cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	if (libpd_start_message((int) list.count)) return -100;
-			encodeList(list);
-		return libpd_finish_list([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
+	encodeList(list);
+	return libpd_finish_list([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (int)sendMessage:(NSString *)message withArguments:(NSArray *)list
         toReceiver:(NSString *)receiverName {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	if (libpd_start_message((int) list.count)) return -100;
 	encodeList(list);
 	return libpd_finish_message([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
-		[message cStringUsingEncoding:NSUTF8StringEncoding]);
+	                            [message cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 #pragma mark Receiving Messages from Pd
 
 - (void *)subscribe:(NSString *)symbol {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_bind([symbol cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (void)unsubscribe:(void *)subscription {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	libpd_unbind(subscription);
 }
 
 - (BOOL)exists:(NSString *)symbol {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return (BOOL) libpd_exists([symbol cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
@@ -423,7 +483,7 @@ static void midiByteHook(int port, int byte) {
 }
 
 - (void)receiveMessages {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	libpd_queued_receive_pd_messages();
 }
 
@@ -439,55 +499,55 @@ static void midiByteHook(int port, int byte) {
 	}
 }
 
-- (void)receiveMessagesTimer:(NSTimer*)theTimer {
-	PDBASE_SETINSTANCE
+- (void)receiveMessagesTimer:(NSTimer *)theTimer {
+	PDINSTANCE_SET
 	libpd_queued_receive_pd_messages();
 }
 
 #pragma mark Sending MIDI messages to Pd
 
 - (int)sendNoteOn:(int)channel pitch:(int)pitch velocity:(int)velocity {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_noteon(channel, pitch, velocity);
 }
 
 - (int)sendControlChange:(int)channel controller:(int)controller value:(int)value {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_controlchange(channel, controller, value);
 }
 
 - (int)sendProgramChange:(int)channel value:(int)value {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_programchange(channel, value);
 }
 
 - (int)sendPitchBend:(int)channel value:(int)value {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_pitchbend(channel, value);
 }
 
 - (int)sendAftertouch:(int)channel value:(int)value {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_aftertouch(channel, value);
 }
 
 - (int)sendPolyAftertouch:(int)channel pitch:(int)pitch value:(int)value {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_polyaftertouch(channel, pitch, value);
 }
 
 - (int)sendMidiByte:(int)port byte:(int)byte {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_midibyte(port, byte);
 }
 
 - (int)sendSysex:(int)port byte:(int)byte {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_sysex(port, byte);
 }
 
 - (int)sendSysRealTime:(int)port byte:(int)byte {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	return libpd_sysrealtime(port, byte);
 }
 
@@ -507,7 +567,7 @@ static void midiByteHook(int port, int byte) {
 }
 
 - (void)receiveMidi {
-	PDBASE_SETINSTANCE
+	PDINSTANCE_SET
 	libpd_queued_receive_midi_messages();
 }
 
@@ -523,20 +583,92 @@ static void midiByteHook(int port, int byte) {
 	}
 }
 
-- (void)receiveMidiTimer:(NSTimer*)theTimer {
-	PDBASE_SETINSTANCE
+- (void)receiveMidiTimer:(NSTimer *)theTimer {
+	PDINSTANCE_SET
 	libpd_queued_receive_midi_messages();
+}
+
+#pragma mark Multiple Instances
+
+- (BOOL)isMainInstance {
+#ifdef PDINSTANCE
+	return instance == libpd_main_instance();
+#else
+	return YES;
+#endif
+}
+
+- (void *)instance {
+#ifdef PDINSTANCE
+	return (void *)instance;
+#else
+	return libpd_main_instance();
+#endif
+}
+
+- (void)setThisInstance {
+#ifdef PDINSTANCE
+	libpd_set_instance(instance);
+#endif
+}
+
++ (PdInstance *)thisInstance {
+	return (__bridge PdInstance *)libpd_get_instancedata();
+}
+
+// create as needed, do not overwrite instance data
++ (PdInstance *)mainInstance {
+	if (s_mainInstance == nil) {
+#ifdef DEBUG_PDINSTANCE
+		NSLog(@"PdInstance: creating main instance");
+#endif
+		libpd_init();
+#ifdef PDINSTANCE
+		libpd_set_instance(libpd_main_instance());
+#endif
+		s_mainInstance = [[PdInstance alloc] init];
+#ifdef PDINSTANCE
+		// libpd_set_instancedata called in init
+#else
+		libpd_set_instancedata((__bridge void *)(s_mainInstance), NULL);
+#endif
+	}
+	return s_mainInstance;
+}
+
+// overwrite main instance data *only* if changing queued status
++ (int)initMainInstanceWithQueue:(BOOL)queue {
+	if (s_mainInstance != nil && s_mainInstance.isQueued == queue) {
+		return -1; // nothing to do
+	}
+	libpd_init();
+#ifdef PDINSTANCE
+	libpd_set_instance(libpd_main_instance());
+#endif
+	libpd_set_instancedata(NULL, NULL); // overwrite
+#ifdef DEBUG_PDINSTANCE
+	NSLog(@"PdBase: creating main instance");
+#endif
+	s_mainInstance = [[PdInstance alloc] initWithQueue:queue];
+#ifdef PDINSTANCE
+	// libpd_set_instancedata called by init
+#else
+	libpd_set_instancedata((__bridge void *)(s_mainInstance), NULL);
+#endif
+	return 0;
+}
+
++ (int)numInstances {
+	return libpd_num_instances();
 }
 
 #pragma mark Log Level
 
-- (void)setVerbose:(BOOL)verbose {
-	PDBASE_SETINSTANCE
++ (void)setVerbose:(BOOL)verbose {
 	libpd_set_verbose((int)verbose);
 }
 
-- (BOOL)getVerbose {
-	PDBASE_SETINSTANCE
++ (BOOL)getVerbose {
 	return libpd_get_verbose();
 }
 

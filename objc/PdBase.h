@@ -31,141 +31,34 @@
 // IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Updated 2013, 2018, 2020 Dan Wilcox <danomatika@gmail.com>
+// Updated 2013, 2018, 2020, 2024 Dan Wilcox <danomatika@gmail.com>
 //
 
-#import <Foundation/Foundation.h>
-
-#pragma mark -
-
-/// listener interface for messages from pd
-@protocol PdListener<NSObject>
-@optional
-
-/// receive bang, source is the source receiver name
-- (void)receiveBangFromSource:(NSString *)source;
-
-/// receive float, source is the source receiver name
-- (void)receiveFloat:(float)received fromSource:(NSString *)source;
-
-/// receive symbol, source is the source receiver name
-- (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source;
-
-/// receive list, source is the source receiver name
-/// list is an NSArray whose data can be inspected & accessed with:
-///     for (int i = 0; i < list.count; i++) {
-///       id obj = list[i];
-///       if ([obj isKindOfClass:NSNumber.class]) {
-///         float x = [obj floatValue];
-///         // do something with float x
-///       } else if ([obj isKindOfClass:NSString.class]) {
-///         NSString *s = obj;
-///         // do something with string s
-///       }
-///     }
-/// note: currently only float and symbol types are supported in pd lists
-- (void)receiveList:(NSArray *)list fromSource:(NSString *)source;
-
-/// receive typed message, source is the source receiver name and message is
-/// the typed message name: a message like [; foo bar 1 2 a b( will trigger a
-/// function call like [delegate receiveMessage:@"bar"
-///                               withArguments:@[@(1), @(2), @"a", @"b"]
-///                                  fromSource:@"foo"]
-/// arguments is an NSArray whose data can be inspected & accessed with:
-///     for (int i = 0; i < arguments.count; i++) {
-///       id obj = arguments[i];
-///       if ([obj isKindOfClass:NSNumber.class]) {
-///         float x = [obj floatValue];
-///         // do something with float x
-///       } else if ([obj isKindOfClass:NSString.class]) {
-///         NSString *s = obj;
-///         // do something with string s
-///       }
-///     }
-/// note: currently only float and symbol types are supported in pd lists
-- (void)receiveMessage:(NSString *)message withArguments:(NSArray *)arguments
-                                              fromSource:(NSString *)source;
-@end
-
-/// receiver interface for printing and receiving messages from pd
-@protocol PdReceiverDelegate<PdListener>
-@optional
-
-/// receive print line, message is the string to be printed
-- (void)receivePrint:(NSString *)message;
-@end
-
-#pragma mark -
-
-/// listener interface for MIDI from pd
-@protocol PdMidiListener<NSObject>
-@optional
-
-/// receive MIDI note on
-/// channel is 0-indexed, pitch is 0-127, and value is 0-127
-/// channels encode MIDI ports via: libpd_channel = pd_channel + 16 * pd_port
-/// note: there is no note off message, note on w/ velocity = 0 is used instead
-/// note: out of range values from pd are clamped
-- (void)receiveNoteOn:(int)pitch withVelocity:(int)velocity
-                                   forChannel:(int)channel;
-
-/// receive MIDI control change
-/// channel is 0-indexed, controller is 0-127, and value is 0-127
-/// channels encode MIDI ports via: libpd_channel = pd_channel + 16 * pd_port
-/// note: out of range values from pd are clamped
-- (void)receiveControlChange:(int)value forController:(int)controller
-                                           forChannel:(int)channel;
-
-/// receive MIDI program change
-/// channel is 0-indexed and value is 0-127
-/// channels encode MIDI ports via: libpd_channel = pd_channel + 16 * pd_port
-/// note: out of range values from pd are clamped
-- (void)receiveProgramChange:(int)value forChannel:(int)channel;
-
-/// receive MIDI pitch bend
-/// channel is 0-indexed and value is -8192-8192
-/// channels encode MIDI ports via: libpd_channel = pd_channel + 16 * pd_port
-/// note: [bendin] outputs 0-16383 while [bendout] accepts -8192-8192
-/// note: out of range values from pd are clamped
-- (void)receivePitchBend:(int)value forChannel:(int)channel;
-
-/// receive MIDI after touch
-/// channel is 0-indexed and value is 0-127
-/// channels encode MIDI ports via: libpd_channel = pd_channel + 16 * pd_port
-/// note: out of range values from pd are clamped
-- (void)receiveAftertouch:(int)value forChannel:(int)channel;
-
-/// receive MIDI poly after touch
-/// channel is 0-indexed, pitch is 0-127, and value is 0-127
-/// channels encode MIDI ports via: libpd_channel = pd_channel + 16 * pd_port
-/// note: out of range values from pd are clamped
-- (void)receivePolyAftertouch:(int)value forPitch:(int)pitch
-                                       forChannel:(int)channel;
-@end
-
-/// receiver interface for MIDI messages from pd
-@protocol PdMidiReceiverDelegate<PdMidiListener>
-@optional
-
-/// receive raw MIDI byte
-/// port is 0-indexed and byte is 0-256
-/// note: out of range values from pd are clamped
-- (void)receiveMidiByte:(int)byte forPort:(int)port;
-@end
-
-#pragma mark -
+#import "PdInstance.h"
 
 /// PdBase: a class level wrapper for the libpd C API
 /// not meant to be instantiated, no member variables
+///
+/// behavior depends upon if libpd is compiled for single or multiple instances
+/// * single instance mode (default):
+///   - wraps main PdInstance only
+///   - do not create additional PdInstance objects directly(!)
+/// * multi instance mode: (define PDINSTANCE and PDTHREADS in CFLAGS)
+///   - wraps PdInstance.thisInstance, main PdInstance by default
+///   - call [PdInstance setThisInstance] to change current instance
+///   - note: "this" PdInstance is changed whenever a new PdInstance is created
 @interface PdBase : NSObject
 
 #pragma mark Initializing Pd
 
 /// initialize with message queuing, safe to call this more than once
+/// creates main pd instance
+/// note: automatically called when PdBase is first used
 /// returns 0 on success or -1 if libpd was already initialized
 + (int)initialize;
 
 /// initialize with or without message queuing, safe to call this more than once
+/// overwrites main pd instance if changing queued setting
 ///
 /// for lowest latency, this will result in delegate receiver calls from the
 /// audio thread directly which will probably require manual dispatch to the
@@ -445,13 +338,5 @@
 /// only required if the respective delegate was set with pollingEnabled NO
 /// and queuing is enabled
 + (void)receiveMidi;
-
-#pragma mark Log Level
-
-/// set verbose print state
-+ (void)setVerbose:(BOOL)verbose;
-
-/// get the verbose print state
-+ (BOOL)getVerbose;
 
 @end

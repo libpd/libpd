@@ -53,7 +53,7 @@
 @property (nonatomic, readonly) AudioUnit audioUnit;
 
 /// underlying pd instance
-@property (nonatomic, strong, readonly) PdInstance *instance;
+@property (nonatomic, strong, readonly) PdInstance *pd;
 
 /// audio unit callback function reference, override the getter method if you
 /// want to subclass PdAudioUnit and implement your own custom sample rendering

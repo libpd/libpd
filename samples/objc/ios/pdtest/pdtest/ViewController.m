@@ -18,7 +18,6 @@
 
 @interface ViewController() {}
 
-@property (strong, nonatomic) PdInstance *pd;
 @property (strong, nonatomic) PdAudioController *audioController;
 @property (strong, nonatomic) PdFile *patch;
 
@@ -64,8 +63,8 @@
 	CGPoint pos = [touch locationInView:self.view];
 	int pitch = (-1 * (pos.y/CGRectGetHeight(self.view.frame)) + 1) * 127;
 
-	[self.pd sendList:@[@"pitch", @(pitch)] toReceiver:@"tone"];
-	[self.pd sendBangToReceiver:@"tone"];
+	[PdBase sendList:@[@"pitch", @(pitch)] toReceiver:@"tone"];
+	[PdBase sendBangToReceiver:@"tone"];
 
 	NSLog(@"touch at %.f %.f with pitch: %d", pos.x, pos.y, pitch);
 }
@@ -91,18 +90,42 @@
 	outputChannels = (int)AVAudioSession.sharedInstance.maximumOutputNumberOfChannels;
 	#endif
 
-	self.pd = [[PdInstance alloc] init];
-	PdInstance *testPd = [[PdInstance alloc] init];
-
 	// configure a typical audio session with input and output
-	if(self.pd) {
-		self.audioController = [[PdAudioController alloc] initWithInstance:self.pd];
-	}
-	else {
-		self.audioController = [[PdAudioController alloc] init];
-		self.pd = self.audioController.instance;
-	}
-	testPd = nil;
+	// multiple instances supported if compiling with PDINSTANCE and PDTHREADS
+	// ie. linking to libpd xcode project's libpd-ios-multi target
+#ifdef PDINSTANCE
+	NSLog(@"compiled for multiple instances");
+
+	// use the audio unit's default pd instance, unique to each audio unit
+	self.audioController = [[PdAudioController alloc] init];
+	// ... or provide a specific PdInstance for the audio unit
+	//self.audioController = [[PdAudioController alloc] initWithInstance:[[PdInstance alloc] init]];
+	NSLog(@"num pd instances: %d", PdInstance.numInstances);
+	NSLog(@"main pd instance: %@", PdInstance.mainInstance); // shared main instance, always valid
+	NSLog(@"this pd instance: %@", PdInstance.thisInstance); // current instance
+
+	// access the audio unit's instance
+	PdInstance *pd = self.audioController.audioUnit.pd;
+	NSLog(@"audio unit pd instance: %@", pd);
+
+	// can now use instance directly instead of PdBase calls:
+	// [pd setDelegate:self];
+	// ...
+	// or set as current "this" instance for PdBase & libpd C API calls
+	// [pd setThisInstance];
+	// [PdBase setMidiDelegate:self];
+	// ...
+	/// note: new PdInstances become the current "this" instance on creation
+#else
+	NSLog(@"compiled for single instance");
+	self.audioController = [[PdAudioController alloc] init];
+
+	// PdBase wraps main instance, can also use main instance directly via
+	// PdInstance.mainInstance:
+	// PDInstance *pd = PdInstance.mainInstance;
+	// [pd setMidiDelegate:self];
+	// ...
+#endif
 
 	// add/override some common session settings
 	//self.audioController.mixWithOthers = NO; // this app's audio only
@@ -134,18 +157,18 @@
 	[self updateInfoLabels];
 
 	// set AppDelegate as PdReceiverDelegate to receive messages from pd
-	[self.pd setDelegate:self];
-	[self.pd setMidiDelegate:self]; // for midi too
+	[PdBase setDelegate:self];
+	[PdBase setMidiDelegate:self]; // for midi too
 
 	// receive messages to fromPD: [r fromPD]
-	[self.pd subscribe:@"fromPD"];
+	[PdBase subscribe:@"fromPD"];
 
 	// add search path
-	[self.pd addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", NSBundle.mainBundle.bundlePath]];
+	[PdBase addToSearchPath:[NSString stringWithFormat:@"%@/pd/abs", NSBundle.mainBundle.bundlePath]];
 
 	// turn on dsp
 	self.audioController.active = YES;
-	[self.pd computeAudio:YES];
+	[PdBase computeAudio:YES];
 }
 
 - (void)testPd {
@@ -155,8 +178,9 @@
 	NSLog(@"-- BEGIN Patch Test");
 
 	// open patch
+	//[PdBase openFile:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
 	self.patch = [PdFile openFileNamed:@"test.pd"
-								  path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
+	                              path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
 	NSLog(@"%@", self.patch);
 
 	// close patch
@@ -173,19 +197,19 @@
 	NSLog(@"-- BEGIN Message Test");
 
 	// test basic atoms
-	[self.pd sendBangToReceiver:@"toPd"];
-	[self.pd sendFloat:100 toReceiver:@"toPD"];
-	[self.pd sendSymbol:@"test string" toReceiver:@"toPD" ];
+	[PdBase sendBangToReceiver:@"toPd"];
+	[PdBase sendFloat:100 toReceiver:@"toPD"];
+	[PdBase sendSymbol:@"test string" toReceiver:@"toPD" ];
 
 	// send a list
 	NSArray *list = @[@1.23f, @"a symbol"];
-	[self.pd sendList:list toReceiver:@"toPd"];
+	[PdBase sendList:list toReceiver:@"toPd"];
 
 	// send a list to the $0 receiver ie $0-toPd
-	[self.pd sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", self.patch.dollarZero]];
+	[PdBase sendList:list toReceiver:[NSString stringWithFormat:@"%d-toPd", self.patch.dollarZero]];
 
 	// send a message
-	[self.pd sendMessage:@"msg" withArguments:list toReceiver:@"toPD"];
+	[PdBase sendMessage:@"msg" withArguments:list toReceiver:@"toPD"];
 
 
 	NSLog(@"-- FINISH Message Test");
@@ -194,16 +218,16 @@
 	NSLog(@"-- BEGIN MIDI Test");
 
 	// send functions
-	[self.pd sendNoteOn:midiChan pitch:60 velocity:64];
-	[self.pd sendControlChange:midiChan controller:0 value:64];
-	[self.pd sendProgramChange:midiChan value:100];
-	[self.pd sendPitchBend:midiChan value:2000];
+	[PdBase sendNoteOn:midiChan pitch:60 velocity:64];
+	[PdBase sendControlChange:midiChan controller:0 value:64];
+	[PdBase sendProgramChange:midiChan value:100];
+	[PdBase sendPitchBend:midiChan value:2000];
 
-	[self.pd sendAftertouch:midiChan value:100];
-	[self.pd sendPolyAftertouch:midiChan pitch:64 value:100];
-	[self.pd sendMidiByte:0 byte:239];
-	[self.pd sendSysex:0 byte:239];
-	[self.pd sendSysRealTime:0 byte:239];
+	[PdBase sendAftertouch:midiChan value:100];
+	[PdBase sendPolyAftertouch:midiChan pitch:64 value:100];
+	[PdBase sendMidiByte:0 byte:239];
+	[PdBase sendSysex:0 byte:239];
+	[PdBase sendSysRealTime:0 byte:239];
 
 	NSLog(@"-- FINISH MIDI Test");
 
@@ -211,12 +235,12 @@
 	NSLog(@"-- BEGIN Array Test");
 
 	// array check length
-	int array1Len = [self.pd arraySizeForArrayNamed:@"array1"];
+	int array1Len = [PdBase arraySizeForArrayNamed:@"array1"];
 	NSLog(@"array1 len: %d", array1Len);
 
 	// read array
 	float array1[array1Len];
-	[self.pd copyArrayNamed:@"array1" withOffset:0 toArray:array1 count:array1Len];
+	[PdBase copyArrayNamed:@"array1" withOffset:0 toArray:array1 count:array1Len];
 	NSMutableString *array1String = [[NSMutableString alloc] init];
 	for(int i = 0; i < array1Len; ++i)
 		[array1String appendString:[NSString stringWithFormat:@"%f ", array1[i]]];
@@ -225,11 +249,11 @@
 	// clear array
 	for(int i = 0; i < array1Len; ++i)
 		array1[i] = 0;
-	[self.pd copyArray:array1 toArrayNamed:@"array1" withOffset:0 count:array1Len];
+	[PdBase copyArray:array1 toArrayNamed:@"array1" withOffset:0 count:array1Len];
 
 	// read array
 	[array1String setString:@""];
-	[self.pd copyArrayNamed:@"array1" withOffset:0 toArray:array1 count:array1Len];
+	[PdBase copyArrayNamed:@"array1" withOffset:0 toArray:array1 count:array1Len];
 	for(int i = 0; i < array1Len; ++i)
 		[array1String appendString:[NSString stringWithFormat:@"%f ", array1[i]]];
 	NSLog(@"%@", array1String);
@@ -237,11 +261,11 @@
 	// write array
 	for(int i = 0; i < array1Len; ++i)
 		array1[i] = i;
-	[self.pd copyArray:array1 toArrayNamed:@"array1" withOffset:0 count:array1Len];
+	[PdBase copyArray:array1 toArrayNamed:@"array1" withOffset:0 count:array1Len];
 
 	// read array
 	[array1String setString:@""];
-	[self.pd copyArrayNamed:@"array1" withOffset:0 toArray:array1 count:array1Len];
+	[PdBase copyArrayNamed:@"array1" withOffset:0 toArray:array1 count:array1Len];
 	for(int i = 0; i < array1Len; ++i)
 		[array1String appendString:[NSString stringWithFormat:@"%f ", array1[i]]];
 	NSLog(@"%@", array1String);
@@ -251,7 +275,7 @@
 
 	NSLog(@"-- BEGIN PD Test");
 
-	[self.pd sendSymbol:@"test" toReceiver:@"toPD"];
+	[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
 
 	NSLog(@"-- FINISH PD Test");
 
@@ -259,22 +283,22 @@
 	NSLog(@"-- BEGIN Polling Test");
 
 	// set delegates again, but disable polling
-	[self.pd setDelegate:nil]; // clear delegate & stop polling timer
-	[self.pd setMidiDelegate:nil];
-	[self.pd setDelegate:self pollingEnabled:NO];
-	[self.pd setMidiDelegate:self pollingEnabled:NO];
+	[PdBase setDelegate:nil]; // clear delegate & stop polling timer
+	[PdBase setMidiDelegate:nil];
+	[PdBase setDelegate:self pollingEnabled:NO];
+	[PdBase setMidiDelegate:self pollingEnabled:NO];
 
-	[self.pd sendSymbol:@"test" toReceiver:@"toPD"];
+	[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
 
-	// process messages manually
-	[self.pd receiveMessages];
-	[self.pd receiveMidi];
+	// process message queues manually
+	[PdBase receiveMessages];
+	[PdBase receiveMidi];
 
 	NSLog(@"-- FINISH Polling Test");
 
 	// reenable delegates
-	[self.pd setDelegate:self];
-	[self.pd setMidiDelegate:self];
+	[PdBase setDelegate:self];
+	[PdBase setMidiDelegate:self];
 }
 
 #pragma mark PdReceiverDelegate

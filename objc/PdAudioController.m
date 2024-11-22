@@ -475,8 +475,8 @@
 
 #pragma mark Overridden Getters/Setters
 
-- (PdInstance *)instance {
-	return self.audioUnit.instance;
+- (PdInstance *)pd {
+	return self.audioUnit.pd;
 }
 
 // make sure option changes are applied on restart
