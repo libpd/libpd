@@ -18,7 +18,8 @@ jobs:
             submodules: 'recursive'
       - name: Dependencies
         run: |
-          apt-get install -qq --force-yes cmake build-essential gcc
+          sudo apt-get update
+          sudo apt-get -y --no-install-recommends install cmake build-essential
       - name: Build (Makefile)
         run: |
           make
@@ -99,8 +100,10 @@ jobs:
           msystem: ${{matrix.platform.sys}}
           update: true
           pacboy: >-
-            cmake:p
+            clang:p
+            make:p
             toolchain:p
+            cmake:p
       - name: Build (Makefile)
         shell: msys2 {0}
         run: |
