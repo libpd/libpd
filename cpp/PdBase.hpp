@@ -1188,6 +1188,16 @@ public:
         return libpd_num_instances();
     }
 
+    /// set verbose print state
+    static setVerbose(bool verbose) {
+        libpd_set_verbose((int)verbose);
+    }
+
+    /// get the verbose print state
+    static bool isVerbose() {
+        return libpd_get_verbose();
+    }
+
 protected:
 
     /// compound message status
