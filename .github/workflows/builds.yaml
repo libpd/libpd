@@ -23,9 +23,9 @@ jobs:
       - name: Build (Makefile)
         run: |
           make
-          make -C samples/c/pdtest && make clean
-          make -C samples/c/pdtest_multi && make clean
-          make -C samples/c/pdtest_thread && make clean
+          make -C samples/c/pdtest && make clobber
+          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest_thread
       - name: Build (CMake)
         run: |
             cmake \
@@ -100,17 +100,16 @@ jobs:
           msystem: ${{matrix.platform.sys}}
           update: true
           pacboy: >-
-            clang:p
-            make:p
+            base-devel
             toolchain:p
             cmake:p
       - name: Build (Makefile)
         shell: msys2 {0}
         run: |
           make
-          make -C samples/c/pdtest && make clean
-          make -C samples/c/pdtest_multi && make clean
-          make -C samples/c/pdtest_thread && make clean
+          make -C samples/c/pdtest && make clobber
+          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest_thread
       - name: Build (CMake)
         shell: msys2 {0}
         run: |
@@ -143,9 +142,9 @@ jobs:
       - name: Build (Makefile)
         run: |
           make
-          make -C samples/c/pdtest && make clean
-          make -C samples/c/pdtest_multi && make clean
-          make -C samples/c/pdtest_thread && make clean
+          make -C samples/c/pdtest && make clobber
+          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest_thread
       - name: Build (CMake)
         run: |
           cmake \
@@ -176,9 +175,9 @@ jobs:
       - name: Build (Makefile)
         run: |
           make
-          make -C samples/c/pdtest && make clean
-          make -C samples/c/pdtest_multi && make clean
-          make -C samples/c/pdtest_thread && make clean
+          make -C samples/c/pdtest && make clobber
+          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest_thread
       - name: Build (CMake)
         run: |
           cmake \
