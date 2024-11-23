@@ -1189,7 +1189,7 @@ public:
     }
 
     /// set verbose print state
-    static setVerbose(bool verbose) {
+    static void setVerbose(bool verbose) {
         libpd_set_verbose((int)verbose);
     }
 
