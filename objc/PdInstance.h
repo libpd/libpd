@@ -129,7 +129,7 @@
 
 #pragma mark -
 
-/// PdBase: an instance wrapper for the libpd C API
+/// PdInstance: an instance wrapper for the libpd C API
 ///
 /// behavior depends upon if libpd is compiled for single or multiple instances
 /// * single instance mode (default):
@@ -142,7 +142,8 @@
 ///   - each PdInstance instance is unique
 ///   - shared main instance always valid via PdInstance.mainInstance
 ///   - current "this" instance is main instance by default
-///   - call [PdInstance setThisInstance] to change current instance
+///   - most PdInstance methods set the current instance
+///   - call [PdInstance setThisInstance] to explicitly set the current instance
 ///   - note: "this" instance is changed whenever a new PdInstance is created
 @interface PdInstance : NSObject
 
@@ -156,7 +157,7 @@
 
 /// create a new pd instance with or without message queuing
 /// note: do not call this directly if compiling without PDINSTANCE,
-///       use [PdInstance initMainInstanceWithQueue:] and
+///       use [PdInstance initializeMainInstanceWithQueue:] and
 ///       PdInstance.mainInstance to get the main instance
 /// note: sets current "this" instance if compiled with PDINSTANCE
 ///
@@ -195,9 +196,6 @@
 - (int)dollarZeroForFile:(void *)x;
 
 #pragma mark Audio Processing
-
-/// return pd's fixed block size: the number of sample frames per 1 pd tick
-+ (int)getBlockSize;
 
 /// initialize audio rendering
 /// returns 0 on success
@@ -262,19 +260,19 @@
 /// send a bang to a destination receiver
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send a bang to [s foo] on the next tick with:
-///     [PdBase sendBangToReceiver:@"foo"];
+///     [pd sendBangToReceiver:@"foo"];
 - (int)sendBangToReceiver:(NSString *)receiverName;
 
 /// send a float to a destination receiver
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send a 1.0 to [s foo] on the next tick with:
-///     [PdBase sendFloat:1 toReceiver:@"foo"];
+///     [pd sendFloat:1 toReceiver:@"foo"];
 - (int)sendFloat:(float)value toReceiver:(NSString *)receiverName;
 
 /// send a symbol to a destination receiver
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send "bar" to [s foo] on the next tick with:
-///     [PdBase sendSymbol:@"bar" toReceiver:@"foo"];
+///     [pd sendSymbol:@"bar" toReceiver:@"foo"];
 - (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName;
 
 /// send a list to a destination receiver,
@@ -282,7 +280,7 @@
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send [list 1 2 bar( to [s foo] on the next tick with:
 ///     NSArray *list = @[@(1), @(2), @"bar", @"foo"];
-///     [PdBase sendList:list toReceiver:@"foo"];
+///     [pd sendList:list toReceiver:@"foo"];
 /// note: currently only float and symbol types are supported in pd lists
 - (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName;
 
@@ -295,7 +293,7 @@
 /// returns 0 on success or -1 if receiver name is non-existent
 /// ex: send [; pd dsp 1( on the next tick with:
 ///     NSArray *list = @[@(1)];
-///     [PdBase sendMessage:@"dsp" withArguments:list toReceiver:@"pd"];
+///     [pd sendMessage:@"dsp" withArguments:list toReceiver:@"pd"];
 /// note: currently only float and symbol types are supported in pd lists
 - (int)sendMessage:(NSString *)message withArguments:(NSArray *)list
         toReceiver:(NSString *)receiverName;
@@ -306,7 +304,7 @@
 /// returns an opaque receiver pointer or nil on failure
 
 /// subscribe to messages sent to a source receiver
-/// ex: [PdBase subscribe:@"foo"] adds a "virtual" [r foo] which forwards
+/// ex: [pd subscribe:@"foo"] adds a "virtual" [r foo] which forwards
 /// messages to the PdMessageReceiver delegate
 /// returns an opaque receiver pointer or NULL on failure
 - (void *)subscribe:(NSString *)symbol;
@@ -326,7 +324,7 @@
 ///
 /// polling is performed by an NSTimer using an interval which is "good enough"
 /// for most cases, however if you need lower latency look into calling
-/// receiveMessages: using a CADisplayLink of high resolution timer
+/// receiveMessages: using a CADisplayLink or high resolution timer
 ///
 /// for lowest latency, you can disable queing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
@@ -416,9 +414,9 @@
 ///
 /// polling is performed by an NSTimer using an interval which is "good enough"
 /// for most cases, however if you need lower latency look into calling
-/// receiveMidiMessages: using a CADisplayLink of high resolution timer
+/// receiveMidiMessages: using a CADisplayLink or high resolution timer
 ///
-/// for lowest latency, you can disable queing with initializeWithQueue NO
+/// for lowest latency, you can disable queuing with initializeWithQueue:NO
 /// although this will result in delegate receiver calls from the audio thread
 /// directly which may require manual dispatch to main thread for UI handling
 ///
@@ -460,13 +458,12 @@
 /// get the main instance, always valid
 /// creates default queued instance, as needed
 /// note: override with non-queued instance by calling
-///       [PdInstance initMainInstanceWithQueue:NO]
+///       [PdInstance initializeMainInstanceWithQueue:NO]
 + (PdInstance *)mainInstance;
 
 /// (re)initialize main instance with or without message queuing,
 /// safe to call this more than once, overwrites main pd instance if changing
-/// queued setting (so update any saved pointers)
-/// note: sets current "this" instance if compiled with PDINSTANCE
+/// queue setting (so update any saved pointers), sets current instance
 ///
 /// for lowest latency, this will result in delegate receiver calls from the
 /// audio thread directly which will probably require manual dispatch to the
@@ -476,18 +473,10 @@
 /// note: stops message polling if queue is NO
 ///
 /// returns 0 on success or -1 if libpd was already initialized
-+ (int)initMainInstanceWithQueue:(BOOL)queue;
++ (int)initializeMainInstanceWithQueue:(BOOL)queue;
 
 /// get the number of pd instances, including the main instance
 /// returns number or 1 when libpd is compiled without PDINSTANCE
 + (int)numInstances;
-
-#pragma mark Log Level
-
-/// set verbose print state, affects all instances
-+ (void)setVerbose:(BOOL)verbose;
-
-/// get the verbose print state
-+ (BOOL)getVerbose;
 
 @end

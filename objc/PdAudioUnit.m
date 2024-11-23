@@ -11,7 +11,7 @@
 //
 
 #import "PdAudioUnit.h"
-#import "PdInstance.h"
+#import "PdBase.h"
 #import "AudioHelpers.h"
 #include "z_ringbuffer.h"
 
@@ -55,7 +55,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 + (instancetype)defaultAudioUnit {
 	PdAudioUnit *au = [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
 	                                                            options:0
-                                                                  error:nil];
+	                                                              error:nil];
 	#ifdef PDINSTANCE
 		au.pd = [[PdInstance alloc] init]; // queued
 	#else
@@ -67,7 +67,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 + (instancetype)defaultAudioUnitWithInstance:(PdInstance *)pd {
 	PdAudioUnit *au = [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
 	                                                            options:0
-                                                                  error:nil];
+	                                                              error:nil];
 	au.pd = pd;
 	return au;
 }
@@ -77,7 +77,7 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
                                        error:(NSError **)outError {
 	self = [super initWithComponentDescription:componentDescription options:options error:outError];
 	if (self) {
-		_blockFrames = [PdInstance getBlockSize];
+		_blockFrames = [PdBase getBlockSize];
 		_blockFramesAsLog = log2int(_blockFrames);
 	}
 	return self;
@@ -118,8 +118,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 		return -1;
 	}
 	[self.pd openAudioWithSampleRate:sampleRate
-							 inputChannels:inputChannels
-							outputChannels:outputChannels];
+	                   inputChannels:inputChannels
+	                  outputChannels:outputChannels];
 	[self.pd computeAudio:YES];
 	self.active = wasActive;
 	return 0;

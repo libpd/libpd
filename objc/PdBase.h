@@ -41,24 +41,25 @@
 ///
 /// behavior depends upon if libpd is compiled for single or multiple instances
 /// * single instance mode (default):
-///   - wraps main PdInstance only
+///   - wraps main instance only
 ///   - do not create additional PdInstance objects directly(!)
 /// * multi instance mode: (define PDINSTANCE and PDTHREADS in CFLAGS)
-///   - wraps PdInstance.thisInstance, main PdInstance by default
+///   - wraps current "this" instance, set to main instance by default
 ///   - call [PdInstance setThisInstance] to change current instance
 ///   - note: "this" PdInstance is changed whenever a new PdInstance is created
+///           or when PdBase is first used
 @interface PdBase : NSObject
 
 #pragma mark Initializing Pd
 
 /// initialize with message queuing, safe to call this more than once
 /// creates main pd instance
-/// note: automatically called when PdBase is first used
+/// note: automatically called when PdBase is first used, sets current instance
 /// returns 0 on success or -1 if libpd was already initialized
 + (int)initialize;
 
 /// initialize with or without message queuing, safe to call this more than once
-/// overwrites main pd instance if changing queued setting
+/// overwrites main pd instance if changing queue setting, sets current instance
 ///
 /// for lowest latency, this will result in delegate receiver calls from the
 /// audio thread directly which will probably require manual dispatch to the
@@ -73,14 +74,14 @@
 /// returns whether pd was initialized with message queuing
 + (BOOL)isQueued;
 
-/// clear the pd search path for abstractions and externals
-/// note: this is called when initializing
-+ (void)clearSearchPath;
-
 /// add a path to the pd search paths
 /// relative paths are relative to the current working directory
 /// unlike desktop pd, *no* search paths are set by default (ie. extra)
 + (void)addToSearchPath:(NSString *)path;
+
+/// clear the pd search path for abstractions and externals
+/// note: this is called when initializing
++ (void)clearSearchPath;
 
 #pragma mark Opening Patches
 
@@ -227,7 +228,7 @@
 ///
 /// polling is performed by an NSTimer using an interval which is "good enough"
 /// for most cases, however if you need lower latency look into calling
-/// receiveMessages: using a CADisplayLink of high resolution timer
+/// receiveMessages: using a CADisplayLink or high resolution timer
 ///
 /// for lowest latency, you can disable queuing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
@@ -317,7 +318,7 @@
 ///
 /// polling is performed by an NSTimer using an interval which is "good enough"
 /// for most cases, however if you need lower latency look into calling
-/// receiveMidiMessages: using a CADisplayLink of high resolution timer
+/// receiveMidiMessages: using a CADisplayLink or high resolution timer
 ///
 /// for lowest latency, you can disable queuing with initializeWithQueue NO
 /// although this will result in delegate receiver calls from the audio thread
@@ -338,5 +339,13 @@
 /// only required if the respective delegate was set with pollingEnabled NO
 /// and queuing is enabled
 + (void)receiveMidi;
+
+#pragma mark Log Level
+
+/// set verbose print state
++ (void)setVerbose:(BOOL)verbose;
+
+/// get the verbose print state
++ (BOOL)getVerbose;
 
 @end

@@ -45,26 +45,6 @@ static NSArray *decodeList(int argc, t_atom *argv) {
 	return (NSArray *)list;
 }
 
-static void encodeList(NSArray *list) {
-	for (int i = 0; i < list.count; i++) {
-		NSObject *object = list[i];
-		if ([object isKindOfClass:[NSNumber class]]) {
-			libpd_add_float(((NSNumber *)object).floatValue);
-		} else if ([object isKindOfClass:[NSString class]]) {
-			if ([(NSString *)object canBeConvertedToEncoding:NSUTF8StringEncoding]) {
-				libpd_add_symbol([(NSString *)object cStringUsingEncoding:NSUTF8StringEncoding]);
-			} else {
-				// If string contains non-ASCII characters, allow a lossy conversion (instead of returning null).
-				NSData *data = [(NSString *)object dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-				NSString* newString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-				libpd_add_symbol([newString cStringUsingEncoding:NSUTF8StringEncoding]);
-			}
-		} else {
-			NSLog(@"PdInstance: message not supported. %@", [object class]);
-		}
-	}
-}
-
 #pragma mark - Hooks
 
 static void printHook(const char *s) {
@@ -181,6 +161,9 @@ static PdInstance *s_mainInstance = nil; // global main instance
 #endif
 }
 
+// init main instance?
+- (instancetype)initWithQueue:(BOOL)queue isMain:(BOOL)main;
+
 // timer methods, same as receiveMessage & receiveMidi
 - (void)receiveMessagesTimer:(NSTimer *)theTimer;
 - (void)receiveMidiTimer:(NSTimer *)theTimer;
@@ -195,7 +178,7 @@ static PdInstance *s_mainInstance = nil; // global main instance
 - (instancetype)init {
 	self = [super init];
 	if (self) {
-		[self setupWithQueue:YES];
+		[self setupWithQueue:YES isMain:NO];
 	}
 	return self;
 }
@@ -203,22 +186,30 @@ static PdInstance *s_mainInstance = nil; // global main instance
 - (instancetype)initWithQueue:(BOOL)queue {
 	self = [super init];
 	if (self) {
-		[self setupWithQueue:queue];
+		[self setupWithQueue:queue isMain:NO];
+	}
+	return self;
+}
+
+- (instancetype)initWithQueue:(BOOL)queue isMain:(BOOL)main {
+	self = [super init];
+	if (self) {
+		[self setupWithQueue:queue isMain:main];
 	}
 	return self;
 }
 
 // overwrites instance data
-- (void)setupWithQueue:(BOOL)queue {
+- (void)setupWithQueue:(BOOL)queue isMain:(BOOL)main {
 #ifdef DEBUG_PDINSTANCE
 	NSLog(@"PdInstance: setup %@", self);
 #endif
 	libpd_init();
-	#ifdef PDINSTANCE
-		instance = libpd_new_instance();
-		libpd_set_instance(instance);
-		libpd_set_instancedata((__bridge void *)(self), NULL);
-	#endif
+#ifdef PDINSTANCE
+	instance = (main ? libpd_main_instance() : libpd_new_instance());
+	libpd_set_instance(instance);
+	libpd_set_instancedata((__bridge void *)(self), NULL);
+#endif
 	queued = queue;
 	if (queued) {
 		libpd_queued_init();
@@ -318,46 +309,32 @@ static PdInstance *s_mainInstance = nil; // global main instance
 
 - (void)addToSearchPath:(NSString *)path {
 	PDINSTANCE_SET
-	libpd_add_to_search_path([path cStringUsingEncoding:NSUTF8StringEncoding]);
+	[PdBase addToSearchPath:path];
 }
 
 - (void)clearSearchPath {
 	PDINSTANCE_SET
-	libpd_clear_search_path();
+	[PdBase clearSearchPath];
 }
 
 #pragma mark Opening Patches
 
 - (void *)openFile:(NSString *)baseName path:(NSString *)pathName {
 	PDINSTANCE_SET
-	if (!baseName || !pathName) {
-		return NULL;
-	}
-	if (![[NSFileManager defaultManager] fileExistsAtPath:[pathName stringByAppendingPathComponent:baseName]]) {
-		return NULL;
-	}
-	const char *base = [baseName cStringUsingEncoding:NSUTF8StringEncoding];
-	const char *path = [pathName cStringUsingEncoding:NSUTF8StringEncoding];
-	return libpd_openfile(base, path);
+	return [PdBase openFile:baseName path:pathName];
 }
 
 - (void)closeFile:(void *)x {
 	PDINSTANCE_SET
-	if (x) {
-		libpd_closefile(x);
-	}
+	return [PdBase closeFile:x];
 }
 
 - (int)dollarZeroForFile:(void *)x {
 	PDINSTANCE_SET
-	return libpd_getdollarzero(x);
+	return [PdBase dollarZeroForFile:x];
 }
 
 #pragma mark Audio Processing
-
-+ (int)getBlockSize {
-	return libpd_blocksize();
-}
 
 - (int)openAudioWithSampleRate:(int)samplerate
                  inputChannels:(int)inputChannels
@@ -389,84 +366,76 @@ static PdInstance *s_mainInstance = nil; // global main instance
 
 - (void)computeAudio:(BOOL)enable {
 	PDINSTANCE_SET
-	[self sendMessage:@"dsp" withArguments:@[@(enable)] toReceiver:@"pd"];
+	[PdBase sendMessage:@"dsp" withArguments:@[@(enable)] toReceiver:@"pd"];
 }
 
 #pragma mark Array Access
 
 - (int)arraySizeForArrayNamed:(NSString *)arrayName {
 	PDINSTANCE_SET
-	return libpd_arraysize([arrayName cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase arraySizeForArrayNamed:arrayName];
 }
 
 - (int)resizeArrayNamed:(NSString *)arrayName toSize:(long)size {
 	PDINSTANCE_SET
-	return libpd_resize_array([arrayName cStringUsingEncoding:NSUTF8StringEncoding], size);
+	return [PdBase resizeArrayNamed:arrayName toSize:size];
 }
 
 - (int)copyArrayNamed:(NSString *)arrayName withOffset:(int)offset
               toArray:(float *)destinationArray count:(int)n {
 	PDINSTANCE_SET
-	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
-	return libpd_read_array(destinationArray, name, offset, n);
+	return [PdBase copyArrayNamed:arrayName withOffset:offset toArray:destinationArray count:n];
 }
 
 - (int)copyArray:(float *)sourceArray toArrayNamed:(NSString *)arrayName
       withOffset:(int)offset count:(int)n {
 	PDINSTANCE_SET
-	const char *name = [arrayName cStringUsingEncoding:NSUTF8StringEncoding];
-	return libpd_write_array(name, offset, sourceArray, n);
+	return [PdBase copyArray:sourceArray toArrayNamed:arrayName withOffset:offset count:n];
 }
 
 #pragma mark Sending Messages to Pd
 
 - (int)sendBangToReceiver:(NSString *)receiverName {
 	PDINSTANCE_SET
-	return libpd_bang([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase sendBangToReceiver:receiverName];
 }
 
 - (int)sendFloat:(float)value toReceiver:(NSString *)receiverName {
 	PDINSTANCE_SET
-	return libpd_float([receiverName cStringUsingEncoding:NSUTF8StringEncoding], value);
+	return [PdBase sendFloat:value toReceiver:receiverName];
 }
 
 - (int)sendSymbol:(NSString *)symbol toReceiver:(NSString *)receiverName {
 	PDINSTANCE_SET
-	return libpd_symbol([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
-	                    [symbol cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase sendSymbol:symbol toReceiver:receiverName];
 }
 
 - (int)sendList:(NSArray *)list toReceiver:(NSString *)receiverName {
 	PDINSTANCE_SET
-	if (libpd_start_message((int) list.count)) return -100;
-	encodeList(list);
-	return libpd_finish_list([receiverName cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase sendList:list toReceiver:receiverName];
 }
 
 - (int)sendMessage:(NSString *)message withArguments:(NSArray *)list
         toReceiver:(NSString *)receiverName {
 	PDINSTANCE_SET
-	if (libpd_start_message((int) list.count)) return -100;
-	encodeList(list);
-	return libpd_finish_message([receiverName cStringUsingEncoding:NSUTF8StringEncoding],
-	                            [message cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase sendMessage:message withArguments:list toReceiver:receiverName];
 }
 
 #pragma mark Receiving Messages from Pd
 
 - (void *)subscribe:(NSString *)symbol {
 	PDINSTANCE_SET
-	return libpd_bind([symbol cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase subscribe:symbol];
 }
 
 - (void)unsubscribe:(void *)subscription {
 	PDINSTANCE_SET
-	libpd_unbind(subscription);
+	[PdBase unsubscribe:subscription];
 }
 
 - (BOOL)exists:(NSString *)symbol {
 	PDINSTANCE_SET
-	return (BOOL) libpd_exists([symbol cStringUsingEncoding:NSUTF8StringEncoding]);
+	return [PdBase exists:symbol];
 }
 
 // only to be called from main thread
@@ -598,7 +567,7 @@ static PdInstance *s_mainInstance = nil; // global main instance
 #endif
 }
 
-- (void *)instance {
+- (void *)pdinstance {
 #ifdef PDINSTANCE
 	return (void *)instance;
 #else
@@ -613,7 +582,11 @@ static PdInstance *s_mainInstance = nil; // global main instance
 }
 
 + (PdInstance *)thisInstance {
+#ifdef PDINSTANCE
 	return (__bridge PdInstance *)libpd_get_instancedata();
+#else
+	return PdInstance.mainInstance;
+#endif
 }
 
 // create as needed, do not overwrite instance data
@@ -626,7 +599,7 @@ static PdInstance *s_mainInstance = nil; // global main instance
 #ifdef PDINSTANCE
 		libpd_set_instance(libpd_main_instance());
 #endif
-		s_mainInstance = [[PdInstance alloc] init];
+		s_mainInstance = [[PdInstance alloc] initWithQueue:YES isMain:YES];
 #ifdef PDINSTANCE
 		// libpd_set_instancedata called in init
 #else
@@ -637,7 +610,7 @@ static PdInstance *s_mainInstance = nil; // global main instance
 }
 
 // overwrite main instance data *only* if changing queued status
-+ (int)initMainInstanceWithQueue:(BOOL)queue {
++ (int)initializeMainInstanceWithQueue:(BOOL)queue {
 	if (s_mainInstance != nil && s_mainInstance.isQueued == queue) {
 		return -1; // nothing to do
 	}
@@ -649,7 +622,7 @@ static PdInstance *s_mainInstance = nil; // global main instance
 #ifdef DEBUG_PDINSTANCE
 	NSLog(@"PdBase: creating main instance");
 #endif
-	s_mainInstance = [[PdInstance alloc] initWithQueue:queue];
+	s_mainInstance = [[PdInstance alloc] initWithQueue:queue isMain:YES];
 #ifdef PDINSTANCE
 	// libpd_set_instancedata called by init
 #else
@@ -660,16 +633,6 @@ static PdInstance *s_mainInstance = nil; // global main instance
 
 + (int)numInstances {
 	return libpd_num_instances();
-}
-
-#pragma mark Log Level
-
-+ (void)setVerbose:(BOOL)verbose {
-	libpd_set_verbose((int)verbose);
-}
-
-+ (BOOL)getVerbose {
-	return libpd_get_verbose();
 }
 
 @end

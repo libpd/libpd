@@ -116,11 +116,16 @@
 	// [PdBase setMidiDelegate:self];
 	// ...
 	/// note: new PdInstances become the current "this" instance on creation
+	///
+	[pd setThisInstance];
 #else
 	NSLog(@"compiled for single instance");
+
+	// uses main pd instance
 	self.audioController = [[PdAudioController alloc] init];
 
-	// PdBase wraps main instance, can also use main instance directly via
+	// PdBase wraps main instance
+	/// can also use main instance directly via
 	// PdInstance.mainInstance:
 	// PDInstance *pd = PdInstance.mainInstance;
 	// [pd setMidiDelegate:self];
@@ -148,7 +153,7 @@
 	}
 
 	// other AVAudioSession configurations can be done manually (see the Apple docs)
-	// for example, force voice chat mode: enable echo cancelation, Bluetooth, and default to speaker output
+	// for example, force voice chat mode: enable echo cancellation, Bluetooth, and default to speaker output
 	// this works for the PlayAndRecord category only, ie. playback with input and output channels > 0
 	//[AVAudioSession.sharedInstance setMode:AVAudioSessionModeVoiceChat error:nil];
 
