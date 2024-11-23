@@ -17,8 +17,8 @@ ifeq ($(UNAME), Darwin) # Mac
   PLATFORM = mac
 else
   ifeq ($(OS), Windows_NT) # Windows, use Mingw
+    SOLIB_PREFIX =
     SOLIB_EXT = dll
-    SOLIB_PREFIX = 
     PLATFORM = windows
   else # assume Linux
     SOLIB_EXT = so
@@ -27,7 +27,7 @@ else
 endif
 
 LIBPD_DIR = ../../..
-LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
+LIBPD = $(LIBPD_DIR)/libs/$(SOLIB_PREFIX)pd.$(SOLIB_EXT)
 
 SRC_FILES = src/PdObject.cpp src/main.cpp
 TARGET = pdtest_jack

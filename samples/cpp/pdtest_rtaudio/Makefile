@@ -19,8 +19,8 @@ ifeq ($(UNAME), Darwin)  # Mac
   AUDIO_API = -framework Foundation -framework CoreAudio
 else
   ifeq ($(OS), Windows_NT)  # Windows, use Mingw
+    SOLIB_PREFIX =
     SOLIB_EXT = dll
-    SOLIB_PREFIX = 
     PLATFORM = windows
     CXXFLAGS = -D__WINDOWS_DS__
     AUDIO_API = -lole32 -loleaut32 -ldsound -lwinmm
@@ -33,7 +33,7 @@ else
 endif
 
 LIBPD_DIR = ../../..
-LIBPD = $(LIBPD_DIR)/libs/libpd.$(SOLIB_EXT)
+LIBPD = $(LIBPD_DIR)/libs/$(SOLIB_PREFIX)pd.$(SOLIB_EXT)
 
 SRC_FILES = src/PdObject.cpp src/main.cpp src/RtAudio.cpp
 TARGET = pdtest_rtaudio
