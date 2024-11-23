@@ -3,83 +3,68 @@ name: Builds
 on: [ push, pull_request ]
 
 jobs:
-  debian:
+
+  linux:
     name: Linux
     runs-on: ubuntu-latest
-    container:
-      image: ${{ matrix.distro }}
-
     strategy:
-      fail-fast: false
       matrix:
-        pd_multi: [ON, OFF]
-        build_type: [Debug, Release]
-        distro: ["debian:stable", "debian:testing", "ubuntu:lunar", "ubuntu:mantic"]
-        CC: [clang, gcc]
-
+        pd_multi: [OFF]
+        build_type: [Debug]
     steps:
-      - name: Install git
-        run: |
-          apt-get update -qq
-          apt-get install -qq --force-yes git
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          submodules: 'recursive'
-
+      - name: Checkout
+        uses: actions/checkout@v4
+          with:
+            submodules: 'recursive'
       - name: Dependencies
         run: |
-          apt-get install -qq --force-yes cmake build-essential clang gcc
-
-      - name: Build
-        env:
-          CC: ${{ matrix.CC }}
+          apt-get install -qq --force-yes cmake build-essential gcc
+      - name: Build (Makefile)
         run: |
-          cmake \
-            -S $PWD -B build \
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-            -DPD_MULTI=${{ matrix.pd_multi }} \
-            -DPD_BUILD_C_EXAMPLES=ON
-          cmake --build build
+          make
+          make -C samples/c/pdtest && make clean
+          make -C samples/c/pdtest_multi && make clean
+          make -C samples/c/pdtest_thread && make clean
+      - name: Build (CMake)
+          run: |
+            cmake \
+              -S $PWD -B build \
+              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -DPD_MULTI=${{ matrix.pd_multi }} \
+              -DPD_BUILD_C_EXAMPLES=ON
+            cmake --build build
 
   win_msvc:
-    name: MSVC
+    name: Visual Studio
     runs-on: windows-latest
     strategy:
-      fail-fast: false
       matrix:
-        pd_multi: [ON, OFF]
-        build_type: [Debug, Release]
-        arch: [x86, x64]
+        pd_multi: [OFF]
+        build_type: [Debug]
+        arch: [x64]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
-
       - name: Checkout pthread-win32
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
           repository: GerHobbelt/pthread-win32
           path: pthread-win32
-
       - name: Set up Visual Studio shell
         uses: egor-tensin/vs-shell@v2
         with:
           arch: ${{ matrix.arch }}
-
       - name: Dependencies
         shell: bash
         run: |
           choco install -y cmake
-
-      - name: Build Pthread
+      - name: Pthread
         run: |
           msbuild pthread-win32/windows/VS2022/pthread_lib.2022.vcxproj /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.arch }}
-
-      - name: Build
+      - name: Build (CMake)
         shell: bash
         run: |
           export PTHREAD_STATIC_LIB=$(find pthread-win32/windows/VS2022/bin -name pthread_static_lib.lib)
@@ -98,20 +83,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pd_multi: [ON, OFF]
-        build_type: [Debug, Release]
+        pd_multi: [OFF]
+        build_type: [Debug]
         platform: [
-          { sys: mingw32, env: x86 },
           { sys: mingw64, env: x86_64 },
-          { sys: ucrt64,  env: ucrt-x86_64 },
-          { sys: clang64, env: clang-x86_64 }
         ]
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-
       - name: Dependencies
         uses: msys2/setup-msys2@v2
         with:
@@ -120,8 +101,14 @@ jobs:
           pacboy: >-
             cmake:p
             toolchain:p
-
-      - name: Build
+      - name: Build (Makefile)
+        shell: msys2 {0}
+        run: |
+          make
+          make -C samples/c/pdtest && make clean
+          make -C samples/c/pdtest_multi && make clean
+          make -C samples/c/pdtest_thread && make clean
+      - name: Build (CMake)
         shell: msys2 {0}
         run: |
           cmake \
@@ -136,23 +123,27 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        pd_multi: [ON, OFF]
-        build_type: [Debug, Release]
+        pd_multi: [OFF]
+        build_type: [Debug]
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
+      - name: Setup Xcode
+        - uses: maxim-lobanov/setup-xcode@v1
+          with:
+            xcode-version: latest-stable
       - name: Dependencies
         run: |
           brew install cmake
-
-      - name: Build
+       - name: Build (Makefile)
+        run: |
+          make
+          make -C samples/c/pdtest && make clean
+          make -C samples/c/pdtest_multi && make clean
+          make -C samples/c/pdtest_thread && make clean
+      - name: Build (CMake)
         run: |
           cmake \
             -S $PWD -B build \
@@ -167,24 +158,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pd_multi: [ON, OFF]
-        build_type: [Debug, Release]
+        pd_multi: [OFF]
+        build_type: [Debug]
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-
       - uses: vmactions/freebsd-vm@v1
         with:
           usesh: true
           prepare: |
             pkg install -y cmake
-
-          run: |
-            cmake \
-              -S $PWD -B build \
-              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-              -DPD_MULTI=${{ matrix.pd_multi }} \
-              -DPD_BUILD_C_EXAMPLES=ON
-            cmake --build build
+      - name: Build (Makefile)
+        run: |
+          make
+          make -C samples/c/pdtest && make clean
+          make -C samples/c/pdtest_multi && make clean
+          make -C samples/c/pdtest_thread && make clean
+      - name: Build (CMake)
+        run: |
+          cmake \
+            -S $PWD -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DPD_MULTI=${{ matrix.pd_multi }} \
+            -DPD_BUILD_C_EXAMPLES=ON
+          cmake --build build
