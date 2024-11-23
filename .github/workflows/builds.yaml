@@ -23,8 +23,9 @@ jobs:
       - name: Build (Makefile)
         run: |
           make
-          make -C samples/c/pdtest && make clobber
-          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest
+          make clobber
+          make -C samples/c/pdtest_multi
           make -C samples/c/pdtest_thread
       - name: Build (CMake)
         run: |
@@ -99,16 +100,15 @@ jobs:
         with:
           msystem: ${{matrix.platform.sys}}
           update: true
-          pacboy: >-
-            base-devel
-            toolchain:p
-            cmake:p
+          install: base-devel
+          pacboy: toolchain:p cmake:p
       - name: Build (Makefile)
         shell: msys2 {0}
         run: |
           make
-          make -C samples/c/pdtest && make clobber
-          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest
+          make clobber
+          make -C samples/c/pdtest_multi
           make -C samples/c/pdtest_thread
       - name: Build (CMake)
         shell: msys2 {0}
@@ -142,8 +142,9 @@ jobs:
       - name: Build (Makefile)
         run: |
           make
-          make -C samples/c/pdtest && make clobber
-          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest
+          make clobber
+          make -C samples/c/pdtest_multi
           make -C samples/c/pdtest_thread
       - name: Build (CMake)
         run: |
@@ -175,8 +176,9 @@ jobs:
       - name: Build (Makefile)
         run: |
           make
-          make -C samples/c/pdtest && make clobber
-          make -C samples/c/pdtest_multi && make clobber
+          make -C samples/c/pdtest
+          make clobber
+          make -C samples/c/pdtest_multi
           make -C samples/c/pdtest_thread
       - name: Build (CMake)
         run: |
