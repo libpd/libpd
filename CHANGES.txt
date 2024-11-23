@@ -9,14 +9,19 @@
      descriptors on macOS to > 1024
 * C: portaudio sample now prints audio device info
 
-* ObjC: updated xcode projects for pd 0.55 and xcode 15,
-        ios min deployment target now iOS 12
+* ObjC: modernized xcode projects, min deployment target now iOS 12
+* ObjC: fixed Swift UI PdAudioUnit crash due to input buffer being used when
+        input is disabled (anvlkv)
 * ObjC: fixed warning by explictly synthesizing PdAudioController audioUnit
         property
 * ObjC: added PdAudioController overrideMutedMicrophoneInterruption option
         (robertesler)
 
+* C++: added PdBase setVerbose() and isVerbose()
+
 * Java: added PdBase set_verbose() function (anvlkv)
+
+* added Github CI workflow (Jean-Michaël Celerier)
 
 0.14.1: 2023 Dec 24
 
