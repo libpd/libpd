@@ -14,6 +14,8 @@ option(LIBPD_STATIC "Build static library" ON)
 option(LIBPD_SHARED "Build shared library" ON)
 cmake_dependent_option(PD_BUILD_C_EXAMPLES "Builds C API example programs" OFF "LIBPD_SHARED" OFF)
 
+set(CMAKE_C_STANDARD 11)
+
 if (MSVC)
     set(PTHREADS_LIB CACHE FILEPATH "Path to pthreads library binary file (ex. C:/src/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)")
     set(PTHREADS_INCLUDE_DIR CACHE PATH "Path to folder with pthreads library header files (ex. C:/src/vcpkg/packages/pthreads_x64-windows/include)")
@@ -36,10 +38,14 @@ if(WIN32)
 endif()
 if (MSVC)
     set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DHAVE_STRUCT_TIMESPEC")
-    add_definitions("/D_CRT_SECURE_NO_WARNINGS /wd4091 /wd4996")
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_options(/wd4091 /wd4996)
+
+    # vcruntime_c11_stdatomic.h(36,24): error C2061: syntax error: identifier 'atomic_bool'
+    add_compile_options(/experimental:c11atomics)
     if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
         # Select appropriate long int type on 64-bit Windows
-        set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -DPD_LONGINTTYPE=\"long long\"")
+        add_compile_definitions("PD_LONGINTTYPE=long long")
     endif()
 else()
     set(CMAKE_C_FLAGS         "${CMAKE_C_FLAGS} -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast")
