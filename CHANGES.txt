@@ -12,6 +12,8 @@
 * ObjC: modernized xcode projects, min deployment target now iOS 12
 * ObjC: fixed Swift UI PdAudioUnit crash due to input buffer being used when
         input is disabled (anvlkv)
+* ObjC: fixed buffer issue due to legacy rounding for io buffer duration, seems
+        to be no longer needed on modern ios (reported by Oliver Greschke)
 * ObjC: fixed warning by explictly synthesizing PdAudioController audioUnit
         property
 * ObjC: added PdAudioController overrideMutedMicrophoneInterruption option
