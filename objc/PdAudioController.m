@@ -223,16 +223,11 @@
 	                             outputChannels:numberChannels];
 }
 
-// Note about the magic 0.5 added to numberFrames:
-// Apple is doing some horrible rounding of the bufferDuration into what tries
-// to give a power of two frames to the audio unit, which is inconsistent across
-// different devices. As they are currently truncating, we add in this value to
-// make sure the resulting ticks value is not halved.
 - (PdAudioStatus)configureTicksPerBuffer:(int)ticksPerBuffer {
 	AVAudioSession *session = AVAudioSession.sharedInstance;
 	NSError *error = nil;
 	int frames = [PdBase getBlockSize] * ticksPerBuffer;
-	NSTimeInterval duration = (Float32) (frames + 0.5) / self.sampleRate;
+	NSTimeInterval duration = (Float32) frames / self.sampleRate;
 
 	AU_LOGV(@"session preferred IO buffer duration: %g", session.preferredIOBufferDuration);
 	AU_LOGV(@"requested IO buffer duration: %g (frames %d)", duration, frames);
