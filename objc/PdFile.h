@@ -29,11 +29,13 @@
 /// stored parent dir path for the file
 @property (nonatomic, copy, readonly) NSString *pathName;
 
-/// open a pd file/patch by filename and parent dir path
+/// open a pd file/patch by filename and parent dir path using the current
+/// "this" pd instance, main instance by default
 /// returns representative PdFile on success or nil on failure
 + (instancetype)openFileNamed:(NSString *)baseName path:(NSString *)pathName;
 
-/// open a pd file/patch by filename and parent dir path,
+/// open a pd file/patch by filename and parent dir path, using the current
+/// "this" pd instance, main instance by default
 /// returns YES on success or NO on failure
 - (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName;
 
