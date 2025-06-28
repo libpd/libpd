@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    getPdVersion
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_getPdVersion
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    clearSearchPath
  * Signature: ()V
  */
@@ -289,6 +297,14 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_process__I_3D_3D
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    setVerbose
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setVerbose
+  (JNIEnv *, jclass, jboolean);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    initialize
  * Signature: ()V
  */
@@ -391,25 +407,6 @@ JNIEXPORT jlong JNICALL Java_org_puredata_core_PdBase_bindSymbol
 JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_unbindSymbol
   (JNIEnv *, jclass, jlong);
 
-/*
- * Class:     org_puredata_core_PdBase
- * Method:    unbindSymbol
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setVerbose
-  (JNIEnv *, jclass, jboolean);
-
-#ifdef __cplusplus
-}
-#endif
-#endif
-/* Header for class org_puredata_core_PdBaseLoader */
-
-#ifndef _Included_org_puredata_core_PdBaseLoader
-#define _Included_org_puredata_core_PdBaseLoader
-#ifdef __cplusplus
-extern "C" {
-#endif
 #ifdef __cplusplus
 }
 #endif
