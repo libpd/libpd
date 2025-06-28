@@ -75,6 +75,13 @@ public final class PdBase {
   }
 
   /**
+   * Get the version of PureData that has been compiled into the application.
+   *
+   * @return pd version string e.g "0.53.1"
+   */
+  public native static String versionString();
+
+  /**
    * Clears the search path for Pd externals.
    */
   public native static void clearSearchPath();

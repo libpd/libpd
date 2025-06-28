@@ -625,6 +625,18 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
   return err;
 }
 
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_versionString
+(JNIEnv *env, jclass cls) {
+  pthread_mutex_lock(&mutex);
+  int major, minor, bugfix;
+  char buf[1024];
+  sys_getversion(&major, &minor, &bugfix);
+  pthread_mutex_unlock(&mutex);
+  snprintf(buf, sizeof(buf), "%d.%d.%d", major, minor, bugfix);
+  jstring result = (*env)->NewStringUTF(env, buf);
+  return result;
+}
+
 // -----------------------------------------------------------------------------
 // Audio glue needs to be supplied in another file.
 // -----------------------------------------------------------------------------
