@@ -243,8 +243,8 @@ $(LIBPD_STATIC): ${PD_FILES:.c=.o} ${UTIL_FILES:.c=.o} ${EXTRA_FILES:.c=.o}
 javalib: $(JNIH_FILE) $(PDJAVA_JAR)
 
 $(JNIH_FILE): $(JAVA_BASE)
-	javac -classpath java $^
-	javah -o $@ -classpath java org.puredata.core.PdBase
+	javac -classpath java $^ -h jni
+	mv jni/org_puredata_core_PdBase.h jni/z_jni.h
 
 $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
