@@ -9,10 +9,10 @@ extern "C" {
 #endif
 /*
  * Class:     org_puredata_core_PdBase
- * Method:    getPdVersion
+ * Method:    versionString
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_getPdVersion
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_versionString
   (JNIEnv *, jclass);
 
 /*

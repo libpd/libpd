@@ -625,7 +625,7 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_sendSysRealTime
   return err;
 }
 
-JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_getPdVersion
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_versionString
 (JNIEnv *env, jclass cls) {
   pthread_mutex_lock(&mutex);
   int major, minor, bugfix;

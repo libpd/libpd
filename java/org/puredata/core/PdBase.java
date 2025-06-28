@@ -79,7 +79,7 @@ public final class PdBase {
    *
    * @return pd version string e.g "0.53.1"
    */
-  public native static String getPdVersion();
+  public native static String versionString();
 
   /**
    * Clears the search path for Pd externals.
