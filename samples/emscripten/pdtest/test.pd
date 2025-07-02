@@ -1,0 +1,17 @@
+#N canvas 410 294 450 300 10;
+#X obj 97 64 loadbang;
+#X obj 97 86 metro 500;
+#X obj 97 131 print;
+#X obj 188 73 osc~ 400;
+#X obj 179 104 dac~;
+#X obj 97 107 f 0;
+#X obj 128 107 + 1;
+#X obj 46 132 noteout;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 3 0 4 0;
+#X connect 3 0 4 1;
+#X connect 5 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 1;
