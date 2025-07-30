@@ -91,7 +91,47 @@
 	#endif
 
 	// configure a typical audio session with input and output
+	// multiple instances supported if compiling with PDINSTANCE and PDTHREADS
+	// ie. linking to libpd xcode project's libpd-ios-multi target
+#ifdef PDINSTANCE
+	NSLog(@"compiled for multiple instances");
+
+	// use the audio unit's default pd instance, unique to each audio unit
 	self.audioController = [[PdAudioController alloc] init];
+	// ... or provide a specific PdInstance for the audio unit
+	//self.audioController = [[PdAudioController alloc] initWithInstance:[[PdInstance alloc] init]];
+	NSLog(@"num pd instances: %d", PdInstance.numInstances);
+	NSLog(@"main pd instance: %@", PdInstance.mainInstance); // shared main instance, always valid
+	NSLog(@"this pd instance: %@", PdInstance.thisInstance); // current instance
+
+	// access the audio unit's instance
+	PdInstance *pd = self.audioController.audioUnit.pd;
+	NSLog(@"audio unit pd instance: %@", pd);
+
+	// can now use instance directly instead of PdBase calls:
+	// [pd setDelegate:self];
+	// ...
+	// or set as current "this" instance for PdBase & libpd C API calls
+	// [pd setThisInstance];
+	// [PdBase setMidiDelegate:self];
+	// ...
+	/// note: new PdInstances become the current "this" instance on creation
+	///
+	[pd setThisInstance];
+#else
+	NSLog(@"compiled for single instance");
+
+	// uses main pd instance
+	self.audioController = [[PdAudioController alloc] init];
+
+	// PdBase wraps main instance
+	/// can also use main instance directly via
+	// PdInstance.mainInstance:
+	// PDInstance *pd = PdInstance.mainInstance;
+	// [pd setMidiDelegate:self];
+	// ...
+#endif
+
 	// add/override some common session settings
 	//self.audioController.mixWithOthers = NO; // this app's audio only
 	//self.audioController.defaultToSpeaker = NO; // use receiver (earpiece) instead
@@ -113,7 +153,7 @@
 	}
 
 	// other AVAudioSession configurations can be done manually (see the Apple docs)
-	// for example, force voice chat mode: enable echo cancelation, Bluetooth, and default to speaker output
+	// for example, force voice chat mode: enable echo cancellation, Bluetooth, and default to speaker output
 	// this works for the PlayAndRecord category only, ie. playback with input and output channels > 0
 	//[AVAudioSession.sharedInstance setMode:AVAudioSessionModeVoiceChat error:nil];
 
@@ -143,8 +183,9 @@
 	NSLog(@"-- BEGIN Patch Test");
 
 	// open patch
+	//[PdBase openFile:@"test.pd" path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
 	self.patch = [PdFile openFileNamed:@"test.pd"
-								  path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
+	                              path:[NSString stringWithFormat:@"%@/pd", NSBundle.mainBundle.bundlePath]];
 	NSLog(@"%@", self.patch);
 
 	// close patch
@@ -254,7 +295,7 @@
 
 	[PdBase sendSymbol:@"test" toReceiver:@"toPD"];
 
-	// process messages manually
+	// process message queues manually
 	[PdBase receiveMessages];
 	[PdBase receiveMidi];
 
