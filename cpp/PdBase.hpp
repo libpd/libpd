@@ -445,7 +445,7 @@ public:
 
     /// process waiting messages
     virtual void receiveMessages() {
-        if (!bQueued) {
+        if(!bQueued) {
             std::cerr << "Pd: called receiveMessages() "
                       << "while inited with queued = false"
                       << std::endl;
@@ -456,7 +456,7 @@ public:
 
     /// process waiting midi messages
     virtual void receiveMidi() {
-        if (!bQueued) {
+        if(!bQueued) {
             std::cerr << "Pd: called receiveMidi() "
                       << "while inited with queued = false"
                       << std::endl;
@@ -470,8 +470,9 @@ public:
     /// set the incoming event receiver
     ///
     /// automatically receives from all currently subscribed sources
-    /// if inited with queued = false
-    /// otherwise, you will need to call receiveMessages()
+    ///
+    /// if inited with queued = true, call receiveMessages() to process
+    /// from the queue to the receiver
     ///
     void setReceiver(pd::PdReceiver *receiver) {
         this->receiver = receiver;
@@ -482,8 +483,9 @@ public:
     /// set the incoming midi event receiver
     ///
     /// automatically receives from all midi channels
-    /// if inited with queued = false
-    /// otherwise, you will need to call receiveMidi()
+    ///
+    /// if inited with queued = true, call receiveMidi() to process
+    /// from the queue to the receiver
     ///
     void setMidiReceiver(pd::PdMidiReceiver *midiReceiver) {
         this->midiReceiver = midiReceiver;
