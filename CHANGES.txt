@@ -20,6 +20,8 @@
         (robertesler)
 
 * C++: added PdBase setVerbose() and isVerbose()
+* C++: fixed print errors when misusing receiveMessages/receiveMidi, updated
+       stale comments referring to message queue behavior (Evgeny Kochetkov)
 
 * Java: added PdBase set_verbose() function (anvlkv)
 
