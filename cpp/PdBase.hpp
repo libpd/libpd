@@ -387,7 +387,7 @@ public:
     ///
     virtual void subscribe(const std::string &source) {
         if(exists(source)) {
-            std::cerr << "Pd: unsubscribe: ignoring duplicate source"
+            std::cerr << "Pd: subscribe: ignoring duplicate source"
                       << std::endl;
             return;
         }
@@ -445,24 +445,33 @@ public:
 
     /// process waiting messages
     virtual void receiveMessages() {
+        if (!bQueued) {
+            std::cerr << "Pd: called receiveMessages() "
+                      << "while inited with queued = false"
+                      << std::endl;
+        }
         PDBASE_SETINSTANCE
         libpd_queued_receive_pd_messages();
     }
 
     /// process waiting midi messages
     virtual void receiveMidi() {
+        if (!bQueued) {
+            std::cerr << "Pd: called receiveMidi() "
+                      << "while inited with queued = false"
+                      << std::endl;
+        }
         PDBASE_SETINSTANCE
         libpd_queued_receive_midi_messages();
     }
 
 /// \section Event Receiving via Callbacks
 
-    /// set the incoming event receiver, disables the event queue
+    /// set the incoming event receiver
     ///
     /// automatically receives from all currently subscribed sources
-    ///
-    /// set this to NULL to disable callback receiving and re-enable the
-    /// event queue
+    /// if inited with queued = false
+    /// otherwise, you will need to call receiveMessages()
     ///
     void setReceiver(pd::PdReceiver *receiver) {
         this->receiver = receiver;
@@ -470,11 +479,11 @@ public:
 
 /// \section Midi Receiving via Callbacks
 
-    /// set the incoming midi event receiver, disables the midi queue
+    /// set the incoming midi event receiver
     ///
     /// automatically receives from all midi channels
-    ///
-    /// set this to NULL to disable midi events and re-enable the midi queue
+    /// if inited with queued = false
+    /// otherwise, you will need to call receiveMidi()
     ///
     void setMidiReceiver(pd::PdMidiReceiver *midiReceiver) {
         this->midiReceiver = midiReceiver;
