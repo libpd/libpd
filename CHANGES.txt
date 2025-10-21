@@ -1,4 +1,4 @@
-0.15.0: TBD
+0.15.0: 21 Oct 2025
 
 * updated to pd vanilla 0.55-2
 
@@ -23,9 +23,14 @@
 * C++: fixed print errors when misusing receiveMessages/receiveMidi, updated
        stale comments referring to message queue behavior (Evgeny Kochetkov)
 
-* Java: added PdBase set_verbose() function (anvlkv)
+* Java: updated opensl_stream to fix compilation on Android (Antoine Rousseau)
+* Java: fixed regeneration of jni/z_jni.h, javah is deprecated (Antoine Rousseau)
+* Java: added versionString() (Antoine Rousseau)
+* Java: added PdBase setVerbose() function (anvlkv)
+* Java: refreshed jni/z_jni.h (Antoine Rousseau)
 
 * added Github CI workflow (Jean-Michaël Celerier)
+* various CMake fixes (Jean-Michaël Celerier)
 
 0.14.1: 2023 Dec 24
 
