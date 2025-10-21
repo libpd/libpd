@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'libpd'
-  spec.version = '0.14.1'
+  spec.version = '0.15.0'
 
   spec.license = { :type => 'Standard Improved BSD License', :file => 'License.txt' }
 
@@ -34,7 +34,7 @@ Pod::Spec.new do |spec|
 
   spec.public_header_files = 'objc/**/*.{h}'
 
-  spec.ios.deployment_target = '11.0'
+  spec.ios.deployment_target = '12.0'
   spec.macos.deployment_target = '10.13'
 
   spec.requires_arc = true
