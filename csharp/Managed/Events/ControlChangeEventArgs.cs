@@ -2,7 +2,7 @@ using System;
 
 namespace LibPDBinding.Managed.Events
 {
-	public class ControlChangeEventArgs:EventArgs
+	public class ControlChangeEventArgs : EventArgs
 	{
 		public int Channel { get; private set; }
 

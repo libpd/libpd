@@ -251,9 +251,9 @@ If your platform's native libpdcsharp.(so/dll) is not included, you have to buil
 
 ### Building yourself
 
-The C\# library expects a file libpdcsharp.(so/dll) in its directory. Before using the project, you need to compile it:
+The C\# library expects a file libpdcsharp.(so/dll) in its directory. Before using the project, you need to compile it with multiple instance support:
 
-    make csharplib
+    make csharplib MULTI=true
 
 Include `csharp/LibPdBinding.csproj` in your solution and reference the project in your application. See `csharp/README.txt` for details.
 

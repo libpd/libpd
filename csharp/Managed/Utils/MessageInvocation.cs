@@ -1,5 +1,4 @@
 using LibPDBinding.Managed.Data;
-using LibPDBinding.Native;
 using System;
 using System.Runtime.InteropServices;
 

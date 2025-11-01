@@ -3,7 +3,7 @@ using System;
 namespace LibPDBinding.Managed.Events
 {
 
-	public class ProgramChangeEventArgs:EventArgs
+	public class ProgramChangeEventArgs : EventArgs
 	{
 		public int Channel { get; private set; }
 
