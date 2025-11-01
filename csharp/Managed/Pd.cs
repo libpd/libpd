@@ -129,20 +129,17 @@ namespace LibPDBinding.Managed
 			Messaging.Dispose ();
 			Midi.Dispose ();
 			MultiInstance.free_instance (_thisInstance);
-			_currentInstance = IntPtr.Zero;
 		}
 
 		static bool _initialized;
-		static IntPtr _currentInstance = IntPtr.Zero;
 		readonly IntPtr _thisInstance;
 
 		internal void Activate ()
 		{
-			if (_currentInstance == _thisInstance) {
-				return;
+			if (MultiInstance.this_instance () == _thisInstance) {
+				return; 
 			}
 			MultiInstance.set_instance (_thisInstance);
-			_currentInstance = _thisInstance;
 		}
 
 		/// <summary>
