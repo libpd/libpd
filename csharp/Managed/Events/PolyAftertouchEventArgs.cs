@@ -2,7 +2,7 @@ using System;
 
 namespace LibPDBinding.Managed.Events
 {
-	public class PolyAftertouchEventArgs:EventArgs
+	public class PolyAftertouchEventArgs : EventArgs
 	{
 		public int Channel { get; private set; }
 

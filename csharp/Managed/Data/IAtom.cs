@@ -1,5 +1,3 @@
-using System;
-
 namespace LibPDBinding.Managed.Data
 {
 	public interface IAtom<T>

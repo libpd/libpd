@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup Condition="$([MSBuild]::IsOsPlatform('Windows')) And $([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X64">
+        <Content Include="$(MSBuildThisFileDirectory)../runtimes/win-x64/native/libpdcsharp.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>libpdcsharp.dll</Link>
+        </Content>
+        <Content Include="$(MSBuildThisFileDirectory)../runtimes/win-x64/native/libwinpthread-1.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>libwinpthread-1.dll</Link>
+        </Content>
+    </ItemGroup>
+    <ItemGroup Condition="$([MSBuild]::IsOsPlatform('Windows')) And $([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X86">
+        <Content Include="$(MSBuildThisFileDirectory)../runtimes/win-x86/native/libpdcsharp.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>libpdcsharp.dll</Link>
+        </Content>
+        <Content Include="$(MSBuildThisFileDirectory)../runtimes/win-x86/native/libwinpthread-1.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>libwinpthread-1.dll</Link>
+        </Content>
+    </ItemGroup>
+</Project>

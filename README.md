@@ -132,7 +132,25 @@ Once libpd has built successfully, the compiled libraries will be found in the `
 
 Install the core build requirements using your distribution's package manager. For Debian, you can install the compiler chain, autotools, & gettext with:
 
-    sudo apt-get install build-essentials
+    sudo apt install build-essentials
+
+If you want to cross-compile for other architectures, you need additional packages and set the `CC` environment variable for the architecture. Examples using Debian based amd64 distribution:
+
+For 32bit Intel:
+    
+    sudo apt install gcc-i686-linux-gnu
+    make CC=i686-linux-gnu-gcc
+
+For 32bit ARM:
+    
+    sudo apt install gcc-arm-linux-gnueabi
+    make CC=arm-linux-gnueabi-gcc
+
+For 64bit ARM:
+    
+    sudo apt install gcc-aarch64-linux-gnu
+    make CC=aarch64-linux-gnu-gcc
+
 
 ### macOS
 
@@ -159,13 +177,15 @@ To override autodetection, specify the `-arch` flags directly using the `FAT_ARC
 
 ### Windows
 
-libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 "x86_64" 64 bit installer (or "i686" if you are using 32 bit Windows) from:
+libpd on Windows can be built with MinGW which provides the core build requirements: a compiler chain & shell environment. It is recommended to use the Msys2 distribution which provides both a Unix command shell and MinGW. Download the Msys2 64 bit installer for x86_64 or amd64 from:
 
 <http://www.msys2.org/>
 
+For 32 bit the latest version can be downloaded from <https://repo.msys2.org/distrib/i686/>, because it has been deprecated by the developers.
+
 Then install to the default location (C:\msys32 or C:\msys64) and follow the setup/update info on the Msys2 webpage.
 
-Msys2 provides both 32 and 64 bit MinGW and command shells which are used to compile for 32 or 64 bit, respectively. Due to how MinGW is designed, you cannot build a 64 bit libpd with a 32 bit MinGW and vice versa.
+Msys2 provides both MinGW and command shells which are used to compile. Due to how MinGW is designed, you can only build a dll for the current installed environment.
 
 Note: Msys2 development seems to change frequently, so some of the package names below may have changed after this document was written.
 
@@ -251,9 +271,9 @@ If your platform's native libpdcsharp.(so/dll) is not included, you have to buil
 
 ### Building yourself
 
-The C\# library expects a file libpdcsharp.(so/dll) in its directory. Before using the project, you need to compile it:
+The C\# library expects a file libpdcsharp.(so/dll) in its directory. Before using the project, you need to compile it with multiple instance support:
 
-    make csharplib
+    make csharplib MULTI=true
 
 Include `csharp/LibPdBinding.csproj` in your solution and reference the project in your application. See `csharp/README.txt` for details.
 

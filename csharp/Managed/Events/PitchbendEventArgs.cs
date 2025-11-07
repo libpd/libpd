@@ -2,7 +2,7 @@ using System;
 
 namespace LibPDBinding.Managed.Events
 {
-	public class PitchbendEventArgs:EventArgs
+	public class PitchbendEventArgs : EventArgs
 	{
 		public int Channel { get; private set; }
 
