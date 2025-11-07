@@ -13,7 +13,7 @@
 //
 
 #import "PdFile.h"
-#import "PdBase.h"
+#import "PdInstance.h"
 
 @interface PdFile ()
 @property (nonatomic, strong, readwrite) NSValue *fileReference;
@@ -49,10 +49,10 @@
 - (BOOL)openFile:(NSString *)baseName path:(NSString *)pathName {
 	self.baseName = baseName;
 	self.pathName = pathName;
-	void *x = [PdBase openFile:baseName path:pathName];
+	void *x = [PdInstance.thisInstance openFile:baseName path:pathName];
 	if (x) {
 		self.fileReference = [NSValue valueWithPointer:x];
-		self.dollarZero = [PdBase dollarZeroForFile:x];
+		self.dollarZero = [PdInstance.thisInstance dollarZeroForFile:x];
 		return YES;
 	}
 	return NO;
@@ -69,7 +69,7 @@
 - (void)closeFile {
 	void *x = (self.fileReference).pointerValue;
 	if (x) {
-		[PdBase closeFile:x];
+		[PdInstance.thisInstance closeFile:x];
 		self.fileReference = nil;
 	}
 }
