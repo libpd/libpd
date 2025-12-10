@@ -61,3 +61,12 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
   return -1;
 }
 
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setRecordingDeviceId
+  (JNIEnv *env, jclass cls, jint deviceId) {}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setPlaybackDeviceId
+  (JNIEnv *env, jclass cls, jint deviceId) {}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setBufferSizeInFrames
+  (JNIEnv *env, jclass cls, jint frames) {}
+

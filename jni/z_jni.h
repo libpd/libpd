@@ -97,6 +97,30 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestOutputChannels
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    setRecordingDeviceId
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setRecordingDeviceId
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    setPlaybackDeviceId
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setPlaybackDeviceId
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
+ * Method:    setBufferSizeInFrames
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setBufferSizeInFrames
+  (JNIEnv *, jclass, jint);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    closeAudio
  * Signature: ()V
  */

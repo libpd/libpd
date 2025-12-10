@@ -175,6 +175,27 @@ public final class PdBase {
   public native static int suggestOutputChannels();
 
   /**
+   * Select the audio input device
+   *
+   * @param deviceId an integer that identifies the device (depends on the implementation)
+   */
+  public native static void setRecordingDeviceId(int deviceId);
+
+  /**
+   * Select the audio output device
+   *
+   * @param deviceId an integer that identifies the device (depends on the implementation)
+   */
+  public native static void setPlaybackDeviceId(int deviceId);
+
+  /**
+   * Set the audio buffer size
+   *
+   * @param frames the size of the buffer in frames (e.g 2 samples for Stereo)
+   */
+  public native static void setBufferSizeInFrames(int frames);
+
+  /**
    * Closes the audio components if implementsAudio is true, otherwise no-op.
    */
   public native static void closeAudio();

@@ -92,3 +92,13 @@ JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning(JNIEnv *env,
                                                                    jclass cls) {
   return pa_stream && Pa_IsStreamActive(pa_stream);
 }
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setRecordingDeviceId
+  (JNIEnv *env, jclass cls, jint deviceId) {}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setPlaybackDeviceId
+  (JNIEnv *env, jclass cls, jint deviceId) {}
+
+JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_setBufferSizeInFrames
+  (JNIEnv *env, jclass cls, jint frames) {}
+
