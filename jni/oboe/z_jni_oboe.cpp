@@ -52,7 +52,7 @@ jobject options) {
         engine = new OboeEngine();
     }
     if (engine != nullptr) {
-        LOGE("requested sample rate %d", sRate);
+        LOGV("requested sample rate %d", sRate);
         engine->setSampleRate(sRate < 0 ? oboe::kUnspecified : sRate);
         engine->setAudioApi(engine->isAAudioRecommended() ? oboe::AudioApi::AAudio : oboe::AudioApi::OpenSLES);
         engine->setChannelCounts(
@@ -77,7 +77,7 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio
         int inChans, outChans, sRate;
         engine->getAudioParams(inChans, outChans, sRate);
         libpd_init_audio(inChans, outChans, sRate);
-        LOGE("final sample rate %d", sRate);
+        LOGV("final sample rate %d", sRate);
     }
     return isRunning ? 0 : -1;
 }

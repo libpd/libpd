@@ -55,7 +55,7 @@ void OboeEngine::setBufferSizeInFrames(int frames)
 }
 
 void OboeEngine::setSampleRate(int srate) {
-    mSampleRate = srate;
+    mRequestedSampleRate = srate;
 }
 
 bool OboeEngine::setEffectOn(bool isOn) {
@@ -99,6 +99,7 @@ oboe::Result  OboeEngine::openStreams() {
     // stream first, then use properties from the playback stream
     // (e.g. sample rate) to create the recording stream. By matching the
     // properties we should get the lowest latency path
+    mSampleRate = mRequestedSampleRate;
     oboe::AudioStreamBuilder inBuilder, outBuilder;
     setupPlaybackStreamParameters(&outBuilder);
     oboe::Result result = outBuilder.openStream(mPlayStream);
@@ -164,7 +165,8 @@ oboe::AudioStreamBuilder *OboeEngine::setupPlaybackStreamParameters(
         ->setErrorCallback(this)
         ->setDeviceId(mPlaybackDeviceId)
         ->setDirection(oboe::Direction::Output)
-        ->setChannelCount(mOutputChannelCount);
+        ->setChannelCount(mOutputChannelCount)
+        ->setSampleRate(mSampleRate);
 
     return setupCommonStreamParameters(builder);
 }
