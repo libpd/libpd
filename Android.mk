@@ -210,3 +210,17 @@ LOCAL_SHARED_LIBRARIES := pd
 
 include $(BUILD_SHARED_LIBRARY)
 
+
+# Build Oboe JNI binary
+# (must be the last one because of the prefab import-module)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := pdnativeoboe
+LOCAL_C_INCLUDES := $(PD_C_INCLUDES) $(LOCAL_PATH)/jni
+LOCAL_SRC_FILES := jni/oboe/z_jni_oboe_shared.c jni/oboe/z_jni_oboe.cpp jni/oboe/OboeEngine.cpp
+LOCAL_SHARED_LIBRARIES := pd oboe
+LOCAL_LDLIBS := -llog
+include $(BUILD_SHARED_LIBRARY)
+
+$(call import-module, prefab/oboe)

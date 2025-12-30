@@ -44,8 +44,8 @@ public abstract class PdBaseLoader {
 		        }
 		      }
 		      if (version >= 9) {
-		        System.out.println("loading pdnativeopensl for Android");
-		        System.loadLibrary("pdnativeopensl");
+		        System.out.println("loading pdnativeoboe for Android");
+		        System.loadLibrary("pdnativeoboe");
 		      } else {
 		        System.out.println("loading pdnative for Android");
 		        System.loadLibrary("pdnative");

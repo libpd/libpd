@@ -127,17 +127,42 @@ public final class PdBase {
   /**
    * Sets up Pd audio; must be called before rendering audio with process or startAudio.
    *
-   * @param inputChannels Number of input channles
+   * @param inputChannels Number of input channels
    * @param outputChannels Number of output channels
    * @param sampleRate Audio sample rate
-   * @param options Audio backend options, reserved for future use.
+   * @param options Audio backend options, specific to the audio implementation.
+   * <p>
+   * <table>
+   *   <caption>Oboe options</caption>
+   *   <thead>
+   *     <tr>
+   *       <th scope="col">Key</th>
+   *       <th scope="col">Value</th>
+   *     </tr>
+   *   </thead>
+   *   <tbody>
+   *     <tr>
+   *       <td>"inputDeviceId"</td>
+   *       <td>id of the audio input device</td>
+   *     </tr>
+   *     <tr>
+   *       <td>"outputDeviceId"</td>
+   *       <td>id of the audio output device</td>
+   *     </tr>
+   *     <tr>
+   *       <td>"bufferSizeInFrames"</td>
+   *       <td>size of the buffer in frames (e.g 2 samples for Stereo)</td>
+   *     </tr>
+   *   </tbody>
+   * </table>
    * @return error code, 0 on success
+   *
    */
   public native static int openAudio(int inputChannels, int outputChannels, int sampleRate,
       Map<String, String> options);
 
   /**
-   * Indicates whether the underlying binary implements audio, e.g., with OpenSL or PortAudio or
+   * Indicates whether the underlying binary implements audio, e.g., with Oboe or PortAudio or
    * JACK.
    *
    * @return true there is an audio implementation
@@ -145,7 +170,7 @@ public final class PdBase {
   public native static boolean implementsAudio();
 
   /**
-   * Indicates how the underlying binary implements audio, e.g., with OpenSL or PortAudio or JACK.
+   * Indicates how the underlying binary implements audio, e.g., with Oboe or PortAudio or JACK.
    *
    * @return audio backend name or null if there is no audio implementation
    */
