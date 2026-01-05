@@ -52,13 +52,18 @@ void OboeEngine::setAudioCallback(void (*callback)(void*), void *userData) {
 void OboeEngine::setBufferSizeInFrames(int frames)
 {
     mBufferSizeInFrames = frames;
-    if (mPlayStream && mBufferSizeInFrames != oboe::kUnspecified) {
-        mPlayStream->setBufferSizeInFrames(mBufferSizeInFrames);
-    }
 }
 
 void OboeEngine::setSampleRate(int srate) {
     mRequestedSampleRate = srate;
+}
+
+int OboeEngine::getLatencyMillis() {
+    return mCalculatedLatencyMillis;
+}
+
+int OboeEngine::getXRuns() {
+    return mXRuns;
 }
 
 bool OboeEngine::setEffectOn(bool isOn) {
@@ -175,6 +180,10 @@ oboe::AudioStreamBuilder *OboeEngine::setupPlaybackStreamParameters(
         ->setDirection(oboe::Direction::Output)
         ->setChannelCount(mOutputChannelCount)
         ->setSampleRate(mSampleRate);
+    // If buffersize has been specified, make sure the buffer capacity is large enough
+    if (mBufferSizeInFrames != oboe::kUnspecified) {
+        builder->setBufferCapacityInFrames(mBufferSizeInFrames * 2);
+    }
 
     return setupCommonStreamParameters(builder);
 }
@@ -215,7 +224,7 @@ void OboeEngine::closeStream(std::shared_ptr<oboe::AudioStream> &stream) {
         if (result != oboe::Result::OK) {
             LOGE("Error closing stream: %s", oboe::convertToText(result));
         } else {
-            LOGW("Successfully closed streams");
+            LOGW("Successfully closed stream");
         }
         stream.reset();
     }
@@ -248,6 +257,10 @@ oboe::DataCallbackResult OboeEngine::onAudioReady(
     if (mAudioCallback) {
         mAudioCallback(mAudioCallbackUserData);
     }
+
+    mCalculatedLatencyMillis = mPlayStream->calculateLatencyMillis().value();
+    mXRuns = mPlayStream->getXRunCount().value();
+
     if (mDuplexStream) {
         return mDuplexStream->onAudioReady(oboeStream, audioData, numFrames);
     } else if (mSimplexStream) {

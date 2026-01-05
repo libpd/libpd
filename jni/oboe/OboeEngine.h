@@ -13,6 +13,8 @@
 #include <oboe/Oboe.h>
 #include <string>
 #include <thread>
+#include <atomic>
+
 #include "PdStreams.h"
 
 class OboeEngine : public oboe::AudioStreamCallback {
@@ -27,6 +29,8 @@ public:
     void getAudioParams(int &numInputs, int &numOutputs, int &sampleRate);
     void setBufferSizeInFrames(int frames);
     void setSampleRate(int srate);
+    int getLatencyMillis();
+    int getXRuns();
 
     /* optional user audio callback */
     void setAudioCallback(void (*callback)(void*), void *userData = nullptr);
@@ -60,6 +64,8 @@ private:
     int32_t mBufferSizeInFrames = oboe::kUnspecified;
     int32_t mInputChannelCount = oboe::ChannelCount::Stereo;
     int32_t mOutputChannelCount = oboe::ChannelCount::Stereo;
+    std::atomic<int> mCalculatedLatencyMillis = 0;
+    std::atomic<int> mXRuns = 0;
 
     std::unique_ptr<PdStreamDuplex> mDuplexStream;
     std::unique_ptr<PdStreamSimplex> mSimplexStream;

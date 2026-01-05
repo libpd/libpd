@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio
     }
 }
 
-void options_callback(const char* key, const char *value) {
+static void option_set(const char* key, const char *value) {
     if (!strcmp(key, "inputDeviceId")) {
         int id = atoi(value);
         engine->setRecordingDeviceId(id < 0 ? oboe::kUnspecified : id);
@@ -52,27 +52,41 @@ void options_callback(const char* key, const char *value) {
     }
 }
 
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioRuntimeInfo
+(JNIEnv *env, jclass cls, jstring key) {
+    const char* keyChars = (char *) env->GetStringUTFChars(key, NULL);
+    std::string keyString{keyChars};
+    env->ReleaseStringUTFChars(key, keyChars);
+    std::string valueString{"unknown"};
+    if (engine != nullptr) {
+        if (keyString == "latencyMillis") {
+            valueString = std::to_string(engine->getLatencyMillis());
+        } else if (keyString == "xRuns") {
+            valueString = std::to_string(engine->getXRuns());
+        } else if (keyString == "sampleRate") {
+            int inChans, outChans, sRate = 0;
+            engine->getAudioParams(inChans, outChans, sRate);
+            valueString = std::to_string(sRate);
+        }
+    }
+    return env->NewStringUTF(valueString.c_str());
+}
+
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
 (JNIEnv *env, jclass cls, jint inChans, jint outChans, jint sRate,
 jobject options) {
     Java_org_puredata_core_PdBase_closeAudio(env, cls);
-    pthread_mutex_lock(&mutex);
-    // Pd audio parameters will be updated later, in startAudio
-    jint err = libpd_init_audio(2, 2, 48000);
-    pthread_mutex_unlock(&mutex);
-    if (err) return err;
     if (engine == nullptr) {
         engine = new OboeEngine();
     }
     if (engine != nullptr) {
-        LOGV("requested sample rate %d", sRate);
         engine->setSampleRate(sRate < 0 ? oboe::kUnspecified : sRate);
         engine->setAudioApi(engine->isAAudioRecommended() ? oboe::AudioApi::AAudio : oboe::AudioApi::OpenSLES);
         engine->setChannelCounts(
             inChans < 0 ? oboe::kUnspecified : inChans,
             outChans < 0 ? oboe::kUnspecified : outChans
         );
-        map_foreach(env, options, options_callback);
+        map_foreach(env, options, option_set);
     }
     return (engine == nullptr) ? -1 : 0;
 }
@@ -86,12 +100,11 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio
         return -1;
     }
     isRunning = engine->setEffectOn(true);
-    // update Pd audio parameters for the actual devices
+    // init Pd audio parameters with the final hardware settings
     if (isRunning) {
         int inChans, outChans, sRate;
         engine->getAudioParams(inChans, outChans, sRate);
         libpd_init_audio(inChans, outChans, sRate);
-        LOGV("final sample rate %d", sRate);
     }
     return isRunning ? 0 : -1;
 }
@@ -99,9 +112,6 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio
 (JNIEnv *env, jclass cls) {
     if (engine == nullptr) {
-        LOGE(
-            "Engine is null, you must call createEngine before calling pauseAudio "
-            "method");
         return -1;
     }
     isRunning = false;
