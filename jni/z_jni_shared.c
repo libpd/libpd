@@ -711,6 +711,12 @@ JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_versionString
   return result;
 }
 
+__attribute__((weak))
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioRuntimeInfo
+ (JNIEnv *env, jclass cls, jstring key) {
+    return (*env)->NewStringUTF(env, "unknown");
+}
+
 // -----------------------------------------------------------------------------
 // Audio glue needs to be supplied in another file.
 // -----------------------------------------------------------------------------

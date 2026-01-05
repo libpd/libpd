@@ -130,10 +130,10 @@ public final class PdBase {
    * @param inputChannels Number of input channels
    * @param outputChannels Number of output channels
    * @param sampleRate Audio sample rate
-   * @param options Audio backend options, specific to the audio implementation.
+   * @param options Audio backend options, specific to the audio implementation:
    * <p>
    * <table>
-   *   <caption>Oboe options</caption>
+   *   <caption>Oboe initialization options</caption>
    *   <thead>
    *     <tr>
    *       <th scope="col">Key</th>
@@ -160,6 +160,38 @@ public final class PdBase {
    */
   public native static int openAudio(int inputChannels, int outputChannels, int sampleRate,
       Map<String, String> options);
+
+  /**
+   * Get the value of the audio runtime property indicated by the string 'key'. The key/value pairs are
+   * specific to the current audio implementation.
+   * <p>
+   * <table>
+   *   <caption>Oboe runtime properties</caption>
+   *   <thead>
+   *     <tr>
+   *       <th scope="col">Key</th>
+   *       <th scope="col">Value</th>
+   *     </tr>
+   *   </thead>
+   *   <tbody>
+   *     <tr>
+   *       <td>"latencyMillis"</td>
+   *       <td>the calculated latency in milliseconds</td>
+   *     </tr>
+   *     <tr>
+   *       <td>"xRuns"</td>
+   *       <td>number of buffer overruns or underruns since audio started</td>
+   *     </tr>
+   *     <tr>
+   *       <td>"sampleRate"</td>
+   *       <td>final sampling rate</td>
+   *     </tr>
+   *   </tbody>
+   * </table>
+   *
+   * @return a string containing the value of the 'key' property, "unknown" if no such property.
+   */
+  public native static String audioRuntimeInfo(String key);
 
   /**
    * Indicates whether the underlying binary implements audio, e.g., with Oboe or PortAudio or
