@@ -246,6 +246,8 @@ $(JNIH_FILE): $(JAVA_BASE)
 	javac -classpath java $^ -h jni
 	mv jni/org_puredata_core_PdBase.h jni/z_jni.h
 
+${JNI_SOUND:.c=.o}: jni/z_jni_shared.c
+
 $(PDJAVA_NATIVE): ${PD_FILES:.c=.o} ${LIBPD_UTILS:.c=.o} ${EXTRA_FILES:.c=.o} ${JNI_FILE:.c=.o}
 	mkdir -p $(PDJAVA_DIR)
 	$(CC) -o $(PDJAVA_NATIVE) $^ -lm -lpthread $(JAVA_LDFLAGS)

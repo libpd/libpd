@@ -57,6 +57,14 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_openAudio
 
 /*
  * Class:     org_puredata_core_PdBase
+ * Method:    audioRuntimeInfo
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioRuntimeInfo
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_puredata_core_PdBase
  * Method:    implementsAudio
  * Signature: ()Z
  */

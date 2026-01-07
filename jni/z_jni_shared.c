@@ -7,6 +7,7 @@
 
 #include "z_jni.h"
 #include "z_jni_native_hooks.h"
+#include "z_jni_utils.h"
 
 #include <pthread.h>
 #include <stdio.h>
@@ -74,6 +75,79 @@ static jobjectArray makeJavaArray(JNIEnv *env, int argc, t_atom *argv) {
     }
   }
   return jarray;
+}
+
+// Gets all key/value pairs from a java HashMap<String, String>,
+// and call a user function for each.
+// (thanks to https://github.com/mkowsiak/jnicookbook/blob/master/recipes/recipeNo037)
+void map_foreach(JNIEnv *env, jobject map, foreach_callback_t callback) {
+  jclass clsHashMap = (*env)->GetObjectClass (env, map);
+
+  // Retreive Set.keySet() method id.
+  // Descriptor obtained with:
+  // javap -s -p java.util.HashMap | grep -A 1 keySet
+  jmethodID midKeySet =
+    (*env)->GetMethodID (env, clsHashMap, "keySet", "()Ljava/util/Set;");
+
+  // Make sure that method exists
+  if (midKeySet == NULL) {
+    return; // method not found
+  }
+
+  // Get Set of keys
+  jobject objKeySet = (*env)->CallObjectMethod (env, map, midKeySet);
+  jclass clsSet = (*env)->GetObjectClass (env, objKeySet);
+
+  // Retreive Set.toArray() method id.
+  // Descriptor obtained with:
+  // javap -s -p java.util.Set | grep -A 1 toArray
+  jmethodID midToArray =
+    (*env)->GetMethodID (env, clsSet, "toArray", "()[Ljava/lang/Object;");
+
+  // Make sure that method exists
+  if (midToArray == NULL) {
+    return; // method not found
+  }
+
+  // Get array of all keys
+  jobjectArray arrayOfKeys =
+    (*env)->CallObjectMethod (env, objKeySet, midToArray);
+  int arraySize = (*env)->GetArrayLength (env, arrayOfKeys);
+
+  // Iterate over key indexes
+  for (int i = 0; i < arraySize; i++) {
+    // First, we need to get key from array of all keys
+    jstring objKey = (*env)->GetObjectArrayElement (env, arrayOfKeys, i);
+    const char *c_string_key = (*env)->GetStringUTFChars (env, objKey, 0);
+
+    // Once we have key, we can retrieve value for that key
+    jmethodID midGet =
+      (*env)->GetMethodID ( env,
+        clsHashMap,
+        "get",
+        "(Ljava/lang/Object;)Ljava/lang/Object;");
+
+    // Make sure that method exists
+    if (midGet == NULL) {
+      return; // method not found
+    }
+
+    // Get Value for Key
+    jobject objValue = (*env)->CallObjectMethod (env, map, midGet, objKey);
+    const char *c_string_value = (*env)->GetStringUTFChars (env, objValue, 0);
+
+    // Call the callback
+    if (callback) {
+      callback(c_string_key, c_string_value);
+    }
+
+    // Release local stuff */
+    (*env)->ReleaseStringUTFChars (env, objKey, c_string_key);
+    (*env)->DeleteLocalRef (env, objKey);
+
+    (*env)->ReleaseStringUTFChars (env, objValue, c_string_value);
+    (*env)->DeleteLocalRef (env, objValue);
+  }
 }
 
 static void java_printhook(const char *msg) {
@@ -635,6 +709,12 @@ JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_versionString
   snprintf(buf, sizeof(buf), "%d.%d.%d", major, minor, bugfix);
   jstring result = (*env)->NewStringUTF(env, buf);
   return result;
+}
+
+__attribute__((weak))
+JNIEXPORT jstring JNICALL Java_org_puredata_core_PdBase_audioRuntimeInfo
+ (JNIEnv *env, jclass cls, jstring key) {
+    return (*env)->NewStringUTF(env, "unknown");
 }
 
 // -----------------------------------------------------------------------------
