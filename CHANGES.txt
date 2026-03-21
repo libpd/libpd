@@ -1,4 +1,6 @@
-0.15.1: TBD
+0.16.0: TBD
+
+* updated to pd vanilla 0.56-2
 
 * C#: removed libpd_get_instance() stub declaration
       (reported by Charles K. Neimog, fixed by Thomas Mayer)
