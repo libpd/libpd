@@ -2,6 +2,10 @@
 
 * updated to pd vanilla 0.56-2
 
+* added support for Emscripten (Claude Heiland-Allen)
+
+* Emscripten: added emscripten sample projects (Claude Heiland-Allen)
+
 * C#: removed libpd_get_instance() stub declaration
       (reported by Charles K. Neimog, fixed by Thomas Mayer)
 
