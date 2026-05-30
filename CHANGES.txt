@@ -1,6 +1,6 @@
-0.16.0: TBD
+0.16.0: 30 May 2026
 
-* updated to pd vanilla 0.56-2
+* updated to pd vanilla 0.56-3
 
 * added support for Emscripten (Claude Heiland-Allen)
 
