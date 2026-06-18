@@ -20,6 +20,8 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 
 @interface PdAudioUnit ()
 
+@property (nonatomic, readwrite) PdInstance *pd;
+
 /// create and start the audio unit
 - (BOOL)initAudioUnitWithSampleRate:(Float64)sampleRate
                       inputChannels:(int)inputChannels
@@ -51,9 +53,23 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 #pragma mark Initialization
 
 + (instancetype)defaultAudioUnit {
-	return [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
-                                                     options:0
-                                                       error:nil];
+	PdAudioUnit *au = [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
+	                                                            options:0
+	                                                              error:nil];
+	#ifdef PDINSTANCE
+		au.pd = [[PdInstance alloc] init]; // queued
+	#else
+		au.pd = PdInstance.mainInstance;
+	#endif
+	return au;
+}
+
++ (instancetype)defaultAudioUnitWithInstance:(PdInstance *)pd {
+	PdAudioUnit *au = [[PdAudioUnit alloc] initWithComponentDescription:PdAudioUnit.defaultIODescription
+	                                                            options:0
+	                                                              error:nil];
+	au.pd = pd;
+	return au;
 }
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription
@@ -101,10 +117,10 @@ static const AudioUnitElement kRemoteIOElement_Output = 0;
 	if (![self updateInputChannels:_inputChannels outputChannels:_outputChannels]) {
 		return -1;
 	}
-	[PdBase openAudioWithSampleRate:sampleRate
-	                  inputChannels:inputChannels
-	                 outputChannels:outputChannels];
-	[PdBase computeAudio:YES];
+	[self.pd openAudioWithSampleRate:sampleRate
+	                   inputChannels:inputChannels
+	                  outputChannels:outputChannels];
+	[self.pd computeAudio:YES];
 	self.active = wasActive;
 	return 0;
 }
@@ -275,7 +291,7 @@ static OSStatus audioRenderCallback(void *inRefCon,
 		char *copy = (char *)auBuffer;
 		while (rb_available_to_read(pd->_outputRingBuffer) < outputBufferSize) {
 			rb_read_from_buffer(pd->_inputRingBuffer, copy, pd->_inputBlockSize);
-			[PdBase processFloatWithInputBuffer:(float *)copy outputBuffer:(float *)copy ticks:1];
+			[pd->_pd processFloatWithInputBuffer:(float *)copy outputBuffer:(float *)copy ticks:1];
 			rb_write_to_buffer(pd->_outputRingBuffer, 1, copy, pd->_outputBlockSize);
 		}
 
@@ -291,7 +307,7 @@ static OSStatus audioRenderCallback(void *inRefCon,
 
 		// this is a faster way of computing (inNumberFrames / pd->_blockFrames)
 		int ticks = inNumberFrames >> pd->_blockFramesAsLog;
-		[PdBase processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
+		[pd->_pd processFloatWithInputBuffer:auBuffer outputBuffer:auBuffer ticks:ticks];
 	}
 
 	return noErr;
@@ -321,9 +337,9 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			pd->_sampleRate = sr;
 			AU_LOG(@"*** WARNING *** audio unit sample rate property changed: %g", sr);
 			[pd updateInputChannels:pd->_inputChannels outputChannels:pd->_outputChannels];
-			[PdBase openAudioWithSampleRate:sr
-			                  inputChannels:pd->_inputChannels
-			                 outputChannels:pd->_outputChannels];
+			[pd->_pd openAudioWithSampleRate:sr
+			                         inputChannels:pd->_inputChannels
+			                        outputChannels:pd->_outputChannels];
 		}
 	}
 	else if (inID == kAudioUnitProperty_StreamFormat) {
@@ -335,9 +351,9 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			if (pd->_inputChannels != streamFormat.mChannelsPerFrame) {
 				AU_LOG(@"*** WARNING *** audio unit input channels changed: %d", streamFormat.mChannelsPerFrame);
 				[pd updateInputChannels:streamFormat.mChannelsPerFrame outputChannels:pd->_outputChannels];
-				[PdBase openAudioWithSampleRate:pd->_sampleRate
-				                  inputChannels:streamFormat.mChannelsPerFrame
-				                 outputChannels:pd->_outputChannels];
+				[pd->_pd openAudioWithSampleRate:pd->_sampleRate
+				                         inputChannels:streamFormat.mChannelsPerFrame
+				                        outputChannels:pd->_outputChannels];
 
 			}
 		}
@@ -345,9 +361,9 @@ static void propertyChangedCallback(void *inRefCon, AudioUnit inUnit, AudioUnitP
 			if (pd->_outputChannels != streamFormat.mChannelsPerFrame) {
 				AU_LOG(@"*** WARNING *** audio unit output channels changed: %d", streamFormat.mChannelsPerFrame);
 				[pd updateInputChannels:pd->_inputChannels outputChannels:streamFormat.mChannelsPerFrame];
-				[PdBase openAudioWithSampleRate:pd->_sampleRate
-				                  inputChannels:pd->_inputChannels
-				                 outputChannels:streamFormat.mChannelsPerFrame];
+				[pd->_pd openAudioWithSampleRate:pd->_sampleRate
+				                         inputChannels:pd->_inputChannels
+				                        outputChannels:streamFormat.mChannelsPerFrame];
 
 			}
 		}
