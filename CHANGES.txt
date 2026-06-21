@@ -1,3 +1,7 @@
+0.16.1: 21 Jun 2026
+
+* updated to pd vanilla 0.56-5
+
 0.16.0: 30 May 2026
 
 * updated to pd vanilla 0.56-3
