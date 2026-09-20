@@ -22,6 +22,7 @@
 		302110E71AE7095200DFFAF8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 302110E01AE7095200DFFAF8 /* main.m */; };
 		309FA25723D71FE700D6ABF2 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309FA25223D71FE700D6ABF2 /* AVKit.framework */; };
 		30EF3CD11AE76AE600E3DB68 /* libpd-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30EF3CCE1AE7696300E3DB68 /* libpd-ios.a */; };
+		7EC07DF0306066E50096E6D0 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC07DEF306066E50096E6D0 /* SceneDelegate.m */; };
 		F41438CC1F72684400E7BCAE /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F41438CA1F72684400E7BCAE /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,8 @@
 		30507F852350A81D007226D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Base.lproj/Storyboard.storyboard; sourceTree = "<group>"; };
 		309FA25223D71FE700D6ABF2 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		30EF3CC81AE7696300E3DB68 /* libpd.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpd.xcodeproj; path = ../../../../libpd.xcodeproj; sourceTree = "<group>"; };
+		7EC07DEE306066E50096E6D0 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = pdtest/SceneDelegate.h; sourceTree = SOURCE_ROOT; };
+		7EC07DEF306066E50096E6D0 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = pdtest/SceneDelegate.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				302110D11AE7093900DFFAF8 /* AppDelegate.m */,
 				302110D21AE7093900DFFAF8 /* ViewController.h */,
 				302110D31AE7093900DFFAF8 /* ViewController.m */,
+				7EC07DEE306066E50096E6D0 /* SceneDelegate.h */,
+				7EC07DEF306066E50096E6D0 /* SceneDelegate.m */,
 				3011355616A6ECD1005421C7 /* Supporting Files */,
 			);
 			name = pdtest;
@@ -287,6 +292,7 @@
 				302110D51AE7093900DFFAF8 /* ViewController.m in Sources */,
 				302110D41AE7093900DFFAF8 /* AppDelegate.m in Sources */,
 				302110E71AE7095200DFFAF8 /* main.m in Sources */,
+				7EC07DF0306066E50096E6D0 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +365,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../../objc;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -404,7 +410,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../../objc;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -422,7 +428,7 @@
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 2.0;
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
@@ -444,7 +450,7 @@
 				GCC_PREFIX_HEADER = "pdtest/pdtest-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../../../../objc;
 				INFOPLIST_FILE = "$(SRCROOT)/pdtest/pdtest-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 2.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libpd.$(PRODUCT_NAME:rfc1034identifier)";
