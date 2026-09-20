@@ -97,7 +97,7 @@ typedef enum PdAudioStatus {
 /// use AirPlay?
 /// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
-/// available on iSO 10+
+/// available on iOS 10+
 @property (nonatomic, assign) BOOL allowAirPlay;
 
 /// allow audio to continue on certain devices with the privacy feature
