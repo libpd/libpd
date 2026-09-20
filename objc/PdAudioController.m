@@ -275,7 +275,7 @@
 		options |= AVAudioSessionCategoryOptionDefaultToSpeaker;
 	}
 	if (self.allowBluetooth) {
-		options |= AVAudioSessionCategoryOptionAllowBluetooth;
+		options |= AVAudioSessionCategoryOptionAllowBluetoothHFP;
 	}
 	if (self.interruptSpokenAudioAndMixWithOthers) {
 		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
@@ -299,7 +299,7 @@
 - (AVAudioSessionCategoryOptions)recordOptions {
 	AVAudioSessionCategoryOptions options = 0;
 	if (self.allowBluetooth) {
-		options |= AVAudioSessionCategoryOptionAllowBluetooth;
+		options |= AVAudioSessionCategoryOptionAllowBluetoothHFP;
 	}
 	return options;
 }
