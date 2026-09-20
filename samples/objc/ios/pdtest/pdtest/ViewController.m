@@ -30,14 +30,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
 
 	// add audio route picker button to view
-	if (@available(iOS 11.0, *)) {
-		AVRoutePickerView *pickerView = [[AVRoutePickerView alloc] initWithFrame:self.routePickerContainer.bounds];
-		[self.routePickerContainer addSubview:pickerView];
-		self.routePickerContainer.backgroundColor = UIColor.clearColor;
-	}
-	else { // AVRoutePickerView not available before iOS 11
-		self.routePickerContainer.hidden = YES;
-	}
+	AVRoutePickerView *pickerView = [[AVRoutePickerView alloc] initWithFrame:self.routePickerContainer.bounds];
+	[self.routePickerContainer addSubview:pickerView];
+	self.routePickerContainer.backgroundColor = UIColor.clearColor;
 
 	// setup and run tests
 	[self setupPd];

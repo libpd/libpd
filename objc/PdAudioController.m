@@ -280,18 +280,14 @@
 	if (self.interruptSpokenAudioAndMixWithOthers) {
 		options |= AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers;
 	}
-	if (@available(iOS 10.0, *)) {
-		if (self.allowBluetoothA2DP) {
-			options |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
-		}
-		if (self.allowAirPlay) {
-			options |= AVAudioSessionCategoryOptionAllowAirPlay;
-		}
+	if (self.allowBluetoothA2DP) {
+		options |= AVAudioSessionCategoryOptionAllowBluetoothA2DP;
 	}
-	if (@available(iOS 14.5, *)) {
-		if (self.overrideMutedMicrophoneInterruption) {
-			options |= AVAudioSessionCategoryOptionOverrideMutedMicrophoneInterruption;
-		}
+	if (self.allowAirPlay) {
+		options |= AVAudioSessionCategoryOptionAllowAirPlay;
+	}
+	if (self.overrideMutedMicrophoneInterruption) {
+		options |= AVAudioSessionCategoryOptionOverrideMutedMicrophoneInterruption;
 	}
 	return options;
 }

@@ -84,7 +84,6 @@ typedef enum PdAudioStatus {
 /// note: this may be overridden by allowBluetooth if both are set
 /// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
-/// available on iOS 10+
 ///
 /// for some devices, it has been found that setting the mode to videoRecording
 /// results in this option being used more reliably after the app is started:
@@ -97,7 +96,6 @@ typedef enum PdAudioStatus {
 /// use AirPlay?
 /// applied to categories: PlayAndRecord
 /// always supported for output-only categories: Playback, Ambient, SoloAmbient
-/// available on iOS 10+
 @property (nonatomic, assign) BOOL allowAirPlay;
 
 /// allow audio to continue on certain devices with the privacy feature
@@ -105,7 +103,6 @@ typedef enum PdAudioStatus {
 /// if YES, the audio session continue but write 0s to the input buffer
 /// applied to categories: PlayAndRecord
 /// does not apply to sessions with no audio input
-/// available on iOS 14.5+
 @property(nonatomic, assign) BOOL overrideMutedMicrophoneInterruption;
 
 #pragma mark Other Configuration Properties
