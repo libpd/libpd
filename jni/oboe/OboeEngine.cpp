@@ -58,6 +58,10 @@ void OboeEngine::setSampleRate(int srate) {
     mRequestedSampleRate = srate;
 }
 
+void OboeEngine::setAutoReopen(bool autoReopen) {
+    mAutoReopen = autoReopen;
+}
+
 int OboeEngine::getLatencyMillis() {
     return mCalculatedLatencyMillis;
 }
@@ -82,6 +86,10 @@ bool OboeEngine::setEffectOn(bool isOn) {
     return success;
 }
 
+bool OboeEngine::isRunning() {
+    return mIsEffectOn;
+}
+
 void OboeEngine::closeStreams() {
     /*
     * Note: The order of events is important here.
@@ -91,6 +99,7 @@ void OboeEngine::closeStreams() {
     * which would cause the app to crash since the recording stream would be
     * null.
     */
+    mLock.lock();
     if (mDuplexStream) {
         mDuplexStream->stop();
         closeStream(mPlayStream);
@@ -100,6 +109,7 @@ void OboeEngine::closeStreams() {
         closeStream(mPlayStream);
         mSimplexStream.reset();
     }
+    mLock.unlock();
 }
 
 oboe::Result  OboeEngine::openStreams() {
@@ -107,6 +117,8 @@ oboe::Result  OboeEngine::openStreams() {
     // stream first, then use properties from the playback stream
     // (e.g. sample rate) to create the recording stream. By matching the
     // properties we should get the lowest latency path
+    mLock.lock();
+
     mSampleRate = mRequestedSampleRate;
     oboe::AudioStreamBuilder inBuilder, outBuilder;
     setupPlaybackStreamParameters(&outBuilder);
@@ -145,6 +157,7 @@ oboe::Result  OboeEngine::openStreams() {
         mPlayStream->start();
     }
 
+    mLock.unlock();
     return oboe::Result::OK;
 }
 
@@ -298,7 +311,11 @@ void OboeEngine::onErrorAfterClose(oboe::AudioStream *oboeStream,
 
     // Restart the stream if the error is a disconnect.
     if (error == oboe::Result::ErrorDisconnected) {
-        LOGI("Restarting AudioStream");
-        openStreams();
+        if (mIsEffectOn && mAutoReopen) {
+            LOGI("Restarting AudioStream");
+            openStreams();
+        } else {
+            mIsEffectOn = false;
+        }
     }
 }
