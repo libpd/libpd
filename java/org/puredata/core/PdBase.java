@@ -153,6 +153,13 @@ public final class PdBase {
    *       <td>"bufferSizeInFrames"</td>
    *       <td>size of the buffer in frames (e.g 2 samples for Stereo)</td>
    *     </tr>
+   *     <tr>
+   *       <td>"autoReopen"</td>
+   *       <td>if "0", oboe engine won't reopen automatically the default device after
+   *           the current device has been disconnected
+   *           <br>the default is "1": oboe will reopen automatically after disconnect
+   *       </td>
+   *     </tr>
    *   </tbody>
    * </table>
    * @return error code, 0 on success

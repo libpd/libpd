@@ -9,7 +9,6 @@
 #include "z_jni_oboe.h"
 
 static OboeEngine *engine = nullptr;
-static bool isRunning = false;
 
 pthread_mutex_t &mutex = *jni_oboe_get_libpd_mutex();
 
@@ -33,7 +32,6 @@ JNIEXPORT void JNICALL Java_org_puredata_core_PdBase_closeAudio
 (JNIEnv *env, jclass cls) {
     if (engine) {
         engine->setEffectOn(false);
-        isRunning = false;
         delete engine;
         engine = nullptr;
     }
@@ -49,6 +47,9 @@ static void option_set(const char* key, const char *value) {
     } else if (!strcmp(key, "bufferSizeInFrames")) {
         int size = atoi(value);
         engine->setBufferSizeInFrames(size < 0 ? oboe::kUnspecified : size);
+    } else if (!strcmp(key, "autoReopen")) {
+        bool autoReopen = atoi(value) != 0;
+        engine->setAutoReopen(autoReopen);
     }
 }
 
@@ -99,14 +100,14 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_startAudio
             "method");
         return -1;
     }
-    isRunning = engine->setEffectOn(true);
+    engine->setEffectOn(true);
     // init Pd audio parameters with the final hardware settings
-    if (isRunning) {
+    if (engine->isRunning()) {
         int inChans, outChans, sRate;
         engine->getAudioParams(inChans, outChans, sRate);
         libpd_init_audio(inChans, outChans, sRate);
     }
-    return isRunning ? 0 : -1;
+    return engine->isRunning() ? 0 : -1;
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio
@@ -114,14 +115,13 @@ JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_pauseAudio
     if (engine == nullptr) {
         return -1;
     }
-    isRunning = false;
     engine->setEffectOn(false);
     return 0;
 }
 
 JNIEXPORT jboolean JNICALL Java_org_puredata_core_PdBase_isRunning
 (JNIEnv *env, jclass cls) {
-  return engine && isRunning;
+  return engine && engine->isRunning();
 }
 
 JNIEXPORT jint JNICALL Java_org_puredata_core_PdBase_suggestSampleRate
