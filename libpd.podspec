@@ -28,7 +28,6 @@ Pod::Spec.new do |spec|
                       'pure-data/extra/pique/*.{h,c}',
                       'pure-data/extra/sigmund~/*.{h,c}',
                       'pure-data/extra/stdout/*.{h,c}',
-                      'libpd_wrapper/**/*.{h,c}',
                       'objc/**/*.{h,m}'
   spec.preserve_paths = 'pure-data/extra/pd~/binarymsg.c'
 
@@ -77,19 +76,6 @@ Pod::Spec.new do |spec|
                        'pure-data/src/s_watchdog.c',
                        'pure-data/src/u_pdreceive.c',
                        'pure-data/src/u_pdsend.c',
-                       'pure-data/src/x_libpdreceive.h',
-                       'pure-data/src/x_libpdreceive.c',
-                       'pure-data/src/z_ringbuffer.h',
-                       'pure-data/src/z_ringbuffer.c',
-                       'pure-data/src/z_queued.c',
-                       'pure-data/src/z_queued.h',
-                       'pure-data/src/z_print_util.c',
-                       'pure-data/src/z_print_util.h',
-                       'pure-data/src/z_hooks.c',
-                       'pure-data/src/z_hooks.h',
-                       'pure-data/src/s_libpdmidi.c',
-                       'pure-data/src/z_libpd.c',
-                       'pure-data/src/z_libpd.h',
                        'pure-data/src/m_dispatch_gen.c',
 
   # exclude ios-only audio implementation

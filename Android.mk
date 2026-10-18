@@ -33,11 +33,11 @@ PD_SRC_FILES := \
   pure-data/src/x_misc.c pure-data/src/x_net.c pure-data/src/x_array.c \
   pure-data/src/x_time.c pure-data/src/x_interface.c pure-data/src/x_scalar.c \
   pure-data/src/x_text.c pure-data/src/x_vexp.c pure-data/src/x_vexp_if.c \
-  pure-data/src/x_vexp_fun.c libpd_wrapper/s_libpdmidi.c \
-  libpd_wrapper/x_libpdreceive.c libpd_wrapper/z_libpd.c \
-  libpd_wrapper/util/z_ringbuffer.c libpd_wrapper/util/z_queued.c \
-  libpd_wrapper/z_hooks.c libpd_wrapper/util/z_print_util.c
-PD_C_INCLUDES := $(LOCAL_PATH)/libpd_wrapper $(LOCAL_PATH)/libpd_wrapper/util \
+  pure-data/src/x_vexp_fun.c pure-data/src/s_libpdmidi.c \
+  pure-data/src/x_libpdreceive.c pure-data/src/z_libpd.c \
+  pure-data/src/z_ringbuffer.c pure-data/src/z_queued.c \
+  pure-data/src/z_hooks.c pure-data/src/z_print_util.c
+PD_C_INCLUDES := $(LOCAL_PATH)/pure-data/src $(LOCAL_PATH)/pure-data/src \
   $(LOCAL_PATH)/pure-data/src
 PD_CFLAGS := -DPD -DUSEAPI_DUMMY -DPD_INTERNAL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DHAVE_ENDIAN_H -DHAVE_LIBDL -w
 PD_JNI_CFLAGS := -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast

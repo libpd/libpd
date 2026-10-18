@@ -29,6 +29,7 @@ public:
     void getAudioParams(int &numInputs, int &numOutputs, int &sampleRate);
     void setBufferSizeInFrames(int frames);
     void setSampleRate(int srate);
+    void setAutoReopen(bool autoReopen);
     int getLatencyMillis();
     int getXRuns();
 
@@ -40,6 +41,11 @@ public:
      * @return true if it succeeds
      */
     bool setEffectOn(bool isOn);
+
+    /**
+     * @return true if engine is currently running
+     */
+    bool isRunning();
 
     /*
      * oboe::AudioStreamDataCallback interface implementation
@@ -55,6 +61,7 @@ public:
 
 private:
     bool mIsEffectOn = false;
+    bool mAutoReopen = true;
     int32_t mRecordingDeviceId = oboe::kUnspecified;
     int32_t mPlaybackDeviceId = oboe::kUnspecified;
     const oboe::AudioFormat mFormat = oboe::AudioFormat::Float; // for easier processing
@@ -71,6 +78,8 @@ private:
     std::unique_ptr<PdStreamSimplex> mSimplexStream;
     std::shared_ptr<oboe::AudioStream> mRecordingStream;
     std::shared_ptr<oboe::AudioStream> mPlayStream;
+
+    std::mutex mLock; // guard openStreams() and closeStreams()
 
     void (*mAudioCallback)(void *data) = nullptr;
     void *mAudioCallbackUserData = nullptr;

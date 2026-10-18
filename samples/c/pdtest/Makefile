@@ -22,7 +22,7 @@ LIBPD = $(LIBPD_DIR)/libs/$(SOLIB_PREFIX)pd.$(SOLIB_EXT)
 SRC_FILES = pdtest.c
 TARGET = pdtest
 
-CFLAGS = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/pure-data/src -O3
+CFLAGS = -I$(LIBPD_DIR)/pure-data/src -O3
 
 .PHONY: clean clobber
 
